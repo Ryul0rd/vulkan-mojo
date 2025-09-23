@@ -11,6 +11,17 @@ Generated Mojo bindings for the Vulkan graphics API
 
 ## Usage
 
+#### Functions are loaded by once that level is initialized
+```mojo
+# load global functions any time
+var vkg = vk.GlobalFunctionsV1_3()
+...
+# load instance and device level functions once you've initialized that instance or device
+var vki = vk.InstanceFunctionsV1_3(vkg, instance)
+...
+var vkd = vk.DeviceFunctionsV1_3(vkg, device)
+```
+
 #### Structs don't currently carry origins of pointers
 ```mojo
 var queue_priorities = InlineArray[Float32, 1](1.0)
