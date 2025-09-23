@@ -25,15 +25,15 @@ _ = queue_priorities # necessary to make sure pointer in queue_create_info remai
 
 #### Hpp-style convenience functions for the 2 call pattern
 ```mojo
-var extension_properties_result = vkg.enumerate_instance_extension_properties(Ptr[UInt8]())
+var extension_properties_result = vkg.enumerate_instance_extension_properties(UnsafePointer[UInt8]())
 ```
 instead of 
 ```mojo
 # and this leaves out proper error handling
 var count: UInt32 = 0
-var result = vki.enumerate_foo(count, UnsafePointer[vk.ExtensionProperties]())
+var result = vki.enumerate_foo(UnsafePointer[UInt8](), count, UnsafePointer[vk.ExtensionProperties]())
 var extension_properties = UnsafePointer[vk.ExtensionProperties].alloc(count * size_of[vk.ExtensionProperties]())
-result = vki.enumerate_foo(count, extension_properties)
+result = vki.enumerate_foo(UnsafePointer[UInt8](), count, extension_properties)
 ```
 
 Check examples for more detail
