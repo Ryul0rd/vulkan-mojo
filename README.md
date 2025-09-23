@@ -1,5 +1,5 @@
 # vulkan-mojo
-![CodeQL](https://github.com/Ryul0rd/vulkan-mojo/workflows/CodeQL/badge.svg)
+![CodeQL](https://github.com/Ryul0rd/vulkan-mojo/actions/workflows/codeql.yml/badge.svg)
 
 Generated Mojo bindings for the Vulkan graphics API
 
