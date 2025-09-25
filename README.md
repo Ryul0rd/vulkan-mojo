@@ -9,6 +9,13 @@ Generated Mojo bindings for the Vulkan graphics API
 - Unsafe. Use validation layers to catch mistakes
 - Linux only currently
 
+## Installation
+vulkan mojo is available through the modular community channel! Just run
+```sh
+pixi project channel add https://repo.prefix.dev/modular-community && \
+pixi add vulkan-mojo
+```
+
 ## Usage
 
 #### Functions are loaded by once that level is initialized
