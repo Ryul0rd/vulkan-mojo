@@ -2,61 +2,59 @@ from .handles import *
 from .structs import *
 from .misc import *
 
+comptime Ptr = UnsafePointer
 
-alias Ptr = UnsafePointer
 
-
-alias PFN_vkInternalAllocationNotification = fn(
-    Ptr[NoneType],
-    UInt,
-    InternalAllocationType,
-    SystemAllocationScope,
+comptime PFN_vkInternalAllocationNotification = fn(
+    Ptr[NoneType, MutOrigin.external], UInt, InternalAllocationType, SystemAllocationScope
 )
 
-alias PFN_vkInternalFreeNotification = fn(
-    Ptr[NoneType],
-    UInt,
-    InternalAllocationType,
-    SystemAllocationScope,
+comptime PFN_vkInternalFreeNotification = fn(
+    Ptr[NoneType, MutOrigin.external], UInt, InternalAllocationType, SystemAllocationScope
 )
 
-alias PFN_vkReallocationFunction = fn(
-    Ptr[NoneType],
-    Ptr[NoneType],
+comptime PFN_vkReallocationFunction = fn(
+    Ptr[NoneType, MutOrigin.external],
+    Ptr[NoneType, MutOrigin.external],
     UInt,
     UInt,
     SystemAllocationScope,
 )
 
-alias PFN_vkAllocationFunction = fn(Ptr[NoneType], UInt, UInt, SystemAllocationScope)
+comptime PFN_vkAllocationFunction = fn(
+    Ptr[NoneType, MutOrigin.external], UInt, UInt, SystemAllocationScope
+)
 
-alias PFN_vkFreeFunction = fn(Ptr[NoneType], Ptr[NoneType])
+comptime PFN_vkFreeFunction = fn(
+    Ptr[NoneType, MutOrigin.external], Ptr[NoneType, MutOrigin.external]
+)
 
-alias PFN_vkVoidFunction = fn()
+comptime PFN_vkVoidFunction = fn()
 
-alias PFN_vkDebugReportCallbackEXT = fn(
+comptime PFN_vkDebugReportCallbackEXT = fn(
     DebugReportFlagsEXT,
     DebugReportObjectTypeEXT,
     UInt64,
     UInt,
     Int32,
-    Ptr[UInt8],
-    Ptr[UInt8],
-    Ptr[NoneType],
+    Ptr[c_char, ImmutOrigin.external],
+    Ptr[c_char, ImmutOrigin.external],
+    Ptr[NoneType, MutOrigin.external],
 ) -> Bool32
 
-alias PFN_vkDebugUtilsMessengerCallbackEXT = fn(
+comptime PFN_vkDebugUtilsMessengerCallbackEXT = fn(
     DebugUtilsMessageSeverityFlagBitsEXT,
     DebugUtilsMessageTypeFlagsEXT,
-    Ptr[DebugUtilsMessengerCallbackDataEXT],
-    Ptr[NoneType],
+    Ptr[DebugUtilsMessengerCallbackDataEXT, ImmutOrigin.external],
+    Ptr[NoneType, MutOrigin.external],
 ) -> Bool32
 
-alias PFN_vkFaultCallbackFunction = fn(Bool32, UInt32, Ptr[FaultData])
+comptime PFN_vkFaultCallbackFunction = fn(Bool32, UInt32, Ptr[FaultData, ImmutOrigin.external])
 
-alias PFN_vkDeviceMemoryReportCallbackEXT = fn(
-    Ptr[DeviceMemoryReportCallbackDataEXT],
-    Ptr[NoneType],
+comptime PFN_vkDeviceMemoryReportCallbackEXT = fn(
+    Ptr[DeviceMemoryReportCallbackDataEXT, ImmutOrigin.external], Ptr[NoneType, MutOrigin.external]
 )
 
-alias PFN_vkGetInstanceProcAddrLUNARG = fn(Instance, Ptr[UInt8]) -> PFN_vkVoidFunction
+comptime PFN_vkGetInstanceProcAddrLUNARG = fn(
+    Instance, Ptr[c_char, ImmutOrigin.external]
+) -> PFN_vkVoidFunction

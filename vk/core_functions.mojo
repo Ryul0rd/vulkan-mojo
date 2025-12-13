@@ -1,531 +1,546 @@
-from sys import DLHandle, RTLD
+from sys import OwnedDLHandle, RTLD
 from .fn_types import *
 from .handles import *
 from .structs import *
 from .misc import *
 
 
-alias Ptr = UnsafePointer
+comptime Ptr = UnsafePointer
 
 
 trait GlobalFunctions:
-    fn handle(self) -> DLHandle:
+    fn handle(self) -> ref [self] OwnedDLHandle:
         ...
 
 
-struct GlobalFunctionsV1_0(GlobalFunctions, Copyable, Movable):
-    var _handle: DLHandle
+struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
+    var _handle: OwnedDLHandle
     var _v1_0: GlobalFunctionAdditionsV1_0
 
     fn __init__(out self) raises:
-        self._handle = DLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
+        self._handle = OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
         self._v1_0 = GlobalFunctionAdditionsV1_0(self._handle)
 
-    fn handle(self) -> DLHandle:
+    fn handle(self) -> ref [self] OwnedDLHandle:
         return self._handle
 
     fn create_instance(
         self,
         create_info: InstanceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut instance: Instance,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
         return self._v1_0.create_instance(Ptr(to=create_info), p_allocator, Ptr(to=instance))
 
-    fn get_instance_proc_addr(self, instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction:
+    fn get_instance_proc_addr(self, instance: Instance, name: c_char) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name)
+        return self._v1_0.get_instance_proc_addr(instance, Ptr(to=name))
 
     fn enumerate_instance_extension_properties(
         self,
-        p_layer_name: Ptr[UInt8],
+        p_layer_name: Ptr[c_char, ImmutOrigin.external],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties],
+        p_properties: Ptr[ExtensionProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
             p_layer_name, Ptr(to=property_count), p_properties
         )
 
     fn enumerate_instance_extension_properties(
-        self, p_layer_name: Ptr[UInt8]
+        self, p_layer_name: Ptr[c_char, ImmutOrigin.external]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         var list = List[ExtensionProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_instance_extension_properties(
-                p_layer_name, count, Ptr[ExtensionProperties]()
+                p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_instance_extension_properties(
-                    p_layer_name, count, list.unsafe_ptr()
-                )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
-    fn enumerate_instance_layer_properties(
-        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties]
-    ) -> Result:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
-        """
-        return self._v1_0.enumerate_instance_layer_properties(Ptr(to=property_count), p_properties)
-
-    fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
-        """
-        var list = List[LayerProperties]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.enumerate_instance_layer_properties(count, Ptr[LayerProperties]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
-        list._len = Int(count)
-        return ListResult(list^, result)
-
-
-struct GlobalFunctionsV1_1(GlobalFunctions, Copyable, Movable):
-    var _handle: DLHandle
-    var _v1_0: GlobalFunctionAdditionsV1_0
-    var _v1_1: GlobalFunctionAdditionsV1_1
-
-    fn __init__(out self) raises:
-        self._handle = DLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
-        self._v1_0 = GlobalFunctionAdditionsV1_0(self._handle)
-        self._v1_1 = GlobalFunctionAdditionsV1_1(self._handle)
-
-    fn handle(self) -> DLHandle:
-        return self._handle
-
-    fn create_instance(
-        self,
-        create_info: InstanceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
-        mut instance: Instance,
-    ) -> Result:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
-        """
-        return self._v1_0.create_instance(Ptr(to=create_info), p_allocator, Ptr(to=instance))
-
-    fn get_instance_proc_addr(self, instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
-        """
-        return self._v1_0.get_instance_proc_addr(instance, p_name)
-
-    fn enumerate_instance_extension_properties(
-        self,
-        p_layer_name: Ptr[UInt8],
-        mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties],
-    ) -> Result:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
-        """
-        return self._v1_0.enumerate_instance_extension_properties(
-            p_layer_name, Ptr(to=property_count), p_properties
-        )
-
-    fn enumerate_instance_extension_properties(
-        self, p_layer_name: Ptr[UInt8]
-    ) -> ListResult[ExtensionProperties]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
-        """
-        var list = List[ExtensionProperties]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
             result = self.enumerate_instance_extension_properties(
-                p_layer_name, count, Ptr[ExtensionProperties]()
+                p_layer_name, count, list.unsafe_ptr()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_instance_extension_properties(
-                    p_layer_name, count, list.unsafe_ptr()
-                )
         list._len = Int(count)
         return ListResult(list^, result)
 
     fn enumerate_instance_layer_properties(
-        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties]
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutOrigin.external]
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         return self._v1_0.enumerate_instance_layer_properties(Ptr(to=property_count), p_properties)
 
     fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         var list = List[LayerProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.enumerate_instance_layer_properties(count, Ptr[LayerProperties]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
+            result = self.enumerate_instance_layer_properties(
+                count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_instance_version(self, mut version: Version) -> Result:
-        """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
-        """
-        return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())
-
-
-struct GlobalFunctionsV1_2(GlobalFunctions, Copyable, Movable):
-    var _handle: DLHandle
+struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
+    var _handle: OwnedDLHandle
     var _v1_0: GlobalFunctionAdditionsV1_0
     var _v1_1: GlobalFunctionAdditionsV1_1
 
     fn __init__(out self) raises:
-        self._handle = DLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
+        self._handle = OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
         self._v1_0 = GlobalFunctionAdditionsV1_0(self._handle)
         self._v1_1 = GlobalFunctionAdditionsV1_1(self._handle)
 
-    fn handle(self) -> DLHandle:
+    fn handle(self) -> ref [self] OwnedDLHandle:
         return self._handle
 
     fn create_instance(
         self,
         create_info: InstanceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut instance: Instance,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
         return self._v1_0.create_instance(Ptr(to=create_info), p_allocator, Ptr(to=instance))
 
-    fn get_instance_proc_addr(self, instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction:
+    fn get_instance_proc_addr(self, instance: Instance, name: c_char) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name)
+        return self._v1_0.get_instance_proc_addr(instance, Ptr(to=name))
 
     fn enumerate_instance_extension_properties(
         self,
-        p_layer_name: Ptr[UInt8],
+        p_layer_name: Ptr[c_char, ImmutOrigin.external],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties],
+        p_properties: Ptr[ExtensionProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
             p_layer_name, Ptr(to=property_count), p_properties
         )
 
     fn enumerate_instance_extension_properties(
-        self, p_layer_name: Ptr[UInt8]
+        self, p_layer_name: Ptr[c_char, ImmutOrigin.external]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         var list = List[ExtensionProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_instance_extension_properties(
-                p_layer_name, count, Ptr[ExtensionProperties]()
+                p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_instance_extension_properties(
-                    p_layer_name, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
     fn enumerate_instance_layer_properties(
-        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties]
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutOrigin.external]
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         return self._v1_0.enumerate_instance_layer_properties(Ptr(to=property_count), p_properties)
 
     fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         var list = List[LayerProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.enumerate_instance_layer_properties(count, Ptr[LayerProperties]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
+            result = self.enumerate_instance_layer_properties(
+                count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_instance_version(self, mut version: Version) -> Result:
-        """See official vulkan docs for details.
+fn enumerate_instance_version(self, mut version: Version) -> Result:
+    """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
-        """
-        return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())
+    https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+    """
+    return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())
 
 
-struct GlobalFunctionsV1_3(GlobalFunctions, Copyable, Movable):
-    var _handle: DLHandle
+struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
+    var _handle: OwnedDLHandle
     var _v1_0: GlobalFunctionAdditionsV1_0
     var _v1_1: GlobalFunctionAdditionsV1_1
 
     fn __init__(out self) raises:
-        self._handle = DLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
+        self._handle = OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
         self._v1_0 = GlobalFunctionAdditionsV1_0(self._handle)
         self._v1_1 = GlobalFunctionAdditionsV1_1(self._handle)
 
-    fn handle(self) -> DLHandle:
+    fn handle(self) -> ref [self] OwnedDLHandle:
         return self._handle
 
     fn create_instance(
         self,
         create_info: InstanceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut instance: Instance,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
         return self._v1_0.create_instance(Ptr(to=create_info), p_allocator, Ptr(to=instance))
 
-    fn get_instance_proc_addr(self, instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction:
+    fn get_instance_proc_addr(self, instance: Instance, name: c_char) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name)
+        return self._v1_0.get_instance_proc_addr(instance, Ptr(to=name))
 
     fn enumerate_instance_extension_properties(
         self,
-        p_layer_name: Ptr[UInt8],
+        p_layer_name: Ptr[c_char, ImmutOrigin.external],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties],
+        p_properties: Ptr[ExtensionProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
             p_layer_name, Ptr(to=property_count), p_properties
         )
 
     fn enumerate_instance_extension_properties(
-        self, p_layer_name: Ptr[UInt8]
+        self, p_layer_name: Ptr[c_char, ImmutOrigin.external]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         var list = List[ExtensionProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_instance_extension_properties(
-                p_layer_name, count, Ptr[ExtensionProperties]()
+                p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_instance_extension_properties(
-                    p_layer_name, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
     fn enumerate_instance_layer_properties(
-        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties]
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutOrigin.external]
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         return self._v1_0.enumerate_instance_layer_properties(Ptr(to=property_count), p_properties)
 
     fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         var list = List[LayerProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.enumerate_instance_layer_properties(count, Ptr[LayerProperties]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
+            result = self.enumerate_instance_layer_properties(
+                count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_instance_version(self, mut version: Version) -> Result:
-        """See official vulkan docs for details.
+fn enumerate_instance_version(self, mut version: Version) -> Result:
+    """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
-        """
-        return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())
+    https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+    """
+    return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())
 
 
-struct GlobalFunctionsV1_4(GlobalFunctions, Copyable, Movable):
-    var _handle: DLHandle
+struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
+    var _handle: OwnedDLHandle
     var _v1_0: GlobalFunctionAdditionsV1_0
     var _v1_1: GlobalFunctionAdditionsV1_1
 
     fn __init__(out self) raises:
-        self._handle = DLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
+        self._handle = OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
         self._v1_0 = GlobalFunctionAdditionsV1_0(self._handle)
         self._v1_1 = GlobalFunctionAdditionsV1_1(self._handle)
 
-    fn handle(self) -> DLHandle:
+    fn handle(self) -> ref [self] OwnedDLHandle:
         return self._handle
 
     fn create_instance(
         self,
         create_info: InstanceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut instance: Instance,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
         return self._v1_0.create_instance(Ptr(to=create_info), p_allocator, Ptr(to=instance))
 
-    fn get_instance_proc_addr(self, instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction:
+    fn get_instance_proc_addr(self, instance: Instance, name: c_char) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name)
+        return self._v1_0.get_instance_proc_addr(instance, Ptr(to=name))
 
     fn enumerate_instance_extension_properties(
         self,
-        p_layer_name: Ptr[UInt8],
+        p_layer_name: Ptr[c_char, ImmutOrigin.external],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties],
+        p_properties: Ptr[ExtensionProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
             p_layer_name, Ptr(to=property_count), p_properties
         )
 
     fn enumerate_instance_extension_properties(
-        self, p_layer_name: Ptr[UInt8]
+        self, p_layer_name: Ptr[c_char, ImmutOrigin.external]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         var list = List[ExtensionProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_instance_extension_properties(
-                p_layer_name, count, Ptr[ExtensionProperties]()
+                p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_instance_extension_properties(
-                    p_layer_name, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
     fn enumerate_instance_layer_properties(
-        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties]
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutOrigin.external]
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         return self._v1_0.enumerate_instance_layer_properties(Ptr(to=property_count), p_properties)
 
     fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         var list = List[LayerProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.enumerate_instance_layer_properties(count, Ptr[LayerProperties]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
+            result = self.enumerate_instance_layer_properties(
+                count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_instance_version(self, mut version: Version) -> Result:
+fn enumerate_instance_version(self, mut version: Version) -> Result:
+    """See official vulkan docs for details.
+
+    https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+    """
+    return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())
+
+
+struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
+    var _handle: OwnedDLHandle
+    var _v1_0: GlobalFunctionAdditionsV1_0
+    var _v1_1: GlobalFunctionAdditionsV1_1
+
+    fn __init__(out self) raises:
+        self._handle = OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
+        self._v1_0 = GlobalFunctionAdditionsV1_0(self._handle)
+        self._v1_1 = GlobalFunctionAdditionsV1_1(self._handle)
+
+    fn handle(self) -> ref [self] OwnedDLHandle:
+        return self._handle
+
+    fn create_instance(
+        self,
+        create_info: InstanceCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        mut instance: Instance,
+    ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
-        return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())
+        return self._v1_0.create_instance(Ptr(to=create_info), p_allocator, Ptr(to=instance))
+
+    fn get_instance_proc_addr(self, instance: Instance, name: c_char) -> PFN_vkVoidFunction:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
+        """
+        return self._v1_0.get_instance_proc_addr(instance, Ptr(to=name))
+
+    fn enumerate_instance_extension_properties(
+        self,
+        p_layer_name: Ptr[c_char, ImmutOrigin.external],
+        mut property_count: UInt32,
+        p_properties: Ptr[ExtensionProperties, MutOrigin.external],
+    ) -> Result:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
+        """
+        return self._v1_0.enumerate_instance_extension_properties(
+            p_layer_name, Ptr(to=property_count), p_properties
+        )
+
+    fn enumerate_instance_extension_properties(
+        self, p_layer_name: Ptr[c_char, ImmutOrigin.external]
+    ) -> ListResult[ExtensionProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
+        """
+        var list = List[ExtensionProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
+    fn enumerate_instance_layer_properties(
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutOrigin.external]
+    ) -> Result:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
+        """
+        return self._v1_0.enumerate_instance_layer_properties(Ptr(to=property_count), p_properties)
+
+    fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
+        """
+        var list = List[LayerProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_instance_layer_properties(
+                count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
+
+fn enumerate_instance_version(self, mut version: Version) -> Result:
+    """See official vulkan docs for details.
+
+    https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+    """
+    return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())
 
 
 struct GlobalFunctionAdditionsV1_0(Copyable, Movable):
     var create_instance: fn(
-        pCreateInfo: Ptr[InstanceCreateInfo], pAllocator: Ptr[AllocationCallbacks], pInstance: Ptr[Instance]
+        pCreateInfo: Ptr[InstanceCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pInstance: Ptr[Instance, MutOrigin.external],
     ) -> Result
     var get_instance_proc_addr: fn(
-        instance: Instance, pName: Ptr[UInt8]
+        instance: Instance, pName: Ptr[c_char, ImmutOrigin.external]
     ) -> PFN_vkVoidFunction
     var enumerate_instance_extension_properties: fn(
-        pLayerName: Ptr[UInt8], pPropertyCount: Ptr[UInt32], pProperties: Ptr[ExtensionProperties]
+        pLayerName: Ptr[c_char, ImmutOrigin.external],
+        pPropertyCount: Ptr[UInt32, MutOrigin.external],
+        pProperties: Ptr[ExtensionProperties, MutOrigin.external],
     ) -> Result
     var enumerate_instance_layer_properties: fn(
-        pPropertyCount: Ptr[UInt32], pProperties: Ptr[LayerProperties]
+        pPropertyCount: Ptr[UInt32, MutOrigin.external],
+        pProperties: Ptr[LayerProperties, MutOrigin.external],
     ) -> Result
 
-    fn __init__(out self, handle: DLHandle) raises:
+    fn __init__(out self, handle: OwnedDLHandle) raises:
         get_instance_proc_addr = handle.get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self.create_instance = Ptr(to=get_instance_proc_addr(
             Instance.NULL, "vkCreateInstance".unsafe_ptr()
@@ -542,29 +557,27 @@ struct GlobalFunctionAdditionsV1_0(Copyable, Movable):
 
 
 struct GlobalFunctionAdditionsV1_1(Copyable, Movable):
-    var enumerate_instance_version: fn(
-        pApiVersion: Ptr[UInt32]
-    ) -> Result
+    var enumerate_instance_version: fn(pApiVersion: Ptr[UInt32, MutOrigin.external]) -> Result
 
-    fn __init__(out self, handle: DLHandle) raises:
+    fn __init__(out self, handle: OwnedDLHandle) raises:
         get_instance_proc_addr = handle.get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self.enumerate_instance_version = Ptr(to=get_instance_proc_addr(
             Instance.NULL, "vkEnumerateInstanceVersion".unsafe_ptr()
         )).bitcast[__type_of(self.enumerate_instance_version)]()[]
-
-
-struct InstanceFunctionsV1_0(Copyable, Movable):
     var _v1_0: InstanceFunctionAdditionsV1_0
 
-    fn __init__(out self, global_functions: GlobalFunctionsV1_0, instance: Instance) raises:
+    fn __init__(
+out self, global_functions: GlobalFunctionsV1_0, instance: Instance) raises:
         self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.handle())
 
-    fn destroy_instance(self, instance: Instance, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_instance(
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
         """
         return self._v1_0.destroy_instance(instance, p_allocator)
 
@@ -572,11 +585,11 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
-        p_physical_devices: Ptr[PhysicalDevice],
+        p_physical_devices: Ptr[PhysicalDevice, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
             instance, Ptr(to=physical_device_count), p_physical_devices
@@ -585,16 +598,18 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
     fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         var list = List[PhysicalDevice]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.enumerate_physical_devices(instance, count, Ptr[PhysicalDevice]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
+            result = self.enumerate_physical_devices(
+                instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -603,7 +618,7 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
         """
         return self._v1_0.get_physical_device_features(physical_device, Ptr(to=features))
 
@@ -615,7 +630,7 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
         """
         return self._v1_0.get_physical_device_format_properties(
             physical_device, format, Ptr(to=format_properties)
@@ -633,7 +648,7 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_image_format_properties(
             physical_device, format, type, tiling, usage, flags, Ptr(to=image_format_properties)
@@ -644,7 +659,7 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
         """
         return self._v1_0.get_physical_device_properties(physical_device, Ptr(to=properties))
 
@@ -652,11 +667,11 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties],
+        p_queue_family_properties: Ptr[QueueFamilyProperties, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         return self._v1_0.get_physical_device_queue_family_properties(
             physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
@@ -667,12 +682,12 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self.get_physical_device_queue_family_properties(
-            physical_device, count, Ptr[QueueFamilyProperties]()
+            physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -687,29 +702,29 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
         """
         return self._v1_0.get_physical_device_memory_properties(
             physical_device, Ptr(to=memory_properties)
         )
 
-    fn get_device_proc_addr(self, device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction:
+    fn get_device_proc_addr(self, device: Device, name: c_char) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name)
+        return self._v1_0.get_device_proc_addr(device, Ptr(to=name))
 
     fn create_device(
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut device: Device,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDevice.html
         """
         return self._v1_0.create_device(
             physical_device, Ptr(to=create_info), p_allocator, Ptr(to=device)
@@ -718,37 +733,37 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: Ptr[UInt8],
+        p_layer_name: Ptr[c_char, ImmutOrigin.external],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties],
+        p_properties: Ptr[ExtensionProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device, p_layer_name, Ptr(to=property_count), p_properties
         )
 
     fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: Ptr[UInt8]
+        self, physical_device: PhysicalDevice, p_layer_name: Ptr[c_char, ImmutOrigin.external]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         var list = List[ExtensionProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_device_extension_properties(
-                physical_device, p_layer_name, count, Ptr[ExtensionProperties]()
+                physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_device_extension_properties(
-                    physical_device, p_layer_name, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -756,11 +771,11 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[LayerProperties],
+        p_properties: Ptr[LayerProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
             physical_device, Ptr(to=property_count), p_properties
@@ -771,20 +786,20 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         var list = List[LayerProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_device_layer_properties(
-                physical_device, count, Ptr[LayerProperties]()
+                physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_device_layer_properties(
-                    physical_device, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -797,11 +812,11 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
         usage: ImageUsageFlags,
         tiling: ImageTiling,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties],
+        p_properties: Ptr[SparseImageFormatProperties, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_sparse_image_format_properties(
             physical_device,
@@ -825,7 +840,7 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
     ) -> List[SparseImageFormatProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
@@ -837,7 +852,7 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
             usage,
             tiling,
             count,
-            Ptr[SparseImageFormatProperties](),
+            Ptr[SparseImageFormatProperties, MutAnyOrigin](),
         )
         if count > 0:
             list.reserve(Int(count))
@@ -846,20 +861,20 @@ struct InstanceFunctionsV1_0(Copyable, Movable):
             )
         list._len = Int(count)
         return list^
-
-
-struct InstanceFunctionsV1_1(Copyable, Movable):
     var _v1_0: InstanceFunctionAdditionsV1_0
     var _v1_1: InstanceFunctionAdditionsV1_1
 
-    fn __init__(out self, global_functions: GlobalFunctionsV1_1, instance: Instance) raises:
+    fn __init__(
+out self, global_functions: GlobalFunctionsV1_1, instance: Instance) raises:
         self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.handle())
         self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.handle())
 
-    fn destroy_instance(self, instance: Instance, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_instance(
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
         """
         return self._v1_0.destroy_instance(instance, p_allocator)
 
@@ -867,11 +882,11 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
-        p_physical_devices: Ptr[PhysicalDevice],
+        p_physical_devices: Ptr[PhysicalDevice, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
             instance, Ptr(to=physical_device_count), p_physical_devices
@@ -880,16 +895,18 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         var list = List[PhysicalDevice]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.enumerate_physical_devices(instance, count, Ptr[PhysicalDevice]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
+            result = self.enumerate_physical_devices(
+                instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -898,7 +915,7 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
         """
         return self._v1_0.get_physical_device_features(physical_device, Ptr(to=features))
 
@@ -910,7 +927,7 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
         """
         return self._v1_0.get_physical_device_format_properties(
             physical_device, format, Ptr(to=format_properties)
@@ -928,7 +945,7 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_image_format_properties(
             physical_device, format, type, tiling, usage, flags, Ptr(to=image_format_properties)
@@ -939,7 +956,7 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
         """
         return self._v1_0.get_physical_device_properties(physical_device, Ptr(to=properties))
 
@@ -947,11 +964,11 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties],
+        p_queue_family_properties: Ptr[QueueFamilyProperties, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         return self._v1_0.get_physical_device_queue_family_properties(
             physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
@@ -962,12 +979,12 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self.get_physical_device_queue_family_properties(
-            physical_device, count, Ptr[QueueFamilyProperties]()
+            physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -982,29 +999,29 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
         """
         return self._v1_0.get_physical_device_memory_properties(
             physical_device, Ptr(to=memory_properties)
         )
 
-    fn get_device_proc_addr(self, device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction:
+    fn get_device_proc_addr(self, device: Device, name: c_char) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name)
+        return self._v1_0.get_device_proc_addr(device, Ptr(to=name))
 
     fn create_device(
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut device: Device,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDevice.html
         """
         return self._v1_0.create_device(
             physical_device, Ptr(to=create_info), p_allocator, Ptr(to=device)
@@ -1013,37 +1030,37 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: Ptr[UInt8],
+        p_layer_name: Ptr[c_char, ImmutOrigin.external],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties],
+        p_properties: Ptr[ExtensionProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device, p_layer_name, Ptr(to=property_count), p_properties
         )
 
     fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: Ptr[UInt8]
+        self, physical_device: PhysicalDevice, p_layer_name: Ptr[c_char, ImmutOrigin.external]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         var list = List[ExtensionProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_device_extension_properties(
-                physical_device, p_layer_name, count, Ptr[ExtensionProperties]()
+                physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_device_extension_properties(
-                    physical_device, p_layer_name, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1051,11 +1068,11 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[LayerProperties],
+        p_properties: Ptr[LayerProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
             physical_device, Ptr(to=property_count), p_properties
@@ -1066,20 +1083,20 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         var list = List[LayerProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_device_layer_properties(
-                physical_device, count, Ptr[LayerProperties]()
+                physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_device_layer_properties(
-                    physical_device, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1092,11 +1109,11 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
         usage: ImageUsageFlags,
         tiling: ImageTiling,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties],
+        p_properties: Ptr[SparseImageFormatProperties, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_sparse_image_format_properties(
             physical_device,
@@ -1120,7 +1137,7 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ) -> List[SparseImageFormatProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
@@ -1132,7 +1149,7 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
             usage,
             tiling,
             count,
-            Ptr[SparseImageFormatProperties](),
+            Ptr[SparseImageFormatProperties, MutAnyOrigin](),
         )
         if count > 0:
             list.reserve(Int(count))
@@ -1146,11 +1163,11 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties],
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         return self._v1_1.enumerate_physical_device_groups(
             instance, Ptr(to=physical_device_group_count), p_physical_device_group_properties
@@ -1161,18 +1178,18 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ) -> ListResult[PhysicalDeviceGroupProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         var list = List[PhysicalDeviceGroupProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_physical_device_groups(
-                instance, count, Ptr[PhysicalDeviceGroupProperties]()
+                instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1181,7 +1198,7 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
         """
         return self._v1_1.get_physical_device_features_2(physical_device, Ptr(to=features))
 
@@ -1190,7 +1207,7 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
         """
         return self._v1_1.get_physical_device_properties_2(physical_device, Ptr(to=properties))
 
@@ -1202,7 +1219,7 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
         """
         return self._v1_1.get_physical_device_format_properties_2(
             physical_device, format, Ptr(to=format_properties)
@@ -1216,7 +1233,7 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties2.html
         """
         return self._v1_1.get_physical_device_image_format_properties_2(
             physical_device, Ptr(to=image_format_info), Ptr(to=image_format_properties)
@@ -1226,11 +1243,11 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties2],
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
             physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
@@ -1241,12 +1258,12 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ) -> List[QueueFamilyProperties2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self.get_physical_device_queue_family_properties_2(
-            physical_device, count, Ptr[QueueFamilyProperties2]()
+            physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -1263,7 +1280,7 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
         """
         return self._v1_1.get_physical_device_memory_properties_2(
             physical_device, Ptr(to=memory_properties)
@@ -1274,11 +1291,11 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties2],
+        p_properties: Ptr[SparseImageFormatProperties2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
             physical_device, Ptr(to=format_info), Ptr(to=property_count), p_properties
@@ -1289,12 +1306,12 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ) -> List[SparseImageFormatProperties2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         var list = List[SparseImageFormatProperties2]()
         var count: UInt32 = 0
         self.get_physical_device_sparse_image_format_properties_2(
-            physical_device, format_info, count, Ptr[SparseImageFormatProperties2]()
+            physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -1312,7 +1329,7 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalBufferProperties.html
         """
         return self._v1_1.get_physical_device_external_buffer_properties(
             physical_device, Ptr(to=external_buffer_info), Ptr(to=external_buffer_properties)
@@ -1326,7 +1343,7 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalFenceProperties.html
         """
         return self._v1_1.get_physical_device_external_fence_properties(
             physical_device, Ptr(to=external_fence_info), Ptr(to=external_fence_properties)
@@ -1340,25 +1357,25 @@ struct InstanceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalSemaphoreProperties.html
         """
         return self._v1_1.get_physical_device_external_semaphore_properties(
             physical_device, Ptr(to=external_semaphore_info), Ptr(to=external_semaphore_properties)
         )
-
-
-struct InstanceFunctionsV1_2(Copyable, Movable):
     var _v1_0: InstanceFunctionAdditionsV1_0
     var _v1_1: InstanceFunctionAdditionsV1_1
 
-    fn __init__(out self, global_functions: GlobalFunctionsV1_2, instance: Instance) raises:
+    fn __init__(
+out self, global_functions: GlobalFunctionsV1_2, instance: Instance) raises:
         self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.handle())
         self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.handle())
 
-    fn destroy_instance(self, instance: Instance, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_instance(
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
         """
         return self._v1_0.destroy_instance(instance, p_allocator)
 
@@ -1366,11 +1383,11 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
-        p_physical_devices: Ptr[PhysicalDevice],
+        p_physical_devices: Ptr[PhysicalDevice, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
             instance, Ptr(to=physical_device_count), p_physical_devices
@@ -1379,16 +1396,18 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         var list = List[PhysicalDevice]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.enumerate_physical_devices(instance, count, Ptr[PhysicalDevice]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
+            result = self.enumerate_physical_devices(
+                instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1397,7 +1416,7 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
         """
         return self._v1_0.get_physical_device_features(physical_device, Ptr(to=features))
 
@@ -1409,7 +1428,7 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
         """
         return self._v1_0.get_physical_device_format_properties(
             physical_device, format, Ptr(to=format_properties)
@@ -1427,7 +1446,7 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_image_format_properties(
             physical_device, format, type, tiling, usage, flags, Ptr(to=image_format_properties)
@@ -1438,7 +1457,7 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
         """
         return self._v1_0.get_physical_device_properties(physical_device, Ptr(to=properties))
 
@@ -1446,11 +1465,11 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties],
+        p_queue_family_properties: Ptr[QueueFamilyProperties, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         return self._v1_0.get_physical_device_queue_family_properties(
             physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
@@ -1461,12 +1480,12 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self.get_physical_device_queue_family_properties(
-            physical_device, count, Ptr[QueueFamilyProperties]()
+            physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -1481,29 +1500,29 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
         """
         return self._v1_0.get_physical_device_memory_properties(
             physical_device, Ptr(to=memory_properties)
         )
 
-    fn get_device_proc_addr(self, device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction:
+    fn get_device_proc_addr(self, device: Device, name: c_char) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name)
+        return self._v1_0.get_device_proc_addr(device, Ptr(to=name))
 
     fn create_device(
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut device: Device,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDevice.html
         """
         return self._v1_0.create_device(
             physical_device, Ptr(to=create_info), p_allocator, Ptr(to=device)
@@ -1512,37 +1531,37 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: Ptr[UInt8],
+        p_layer_name: Ptr[c_char, ImmutOrigin.external],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties],
+        p_properties: Ptr[ExtensionProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device, p_layer_name, Ptr(to=property_count), p_properties
         )
 
     fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: Ptr[UInt8]
+        self, physical_device: PhysicalDevice, p_layer_name: Ptr[c_char, ImmutOrigin.external]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         var list = List[ExtensionProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_device_extension_properties(
-                physical_device, p_layer_name, count, Ptr[ExtensionProperties]()
+                physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_device_extension_properties(
-                    physical_device, p_layer_name, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1550,11 +1569,11 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[LayerProperties],
+        p_properties: Ptr[LayerProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
             physical_device, Ptr(to=property_count), p_properties
@@ -1565,20 +1584,20 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         var list = List[LayerProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_device_layer_properties(
-                physical_device, count, Ptr[LayerProperties]()
+                physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_device_layer_properties(
-                    physical_device, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1591,11 +1610,11 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
         usage: ImageUsageFlags,
         tiling: ImageTiling,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties],
+        p_properties: Ptr[SparseImageFormatProperties, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_sparse_image_format_properties(
             physical_device,
@@ -1619,7 +1638,7 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ) -> List[SparseImageFormatProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
@@ -1631,7 +1650,7 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
             usage,
             tiling,
             count,
-            Ptr[SparseImageFormatProperties](),
+            Ptr[SparseImageFormatProperties, MutAnyOrigin](),
         )
         if count > 0:
             list.reserve(Int(count))
@@ -1645,11 +1664,11 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties],
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         return self._v1_1.enumerate_physical_device_groups(
             instance, Ptr(to=physical_device_group_count), p_physical_device_group_properties
@@ -1660,18 +1679,18 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ) -> ListResult[PhysicalDeviceGroupProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         var list = List[PhysicalDeviceGroupProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_physical_device_groups(
-                instance, count, Ptr[PhysicalDeviceGroupProperties]()
+                instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1680,7 +1699,7 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
         """
         return self._v1_1.get_physical_device_features_2(physical_device, Ptr(to=features))
 
@@ -1689,7 +1708,7 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
         """
         return self._v1_1.get_physical_device_properties_2(physical_device, Ptr(to=properties))
 
@@ -1701,7 +1720,7 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
         """
         return self._v1_1.get_physical_device_format_properties_2(
             physical_device, format, Ptr(to=format_properties)
@@ -1715,7 +1734,7 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties2.html
         """
         return self._v1_1.get_physical_device_image_format_properties_2(
             physical_device, Ptr(to=image_format_info), Ptr(to=image_format_properties)
@@ -1725,11 +1744,11 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties2],
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
             physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
@@ -1740,12 +1759,12 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ) -> List[QueueFamilyProperties2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self.get_physical_device_queue_family_properties_2(
-            physical_device, count, Ptr[QueueFamilyProperties2]()
+            physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -1762,7 +1781,7 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
         """
         return self._v1_1.get_physical_device_memory_properties_2(
             physical_device, Ptr(to=memory_properties)
@@ -1773,11 +1792,11 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties2],
+        p_properties: Ptr[SparseImageFormatProperties2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
             physical_device, Ptr(to=format_info), Ptr(to=property_count), p_properties
@@ -1788,12 +1807,12 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ) -> List[SparseImageFormatProperties2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         var list = List[SparseImageFormatProperties2]()
         var count: UInt32 = 0
         self.get_physical_device_sparse_image_format_properties_2(
-            physical_device, format_info, count, Ptr[SparseImageFormatProperties2]()
+            physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -1811,7 +1830,7 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalBufferProperties.html
         """
         return self._v1_1.get_physical_device_external_buffer_properties(
             physical_device, Ptr(to=external_buffer_info), Ptr(to=external_buffer_properties)
@@ -1825,7 +1844,7 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalFenceProperties.html
         """
         return self._v1_1.get_physical_device_external_fence_properties(
             physical_device, Ptr(to=external_fence_info), Ptr(to=external_fence_properties)
@@ -1839,27 +1858,27 @@ struct InstanceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalSemaphoreProperties.html
         """
         return self._v1_1.get_physical_device_external_semaphore_properties(
             physical_device, Ptr(to=external_semaphore_info), Ptr(to=external_semaphore_properties)
         )
-
-
-struct InstanceFunctionsV1_3(Copyable, Movable):
     var _v1_0: InstanceFunctionAdditionsV1_0
     var _v1_1: InstanceFunctionAdditionsV1_1
     var _v1_3: InstanceFunctionAdditionsV1_3
 
-    fn __init__(out self, global_functions: GlobalFunctionsV1_3, instance: Instance) raises:
+    fn __init__(
+out self, global_functions: GlobalFunctionsV1_3, instance: Instance) raises:
         self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.handle())
         self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.handle())
         self._v1_3 = InstanceFunctionAdditionsV1_3(instance, global_functions.handle())
 
-    fn destroy_instance(self, instance: Instance, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_instance(
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
         """
         return self._v1_0.destroy_instance(instance, p_allocator)
 
@@ -1867,11 +1886,11 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
-        p_physical_devices: Ptr[PhysicalDevice],
+        p_physical_devices: Ptr[PhysicalDevice, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
             instance, Ptr(to=physical_device_count), p_physical_devices
@@ -1880,16 +1899,18 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         var list = List[PhysicalDevice]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.enumerate_physical_devices(instance, count, Ptr[PhysicalDevice]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
+            result = self.enumerate_physical_devices(
+                instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1898,7 +1919,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
         """
         return self._v1_0.get_physical_device_features(physical_device, Ptr(to=features))
 
@@ -1910,7 +1931,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
         """
         return self._v1_0.get_physical_device_format_properties(
             physical_device, format, Ptr(to=format_properties)
@@ -1928,7 +1949,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_image_format_properties(
             physical_device, format, type, tiling, usage, flags, Ptr(to=image_format_properties)
@@ -1939,7 +1960,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
         """
         return self._v1_0.get_physical_device_properties(physical_device, Ptr(to=properties))
 
@@ -1947,11 +1968,11 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties],
+        p_queue_family_properties: Ptr[QueueFamilyProperties, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         return self._v1_0.get_physical_device_queue_family_properties(
             physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
@@ -1962,12 +1983,12 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self.get_physical_device_queue_family_properties(
-            physical_device, count, Ptr[QueueFamilyProperties]()
+            physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -1982,29 +2003,29 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
         """
         return self._v1_0.get_physical_device_memory_properties(
             physical_device, Ptr(to=memory_properties)
         )
 
-    fn get_device_proc_addr(self, device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction:
+    fn get_device_proc_addr(self, device: Device, name: c_char) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name)
+        return self._v1_0.get_device_proc_addr(device, Ptr(to=name))
 
     fn create_device(
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut device: Device,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDevice.html
         """
         return self._v1_0.create_device(
             physical_device, Ptr(to=create_info), p_allocator, Ptr(to=device)
@@ -2013,37 +2034,37 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: Ptr[UInt8],
+        p_layer_name: Ptr[c_char, ImmutOrigin.external],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties],
+        p_properties: Ptr[ExtensionProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device, p_layer_name, Ptr(to=property_count), p_properties
         )
 
     fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: Ptr[UInt8]
+        self, physical_device: PhysicalDevice, p_layer_name: Ptr[c_char, ImmutOrigin.external]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         var list = List[ExtensionProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_device_extension_properties(
-                physical_device, p_layer_name, count, Ptr[ExtensionProperties]()
+                physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_device_extension_properties(
-                    physical_device, p_layer_name, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2051,11 +2072,11 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[LayerProperties],
+        p_properties: Ptr[LayerProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
             physical_device, Ptr(to=property_count), p_properties
@@ -2066,20 +2087,20 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         var list = List[LayerProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_device_layer_properties(
-                physical_device, count, Ptr[LayerProperties]()
+                physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_device_layer_properties(
-                    physical_device, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2092,11 +2113,11 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
         usage: ImageUsageFlags,
         tiling: ImageTiling,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties],
+        p_properties: Ptr[SparseImageFormatProperties, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_sparse_image_format_properties(
             physical_device,
@@ -2120,7 +2141,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ) -> List[SparseImageFormatProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
@@ -2132,7 +2153,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
             usage,
             tiling,
             count,
-            Ptr[SparseImageFormatProperties](),
+            Ptr[SparseImageFormatProperties, MutAnyOrigin](),
         )
         if count > 0:
             list.reserve(Int(count))
@@ -2146,11 +2167,11 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties],
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         return self._v1_1.enumerate_physical_device_groups(
             instance, Ptr(to=physical_device_group_count), p_physical_device_group_properties
@@ -2161,18 +2182,18 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ) -> ListResult[PhysicalDeviceGroupProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         var list = List[PhysicalDeviceGroupProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_physical_device_groups(
-                instance, count, Ptr[PhysicalDeviceGroupProperties]()
+                instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2181,7 +2202,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
         """
         return self._v1_1.get_physical_device_features_2(physical_device, Ptr(to=features))
 
@@ -2190,7 +2211,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
         """
         return self._v1_1.get_physical_device_properties_2(physical_device, Ptr(to=properties))
 
@@ -2202,7 +2223,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
         """
         return self._v1_1.get_physical_device_format_properties_2(
             physical_device, format, Ptr(to=format_properties)
@@ -2216,7 +2237,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties2.html
         """
         return self._v1_1.get_physical_device_image_format_properties_2(
             physical_device, Ptr(to=image_format_info), Ptr(to=image_format_properties)
@@ -2226,11 +2247,11 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties2],
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
             physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
@@ -2241,12 +2262,12 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ) -> List[QueueFamilyProperties2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self.get_physical_device_queue_family_properties_2(
-            physical_device, count, Ptr[QueueFamilyProperties2]()
+            physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -2263,7 +2284,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
         """
         return self._v1_1.get_physical_device_memory_properties_2(
             physical_device, Ptr(to=memory_properties)
@@ -2274,11 +2295,11 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties2],
+        p_properties: Ptr[SparseImageFormatProperties2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
             physical_device, Ptr(to=format_info), Ptr(to=property_count), p_properties
@@ -2289,12 +2310,12 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ) -> List[SparseImageFormatProperties2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         var list = List[SparseImageFormatProperties2]()
         var count: UInt32 = 0
         self.get_physical_device_sparse_image_format_properties_2(
-            physical_device, format_info, count, Ptr[SparseImageFormatProperties2]()
+            physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -2312,7 +2333,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalBufferProperties.html
         """
         return self._v1_1.get_physical_device_external_buffer_properties(
             physical_device, Ptr(to=external_buffer_info), Ptr(to=external_buffer_properties)
@@ -2326,7 +2347,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalFenceProperties.html
         """
         return self._v1_1.get_physical_device_external_fence_properties(
             physical_device, Ptr(to=external_fence_info), Ptr(to=external_fence_properties)
@@ -2340,7 +2361,7 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalSemaphoreProperties.html
         """
         return self._v1_1.get_physical_device_external_semaphore_properties(
             physical_device, Ptr(to=external_semaphore_info), Ptr(to=external_semaphore_properties)
@@ -2350,11 +2371,11 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut tool_count: UInt32,
-        p_tool_properties: Ptr[PhysicalDeviceToolProperties],
+        p_tool_properties: Ptr[PhysicalDeviceToolProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
         """
         return self._v1_3.get_physical_device_tool_properties(
             physical_device, Ptr(to=tool_count), p_tool_properties
@@ -2365,38 +2386,38 @@ struct InstanceFunctionsV1_3(Copyable, Movable):
     ) -> ListResult[PhysicalDeviceToolProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
         """
         var list = List[PhysicalDeviceToolProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.get_physical_device_tool_properties(
-                physical_device, count, Ptr[PhysicalDeviceToolProperties]()
+                physical_device, count, Ptr[PhysicalDeviceToolProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.get_physical_device_tool_properties(
-                    physical_device, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_tool_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
-
-
-struct InstanceFunctionsV1_4(Copyable, Movable):
     var _v1_0: InstanceFunctionAdditionsV1_0
     var _v1_1: InstanceFunctionAdditionsV1_1
     var _v1_3: InstanceFunctionAdditionsV1_3
 
-    fn __init__(out self, global_functions: GlobalFunctionsV1_4, instance: Instance) raises:
+    fn __init__(
+out self, global_functions: GlobalFunctionsV1_4, instance: Instance) raises:
         self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.handle())
         self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.handle())
         self._v1_3 = InstanceFunctionAdditionsV1_3(instance, global_functions.handle())
 
-    fn destroy_instance(self, instance: Instance, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_instance(
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
         """
         return self._v1_0.destroy_instance(instance, p_allocator)
 
@@ -2404,11 +2425,11 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
-        p_physical_devices: Ptr[PhysicalDevice],
+        p_physical_devices: Ptr[PhysicalDevice, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
             instance, Ptr(to=physical_device_count), p_physical_devices
@@ -2417,16 +2438,18 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         var list = List[PhysicalDevice]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.enumerate_physical_devices(instance, count, Ptr[PhysicalDevice]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
+            result = self.enumerate_physical_devices(
+                instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2435,7 +2458,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
         """
         return self._v1_0.get_physical_device_features(physical_device, Ptr(to=features))
 
@@ -2447,7 +2470,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
         """
         return self._v1_0.get_physical_device_format_properties(
             physical_device, format, Ptr(to=format_properties)
@@ -2465,7 +2488,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_image_format_properties(
             physical_device, format, type, tiling, usage, flags, Ptr(to=image_format_properties)
@@ -2476,7 +2499,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
         """
         return self._v1_0.get_physical_device_properties(physical_device, Ptr(to=properties))
 
@@ -2484,11 +2507,11 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties],
+        p_queue_family_properties: Ptr[QueueFamilyProperties, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         return self._v1_0.get_physical_device_queue_family_properties(
             physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
@@ -2499,12 +2522,12 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self.get_physical_device_queue_family_properties(
-            physical_device, count, Ptr[QueueFamilyProperties]()
+            physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -2519,29 +2542,29 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
         """
         return self._v1_0.get_physical_device_memory_properties(
             physical_device, Ptr(to=memory_properties)
         )
 
-    fn get_device_proc_addr(self, device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction:
+    fn get_device_proc_addr(self, device: Device, name: c_char) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name)
+        return self._v1_0.get_device_proc_addr(device, Ptr(to=name))
 
     fn create_device(
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut device: Device,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDevice.html
         """
         return self._v1_0.create_device(
             physical_device, Ptr(to=create_info), p_allocator, Ptr(to=device)
@@ -2550,37 +2573,37 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: Ptr[UInt8],
+        p_layer_name: Ptr[c_char, ImmutOrigin.external],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties],
+        p_properties: Ptr[ExtensionProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device, p_layer_name, Ptr(to=property_count), p_properties
         )
 
     fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: Ptr[UInt8]
+        self, physical_device: PhysicalDevice, p_layer_name: Ptr[c_char, ImmutOrigin.external]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         var list = List[ExtensionProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_device_extension_properties(
-                physical_device, p_layer_name, count, Ptr[ExtensionProperties]()
+                physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_device_extension_properties(
-                    physical_device, p_layer_name, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2588,11 +2611,11 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[LayerProperties],
+        p_properties: Ptr[LayerProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
             physical_device, Ptr(to=property_count), p_properties
@@ -2603,20 +2626,20 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         var list = List[LayerProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_device_layer_properties(
-                physical_device, count, Ptr[LayerProperties]()
+                physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_device_layer_properties(
-                    physical_device, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2629,11 +2652,11 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
         usage: ImageUsageFlags,
         tiling: ImageTiling,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties],
+        p_properties: Ptr[SparseImageFormatProperties, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_sparse_image_format_properties(
             physical_device,
@@ -2657,7 +2680,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ) -> List[SparseImageFormatProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
@@ -2669,7 +2692,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
             usage,
             tiling,
             count,
-            Ptr[SparseImageFormatProperties](),
+            Ptr[SparseImageFormatProperties, MutAnyOrigin](),
         )
         if count > 0:
             list.reserve(Int(count))
@@ -2683,11 +2706,11 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties],
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         return self._v1_1.enumerate_physical_device_groups(
             instance, Ptr(to=physical_device_group_count), p_physical_device_group_properties
@@ -2698,18 +2721,18 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ) -> ListResult[PhysicalDeviceGroupProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         var list = List[PhysicalDeviceGroupProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.enumerate_physical_device_groups(
-                instance, count, Ptr[PhysicalDeviceGroupProperties]()
+                instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2718,7 +2741,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
         """
         return self._v1_1.get_physical_device_features_2(physical_device, Ptr(to=features))
 
@@ -2727,7 +2750,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
         """
         return self._v1_1.get_physical_device_properties_2(physical_device, Ptr(to=properties))
 
@@ -2739,7 +2762,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
         """
         return self._v1_1.get_physical_device_format_properties_2(
             physical_device, format, Ptr(to=format_properties)
@@ -2753,7 +2776,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties2.html
         """
         return self._v1_1.get_physical_device_image_format_properties_2(
             physical_device, Ptr(to=image_format_info), Ptr(to=image_format_properties)
@@ -2763,11 +2786,11 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties2],
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
             physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
@@ -2778,12 +2801,12 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ) -> List[QueueFamilyProperties2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self.get_physical_device_queue_family_properties_2(
-            physical_device, count, Ptr[QueueFamilyProperties2]()
+            physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -2800,7 +2823,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
         """
         return self._v1_1.get_physical_device_memory_properties_2(
             physical_device, Ptr(to=memory_properties)
@@ -2811,11 +2834,11 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties2],
+        p_properties: Ptr[SparseImageFormatProperties2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
             physical_device, Ptr(to=format_info), Ptr(to=property_count), p_properties
@@ -2826,12 +2849,12 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ) -> List[SparseImageFormatProperties2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         var list = List[SparseImageFormatProperties2]()
         var count: UInt32 = 0
         self.get_physical_device_sparse_image_format_properties_2(
-            physical_device, format_info, count, Ptr[SparseImageFormatProperties2]()
+            physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -2849,7 +2872,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalBufferProperties.html
         """
         return self._v1_1.get_physical_device_external_buffer_properties(
             physical_device, Ptr(to=external_buffer_info), Ptr(to=external_buffer_properties)
@@ -2863,7 +2886,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalFenceProperties.html
         """
         return self._v1_1.get_physical_device_external_fence_properties(
             physical_device, Ptr(to=external_fence_info), Ptr(to=external_fence_properties)
@@ -2877,7 +2900,7 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalSemaphoreProperties.html
         """
         return self._v1_1.get_physical_device_external_semaphore_properties(
             physical_device, Ptr(to=external_semaphore_info), Ptr(to=external_semaphore_properties)
@@ -2887,11 +2910,11 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
         self,
         physical_device: PhysicalDevice,
         mut tool_count: UInt32,
-        p_tool_properties: Ptr[PhysicalDeviceToolProperties],
+        p_tool_properties: Ptr[PhysicalDeviceToolProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
         """
         return self._v1_3.get_physical_device_tool_properties(
             physical_device, Ptr(to=tool_count), p_tool_properties
@@ -2902,68 +2925,97 @@ struct InstanceFunctionsV1_4(Copyable, Movable):
     ) -> ListResult[PhysicalDeviceToolProperties]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
         """
         var list = List[PhysicalDeviceToolProperties]()
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self.get_physical_device_tool_properties(
-                physical_device, count, Ptr[PhysicalDeviceToolProperties]()
+                physical_device, count, Ptr[PhysicalDeviceToolProperties, MutAnyOrigin]()
             )
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.get_physical_device_tool_properties(
-                    physical_device, count, list.unsafe_ptr()
-                )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_tool_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
 
 struct InstanceFunctionAdditionsV1_0(Copyable, Movable):
     var destroy_instance: fn(
-        instance: Instance, pAllocator: Ptr[AllocationCallbacks]
+        instance: Instance, pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
     )
     var enumerate_physical_devices: fn(
-        instance: Instance, pPhysicalDeviceCount: Ptr[UInt32], pPhysicalDevices: Ptr[PhysicalDevice]
+        instance: Instance,
+        pPhysicalDeviceCount: Ptr[UInt32, MutOrigin.external],
+        pPhysicalDevices: Ptr[PhysicalDevice, MutOrigin.external],
     ) -> Result
     var get_physical_device_features: fn(
-        physicalDevice: PhysicalDevice, pFeatures: Ptr[PhysicalDeviceFeatures]
+        physicalDevice: PhysicalDevice, pFeatures: Ptr[PhysicalDeviceFeatures, MutOrigin.external]
     )
     var get_physical_device_format_properties: fn(
-        physicalDevice: PhysicalDevice, format: Format, pFormatProperties: Ptr[FormatProperties]
+        physicalDevice: PhysicalDevice,
+        format: Format,
+        pFormatProperties: Ptr[FormatProperties, MutOrigin.external],
     )
     var get_physical_device_image_format_properties: fn(
-        physicalDevice: PhysicalDevice, format: Format, type: ImageType, tiling: ImageTiling, usage: ImageUsageFlags, flags: ImageCreateFlags, pImageFormatProperties: Ptr[ImageFormatProperties]
+        physicalDevice: PhysicalDevice,
+        format: Format,
+        type: ImageType,
+        tiling: ImageTiling,
+        usage: ImageUsageFlags,
+        flags: ImageCreateFlags,
+        pImageFormatProperties: Ptr[ImageFormatProperties, MutOrigin.external],
     ) -> Result
     var get_physical_device_properties: fn(
-        physicalDevice: PhysicalDevice, pProperties: Ptr[PhysicalDeviceProperties]
+        physicalDevice: PhysicalDevice,
+        pProperties: Ptr[PhysicalDeviceProperties, MutOrigin.external],
     )
     var get_physical_device_queue_family_properties: fn(
-        physicalDevice: PhysicalDevice, pQueueFamilyPropertyCount: Ptr[UInt32], pQueueFamilyProperties: Ptr[QueueFamilyProperties]
+        physicalDevice: PhysicalDevice,
+        pQueueFamilyPropertyCount: Ptr[UInt32, MutOrigin.external],
+        pQueueFamilyProperties: Ptr[QueueFamilyProperties, MutOrigin.external],
     )
     var get_physical_device_memory_properties: fn(
-        physicalDevice: PhysicalDevice, pMemoryProperties: Ptr[PhysicalDeviceMemoryProperties]
+        physicalDevice: PhysicalDevice,
+        pMemoryProperties: Ptr[PhysicalDeviceMemoryProperties, MutOrigin.external],
     )
     var get_device_proc_addr: fn(
-        device: Device, pName: Ptr[UInt8]
+        device: Device, pName: Ptr[c_char, ImmutOrigin.external]
     ) -> PFN_vkVoidFunction
     var create_device: fn(
-        physicalDevice: PhysicalDevice, pCreateInfo: Ptr[DeviceCreateInfo], pAllocator: Ptr[AllocationCallbacks], pDevice: Ptr[Device]
+        physicalDevice: PhysicalDevice,
+        pCreateInfo: Ptr[DeviceCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pDevice: Ptr[Device, MutOrigin.external],
     ) -> Result
     var enumerate_device_extension_properties: fn(
-        physicalDevice: PhysicalDevice, pLayerName: Ptr[UInt8], pPropertyCount: Ptr[UInt32], pProperties: Ptr[ExtensionProperties]
+        physicalDevice: PhysicalDevice,
+        pLayerName: Ptr[c_char, ImmutOrigin.external],
+        pPropertyCount: Ptr[UInt32, MutOrigin.external],
+        pProperties: Ptr[ExtensionProperties, MutOrigin.external],
     ) -> Result
     var enumerate_device_layer_properties: fn(
-        physicalDevice: PhysicalDevice, pPropertyCount: Ptr[UInt32], pProperties: Ptr[LayerProperties]
+        physicalDevice: PhysicalDevice,
+        pPropertyCount: Ptr[UInt32, MutOrigin.external],
+        pProperties: Ptr[LayerProperties, MutOrigin.external],
     ) -> Result
     var get_physical_device_sparse_image_format_properties: fn(
-        physicalDevice: PhysicalDevice, format: Format, type: ImageType, samples: SampleCountFlagBits, usage: ImageUsageFlags, tiling: ImageTiling, pPropertyCount: Ptr[UInt32], pProperties: Ptr[SparseImageFormatProperties]
+        physicalDevice: PhysicalDevice,
+        format: Format,
+        type: ImageType,
+        samples: SampleCountFlagBits,
+        usage: ImageUsageFlags,
+        tiling: ImageTiling,
+        pPropertyCount: Ptr[UInt32, MutOrigin.external],
+        pProperties: Ptr[SparseImageFormatProperties, MutOrigin.external],
     )
 
-    fn __init__(out self, instance: Instance, handle: DLHandle) raises:
+    fn __init__(out self, instance: Instance, handle: OwnedDLHandle) raises:
         get_instance_proc_addr = handle.get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self.destroy_instance = Ptr(to=get_instance_proc_addr(
             instance, "vkDestroyInstance".unsafe_ptr()
@@ -3008,42 +3060,61 @@ struct InstanceFunctionAdditionsV1_0(Copyable, Movable):
 
 struct InstanceFunctionAdditionsV1_1(Copyable, Movable):
     var enumerate_physical_device_groups: fn(
-        instance: Instance, pPhysicalDeviceGroupCount: Ptr[UInt32], pPhysicalDeviceGroupProperties: Ptr[PhysicalDeviceGroupProperties]
+        instance: Instance,
+        pPhysicalDeviceGroupCount: Ptr[UInt32, MutOrigin.external],
+        pPhysicalDeviceGroupProperties: Ptr[PhysicalDeviceGroupProperties, MutOrigin.external],
     ) -> Result
     var get_physical_device_features_2: fn(
-        physicalDevice: PhysicalDevice, pFeatures: Ptr[PhysicalDeviceFeatures2]
+        physicalDevice: PhysicalDevice, pFeatures: Ptr[PhysicalDeviceFeatures2, MutOrigin.external]
     )
     var get_physical_device_properties_2: fn(
-        physicalDevice: PhysicalDevice, pProperties: Ptr[PhysicalDeviceProperties2]
+        physicalDevice: PhysicalDevice,
+        pProperties: Ptr[PhysicalDeviceProperties2, MutOrigin.external],
     )
     var get_physical_device_format_properties_2: fn(
-        physicalDevice: PhysicalDevice, format: Format, pFormatProperties: Ptr[FormatProperties2]
+        physicalDevice: PhysicalDevice,
+        format: Format,
+        pFormatProperties: Ptr[FormatProperties2, MutOrigin.external],
     )
     var get_physical_device_image_format_properties_2: fn(
-        physicalDevice: PhysicalDevice, pImageFormatInfo: Ptr[PhysicalDeviceImageFormatInfo2], pImageFormatProperties: Ptr[ImageFormatProperties2]
+        physicalDevice: PhysicalDevice,
+        pImageFormatInfo: Ptr[PhysicalDeviceImageFormatInfo2, ImmutOrigin.external],
+        pImageFormatProperties: Ptr[ImageFormatProperties2, MutOrigin.external],
     ) -> Result
     var get_physical_device_queue_family_properties_2: fn(
-        physicalDevice: PhysicalDevice, pQueueFamilyPropertyCount: Ptr[UInt32], pQueueFamilyProperties: Ptr[QueueFamilyProperties2]
+        physicalDevice: PhysicalDevice,
+        pQueueFamilyPropertyCount: Ptr[UInt32, MutOrigin.external],
+        pQueueFamilyProperties: Ptr[QueueFamilyProperties2, MutOrigin.external],
     )
     var get_physical_device_memory_properties_2: fn(
-        physicalDevice: PhysicalDevice, pMemoryProperties: Ptr[PhysicalDeviceMemoryProperties2]
+        physicalDevice: PhysicalDevice,
+        pMemoryProperties: Ptr[PhysicalDeviceMemoryProperties2, MutOrigin.external],
     )
     var get_physical_device_sparse_image_format_properties_2: fn(
-        physicalDevice: PhysicalDevice, pFormatInfo: Ptr[PhysicalDeviceSparseImageFormatInfo2], pPropertyCount: Ptr[UInt32], pProperties: Ptr[SparseImageFormatProperties2]
+        physicalDevice: PhysicalDevice,
+        pFormatInfo: Ptr[PhysicalDeviceSparseImageFormatInfo2, ImmutOrigin.external],
+        pPropertyCount: Ptr[UInt32, MutOrigin.external],
+        pProperties: Ptr[SparseImageFormatProperties2, MutOrigin.external],
     )
     var get_physical_device_external_buffer_properties: fn(
-        physicalDevice: PhysicalDevice, pExternalBufferInfo: Ptr[PhysicalDeviceExternalBufferInfo], pExternalBufferProperties: Ptr[ExternalBufferProperties]
+        physicalDevice: PhysicalDevice,
+        pExternalBufferInfo: Ptr[PhysicalDeviceExternalBufferInfo, ImmutOrigin.external],
+        pExternalBufferProperties: Ptr[ExternalBufferProperties, MutOrigin.external],
     )
     var get_physical_device_external_fence_properties: fn(
-        physicalDevice: PhysicalDevice, pExternalFenceInfo: Ptr[PhysicalDeviceExternalFenceInfo], pExternalFenceProperties: Ptr[ExternalFenceProperties]
+        physicalDevice: PhysicalDevice,
+        pExternalFenceInfo: Ptr[PhysicalDeviceExternalFenceInfo, ImmutOrigin.external],
+        pExternalFenceProperties: Ptr[ExternalFenceProperties, MutOrigin.external],
     )
     var get_physical_device_external_semaphore_properties: fn(
-        physicalDevice: PhysicalDevice, pExternalSemaphoreInfo: Ptr[PhysicalDeviceExternalSemaphoreInfo], pExternalSemaphoreProperties: Ptr[ExternalSemaphoreProperties]
+        physicalDevice: PhysicalDevice,
+        pExternalSemaphoreInfo: Ptr[PhysicalDeviceExternalSemaphoreInfo, ImmutOrigin.external],
+        pExternalSemaphoreProperties: Ptr[ExternalSemaphoreProperties, MutOrigin.external],
     )
 
-    fn __init__(out self, instance: Instance, handle: DLHandle) raises:
+    fn __init__(out self, instance: Instance, handle: OwnedDLHandle) raises:
         get_instance_proc_addr = handle.get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self.enumerate_physical_device_groups = Ptr(to=get_instance_proc_addr(
             instance, "vkEnumeratePhysicalDeviceGroups".unsafe_ptr()
@@ -3082,28 +3153,30 @@ struct InstanceFunctionAdditionsV1_1(Copyable, Movable):
 
 struct InstanceFunctionAdditionsV1_3(Copyable, Movable):
     var get_physical_device_tool_properties: fn(
-        physicalDevice: PhysicalDevice, pToolCount: Ptr[UInt32], pToolProperties: Ptr[PhysicalDeviceToolProperties]
+        physicalDevice: PhysicalDevice,
+        pToolCount: Ptr[UInt32, MutOrigin.external],
+        pToolProperties: Ptr[PhysicalDeviceToolProperties, MutOrigin.external],
     ) -> Result
 
-    fn __init__(out self, instance: Instance, handle: DLHandle) raises:
+    fn __init__(out self, instance: Instance, handle: OwnedDLHandle) raises:
         get_instance_proc_addr = handle.get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self.get_physical_device_tool_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceToolProperties".unsafe_ptr()
         )).bitcast[__type_of(self.get_physical_device_tool_properties)]()[]
-
-
-struct DeviceFunctionsV1_0(Copyable, Movable):
     var _v1_0: DeviceFunctionAdditionsV1_0
 
-    fn __init__(out self, global_functions: GlobalFunctionsV1_0, device: Device) raises:
+    fn __init__(
+out self, global_functions: GlobalFunctionsV1_0, device: Device) raises:
         self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.handle())
 
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_device(
+        self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
         """
         return self._v1_0.destroy_device(device, p_allocator)
 
@@ -3112,30 +3185,30 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(device, queue_family_index, queue_index, Ptr(to=queue))
 
     fn queue_submit(
-        self, queue: Queue, submit_count: UInt32, p_submits: Ptr[SubmitInfo], fence: Fence
+        self, queue: Queue, submit_count: UInt32, submits: SubmitInfo, fence: Fence
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit.html
         """
-        return self._v1_0.queue_submit(queue, submit_count, p_submits, fence)
+        return self._v1_0.queue_submit(queue, submit_count, Ptr(to=submits), fence)
 
     fn queue_wait_idle(self, queue: Queue) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueWaitIdle.html
         """
         return self._v1_0.queue_wait_idle(queue)
 
     fn device_wait_idle(self, device: Device) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDeviceWaitIdle.html
         """
         return self._v1_0.device_wait_idle(device)
 
@@ -3143,23 +3216,26 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateMemory.html
         """
         return self._v1_0.allocate_memory(
             device, Ptr(to=allocate_info), p_allocator, Ptr(to=memory)
         )
 
     fn free_memory(
-        self, device: Device, memory: DeviceMemory, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        memory: DeviceMemory,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeMemory.html
         """
         return self._v1_0.free_memory(device, memory, p_allocator)
 
@@ -3170,39 +3246,41 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[Ptr[NoneType]],
+        pp_data: Ptr[Ptr[NoneType, MutOrigin.external], MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
         return self._v1_0.map_memory(device, memory, offset, size, flags, pp_data)
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUnmapMemory.html
         """
         return self._v1_0.unmap_memory(device, memory)
 
     fn flush_mapped_memory_ranges(
-        self, device: Device, memory_range_count: UInt32, p_memory_ranges: Ptr[MappedMemoryRange]
+        self, device: Device, memory_range_count: UInt32, memory_ranges: MappedMemoryRange
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFlushMappedMemoryRanges.html
         """
-        return self._v1_0.flush_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.flush_mapped_memory_ranges(
+            device, memory_range_count, Ptr(to=memory_ranges)
+        )
 
     fn invalidate_mapped_memory_ranges(
-        self, device: Device, memory_range_count: UInt32, p_memory_ranges: Ptr[MappedMemoryRange]
+        self, device: Device, memory_range_count: UInt32, memory_ranges: MappedMemoryRange
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkInvalidateMappedMemoryRanges.html
         """
         return self._v1_0.invalidate_mapped_memory_ranges(
-            device, memory_range_count, p_memory_ranges
+            device, memory_range_count, Ptr(to=memory_ranges)
         )
 
     fn get_device_memory_commitment(
@@ -3210,7 +3288,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
             device, memory, Ptr(to=committed_memory_in_bytes)
@@ -3221,7 +3299,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory.html
         """
         return self._v1_0.bind_buffer_memory(device, buffer, memory, memory_offset)
 
@@ -3230,7 +3308,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory.html
         """
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
@@ -3239,7 +3317,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
             device, buffer, Ptr(to=memory_requirements)
@@ -3250,7 +3328,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(device, image, Ptr(to=memory_requirements))
 
@@ -3259,11 +3337,11 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         device: Device,
         image: Image,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         return self._v1_0.get_image_sparse_memory_requirements(
             device, image, Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
@@ -3274,12 +3352,12 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self.get_image_sparse_memory_requirements(
-            device, image, count, Ptr[SparseImageMemoryRequirements]()
+            device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -3288,83 +3366,86 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         return list^
 
     fn queue_bind_sparse(
-        self, queue: Queue, bind_info_count: UInt32, p_bind_info: Ptr[BindSparseInfo], fence: Fence
+        self, queue: Queue, bind_info_count: UInt32, bind_info: BindSparseInfo, fence: Fence
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBindSparse.html
         """
-        return self._v1_0.queue_bind_sparse(queue, bind_info_count, p_bind_info, fence)
+        return self._v1_0.queue_bind_sparse(queue, bind_info_count, Ptr(to=bind_info), fence)
 
     fn create_fence(
         self,
         device: Device,
         create_info: FenceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFence.html
         """
         return self._v1_0.create_fence(device, Ptr(to=create_info), p_allocator, Ptr(to=fence))
 
-    fn destroy_fence(self, device: Device, fence: Fence, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_fence(
+        self,
+        device: Device,
+        fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFence.html
         """
         return self._v1_0.destroy_fence(device, fence, p_allocator)
 
-    fn reset_fences(self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence]) -> Result:
+    fn reset_fences(self, device: Device, fence_count: UInt32, fences: Fence) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetFences.html
         """
-        return self._v1_0.reset_fences(device, fence_count, p_fences)
+        return self._v1_0.reset_fences(device, fence_count, Ptr(to=fences))
 
     fn get_fence_status(self, device: Device, fence: Fence) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceStatus.html
         """
         return self._v1_0.get_fence_status(device, fence)
 
     fn wait_for_fences(
-        self,
-        device: Device,
-        fence_count: UInt32,
-        p_fences: Ptr[Fence],
-        wait_all: Bool32,
-        timeout: UInt64,
+        self, device: Device, fence_count: UInt32, fences: Fence, wait_all: Bool32, timeout: UInt64
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitForFences.html
         """
-        return self._v1_0.wait_for_fences(device, fence_count, p_fences, wait_all, timeout)
+        return self._v1_0.wait_for_fences(device, fence_count, Ptr(to=fences), wait_all, timeout)
 
     fn create_semaphore(
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSemaphore.html
         """
         return self._v1_0.create_semaphore(
             device, Ptr(to=create_info), p_allocator, Ptr(to=semaphore)
         )
 
     fn destroy_semaphore(
-        self, device: Device, semaphore: Semaphore, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        semaphore: Semaphore,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySemaphore.html
         """
         return self._v1_0.destroy_semaphore(device, semaphore, p_allocator)
 
@@ -3372,40 +3453,45 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         create_info: EventCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateEvent.html
         """
         return self._v1_0.create_event(device, Ptr(to=create_info), p_allocator, Ptr(to=event))
 
-    fn destroy_event(self, device: Device, event: Event, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_event(
+        self,
+        device: Device,
+        event: Event,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyEvent.html
         """
         return self._v1_0.destroy_event(device, event, p_allocator)
 
     fn get_event_status(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetEventStatus.html
         """
         return self._v1_0.get_event_status(device, event)
 
     fn set_event(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetEvent.html
         """
         return self._v1_0.set_event(device, event)
 
     fn reset_event(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetEvent.html
         """
         return self._v1_0.reset_event(device, event)
 
@@ -3413,23 +3499,26 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateQueryPool.html
         """
         return self._v1_0.create_query_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=query_pool)
         )
 
     fn destroy_query_pool(
-        self, device: Device, query_pool: QueryPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        query_pool: QueryPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyQueryPool.html
         """
         return self._v1_0.destroy_query_pool(device, query_pool, p_allocator)
 
@@ -3440,35 +3529,40 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType],
+        mut data: NoneType,
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueryPoolResults.html
         """
         return self._v1_0.get_query_pool_results(
-            device, query_pool, first_query, query_count, data_size, p_data, stride, flags
+            device, query_pool, first_query, query_count, data_size, Ptr(to=data), stride, flags
         )
 
     fn create_buffer(
         self,
         device: Device,
         create_info: BufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBuffer.html
         """
         return self._v1_0.create_buffer(device, Ptr(to=create_info), p_allocator, Ptr(to=buffer))
 
-    fn destroy_buffer(self, device: Device, buffer: Buffer, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_buffer(
+        self,
+        device: Device,
+        buffer: Buffer,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBuffer.html
         """
         return self._v1_0.destroy_buffer(device, buffer, p_allocator)
 
@@ -3476,21 +3570,26 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBufferView.html
         """
-        return self._v1_0.create_buffer_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_buffer_view(
+            device, Ptr(to=create_info), p_allocator, Ptr(to=view)
+        )
 
     fn destroy_buffer_view(
-        self, device: Device, buffer_view: BufferView, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        buffer_view: BufferView,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBufferView.html
         """
         return self._v1_0.destroy_buffer_view(device, buffer_view, p_allocator)
 
@@ -3498,19 +3597,24 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         create_info: ImageCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImage.html
         """
         return self._v1_0.create_image(device, Ptr(to=create_info), p_allocator, Ptr(to=image))
 
-    fn destroy_image(self, device: Device, image: Image, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_image(
+        self,
+        device: Device,
+        image: Image,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImage.html
         """
         return self._v1_0.destroy_image(device, image, p_allocator)
 
@@ -3523,7 +3627,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout.html
         """
         return self._v1_0.get_image_subresource_layout(
             device, image, Ptr(to=subresource), Ptr(to=layout)
@@ -3533,21 +3637,24 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImageView.html
         """
         return self._v1_0.create_image_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
 
     fn destroy_image_view(
-        self, device: Device, image_view: ImageView, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        image_view: ImageView,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImageView.html
         """
         return self._v1_0.destroy_image_view(device, image_view, p_allocator)
 
@@ -3555,23 +3662,26 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateShaderModule.html
         """
         return self._v1_0.create_shader_module(
             device, Ptr(to=create_info), p_allocator, Ptr(to=shader_module)
         )
 
     fn destroy_shader_module(
-        self, device: Device, shader_module: ShaderModule, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        shader_module: ShaderModule,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyShaderModule.html
         """
         return self._v1_0.destroy_shader_module(device, shader_module, p_allocator)
 
@@ -3579,23 +3689,26 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineCache.html
         """
         return self._v1_0.create_pipeline_cache(
             device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_cache)
         )
 
     fn destroy_pipeline_cache(
-        self, device: Device, pipeline_cache: PipelineCache, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline_cache: PipelineCache,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineCache.html
         """
         return self._v1_0.destroy_pipeline_cache(device, pipeline_cache, p_allocator)
 
@@ -3604,31 +3717,35 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         device: Device,
         pipeline_cache: PipelineCache,
         mut data_size: UInt,
-        p_data: Ptr[NoneType],
+        p_data: Ptr[NoneType, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
-        return self._v1_0.get_pipeline_cache_data(device, pipeline_cache, Ptr(to=data_size), p_data)
+        return self._v1_0.get_pipeline_cache_data(
+            device, pipeline_cache, Ptr(to=data_size), p_data
+        )
 
     fn get_pipeline_cache_data(
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         var list = List[UInt8]()
         var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.get_pipeline_cache_data(device, pipeline_cache, count, Ptr[NoneType]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.get_pipeline_cache_data(
-                    device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
-                )
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -3637,29 +3754,36 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         device: Device,
         dst_cache: PipelineCache,
         src_cache_count: UInt32,
-        p_src_caches: Ptr[PipelineCache],
+        src_caches: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkMergePipelineCaches.html
         """
-        return self._v1_0.merge_pipeline_caches(device, dst_cache, src_cache_count, p_src_caches)
+        return self._v1_0.merge_pipeline_caches(
+            device, dst_cache, src_cache_count, Ptr(to=src_caches)
+        )
 
     fn create_graphics_pipelines(
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[GraphicsPipelineCreateInfo],
-        p_allocator: Ptr[AllocationCallbacks],
-        p_pipelines: Ptr[Pipeline],
+        create_infos: GraphicsPipelineCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        mut pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateGraphicsPipelines.html
         """
         return self._v1_0.create_graphics_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=create_infos),
+            p_allocator,
+            Ptr(to=pipelines),
         )
 
     fn create_compute_pipelines(
@@ -3667,24 +3791,32 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[ComputePipelineCreateInfo],
-        p_allocator: Ptr[AllocationCallbacks],
-        p_pipelines: Ptr[Pipeline],
+        create_infos: ComputePipelineCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        mut pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateComputePipelines.html
         """
         return self._v1_0.create_compute_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=create_infos),
+            p_allocator,
+            Ptr(to=pipelines),
         )
 
     fn destroy_pipeline(
-        self, device: Device, pipeline: Pipeline, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline: Pipeline,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipeline.html
         """
         return self._v1_0.destroy_pipeline(device, pipeline, p_allocator)
 
@@ -3692,23 +3824,26 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineLayout.html
         """
         return self._v1_0.create_pipeline_layout(
             device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_layout)
         )
 
     fn destroy_pipeline_layout(
-        self, device: Device, pipeline_layout: PipelineLayout, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline_layout: PipelineLayout,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineLayout.html
         """
         return self._v1_0.destroy_pipeline_layout(device, pipeline_layout, p_allocator)
 
@@ -3716,21 +3851,24 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         create_info: SamplerCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSampler.html
         """
         return self._v1_0.create_sampler(device, Ptr(to=create_info), p_allocator, Ptr(to=sampler))
 
     fn destroy_sampler(
-        self, device: Device, sampler: Sampler, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        sampler: Sampler,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySampler.html
         """
         return self._v1_0.destroy_sampler(device, sampler, p_allocator)
 
@@ -3738,12 +3876,12 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorSetLayout.html
         """
         return self._v1_0.create_descriptor_set_layout(
             device, Ptr(to=create_info), p_allocator, Ptr(to=set_layout)
@@ -3753,11 +3891,11 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorSetLayout.html
         """
         return self._v1_0.destroy_descriptor_set_layout(device, descriptor_set_layout, p_allocator)
 
@@ -3765,23 +3903,26 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorPool.html
         """
         return self._v1_0.create_descriptor_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_pool)
         )
 
     fn destroy_descriptor_pool(
-        self, device: Device, descriptor_pool: DescriptorPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        descriptor_pool: DescriptorPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorPool.html
         """
         return self._v1_0.destroy_descriptor_pool(device, descriptor_pool, p_allocator)
 
@@ -3790,7 +3931,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetDescriptorPool.html
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
@@ -3798,70 +3939,75 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        mut descriptor_sets: DescriptorSet,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
-        return self._v1_0.allocate_descriptor_sets(device, Ptr(to=allocate_info), p_descriptor_sets)
+        return self._v1_0.allocate_descriptor_sets(
+            device, Ptr(to=allocate_info), Ptr(to=descriptor_sets)
+        )
 
     fn free_descriptor_sets(
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        descriptor_sets: DescriptorSet,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeDescriptorSets.html
         """
         return self._v1_0.free_descriptor_sets(
-            device, descriptor_pool, descriptor_set_count, p_descriptor_sets
+            device, descriptor_pool, descriptor_set_count, Ptr(to=descriptor_sets)
         )
 
     fn update_descriptor_sets(
         self,
         device: Device,
         descriptor_write_count: UInt32,
-        p_descriptor_writes: Ptr[WriteDescriptorSet],
+        descriptor_writes: WriteDescriptorSet,
         descriptor_copy_count: UInt32,
-        p_descriptor_copies: Ptr[CopyDescriptorSet],
+        descriptor_copies: CopyDescriptorSet,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSets.html
         """
         return self._v1_0.update_descriptor_sets(
             device,
             descriptor_write_count,
-            p_descriptor_writes,
+            Ptr(to=descriptor_writes),
             descriptor_copy_count,
-            p_descriptor_copies,
+            Ptr(to=descriptor_copies),
         )
 
     fn create_framebuffer(
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFramebuffer.html
         """
         return self._v1_0.create_framebuffer(
             device, Ptr(to=create_info), p_allocator, Ptr(to=framebuffer)
         )
 
     fn destroy_framebuffer(
-        self, device: Device, framebuffer: Framebuffer, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        framebuffer: Framebuffer,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFramebuffer.html
         """
         return self._v1_0.destroy_framebuffer(device, framebuffer, p_allocator)
 
@@ -3869,23 +4015,26 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass.html
         """
         return self._v1_0.create_render_pass(
             device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass)
         )
 
     fn destroy_render_pass(
-        self, device: Device, render_pass: RenderPass, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        render_pass: RenderPass,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyRenderPass.html
         """
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
@@ -3894,7 +4043,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(device, render_pass, Ptr(to=granularity))
 
@@ -3902,23 +4051,26 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCommandPool.html
         """
         return self._v1_0.create_command_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=command_pool)
         )
 
     fn destroy_command_pool(
-        self, device: Device, command_pool: CommandPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        command_pool: CommandPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCommandPool.html
         """
         return self._v1_0.destroy_command_pool(device, command_pool, p_allocator)
 
@@ -3927,7 +4079,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetCommandPool.html
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
@@ -3935,27 +4087,29 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer],
+        mut command_buffers: CommandBuffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
-        return self._v1_0.allocate_command_buffers(device, Ptr(to=allocate_info), p_command_buffers)
+        return self._v1_0.allocate_command_buffers(
+            device, Ptr(to=allocate_info), Ptr(to=command_buffers)
+        )
 
     fn free_command_buffers(
         self,
         device: Device,
         command_pool: CommandPool,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer],
+        command_buffers: CommandBuffer,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeCommandBuffers.html
         """
         return self._v1_0.free_command_buffers(
-            device, command_pool, command_buffer_count, p_command_buffers
+            device, command_pool, command_buffer_count, Ptr(to=command_buffers)
         )
 
     fn begin_command_buffer(
@@ -3963,14 +4117,14 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(command_buffer, Ptr(to=begin_info))
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEndCommandBuffer.html
         """
         return self._v1_0.end_command_buffer(command_buffer)
 
@@ -3979,7 +4133,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetCommandBuffer.html
         """
         return self._v1_0.reset_command_buffer(command_buffer, flags)
 
@@ -3991,7 +4145,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindPipeline.html
         """
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
@@ -4000,14 +4154,14 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        p_viewports: Ptr[Viewport],
+        viewports: Viewport,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewport.html
         """
         return self._v1_0.cmd_set_viewport(
-            command_buffer, first_viewport, viewport_count, p_viewports
+            command_buffer, first_viewport, viewport_count, Ptr(to=viewports)
         )
 
     fn cmd_set_scissor(
@@ -4015,18 +4169,20 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
         scissor_count: UInt32,
-        p_scissors: Ptr[Rect2D],
+        scissors: Rect2D,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissor.html
         """
-        return self._v1_0.cmd_set_scissor(command_buffer, first_scissor, scissor_count, p_scissors)
+        return self._v1_0.cmd_set_scissor(
+            command_buffer, first_scissor, scissor_count, Ptr(to=scissors)
+        )
 
     fn cmd_set_line_width(self, command_buffer: CommandBuffer, line_width: Float32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLineWidth.html
         """
         return self._v1_0.cmd_set_line_width(command_buffer, line_width)
 
@@ -4039,16 +4195,18 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBias.html
         """
         return self._v1_0.cmd_set_depth_bias(
             command_buffer, depth_bias_constant_factor, depth_bias_clamp, depth_bias_slope_factor
         )
 
-    fn cmd_set_blend_constants(self, command_buffer: CommandBuffer, blend_constants: Float32):
+    fn cmd_set_blend_constants(
+        self, command_buffer: CommandBuffer, blend_constants: InlineArray[Float32, Int(4)]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetBlendConstants.html
         """
         return self._v1_0.cmd_set_blend_constants(command_buffer, blend_constants)
 
@@ -4057,7 +4215,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBounds.html
         """
         return self._v1_0.cmd_set_depth_bounds(command_buffer, min_depth_bounds, max_depth_bounds)
 
@@ -4066,7 +4224,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilCompareMask.html
         """
         return self._v1_0.cmd_set_stencil_compare_mask(command_buffer, face_mask, compare_mask)
 
@@ -4075,7 +4233,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilWriteMask.html
         """
         return self._v1_0.cmd_set_stencil_write_mask(command_buffer, face_mask, write_mask)
 
@@ -4084,7 +4242,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilReference.html
         """
         return self._v1_0.cmd_set_stencil_reference(command_buffer, face_mask, reference)
 
@@ -4095,13 +4253,13 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         layout: PipelineLayout,
         first_set: UInt32,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        descriptor_sets: DescriptorSet,
         dynamic_offset_count: UInt32,
-        p_dynamic_offsets: Ptr[UInt32],
+        dynamic_offsets: UInt32,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorSets.html
         """
         return self._v1_0.cmd_bind_descriptor_sets(
             command_buffer,
@@ -4109,9 +4267,9 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
             layout,
             first_set,
             descriptor_set_count,
-            p_descriptor_sets,
+            Ptr(to=descriptor_sets),
             dynamic_offset_count,
-            p_dynamic_offsets,
+            Ptr(to=dynamic_offsets),
         )
 
     fn cmd_bind_index_buffer(
@@ -4123,7 +4281,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindIndexBuffer.html
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
@@ -4132,15 +4290,15 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer],
-        p_offsets: Ptr[DeviceSize],
+        buffers: Buffer,
+        offsets: DeviceSize,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers.html
         """
         return self._v1_0.cmd_bind_vertex_buffers(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets
+            command_buffer, first_binding, binding_count, Ptr(to=buffers), Ptr(to=offsets)
         )
 
     fn cmd_draw(
@@ -4153,7 +4311,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDraw.html
         """
         return self._v1_0.cmd_draw(
             command_buffer, vertex_count, instance_count, first_vertex, first_instance
@@ -4170,7 +4328,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexed.html
         """
         return self._v1_0.cmd_draw_indexed(
             command_buffer, index_count, instance_count, first_index, vertex_offset, first_instance
@@ -4186,7 +4344,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndirect.html
         """
         return self._v1_0.cmd_draw_indirect(command_buffer, buffer, offset, draw_count, stride)
 
@@ -4200,7 +4358,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexedIndirect.html
         """
         return self._v1_0.cmd_draw_indexed_indirect(
             command_buffer, buffer, offset, draw_count, stride
@@ -4215,7 +4373,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatch.html
         """
         return self._v1_0.cmd_dispatch(command_buffer, group_count_x, group_count_y, group_count_z)
 
@@ -4224,7 +4382,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchIndirect.html
         """
         return self._v1_0.cmd_dispatch_indirect(command_buffer, buffer, offset)
 
@@ -4234,14 +4392,14 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         src_buffer: Buffer,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferCopy],
+        regions: BufferCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer.html
         """
         return self._v1_0.cmd_copy_buffer(
-            command_buffer, src_buffer, dst_buffer, region_count, p_regions
+            command_buffer, src_buffer, dst_buffer, region_count, Ptr(to=regions)
         )
 
     fn cmd_copy_image(
@@ -4252,11 +4410,11 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageCopy],
+        regions: ImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImage.html
         """
         return self._v1_0.cmd_copy_image(
             command_buffer,
@@ -4265,7 +4423,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
         )
 
     fn cmd_blit_image(
@@ -4276,12 +4434,12 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageBlit],
+        regions: ImageBlit,
         filter: Filter,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBlitImage.html
         """
         return self._v1_0.cmd_blit_image(
             command_buffer,
@@ -4290,7 +4448,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
             filter,
         )
 
@@ -4301,14 +4459,14 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy],
+        regions: BufferImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage.html
         """
         return self._v1_0.cmd_copy_buffer_to_image(
-            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, p_regions
+            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, Ptr(to=regions)
         )
 
     fn cmd_copy_image_to_buffer(
@@ -4318,14 +4476,14 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         src_image_layout: ImageLayout,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy],
+        regions: BufferImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer.html
         """
         return self._v1_0.cmd_copy_image_to_buffer(
-            command_buffer, src_image, src_image_layout, dst_buffer, region_count, p_regions
+            command_buffer, src_image, src_image_layout, dst_buffer, region_count, Ptr(to=regions)
         )
 
     fn cmd_update_buffer(
@@ -4334,14 +4492,14 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         data_size: DeviceSize,
-        p_data: Ptr[NoneType],
+        data: NoneType,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdUpdateBuffer.html
         """
         return self._v1_0.cmd_update_buffer(
-            command_buffer, dst_buffer, dst_offset, data_size, p_data
+            command_buffer, dst_buffer, dst_offset, data_size, Ptr(to=data)
         )
 
     fn cmd_fill_buffer(
@@ -4354,7 +4512,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdFillBuffer.html
         """
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
@@ -4365,14 +4523,14 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         image_layout: ImageLayout,
         color: ClearColorValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange],
+        ranges: ImageSubresourceRange,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearColorImage.html
         """
         return self._v1_0.cmd_clear_color_image(
-            command_buffer, image, image_layout, Ptr(to=color), range_count, p_ranges
+            command_buffer, image, image_layout, Ptr(to=color), range_count, Ptr(to=ranges)
         )
 
     fn cmd_clear_depth_stencil_image(
@@ -4382,30 +4540,30 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         image_layout: ImageLayout,
         depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange],
+        ranges: ImageSubresourceRange,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearDepthStencilImage.html
         """
         return self._v1_0.cmd_clear_depth_stencil_image(
-            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, p_ranges
+            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, Ptr(to=ranges)
         )
 
     fn cmd_clear_attachments(
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
-        p_attachments: Ptr[ClearAttachment],
+        attachments: ClearAttachment,
         rect_count: UInt32,
-        p_rects: Ptr[ClearRect],
+        rects: ClearRect,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearAttachments.html
         """
         return self._v1_0.cmd_clear_attachments(
-            command_buffer, attachment_count, p_attachments, rect_count, p_rects
+            command_buffer, attachment_count, Ptr(to=attachments), rect_count, Ptr(to=rects)
         )
 
     fn cmd_resolve_image(
@@ -4416,11 +4574,11 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageResolve],
+        regions: ImageResolve,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResolveImage.html
         """
         return self._v1_0.cmd_resolve_image(
             command_buffer,
@@ -4429,7 +4587,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
         )
 
     fn cmd_set_event(
@@ -4437,7 +4595,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetEvent.html
         """
         return self._v1_0.cmd_set_event(command_buffer, event, stage_mask)
 
@@ -4446,7 +4604,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetEvent.html
         """
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
@@ -4454,32 +4612,32 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event],
+        events: Event,
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier],
+        memory_barriers: MemoryBarrier,
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier],
+        buffer_memory_barriers: BufferMemoryBarrier,
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier],
+        image_memory_barriers: ImageMemoryBarrier,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWaitEvents.html
         """
         return self._v1_0.cmd_wait_events(
             command_buffer,
             event_count,
-            p_events,
+            Ptr(to=events),
             src_stage_mask,
             dst_stage_mask,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=memory_barriers),
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=buffer_memory_barriers),
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=image_memory_barriers),
         )
 
     fn cmd_pipeline_barrier(
@@ -4489,15 +4647,15 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         dst_stage_mask: PipelineStageFlags,
         dependency_flags: DependencyFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier],
+        memory_barriers: MemoryBarrier,
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier],
+        buffer_memory_barriers: BufferMemoryBarrier,
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier],
+        image_memory_barriers: ImageMemoryBarrier,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPipelineBarrier.html
         """
         return self._v1_0.cmd_pipeline_barrier(
             command_buffer,
@@ -4505,11 +4663,11 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
             dst_stage_mask,
             dependency_flags,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=memory_barriers),
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=buffer_memory_barriers),
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=image_memory_barriers),
         )
 
     fn cmd_begin_query(
@@ -4521,14 +4679,14 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginQuery.html
         """
         return self._v1_0.cmd_begin_query(command_buffer, query_pool, query, flags)
 
     fn cmd_end_query(self, command_buffer: CommandBuffer, query_pool: QueryPool, query: UInt32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndQuery.html
         """
         return self._v1_0.cmd_end_query(command_buffer, query_pool, query)
 
@@ -4541,9 +4699,11 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetQueryPool.html
         """
-        return self._v1_0.cmd_reset_query_pool(command_buffer, query_pool, first_query, query_count)
+        return self._v1_0.cmd_reset_query_pool(
+            command_buffer, query_pool, first_query, query_count
+        )
 
     fn cmd_write_timestamp(
         self,
@@ -4554,7 +4714,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWriteTimestamp.html
         """
         return self._v1_0.cmd_write_timestamp(command_buffer, pipeline_stage, query_pool, query)
 
@@ -4571,7 +4731,7 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyQueryPoolResults.html
         """
         return self._v1_0.cmd_copy_query_pool_results(
             command_buffer,
@@ -4591,14 +4751,14 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         stage_flags: ShaderStageFlags,
         offset: UInt32,
         size: UInt32,
-        p_values: Ptr[NoneType],
+        values: NoneType,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants.html
         """
         return self._v1_0.cmd_push_constants(
-            command_buffer, layout, stage_flags, offset, size, p_values
+            command_buffer, layout, stage_flags, offset, size, Ptr(to=values)
         )
 
     fn cmd_begin_render_pass(
@@ -4609,21 +4769,23 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
-        return self._v1_0.cmd_begin_render_pass(command_buffer, Ptr(to=render_pass_begin), contents)
+        return self._v1_0.cmd_begin_render_pass(
+            command_buffer, Ptr(to=render_pass_begin), contents
+        )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdNextSubpass.html
         """
         return self._v1_0.cmd_next_subpass(command_buffer, contents)
 
     fn cmd_end_render_pass(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass.html
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
@@ -4631,29 +4793,29 @@ struct DeviceFunctionsV1_0(Copyable, Movable):
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer],
+        command_buffers: CommandBuffer,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteCommands.html
         """
         return self._v1_0.cmd_execute_commands(
-            command_buffer, command_buffer_count, p_command_buffers
+            command_buffer, command_buffer_count, Ptr(to=command_buffers)
         )
-
-
-struct DeviceFunctionsV1_1(Copyable, Movable):
     var _v1_0: DeviceFunctionAdditionsV1_0
     var _v1_1: DeviceFunctionAdditionsV1_1
 
-    fn __init__(out self, global_functions: GlobalFunctionsV1_1, device: Device) raises:
+    fn __init__(
+out self, global_functions: GlobalFunctionsV1_1, device: Device) raises:
         self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.handle())
         self._v1_1 = DeviceFunctionAdditionsV1_1(device, global_functions.handle())
 
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_device(
+        self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
         """
         return self._v1_0.destroy_device(device, p_allocator)
 
@@ -4662,30 +4824,30 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(device, queue_family_index, queue_index, Ptr(to=queue))
 
     fn queue_submit(
-        self, queue: Queue, submit_count: UInt32, p_submits: Ptr[SubmitInfo], fence: Fence
+        self, queue: Queue, submit_count: UInt32, submits: SubmitInfo, fence: Fence
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit.html
         """
-        return self._v1_0.queue_submit(queue, submit_count, p_submits, fence)
+        return self._v1_0.queue_submit(queue, submit_count, Ptr(to=submits), fence)
 
     fn queue_wait_idle(self, queue: Queue) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueWaitIdle.html
         """
         return self._v1_0.queue_wait_idle(queue)
 
     fn device_wait_idle(self, device: Device) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDeviceWaitIdle.html
         """
         return self._v1_0.device_wait_idle(device)
 
@@ -4693,23 +4855,26 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateMemory.html
         """
         return self._v1_0.allocate_memory(
             device, Ptr(to=allocate_info), p_allocator, Ptr(to=memory)
         )
 
     fn free_memory(
-        self, device: Device, memory: DeviceMemory, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        memory: DeviceMemory,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeMemory.html
         """
         return self._v1_0.free_memory(device, memory, p_allocator)
 
@@ -4720,39 +4885,41 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[Ptr[NoneType]],
+        pp_data: Ptr[Ptr[NoneType, MutOrigin.external], MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
         return self._v1_0.map_memory(device, memory, offset, size, flags, pp_data)
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUnmapMemory.html
         """
         return self._v1_0.unmap_memory(device, memory)
 
     fn flush_mapped_memory_ranges(
-        self, device: Device, memory_range_count: UInt32, p_memory_ranges: Ptr[MappedMemoryRange]
+        self, device: Device, memory_range_count: UInt32, memory_ranges: MappedMemoryRange
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFlushMappedMemoryRanges.html
         """
-        return self._v1_0.flush_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.flush_mapped_memory_ranges(
+            device, memory_range_count, Ptr(to=memory_ranges)
+        )
 
     fn invalidate_mapped_memory_ranges(
-        self, device: Device, memory_range_count: UInt32, p_memory_ranges: Ptr[MappedMemoryRange]
+        self, device: Device, memory_range_count: UInt32, memory_ranges: MappedMemoryRange
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkInvalidateMappedMemoryRanges.html
         """
         return self._v1_0.invalidate_mapped_memory_ranges(
-            device, memory_range_count, p_memory_ranges
+            device, memory_range_count, Ptr(to=memory_ranges)
         )
 
     fn get_device_memory_commitment(
@@ -4760,7 +4927,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
             device, memory, Ptr(to=committed_memory_in_bytes)
@@ -4771,7 +4938,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory.html
         """
         return self._v1_0.bind_buffer_memory(device, buffer, memory, memory_offset)
 
@@ -4780,7 +4947,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory.html
         """
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
@@ -4789,7 +4956,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
             device, buffer, Ptr(to=memory_requirements)
@@ -4800,7 +4967,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(device, image, Ptr(to=memory_requirements))
 
@@ -4809,11 +4976,11 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         device: Device,
         image: Image,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         return self._v1_0.get_image_sparse_memory_requirements(
             device, image, Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
@@ -4824,12 +4991,12 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self.get_image_sparse_memory_requirements(
-            device, image, count, Ptr[SparseImageMemoryRequirements]()
+            device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -4838,83 +5005,86 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         return list^
 
     fn queue_bind_sparse(
-        self, queue: Queue, bind_info_count: UInt32, p_bind_info: Ptr[BindSparseInfo], fence: Fence
+        self, queue: Queue, bind_info_count: UInt32, bind_info: BindSparseInfo, fence: Fence
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBindSparse.html
         """
-        return self._v1_0.queue_bind_sparse(queue, bind_info_count, p_bind_info, fence)
+        return self._v1_0.queue_bind_sparse(queue, bind_info_count, Ptr(to=bind_info), fence)
 
     fn create_fence(
         self,
         device: Device,
         create_info: FenceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFence.html
         """
         return self._v1_0.create_fence(device, Ptr(to=create_info), p_allocator, Ptr(to=fence))
 
-    fn destroy_fence(self, device: Device, fence: Fence, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_fence(
+        self,
+        device: Device,
+        fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFence.html
         """
         return self._v1_0.destroy_fence(device, fence, p_allocator)
 
-    fn reset_fences(self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence]) -> Result:
+    fn reset_fences(self, device: Device, fence_count: UInt32, fences: Fence) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetFences.html
         """
-        return self._v1_0.reset_fences(device, fence_count, p_fences)
+        return self._v1_0.reset_fences(device, fence_count, Ptr(to=fences))
 
     fn get_fence_status(self, device: Device, fence: Fence) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceStatus.html
         """
         return self._v1_0.get_fence_status(device, fence)
 
     fn wait_for_fences(
-        self,
-        device: Device,
-        fence_count: UInt32,
-        p_fences: Ptr[Fence],
-        wait_all: Bool32,
-        timeout: UInt64,
+        self, device: Device, fence_count: UInt32, fences: Fence, wait_all: Bool32, timeout: UInt64
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitForFences.html
         """
-        return self._v1_0.wait_for_fences(device, fence_count, p_fences, wait_all, timeout)
+        return self._v1_0.wait_for_fences(device, fence_count, Ptr(to=fences), wait_all, timeout)
 
     fn create_semaphore(
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSemaphore.html
         """
         return self._v1_0.create_semaphore(
             device, Ptr(to=create_info), p_allocator, Ptr(to=semaphore)
         )
 
     fn destroy_semaphore(
-        self, device: Device, semaphore: Semaphore, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        semaphore: Semaphore,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySemaphore.html
         """
         return self._v1_0.destroy_semaphore(device, semaphore, p_allocator)
 
@@ -4922,40 +5092,45 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: EventCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateEvent.html
         """
         return self._v1_0.create_event(device, Ptr(to=create_info), p_allocator, Ptr(to=event))
 
-    fn destroy_event(self, device: Device, event: Event, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_event(
+        self,
+        device: Device,
+        event: Event,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyEvent.html
         """
         return self._v1_0.destroy_event(device, event, p_allocator)
 
     fn get_event_status(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetEventStatus.html
         """
         return self._v1_0.get_event_status(device, event)
 
     fn set_event(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetEvent.html
         """
         return self._v1_0.set_event(device, event)
 
     fn reset_event(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetEvent.html
         """
         return self._v1_0.reset_event(device, event)
 
@@ -4963,23 +5138,26 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateQueryPool.html
         """
         return self._v1_0.create_query_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=query_pool)
         )
 
     fn destroy_query_pool(
-        self, device: Device, query_pool: QueryPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        query_pool: QueryPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyQueryPool.html
         """
         return self._v1_0.destroy_query_pool(device, query_pool, p_allocator)
 
@@ -4990,35 +5168,40 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType],
+        mut data: NoneType,
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueryPoolResults.html
         """
         return self._v1_0.get_query_pool_results(
-            device, query_pool, first_query, query_count, data_size, p_data, stride, flags
+            device, query_pool, first_query, query_count, data_size, Ptr(to=data), stride, flags
         )
 
     fn create_buffer(
         self,
         device: Device,
         create_info: BufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBuffer.html
         """
         return self._v1_0.create_buffer(device, Ptr(to=create_info), p_allocator, Ptr(to=buffer))
 
-    fn destroy_buffer(self, device: Device, buffer: Buffer, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_buffer(
+        self,
+        device: Device,
+        buffer: Buffer,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBuffer.html
         """
         return self._v1_0.destroy_buffer(device, buffer, p_allocator)
 
@@ -5026,21 +5209,26 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBufferView.html
         """
-        return self._v1_0.create_buffer_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_buffer_view(
+            device, Ptr(to=create_info), p_allocator, Ptr(to=view)
+        )
 
     fn destroy_buffer_view(
-        self, device: Device, buffer_view: BufferView, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        buffer_view: BufferView,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBufferView.html
         """
         return self._v1_0.destroy_buffer_view(device, buffer_view, p_allocator)
 
@@ -5048,19 +5236,24 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: ImageCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImage.html
         """
         return self._v1_0.create_image(device, Ptr(to=create_info), p_allocator, Ptr(to=image))
 
-    fn destroy_image(self, device: Device, image: Image, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_image(
+        self,
+        device: Device,
+        image: Image,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImage.html
         """
         return self._v1_0.destroy_image(device, image, p_allocator)
 
@@ -5073,7 +5266,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout.html
         """
         return self._v1_0.get_image_subresource_layout(
             device, image, Ptr(to=subresource), Ptr(to=layout)
@@ -5083,21 +5276,24 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImageView.html
         """
         return self._v1_0.create_image_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
 
     fn destroy_image_view(
-        self, device: Device, image_view: ImageView, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        image_view: ImageView,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImageView.html
         """
         return self._v1_0.destroy_image_view(device, image_view, p_allocator)
 
@@ -5105,23 +5301,26 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateShaderModule.html
         """
         return self._v1_0.create_shader_module(
             device, Ptr(to=create_info), p_allocator, Ptr(to=shader_module)
         )
 
     fn destroy_shader_module(
-        self, device: Device, shader_module: ShaderModule, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        shader_module: ShaderModule,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyShaderModule.html
         """
         return self._v1_0.destroy_shader_module(device, shader_module, p_allocator)
 
@@ -5129,23 +5328,26 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineCache.html
         """
         return self._v1_0.create_pipeline_cache(
             device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_cache)
         )
 
     fn destroy_pipeline_cache(
-        self, device: Device, pipeline_cache: PipelineCache, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline_cache: PipelineCache,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineCache.html
         """
         return self._v1_0.destroy_pipeline_cache(device, pipeline_cache, p_allocator)
 
@@ -5154,31 +5356,35 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         device: Device,
         pipeline_cache: PipelineCache,
         mut data_size: UInt,
-        p_data: Ptr[NoneType],
+        p_data: Ptr[NoneType, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
-        return self._v1_0.get_pipeline_cache_data(device, pipeline_cache, Ptr(to=data_size), p_data)
+        return self._v1_0.get_pipeline_cache_data(
+            device, pipeline_cache, Ptr(to=data_size), p_data
+        )
 
     fn get_pipeline_cache_data(
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         var list = List[UInt8]()
         var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.get_pipeline_cache_data(device, pipeline_cache, count, Ptr[NoneType]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.get_pipeline_cache_data(
-                    device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
-                )
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -5187,29 +5393,36 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         device: Device,
         dst_cache: PipelineCache,
         src_cache_count: UInt32,
-        p_src_caches: Ptr[PipelineCache],
+        src_caches: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkMergePipelineCaches.html
         """
-        return self._v1_0.merge_pipeline_caches(device, dst_cache, src_cache_count, p_src_caches)
+        return self._v1_0.merge_pipeline_caches(
+            device, dst_cache, src_cache_count, Ptr(to=src_caches)
+        )
 
     fn create_graphics_pipelines(
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[GraphicsPipelineCreateInfo],
-        p_allocator: Ptr[AllocationCallbacks],
-        p_pipelines: Ptr[Pipeline],
+        create_infos: GraphicsPipelineCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        mut pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateGraphicsPipelines.html
         """
         return self._v1_0.create_graphics_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=create_infos),
+            p_allocator,
+            Ptr(to=pipelines),
         )
 
     fn create_compute_pipelines(
@@ -5217,24 +5430,32 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[ComputePipelineCreateInfo],
-        p_allocator: Ptr[AllocationCallbacks],
-        p_pipelines: Ptr[Pipeline],
+        create_infos: ComputePipelineCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        mut pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateComputePipelines.html
         """
         return self._v1_0.create_compute_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=create_infos),
+            p_allocator,
+            Ptr(to=pipelines),
         )
 
     fn destroy_pipeline(
-        self, device: Device, pipeline: Pipeline, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline: Pipeline,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipeline.html
         """
         return self._v1_0.destroy_pipeline(device, pipeline, p_allocator)
 
@@ -5242,23 +5463,26 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineLayout.html
         """
         return self._v1_0.create_pipeline_layout(
             device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_layout)
         )
 
     fn destroy_pipeline_layout(
-        self, device: Device, pipeline_layout: PipelineLayout, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline_layout: PipelineLayout,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineLayout.html
         """
         return self._v1_0.destroy_pipeline_layout(device, pipeline_layout, p_allocator)
 
@@ -5266,21 +5490,24 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: SamplerCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSampler.html
         """
         return self._v1_0.create_sampler(device, Ptr(to=create_info), p_allocator, Ptr(to=sampler))
 
     fn destroy_sampler(
-        self, device: Device, sampler: Sampler, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        sampler: Sampler,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySampler.html
         """
         return self._v1_0.destroy_sampler(device, sampler, p_allocator)
 
@@ -5288,12 +5515,12 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorSetLayout.html
         """
         return self._v1_0.create_descriptor_set_layout(
             device, Ptr(to=create_info), p_allocator, Ptr(to=set_layout)
@@ -5303,11 +5530,11 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorSetLayout.html
         """
         return self._v1_0.destroy_descriptor_set_layout(device, descriptor_set_layout, p_allocator)
 
@@ -5315,23 +5542,26 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorPool.html
         """
         return self._v1_0.create_descriptor_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_pool)
         )
 
     fn destroy_descriptor_pool(
-        self, device: Device, descriptor_pool: DescriptorPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        descriptor_pool: DescriptorPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorPool.html
         """
         return self._v1_0.destroy_descriptor_pool(device, descriptor_pool, p_allocator)
 
@@ -5340,7 +5570,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetDescriptorPool.html
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
@@ -5348,70 +5578,75 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        mut descriptor_sets: DescriptorSet,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
-        return self._v1_0.allocate_descriptor_sets(device, Ptr(to=allocate_info), p_descriptor_sets)
+        return self._v1_0.allocate_descriptor_sets(
+            device, Ptr(to=allocate_info), Ptr(to=descriptor_sets)
+        )
 
     fn free_descriptor_sets(
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        descriptor_sets: DescriptorSet,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeDescriptorSets.html
         """
         return self._v1_0.free_descriptor_sets(
-            device, descriptor_pool, descriptor_set_count, p_descriptor_sets
+            device, descriptor_pool, descriptor_set_count, Ptr(to=descriptor_sets)
         )
 
     fn update_descriptor_sets(
         self,
         device: Device,
         descriptor_write_count: UInt32,
-        p_descriptor_writes: Ptr[WriteDescriptorSet],
+        descriptor_writes: WriteDescriptorSet,
         descriptor_copy_count: UInt32,
-        p_descriptor_copies: Ptr[CopyDescriptorSet],
+        descriptor_copies: CopyDescriptorSet,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSets.html
         """
         return self._v1_0.update_descriptor_sets(
             device,
             descriptor_write_count,
-            p_descriptor_writes,
+            Ptr(to=descriptor_writes),
             descriptor_copy_count,
-            p_descriptor_copies,
+            Ptr(to=descriptor_copies),
         )
 
     fn create_framebuffer(
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFramebuffer.html
         """
         return self._v1_0.create_framebuffer(
             device, Ptr(to=create_info), p_allocator, Ptr(to=framebuffer)
         )
 
     fn destroy_framebuffer(
-        self, device: Device, framebuffer: Framebuffer, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        framebuffer: Framebuffer,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFramebuffer.html
         """
         return self._v1_0.destroy_framebuffer(device, framebuffer, p_allocator)
 
@@ -5419,23 +5654,26 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass.html
         """
         return self._v1_0.create_render_pass(
             device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass)
         )
 
     fn destroy_render_pass(
-        self, device: Device, render_pass: RenderPass, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        render_pass: RenderPass,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyRenderPass.html
         """
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
@@ -5444,7 +5682,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(device, render_pass, Ptr(to=granularity))
 
@@ -5452,23 +5690,26 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCommandPool.html
         """
         return self._v1_0.create_command_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=command_pool)
         )
 
     fn destroy_command_pool(
-        self, device: Device, command_pool: CommandPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        command_pool: CommandPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCommandPool.html
         """
         return self._v1_0.destroy_command_pool(device, command_pool, p_allocator)
 
@@ -5477,7 +5718,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetCommandPool.html
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
@@ -5485,27 +5726,29 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer],
+        mut command_buffers: CommandBuffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
-        return self._v1_0.allocate_command_buffers(device, Ptr(to=allocate_info), p_command_buffers)
+        return self._v1_0.allocate_command_buffers(
+            device, Ptr(to=allocate_info), Ptr(to=command_buffers)
+        )
 
     fn free_command_buffers(
         self,
         device: Device,
         command_pool: CommandPool,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer],
+        command_buffers: CommandBuffer,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeCommandBuffers.html
         """
         return self._v1_0.free_command_buffers(
-            device, command_pool, command_buffer_count, p_command_buffers
+            device, command_pool, command_buffer_count, Ptr(to=command_buffers)
         )
 
     fn begin_command_buffer(
@@ -5513,14 +5756,14 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(command_buffer, Ptr(to=begin_info))
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEndCommandBuffer.html
         """
         return self._v1_0.end_command_buffer(command_buffer)
 
@@ -5529,7 +5772,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetCommandBuffer.html
         """
         return self._v1_0.reset_command_buffer(command_buffer, flags)
 
@@ -5541,7 +5784,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindPipeline.html
         """
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
@@ -5550,14 +5793,14 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        p_viewports: Ptr[Viewport],
+        viewports: Viewport,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewport.html
         """
         return self._v1_0.cmd_set_viewport(
-            command_buffer, first_viewport, viewport_count, p_viewports
+            command_buffer, first_viewport, viewport_count, Ptr(to=viewports)
         )
 
     fn cmd_set_scissor(
@@ -5565,18 +5808,20 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
         scissor_count: UInt32,
-        p_scissors: Ptr[Rect2D],
+        scissors: Rect2D,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissor.html
         """
-        return self._v1_0.cmd_set_scissor(command_buffer, first_scissor, scissor_count, p_scissors)
+        return self._v1_0.cmd_set_scissor(
+            command_buffer, first_scissor, scissor_count, Ptr(to=scissors)
+        )
 
     fn cmd_set_line_width(self, command_buffer: CommandBuffer, line_width: Float32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLineWidth.html
         """
         return self._v1_0.cmd_set_line_width(command_buffer, line_width)
 
@@ -5589,16 +5834,18 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBias.html
         """
         return self._v1_0.cmd_set_depth_bias(
             command_buffer, depth_bias_constant_factor, depth_bias_clamp, depth_bias_slope_factor
         )
 
-    fn cmd_set_blend_constants(self, command_buffer: CommandBuffer, blend_constants: Float32):
+    fn cmd_set_blend_constants(
+        self, command_buffer: CommandBuffer, blend_constants: InlineArray[Float32, Int(4)]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetBlendConstants.html
         """
         return self._v1_0.cmd_set_blend_constants(command_buffer, blend_constants)
 
@@ -5607,7 +5854,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBounds.html
         """
         return self._v1_0.cmd_set_depth_bounds(command_buffer, min_depth_bounds, max_depth_bounds)
 
@@ -5616,7 +5863,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilCompareMask.html
         """
         return self._v1_0.cmd_set_stencil_compare_mask(command_buffer, face_mask, compare_mask)
 
@@ -5625,7 +5872,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilWriteMask.html
         """
         return self._v1_0.cmd_set_stencil_write_mask(command_buffer, face_mask, write_mask)
 
@@ -5634,7 +5881,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilReference.html
         """
         return self._v1_0.cmd_set_stencil_reference(command_buffer, face_mask, reference)
 
@@ -5645,13 +5892,13 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         layout: PipelineLayout,
         first_set: UInt32,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        descriptor_sets: DescriptorSet,
         dynamic_offset_count: UInt32,
-        p_dynamic_offsets: Ptr[UInt32],
+        dynamic_offsets: UInt32,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorSets.html
         """
         return self._v1_0.cmd_bind_descriptor_sets(
             command_buffer,
@@ -5659,9 +5906,9 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
             layout,
             first_set,
             descriptor_set_count,
-            p_descriptor_sets,
+            Ptr(to=descriptor_sets),
             dynamic_offset_count,
-            p_dynamic_offsets,
+            Ptr(to=dynamic_offsets),
         )
 
     fn cmd_bind_index_buffer(
@@ -5673,7 +5920,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindIndexBuffer.html
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
@@ -5682,15 +5929,15 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer],
-        p_offsets: Ptr[DeviceSize],
+        buffers: Buffer,
+        offsets: DeviceSize,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers.html
         """
         return self._v1_0.cmd_bind_vertex_buffers(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets
+            command_buffer, first_binding, binding_count, Ptr(to=buffers), Ptr(to=offsets)
         )
 
     fn cmd_draw(
@@ -5703,7 +5950,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDraw.html
         """
         return self._v1_0.cmd_draw(
             command_buffer, vertex_count, instance_count, first_vertex, first_instance
@@ -5720,7 +5967,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexed.html
         """
         return self._v1_0.cmd_draw_indexed(
             command_buffer, index_count, instance_count, first_index, vertex_offset, first_instance
@@ -5736,7 +5983,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndirect.html
         """
         return self._v1_0.cmd_draw_indirect(command_buffer, buffer, offset, draw_count, stride)
 
@@ -5750,7 +5997,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexedIndirect.html
         """
         return self._v1_0.cmd_draw_indexed_indirect(
             command_buffer, buffer, offset, draw_count, stride
@@ -5765,7 +6012,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatch.html
         """
         return self._v1_0.cmd_dispatch(command_buffer, group_count_x, group_count_y, group_count_z)
 
@@ -5774,7 +6021,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchIndirect.html
         """
         return self._v1_0.cmd_dispatch_indirect(command_buffer, buffer, offset)
 
@@ -5784,14 +6031,14 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         src_buffer: Buffer,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferCopy],
+        regions: BufferCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer.html
         """
         return self._v1_0.cmd_copy_buffer(
-            command_buffer, src_buffer, dst_buffer, region_count, p_regions
+            command_buffer, src_buffer, dst_buffer, region_count, Ptr(to=regions)
         )
 
     fn cmd_copy_image(
@@ -5802,11 +6049,11 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageCopy],
+        regions: ImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImage.html
         """
         return self._v1_0.cmd_copy_image(
             command_buffer,
@@ -5815,7 +6062,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
         )
 
     fn cmd_blit_image(
@@ -5826,12 +6073,12 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageBlit],
+        regions: ImageBlit,
         filter: Filter,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBlitImage.html
         """
         return self._v1_0.cmd_blit_image(
             command_buffer,
@@ -5840,7 +6087,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
             filter,
         )
 
@@ -5851,14 +6098,14 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy],
+        regions: BufferImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage.html
         """
         return self._v1_0.cmd_copy_buffer_to_image(
-            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, p_regions
+            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, Ptr(to=regions)
         )
 
     fn cmd_copy_image_to_buffer(
@@ -5868,14 +6115,14 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         src_image_layout: ImageLayout,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy],
+        regions: BufferImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer.html
         """
         return self._v1_0.cmd_copy_image_to_buffer(
-            command_buffer, src_image, src_image_layout, dst_buffer, region_count, p_regions
+            command_buffer, src_image, src_image_layout, dst_buffer, region_count, Ptr(to=regions)
         )
 
     fn cmd_update_buffer(
@@ -5884,14 +6131,14 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         data_size: DeviceSize,
-        p_data: Ptr[NoneType],
+        data: NoneType,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdUpdateBuffer.html
         """
         return self._v1_0.cmd_update_buffer(
-            command_buffer, dst_buffer, dst_offset, data_size, p_data
+            command_buffer, dst_buffer, dst_offset, data_size, Ptr(to=data)
         )
 
     fn cmd_fill_buffer(
@@ -5904,7 +6151,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdFillBuffer.html
         """
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
@@ -5915,14 +6162,14 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         image_layout: ImageLayout,
         color: ClearColorValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange],
+        ranges: ImageSubresourceRange,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearColorImage.html
         """
         return self._v1_0.cmd_clear_color_image(
-            command_buffer, image, image_layout, Ptr(to=color), range_count, p_ranges
+            command_buffer, image, image_layout, Ptr(to=color), range_count, Ptr(to=ranges)
         )
 
     fn cmd_clear_depth_stencil_image(
@@ -5932,30 +6179,30 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         image_layout: ImageLayout,
         depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange],
+        ranges: ImageSubresourceRange,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearDepthStencilImage.html
         """
         return self._v1_0.cmd_clear_depth_stencil_image(
-            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, p_ranges
+            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, Ptr(to=ranges)
         )
 
     fn cmd_clear_attachments(
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
-        p_attachments: Ptr[ClearAttachment],
+        attachments: ClearAttachment,
         rect_count: UInt32,
-        p_rects: Ptr[ClearRect],
+        rects: ClearRect,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearAttachments.html
         """
         return self._v1_0.cmd_clear_attachments(
-            command_buffer, attachment_count, p_attachments, rect_count, p_rects
+            command_buffer, attachment_count, Ptr(to=attachments), rect_count, Ptr(to=rects)
         )
 
     fn cmd_resolve_image(
@@ -5966,11 +6213,11 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageResolve],
+        regions: ImageResolve,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResolveImage.html
         """
         return self._v1_0.cmd_resolve_image(
             command_buffer,
@@ -5979,7 +6226,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
         )
 
     fn cmd_set_event(
@@ -5987,7 +6234,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetEvent.html
         """
         return self._v1_0.cmd_set_event(command_buffer, event, stage_mask)
 
@@ -5996,7 +6243,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetEvent.html
         """
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
@@ -6004,32 +6251,32 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event],
+        events: Event,
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier],
+        memory_barriers: MemoryBarrier,
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier],
+        buffer_memory_barriers: BufferMemoryBarrier,
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier],
+        image_memory_barriers: ImageMemoryBarrier,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWaitEvents.html
         """
         return self._v1_0.cmd_wait_events(
             command_buffer,
             event_count,
-            p_events,
+            Ptr(to=events),
             src_stage_mask,
             dst_stage_mask,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=memory_barriers),
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=buffer_memory_barriers),
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=image_memory_barriers),
         )
 
     fn cmd_pipeline_barrier(
@@ -6039,15 +6286,15 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         dst_stage_mask: PipelineStageFlags,
         dependency_flags: DependencyFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier],
+        memory_barriers: MemoryBarrier,
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier],
+        buffer_memory_barriers: BufferMemoryBarrier,
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier],
+        image_memory_barriers: ImageMemoryBarrier,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPipelineBarrier.html
         """
         return self._v1_0.cmd_pipeline_barrier(
             command_buffer,
@@ -6055,11 +6302,11 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
             dst_stage_mask,
             dependency_flags,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=memory_barriers),
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=buffer_memory_barriers),
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=image_memory_barriers),
         )
 
     fn cmd_begin_query(
@@ -6071,14 +6318,14 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginQuery.html
         """
         return self._v1_0.cmd_begin_query(command_buffer, query_pool, query, flags)
 
     fn cmd_end_query(self, command_buffer: CommandBuffer, query_pool: QueryPool, query: UInt32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndQuery.html
         """
         return self._v1_0.cmd_end_query(command_buffer, query_pool, query)
 
@@ -6091,9 +6338,11 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetQueryPool.html
         """
-        return self._v1_0.cmd_reset_query_pool(command_buffer, query_pool, first_query, query_count)
+        return self._v1_0.cmd_reset_query_pool(
+            command_buffer, query_pool, first_query, query_count
+        )
 
     fn cmd_write_timestamp(
         self,
@@ -6104,7 +6353,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWriteTimestamp.html
         """
         return self._v1_0.cmd_write_timestamp(command_buffer, pipeline_stage, query_pool, query)
 
@@ -6121,7 +6370,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyQueryPoolResults.html
         """
         return self._v1_0.cmd_copy_query_pool_results(
             command_buffer,
@@ -6141,14 +6390,14 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         stage_flags: ShaderStageFlags,
         offset: UInt32,
         size: UInt32,
-        p_values: Ptr[NoneType],
+        values: NoneType,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants.html
         """
         return self._v1_0.cmd_push_constants(
-            command_buffer, layout, stage_flags, offset, size, p_values
+            command_buffer, layout, stage_flags, offset, size, Ptr(to=values)
         )
 
     fn cmd_begin_render_pass(
@@ -6159,21 +6408,23 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
-        return self._v1_0.cmd_begin_render_pass(command_buffer, Ptr(to=render_pass_begin), contents)
+        return self._v1_0.cmd_begin_render_pass(
+            command_buffer, Ptr(to=render_pass_begin), contents
+        )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdNextSubpass.html
         """
         return self._v1_0.cmd_next_subpass(command_buffer, contents)
 
     fn cmd_end_render_pass(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass.html
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
@@ -6181,33 +6432,33 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer],
+        command_buffers: CommandBuffer,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteCommands.html
         """
         return self._v1_0.cmd_execute_commands(
-            command_buffer, command_buffer_count, p_command_buffers
+            command_buffer, command_buffer_count, Ptr(to=command_buffers)
         )
 
     fn bind_buffer_memory_2(
-        self, device: Device, bind_info_count: UInt32, p_bind_infos: Ptr[BindBufferMemoryInfo]
+        self, device: Device, bind_info_count: UInt32, bind_infos: BindBufferMemoryInfo
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory2.html
         """
-        return self._v1_1.bind_buffer_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_buffer_memory_2(device, bind_info_count, Ptr(to=bind_infos))
 
     fn bind_image_memory_2(
-        self, device: Device, bind_info_count: UInt32, p_bind_infos: Ptr[BindImageMemoryInfo]
+        self, device: Device, bind_info_count: UInt32, bind_infos: BindImageMemoryInfo
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory2.html
         """
-        return self._v1_1.bind_image_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_image_memory_2(device, bind_info_count, Ptr(to=bind_infos))
 
     fn get_device_group_peer_memory_features(
         self,
@@ -6219,7 +6470,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupPeerMemoryFeatures.html
         """
         return self._v1_1.get_device_group_peer_memory_features(
             device,
@@ -6232,7 +6483,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDeviceMask.html
         """
         return self._v1_1.cmd_set_device_mask(command_buffer, device_mask)
 
@@ -6248,7 +6499,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchBase.html
         """
         return self._v1_1.cmd_dispatch_base(
             command_buffer,
@@ -6268,7 +6519,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements2.html
         """
         return self._v1_1.get_image_memory_requirements_2(
             device, Ptr(to=info), Ptr(to=memory_requirements)
@@ -6282,7 +6533,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements2.html
         """
         return self._v1_1.get_buffer_memory_requirements_2(
             device, Ptr(to=info), Ptr(to=memory_requirements)
@@ -6293,11 +6544,11 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
             device,
@@ -6311,12 +6562,12 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self.get_image_sparse_memory_requirements_2(
-            device, info, count, Ptr[SparseImageMemoryRequirements2]()
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -6329,14 +6580,14 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkTrimCommandPool.html
         """
         return self._v1_1.trim_command_pool(device, command_pool, flags)
 
     fn get_device_queue_2(self, device: Device, queue_info: DeviceQueueInfo2, mut queue: Queue):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
         """
         return self._v1_1.get_device_queue_2(device, Ptr(to=queue_info), Ptr(to=queue))
 
@@ -6344,12 +6595,12 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSamplerYcbcrConversion.html
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
             device, Ptr(to=create_info), p_allocator, Ptr(to=ycbcr_conversion)
@@ -6359,11 +6610,11 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySamplerYcbcrConversion.html
         """
         return self._v1_1.destroy_sampler_ycbcr_conversion(device, ycbcr_conversion, p_allocator)
 
@@ -6371,12 +6622,12 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorUpdateTemplate.html
         """
         return self._v1_1.create_descriptor_update_template(
             device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_update_template)
@@ -6386,11 +6637,11 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorUpdateTemplate.html
         """
         return self._v1_1.destroy_descriptor_update_template(
             device, descriptor_update_template, p_allocator
@@ -6405,7 +6656,7 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._v1_1.update_descriptor_set_with_template(
             device, descriptor_set, descriptor_update_template, Ptr(to=data)
@@ -6419,27 +6670,27 @@ struct DeviceFunctionsV1_1(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutSupport.html
         """
         return self._v1_1.get_descriptor_set_layout_support(
             device, Ptr(to=create_info), Ptr(to=support)
         )
-
-
-struct DeviceFunctionsV1_2(Copyable, Movable):
     var _v1_0: DeviceFunctionAdditionsV1_0
     var _v1_1: DeviceFunctionAdditionsV1_1
     var _v1_2: DeviceFunctionAdditionsV1_2
 
-    fn __init__(out self, global_functions: GlobalFunctionsV1_2, device: Device) raises:
+    fn __init__(
+out self, global_functions: GlobalFunctionsV1_2, device: Device) raises:
         self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.handle())
         self._v1_1 = DeviceFunctionAdditionsV1_1(device, global_functions.handle())
         self._v1_2 = DeviceFunctionAdditionsV1_2(device, global_functions.handle())
 
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_device(
+        self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
         """
         return self._v1_0.destroy_device(device, p_allocator)
 
@@ -6448,30 +6699,30 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(device, queue_family_index, queue_index, Ptr(to=queue))
 
     fn queue_submit(
-        self, queue: Queue, submit_count: UInt32, p_submits: Ptr[SubmitInfo], fence: Fence
+        self, queue: Queue, submit_count: UInt32, submits: SubmitInfo, fence: Fence
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit.html
         """
-        return self._v1_0.queue_submit(queue, submit_count, p_submits, fence)
+        return self._v1_0.queue_submit(queue, submit_count, Ptr(to=submits), fence)
 
     fn queue_wait_idle(self, queue: Queue) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueWaitIdle.html
         """
         return self._v1_0.queue_wait_idle(queue)
 
     fn device_wait_idle(self, device: Device) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDeviceWaitIdle.html
         """
         return self._v1_0.device_wait_idle(device)
 
@@ -6479,23 +6730,26 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateMemory.html
         """
         return self._v1_0.allocate_memory(
             device, Ptr(to=allocate_info), p_allocator, Ptr(to=memory)
         )
 
     fn free_memory(
-        self, device: Device, memory: DeviceMemory, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        memory: DeviceMemory,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeMemory.html
         """
         return self._v1_0.free_memory(device, memory, p_allocator)
 
@@ -6506,39 +6760,41 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[Ptr[NoneType]],
+        pp_data: Ptr[Ptr[NoneType, MutOrigin.external], MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
         return self._v1_0.map_memory(device, memory, offset, size, flags, pp_data)
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUnmapMemory.html
         """
         return self._v1_0.unmap_memory(device, memory)
 
     fn flush_mapped_memory_ranges(
-        self, device: Device, memory_range_count: UInt32, p_memory_ranges: Ptr[MappedMemoryRange]
+        self, device: Device, memory_range_count: UInt32, memory_ranges: MappedMemoryRange
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFlushMappedMemoryRanges.html
         """
-        return self._v1_0.flush_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.flush_mapped_memory_ranges(
+            device, memory_range_count, Ptr(to=memory_ranges)
+        )
 
     fn invalidate_mapped_memory_ranges(
-        self, device: Device, memory_range_count: UInt32, p_memory_ranges: Ptr[MappedMemoryRange]
+        self, device: Device, memory_range_count: UInt32, memory_ranges: MappedMemoryRange
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkInvalidateMappedMemoryRanges.html
         """
         return self._v1_0.invalidate_mapped_memory_ranges(
-            device, memory_range_count, p_memory_ranges
+            device, memory_range_count, Ptr(to=memory_ranges)
         )
 
     fn get_device_memory_commitment(
@@ -6546,7 +6802,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
             device, memory, Ptr(to=committed_memory_in_bytes)
@@ -6557,7 +6813,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory.html
         """
         return self._v1_0.bind_buffer_memory(device, buffer, memory, memory_offset)
 
@@ -6566,7 +6822,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory.html
         """
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
@@ -6575,7 +6831,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
             device, buffer, Ptr(to=memory_requirements)
@@ -6586,7 +6842,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(device, image, Ptr(to=memory_requirements))
 
@@ -6595,11 +6851,11 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         device: Device,
         image: Image,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         return self._v1_0.get_image_sparse_memory_requirements(
             device, image, Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
@@ -6610,12 +6866,12 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self.get_image_sparse_memory_requirements(
-            device, image, count, Ptr[SparseImageMemoryRequirements]()
+            device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -6624,83 +6880,86 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         return list^
 
     fn queue_bind_sparse(
-        self, queue: Queue, bind_info_count: UInt32, p_bind_info: Ptr[BindSparseInfo], fence: Fence
+        self, queue: Queue, bind_info_count: UInt32, bind_info: BindSparseInfo, fence: Fence
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBindSparse.html
         """
-        return self._v1_0.queue_bind_sparse(queue, bind_info_count, p_bind_info, fence)
+        return self._v1_0.queue_bind_sparse(queue, bind_info_count, Ptr(to=bind_info), fence)
 
     fn create_fence(
         self,
         device: Device,
         create_info: FenceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFence.html
         """
         return self._v1_0.create_fence(device, Ptr(to=create_info), p_allocator, Ptr(to=fence))
 
-    fn destroy_fence(self, device: Device, fence: Fence, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_fence(
+        self,
+        device: Device,
+        fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFence.html
         """
         return self._v1_0.destroy_fence(device, fence, p_allocator)
 
-    fn reset_fences(self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence]) -> Result:
+    fn reset_fences(self, device: Device, fence_count: UInt32, fences: Fence) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetFences.html
         """
-        return self._v1_0.reset_fences(device, fence_count, p_fences)
+        return self._v1_0.reset_fences(device, fence_count, Ptr(to=fences))
 
     fn get_fence_status(self, device: Device, fence: Fence) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceStatus.html
         """
         return self._v1_0.get_fence_status(device, fence)
 
     fn wait_for_fences(
-        self,
-        device: Device,
-        fence_count: UInt32,
-        p_fences: Ptr[Fence],
-        wait_all: Bool32,
-        timeout: UInt64,
+        self, device: Device, fence_count: UInt32, fences: Fence, wait_all: Bool32, timeout: UInt64
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitForFences.html
         """
-        return self._v1_0.wait_for_fences(device, fence_count, p_fences, wait_all, timeout)
+        return self._v1_0.wait_for_fences(device, fence_count, Ptr(to=fences), wait_all, timeout)
 
     fn create_semaphore(
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSemaphore.html
         """
         return self._v1_0.create_semaphore(
             device, Ptr(to=create_info), p_allocator, Ptr(to=semaphore)
         )
 
     fn destroy_semaphore(
-        self, device: Device, semaphore: Semaphore, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        semaphore: Semaphore,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySemaphore.html
         """
         return self._v1_0.destroy_semaphore(device, semaphore, p_allocator)
 
@@ -6708,40 +6967,45 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: EventCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateEvent.html
         """
         return self._v1_0.create_event(device, Ptr(to=create_info), p_allocator, Ptr(to=event))
 
-    fn destroy_event(self, device: Device, event: Event, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_event(
+        self,
+        device: Device,
+        event: Event,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyEvent.html
         """
         return self._v1_0.destroy_event(device, event, p_allocator)
 
     fn get_event_status(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetEventStatus.html
         """
         return self._v1_0.get_event_status(device, event)
 
     fn set_event(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetEvent.html
         """
         return self._v1_0.set_event(device, event)
 
     fn reset_event(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetEvent.html
         """
         return self._v1_0.reset_event(device, event)
 
@@ -6749,23 +7013,26 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateQueryPool.html
         """
         return self._v1_0.create_query_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=query_pool)
         )
 
     fn destroy_query_pool(
-        self, device: Device, query_pool: QueryPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        query_pool: QueryPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyQueryPool.html
         """
         return self._v1_0.destroy_query_pool(device, query_pool, p_allocator)
 
@@ -6776,35 +7043,40 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType],
+        mut data: NoneType,
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueryPoolResults.html
         """
         return self._v1_0.get_query_pool_results(
-            device, query_pool, first_query, query_count, data_size, p_data, stride, flags
+            device, query_pool, first_query, query_count, data_size, Ptr(to=data), stride, flags
         )
 
     fn create_buffer(
         self,
         device: Device,
         create_info: BufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBuffer.html
         """
         return self._v1_0.create_buffer(device, Ptr(to=create_info), p_allocator, Ptr(to=buffer))
 
-    fn destroy_buffer(self, device: Device, buffer: Buffer, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_buffer(
+        self,
+        device: Device,
+        buffer: Buffer,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBuffer.html
         """
         return self._v1_0.destroy_buffer(device, buffer, p_allocator)
 
@@ -6812,21 +7084,26 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBufferView.html
         """
-        return self._v1_0.create_buffer_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_buffer_view(
+            device, Ptr(to=create_info), p_allocator, Ptr(to=view)
+        )
 
     fn destroy_buffer_view(
-        self, device: Device, buffer_view: BufferView, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        buffer_view: BufferView,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBufferView.html
         """
         return self._v1_0.destroy_buffer_view(device, buffer_view, p_allocator)
 
@@ -6834,19 +7111,24 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: ImageCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImage.html
         """
         return self._v1_0.create_image(device, Ptr(to=create_info), p_allocator, Ptr(to=image))
 
-    fn destroy_image(self, device: Device, image: Image, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_image(
+        self,
+        device: Device,
+        image: Image,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImage.html
         """
         return self._v1_0.destroy_image(device, image, p_allocator)
 
@@ -6859,7 +7141,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout.html
         """
         return self._v1_0.get_image_subresource_layout(
             device, image, Ptr(to=subresource), Ptr(to=layout)
@@ -6869,21 +7151,24 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImageView.html
         """
         return self._v1_0.create_image_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
 
     fn destroy_image_view(
-        self, device: Device, image_view: ImageView, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        image_view: ImageView,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImageView.html
         """
         return self._v1_0.destroy_image_view(device, image_view, p_allocator)
 
@@ -6891,23 +7176,26 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateShaderModule.html
         """
         return self._v1_0.create_shader_module(
             device, Ptr(to=create_info), p_allocator, Ptr(to=shader_module)
         )
 
     fn destroy_shader_module(
-        self, device: Device, shader_module: ShaderModule, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        shader_module: ShaderModule,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyShaderModule.html
         """
         return self._v1_0.destroy_shader_module(device, shader_module, p_allocator)
 
@@ -6915,23 +7203,26 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineCache.html
         """
         return self._v1_0.create_pipeline_cache(
             device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_cache)
         )
 
     fn destroy_pipeline_cache(
-        self, device: Device, pipeline_cache: PipelineCache, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline_cache: PipelineCache,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineCache.html
         """
         return self._v1_0.destroy_pipeline_cache(device, pipeline_cache, p_allocator)
 
@@ -6940,31 +7231,35 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         device: Device,
         pipeline_cache: PipelineCache,
         mut data_size: UInt,
-        p_data: Ptr[NoneType],
+        p_data: Ptr[NoneType, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
-        return self._v1_0.get_pipeline_cache_data(device, pipeline_cache, Ptr(to=data_size), p_data)
+        return self._v1_0.get_pipeline_cache_data(
+            device, pipeline_cache, Ptr(to=data_size), p_data
+        )
 
     fn get_pipeline_cache_data(
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         var list = List[UInt8]()
         var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.get_pipeline_cache_data(device, pipeline_cache, count, Ptr[NoneType]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.get_pipeline_cache_data(
-                    device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
-                )
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -6973,29 +7268,36 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         device: Device,
         dst_cache: PipelineCache,
         src_cache_count: UInt32,
-        p_src_caches: Ptr[PipelineCache],
+        src_caches: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkMergePipelineCaches.html
         """
-        return self._v1_0.merge_pipeline_caches(device, dst_cache, src_cache_count, p_src_caches)
+        return self._v1_0.merge_pipeline_caches(
+            device, dst_cache, src_cache_count, Ptr(to=src_caches)
+        )
 
     fn create_graphics_pipelines(
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[GraphicsPipelineCreateInfo],
-        p_allocator: Ptr[AllocationCallbacks],
-        p_pipelines: Ptr[Pipeline],
+        create_infos: GraphicsPipelineCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        mut pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateGraphicsPipelines.html
         """
         return self._v1_0.create_graphics_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=create_infos),
+            p_allocator,
+            Ptr(to=pipelines),
         )
 
     fn create_compute_pipelines(
@@ -7003,24 +7305,32 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[ComputePipelineCreateInfo],
-        p_allocator: Ptr[AllocationCallbacks],
-        p_pipelines: Ptr[Pipeline],
+        create_infos: ComputePipelineCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        mut pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateComputePipelines.html
         """
         return self._v1_0.create_compute_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=create_infos),
+            p_allocator,
+            Ptr(to=pipelines),
         )
 
     fn destroy_pipeline(
-        self, device: Device, pipeline: Pipeline, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline: Pipeline,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipeline.html
         """
         return self._v1_0.destroy_pipeline(device, pipeline, p_allocator)
 
@@ -7028,23 +7338,26 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineLayout.html
         """
         return self._v1_0.create_pipeline_layout(
             device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_layout)
         )
 
     fn destroy_pipeline_layout(
-        self, device: Device, pipeline_layout: PipelineLayout, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline_layout: PipelineLayout,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineLayout.html
         """
         return self._v1_0.destroy_pipeline_layout(device, pipeline_layout, p_allocator)
 
@@ -7052,21 +7365,24 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: SamplerCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSampler.html
         """
         return self._v1_0.create_sampler(device, Ptr(to=create_info), p_allocator, Ptr(to=sampler))
 
     fn destroy_sampler(
-        self, device: Device, sampler: Sampler, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        sampler: Sampler,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySampler.html
         """
         return self._v1_0.destroy_sampler(device, sampler, p_allocator)
 
@@ -7074,12 +7390,12 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorSetLayout.html
         """
         return self._v1_0.create_descriptor_set_layout(
             device, Ptr(to=create_info), p_allocator, Ptr(to=set_layout)
@@ -7089,11 +7405,11 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorSetLayout.html
         """
         return self._v1_0.destroy_descriptor_set_layout(device, descriptor_set_layout, p_allocator)
 
@@ -7101,23 +7417,26 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorPool.html
         """
         return self._v1_0.create_descriptor_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_pool)
         )
 
     fn destroy_descriptor_pool(
-        self, device: Device, descriptor_pool: DescriptorPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        descriptor_pool: DescriptorPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorPool.html
         """
         return self._v1_0.destroy_descriptor_pool(device, descriptor_pool, p_allocator)
 
@@ -7126,7 +7445,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetDescriptorPool.html
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
@@ -7134,70 +7453,75 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        mut descriptor_sets: DescriptorSet,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
-        return self._v1_0.allocate_descriptor_sets(device, Ptr(to=allocate_info), p_descriptor_sets)
+        return self._v1_0.allocate_descriptor_sets(
+            device, Ptr(to=allocate_info), Ptr(to=descriptor_sets)
+        )
 
     fn free_descriptor_sets(
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        descriptor_sets: DescriptorSet,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeDescriptorSets.html
         """
         return self._v1_0.free_descriptor_sets(
-            device, descriptor_pool, descriptor_set_count, p_descriptor_sets
+            device, descriptor_pool, descriptor_set_count, Ptr(to=descriptor_sets)
         )
 
     fn update_descriptor_sets(
         self,
         device: Device,
         descriptor_write_count: UInt32,
-        p_descriptor_writes: Ptr[WriteDescriptorSet],
+        descriptor_writes: WriteDescriptorSet,
         descriptor_copy_count: UInt32,
-        p_descriptor_copies: Ptr[CopyDescriptorSet],
+        descriptor_copies: CopyDescriptorSet,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSets.html
         """
         return self._v1_0.update_descriptor_sets(
             device,
             descriptor_write_count,
-            p_descriptor_writes,
+            Ptr(to=descriptor_writes),
             descriptor_copy_count,
-            p_descriptor_copies,
+            Ptr(to=descriptor_copies),
         )
 
     fn create_framebuffer(
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFramebuffer.html
         """
         return self._v1_0.create_framebuffer(
             device, Ptr(to=create_info), p_allocator, Ptr(to=framebuffer)
         )
 
     fn destroy_framebuffer(
-        self, device: Device, framebuffer: Framebuffer, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        framebuffer: Framebuffer,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFramebuffer.html
         """
         return self._v1_0.destroy_framebuffer(device, framebuffer, p_allocator)
 
@@ -7205,23 +7529,26 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass.html
         """
         return self._v1_0.create_render_pass(
             device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass)
         )
 
     fn destroy_render_pass(
-        self, device: Device, render_pass: RenderPass, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        render_pass: RenderPass,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyRenderPass.html
         """
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
@@ -7230,7 +7557,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(device, render_pass, Ptr(to=granularity))
 
@@ -7238,23 +7565,26 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCommandPool.html
         """
         return self._v1_0.create_command_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=command_pool)
         )
 
     fn destroy_command_pool(
-        self, device: Device, command_pool: CommandPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        command_pool: CommandPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCommandPool.html
         """
         return self._v1_0.destroy_command_pool(device, command_pool, p_allocator)
 
@@ -7263,7 +7593,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetCommandPool.html
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
@@ -7271,27 +7601,29 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer],
+        mut command_buffers: CommandBuffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
-        return self._v1_0.allocate_command_buffers(device, Ptr(to=allocate_info), p_command_buffers)
+        return self._v1_0.allocate_command_buffers(
+            device, Ptr(to=allocate_info), Ptr(to=command_buffers)
+        )
 
     fn free_command_buffers(
         self,
         device: Device,
         command_pool: CommandPool,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer],
+        command_buffers: CommandBuffer,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeCommandBuffers.html
         """
         return self._v1_0.free_command_buffers(
-            device, command_pool, command_buffer_count, p_command_buffers
+            device, command_pool, command_buffer_count, Ptr(to=command_buffers)
         )
 
     fn begin_command_buffer(
@@ -7299,14 +7631,14 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(command_buffer, Ptr(to=begin_info))
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEndCommandBuffer.html
         """
         return self._v1_0.end_command_buffer(command_buffer)
 
@@ -7315,7 +7647,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetCommandBuffer.html
         """
         return self._v1_0.reset_command_buffer(command_buffer, flags)
 
@@ -7327,7 +7659,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindPipeline.html
         """
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
@@ -7336,14 +7668,14 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        p_viewports: Ptr[Viewport],
+        viewports: Viewport,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewport.html
         """
         return self._v1_0.cmd_set_viewport(
-            command_buffer, first_viewport, viewport_count, p_viewports
+            command_buffer, first_viewport, viewport_count, Ptr(to=viewports)
         )
 
     fn cmd_set_scissor(
@@ -7351,18 +7683,20 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
         scissor_count: UInt32,
-        p_scissors: Ptr[Rect2D],
+        scissors: Rect2D,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissor.html
         """
-        return self._v1_0.cmd_set_scissor(command_buffer, first_scissor, scissor_count, p_scissors)
+        return self._v1_0.cmd_set_scissor(
+            command_buffer, first_scissor, scissor_count, Ptr(to=scissors)
+        )
 
     fn cmd_set_line_width(self, command_buffer: CommandBuffer, line_width: Float32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLineWidth.html
         """
         return self._v1_0.cmd_set_line_width(command_buffer, line_width)
 
@@ -7375,16 +7709,18 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBias.html
         """
         return self._v1_0.cmd_set_depth_bias(
             command_buffer, depth_bias_constant_factor, depth_bias_clamp, depth_bias_slope_factor
         )
 
-    fn cmd_set_blend_constants(self, command_buffer: CommandBuffer, blend_constants: Float32):
+    fn cmd_set_blend_constants(
+        self, command_buffer: CommandBuffer, blend_constants: InlineArray[Float32, Int(4)]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetBlendConstants.html
         """
         return self._v1_0.cmd_set_blend_constants(command_buffer, blend_constants)
 
@@ -7393,7 +7729,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBounds.html
         """
         return self._v1_0.cmd_set_depth_bounds(command_buffer, min_depth_bounds, max_depth_bounds)
 
@@ -7402,7 +7738,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilCompareMask.html
         """
         return self._v1_0.cmd_set_stencil_compare_mask(command_buffer, face_mask, compare_mask)
 
@@ -7411,7 +7747,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilWriteMask.html
         """
         return self._v1_0.cmd_set_stencil_write_mask(command_buffer, face_mask, write_mask)
 
@@ -7420,7 +7756,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilReference.html
         """
         return self._v1_0.cmd_set_stencil_reference(command_buffer, face_mask, reference)
 
@@ -7431,13 +7767,13 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         layout: PipelineLayout,
         first_set: UInt32,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        descriptor_sets: DescriptorSet,
         dynamic_offset_count: UInt32,
-        p_dynamic_offsets: Ptr[UInt32],
+        dynamic_offsets: UInt32,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorSets.html
         """
         return self._v1_0.cmd_bind_descriptor_sets(
             command_buffer,
@@ -7445,9 +7781,9 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
             layout,
             first_set,
             descriptor_set_count,
-            p_descriptor_sets,
+            Ptr(to=descriptor_sets),
             dynamic_offset_count,
-            p_dynamic_offsets,
+            Ptr(to=dynamic_offsets),
         )
 
     fn cmd_bind_index_buffer(
@@ -7459,7 +7795,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindIndexBuffer.html
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
@@ -7468,15 +7804,15 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer],
-        p_offsets: Ptr[DeviceSize],
+        buffers: Buffer,
+        offsets: DeviceSize,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers.html
         """
         return self._v1_0.cmd_bind_vertex_buffers(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets
+            command_buffer, first_binding, binding_count, Ptr(to=buffers), Ptr(to=offsets)
         )
 
     fn cmd_draw(
@@ -7489,7 +7825,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDraw.html
         """
         return self._v1_0.cmd_draw(
             command_buffer, vertex_count, instance_count, first_vertex, first_instance
@@ -7506,7 +7842,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexed.html
         """
         return self._v1_0.cmd_draw_indexed(
             command_buffer, index_count, instance_count, first_index, vertex_offset, first_instance
@@ -7522,7 +7858,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndirect.html
         """
         return self._v1_0.cmd_draw_indirect(command_buffer, buffer, offset, draw_count, stride)
 
@@ -7536,7 +7872,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexedIndirect.html
         """
         return self._v1_0.cmd_draw_indexed_indirect(
             command_buffer, buffer, offset, draw_count, stride
@@ -7551,7 +7887,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatch.html
         """
         return self._v1_0.cmd_dispatch(command_buffer, group_count_x, group_count_y, group_count_z)
 
@@ -7560,7 +7896,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchIndirect.html
         """
         return self._v1_0.cmd_dispatch_indirect(command_buffer, buffer, offset)
 
@@ -7570,14 +7906,14 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         src_buffer: Buffer,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferCopy],
+        regions: BufferCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer.html
         """
         return self._v1_0.cmd_copy_buffer(
-            command_buffer, src_buffer, dst_buffer, region_count, p_regions
+            command_buffer, src_buffer, dst_buffer, region_count, Ptr(to=regions)
         )
 
     fn cmd_copy_image(
@@ -7588,11 +7924,11 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageCopy],
+        regions: ImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImage.html
         """
         return self._v1_0.cmd_copy_image(
             command_buffer,
@@ -7601,7 +7937,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
         )
 
     fn cmd_blit_image(
@@ -7612,12 +7948,12 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageBlit],
+        regions: ImageBlit,
         filter: Filter,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBlitImage.html
         """
         return self._v1_0.cmd_blit_image(
             command_buffer,
@@ -7626,7 +7962,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
             filter,
         )
 
@@ -7637,14 +7973,14 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy],
+        regions: BufferImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage.html
         """
         return self._v1_0.cmd_copy_buffer_to_image(
-            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, p_regions
+            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, Ptr(to=regions)
         )
 
     fn cmd_copy_image_to_buffer(
@@ -7654,14 +7990,14 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         src_image_layout: ImageLayout,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy],
+        regions: BufferImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer.html
         """
         return self._v1_0.cmd_copy_image_to_buffer(
-            command_buffer, src_image, src_image_layout, dst_buffer, region_count, p_regions
+            command_buffer, src_image, src_image_layout, dst_buffer, region_count, Ptr(to=regions)
         )
 
     fn cmd_update_buffer(
@@ -7670,14 +8006,14 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         data_size: DeviceSize,
-        p_data: Ptr[NoneType],
+        data: NoneType,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdUpdateBuffer.html
         """
         return self._v1_0.cmd_update_buffer(
-            command_buffer, dst_buffer, dst_offset, data_size, p_data
+            command_buffer, dst_buffer, dst_offset, data_size, Ptr(to=data)
         )
 
     fn cmd_fill_buffer(
@@ -7690,7 +8026,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdFillBuffer.html
         """
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
@@ -7701,14 +8037,14 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         image_layout: ImageLayout,
         color: ClearColorValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange],
+        ranges: ImageSubresourceRange,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearColorImage.html
         """
         return self._v1_0.cmd_clear_color_image(
-            command_buffer, image, image_layout, Ptr(to=color), range_count, p_ranges
+            command_buffer, image, image_layout, Ptr(to=color), range_count, Ptr(to=ranges)
         )
 
     fn cmd_clear_depth_stencil_image(
@@ -7718,30 +8054,30 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         image_layout: ImageLayout,
         depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange],
+        ranges: ImageSubresourceRange,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearDepthStencilImage.html
         """
         return self._v1_0.cmd_clear_depth_stencil_image(
-            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, p_ranges
+            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, Ptr(to=ranges)
         )
 
     fn cmd_clear_attachments(
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
-        p_attachments: Ptr[ClearAttachment],
+        attachments: ClearAttachment,
         rect_count: UInt32,
-        p_rects: Ptr[ClearRect],
+        rects: ClearRect,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearAttachments.html
         """
         return self._v1_0.cmd_clear_attachments(
-            command_buffer, attachment_count, p_attachments, rect_count, p_rects
+            command_buffer, attachment_count, Ptr(to=attachments), rect_count, Ptr(to=rects)
         )
 
     fn cmd_resolve_image(
@@ -7752,11 +8088,11 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageResolve],
+        regions: ImageResolve,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResolveImage.html
         """
         return self._v1_0.cmd_resolve_image(
             command_buffer,
@@ -7765,7 +8101,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
         )
 
     fn cmd_set_event(
@@ -7773,7 +8109,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetEvent.html
         """
         return self._v1_0.cmd_set_event(command_buffer, event, stage_mask)
 
@@ -7782,7 +8118,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetEvent.html
         """
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
@@ -7790,32 +8126,32 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event],
+        events: Event,
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier],
+        memory_barriers: MemoryBarrier,
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier],
+        buffer_memory_barriers: BufferMemoryBarrier,
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier],
+        image_memory_barriers: ImageMemoryBarrier,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWaitEvents.html
         """
         return self._v1_0.cmd_wait_events(
             command_buffer,
             event_count,
-            p_events,
+            Ptr(to=events),
             src_stage_mask,
             dst_stage_mask,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=memory_barriers),
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=buffer_memory_barriers),
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=image_memory_barriers),
         )
 
     fn cmd_pipeline_barrier(
@@ -7825,15 +8161,15 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         dst_stage_mask: PipelineStageFlags,
         dependency_flags: DependencyFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier],
+        memory_barriers: MemoryBarrier,
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier],
+        buffer_memory_barriers: BufferMemoryBarrier,
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier],
+        image_memory_barriers: ImageMemoryBarrier,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPipelineBarrier.html
         """
         return self._v1_0.cmd_pipeline_barrier(
             command_buffer,
@@ -7841,11 +8177,11 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
             dst_stage_mask,
             dependency_flags,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=memory_barriers),
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=buffer_memory_barriers),
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=image_memory_barriers),
         )
 
     fn cmd_begin_query(
@@ -7857,14 +8193,14 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginQuery.html
         """
         return self._v1_0.cmd_begin_query(command_buffer, query_pool, query, flags)
 
     fn cmd_end_query(self, command_buffer: CommandBuffer, query_pool: QueryPool, query: UInt32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndQuery.html
         """
         return self._v1_0.cmd_end_query(command_buffer, query_pool, query)
 
@@ -7877,9 +8213,11 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetQueryPool.html
         """
-        return self._v1_0.cmd_reset_query_pool(command_buffer, query_pool, first_query, query_count)
+        return self._v1_0.cmd_reset_query_pool(
+            command_buffer, query_pool, first_query, query_count
+        )
 
     fn cmd_write_timestamp(
         self,
@@ -7890,7 +8228,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWriteTimestamp.html
         """
         return self._v1_0.cmd_write_timestamp(command_buffer, pipeline_stage, query_pool, query)
 
@@ -7907,7 +8245,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyQueryPoolResults.html
         """
         return self._v1_0.cmd_copy_query_pool_results(
             command_buffer,
@@ -7927,14 +8265,14 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         stage_flags: ShaderStageFlags,
         offset: UInt32,
         size: UInt32,
-        p_values: Ptr[NoneType],
+        values: NoneType,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants.html
         """
         return self._v1_0.cmd_push_constants(
-            command_buffer, layout, stage_flags, offset, size, p_values
+            command_buffer, layout, stage_flags, offset, size, Ptr(to=values)
         )
 
     fn cmd_begin_render_pass(
@@ -7945,21 +8283,23 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
-        return self._v1_0.cmd_begin_render_pass(command_buffer, Ptr(to=render_pass_begin), contents)
+        return self._v1_0.cmd_begin_render_pass(
+            command_buffer, Ptr(to=render_pass_begin), contents
+        )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdNextSubpass.html
         """
         return self._v1_0.cmd_next_subpass(command_buffer, contents)
 
     fn cmd_end_render_pass(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass.html
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
@@ -7967,33 +8307,33 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer],
+        command_buffers: CommandBuffer,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteCommands.html
         """
         return self._v1_0.cmd_execute_commands(
-            command_buffer, command_buffer_count, p_command_buffers
+            command_buffer, command_buffer_count, Ptr(to=command_buffers)
         )
 
     fn bind_buffer_memory_2(
-        self, device: Device, bind_info_count: UInt32, p_bind_infos: Ptr[BindBufferMemoryInfo]
+        self, device: Device, bind_info_count: UInt32, bind_infos: BindBufferMemoryInfo
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory2.html
         """
-        return self._v1_1.bind_buffer_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_buffer_memory_2(device, bind_info_count, Ptr(to=bind_infos))
 
     fn bind_image_memory_2(
-        self, device: Device, bind_info_count: UInt32, p_bind_infos: Ptr[BindImageMemoryInfo]
+        self, device: Device, bind_info_count: UInt32, bind_infos: BindImageMemoryInfo
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory2.html
         """
-        return self._v1_1.bind_image_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_image_memory_2(device, bind_info_count, Ptr(to=bind_infos))
 
     fn get_device_group_peer_memory_features(
         self,
@@ -8005,7 +8345,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupPeerMemoryFeatures.html
         """
         return self._v1_1.get_device_group_peer_memory_features(
             device,
@@ -8018,7 +8358,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDeviceMask.html
         """
         return self._v1_1.cmd_set_device_mask(command_buffer, device_mask)
 
@@ -8034,7 +8374,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchBase.html
         """
         return self._v1_1.cmd_dispatch_base(
             command_buffer,
@@ -8054,7 +8394,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements2.html
         """
         return self._v1_1.get_image_memory_requirements_2(
             device, Ptr(to=info), Ptr(to=memory_requirements)
@@ -8068,7 +8408,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements2.html
         """
         return self._v1_1.get_buffer_memory_requirements_2(
             device, Ptr(to=info), Ptr(to=memory_requirements)
@@ -8079,11 +8419,11 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
             device,
@@ -8097,12 +8437,12 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self.get_image_sparse_memory_requirements_2(
-            device, info, count, Ptr[SparseImageMemoryRequirements2]()
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -8115,14 +8455,14 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkTrimCommandPool.html
         """
         return self._v1_1.trim_command_pool(device, command_pool, flags)
 
     fn get_device_queue_2(self, device: Device, queue_info: DeviceQueueInfo2, mut queue: Queue):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
         """
         return self._v1_1.get_device_queue_2(device, Ptr(to=queue_info), Ptr(to=queue))
 
@@ -8130,12 +8470,12 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSamplerYcbcrConversion.html
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
             device, Ptr(to=create_info), p_allocator, Ptr(to=ycbcr_conversion)
@@ -8145,11 +8485,11 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySamplerYcbcrConversion.html
         """
         return self._v1_1.destroy_sampler_ycbcr_conversion(device, ycbcr_conversion, p_allocator)
 
@@ -8157,12 +8497,12 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorUpdateTemplate.html
         """
         return self._v1_1.create_descriptor_update_template(
             device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_update_template)
@@ -8172,11 +8512,11 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorUpdateTemplate.html
         """
         return self._v1_1.destroy_descriptor_update_template(
             device, descriptor_update_template, p_allocator
@@ -8191,7 +8531,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._v1_1.update_descriptor_set_with_template(
             device, descriptor_set, descriptor_update_template, Ptr(to=data)
@@ -8205,7 +8545,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutSupport.html
         """
         return self._v1_1.get_descriptor_set_layout_support(
             device, Ptr(to=create_info), Ptr(to=support)
@@ -8223,7 +8563,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndirectCount.html
         """
         return self._v1_2.cmd_draw_indirect_count(
             command_buffer,
@@ -8247,7 +8587,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexedIndirectCount.html
         """
         return self._v1_2.cmd_draw_indexed_indirect_count(
             command_buffer,
@@ -8263,12 +8603,12 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
         self,
         device: Device,
         create_info: RenderPassCreateInfo2,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass2.html
         """
         return self._v1_2.create_render_pass_2(
             device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass)
@@ -8282,7 +8622,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass2.html
         """
         return self._v1_2.cmd_begin_render_pass_2(
             command_buffer, Ptr(to=render_pass_begin), Ptr(to=subpass_begin_info)
@@ -8296,16 +8636,18 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdNextSubpass2.html
         """
         return self._v1_2.cmd_next_subpass_2(
             command_buffer, Ptr(to=subpass_begin_info), Ptr(to=subpass_end_info)
         )
 
-    fn cmd_end_render_pass_2(self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo):
+    fn cmd_end_render_pass_2(
+        self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass2.html
         """
         return self._v1_2.cmd_end_render_pass_2(command_buffer, Ptr(to=subpass_end_info))
 
@@ -8314,7 +8656,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetQueryPool.html
         """
         return self._v1_2.reset_query_pool(device, query_pool, first_query, query_count)
 
@@ -8323,7 +8665,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreCounterValue.html
         """
         return self._v1_2.get_semaphore_counter_value(device, semaphore, Ptr(to=value))
 
@@ -8332,14 +8674,14 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitSemaphores.html
         """
         return self._v1_2.wait_semaphores(device, Ptr(to=wait_info), timeout)
 
     fn signal_semaphore(self, device: Device, signal_info: SemaphoreSignalInfo) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkSignalSemaphore.html
         """
         return self._v1_2.signal_semaphore(device, Ptr(to=signal_info))
 
@@ -8348,7 +8690,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ) -> DeviceAddress:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
         return self._v1_2.get_buffer_device_address(device, Ptr(to=info))
 
@@ -8357,7 +8699,7 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ) -> UInt64:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureAddress.html
         """
         return self._v1_2.get_buffer_opaque_capture_address(device, Ptr(to=info))
 
@@ -8366,27 +8708,27 @@ struct DeviceFunctionsV1_2(Copyable, Movable):
     ) -> UInt64:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryOpaqueCaptureAddress.html
         """
         return self._v1_2.get_device_memory_opaque_capture_address(device, Ptr(to=info))
-
-
-struct DeviceFunctionsV1_3(Copyable, Movable):
     var _v1_0: DeviceFunctionAdditionsV1_0
     var _v1_1: DeviceFunctionAdditionsV1_1
     var _v1_2: DeviceFunctionAdditionsV1_2
     var _v1_3: DeviceFunctionAdditionsV1_3
 
-    fn __init__(out self, global_functions: GlobalFunctionsV1_3, device: Device) raises:
+    fn __init__(
+out self, global_functions: GlobalFunctionsV1_3, device: Device) raises:
         self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.handle())
         self._v1_1 = DeviceFunctionAdditionsV1_1(device, global_functions.handle())
         self._v1_2 = DeviceFunctionAdditionsV1_2(device, global_functions.handle())
         self._v1_3 = DeviceFunctionAdditionsV1_3(device, global_functions.handle())
 
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_device(
+        self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
         """
         return self._v1_0.destroy_device(device, p_allocator)
 
@@ -8395,30 +8737,30 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(device, queue_family_index, queue_index, Ptr(to=queue))
 
     fn queue_submit(
-        self, queue: Queue, submit_count: UInt32, p_submits: Ptr[SubmitInfo], fence: Fence
+        self, queue: Queue, submit_count: UInt32, submits: SubmitInfo, fence: Fence
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit.html
         """
-        return self._v1_0.queue_submit(queue, submit_count, p_submits, fence)
+        return self._v1_0.queue_submit(queue, submit_count, Ptr(to=submits), fence)
 
     fn queue_wait_idle(self, queue: Queue) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueWaitIdle.html
         """
         return self._v1_0.queue_wait_idle(queue)
 
     fn device_wait_idle(self, device: Device) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDeviceWaitIdle.html
         """
         return self._v1_0.device_wait_idle(device)
 
@@ -8426,23 +8768,26 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateMemory.html
         """
         return self._v1_0.allocate_memory(
             device, Ptr(to=allocate_info), p_allocator, Ptr(to=memory)
         )
 
     fn free_memory(
-        self, device: Device, memory: DeviceMemory, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        memory: DeviceMemory,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeMemory.html
         """
         return self._v1_0.free_memory(device, memory, p_allocator)
 
@@ -8453,39 +8798,41 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[Ptr[NoneType]],
+        pp_data: Ptr[Ptr[NoneType, MutOrigin.external], MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
         return self._v1_0.map_memory(device, memory, offset, size, flags, pp_data)
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUnmapMemory.html
         """
         return self._v1_0.unmap_memory(device, memory)
 
     fn flush_mapped_memory_ranges(
-        self, device: Device, memory_range_count: UInt32, p_memory_ranges: Ptr[MappedMemoryRange]
+        self, device: Device, memory_range_count: UInt32, memory_ranges: MappedMemoryRange
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFlushMappedMemoryRanges.html
         """
-        return self._v1_0.flush_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.flush_mapped_memory_ranges(
+            device, memory_range_count, Ptr(to=memory_ranges)
+        )
 
     fn invalidate_mapped_memory_ranges(
-        self, device: Device, memory_range_count: UInt32, p_memory_ranges: Ptr[MappedMemoryRange]
+        self, device: Device, memory_range_count: UInt32, memory_ranges: MappedMemoryRange
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkInvalidateMappedMemoryRanges.html
         """
         return self._v1_0.invalidate_mapped_memory_ranges(
-            device, memory_range_count, p_memory_ranges
+            device, memory_range_count, Ptr(to=memory_ranges)
         )
 
     fn get_device_memory_commitment(
@@ -8493,7 +8840,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
             device, memory, Ptr(to=committed_memory_in_bytes)
@@ -8504,7 +8851,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory.html
         """
         return self._v1_0.bind_buffer_memory(device, buffer, memory, memory_offset)
 
@@ -8513,7 +8860,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory.html
         """
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
@@ -8522,7 +8869,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
             device, buffer, Ptr(to=memory_requirements)
@@ -8533,7 +8880,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(device, image, Ptr(to=memory_requirements))
 
@@ -8542,11 +8889,11 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         device: Device,
         image: Image,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         return self._v1_0.get_image_sparse_memory_requirements(
             device, image, Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
@@ -8557,12 +8904,12 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self.get_image_sparse_memory_requirements(
-            device, image, count, Ptr[SparseImageMemoryRequirements]()
+            device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -8571,83 +8918,86 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         return list^
 
     fn queue_bind_sparse(
-        self, queue: Queue, bind_info_count: UInt32, p_bind_info: Ptr[BindSparseInfo], fence: Fence
+        self, queue: Queue, bind_info_count: UInt32, bind_info: BindSparseInfo, fence: Fence
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBindSparse.html
         """
-        return self._v1_0.queue_bind_sparse(queue, bind_info_count, p_bind_info, fence)
+        return self._v1_0.queue_bind_sparse(queue, bind_info_count, Ptr(to=bind_info), fence)
 
     fn create_fence(
         self,
         device: Device,
         create_info: FenceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFence.html
         """
         return self._v1_0.create_fence(device, Ptr(to=create_info), p_allocator, Ptr(to=fence))
 
-    fn destroy_fence(self, device: Device, fence: Fence, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_fence(
+        self,
+        device: Device,
+        fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFence.html
         """
         return self._v1_0.destroy_fence(device, fence, p_allocator)
 
-    fn reset_fences(self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence]) -> Result:
+    fn reset_fences(self, device: Device, fence_count: UInt32, fences: Fence) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetFences.html
         """
-        return self._v1_0.reset_fences(device, fence_count, p_fences)
+        return self._v1_0.reset_fences(device, fence_count, Ptr(to=fences))
 
     fn get_fence_status(self, device: Device, fence: Fence) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceStatus.html
         """
         return self._v1_0.get_fence_status(device, fence)
 
     fn wait_for_fences(
-        self,
-        device: Device,
-        fence_count: UInt32,
-        p_fences: Ptr[Fence],
-        wait_all: Bool32,
-        timeout: UInt64,
+        self, device: Device, fence_count: UInt32, fences: Fence, wait_all: Bool32, timeout: UInt64
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitForFences.html
         """
-        return self._v1_0.wait_for_fences(device, fence_count, p_fences, wait_all, timeout)
+        return self._v1_0.wait_for_fences(device, fence_count, Ptr(to=fences), wait_all, timeout)
 
     fn create_semaphore(
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSemaphore.html
         """
         return self._v1_0.create_semaphore(
             device, Ptr(to=create_info), p_allocator, Ptr(to=semaphore)
         )
 
     fn destroy_semaphore(
-        self, device: Device, semaphore: Semaphore, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        semaphore: Semaphore,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySemaphore.html
         """
         return self._v1_0.destroy_semaphore(device, semaphore, p_allocator)
 
@@ -8655,40 +9005,45 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: EventCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateEvent.html
         """
         return self._v1_0.create_event(device, Ptr(to=create_info), p_allocator, Ptr(to=event))
 
-    fn destroy_event(self, device: Device, event: Event, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_event(
+        self,
+        device: Device,
+        event: Event,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyEvent.html
         """
         return self._v1_0.destroy_event(device, event, p_allocator)
 
     fn get_event_status(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetEventStatus.html
         """
         return self._v1_0.get_event_status(device, event)
 
     fn set_event(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetEvent.html
         """
         return self._v1_0.set_event(device, event)
 
     fn reset_event(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetEvent.html
         """
         return self._v1_0.reset_event(device, event)
 
@@ -8696,23 +9051,26 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateQueryPool.html
         """
         return self._v1_0.create_query_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=query_pool)
         )
 
     fn destroy_query_pool(
-        self, device: Device, query_pool: QueryPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        query_pool: QueryPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyQueryPool.html
         """
         return self._v1_0.destroy_query_pool(device, query_pool, p_allocator)
 
@@ -8723,35 +9081,40 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType],
+        mut data: NoneType,
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueryPoolResults.html
         """
         return self._v1_0.get_query_pool_results(
-            device, query_pool, first_query, query_count, data_size, p_data, stride, flags
+            device, query_pool, first_query, query_count, data_size, Ptr(to=data), stride, flags
         )
 
     fn create_buffer(
         self,
         device: Device,
         create_info: BufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBuffer.html
         """
         return self._v1_0.create_buffer(device, Ptr(to=create_info), p_allocator, Ptr(to=buffer))
 
-    fn destroy_buffer(self, device: Device, buffer: Buffer, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_buffer(
+        self,
+        device: Device,
+        buffer: Buffer,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBuffer.html
         """
         return self._v1_0.destroy_buffer(device, buffer, p_allocator)
 
@@ -8759,21 +9122,26 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBufferView.html
         """
-        return self._v1_0.create_buffer_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_buffer_view(
+            device, Ptr(to=create_info), p_allocator, Ptr(to=view)
+        )
 
     fn destroy_buffer_view(
-        self, device: Device, buffer_view: BufferView, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        buffer_view: BufferView,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBufferView.html
         """
         return self._v1_0.destroy_buffer_view(device, buffer_view, p_allocator)
 
@@ -8781,19 +9149,24 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: ImageCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImage.html
         """
         return self._v1_0.create_image(device, Ptr(to=create_info), p_allocator, Ptr(to=image))
 
-    fn destroy_image(self, device: Device, image: Image, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_image(
+        self,
+        device: Device,
+        image: Image,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImage.html
         """
         return self._v1_0.destroy_image(device, image, p_allocator)
 
@@ -8806,7 +9179,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout.html
         """
         return self._v1_0.get_image_subresource_layout(
             device, image, Ptr(to=subresource), Ptr(to=layout)
@@ -8816,21 +9189,24 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImageView.html
         """
         return self._v1_0.create_image_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
 
     fn destroy_image_view(
-        self, device: Device, image_view: ImageView, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        image_view: ImageView,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImageView.html
         """
         return self._v1_0.destroy_image_view(device, image_view, p_allocator)
 
@@ -8838,23 +9214,26 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateShaderModule.html
         """
         return self._v1_0.create_shader_module(
             device, Ptr(to=create_info), p_allocator, Ptr(to=shader_module)
         )
 
     fn destroy_shader_module(
-        self, device: Device, shader_module: ShaderModule, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        shader_module: ShaderModule,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyShaderModule.html
         """
         return self._v1_0.destroy_shader_module(device, shader_module, p_allocator)
 
@@ -8862,23 +9241,26 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineCache.html
         """
         return self._v1_0.create_pipeline_cache(
             device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_cache)
         )
 
     fn destroy_pipeline_cache(
-        self, device: Device, pipeline_cache: PipelineCache, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline_cache: PipelineCache,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineCache.html
         """
         return self._v1_0.destroy_pipeline_cache(device, pipeline_cache, p_allocator)
 
@@ -8887,31 +9269,35 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         device: Device,
         pipeline_cache: PipelineCache,
         mut data_size: UInt,
-        p_data: Ptr[NoneType],
+        p_data: Ptr[NoneType, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
-        return self._v1_0.get_pipeline_cache_data(device, pipeline_cache, Ptr(to=data_size), p_data)
+        return self._v1_0.get_pipeline_cache_data(
+            device, pipeline_cache, Ptr(to=data_size), p_data
+        )
 
     fn get_pipeline_cache_data(
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         var list = List[UInt8]()
         var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.get_pipeline_cache_data(device, pipeline_cache, count, Ptr[NoneType]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.get_pipeline_cache_data(
-                    device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
-                )
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -8920,29 +9306,36 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         device: Device,
         dst_cache: PipelineCache,
         src_cache_count: UInt32,
-        p_src_caches: Ptr[PipelineCache],
+        src_caches: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkMergePipelineCaches.html
         """
-        return self._v1_0.merge_pipeline_caches(device, dst_cache, src_cache_count, p_src_caches)
+        return self._v1_0.merge_pipeline_caches(
+            device, dst_cache, src_cache_count, Ptr(to=src_caches)
+        )
 
     fn create_graphics_pipelines(
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[GraphicsPipelineCreateInfo],
-        p_allocator: Ptr[AllocationCallbacks],
-        p_pipelines: Ptr[Pipeline],
+        create_infos: GraphicsPipelineCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        mut pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateGraphicsPipelines.html
         """
         return self._v1_0.create_graphics_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=create_infos),
+            p_allocator,
+            Ptr(to=pipelines),
         )
 
     fn create_compute_pipelines(
@@ -8950,24 +9343,32 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[ComputePipelineCreateInfo],
-        p_allocator: Ptr[AllocationCallbacks],
-        p_pipelines: Ptr[Pipeline],
+        create_infos: ComputePipelineCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        mut pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateComputePipelines.html
         """
         return self._v1_0.create_compute_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=create_infos),
+            p_allocator,
+            Ptr(to=pipelines),
         )
 
     fn destroy_pipeline(
-        self, device: Device, pipeline: Pipeline, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline: Pipeline,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipeline.html
         """
         return self._v1_0.destroy_pipeline(device, pipeline, p_allocator)
 
@@ -8975,23 +9376,26 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineLayout.html
         """
         return self._v1_0.create_pipeline_layout(
             device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_layout)
         )
 
     fn destroy_pipeline_layout(
-        self, device: Device, pipeline_layout: PipelineLayout, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline_layout: PipelineLayout,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineLayout.html
         """
         return self._v1_0.destroy_pipeline_layout(device, pipeline_layout, p_allocator)
 
@@ -8999,21 +9403,24 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: SamplerCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSampler.html
         """
         return self._v1_0.create_sampler(device, Ptr(to=create_info), p_allocator, Ptr(to=sampler))
 
     fn destroy_sampler(
-        self, device: Device, sampler: Sampler, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        sampler: Sampler,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySampler.html
         """
         return self._v1_0.destroy_sampler(device, sampler, p_allocator)
 
@@ -9021,12 +9428,12 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorSetLayout.html
         """
         return self._v1_0.create_descriptor_set_layout(
             device, Ptr(to=create_info), p_allocator, Ptr(to=set_layout)
@@ -9036,11 +9443,11 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorSetLayout.html
         """
         return self._v1_0.destroy_descriptor_set_layout(device, descriptor_set_layout, p_allocator)
 
@@ -9048,23 +9455,26 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorPool.html
         """
         return self._v1_0.create_descriptor_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_pool)
         )
 
     fn destroy_descriptor_pool(
-        self, device: Device, descriptor_pool: DescriptorPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        descriptor_pool: DescriptorPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorPool.html
         """
         return self._v1_0.destroy_descriptor_pool(device, descriptor_pool, p_allocator)
 
@@ -9073,7 +9483,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetDescriptorPool.html
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
@@ -9081,70 +9491,75 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        mut descriptor_sets: DescriptorSet,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
-        return self._v1_0.allocate_descriptor_sets(device, Ptr(to=allocate_info), p_descriptor_sets)
+        return self._v1_0.allocate_descriptor_sets(
+            device, Ptr(to=allocate_info), Ptr(to=descriptor_sets)
+        )
 
     fn free_descriptor_sets(
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        descriptor_sets: DescriptorSet,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeDescriptorSets.html
         """
         return self._v1_0.free_descriptor_sets(
-            device, descriptor_pool, descriptor_set_count, p_descriptor_sets
+            device, descriptor_pool, descriptor_set_count, Ptr(to=descriptor_sets)
         )
 
     fn update_descriptor_sets(
         self,
         device: Device,
         descriptor_write_count: UInt32,
-        p_descriptor_writes: Ptr[WriteDescriptorSet],
+        descriptor_writes: WriteDescriptorSet,
         descriptor_copy_count: UInt32,
-        p_descriptor_copies: Ptr[CopyDescriptorSet],
+        descriptor_copies: CopyDescriptorSet,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSets.html
         """
         return self._v1_0.update_descriptor_sets(
             device,
             descriptor_write_count,
-            p_descriptor_writes,
+            Ptr(to=descriptor_writes),
             descriptor_copy_count,
-            p_descriptor_copies,
+            Ptr(to=descriptor_copies),
         )
 
     fn create_framebuffer(
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFramebuffer.html
         """
         return self._v1_0.create_framebuffer(
             device, Ptr(to=create_info), p_allocator, Ptr(to=framebuffer)
         )
 
     fn destroy_framebuffer(
-        self, device: Device, framebuffer: Framebuffer, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        framebuffer: Framebuffer,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFramebuffer.html
         """
         return self._v1_0.destroy_framebuffer(device, framebuffer, p_allocator)
 
@@ -9152,23 +9567,26 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass.html
         """
         return self._v1_0.create_render_pass(
             device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass)
         )
 
     fn destroy_render_pass(
-        self, device: Device, render_pass: RenderPass, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        render_pass: RenderPass,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyRenderPass.html
         """
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
@@ -9177,7 +9595,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(device, render_pass, Ptr(to=granularity))
 
@@ -9185,23 +9603,26 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCommandPool.html
         """
         return self._v1_0.create_command_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=command_pool)
         )
 
     fn destroy_command_pool(
-        self, device: Device, command_pool: CommandPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        command_pool: CommandPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCommandPool.html
         """
         return self._v1_0.destroy_command_pool(device, command_pool, p_allocator)
 
@@ -9210,7 +9631,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetCommandPool.html
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
@@ -9218,27 +9639,29 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer],
+        mut command_buffers: CommandBuffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
-        return self._v1_0.allocate_command_buffers(device, Ptr(to=allocate_info), p_command_buffers)
+        return self._v1_0.allocate_command_buffers(
+            device, Ptr(to=allocate_info), Ptr(to=command_buffers)
+        )
 
     fn free_command_buffers(
         self,
         device: Device,
         command_pool: CommandPool,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer],
+        command_buffers: CommandBuffer,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeCommandBuffers.html
         """
         return self._v1_0.free_command_buffers(
-            device, command_pool, command_buffer_count, p_command_buffers
+            device, command_pool, command_buffer_count, Ptr(to=command_buffers)
         )
 
     fn begin_command_buffer(
@@ -9246,14 +9669,14 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(command_buffer, Ptr(to=begin_info))
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEndCommandBuffer.html
         """
         return self._v1_0.end_command_buffer(command_buffer)
 
@@ -9262,7 +9685,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetCommandBuffer.html
         """
         return self._v1_0.reset_command_buffer(command_buffer, flags)
 
@@ -9274,7 +9697,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindPipeline.html
         """
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
@@ -9283,14 +9706,14 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        p_viewports: Ptr[Viewport],
+        viewports: Viewport,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewport.html
         """
         return self._v1_0.cmd_set_viewport(
-            command_buffer, first_viewport, viewport_count, p_viewports
+            command_buffer, first_viewport, viewport_count, Ptr(to=viewports)
         )
 
     fn cmd_set_scissor(
@@ -9298,18 +9721,20 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
         scissor_count: UInt32,
-        p_scissors: Ptr[Rect2D],
+        scissors: Rect2D,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissor.html
         """
-        return self._v1_0.cmd_set_scissor(command_buffer, first_scissor, scissor_count, p_scissors)
+        return self._v1_0.cmd_set_scissor(
+            command_buffer, first_scissor, scissor_count, Ptr(to=scissors)
+        )
 
     fn cmd_set_line_width(self, command_buffer: CommandBuffer, line_width: Float32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLineWidth.html
         """
         return self._v1_0.cmd_set_line_width(command_buffer, line_width)
 
@@ -9322,16 +9747,18 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBias.html
         """
         return self._v1_0.cmd_set_depth_bias(
             command_buffer, depth_bias_constant_factor, depth_bias_clamp, depth_bias_slope_factor
         )
 
-    fn cmd_set_blend_constants(self, command_buffer: CommandBuffer, blend_constants: Float32):
+    fn cmd_set_blend_constants(
+        self, command_buffer: CommandBuffer, blend_constants: InlineArray[Float32, Int(4)]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetBlendConstants.html
         """
         return self._v1_0.cmd_set_blend_constants(command_buffer, blend_constants)
 
@@ -9340,7 +9767,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBounds.html
         """
         return self._v1_0.cmd_set_depth_bounds(command_buffer, min_depth_bounds, max_depth_bounds)
 
@@ -9349,7 +9776,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilCompareMask.html
         """
         return self._v1_0.cmd_set_stencil_compare_mask(command_buffer, face_mask, compare_mask)
 
@@ -9358,7 +9785,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilWriteMask.html
         """
         return self._v1_0.cmd_set_stencil_write_mask(command_buffer, face_mask, write_mask)
 
@@ -9367,7 +9794,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilReference.html
         """
         return self._v1_0.cmd_set_stencil_reference(command_buffer, face_mask, reference)
 
@@ -9378,13 +9805,13 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         layout: PipelineLayout,
         first_set: UInt32,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        descriptor_sets: DescriptorSet,
         dynamic_offset_count: UInt32,
-        p_dynamic_offsets: Ptr[UInt32],
+        dynamic_offsets: UInt32,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorSets.html
         """
         return self._v1_0.cmd_bind_descriptor_sets(
             command_buffer,
@@ -9392,9 +9819,9 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
             layout,
             first_set,
             descriptor_set_count,
-            p_descriptor_sets,
+            Ptr(to=descriptor_sets),
             dynamic_offset_count,
-            p_dynamic_offsets,
+            Ptr(to=dynamic_offsets),
         )
 
     fn cmd_bind_index_buffer(
@@ -9406,7 +9833,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindIndexBuffer.html
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
@@ -9415,15 +9842,15 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer],
-        p_offsets: Ptr[DeviceSize],
+        buffers: Buffer,
+        offsets: DeviceSize,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers.html
         """
         return self._v1_0.cmd_bind_vertex_buffers(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets
+            command_buffer, first_binding, binding_count, Ptr(to=buffers), Ptr(to=offsets)
         )
 
     fn cmd_draw(
@@ -9436,7 +9863,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDraw.html
         """
         return self._v1_0.cmd_draw(
             command_buffer, vertex_count, instance_count, first_vertex, first_instance
@@ -9453,7 +9880,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexed.html
         """
         return self._v1_0.cmd_draw_indexed(
             command_buffer, index_count, instance_count, first_index, vertex_offset, first_instance
@@ -9469,7 +9896,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndirect.html
         """
         return self._v1_0.cmd_draw_indirect(command_buffer, buffer, offset, draw_count, stride)
 
@@ -9483,7 +9910,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexedIndirect.html
         """
         return self._v1_0.cmd_draw_indexed_indirect(
             command_buffer, buffer, offset, draw_count, stride
@@ -9498,7 +9925,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatch.html
         """
         return self._v1_0.cmd_dispatch(command_buffer, group_count_x, group_count_y, group_count_z)
 
@@ -9507,7 +9934,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchIndirect.html
         """
         return self._v1_0.cmd_dispatch_indirect(command_buffer, buffer, offset)
 
@@ -9517,14 +9944,14 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         src_buffer: Buffer,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferCopy],
+        regions: BufferCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer.html
         """
         return self._v1_0.cmd_copy_buffer(
-            command_buffer, src_buffer, dst_buffer, region_count, p_regions
+            command_buffer, src_buffer, dst_buffer, region_count, Ptr(to=regions)
         )
 
     fn cmd_copy_image(
@@ -9535,11 +9962,11 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageCopy],
+        regions: ImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImage.html
         """
         return self._v1_0.cmd_copy_image(
             command_buffer,
@@ -9548,7 +9975,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
         )
 
     fn cmd_blit_image(
@@ -9559,12 +9986,12 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageBlit],
+        regions: ImageBlit,
         filter: Filter,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBlitImage.html
         """
         return self._v1_0.cmd_blit_image(
             command_buffer,
@@ -9573,7 +10000,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
             filter,
         )
 
@@ -9584,14 +10011,14 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy],
+        regions: BufferImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage.html
         """
         return self._v1_0.cmd_copy_buffer_to_image(
-            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, p_regions
+            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, Ptr(to=regions)
         )
 
     fn cmd_copy_image_to_buffer(
@@ -9601,14 +10028,14 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         src_image_layout: ImageLayout,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy],
+        regions: BufferImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer.html
         """
         return self._v1_0.cmd_copy_image_to_buffer(
-            command_buffer, src_image, src_image_layout, dst_buffer, region_count, p_regions
+            command_buffer, src_image, src_image_layout, dst_buffer, region_count, Ptr(to=regions)
         )
 
     fn cmd_update_buffer(
@@ -9617,14 +10044,14 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         data_size: DeviceSize,
-        p_data: Ptr[NoneType],
+        data: NoneType,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdUpdateBuffer.html
         """
         return self._v1_0.cmd_update_buffer(
-            command_buffer, dst_buffer, dst_offset, data_size, p_data
+            command_buffer, dst_buffer, dst_offset, data_size, Ptr(to=data)
         )
 
     fn cmd_fill_buffer(
@@ -9637,7 +10064,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdFillBuffer.html
         """
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
@@ -9648,14 +10075,14 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         image_layout: ImageLayout,
         color: ClearColorValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange],
+        ranges: ImageSubresourceRange,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearColorImage.html
         """
         return self._v1_0.cmd_clear_color_image(
-            command_buffer, image, image_layout, Ptr(to=color), range_count, p_ranges
+            command_buffer, image, image_layout, Ptr(to=color), range_count, Ptr(to=ranges)
         )
 
     fn cmd_clear_depth_stencil_image(
@@ -9665,30 +10092,30 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         image_layout: ImageLayout,
         depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange],
+        ranges: ImageSubresourceRange,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearDepthStencilImage.html
         """
         return self._v1_0.cmd_clear_depth_stencil_image(
-            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, p_ranges
+            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, Ptr(to=ranges)
         )
 
     fn cmd_clear_attachments(
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
-        p_attachments: Ptr[ClearAttachment],
+        attachments: ClearAttachment,
         rect_count: UInt32,
-        p_rects: Ptr[ClearRect],
+        rects: ClearRect,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearAttachments.html
         """
         return self._v1_0.cmd_clear_attachments(
-            command_buffer, attachment_count, p_attachments, rect_count, p_rects
+            command_buffer, attachment_count, Ptr(to=attachments), rect_count, Ptr(to=rects)
         )
 
     fn cmd_resolve_image(
@@ -9699,11 +10126,11 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageResolve],
+        regions: ImageResolve,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResolveImage.html
         """
         return self._v1_0.cmd_resolve_image(
             command_buffer,
@@ -9712,7 +10139,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
         )
 
     fn cmd_set_event(
@@ -9720,7 +10147,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetEvent.html
         """
         return self._v1_0.cmd_set_event(command_buffer, event, stage_mask)
 
@@ -9729,7 +10156,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetEvent.html
         """
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
@@ -9737,32 +10164,32 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event],
+        events: Event,
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier],
+        memory_barriers: MemoryBarrier,
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier],
+        buffer_memory_barriers: BufferMemoryBarrier,
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier],
+        image_memory_barriers: ImageMemoryBarrier,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWaitEvents.html
         """
         return self._v1_0.cmd_wait_events(
             command_buffer,
             event_count,
-            p_events,
+            Ptr(to=events),
             src_stage_mask,
             dst_stage_mask,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=memory_barriers),
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=buffer_memory_barriers),
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=image_memory_barriers),
         )
 
     fn cmd_pipeline_barrier(
@@ -9772,15 +10199,15 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         dst_stage_mask: PipelineStageFlags,
         dependency_flags: DependencyFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier],
+        memory_barriers: MemoryBarrier,
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier],
+        buffer_memory_barriers: BufferMemoryBarrier,
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier],
+        image_memory_barriers: ImageMemoryBarrier,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPipelineBarrier.html
         """
         return self._v1_0.cmd_pipeline_barrier(
             command_buffer,
@@ -9788,11 +10215,11 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
             dst_stage_mask,
             dependency_flags,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=memory_barriers),
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=buffer_memory_barriers),
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=image_memory_barriers),
         )
 
     fn cmd_begin_query(
@@ -9804,14 +10231,14 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginQuery.html
         """
         return self._v1_0.cmd_begin_query(command_buffer, query_pool, query, flags)
 
     fn cmd_end_query(self, command_buffer: CommandBuffer, query_pool: QueryPool, query: UInt32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndQuery.html
         """
         return self._v1_0.cmd_end_query(command_buffer, query_pool, query)
 
@@ -9824,9 +10251,11 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetQueryPool.html
         """
-        return self._v1_0.cmd_reset_query_pool(command_buffer, query_pool, first_query, query_count)
+        return self._v1_0.cmd_reset_query_pool(
+            command_buffer, query_pool, first_query, query_count
+        )
 
     fn cmd_write_timestamp(
         self,
@@ -9837,7 +10266,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWriteTimestamp.html
         """
         return self._v1_0.cmd_write_timestamp(command_buffer, pipeline_stage, query_pool, query)
 
@@ -9854,7 +10283,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyQueryPoolResults.html
         """
         return self._v1_0.cmd_copy_query_pool_results(
             command_buffer,
@@ -9874,14 +10303,14 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         stage_flags: ShaderStageFlags,
         offset: UInt32,
         size: UInt32,
-        p_values: Ptr[NoneType],
+        values: NoneType,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants.html
         """
         return self._v1_0.cmd_push_constants(
-            command_buffer, layout, stage_flags, offset, size, p_values
+            command_buffer, layout, stage_flags, offset, size, Ptr(to=values)
         )
 
     fn cmd_begin_render_pass(
@@ -9892,21 +10321,23 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
-        return self._v1_0.cmd_begin_render_pass(command_buffer, Ptr(to=render_pass_begin), contents)
+        return self._v1_0.cmd_begin_render_pass(
+            command_buffer, Ptr(to=render_pass_begin), contents
+        )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdNextSubpass.html
         """
         return self._v1_0.cmd_next_subpass(command_buffer, contents)
 
     fn cmd_end_render_pass(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass.html
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
@@ -9914,33 +10345,33 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer],
+        command_buffers: CommandBuffer,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteCommands.html
         """
         return self._v1_0.cmd_execute_commands(
-            command_buffer, command_buffer_count, p_command_buffers
+            command_buffer, command_buffer_count, Ptr(to=command_buffers)
         )
 
     fn bind_buffer_memory_2(
-        self, device: Device, bind_info_count: UInt32, p_bind_infos: Ptr[BindBufferMemoryInfo]
+        self, device: Device, bind_info_count: UInt32, bind_infos: BindBufferMemoryInfo
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory2.html
         """
-        return self._v1_1.bind_buffer_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_buffer_memory_2(device, bind_info_count, Ptr(to=bind_infos))
 
     fn bind_image_memory_2(
-        self, device: Device, bind_info_count: UInt32, p_bind_infos: Ptr[BindImageMemoryInfo]
+        self, device: Device, bind_info_count: UInt32, bind_infos: BindImageMemoryInfo
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory2.html
         """
-        return self._v1_1.bind_image_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_image_memory_2(device, bind_info_count, Ptr(to=bind_infos))
 
     fn get_device_group_peer_memory_features(
         self,
@@ -9952,7 +10383,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupPeerMemoryFeatures.html
         """
         return self._v1_1.get_device_group_peer_memory_features(
             device,
@@ -9965,7 +10396,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDeviceMask.html
         """
         return self._v1_1.cmd_set_device_mask(command_buffer, device_mask)
 
@@ -9981,7 +10412,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchBase.html
         """
         return self._v1_1.cmd_dispatch_base(
             command_buffer,
@@ -10001,7 +10432,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements2.html
         """
         return self._v1_1.get_image_memory_requirements_2(
             device, Ptr(to=info), Ptr(to=memory_requirements)
@@ -10015,7 +10446,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements2.html
         """
         return self._v1_1.get_buffer_memory_requirements_2(
             device, Ptr(to=info), Ptr(to=memory_requirements)
@@ -10026,11 +10457,11 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
             device,
@@ -10044,12 +10475,12 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self.get_image_sparse_memory_requirements_2(
-            device, info, count, Ptr[SparseImageMemoryRequirements2]()
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -10062,14 +10493,14 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkTrimCommandPool.html
         """
         return self._v1_1.trim_command_pool(device, command_pool, flags)
 
     fn get_device_queue_2(self, device: Device, queue_info: DeviceQueueInfo2, mut queue: Queue):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
         """
         return self._v1_1.get_device_queue_2(device, Ptr(to=queue_info), Ptr(to=queue))
 
@@ -10077,12 +10508,12 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSamplerYcbcrConversion.html
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
             device, Ptr(to=create_info), p_allocator, Ptr(to=ycbcr_conversion)
@@ -10092,11 +10523,11 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySamplerYcbcrConversion.html
         """
         return self._v1_1.destroy_sampler_ycbcr_conversion(device, ycbcr_conversion, p_allocator)
 
@@ -10104,12 +10535,12 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorUpdateTemplate.html
         """
         return self._v1_1.create_descriptor_update_template(
             device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_update_template)
@@ -10119,11 +10550,11 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorUpdateTemplate.html
         """
         return self._v1_1.destroy_descriptor_update_template(
             device, descriptor_update_template, p_allocator
@@ -10138,7 +10569,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._v1_1.update_descriptor_set_with_template(
             device, descriptor_set, descriptor_update_template, Ptr(to=data)
@@ -10152,7 +10583,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutSupport.html
         """
         return self._v1_1.get_descriptor_set_layout_support(
             device, Ptr(to=create_info), Ptr(to=support)
@@ -10170,7 +10601,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndirectCount.html
         """
         return self._v1_2.cmd_draw_indirect_count(
             command_buffer,
@@ -10194,7 +10625,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexedIndirectCount.html
         """
         return self._v1_2.cmd_draw_indexed_indirect_count(
             command_buffer,
@@ -10210,12 +10641,12 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: RenderPassCreateInfo2,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass2.html
         """
         return self._v1_2.create_render_pass_2(
             device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass)
@@ -10229,7 +10660,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass2.html
         """
         return self._v1_2.cmd_begin_render_pass_2(
             command_buffer, Ptr(to=render_pass_begin), Ptr(to=subpass_begin_info)
@@ -10243,16 +10674,18 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdNextSubpass2.html
         """
         return self._v1_2.cmd_next_subpass_2(
             command_buffer, Ptr(to=subpass_begin_info), Ptr(to=subpass_end_info)
         )
 
-    fn cmd_end_render_pass_2(self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo):
+    fn cmd_end_render_pass_2(
+        self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass2.html
         """
         return self._v1_2.cmd_end_render_pass_2(command_buffer, Ptr(to=subpass_end_info))
 
@@ -10261,7 +10694,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetQueryPool.html
         """
         return self._v1_2.reset_query_pool(device, query_pool, first_query, query_count)
 
@@ -10270,7 +10703,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreCounterValue.html
         """
         return self._v1_2.get_semaphore_counter_value(device, semaphore, Ptr(to=value))
 
@@ -10279,14 +10712,14 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitSemaphores.html
         """
         return self._v1_2.wait_semaphores(device, Ptr(to=wait_info), timeout)
 
     fn signal_semaphore(self, device: Device, signal_info: SemaphoreSignalInfo) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkSignalSemaphore.html
         """
         return self._v1_2.signal_semaphore(device, Ptr(to=signal_info))
 
@@ -10295,7 +10728,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> DeviceAddress:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
         return self._v1_2.get_buffer_device_address(device, Ptr(to=info))
 
@@ -10304,7 +10737,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> UInt64:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureAddress.html
         """
         return self._v1_2.get_buffer_opaque_capture_address(device, Ptr(to=info))
 
@@ -10313,7 +10746,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> UInt64:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryOpaqueCaptureAddress.html
         """
         return self._v1_2.get_device_memory_opaque_capture_address(device, Ptr(to=info))
 
@@ -10321,12 +10754,12 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         create_info: PrivateDataSlotCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut private_data_slot: PrivateDataSlot,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePrivateDataSlot.html
         """
         return self._v1_3.create_private_data_slot(
             device, Ptr(to=create_info), p_allocator, Ptr(to=private_data_slot)
@@ -10336,11 +10769,11 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         device: Device,
         private_data_slot: PrivateDataSlot,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPrivateDataSlot.html
         """
         return self._v1_3.destroy_private_data_slot(device, private_data_slot, p_allocator)
 
@@ -10354,7 +10787,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetPrivateData.html
         """
         return self._v1_3.set_private_data(
             device, object_type, object_handle, private_data_slot, data
@@ -10370,7 +10803,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPrivateData.html
         """
         return self._v1_3.get_private_data(
             device, object_type, object_handle, private_data_slot, Ptr(to=data)
@@ -10381,7 +10814,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetEvent2.html
         """
         return self._v1_3.cmd_set_event_2(command_buffer, event, Ptr(to=dependency_info))
 
@@ -10390,7 +10823,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetEvent2.html
         """
         return self._v1_3.cmd_reset_event_2(command_buffer, event, stage_mask)
 
@@ -10398,21 +10831,23 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event],
-        p_dependency_infos: Ptr[DependencyInfo],
+        events: Event,
+        dependency_infos: DependencyInfo,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWaitEvents2.html
         """
         return self._v1_3.cmd_wait_events_2(
-            command_buffer, event_count, p_events, p_dependency_infos
+            command_buffer, event_count, Ptr(to=events), Ptr(to=dependency_infos)
         )
 
-    fn cmd_pipeline_barrier_2(self, command_buffer: CommandBuffer, dependency_info: DependencyInfo):
+    fn cmd_pipeline_barrier_2(
+        self, command_buffer: CommandBuffer, dependency_info: DependencyInfo
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPipelineBarrier2.html
         """
         return self._v1_3.cmd_pipeline_barrier_2(command_buffer, Ptr(to=dependency_info))
 
@@ -10425,30 +10860,30 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWriteTimestamp2.html
         """
         return self._v1_3.cmd_write_timestamp_2(command_buffer, stage, query_pool, query)
 
     fn queue_submit_2(
-        self, queue: Queue, submit_count: UInt32, p_submits: Ptr[SubmitInfo2], fence: Fence
+        self, queue: Queue, submit_count: UInt32, submits: SubmitInfo2, fence: Fence
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit2.html
         """
-        return self._v1_3.queue_submit_2(queue, submit_count, p_submits, fence)
+        return self._v1_3.queue_submit_2(queue, submit_count, Ptr(to=submits), fence)
 
     fn cmd_copy_buffer_2(self, command_buffer: CommandBuffer, copy_buffer_info: CopyBufferInfo2):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer2.html
         """
         return self._v1_3.cmd_copy_buffer_2(command_buffer, Ptr(to=copy_buffer_info))
 
     fn cmd_copy_image_2(self, command_buffer: CommandBuffer, copy_image_info: CopyImageInfo2):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImage2.html
         """
         return self._v1_3.cmd_copy_image_2(command_buffer, Ptr(to=copy_image_info))
 
@@ -10457,7 +10892,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage2.html
         """
         return self._v1_3.cmd_copy_buffer_to_image_2(
             command_buffer, Ptr(to=copy_buffer_to_image_info)
@@ -10468,7 +10903,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer2.html
         """
         return self._v1_3.cmd_copy_image_to_buffer_2(
             command_buffer, Ptr(to=copy_image_to_buffer_info)
@@ -10477,7 +10912,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     fn cmd_blit_image_2(self, command_buffer: CommandBuffer, blit_image_info: BlitImageInfo2):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBlitImage2.html
         """
         return self._v1_3.cmd_blit_image_2(command_buffer, Ptr(to=blit_image_info))
 
@@ -10486,35 +10921,35 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResolveImage2.html
         """
         return self._v1_3.cmd_resolve_image_2(command_buffer, Ptr(to=resolve_image_info))
 
     fn cmd_begin_rendering(self, command_buffer: CommandBuffer, rendering_info: RenderingInfo):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRendering.html
         """
         return self._v1_3.cmd_begin_rendering(command_buffer, Ptr(to=rendering_info))
 
     fn cmd_end_rendering(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRendering.html
         """
         return self._v1_3.cmd_end_rendering(command_buffer)
 
     fn cmd_set_cull_mode(self, command_buffer: CommandBuffer, cull_mode: CullModeFlags):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCullMode.html
         """
         return self._v1_3.cmd_set_cull_mode(command_buffer, cull_mode)
 
     fn cmd_set_front_face(self, command_buffer: CommandBuffer, front_face: FrontFace):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetFrontFace.html
         """
         return self._v1_3.cmd_set_front_face(command_buffer, front_face)
 
@@ -10523,64 +10958,74 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPrimitiveTopology.html
         """
         return self._v1_3.cmd_set_primitive_topology(command_buffer, primitive_topology)
 
     fn cmd_set_viewport_with_count(
-        self, command_buffer: CommandBuffer, viewport_count: UInt32, p_viewports: Ptr[Viewport]
+        self, command_buffer: CommandBuffer, viewport_count: UInt32, viewports: Viewport
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWithCount.html
         """
-        return self._v1_3.cmd_set_viewport_with_count(command_buffer, viewport_count, p_viewports)
+        return self._v1_3.cmd_set_viewport_with_count(
+            command_buffer, viewport_count, Ptr(to=viewports)
+        )
 
     fn cmd_set_scissor_with_count(
-        self, command_buffer: CommandBuffer, scissor_count: UInt32, p_scissors: Ptr[Rect2D]
+        self, command_buffer: CommandBuffer, scissor_count: UInt32, scissors: Rect2D
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissorWithCount.html
         """
-        return self._v1_3.cmd_set_scissor_with_count(command_buffer, scissor_count, p_scissors)
+        return self._v1_3.cmd_set_scissor_with_count(
+            command_buffer, scissor_count, Ptr(to=scissors)
+        )
 
     fn cmd_bind_vertex_buffers_2(
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer],
-        p_offsets: Ptr[DeviceSize],
-        p_sizes: Ptr[DeviceSize],
-        p_strides: Ptr[DeviceSize],
+        buffers: Buffer,
+        offsets: DeviceSize,
+        p_sizes: Ptr[DeviceSize, ImmutOrigin.external],
+        p_strides: Ptr[DeviceSize, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers2.html
         """
         return self._v1_3.cmd_bind_vertex_buffers_2(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets, p_sizes, p_strides
+            command_buffer,
+            first_binding,
+            binding_count,
+            Ptr(to=buffers),
+            Ptr(to=offsets),
+            p_sizes,
+            p_strides,
         )
 
     fn cmd_set_depth_test_enable(self, command_buffer: CommandBuffer, depth_test_enable: Bool32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthTestEnable.html
         """
         return self._v1_3.cmd_set_depth_test_enable(command_buffer, depth_test_enable)
 
     fn cmd_set_depth_write_enable(self, command_buffer: CommandBuffer, depth_write_enable: Bool32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthWriteEnable.html
         """
         return self._v1_3.cmd_set_depth_write_enable(command_buffer, depth_write_enable)
 
     fn cmd_set_depth_compare_op(self, command_buffer: CommandBuffer, depth_compare_op: CompareOp):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthCompareOp.html
         """
         return self._v1_3.cmd_set_depth_compare_op(command_buffer, depth_compare_op)
 
@@ -10589,16 +11034,18 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBoundsTestEnable.html
         """
-        return self._v1_3.cmd_set_depth_bounds_test_enable(command_buffer, depth_bounds_test_enable)
+        return self._v1_3.cmd_set_depth_bounds_test_enable(
+            command_buffer, depth_bounds_test_enable
+        )
 
     fn cmd_set_stencil_test_enable(
         self, command_buffer: CommandBuffer, stencil_test_enable: Bool32
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilTestEnable.html
         """
         return self._v1_3.cmd_set_stencil_test_enable(command_buffer, stencil_test_enable)
 
@@ -10613,7 +11060,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilOp.html
         """
         return self._v1_3.cmd_set_stencil_op(
             command_buffer, face_mask, fail_op, pass_op, depth_fail_op, compare_op
@@ -10624,7 +11071,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRasterizerDiscardEnable.html
         """
         return self._v1_3.cmd_set_rasterizer_discard_enable(
             command_buffer, rasterizer_discard_enable
@@ -10633,7 +11080,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     fn cmd_set_depth_bias_enable(self, command_buffer: CommandBuffer, depth_bias_enable: Bool32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBiasEnable.html
         """
         return self._v1_3.cmd_set_depth_bias_enable(command_buffer, depth_bias_enable)
 
@@ -10642,9 +11089,11 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPrimitiveRestartEnable.html
         """
-        return self._v1_3.cmd_set_primitive_restart_enable(command_buffer, primitive_restart_enable)
+        return self._v1_3.cmd_set_primitive_restart_enable(
+            command_buffer, primitive_restart_enable
+        )
 
     fn get_device_buffer_memory_requirements(
         self,
@@ -10654,7 +11103,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceBufferMemoryRequirements.html
         """
         return self._v1_3.get_device_buffer_memory_requirements(
             device, Ptr(to=info), Ptr(to=memory_requirements)
@@ -10668,7 +11117,7 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageMemoryRequirements.html
         """
         return self._v1_3.get_device_image_memory_requirements(
             device, Ptr(to=info), Ptr(to=memory_requirements)
@@ -10679,11 +11128,11 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
         device: Device,
         info: DeviceImageMemoryRequirements,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSparseMemoryRequirements.html
         """
         return self._v1_3.get_device_image_sparse_memory_requirements(
             device,
@@ -10697,38 +11146,40 @@ struct DeviceFunctionsV1_3(Copyable, Movable):
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSparseMemoryRequirements.html
         """
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self.get_device_image_sparse_memory_requirements(
-            device, info, count, Ptr[SparseImageMemoryRequirements2]()
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
-            self.get_device_image_sparse_memory_requirements(device, info, count, list.unsafe_ptr())
+            self.get_device_image_sparse_memory_requirements(
+                device, info, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return list^
-
-
-struct DeviceFunctionsV1_4(Copyable, Movable):
     var _v1_0: DeviceFunctionAdditionsV1_0
     var _v1_1: DeviceFunctionAdditionsV1_1
     var _v1_2: DeviceFunctionAdditionsV1_2
     var _v1_3: DeviceFunctionAdditionsV1_3
     var _v1_4: DeviceFunctionAdditionsV1_4
 
-    fn __init__(out self, global_functions: GlobalFunctionsV1_4, device: Device) raises:
+    fn __init__(
+out self, global_functions: GlobalFunctionsV1_4, device: Device) raises:
         self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.handle())
         self._v1_1 = DeviceFunctionAdditionsV1_1(device, global_functions.handle())
         self._v1_2 = DeviceFunctionAdditionsV1_2(device, global_functions.handle())
         self._v1_3 = DeviceFunctionAdditionsV1_3(device, global_functions.handle())
         self._v1_4 = DeviceFunctionAdditionsV1_4(device, global_functions.handle())
 
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_device(
+        self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
         """
         return self._v1_0.destroy_device(device, p_allocator)
 
@@ -10737,30 +11188,30 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(device, queue_family_index, queue_index, Ptr(to=queue))
 
     fn queue_submit(
-        self, queue: Queue, submit_count: UInt32, p_submits: Ptr[SubmitInfo], fence: Fence
+        self, queue: Queue, submit_count: UInt32, submits: SubmitInfo, fence: Fence
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit.html
         """
-        return self._v1_0.queue_submit(queue, submit_count, p_submits, fence)
+        return self._v1_0.queue_submit(queue, submit_count, Ptr(to=submits), fence)
 
     fn queue_wait_idle(self, queue: Queue) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueWaitIdle.html
         """
         return self._v1_0.queue_wait_idle(queue)
 
     fn device_wait_idle(self, device: Device) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDeviceWaitIdle.html
         """
         return self._v1_0.device_wait_idle(device)
 
@@ -10768,23 +11219,26 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateMemory.html
         """
         return self._v1_0.allocate_memory(
             device, Ptr(to=allocate_info), p_allocator, Ptr(to=memory)
         )
 
     fn free_memory(
-        self, device: Device, memory: DeviceMemory, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        memory: DeviceMemory,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeMemory.html
         """
         return self._v1_0.free_memory(device, memory, p_allocator)
 
@@ -10795,39 +11249,41 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[Ptr[NoneType]],
+        pp_data: Ptr[Ptr[NoneType, MutOrigin.external], MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
         return self._v1_0.map_memory(device, memory, offset, size, flags, pp_data)
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUnmapMemory.html
         """
         return self._v1_0.unmap_memory(device, memory)
 
     fn flush_mapped_memory_ranges(
-        self, device: Device, memory_range_count: UInt32, p_memory_ranges: Ptr[MappedMemoryRange]
+        self, device: Device, memory_range_count: UInt32, memory_ranges: MappedMemoryRange
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFlushMappedMemoryRanges.html
         """
-        return self._v1_0.flush_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.flush_mapped_memory_ranges(
+            device, memory_range_count, Ptr(to=memory_ranges)
+        )
 
     fn invalidate_mapped_memory_ranges(
-        self, device: Device, memory_range_count: UInt32, p_memory_ranges: Ptr[MappedMemoryRange]
+        self, device: Device, memory_range_count: UInt32, memory_ranges: MappedMemoryRange
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkInvalidateMappedMemoryRanges.html
         """
         return self._v1_0.invalidate_mapped_memory_ranges(
-            device, memory_range_count, p_memory_ranges
+            device, memory_range_count, Ptr(to=memory_ranges)
         )
 
     fn get_device_memory_commitment(
@@ -10835,7 +11291,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
             device, memory, Ptr(to=committed_memory_in_bytes)
@@ -10846,7 +11302,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory.html
         """
         return self._v1_0.bind_buffer_memory(device, buffer, memory, memory_offset)
 
@@ -10855,7 +11311,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory.html
         """
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
@@ -10864,7 +11320,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
             device, buffer, Ptr(to=memory_requirements)
@@ -10875,7 +11331,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(device, image, Ptr(to=memory_requirements))
 
@@ -10884,11 +11340,11 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         device: Device,
         image: Image,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         return self._v1_0.get_image_sparse_memory_requirements(
             device, image, Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
@@ -10899,12 +11355,12 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self.get_image_sparse_memory_requirements(
-            device, image, count, Ptr[SparseImageMemoryRequirements]()
+            device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -10913,83 +11369,86 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         return list^
 
     fn queue_bind_sparse(
-        self, queue: Queue, bind_info_count: UInt32, p_bind_info: Ptr[BindSparseInfo], fence: Fence
+        self, queue: Queue, bind_info_count: UInt32, bind_info: BindSparseInfo, fence: Fence
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBindSparse.html
         """
-        return self._v1_0.queue_bind_sparse(queue, bind_info_count, p_bind_info, fence)
+        return self._v1_0.queue_bind_sparse(queue, bind_info_count, Ptr(to=bind_info), fence)
 
     fn create_fence(
         self,
         device: Device,
         create_info: FenceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFence.html
         """
         return self._v1_0.create_fence(device, Ptr(to=create_info), p_allocator, Ptr(to=fence))
 
-    fn destroy_fence(self, device: Device, fence: Fence, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_fence(
+        self,
+        device: Device,
+        fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFence.html
         """
         return self._v1_0.destroy_fence(device, fence, p_allocator)
 
-    fn reset_fences(self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence]) -> Result:
+    fn reset_fences(self, device: Device, fence_count: UInt32, fences: Fence) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetFences.html
         """
-        return self._v1_0.reset_fences(device, fence_count, p_fences)
+        return self._v1_0.reset_fences(device, fence_count, Ptr(to=fences))
 
     fn get_fence_status(self, device: Device, fence: Fence) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceStatus.html
         """
         return self._v1_0.get_fence_status(device, fence)
 
     fn wait_for_fences(
-        self,
-        device: Device,
-        fence_count: UInt32,
-        p_fences: Ptr[Fence],
-        wait_all: Bool32,
-        timeout: UInt64,
+        self, device: Device, fence_count: UInt32, fences: Fence, wait_all: Bool32, timeout: UInt64
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitForFences.html
         """
-        return self._v1_0.wait_for_fences(device, fence_count, p_fences, wait_all, timeout)
+        return self._v1_0.wait_for_fences(device, fence_count, Ptr(to=fences), wait_all, timeout)
 
     fn create_semaphore(
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSemaphore.html
         """
         return self._v1_0.create_semaphore(
             device, Ptr(to=create_info), p_allocator, Ptr(to=semaphore)
         )
 
     fn destroy_semaphore(
-        self, device: Device, semaphore: Semaphore, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        semaphore: Semaphore,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySemaphore.html
         """
         return self._v1_0.destroy_semaphore(device, semaphore, p_allocator)
 
@@ -10997,40 +11456,45 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: EventCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateEvent.html
         """
         return self._v1_0.create_event(device, Ptr(to=create_info), p_allocator, Ptr(to=event))
 
-    fn destroy_event(self, device: Device, event: Event, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_event(
+        self,
+        device: Device,
+        event: Event,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyEvent.html
         """
         return self._v1_0.destroy_event(device, event, p_allocator)
 
     fn get_event_status(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetEventStatus.html
         """
         return self._v1_0.get_event_status(device, event)
 
     fn set_event(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetEvent.html
         """
         return self._v1_0.set_event(device, event)
 
     fn reset_event(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetEvent.html
         """
         return self._v1_0.reset_event(device, event)
 
@@ -11038,23 +11502,26 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateQueryPool.html
         """
         return self._v1_0.create_query_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=query_pool)
         )
 
     fn destroy_query_pool(
-        self, device: Device, query_pool: QueryPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        query_pool: QueryPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyQueryPool.html
         """
         return self._v1_0.destroy_query_pool(device, query_pool, p_allocator)
 
@@ -11065,35 +11532,40 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType],
+        mut data: NoneType,
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueryPoolResults.html
         """
         return self._v1_0.get_query_pool_results(
-            device, query_pool, first_query, query_count, data_size, p_data, stride, flags
+            device, query_pool, first_query, query_count, data_size, Ptr(to=data), stride, flags
         )
 
     fn create_buffer(
         self,
         device: Device,
         create_info: BufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBuffer.html
         """
         return self._v1_0.create_buffer(device, Ptr(to=create_info), p_allocator, Ptr(to=buffer))
 
-    fn destroy_buffer(self, device: Device, buffer: Buffer, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_buffer(
+        self,
+        device: Device,
+        buffer: Buffer,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBuffer.html
         """
         return self._v1_0.destroy_buffer(device, buffer, p_allocator)
 
@@ -11101,21 +11573,26 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBufferView.html
         """
-        return self._v1_0.create_buffer_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_buffer_view(
+            device, Ptr(to=create_info), p_allocator, Ptr(to=view)
+        )
 
     fn destroy_buffer_view(
-        self, device: Device, buffer_view: BufferView, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        buffer_view: BufferView,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBufferView.html
         """
         return self._v1_0.destroy_buffer_view(device, buffer_view, p_allocator)
 
@@ -11123,19 +11600,24 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: ImageCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImage.html
         """
         return self._v1_0.create_image(device, Ptr(to=create_info), p_allocator, Ptr(to=image))
 
-    fn destroy_image(self, device: Device, image: Image, p_allocator: Ptr[AllocationCallbacks]):
+    fn destroy_image(
+        self,
+        device: Device,
+        image: Image,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImage.html
         """
         return self._v1_0.destroy_image(device, image, p_allocator)
 
@@ -11148,7 +11630,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout.html
         """
         return self._v1_0.get_image_subresource_layout(
             device, image, Ptr(to=subresource), Ptr(to=layout)
@@ -11158,21 +11640,24 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImageView.html
         """
         return self._v1_0.create_image_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
 
     fn destroy_image_view(
-        self, device: Device, image_view: ImageView, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        image_view: ImageView,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImageView.html
         """
         return self._v1_0.destroy_image_view(device, image_view, p_allocator)
 
@@ -11180,23 +11665,26 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateShaderModule.html
         """
         return self._v1_0.create_shader_module(
             device, Ptr(to=create_info), p_allocator, Ptr(to=shader_module)
         )
 
     fn destroy_shader_module(
-        self, device: Device, shader_module: ShaderModule, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        shader_module: ShaderModule,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyShaderModule.html
         """
         return self._v1_0.destroy_shader_module(device, shader_module, p_allocator)
 
@@ -11204,23 +11692,26 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineCache.html
         """
         return self._v1_0.create_pipeline_cache(
             device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_cache)
         )
 
     fn destroy_pipeline_cache(
-        self, device: Device, pipeline_cache: PipelineCache, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline_cache: PipelineCache,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineCache.html
         """
         return self._v1_0.destroy_pipeline_cache(device, pipeline_cache, p_allocator)
 
@@ -11229,31 +11720,35 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         device: Device,
         pipeline_cache: PipelineCache,
         mut data_size: UInt,
-        p_data: Ptr[NoneType],
+        p_data: Ptr[NoneType, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
-        return self._v1_0.get_pipeline_cache_data(device, pipeline_cache, Ptr(to=data_size), p_data)
+        return self._v1_0.get_pipeline_cache_data(
+            device, pipeline_cache, Ptr(to=data_size), p_data
+        )
 
     fn get_pipeline_cache_data(
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         var list = List[UInt8]()
         var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self.get_pipeline_cache_data(device, pipeline_cache, count, Ptr[NoneType]())
-            if result == Result.SUCCESS and count > 0:
-                list.reserve(Int(count))
-                result = self.get_pipeline_cache_data(
-                    device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
-                )
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -11262,29 +11757,36 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         device: Device,
         dst_cache: PipelineCache,
         src_cache_count: UInt32,
-        p_src_caches: Ptr[PipelineCache],
+        src_caches: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkMergePipelineCaches.html
         """
-        return self._v1_0.merge_pipeline_caches(device, dst_cache, src_cache_count, p_src_caches)
+        return self._v1_0.merge_pipeline_caches(
+            device, dst_cache, src_cache_count, Ptr(to=src_caches)
+        )
 
     fn create_graphics_pipelines(
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[GraphicsPipelineCreateInfo],
-        p_allocator: Ptr[AllocationCallbacks],
-        p_pipelines: Ptr[Pipeline],
+        create_infos: GraphicsPipelineCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        mut pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateGraphicsPipelines.html
         """
         return self._v1_0.create_graphics_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=create_infos),
+            p_allocator,
+            Ptr(to=pipelines),
         )
 
     fn create_compute_pipelines(
@@ -11292,24 +11794,32 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[ComputePipelineCreateInfo],
-        p_allocator: Ptr[AllocationCallbacks],
-        p_pipelines: Ptr[Pipeline],
+        create_infos: ComputePipelineCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        mut pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateComputePipelines.html
         """
         return self._v1_0.create_compute_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=create_infos),
+            p_allocator,
+            Ptr(to=pipelines),
         )
 
     fn destroy_pipeline(
-        self, device: Device, pipeline: Pipeline, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline: Pipeline,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipeline.html
         """
         return self._v1_0.destroy_pipeline(device, pipeline, p_allocator)
 
@@ -11317,23 +11827,26 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineLayout.html
         """
         return self._v1_0.create_pipeline_layout(
             device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_layout)
         )
 
     fn destroy_pipeline_layout(
-        self, device: Device, pipeline_layout: PipelineLayout, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        pipeline_layout: PipelineLayout,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineLayout.html
         """
         return self._v1_0.destroy_pipeline_layout(device, pipeline_layout, p_allocator)
 
@@ -11341,21 +11854,24 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: SamplerCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSampler.html
         """
         return self._v1_0.create_sampler(device, Ptr(to=create_info), p_allocator, Ptr(to=sampler))
 
     fn destroy_sampler(
-        self, device: Device, sampler: Sampler, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        sampler: Sampler,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySampler.html
         """
         return self._v1_0.destroy_sampler(device, sampler, p_allocator)
 
@@ -11363,12 +11879,12 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorSetLayout.html
         """
         return self._v1_0.create_descriptor_set_layout(
             device, Ptr(to=create_info), p_allocator, Ptr(to=set_layout)
@@ -11378,11 +11894,11 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorSetLayout.html
         """
         return self._v1_0.destroy_descriptor_set_layout(device, descriptor_set_layout, p_allocator)
 
@@ -11390,23 +11906,26 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorPool.html
         """
         return self._v1_0.create_descriptor_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_pool)
         )
 
     fn destroy_descriptor_pool(
-        self, device: Device, descriptor_pool: DescriptorPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        descriptor_pool: DescriptorPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorPool.html
         """
         return self._v1_0.destroy_descriptor_pool(device, descriptor_pool, p_allocator)
 
@@ -11415,7 +11934,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetDescriptorPool.html
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
@@ -11423,70 +11942,75 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        mut descriptor_sets: DescriptorSet,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
-        return self._v1_0.allocate_descriptor_sets(device, Ptr(to=allocate_info), p_descriptor_sets)
+        return self._v1_0.allocate_descriptor_sets(
+            device, Ptr(to=allocate_info), Ptr(to=descriptor_sets)
+        )
 
     fn free_descriptor_sets(
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        descriptor_sets: DescriptorSet,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeDescriptorSets.html
         """
         return self._v1_0.free_descriptor_sets(
-            device, descriptor_pool, descriptor_set_count, p_descriptor_sets
+            device, descriptor_pool, descriptor_set_count, Ptr(to=descriptor_sets)
         )
 
     fn update_descriptor_sets(
         self,
         device: Device,
         descriptor_write_count: UInt32,
-        p_descriptor_writes: Ptr[WriteDescriptorSet],
+        descriptor_writes: WriteDescriptorSet,
         descriptor_copy_count: UInt32,
-        p_descriptor_copies: Ptr[CopyDescriptorSet],
+        descriptor_copies: CopyDescriptorSet,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSets.html
         """
         return self._v1_0.update_descriptor_sets(
             device,
             descriptor_write_count,
-            p_descriptor_writes,
+            Ptr(to=descriptor_writes),
             descriptor_copy_count,
-            p_descriptor_copies,
+            Ptr(to=descriptor_copies),
         )
 
     fn create_framebuffer(
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFramebuffer.html
         """
         return self._v1_0.create_framebuffer(
             device, Ptr(to=create_info), p_allocator, Ptr(to=framebuffer)
         )
 
     fn destroy_framebuffer(
-        self, device: Device, framebuffer: Framebuffer, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        framebuffer: Framebuffer,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFramebuffer.html
         """
         return self._v1_0.destroy_framebuffer(device, framebuffer, p_allocator)
 
@@ -11494,23 +12018,26 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass.html
         """
         return self._v1_0.create_render_pass(
             device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass)
         )
 
     fn destroy_render_pass(
-        self, device: Device, render_pass: RenderPass, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        render_pass: RenderPass,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyRenderPass.html
         """
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
@@ -11519,7 +12046,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(device, render_pass, Ptr(to=granularity))
 
@@ -11527,23 +12054,26 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCommandPool.html
         """
         return self._v1_0.create_command_pool(
             device, Ptr(to=create_info), p_allocator, Ptr(to=command_pool)
         )
 
     fn destroy_command_pool(
-        self, device: Device, command_pool: CommandPool, p_allocator: Ptr[AllocationCallbacks]
+        self,
+        device: Device,
+        command_pool: CommandPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCommandPool.html
         """
         return self._v1_0.destroy_command_pool(device, command_pool, p_allocator)
 
@@ -11552,7 +12082,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetCommandPool.html
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
@@ -11560,27 +12090,29 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer],
+        mut command_buffers: CommandBuffer,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
-        return self._v1_0.allocate_command_buffers(device, Ptr(to=allocate_info), p_command_buffers)
+        return self._v1_0.allocate_command_buffers(
+            device, Ptr(to=allocate_info), Ptr(to=command_buffers)
+        )
 
     fn free_command_buffers(
         self,
         device: Device,
         command_pool: CommandPool,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer],
+        command_buffers: CommandBuffer,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeCommandBuffers.html
         """
         return self._v1_0.free_command_buffers(
-            device, command_pool, command_buffer_count, p_command_buffers
+            device, command_pool, command_buffer_count, Ptr(to=command_buffers)
         )
 
     fn begin_command_buffer(
@@ -11588,14 +12120,14 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(command_buffer, Ptr(to=begin_info))
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEndCommandBuffer.html
         """
         return self._v1_0.end_command_buffer(command_buffer)
 
@@ -11604,7 +12136,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetCommandBuffer.html
         """
         return self._v1_0.reset_command_buffer(command_buffer, flags)
 
@@ -11616,7 +12148,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindPipeline.html
         """
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
@@ -11625,14 +12157,14 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        p_viewports: Ptr[Viewport],
+        viewports: Viewport,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewport.html
         """
         return self._v1_0.cmd_set_viewport(
-            command_buffer, first_viewport, viewport_count, p_viewports
+            command_buffer, first_viewport, viewport_count, Ptr(to=viewports)
         )
 
     fn cmd_set_scissor(
@@ -11640,18 +12172,20 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
         scissor_count: UInt32,
-        p_scissors: Ptr[Rect2D],
+        scissors: Rect2D,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissor.html
         """
-        return self._v1_0.cmd_set_scissor(command_buffer, first_scissor, scissor_count, p_scissors)
+        return self._v1_0.cmd_set_scissor(
+            command_buffer, first_scissor, scissor_count, Ptr(to=scissors)
+        )
 
     fn cmd_set_line_width(self, command_buffer: CommandBuffer, line_width: Float32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLineWidth.html
         """
         return self._v1_0.cmd_set_line_width(command_buffer, line_width)
 
@@ -11664,16 +12198,18 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBias.html
         """
         return self._v1_0.cmd_set_depth_bias(
             command_buffer, depth_bias_constant_factor, depth_bias_clamp, depth_bias_slope_factor
         )
 
-    fn cmd_set_blend_constants(self, command_buffer: CommandBuffer, blend_constants: Float32):
+    fn cmd_set_blend_constants(
+        self, command_buffer: CommandBuffer, blend_constants: InlineArray[Float32, Int(4)]
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetBlendConstants.html
         """
         return self._v1_0.cmd_set_blend_constants(command_buffer, blend_constants)
 
@@ -11682,7 +12218,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBounds.html
         """
         return self._v1_0.cmd_set_depth_bounds(command_buffer, min_depth_bounds, max_depth_bounds)
 
@@ -11691,7 +12227,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilCompareMask.html
         """
         return self._v1_0.cmd_set_stencil_compare_mask(command_buffer, face_mask, compare_mask)
 
@@ -11700,7 +12236,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilWriteMask.html
         """
         return self._v1_0.cmd_set_stencil_write_mask(command_buffer, face_mask, write_mask)
 
@@ -11709,7 +12245,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilReference.html
         """
         return self._v1_0.cmd_set_stencil_reference(command_buffer, face_mask, reference)
 
@@ -11720,13 +12256,13 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         layout: PipelineLayout,
         first_set: UInt32,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet],
+        descriptor_sets: DescriptorSet,
         dynamic_offset_count: UInt32,
-        p_dynamic_offsets: Ptr[UInt32],
+        dynamic_offsets: UInt32,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorSets.html
         """
         return self._v1_0.cmd_bind_descriptor_sets(
             command_buffer,
@@ -11734,9 +12270,9 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
             layout,
             first_set,
             descriptor_set_count,
-            p_descriptor_sets,
+            Ptr(to=descriptor_sets),
             dynamic_offset_count,
-            p_dynamic_offsets,
+            Ptr(to=dynamic_offsets),
         )
 
     fn cmd_bind_index_buffer(
@@ -11748,7 +12284,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindIndexBuffer.html
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
@@ -11757,15 +12293,15 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer],
-        p_offsets: Ptr[DeviceSize],
+        buffers: Buffer,
+        offsets: DeviceSize,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers.html
         """
         return self._v1_0.cmd_bind_vertex_buffers(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets
+            command_buffer, first_binding, binding_count, Ptr(to=buffers), Ptr(to=offsets)
         )
 
     fn cmd_draw(
@@ -11778,7 +12314,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDraw.html
         """
         return self._v1_0.cmd_draw(
             command_buffer, vertex_count, instance_count, first_vertex, first_instance
@@ -11795,7 +12331,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexed.html
         """
         return self._v1_0.cmd_draw_indexed(
             command_buffer, index_count, instance_count, first_index, vertex_offset, first_instance
@@ -11811,7 +12347,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndirect.html
         """
         return self._v1_0.cmd_draw_indirect(command_buffer, buffer, offset, draw_count, stride)
 
@@ -11825,7 +12361,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexedIndirect.html
         """
         return self._v1_0.cmd_draw_indexed_indirect(
             command_buffer, buffer, offset, draw_count, stride
@@ -11840,7 +12376,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatch.html
         """
         return self._v1_0.cmd_dispatch(command_buffer, group_count_x, group_count_y, group_count_z)
 
@@ -11849,7 +12385,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchIndirect.html
         """
         return self._v1_0.cmd_dispatch_indirect(command_buffer, buffer, offset)
 
@@ -11859,14 +12395,14 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         src_buffer: Buffer,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferCopy],
+        regions: BufferCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer.html
         """
         return self._v1_0.cmd_copy_buffer(
-            command_buffer, src_buffer, dst_buffer, region_count, p_regions
+            command_buffer, src_buffer, dst_buffer, region_count, Ptr(to=regions)
         )
 
     fn cmd_copy_image(
@@ -11877,11 +12413,11 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageCopy],
+        regions: ImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImage.html
         """
         return self._v1_0.cmd_copy_image(
             command_buffer,
@@ -11890,7 +12426,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
         )
 
     fn cmd_blit_image(
@@ -11901,12 +12437,12 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageBlit],
+        regions: ImageBlit,
         filter: Filter,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBlitImage.html
         """
         return self._v1_0.cmd_blit_image(
             command_buffer,
@@ -11915,7 +12451,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
             filter,
         )
 
@@ -11926,14 +12462,14 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy],
+        regions: BufferImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage.html
         """
         return self._v1_0.cmd_copy_buffer_to_image(
-            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, p_regions
+            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, Ptr(to=regions)
         )
 
     fn cmd_copy_image_to_buffer(
@@ -11943,14 +12479,14 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         src_image_layout: ImageLayout,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy],
+        regions: BufferImageCopy,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer.html
         """
         return self._v1_0.cmd_copy_image_to_buffer(
-            command_buffer, src_image, src_image_layout, dst_buffer, region_count, p_regions
+            command_buffer, src_image, src_image_layout, dst_buffer, region_count, Ptr(to=regions)
         )
 
     fn cmd_update_buffer(
@@ -11959,14 +12495,14 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         data_size: DeviceSize,
-        p_data: Ptr[NoneType],
+        data: NoneType,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdUpdateBuffer.html
         """
         return self._v1_0.cmd_update_buffer(
-            command_buffer, dst_buffer, dst_offset, data_size, p_data
+            command_buffer, dst_buffer, dst_offset, data_size, Ptr(to=data)
         )
 
     fn cmd_fill_buffer(
@@ -11979,7 +12515,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdFillBuffer.html
         """
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
@@ -11990,14 +12526,14 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         image_layout: ImageLayout,
         color: ClearColorValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange],
+        ranges: ImageSubresourceRange,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearColorImage.html
         """
         return self._v1_0.cmd_clear_color_image(
-            command_buffer, image, image_layout, Ptr(to=color), range_count, p_ranges
+            command_buffer, image, image_layout, Ptr(to=color), range_count, Ptr(to=ranges)
         )
 
     fn cmd_clear_depth_stencil_image(
@@ -12007,30 +12543,30 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         image_layout: ImageLayout,
         depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange],
+        ranges: ImageSubresourceRange,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearDepthStencilImage.html
         """
         return self._v1_0.cmd_clear_depth_stencil_image(
-            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, p_ranges
+            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, Ptr(to=ranges)
         )
 
     fn cmd_clear_attachments(
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
-        p_attachments: Ptr[ClearAttachment],
+        attachments: ClearAttachment,
         rect_count: UInt32,
-        p_rects: Ptr[ClearRect],
+        rects: ClearRect,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearAttachments.html
         """
         return self._v1_0.cmd_clear_attachments(
-            command_buffer, attachment_count, p_attachments, rect_count, p_rects
+            command_buffer, attachment_count, Ptr(to=attachments), rect_count, Ptr(to=rects)
         )
 
     fn cmd_resolve_image(
@@ -12041,11 +12577,11 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageResolve],
+        regions: ImageResolve,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResolveImage.html
         """
         return self._v1_0.cmd_resolve_image(
             command_buffer,
@@ -12054,7 +12590,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=regions),
         )
 
     fn cmd_set_event(
@@ -12062,7 +12598,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetEvent.html
         """
         return self._v1_0.cmd_set_event(command_buffer, event, stage_mask)
 
@@ -12071,7 +12607,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetEvent.html
         """
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
@@ -12079,32 +12615,32 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event],
+        events: Event,
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier],
+        memory_barriers: MemoryBarrier,
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier],
+        buffer_memory_barriers: BufferMemoryBarrier,
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier],
+        image_memory_barriers: ImageMemoryBarrier,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWaitEvents.html
         """
         return self._v1_0.cmd_wait_events(
             command_buffer,
             event_count,
-            p_events,
+            Ptr(to=events),
             src_stage_mask,
             dst_stage_mask,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=memory_barriers),
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=buffer_memory_barriers),
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=image_memory_barriers),
         )
 
     fn cmd_pipeline_barrier(
@@ -12114,15 +12650,15 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         dst_stage_mask: PipelineStageFlags,
         dependency_flags: DependencyFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier],
+        memory_barriers: MemoryBarrier,
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier],
+        buffer_memory_barriers: BufferMemoryBarrier,
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier],
+        image_memory_barriers: ImageMemoryBarrier,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPipelineBarrier.html
         """
         return self._v1_0.cmd_pipeline_barrier(
             command_buffer,
@@ -12130,11 +12666,11 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
             dst_stage_mask,
             dependency_flags,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=memory_barriers),
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=buffer_memory_barriers),
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=image_memory_barriers),
         )
 
     fn cmd_begin_query(
@@ -12146,14 +12682,14 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginQuery.html
         """
         return self._v1_0.cmd_begin_query(command_buffer, query_pool, query, flags)
 
     fn cmd_end_query(self, command_buffer: CommandBuffer, query_pool: QueryPool, query: UInt32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndQuery.html
         """
         return self._v1_0.cmd_end_query(command_buffer, query_pool, query)
 
@@ -12166,9 +12702,11 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetQueryPool.html
         """
-        return self._v1_0.cmd_reset_query_pool(command_buffer, query_pool, first_query, query_count)
+        return self._v1_0.cmd_reset_query_pool(
+            command_buffer, query_pool, first_query, query_count
+        )
 
     fn cmd_write_timestamp(
         self,
@@ -12179,7 +12717,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWriteTimestamp.html
         """
         return self._v1_0.cmd_write_timestamp(command_buffer, pipeline_stage, query_pool, query)
 
@@ -12196,7 +12734,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyQueryPoolResults.html
         """
         return self._v1_0.cmd_copy_query_pool_results(
             command_buffer,
@@ -12216,14 +12754,14 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         stage_flags: ShaderStageFlags,
         offset: UInt32,
         size: UInt32,
-        p_values: Ptr[NoneType],
+        values: NoneType,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants.html
         """
         return self._v1_0.cmd_push_constants(
-            command_buffer, layout, stage_flags, offset, size, p_values
+            command_buffer, layout, stage_flags, offset, size, Ptr(to=values)
         )
 
     fn cmd_begin_render_pass(
@@ -12234,21 +12772,23 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
-        return self._v1_0.cmd_begin_render_pass(command_buffer, Ptr(to=render_pass_begin), contents)
+        return self._v1_0.cmd_begin_render_pass(
+            command_buffer, Ptr(to=render_pass_begin), contents
+        )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdNextSubpass.html
         """
         return self._v1_0.cmd_next_subpass(command_buffer, contents)
 
     fn cmd_end_render_pass(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass.html
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
@@ -12256,33 +12796,33 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer],
+        command_buffers: CommandBuffer,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteCommands.html
         """
         return self._v1_0.cmd_execute_commands(
-            command_buffer, command_buffer_count, p_command_buffers
+            command_buffer, command_buffer_count, Ptr(to=command_buffers)
         )
 
     fn bind_buffer_memory_2(
-        self, device: Device, bind_info_count: UInt32, p_bind_infos: Ptr[BindBufferMemoryInfo]
+        self, device: Device, bind_info_count: UInt32, bind_infos: BindBufferMemoryInfo
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory2.html
         """
-        return self._v1_1.bind_buffer_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_buffer_memory_2(device, bind_info_count, Ptr(to=bind_infos))
 
     fn bind_image_memory_2(
-        self, device: Device, bind_info_count: UInt32, p_bind_infos: Ptr[BindImageMemoryInfo]
+        self, device: Device, bind_info_count: UInt32, bind_infos: BindImageMemoryInfo
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory2.html
         """
-        return self._v1_1.bind_image_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_image_memory_2(device, bind_info_count, Ptr(to=bind_infos))
 
     fn get_device_group_peer_memory_features(
         self,
@@ -12294,7 +12834,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupPeerMemoryFeatures.html
         """
         return self._v1_1.get_device_group_peer_memory_features(
             device,
@@ -12307,7 +12847,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDeviceMask.html
         """
         return self._v1_1.cmd_set_device_mask(command_buffer, device_mask)
 
@@ -12323,7 +12863,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchBase.html
         """
         return self._v1_1.cmd_dispatch_base(
             command_buffer,
@@ -12343,7 +12883,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements2.html
         """
         return self._v1_1.get_image_memory_requirements_2(
             device, Ptr(to=info), Ptr(to=memory_requirements)
@@ -12357,7 +12897,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements2.html
         """
         return self._v1_1.get_buffer_memory_requirements_2(
             device, Ptr(to=info), Ptr(to=memory_requirements)
@@ -12368,11 +12908,11 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
             device,
@@ -12386,12 +12926,12 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self.get_image_sparse_memory_requirements_2(
-            device, info, count, Ptr[SparseImageMemoryRequirements2]()
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
@@ -12404,14 +12944,14 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkTrimCommandPool.html
         """
         return self._v1_1.trim_command_pool(device, command_pool, flags)
 
     fn get_device_queue_2(self, device: Device, queue_info: DeviceQueueInfo2, mut queue: Queue):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
         """
         return self._v1_1.get_device_queue_2(device, Ptr(to=queue_info), Ptr(to=queue))
 
@@ -12419,12 +12959,12 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSamplerYcbcrConversion.html
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
             device, Ptr(to=create_info), p_allocator, Ptr(to=ycbcr_conversion)
@@ -12434,11 +12974,11 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySamplerYcbcrConversion.html
         """
         return self._v1_1.destroy_sampler_ycbcr_conversion(device, ycbcr_conversion, p_allocator)
 
@@ -12446,12 +12986,12 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorUpdateTemplate.html
         """
         return self._v1_1.create_descriptor_update_template(
             device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_update_template)
@@ -12461,11 +13001,11 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorUpdateTemplate.html
         """
         return self._v1_1.destroy_descriptor_update_template(
             device, descriptor_update_template, p_allocator
@@ -12480,7 +13020,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._v1_1.update_descriptor_set_with_template(
             device, descriptor_set, descriptor_update_template, Ptr(to=data)
@@ -12494,7 +13034,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutSupport.html
         """
         return self._v1_1.get_descriptor_set_layout_support(
             device, Ptr(to=create_info), Ptr(to=support)
@@ -12512,7 +13052,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndirectCount.html
         """
         return self._v1_2.cmd_draw_indirect_count(
             command_buffer,
@@ -12536,7 +13076,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexedIndirectCount.html
         """
         return self._v1_2.cmd_draw_indexed_indirect_count(
             command_buffer,
@@ -12552,12 +13092,12 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: RenderPassCreateInfo2,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass2.html
         """
         return self._v1_2.create_render_pass_2(
             device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass)
@@ -12571,7 +13111,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass2.html
         """
         return self._v1_2.cmd_begin_render_pass_2(
             command_buffer, Ptr(to=render_pass_begin), Ptr(to=subpass_begin_info)
@@ -12585,16 +13125,18 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdNextSubpass2.html
         """
         return self._v1_2.cmd_next_subpass_2(
             command_buffer, Ptr(to=subpass_begin_info), Ptr(to=subpass_end_info)
         )
 
-    fn cmd_end_render_pass_2(self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo):
+    fn cmd_end_render_pass_2(
+        self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass2.html
         """
         return self._v1_2.cmd_end_render_pass_2(command_buffer, Ptr(to=subpass_end_info))
 
@@ -12603,7 +13145,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetQueryPool.html
         """
         return self._v1_2.reset_query_pool(device, query_pool, first_query, query_count)
 
@@ -12612,7 +13154,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreCounterValue.html
         """
         return self._v1_2.get_semaphore_counter_value(device, semaphore, Ptr(to=value))
 
@@ -12621,14 +13163,14 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitSemaphores.html
         """
         return self._v1_2.wait_semaphores(device, Ptr(to=wait_info), timeout)
 
     fn signal_semaphore(self, device: Device, signal_info: SemaphoreSignalInfo) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkSignalSemaphore.html
         """
         return self._v1_2.signal_semaphore(device, Ptr(to=signal_info))
 
@@ -12637,7 +13179,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> DeviceAddress:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
         return self._v1_2.get_buffer_device_address(device, Ptr(to=info))
 
@@ -12646,7 +13188,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> UInt64:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureAddress.html
         """
         return self._v1_2.get_buffer_opaque_capture_address(device, Ptr(to=info))
 
@@ -12655,7 +13197,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> UInt64:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryOpaqueCaptureAddress.html
         """
         return self._v1_2.get_device_memory_opaque_capture_address(device, Ptr(to=info))
 
@@ -12663,12 +13205,12 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         create_info: PrivateDataSlotCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
         mut private_data_slot: PrivateDataSlot,
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePrivateDataSlot.html
         """
         return self._v1_3.create_private_data_slot(
             device, Ptr(to=create_info), p_allocator, Ptr(to=private_data_slot)
@@ -12678,11 +13220,11 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         device: Device,
         private_data_slot: PrivateDataSlot,
-        p_allocator: Ptr[AllocationCallbacks],
+        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPrivateDataSlot.html
         """
         return self._v1_3.destroy_private_data_slot(device, private_data_slot, p_allocator)
 
@@ -12696,7 +13238,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetPrivateData.html
         """
         return self._v1_3.set_private_data(
             device, object_type, object_handle, private_data_slot, data
@@ -12712,7 +13254,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPrivateData.html
         """
         return self._v1_3.get_private_data(
             device, object_type, object_handle, private_data_slot, Ptr(to=data)
@@ -12723,7 +13265,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetEvent2.html
         """
         return self._v1_3.cmd_set_event_2(command_buffer, event, Ptr(to=dependency_info))
 
@@ -12732,7 +13274,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetEvent2.html
         """
         return self._v1_3.cmd_reset_event_2(command_buffer, event, stage_mask)
 
@@ -12740,21 +13282,23 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event],
-        p_dependency_infos: Ptr[DependencyInfo],
+        events: Event,
+        dependency_infos: DependencyInfo,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWaitEvents2.html
         """
         return self._v1_3.cmd_wait_events_2(
-            command_buffer, event_count, p_events, p_dependency_infos
+            command_buffer, event_count, Ptr(to=events), Ptr(to=dependency_infos)
         )
 
-    fn cmd_pipeline_barrier_2(self, command_buffer: CommandBuffer, dependency_info: DependencyInfo):
+    fn cmd_pipeline_barrier_2(
+        self, command_buffer: CommandBuffer, dependency_info: DependencyInfo
+    ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPipelineBarrier2.html
         """
         return self._v1_3.cmd_pipeline_barrier_2(command_buffer, Ptr(to=dependency_info))
 
@@ -12767,30 +13311,30 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWriteTimestamp2.html
         """
         return self._v1_3.cmd_write_timestamp_2(command_buffer, stage, query_pool, query)
 
     fn queue_submit_2(
-        self, queue: Queue, submit_count: UInt32, p_submits: Ptr[SubmitInfo2], fence: Fence
+        self, queue: Queue, submit_count: UInt32, submits: SubmitInfo2, fence: Fence
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit2.html
         """
-        return self._v1_3.queue_submit_2(queue, submit_count, p_submits, fence)
+        return self._v1_3.queue_submit_2(queue, submit_count, Ptr(to=submits), fence)
 
     fn cmd_copy_buffer_2(self, command_buffer: CommandBuffer, copy_buffer_info: CopyBufferInfo2):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer2.html
         """
         return self._v1_3.cmd_copy_buffer_2(command_buffer, Ptr(to=copy_buffer_info))
 
     fn cmd_copy_image_2(self, command_buffer: CommandBuffer, copy_image_info: CopyImageInfo2):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImage2.html
         """
         return self._v1_3.cmd_copy_image_2(command_buffer, Ptr(to=copy_image_info))
 
@@ -12799,7 +13343,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage2.html
         """
         return self._v1_3.cmd_copy_buffer_to_image_2(
             command_buffer, Ptr(to=copy_buffer_to_image_info)
@@ -12810,7 +13354,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer2.html
         """
         return self._v1_3.cmd_copy_image_to_buffer_2(
             command_buffer, Ptr(to=copy_image_to_buffer_info)
@@ -12819,7 +13363,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     fn cmd_blit_image_2(self, command_buffer: CommandBuffer, blit_image_info: BlitImageInfo2):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBlitImage2.html
         """
         return self._v1_3.cmd_blit_image_2(command_buffer, Ptr(to=blit_image_info))
 
@@ -12828,35 +13372,35 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResolveImage2.html
         """
         return self._v1_3.cmd_resolve_image_2(command_buffer, Ptr(to=resolve_image_info))
 
     fn cmd_begin_rendering(self, command_buffer: CommandBuffer, rendering_info: RenderingInfo):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRendering.html
         """
         return self._v1_3.cmd_begin_rendering(command_buffer, Ptr(to=rendering_info))
 
     fn cmd_end_rendering(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRendering.html
         """
         return self._v1_3.cmd_end_rendering(command_buffer)
 
     fn cmd_set_cull_mode(self, command_buffer: CommandBuffer, cull_mode: CullModeFlags):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCullMode.html
         """
         return self._v1_3.cmd_set_cull_mode(command_buffer, cull_mode)
 
     fn cmd_set_front_face(self, command_buffer: CommandBuffer, front_face: FrontFace):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetFrontFace.html
         """
         return self._v1_3.cmd_set_front_face(command_buffer, front_face)
 
@@ -12865,64 +13409,74 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPrimitiveTopology.html
         """
         return self._v1_3.cmd_set_primitive_topology(command_buffer, primitive_topology)
 
     fn cmd_set_viewport_with_count(
-        self, command_buffer: CommandBuffer, viewport_count: UInt32, p_viewports: Ptr[Viewport]
+        self, command_buffer: CommandBuffer, viewport_count: UInt32, viewports: Viewport
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWithCount.html
         """
-        return self._v1_3.cmd_set_viewport_with_count(command_buffer, viewport_count, p_viewports)
+        return self._v1_3.cmd_set_viewport_with_count(
+            command_buffer, viewport_count, Ptr(to=viewports)
+        )
 
     fn cmd_set_scissor_with_count(
-        self, command_buffer: CommandBuffer, scissor_count: UInt32, p_scissors: Ptr[Rect2D]
+        self, command_buffer: CommandBuffer, scissor_count: UInt32, scissors: Rect2D
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissorWithCount.html
         """
-        return self._v1_3.cmd_set_scissor_with_count(command_buffer, scissor_count, p_scissors)
+        return self._v1_3.cmd_set_scissor_with_count(
+            command_buffer, scissor_count, Ptr(to=scissors)
+        )
 
     fn cmd_bind_vertex_buffers_2(
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer],
-        p_offsets: Ptr[DeviceSize],
-        p_sizes: Ptr[DeviceSize],
-        p_strides: Ptr[DeviceSize],
+        buffers: Buffer,
+        offsets: DeviceSize,
+        p_sizes: Ptr[DeviceSize, ImmutOrigin.external],
+        p_strides: Ptr[DeviceSize, ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers2.html
         """
         return self._v1_3.cmd_bind_vertex_buffers_2(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets, p_sizes, p_strides
+            command_buffer,
+            first_binding,
+            binding_count,
+            Ptr(to=buffers),
+            Ptr(to=offsets),
+            p_sizes,
+            p_strides,
         )
 
     fn cmd_set_depth_test_enable(self, command_buffer: CommandBuffer, depth_test_enable: Bool32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthTestEnable.html
         """
         return self._v1_3.cmd_set_depth_test_enable(command_buffer, depth_test_enable)
 
     fn cmd_set_depth_write_enable(self, command_buffer: CommandBuffer, depth_write_enable: Bool32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthWriteEnable.html
         """
         return self._v1_3.cmd_set_depth_write_enable(command_buffer, depth_write_enable)
 
     fn cmd_set_depth_compare_op(self, command_buffer: CommandBuffer, depth_compare_op: CompareOp):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthCompareOp.html
         """
         return self._v1_3.cmd_set_depth_compare_op(command_buffer, depth_compare_op)
 
@@ -12931,16 +13485,18 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBoundsTestEnable.html
         """
-        return self._v1_3.cmd_set_depth_bounds_test_enable(command_buffer, depth_bounds_test_enable)
+        return self._v1_3.cmd_set_depth_bounds_test_enable(
+            command_buffer, depth_bounds_test_enable
+        )
 
     fn cmd_set_stencil_test_enable(
         self, command_buffer: CommandBuffer, stencil_test_enable: Bool32
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilTestEnable.html
         """
         return self._v1_3.cmd_set_stencil_test_enable(command_buffer, stencil_test_enable)
 
@@ -12955,7 +13511,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilOp.html
         """
         return self._v1_3.cmd_set_stencil_op(
             command_buffer, face_mask, fail_op, pass_op, depth_fail_op, compare_op
@@ -12966,7 +13522,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRasterizerDiscardEnable.html
         """
         return self._v1_3.cmd_set_rasterizer_discard_enable(
             command_buffer, rasterizer_discard_enable
@@ -12975,7 +13531,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     fn cmd_set_depth_bias_enable(self, command_buffer: CommandBuffer, depth_bias_enable: Bool32):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBiasEnable.html
         """
         return self._v1_3.cmd_set_depth_bias_enable(command_buffer, depth_bias_enable)
 
@@ -12984,9 +13540,11 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPrimitiveRestartEnable.html
         """
-        return self._v1_3.cmd_set_primitive_restart_enable(command_buffer, primitive_restart_enable)
+        return self._v1_3.cmd_set_primitive_restart_enable(
+            command_buffer, primitive_restart_enable
+        )
 
     fn get_device_buffer_memory_requirements(
         self,
@@ -12996,7 +13554,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceBufferMemoryRequirements.html
         """
         return self._v1_3.get_device_buffer_memory_requirements(
             device, Ptr(to=info), Ptr(to=memory_requirements)
@@ -13010,7 +13568,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageMemoryRequirements.html
         """
         return self._v1_3.get_device_image_memory_requirements(
             device, Ptr(to=info), Ptr(to=memory_requirements)
@@ -13021,11 +13579,11 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         device: Device,
         info: DeviceImageMemoryRequirements,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSparseMemoryRequirements.html
         """
         return self._v1_3.get_device_image_sparse_memory_requirements(
             device,
@@ -13039,16 +13597,18 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSparseMemoryRequirements.html
         """
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self.get_device_image_sparse_memory_requirements(
-            device, info, count, Ptr[SparseImageMemoryRequirements2]()
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
         )
         if count > 0:
             list.reserve(Int(count))
-            self.get_device_image_sparse_memory_requirements(device, info, count, list.unsafe_ptr())
+            self.get_device_image_sparse_memory_requirements(
+                device, info, count, list.unsafe_ptr()
+            )
         list._len = Int(count)
         return list^
 
@@ -13060,25 +13620,28 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLineStipple.html
         """
         return self._v1_4.cmd_set_line_stipple(
             command_buffer, line_stipple_factor, line_stipple_pattern
         )
 
     fn map_memory_2(
-        self, device: Device, memory_map_info: MemoryMapInfo, pp_data: Ptr[Ptr[NoneType]]
+        self,
+        device: Device,
+        memory_map_info: MemoryMapInfo,
+        pp_data: Ptr[Ptr[NoneType, MutOrigin.external], MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory2.html
         """
         return self._v1_4.map_memory_2(device, Ptr(to=memory_map_info), pp_data)
 
     fn unmap_memory_2(self, device: Device, memory_unmap_info: MemoryUnmapInfo) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUnmapMemory2.html
         """
         return self._v1_4.unmap_memory_2(device, Ptr(to=memory_unmap_info))
 
@@ -13092,7 +13655,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindIndexBuffer2.html
         """
         return self._v1_4.cmd_bind_index_buffer_2(command_buffer, buffer, offset, size, index_type)
 
@@ -13101,7 +13664,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderingAreaGranularity.html
         """
         return self._v1_4.get_rendering_area_granularity(
             device, Ptr(to=rendering_area_info), Ptr(to=granularity)
@@ -13112,7 +13675,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSubresourceLayout.html
         """
         return self._v1_4.get_device_image_subresource_layout(device, Ptr(to=info), Ptr(to=layout))
 
@@ -13125,7 +13688,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout2.html
         """
         return self._v1_4.get_image_subresource_layout_2(
             device, image, Ptr(to=subresource), Ptr(to=layout)
@@ -13138,11 +13701,11 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
         layout: PipelineLayout,
         set: UInt32,
         descriptor_write_count: UInt32,
-        p_descriptor_writes: Ptr[WriteDescriptorSet],
+        descriptor_writes: WriteDescriptorSet,
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSet.html
         """
         return self._v1_4.cmd_push_descriptor_set(
             command_buffer,
@@ -13150,7 +13713,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
             layout,
             set,
             descriptor_write_count,
-            p_descriptor_writes,
+            Ptr(to=descriptor_writes),
         )
 
     fn cmd_push_descriptor_set_with_template(
@@ -13163,7 +13726,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSetWithTemplate.html
         """
         return self._v1_4.cmd_push_descriptor_set_with_template(
             command_buffer, descriptor_update_template, layout, set, Ptr(to=data)
@@ -13174,7 +13737,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRenderingAttachmentLocations.html
         """
         return self._v1_4.cmd_set_rendering_attachment_locations(
             command_buffer, Ptr(to=location_info)
@@ -13187,7 +13750,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRenderingInputAttachmentIndices.html
         """
         return self._v1_4.cmd_set_rendering_input_attachment_indices(
             command_buffer, Ptr(to=input_attachment_index_info)
@@ -13198,7 +13761,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorSets2.html
         """
         return self._v1_4.cmd_bind_descriptor_sets_2(
             command_buffer, Ptr(to=bind_descriptor_sets_info)
@@ -13209,7 +13772,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants2.html
         """
         return self._v1_4.cmd_push_constants_2(command_buffer, Ptr(to=push_constants_info))
 
@@ -13218,7 +13781,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSet2.html
         """
         return self._v1_4.cmd_push_descriptor_set_2(
             command_buffer, Ptr(to=push_descriptor_set_info)
@@ -13231,7 +13794,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ):
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSetWithTemplate2.html
         """
         return self._v1_4.cmd_push_descriptor_set_with_template_2(
             command_buffer, Ptr(to=push_descriptor_set_with_template_info)
@@ -13242,7 +13805,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMemoryToImage.html
         """
         return self._v1_4.copy_memory_to_image(device, Ptr(to=copy_memory_to_image_info))
 
@@ -13251,7 +13814,7 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyImageToMemory.html
         """
         return self._v1_4.copy_image_to_memory(device, Ptr(to=copy_image_to_memory_info))
 
@@ -13260,59 +13823,72 @@ struct DeviceFunctionsV1_4(Copyable, Movable):
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyImageToImage.html
         """
         return self._v1_4.copy_image_to_image(device, Ptr(to=copy_image_to_image_info))
 
     fn transition_image_layout(
-        self,
-        device: Device,
-        transition_count: UInt32,
-        p_transitions: Ptr[HostImageLayoutTransitionInfo],
+        self, device: Device, transition_count: UInt32, transitions: HostImageLayoutTransitionInfo
     ) -> Result:
         """See official vulkan docs for details.
 
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkTransitionImageLayout.html
         """
-        return self._v1_4.transition_image_layout(device, transition_count, p_transitions)
+        return self._v1_4.transition_image_layout(device, transition_count, Ptr(to=transitions))
 
 
 struct DeviceFunctionAdditionsV1_0(Copyable, Movable):
     var destroy_device: fn(
-        device: Device, pAllocator: Ptr[AllocationCallbacks]
+        device: Device, pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
     )
     var get_device_queue: fn(
-        device: Device, queueFamilyIndex: UInt32, queueIndex: UInt32, pQueue: Ptr[Queue]
+        device: Device,
+        queueFamilyIndex: UInt32,
+        queueIndex: UInt32,
+        pQueue: Ptr[Queue, MutOrigin.external],
     )
     var queue_submit: fn(
-        queue: Queue, submitCount: UInt32, pSubmits: Ptr[SubmitInfo], fence: Fence
+        queue: Queue,
+        submitCount: UInt32,
+        pSubmits: Ptr[SubmitInfo, ImmutOrigin.external],
+        fence: Fence,
     ) -> Result
-    var queue_wait_idle: fn(
-        queue: Queue
-    ) -> Result
-    var device_wait_idle: fn(
-        device: Device
-    ) -> Result
+    var queue_wait_idle: fn(queue: Queue) -> Result
+    var device_wait_idle: fn(device: Device) -> Result
     var allocate_memory: fn(
-        device: Device, pAllocateInfo: Ptr[MemoryAllocateInfo], pAllocator: Ptr[AllocationCallbacks], pMemory: Ptr[DeviceMemory]
+        device: Device,
+        pAllocateInfo: Ptr[MemoryAllocateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pMemory: Ptr[DeviceMemory, MutOrigin.external],
     ) -> Result
     var free_memory: fn(
-        device: Device, memory: DeviceMemory, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        memory: DeviceMemory,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var map_memory: fn(
-        device: Device, memory: DeviceMemory, offset: DeviceSize, size: DeviceSize, flags: MemoryMapFlags, ppData: Ptr[Ptr[NoneType]]
+        device: Device,
+        memory: DeviceMemory,
+        offset: DeviceSize,
+        size: DeviceSize,
+        flags: MemoryMapFlags,
+        ppData: Ptr[Ptr[NoneType, MutOrigin.external], MutOrigin.external],
     ) -> Result
-    var unmap_memory: fn(
-        device: Device, memory: DeviceMemory
-    )
+    var unmap_memory: fn(device: Device, memory: DeviceMemory)
     var flush_mapped_memory_ranges: fn(
-        device: Device, memoryRangeCount: UInt32, pMemoryRanges: Ptr[MappedMemoryRange]
+        device: Device,
+        memoryRangeCount: UInt32,
+        pMemoryRanges: Ptr[MappedMemoryRange, ImmutOrigin.external],
     ) -> Result
     var invalidate_mapped_memory_ranges: fn(
-        device: Device, memoryRangeCount: UInt32, pMemoryRanges: Ptr[MappedMemoryRange]
+        device: Device,
+        memoryRangeCount: UInt32,
+        pMemoryRanges: Ptr[MappedMemoryRange, ImmutOrigin.external],
     ) -> Result
     var get_device_memory_commitment: fn(
-        device: Device, memory: DeviceMemory, pCommittedMemoryInBytes: Ptr[DeviceSize]
+        device: Device,
+        memory: DeviceMemory,
+        pCommittedMemoryInBytes: Ptr[DeviceSize, MutOrigin.external],
     )
     var bind_buffer_memory: fn(
         device: Device, buffer: Buffer, memory: DeviceMemory, memoryOffset: DeviceSize
@@ -13321,188 +13897,309 @@ struct DeviceFunctionAdditionsV1_0(Copyable, Movable):
         device: Device, image: Image, memory: DeviceMemory, memoryOffset: DeviceSize
     ) -> Result
     var get_buffer_memory_requirements: fn(
-        device: Device, buffer: Buffer, pMemoryRequirements: Ptr[MemoryRequirements]
+        device: Device,
+        buffer: Buffer,
+        pMemoryRequirements: Ptr[MemoryRequirements, MutOrigin.external],
     )
     var get_image_memory_requirements: fn(
-        device: Device, image: Image, pMemoryRequirements: Ptr[MemoryRequirements]
+        device: Device,
+        image: Image,
+        pMemoryRequirements: Ptr[MemoryRequirements, MutOrigin.external],
     )
     var get_image_sparse_memory_requirements: fn(
-        device: Device, image: Image, pSparseMemoryRequirementCount: Ptr[UInt32], pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements]
+        device: Device,
+        image: Image,
+        pSparseMemoryRequirementCount: Ptr[UInt32, MutOrigin.external],
+        pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements, MutOrigin.external],
     )
     var queue_bind_sparse: fn(
-        queue: Queue, bindInfoCount: UInt32, pBindInfo: Ptr[BindSparseInfo], fence: Fence
+        queue: Queue,
+        bindInfoCount: UInt32,
+        pBindInfo: Ptr[BindSparseInfo, ImmutOrigin.external],
+        fence: Fence,
     ) -> Result
     var create_fence: fn(
-        device: Device, pCreateInfo: Ptr[FenceCreateInfo], pAllocator: Ptr[AllocationCallbacks], pFence: Ptr[Fence]
+        device: Device,
+        pCreateInfo: Ptr[FenceCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pFence: Ptr[Fence, MutOrigin.external],
     ) -> Result
     var destroy_fence: fn(
-        device: Device, fence: Fence, pAllocator: Ptr[AllocationCallbacks]
+        device: Device, fence: Fence, pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
     )
     var reset_fences: fn(
-        device: Device, fenceCount: UInt32, pFences: Ptr[Fence]
+        device: Device, fenceCount: UInt32, pFences: Ptr[Fence, ImmutOrigin.external]
     ) -> Result
-    var get_fence_status: fn(
-        device: Device, fence: Fence
-    ) -> Result
+    var get_fence_status: fn(device: Device, fence: Fence) -> Result
     var wait_for_fences: fn(
-        device: Device, fenceCount: UInt32, pFences: Ptr[Fence], waitAll: Bool32, timeout: UInt64
+        device: Device,
+        fenceCount: UInt32,
+        pFences: Ptr[Fence, ImmutOrigin.external],
+        waitAll: Bool32,
+        timeout: UInt64,
     ) -> Result
     var create_semaphore: fn(
-        device: Device, pCreateInfo: Ptr[SemaphoreCreateInfo], pAllocator: Ptr[AllocationCallbacks], pSemaphore: Ptr[Semaphore]
+        device: Device,
+        pCreateInfo: Ptr[SemaphoreCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pSemaphore: Ptr[Semaphore, MutOrigin.external],
     ) -> Result
     var destroy_semaphore: fn(
-        device: Device, semaphore: Semaphore, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        semaphore: Semaphore,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var create_event: fn(
-        device: Device, pCreateInfo: Ptr[EventCreateInfo], pAllocator: Ptr[AllocationCallbacks], pEvent: Ptr[Event]
+        device: Device,
+        pCreateInfo: Ptr[EventCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pEvent: Ptr[Event, MutOrigin.external],
     ) -> Result
     var destroy_event: fn(
-        device: Device, event: Event, pAllocator: Ptr[AllocationCallbacks]
+        device: Device, event: Event, pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
     )
-    var get_event_status: fn(
-        device: Device, event: Event
-    ) -> Result
-    var set_event: fn(
-        device: Device, event: Event
-    ) -> Result
-    var reset_event: fn(
-        device: Device, event: Event
-    ) -> Result
+    var get_event_status: fn(device: Device, event: Event) -> Result
+    var set_event: fn(device: Device, event: Event) -> Result
+    var reset_event: fn(device: Device, event: Event) -> Result
     var create_query_pool: fn(
-        device: Device, pCreateInfo: Ptr[QueryPoolCreateInfo], pAllocator: Ptr[AllocationCallbacks], pQueryPool: Ptr[QueryPool]
+        device: Device,
+        pCreateInfo: Ptr[QueryPoolCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pQueryPool: Ptr[QueryPool, MutOrigin.external],
     ) -> Result
     var destroy_query_pool: fn(
-        device: Device, queryPool: QueryPool, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        queryPool: QueryPool,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var get_query_pool_results: fn(
-        device: Device, queryPool: QueryPool, firstQuery: UInt32, queryCount: UInt32, dataSize: UInt, pData: Ptr[NoneType], stride: DeviceSize, flags: QueryResultFlags
+        device: Device,
+        queryPool: QueryPool,
+        firstQuery: UInt32,
+        queryCount: UInt32,
+        dataSize: UInt,
+        pData: Ptr[NoneType, MutOrigin.external],
+        stride: DeviceSize,
+        flags: QueryResultFlags,
     ) -> Result
     var create_buffer: fn(
-        device: Device, pCreateInfo: Ptr[BufferCreateInfo], pAllocator: Ptr[AllocationCallbacks], pBuffer: Ptr[Buffer]
+        device: Device,
+        pCreateInfo: Ptr[BufferCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pBuffer: Ptr[Buffer, MutOrigin.external],
     ) -> Result
     var destroy_buffer: fn(
-        device: Device, buffer: Buffer, pAllocator: Ptr[AllocationCallbacks]
+        device: Device, buffer: Buffer, pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
     )
     var create_buffer_view: fn(
-        device: Device, pCreateInfo: Ptr[BufferViewCreateInfo], pAllocator: Ptr[AllocationCallbacks], pView: Ptr[BufferView]
+        device: Device,
+        pCreateInfo: Ptr[BufferViewCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pView: Ptr[BufferView, MutOrigin.external],
     ) -> Result
     var destroy_buffer_view: fn(
-        device: Device, bufferView: BufferView, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        bufferView: BufferView,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var create_image: fn(
-        device: Device, pCreateInfo: Ptr[ImageCreateInfo], pAllocator: Ptr[AllocationCallbacks], pImage: Ptr[Image]
+        device: Device,
+        pCreateInfo: Ptr[ImageCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pImage: Ptr[Image, MutOrigin.external],
     ) -> Result
     var destroy_image: fn(
-        device: Device, image: Image, pAllocator: Ptr[AllocationCallbacks]
+        device: Device, image: Image, pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
     )
     var get_image_subresource_layout: fn(
-        device: Device, image: Image, pSubresource: Ptr[ImageSubresource], pLayout: Ptr[SubresourceLayout]
+        device: Device,
+        image: Image,
+        pSubresource: Ptr[ImageSubresource, ImmutOrigin.external],
+        pLayout: Ptr[SubresourceLayout, MutOrigin.external],
     )
     var create_image_view: fn(
-        device: Device, pCreateInfo: Ptr[ImageViewCreateInfo], pAllocator: Ptr[AllocationCallbacks], pView: Ptr[ImageView]
+        device: Device,
+        pCreateInfo: Ptr[ImageViewCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pView: Ptr[ImageView, MutOrigin.external],
     ) -> Result
     var destroy_image_view: fn(
-        device: Device, imageView: ImageView, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        imageView: ImageView,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var create_shader_module: fn(
-        device: Device, pCreateInfo: Ptr[ShaderModuleCreateInfo], pAllocator: Ptr[AllocationCallbacks], pShaderModule: Ptr[ShaderModule]
+        device: Device,
+        pCreateInfo: Ptr[ShaderModuleCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pShaderModule: Ptr[ShaderModule, MutOrigin.external],
     ) -> Result
     var destroy_shader_module: fn(
-        device: Device, shaderModule: ShaderModule, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        shaderModule: ShaderModule,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var create_pipeline_cache: fn(
-        device: Device, pCreateInfo: Ptr[PipelineCacheCreateInfo], pAllocator: Ptr[AllocationCallbacks], pPipelineCache: Ptr[PipelineCache]
+        device: Device,
+        pCreateInfo: Ptr[PipelineCacheCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pPipelineCache: Ptr[PipelineCache, MutOrigin.external],
     ) -> Result
     var destroy_pipeline_cache: fn(
-        device: Device, pipelineCache: PipelineCache, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        pipelineCache: PipelineCache,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var get_pipeline_cache_data: fn(
-        device: Device, pipelineCache: PipelineCache, pDataSize: Ptr[UInt], pData: Ptr[NoneType]
+        device: Device,
+        pipelineCache: PipelineCache,
+        pDataSize: Ptr[UInt, MutOrigin.external],
+        pData: Ptr[NoneType, MutOrigin.external],
     ) -> Result
     var merge_pipeline_caches: fn(
-        device: Device, dstCache: PipelineCache, srcCacheCount: UInt32, pSrcCaches: Ptr[PipelineCache]
+        device: Device,
+        dstCache: PipelineCache,
+        srcCacheCount: UInt32,
+        pSrcCaches: Ptr[PipelineCache, ImmutOrigin.external],
     ) -> Result
     var create_graphics_pipelines: fn(
-        device: Device, pipelineCache: PipelineCache, createInfoCount: UInt32, pCreateInfos: Ptr[GraphicsPipelineCreateInfo], pAllocator: Ptr[AllocationCallbacks], pPipelines: Ptr[Pipeline]
+        device: Device,
+        pipelineCache: PipelineCache,
+        createInfoCount: UInt32,
+        pCreateInfos: Ptr[GraphicsPipelineCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pPipelines: Ptr[Pipeline, MutOrigin.external],
     ) -> Result
     var create_compute_pipelines: fn(
-        device: Device, pipelineCache: PipelineCache, createInfoCount: UInt32, pCreateInfos: Ptr[ComputePipelineCreateInfo], pAllocator: Ptr[AllocationCallbacks], pPipelines: Ptr[Pipeline]
+        device: Device,
+        pipelineCache: PipelineCache,
+        createInfoCount: UInt32,
+        pCreateInfos: Ptr[ComputePipelineCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pPipelines: Ptr[Pipeline, MutOrigin.external],
     ) -> Result
     var destroy_pipeline: fn(
-        device: Device, pipeline: Pipeline, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        pipeline: Pipeline,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var create_pipeline_layout: fn(
-        device: Device, pCreateInfo: Ptr[PipelineLayoutCreateInfo], pAllocator: Ptr[AllocationCallbacks], pPipelineLayout: Ptr[PipelineLayout]
+        device: Device,
+        pCreateInfo: Ptr[PipelineLayoutCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pPipelineLayout: Ptr[PipelineLayout, MutOrigin.external],
     ) -> Result
     var destroy_pipeline_layout: fn(
-        device: Device, pipelineLayout: PipelineLayout, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        pipelineLayout: PipelineLayout,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var create_sampler: fn(
-        device: Device, pCreateInfo: Ptr[SamplerCreateInfo], pAllocator: Ptr[AllocationCallbacks], pSampler: Ptr[Sampler]
+        device: Device,
+        pCreateInfo: Ptr[SamplerCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pSampler: Ptr[Sampler, MutOrigin.external],
     ) -> Result
     var destroy_sampler: fn(
-        device: Device, sampler: Sampler, pAllocator: Ptr[AllocationCallbacks]
+        device: Device, sampler: Sampler, pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external]
     )
     var create_descriptor_set_layout: fn(
-        device: Device, pCreateInfo: Ptr[DescriptorSetLayoutCreateInfo], pAllocator: Ptr[AllocationCallbacks], pSetLayout: Ptr[DescriptorSetLayout]
+        device: Device,
+        pCreateInfo: Ptr[DescriptorSetLayoutCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pSetLayout: Ptr[DescriptorSetLayout, MutOrigin.external],
     ) -> Result
     var destroy_descriptor_set_layout: fn(
-        device: Device, descriptorSetLayout: DescriptorSetLayout, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        descriptorSetLayout: DescriptorSetLayout,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var create_descriptor_pool: fn(
-        device: Device, pCreateInfo: Ptr[DescriptorPoolCreateInfo], pAllocator: Ptr[AllocationCallbacks], pDescriptorPool: Ptr[DescriptorPool]
+        device: Device,
+        pCreateInfo: Ptr[DescriptorPoolCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pDescriptorPool: Ptr[DescriptorPool, MutOrigin.external],
     ) -> Result
     var destroy_descriptor_pool: fn(
-        device: Device, descriptorPool: DescriptorPool, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        descriptorPool: DescriptorPool,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var reset_descriptor_pool: fn(
         device: Device, descriptorPool: DescriptorPool, flags: DescriptorPoolResetFlags
     ) -> Result
     var allocate_descriptor_sets: fn(
-        device: Device, pAllocateInfo: Ptr[DescriptorSetAllocateInfo], pDescriptorSets: Ptr[DescriptorSet]
+        device: Device,
+        pAllocateInfo: Ptr[DescriptorSetAllocateInfo, ImmutOrigin.external],
+        pDescriptorSets: Ptr[DescriptorSet, MutOrigin.external],
     ) -> Result
     var free_descriptor_sets: fn(
-        device: Device, descriptorPool: DescriptorPool, descriptorSetCount: UInt32, pDescriptorSets: Ptr[DescriptorSet]
+        device: Device,
+        descriptorPool: DescriptorPool,
+        descriptorSetCount: UInt32,
+        pDescriptorSets: Ptr[DescriptorSet, ImmutOrigin.external],
     ) -> Result
     var update_descriptor_sets: fn(
-        device: Device, descriptorWriteCount: UInt32, pDescriptorWrites: Ptr[WriteDescriptorSet], descriptorCopyCount: UInt32, pDescriptorCopies: Ptr[CopyDescriptorSet]
+        device: Device,
+        descriptorWriteCount: UInt32,
+        pDescriptorWrites: Ptr[WriteDescriptorSet, ImmutOrigin.external],
+        descriptorCopyCount: UInt32,
+        pDescriptorCopies: Ptr[CopyDescriptorSet, ImmutOrigin.external],
     )
     var create_framebuffer: fn(
-        device: Device, pCreateInfo: Ptr[FramebufferCreateInfo], pAllocator: Ptr[AllocationCallbacks], pFramebuffer: Ptr[Framebuffer]
+        device: Device,
+        pCreateInfo: Ptr[FramebufferCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pFramebuffer: Ptr[Framebuffer, MutOrigin.external],
     ) -> Result
     var destroy_framebuffer: fn(
-        device: Device, framebuffer: Framebuffer, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        framebuffer: Framebuffer,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var create_render_pass: fn(
-        device: Device, pCreateInfo: Ptr[RenderPassCreateInfo], pAllocator: Ptr[AllocationCallbacks], pRenderPass: Ptr[RenderPass]
+        device: Device,
+        pCreateInfo: Ptr[RenderPassCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pRenderPass: Ptr[RenderPass, MutOrigin.external],
     ) -> Result
     var destroy_render_pass: fn(
-        device: Device, renderPass: RenderPass, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        renderPass: RenderPass,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var get_render_area_granularity: fn(
-        device: Device, renderPass: RenderPass, pGranularity: Ptr[Extent2D]
+        device: Device, renderPass: RenderPass, pGranularity: Ptr[Extent2D, MutOrigin.external]
     )
     var create_command_pool: fn(
-        device: Device, pCreateInfo: Ptr[CommandPoolCreateInfo], pAllocator: Ptr[AllocationCallbacks], pCommandPool: Ptr[CommandPool]
+        device: Device,
+        pCreateInfo: Ptr[CommandPoolCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pCommandPool: Ptr[CommandPool, MutOrigin.external],
     ) -> Result
     var destroy_command_pool: fn(
-        device: Device, commandPool: CommandPool, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        commandPool: CommandPool,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var reset_command_pool: fn(
         device: Device, commandPool: CommandPool, flags: CommandPoolResetFlags
     ) -> Result
     var allocate_command_buffers: fn(
-        device: Device, pAllocateInfo: Ptr[CommandBufferAllocateInfo], pCommandBuffers: Ptr[CommandBuffer]
+        device: Device,
+        pAllocateInfo: Ptr[CommandBufferAllocateInfo, ImmutOrigin.external],
+        pCommandBuffers: Ptr[CommandBuffer, MutOrigin.external],
     ) -> Result
     var free_command_buffers: fn(
-        device: Device, commandPool: CommandPool, commandBufferCount: UInt32, pCommandBuffers: Ptr[CommandBuffer]
+        device: Device,
+        commandPool: CommandPool,
+        commandBufferCount: UInt32,
+        pCommandBuffers: Ptr[CommandBuffer, ImmutOrigin.external],
     )
     var begin_command_buffer: fn(
-        commandBuffer: CommandBuffer, pBeginInfo: Ptr[CommandBufferBeginInfo]
+        commandBuffer: CommandBuffer, pBeginInfo: Ptr[CommandBufferBeginInfo, ImmutOrigin.external]
     ) -> Result
-    var end_command_buffer: fn(
-        commandBuffer: CommandBuffer
-    ) -> Result
+    var end_command_buffer: fn(commandBuffer: CommandBuffer) -> Result
     var reset_command_buffer: fn(
         commandBuffer: CommandBuffer, flags: CommandBufferResetFlags
     ) -> Result
@@ -13510,19 +14207,26 @@ struct DeviceFunctionAdditionsV1_0(Copyable, Movable):
         commandBuffer: CommandBuffer, pipelineBindPoint: PipelineBindPoint, pipeline: Pipeline
     )
     var cmd_set_viewport: fn(
-        commandBuffer: CommandBuffer, firstViewport: UInt32, viewportCount: UInt32, pViewports: Ptr[Viewport]
+        commandBuffer: CommandBuffer,
+        firstViewport: UInt32,
+        viewportCount: UInt32,
+        pViewports: Ptr[Viewport, ImmutOrigin.external],
     )
     var cmd_set_scissor: fn(
-        commandBuffer: CommandBuffer, firstScissor: UInt32, scissorCount: UInt32, pScissors: Ptr[Rect2D]
+        commandBuffer: CommandBuffer,
+        firstScissor: UInt32,
+        scissorCount: UInt32,
+        pScissors: Ptr[Rect2D, ImmutOrigin.external],
     )
-    var cmd_set_line_width: fn(
-        commandBuffer: CommandBuffer, lineWidth: Float32
-    )
+    var cmd_set_line_width: fn(commandBuffer: CommandBuffer, lineWidth: Float32)
     var cmd_set_depth_bias: fn(
-        commandBuffer: CommandBuffer, depthBiasConstantFactor: Float32, depthBiasClamp: Float32, depthBiasSlopeFactor: Float32
+        commandBuffer: CommandBuffer,
+        depthBiasConstantFactor: Float32,
+        depthBiasClamp: Float32,
+        depthBiasSlopeFactor: Float32,
     )
     var cmd_set_blend_constants: fn(
-        commandBuffer: CommandBuffer, blendConstants: Float32
+        commandBuffer: CommandBuffer, blendConstants: InlineArray[Float32, Int(4)]
     )
     var cmd_set_depth_bounds: fn(
         commandBuffer: CommandBuffer, minDepthBounds: Float32, maxDepthBounds: Float32
@@ -13537,64 +14241,145 @@ struct DeviceFunctionAdditionsV1_0(Copyable, Movable):
         commandBuffer: CommandBuffer, faceMask: StencilFaceFlags, reference: UInt32
     )
     var cmd_bind_descriptor_sets: fn(
-        commandBuffer: CommandBuffer, pipelineBindPoint: PipelineBindPoint, layout: PipelineLayout, firstSet: UInt32, descriptorSetCount: UInt32, pDescriptorSets: Ptr[DescriptorSet], dynamicOffsetCount: UInt32, pDynamicOffsets: Ptr[UInt32]
+        commandBuffer: CommandBuffer,
+        pipelineBindPoint: PipelineBindPoint,
+        layout: PipelineLayout,
+        firstSet: UInt32,
+        descriptorSetCount: UInt32,
+        pDescriptorSets: Ptr[DescriptorSet, ImmutOrigin.external],
+        dynamicOffsetCount: UInt32,
+        pDynamicOffsets: Ptr[UInt32, ImmutOrigin.external],
     )
     var cmd_bind_index_buffer: fn(
         commandBuffer: CommandBuffer, buffer: Buffer, offset: DeviceSize, indexType: IndexType
     )
     var cmd_bind_vertex_buffers: fn(
-        commandBuffer: CommandBuffer, firstBinding: UInt32, bindingCount: UInt32, pBuffers: Ptr[Buffer], pOffsets: Ptr[DeviceSize]
+        commandBuffer: CommandBuffer,
+        firstBinding: UInt32,
+        bindingCount: UInt32,
+        pBuffers: Ptr[Buffer, ImmutOrigin.external],
+        pOffsets: Ptr[DeviceSize, ImmutOrigin.external],
     )
     var cmd_draw: fn(
-        commandBuffer: CommandBuffer, vertexCount: UInt32, instanceCount: UInt32, firstVertex: UInt32, firstInstance: UInt32
+        commandBuffer: CommandBuffer,
+        vertexCount: UInt32,
+        instanceCount: UInt32,
+        firstVertex: UInt32,
+        firstInstance: UInt32,
     )
     var cmd_draw_indexed: fn(
-        commandBuffer: CommandBuffer, indexCount: UInt32, instanceCount: UInt32, firstIndex: UInt32, vertexOffset: Int32, firstInstance: UInt32
+        commandBuffer: CommandBuffer,
+        indexCount: UInt32,
+        instanceCount: UInt32,
+        firstIndex: UInt32,
+        vertexOffset: Int32,
+        firstInstance: UInt32,
     )
     var cmd_draw_indirect: fn(
-        commandBuffer: CommandBuffer, buffer: Buffer, offset: DeviceSize, drawCount: UInt32, stride: UInt32
+        commandBuffer: CommandBuffer,
+        buffer: Buffer,
+        offset: DeviceSize,
+        drawCount: UInt32,
+        stride: UInt32,
     )
     var cmd_draw_indexed_indirect: fn(
-        commandBuffer: CommandBuffer, buffer: Buffer, offset: DeviceSize, drawCount: UInt32, stride: UInt32
+        commandBuffer: CommandBuffer,
+        buffer: Buffer,
+        offset: DeviceSize,
+        drawCount: UInt32,
+        stride: UInt32,
     )
     var cmd_dispatch: fn(
         commandBuffer: CommandBuffer, groupCountX: UInt32, groupCountY: UInt32, groupCountZ: UInt32
     )
-    var cmd_dispatch_indirect: fn(
-        commandBuffer: CommandBuffer, buffer: Buffer, offset: DeviceSize
-    )
+    var cmd_dispatch_indirect: fn(commandBuffer: CommandBuffer, buffer: Buffer, offset: DeviceSize)
     var cmd_copy_buffer: fn(
-        commandBuffer: CommandBuffer, srcBuffer: Buffer, dstBuffer: Buffer, regionCount: UInt32, pRegions: Ptr[BufferCopy]
+        commandBuffer: CommandBuffer,
+        srcBuffer: Buffer,
+        dstBuffer: Buffer,
+        regionCount: UInt32,
+        pRegions: Ptr[BufferCopy, ImmutOrigin.external],
     )
     var cmd_copy_image: fn(
-        commandBuffer: CommandBuffer, srcImage: Image, srcImageLayout: ImageLayout, dstImage: Image, dstImageLayout: ImageLayout, regionCount: UInt32, pRegions: Ptr[ImageCopy]
+        commandBuffer: CommandBuffer,
+        srcImage: Image,
+        srcImageLayout: ImageLayout,
+        dstImage: Image,
+        dstImageLayout: ImageLayout,
+        regionCount: UInt32,
+        pRegions: Ptr[ImageCopy, ImmutOrigin.external],
     )
     var cmd_blit_image: fn(
-        commandBuffer: CommandBuffer, srcImage: Image, srcImageLayout: ImageLayout, dstImage: Image, dstImageLayout: ImageLayout, regionCount: UInt32, pRegions: Ptr[ImageBlit], filter: Filter
+        commandBuffer: CommandBuffer,
+        srcImage: Image,
+        srcImageLayout: ImageLayout,
+        dstImage: Image,
+        dstImageLayout: ImageLayout,
+        regionCount: UInt32,
+        pRegions: Ptr[ImageBlit, ImmutOrigin.external],
+        filter: Filter,
     )
     var cmd_copy_buffer_to_image: fn(
-        commandBuffer: CommandBuffer, srcBuffer: Buffer, dstImage: Image, dstImageLayout: ImageLayout, regionCount: UInt32, pRegions: Ptr[BufferImageCopy]
+        commandBuffer: CommandBuffer,
+        srcBuffer: Buffer,
+        dstImage: Image,
+        dstImageLayout: ImageLayout,
+        regionCount: UInt32,
+        pRegions: Ptr[BufferImageCopy, ImmutOrigin.external],
     )
     var cmd_copy_image_to_buffer: fn(
-        commandBuffer: CommandBuffer, srcImage: Image, srcImageLayout: ImageLayout, dstBuffer: Buffer, regionCount: UInt32, pRegions: Ptr[BufferImageCopy]
+        commandBuffer: CommandBuffer,
+        srcImage: Image,
+        srcImageLayout: ImageLayout,
+        dstBuffer: Buffer,
+        regionCount: UInt32,
+        pRegions: Ptr[BufferImageCopy, ImmutOrigin.external],
     )
     var cmd_update_buffer: fn(
-        commandBuffer: CommandBuffer, dstBuffer: Buffer, dstOffset: DeviceSize, dataSize: DeviceSize, pData: Ptr[NoneType]
+        commandBuffer: CommandBuffer,
+        dstBuffer: Buffer,
+        dstOffset: DeviceSize,
+        dataSize: DeviceSize,
+        pData: Ptr[NoneType, ImmutOrigin.external],
     )
     var cmd_fill_buffer: fn(
-        commandBuffer: CommandBuffer, dstBuffer: Buffer, dstOffset: DeviceSize, size: DeviceSize, data: UInt32
+        commandBuffer: CommandBuffer,
+        dstBuffer: Buffer,
+        dstOffset: DeviceSize,
+        size: DeviceSize,
+        data: UInt32,
     )
     var cmd_clear_color_image: fn(
-        commandBuffer: CommandBuffer, image: Image, imageLayout: ImageLayout, pColor: Ptr[ClearColorValue], rangeCount: UInt32, pRanges: Ptr[ImageSubresourceRange]
+        commandBuffer: CommandBuffer,
+        image: Image,
+        imageLayout: ImageLayout,
+        pColor: Ptr[ClearColorValue, ImmutOrigin.external],
+        rangeCount: UInt32,
+        pRanges: Ptr[ImageSubresourceRange, ImmutOrigin.external],
     )
     var cmd_clear_depth_stencil_image: fn(
-        commandBuffer: CommandBuffer, image: Image, imageLayout: ImageLayout, pDepthStencil: Ptr[ClearDepthStencilValue], rangeCount: UInt32, pRanges: Ptr[ImageSubresourceRange]
+        commandBuffer: CommandBuffer,
+        image: Image,
+        imageLayout: ImageLayout,
+        pDepthStencil: Ptr[ClearDepthStencilValue, ImmutOrigin.external],
+        rangeCount: UInt32,
+        pRanges: Ptr[ImageSubresourceRange, ImmutOrigin.external],
     )
     var cmd_clear_attachments: fn(
-        commandBuffer: CommandBuffer, attachmentCount: UInt32, pAttachments: Ptr[ClearAttachment], rectCount: UInt32, pRects: Ptr[ClearRect]
+        commandBuffer: CommandBuffer,
+        attachmentCount: UInt32,
+        pAttachments: Ptr[ClearAttachment, ImmutOrigin.external],
+        rectCount: UInt32,
+        pRects: Ptr[ClearRect, ImmutOrigin.external],
     )
     var cmd_resolve_image: fn(
-        commandBuffer: CommandBuffer, srcImage: Image, srcImageLayout: ImageLayout, dstImage: Image, dstImageLayout: ImageLayout, regionCount: UInt32, pRegions: Ptr[ImageResolve]
+        commandBuffer: CommandBuffer,
+        srcImage: Image,
+        srcImageLayout: ImageLayout,
+        dstImage: Image,
+        dstImageLayout: ImageLayout,
+        regionCount: UInt32,
+        pRegions: Ptr[ImageResolve, ImmutOrigin.external],
     )
     var cmd_set_event: fn(
         commandBuffer: CommandBuffer, event: Event, stageMask: PipelineStageFlags
@@ -13603,45 +14388,77 @@ struct DeviceFunctionAdditionsV1_0(Copyable, Movable):
         commandBuffer: CommandBuffer, event: Event, stageMask: PipelineStageFlags
     )
     var cmd_wait_events: fn(
-        commandBuffer: CommandBuffer, eventCount: UInt32, pEvents: Ptr[Event], srcStageMask: PipelineStageFlags, dstStageMask: PipelineStageFlags, memoryBarrierCount: UInt32, pMemoryBarriers: Ptr[MemoryBarrier], bufferMemoryBarrierCount: UInt32, pBufferMemoryBarriers: Ptr[BufferMemoryBarrier], imageMemoryBarrierCount: UInt32, pImageMemoryBarriers: Ptr[ImageMemoryBarrier]
+        commandBuffer: CommandBuffer,
+        eventCount: UInt32,
+        pEvents: Ptr[Event, ImmutOrigin.external],
+        srcStageMask: PipelineStageFlags,
+        dstStageMask: PipelineStageFlags,
+        memoryBarrierCount: UInt32,
+        pMemoryBarriers: Ptr[MemoryBarrier, ImmutOrigin.external],
+        bufferMemoryBarrierCount: UInt32,
+        pBufferMemoryBarriers: Ptr[BufferMemoryBarrier, ImmutOrigin.external],
+        imageMemoryBarrierCount: UInt32,
+        pImageMemoryBarriers: Ptr[ImageMemoryBarrier, ImmutOrigin.external],
     )
     var cmd_pipeline_barrier: fn(
-        commandBuffer: CommandBuffer, srcStageMask: PipelineStageFlags, dstStageMask: PipelineStageFlags, dependencyFlags: DependencyFlags, memoryBarrierCount: UInt32, pMemoryBarriers: Ptr[MemoryBarrier], bufferMemoryBarrierCount: UInt32, pBufferMemoryBarriers: Ptr[BufferMemoryBarrier], imageMemoryBarrierCount: UInt32, pImageMemoryBarriers: Ptr[ImageMemoryBarrier]
+        commandBuffer: CommandBuffer,
+        srcStageMask: PipelineStageFlags,
+        dstStageMask: PipelineStageFlags,
+        dependencyFlags: DependencyFlags,
+        memoryBarrierCount: UInt32,
+        pMemoryBarriers: Ptr[MemoryBarrier, ImmutOrigin.external],
+        bufferMemoryBarrierCount: UInt32,
+        pBufferMemoryBarriers: Ptr[BufferMemoryBarrier, ImmutOrigin.external],
+        imageMemoryBarrierCount: UInt32,
+        pImageMemoryBarriers: Ptr[ImageMemoryBarrier, ImmutOrigin.external],
     )
     var cmd_begin_query: fn(
         commandBuffer: CommandBuffer, queryPool: QueryPool, query: UInt32, flags: QueryControlFlags
     )
-    var cmd_end_query: fn(
-        commandBuffer: CommandBuffer, queryPool: QueryPool, query: UInt32
-    )
+    var cmd_end_query: fn(commandBuffer: CommandBuffer, queryPool: QueryPool, query: UInt32)
     var cmd_reset_query_pool: fn(
         commandBuffer: CommandBuffer, queryPool: QueryPool, firstQuery: UInt32, queryCount: UInt32
     )
     var cmd_write_timestamp: fn(
-        commandBuffer: CommandBuffer, pipelineStage: PipelineStageFlagBits, queryPool: QueryPool, query: UInt32
+        commandBuffer: CommandBuffer,
+        pipelineStage: PipelineStageFlagBits,
+        queryPool: QueryPool,
+        query: UInt32,
     )
     var cmd_copy_query_pool_results: fn(
-        commandBuffer: CommandBuffer, queryPool: QueryPool, firstQuery: UInt32, queryCount: UInt32, dstBuffer: Buffer, dstOffset: DeviceSize, stride: DeviceSize, flags: QueryResultFlags
+        commandBuffer: CommandBuffer,
+        queryPool: QueryPool,
+        firstQuery: UInt32,
+        queryCount: UInt32,
+        dstBuffer: Buffer,
+        dstOffset: DeviceSize,
+        stride: DeviceSize,
+        flags: QueryResultFlags,
     )
     var cmd_push_constants: fn(
-        commandBuffer: CommandBuffer, layout: PipelineLayout, stageFlags: ShaderStageFlags, offset: UInt32, size: UInt32, pValues: Ptr[NoneType]
+        commandBuffer: CommandBuffer,
+        layout: PipelineLayout,
+        stageFlags: ShaderStageFlags,
+        offset: UInt32,
+        size: UInt32,
+        pValues: Ptr[NoneType, ImmutOrigin.external],
     )
     var cmd_begin_render_pass: fn(
-        commandBuffer: CommandBuffer, pRenderPassBegin: Ptr[RenderPassBeginInfo], contents: SubpassContents
+        commandBuffer: CommandBuffer,
+        pRenderPassBegin: Ptr[RenderPassBeginInfo, ImmutOrigin.external],
+        contents: SubpassContents,
     )
-    var cmd_next_subpass: fn(
-        commandBuffer: CommandBuffer, contents: SubpassContents
-    )
-    var cmd_end_render_pass: fn(
-        commandBuffer: CommandBuffer
-    )
+    var cmd_next_subpass: fn(commandBuffer: CommandBuffer, contents: SubpassContents)
+    var cmd_end_render_pass: fn(commandBuffer: CommandBuffer)
     var cmd_execute_commands: fn(
-        commandBuffer: CommandBuffer, commandBufferCount: UInt32, pCommandBuffers: Ptr[CommandBuffer]
+        commandBuffer: CommandBuffer,
+        commandBufferCount: UInt32,
+        pCommandBuffers: Ptr[CommandBuffer, ImmutOrigin.external],
     )
 
-    fn __init__(out self, device: Device, handle: DLHandle) raises:
+    fn __init__(out self, device: Device, handle: OwnedDLHandle) raises:
         get_device_proc_addr = handle.get_function[
-            fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self.destroy_device = Ptr(to=get_device_proc_addr(
             device, "vkDestroyDevice".unsafe_ptr()
@@ -14007,57 +14824,93 @@ struct DeviceFunctionAdditionsV1_0(Copyable, Movable):
 
 struct DeviceFunctionAdditionsV1_1(Copyable, Movable):
     var bind_buffer_memory_2: fn(
-        device: Device, bindInfoCount: UInt32, pBindInfos: Ptr[BindBufferMemoryInfo]
+        device: Device,
+        bindInfoCount: UInt32,
+        pBindInfos: Ptr[BindBufferMemoryInfo, ImmutOrigin.external],
     ) -> Result
     var bind_image_memory_2: fn(
-        device: Device, bindInfoCount: UInt32, pBindInfos: Ptr[BindImageMemoryInfo]
+        device: Device,
+        bindInfoCount: UInt32,
+        pBindInfos: Ptr[BindImageMemoryInfo, ImmutOrigin.external],
     ) -> Result
     var get_device_group_peer_memory_features: fn(
-        device: Device, heapIndex: UInt32, localDeviceIndex: UInt32, remoteDeviceIndex: UInt32, pPeerMemoryFeatures: Ptr[PeerMemoryFeatureFlags]
+        device: Device,
+        heapIndex: UInt32,
+        localDeviceIndex: UInt32,
+        remoteDeviceIndex: UInt32,
+        pPeerMemoryFeatures: Ptr[PeerMemoryFeatureFlags, MutOrigin.external],
     )
-    var cmd_set_device_mask: fn(
-        commandBuffer: CommandBuffer, deviceMask: UInt32
-    )
+    var cmd_set_device_mask: fn(commandBuffer: CommandBuffer, deviceMask: UInt32)
     var cmd_dispatch_base: fn(
-        commandBuffer: CommandBuffer, baseGroupX: UInt32, baseGroupY: UInt32, baseGroupZ: UInt32, groupCountX: UInt32, groupCountY: UInt32, groupCountZ: UInt32
+        commandBuffer: CommandBuffer,
+        baseGroupX: UInt32,
+        baseGroupY: UInt32,
+        baseGroupZ: UInt32,
+        groupCountX: UInt32,
+        groupCountY: UInt32,
+        groupCountZ: UInt32,
     )
     var get_image_memory_requirements_2: fn(
-        device: Device, pInfo: Ptr[ImageMemoryRequirementsInfo2], pMemoryRequirements: Ptr[MemoryRequirements2]
+        device: Device,
+        pInfo: Ptr[ImageMemoryRequirementsInfo2, ImmutOrigin.external],
+        pMemoryRequirements: Ptr[MemoryRequirements2, MutOrigin.external],
     )
     var get_buffer_memory_requirements_2: fn(
-        device: Device, pInfo: Ptr[BufferMemoryRequirementsInfo2], pMemoryRequirements: Ptr[MemoryRequirements2]
+        device: Device,
+        pInfo: Ptr[BufferMemoryRequirementsInfo2, ImmutOrigin.external],
+        pMemoryRequirements: Ptr[MemoryRequirements2, MutOrigin.external],
     )
     var get_image_sparse_memory_requirements_2: fn(
-        device: Device, pInfo: Ptr[ImageSparseMemoryRequirementsInfo2], pSparseMemoryRequirementCount: Ptr[UInt32], pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements2]
+        device: Device,
+        pInfo: Ptr[ImageSparseMemoryRequirementsInfo2, ImmutOrigin.external],
+        pSparseMemoryRequirementCount: Ptr[UInt32, MutOrigin.external],
+        pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements2, MutOrigin.external],
     )
     var trim_command_pool: fn(
         device: Device, commandPool: CommandPool, flags: CommandPoolTrimFlags
     )
     var get_device_queue_2: fn(
-        device: Device, pQueueInfo: Ptr[DeviceQueueInfo2], pQueue: Ptr[Queue]
+        device: Device,
+        pQueueInfo: Ptr[DeviceQueueInfo2, ImmutOrigin.external],
+        pQueue: Ptr[Queue, MutOrigin.external],
     )
     var create_sampler_ycbcr_conversion: fn(
-        device: Device, pCreateInfo: Ptr[SamplerYcbcrConversionCreateInfo], pAllocator: Ptr[AllocationCallbacks], pYcbcrConversion: Ptr[SamplerYcbcrConversion]
+        device: Device,
+        pCreateInfo: Ptr[SamplerYcbcrConversionCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pYcbcrConversion: Ptr[SamplerYcbcrConversion, MutOrigin.external],
     ) -> Result
     var destroy_sampler_ycbcr_conversion: fn(
-        device: Device, ycbcrConversion: SamplerYcbcrConversion, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        ycbcrConversion: SamplerYcbcrConversion,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var create_descriptor_update_template: fn(
-        device: Device, pCreateInfo: Ptr[DescriptorUpdateTemplateCreateInfo], pAllocator: Ptr[AllocationCallbacks], pDescriptorUpdateTemplate: Ptr[DescriptorUpdateTemplate]
+        device: Device,
+        pCreateInfo: Ptr[DescriptorUpdateTemplateCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pDescriptorUpdateTemplate: Ptr[DescriptorUpdateTemplate, MutOrigin.external],
     ) -> Result
     var destroy_descriptor_update_template: fn(
-        device: Device, descriptorUpdateTemplate: DescriptorUpdateTemplate, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        descriptorUpdateTemplate: DescriptorUpdateTemplate,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var update_descriptor_set_with_template: fn(
-        device: Device, descriptorSet: DescriptorSet, descriptorUpdateTemplate: DescriptorUpdateTemplate, pData: Ptr[NoneType]
+        device: Device,
+        descriptorSet: DescriptorSet,
+        descriptorUpdateTemplate: DescriptorUpdateTemplate,
+        pData: Ptr[NoneType, ImmutOrigin.external],
     )
     var get_descriptor_set_layout_support: fn(
-        device: Device, pCreateInfo: Ptr[DescriptorSetLayoutCreateInfo], pSupport: Ptr[DescriptorSetLayoutSupport]
+        device: Device,
+        pCreateInfo: Ptr[DescriptorSetLayoutCreateInfo, ImmutOrigin.external],
+        pSupport: Ptr[DescriptorSetLayoutSupport, MutOrigin.external],
     )
 
-    fn __init__(out self, device: Device, handle: DLHandle) raises:
+    fn __init__(out self, device: Device, handle: OwnedDLHandle) raises:
         get_device_proc_addr = handle.get_function[
-            fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self.bind_buffer_memory_2 = Ptr(to=get_device_proc_addr(
             device, "vkBindBufferMemory2".unsafe_ptr()
@@ -14111,48 +14964,67 @@ struct DeviceFunctionAdditionsV1_1(Copyable, Movable):
 
 struct DeviceFunctionAdditionsV1_2(Copyable, Movable):
     var cmd_draw_indirect_count: fn(
-        commandBuffer: CommandBuffer, buffer: Buffer, offset: DeviceSize, countBuffer: Buffer, countBufferOffset: DeviceSize, maxDrawCount: UInt32, stride: UInt32
+        commandBuffer: CommandBuffer,
+        buffer: Buffer,
+        offset: DeviceSize,
+        countBuffer: Buffer,
+        countBufferOffset: DeviceSize,
+        maxDrawCount: UInt32,
+        stride: UInt32,
     )
     var cmd_draw_indexed_indirect_count: fn(
-        commandBuffer: CommandBuffer, buffer: Buffer, offset: DeviceSize, countBuffer: Buffer, countBufferOffset: DeviceSize, maxDrawCount: UInt32, stride: UInt32
+        commandBuffer: CommandBuffer,
+        buffer: Buffer,
+        offset: DeviceSize,
+        countBuffer: Buffer,
+        countBufferOffset: DeviceSize,
+        maxDrawCount: UInt32,
+        stride: UInt32,
     )
     var create_render_pass_2: fn(
-        device: Device, pCreateInfo: Ptr[RenderPassCreateInfo2], pAllocator: Ptr[AllocationCallbacks], pRenderPass: Ptr[RenderPass]
+        device: Device,
+        pCreateInfo: Ptr[RenderPassCreateInfo2, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pRenderPass: Ptr[RenderPass, MutOrigin.external],
     ) -> Result
     var cmd_begin_render_pass_2: fn(
-        commandBuffer: CommandBuffer, pRenderPassBegin: Ptr[RenderPassBeginInfo], pSubpassBeginInfo: Ptr[SubpassBeginInfo]
+        commandBuffer: CommandBuffer,
+        pRenderPassBegin: Ptr[RenderPassBeginInfo, ImmutOrigin.external],
+        pSubpassBeginInfo: Ptr[SubpassBeginInfo, ImmutOrigin.external],
     )
     var cmd_next_subpass_2: fn(
-        commandBuffer: CommandBuffer, pSubpassBeginInfo: Ptr[SubpassBeginInfo], pSubpassEndInfo: Ptr[SubpassEndInfo]
+        commandBuffer: CommandBuffer,
+        pSubpassBeginInfo: Ptr[SubpassBeginInfo, ImmutOrigin.external],
+        pSubpassEndInfo: Ptr[SubpassEndInfo, ImmutOrigin.external],
     )
     var cmd_end_render_pass_2: fn(
-        commandBuffer: CommandBuffer, pSubpassEndInfo: Ptr[SubpassEndInfo]
+        commandBuffer: CommandBuffer, pSubpassEndInfo: Ptr[SubpassEndInfo, ImmutOrigin.external]
     )
     var reset_query_pool: fn(
         device: Device, queryPool: QueryPool, firstQuery: UInt32, queryCount: UInt32
     )
     var get_semaphore_counter_value: fn(
-        device: Device, semaphore: Semaphore, pValue: Ptr[UInt64]
+        device: Device, semaphore: Semaphore, pValue: Ptr[UInt64, MutOrigin.external]
     ) -> Result
     var wait_semaphores: fn(
-        device: Device, pWaitInfo: Ptr[SemaphoreWaitInfo], timeout: UInt64
+        device: Device, pWaitInfo: Ptr[SemaphoreWaitInfo, ImmutOrigin.external], timeout: UInt64
     ) -> Result
     var signal_semaphore: fn(
-        device: Device, pSignalInfo: Ptr[SemaphoreSignalInfo]
+        device: Device, pSignalInfo: Ptr[SemaphoreSignalInfo, ImmutOrigin.external]
     ) -> Result
     var get_buffer_device_address: fn(
-        device: Device, pInfo: Ptr[BufferDeviceAddressInfo]
+        device: Device, pInfo: Ptr[BufferDeviceAddressInfo, ImmutOrigin.external]
     ) -> DeviceAddress
     var get_buffer_opaque_capture_address: fn(
-        device: Device, pInfo: Ptr[BufferDeviceAddressInfo]
+        device: Device, pInfo: Ptr[BufferDeviceAddressInfo, ImmutOrigin.external]
     ) -> UInt64
     var get_device_memory_opaque_capture_address: fn(
-        device: Device, pInfo: Ptr[DeviceMemoryOpaqueCaptureAddressInfo]
+        device: Device, pInfo: Ptr[DeviceMemoryOpaqueCaptureAddressInfo, ImmutOrigin.external]
     ) -> UInt64
 
-    fn __init__(out self, device: Device, handle: DLHandle) raises:
+    fn __init__(out self, device: Device, handle: OwnedDLHandle) raises:
         get_device_proc_addr = handle.get_function[
-            fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self.cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawIndirectCount".unsafe_ptr()
@@ -14197,117 +15069,150 @@ struct DeviceFunctionAdditionsV1_2(Copyable, Movable):
 
 struct DeviceFunctionAdditionsV1_3(Copyable, Movable):
     var create_private_data_slot: fn(
-        device: Device, pCreateInfo: Ptr[PrivateDataSlotCreateInfo], pAllocator: Ptr[AllocationCallbacks], pPrivateDataSlot: Ptr[PrivateDataSlot]
+        device: Device,
+        pCreateInfo: Ptr[PrivateDataSlotCreateInfo, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pPrivateDataSlot: Ptr[PrivateDataSlot, MutOrigin.external],
     ) -> Result
     var destroy_private_data_slot: fn(
-        device: Device, privateDataSlot: PrivateDataSlot, pAllocator: Ptr[AllocationCallbacks]
+        device: Device,
+        privateDataSlot: PrivateDataSlot,
+        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
     )
     var set_private_data: fn(
-        device: Device, objectType: ObjectType, objectHandle: UInt64, privateDataSlot: PrivateDataSlot, data: UInt64
+        device: Device,
+        objectType: ObjectType,
+        objectHandle: UInt64,
+        privateDataSlot: PrivateDataSlot,
+        data: UInt64,
     ) -> Result
     var get_private_data: fn(
-        device: Device, objectType: ObjectType, objectHandle: UInt64, privateDataSlot: PrivateDataSlot, pData: Ptr[UInt64]
+        device: Device,
+        objectType: ObjectType,
+        objectHandle: UInt64,
+        privateDataSlot: PrivateDataSlot,
+        pData: Ptr[UInt64, MutOrigin.external],
     )
     var cmd_set_event_2: fn(
-        commandBuffer: CommandBuffer, event: Event, pDependencyInfo: Ptr[DependencyInfo]
+        commandBuffer: CommandBuffer,
+        event: Event,
+        pDependencyInfo: Ptr[DependencyInfo, ImmutOrigin.external],
     )
     var cmd_reset_event_2: fn(
         commandBuffer: CommandBuffer, event: Event, stageMask: PipelineStageFlags2
     )
     var cmd_wait_events_2: fn(
-        commandBuffer: CommandBuffer, eventCount: UInt32, pEvents: Ptr[Event], pDependencyInfos: Ptr[DependencyInfo]
+        commandBuffer: CommandBuffer,
+        eventCount: UInt32,
+        pEvents: Ptr[Event, ImmutOrigin.external],
+        pDependencyInfos: Ptr[DependencyInfo, ImmutOrigin.external],
     )
     var cmd_pipeline_barrier_2: fn(
-        commandBuffer: CommandBuffer, pDependencyInfo: Ptr[DependencyInfo]
+        commandBuffer: CommandBuffer, pDependencyInfo: Ptr[DependencyInfo, ImmutOrigin.external]
     )
     var cmd_write_timestamp_2: fn(
-        commandBuffer: CommandBuffer, stage: PipelineStageFlags2, queryPool: QueryPool, query: UInt32
+        commandBuffer: CommandBuffer,
+        stage: PipelineStageFlags2,
+        queryPool: QueryPool,
+        query: UInt32,
     )
     var queue_submit_2: fn(
-        queue: Queue, submitCount: UInt32, pSubmits: Ptr[SubmitInfo2], fence: Fence
+        queue: Queue,
+        submitCount: UInt32,
+        pSubmits: Ptr[SubmitInfo2, ImmutOrigin.external],
+        fence: Fence,
     ) -> Result
     var cmd_copy_buffer_2: fn(
-        commandBuffer: CommandBuffer, pCopyBufferInfo: Ptr[CopyBufferInfo2]
+        commandBuffer: CommandBuffer, pCopyBufferInfo: Ptr[CopyBufferInfo2, ImmutOrigin.external]
     )
     var cmd_copy_image_2: fn(
-        commandBuffer: CommandBuffer, pCopyImageInfo: Ptr[CopyImageInfo2]
+        commandBuffer: CommandBuffer, pCopyImageInfo: Ptr[CopyImageInfo2, ImmutOrigin.external]
     )
     var cmd_copy_buffer_to_image_2: fn(
-        commandBuffer: CommandBuffer, pCopyBufferToImageInfo: Ptr[CopyBufferToImageInfo2]
+        commandBuffer: CommandBuffer,
+        pCopyBufferToImageInfo: Ptr[CopyBufferToImageInfo2, ImmutOrigin.external],
     )
     var cmd_copy_image_to_buffer_2: fn(
-        commandBuffer: CommandBuffer, pCopyImageToBufferInfo: Ptr[CopyImageToBufferInfo2]
+        commandBuffer: CommandBuffer,
+        pCopyImageToBufferInfo: Ptr[CopyImageToBufferInfo2, ImmutOrigin.external],
     )
     var cmd_blit_image_2: fn(
-        commandBuffer: CommandBuffer, pBlitImageInfo: Ptr[BlitImageInfo2]
+        commandBuffer: CommandBuffer, pBlitImageInfo: Ptr[BlitImageInfo2, ImmutOrigin.external]
     )
     var cmd_resolve_image_2: fn(
-        commandBuffer: CommandBuffer, pResolveImageInfo: Ptr[ResolveImageInfo2]
+        commandBuffer: CommandBuffer,
+        pResolveImageInfo: Ptr[ResolveImageInfo2, ImmutOrigin.external],
     )
     var cmd_begin_rendering: fn(
-        commandBuffer: CommandBuffer, pRenderingInfo: Ptr[RenderingInfo]
+        commandBuffer: CommandBuffer, pRenderingInfo: Ptr[RenderingInfo, ImmutOrigin.external]
     )
-    var cmd_end_rendering: fn(
-        commandBuffer: CommandBuffer
-    )
-    var cmd_set_cull_mode: fn(
-        commandBuffer: CommandBuffer, cullMode: CullModeFlags
-    )
-    var cmd_set_front_face: fn(
-        commandBuffer: CommandBuffer, frontFace: FrontFace
-    )
+    var cmd_end_rendering: fn(commandBuffer: CommandBuffer)
+    var cmd_set_cull_mode: fn(commandBuffer: CommandBuffer, cullMode: CullModeFlags)
+    var cmd_set_front_face: fn(commandBuffer: CommandBuffer, frontFace: FrontFace)
     var cmd_set_primitive_topology: fn(
         commandBuffer: CommandBuffer, primitiveTopology: PrimitiveTopology
     )
     var cmd_set_viewport_with_count: fn(
-        commandBuffer: CommandBuffer, viewportCount: UInt32, pViewports: Ptr[Viewport]
+        commandBuffer: CommandBuffer,
+        viewportCount: UInt32,
+        pViewports: Ptr[Viewport, ImmutOrigin.external],
     )
     var cmd_set_scissor_with_count: fn(
-        commandBuffer: CommandBuffer, scissorCount: UInt32, pScissors: Ptr[Rect2D]
+        commandBuffer: CommandBuffer,
+        scissorCount: UInt32,
+        pScissors: Ptr[Rect2D, ImmutOrigin.external],
     )
     var cmd_bind_vertex_buffers_2: fn(
-        commandBuffer: CommandBuffer, firstBinding: UInt32, bindingCount: UInt32, pBuffers: Ptr[Buffer], pOffsets: Ptr[DeviceSize], pSizes: Ptr[DeviceSize], pStrides: Ptr[DeviceSize]
+        commandBuffer: CommandBuffer,
+        firstBinding: UInt32,
+        bindingCount: UInt32,
+        pBuffers: Ptr[Buffer, ImmutOrigin.external],
+        pOffsets: Ptr[DeviceSize, ImmutOrigin.external],
+        pSizes: Ptr[DeviceSize, ImmutOrigin.external],
+        pStrides: Ptr[DeviceSize, ImmutOrigin.external],
     )
-    var cmd_set_depth_test_enable: fn(
-        commandBuffer: CommandBuffer, depthTestEnable: Bool32
-    )
-    var cmd_set_depth_write_enable: fn(
-        commandBuffer: CommandBuffer, depthWriteEnable: Bool32
-    )
-    var cmd_set_depth_compare_op: fn(
-        commandBuffer: CommandBuffer, depthCompareOp: CompareOp
-    )
+    var cmd_set_depth_test_enable: fn(commandBuffer: CommandBuffer, depthTestEnable: Bool32)
+    var cmd_set_depth_write_enable: fn(commandBuffer: CommandBuffer, depthWriteEnable: Bool32)
+    var cmd_set_depth_compare_op: fn(commandBuffer: CommandBuffer, depthCompareOp: CompareOp)
     var cmd_set_depth_bounds_test_enable: fn(
         commandBuffer: CommandBuffer, depthBoundsTestEnable: Bool32
     )
-    var cmd_set_stencil_test_enable: fn(
-        commandBuffer: CommandBuffer, stencilTestEnable: Bool32
-    )
+    var cmd_set_stencil_test_enable: fn(commandBuffer: CommandBuffer, stencilTestEnable: Bool32)
     var cmd_set_stencil_op: fn(
-        commandBuffer: CommandBuffer, faceMask: StencilFaceFlags, failOp: StencilOp, passOp: StencilOp, depthFailOp: StencilOp, compareOp: CompareOp
+        commandBuffer: CommandBuffer,
+        faceMask: StencilFaceFlags,
+        failOp: StencilOp,
+        passOp: StencilOp,
+        depthFailOp: StencilOp,
+        compareOp: CompareOp,
     )
     var cmd_set_rasterizer_discard_enable: fn(
         commandBuffer: CommandBuffer, rasterizerDiscardEnable: Bool32
     )
-    var cmd_set_depth_bias_enable: fn(
-        commandBuffer: CommandBuffer, depthBiasEnable: Bool32
-    )
+    var cmd_set_depth_bias_enable: fn(commandBuffer: CommandBuffer, depthBiasEnable: Bool32)
     var cmd_set_primitive_restart_enable: fn(
         commandBuffer: CommandBuffer, primitiveRestartEnable: Bool32
     )
     var get_device_buffer_memory_requirements: fn(
-        device: Device, pInfo: Ptr[DeviceBufferMemoryRequirements], pMemoryRequirements: Ptr[MemoryRequirements2]
+        device: Device,
+        pInfo: Ptr[DeviceBufferMemoryRequirements, ImmutOrigin.external],
+        pMemoryRequirements: Ptr[MemoryRequirements2, MutOrigin.external],
     )
     var get_device_image_memory_requirements: fn(
-        device: Device, pInfo: Ptr[DeviceImageMemoryRequirements], pMemoryRequirements: Ptr[MemoryRequirements2]
+        device: Device,
+        pInfo: Ptr[DeviceImageMemoryRequirements, ImmutOrigin.external],
+        pMemoryRequirements: Ptr[MemoryRequirements2, MutOrigin.external],
     )
     var get_device_image_sparse_memory_requirements: fn(
-        device: Device, pInfo: Ptr[DeviceImageMemoryRequirements], pSparseMemoryRequirementCount: Ptr[UInt32], pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements2]
+        device: Device,
+        pInfo: Ptr[DeviceImageMemoryRequirements, ImmutOrigin.external],
+        pSparseMemoryRequirementCount: Ptr[UInt32, MutOrigin.external],
+        pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements2, MutOrigin.external],
     )
 
-    fn __init__(out self, device: Device, handle: DLHandle) raises:
+    fn __init__(out self, device: Device, handle: OwnedDLHandle) raises:
         get_device_proc_addr = handle.get_function[
-            fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self.create_private_data_slot = Ptr(to=get_device_proc_addr(
             device, "vkCreatePrivateDataSlot".unsafe_ptr()
@@ -14424,63 +15329,93 @@ struct DeviceFunctionAdditionsV1_4(Copyable, Movable):
         commandBuffer: CommandBuffer, lineStippleFactor: UInt32, lineStipplePattern: UInt16
     )
     var map_memory_2: fn(
-        device: Device, pMemoryMapInfo: Ptr[MemoryMapInfo], ppData: Ptr[Ptr[NoneType]]
+        device: Device,
+        pMemoryMapInfo: Ptr[MemoryMapInfo, ImmutOrigin.external],
+        ppData: Ptr[Ptr[NoneType, MutOrigin.external], MutOrigin.external],
     ) -> Result
     var unmap_memory_2: fn(
-        device: Device, pMemoryUnmapInfo: Ptr[MemoryUnmapInfo]
+        device: Device, pMemoryUnmapInfo: Ptr[MemoryUnmapInfo, ImmutOrigin.external]
     ) -> Result
     var cmd_bind_index_buffer_2: fn(
-        commandBuffer: CommandBuffer, buffer: Buffer, offset: DeviceSize, size: DeviceSize, indexType: IndexType
+        commandBuffer: CommandBuffer,
+        buffer: Buffer,
+        offset: DeviceSize,
+        size: DeviceSize,
+        indexType: IndexType,
     )
     var get_rendering_area_granularity: fn(
-        device: Device, pRenderingAreaInfo: Ptr[RenderingAreaInfo], pGranularity: Ptr[Extent2D]
+        device: Device,
+        pRenderingAreaInfo: Ptr[RenderingAreaInfo, ImmutOrigin.external],
+        pGranularity: Ptr[Extent2D, MutOrigin.external],
     )
     var get_device_image_subresource_layout: fn(
-        device: Device, pInfo: Ptr[DeviceImageSubresourceInfo], pLayout: Ptr[SubresourceLayout2]
+        device: Device,
+        pInfo: Ptr[DeviceImageSubresourceInfo, ImmutOrigin.external],
+        pLayout: Ptr[SubresourceLayout2, MutOrigin.external],
     )
     var get_image_subresource_layout_2: fn(
-        device: Device, image: Image, pSubresource: Ptr[ImageSubresource2], pLayout: Ptr[SubresourceLayout2]
+        device: Device,
+        image: Image,
+        pSubresource: Ptr[ImageSubresource2, ImmutOrigin.external],
+        pLayout: Ptr[SubresourceLayout2, MutOrigin.external],
     )
     var cmd_push_descriptor_set: fn(
-        commandBuffer: CommandBuffer, pipelineBindPoint: PipelineBindPoint, layout: PipelineLayout, set: UInt32, descriptorWriteCount: UInt32, pDescriptorWrites: Ptr[WriteDescriptorSet]
+        commandBuffer: CommandBuffer,
+        pipelineBindPoint: PipelineBindPoint,
+        layout: PipelineLayout,
+        set: UInt32,
+        descriptorWriteCount: UInt32,
+        pDescriptorWrites: Ptr[WriteDescriptorSet, ImmutOrigin.external],
     )
     var cmd_push_descriptor_set_with_template: fn(
-        commandBuffer: CommandBuffer, descriptorUpdateTemplate: DescriptorUpdateTemplate, layout: PipelineLayout, set: UInt32, pData: Ptr[NoneType]
+        commandBuffer: CommandBuffer,
+        descriptorUpdateTemplate: DescriptorUpdateTemplate,
+        layout: PipelineLayout,
+        set: UInt32,
+        pData: Ptr[NoneType, ImmutOrigin.external],
     )
     var cmd_set_rendering_attachment_locations: fn(
-        commandBuffer: CommandBuffer, pLocationInfo: Ptr[RenderingAttachmentLocationInfo]
+        commandBuffer: CommandBuffer,
+        pLocationInfo: Ptr[RenderingAttachmentLocationInfo, ImmutOrigin.external],
     )
     var cmd_set_rendering_input_attachment_indices: fn(
-        commandBuffer: CommandBuffer, pInputAttachmentIndexInfo: Ptr[RenderingInputAttachmentIndexInfo]
+        commandBuffer: CommandBuffer,
+        pInputAttachmentIndexInfo: Ptr[RenderingInputAttachmentIndexInfo, ImmutOrigin.external],
     )
     var cmd_bind_descriptor_sets_2: fn(
-        commandBuffer: CommandBuffer, pBindDescriptorSetsInfo: Ptr[BindDescriptorSetsInfo]
+        commandBuffer: CommandBuffer,
+        pBindDescriptorSetsInfo: Ptr[BindDescriptorSetsInfo, ImmutOrigin.external],
     )
     var cmd_push_constants_2: fn(
-        commandBuffer: CommandBuffer, pPushConstantsInfo: Ptr[PushConstantsInfo]
+        commandBuffer: CommandBuffer,
+        pPushConstantsInfo: Ptr[PushConstantsInfo, ImmutOrigin.external],
     )
     var cmd_push_descriptor_set_2: fn(
-        commandBuffer: CommandBuffer, pPushDescriptorSetInfo: Ptr[PushDescriptorSetInfo]
+        commandBuffer: CommandBuffer,
+        pPushDescriptorSetInfo: Ptr[PushDescriptorSetInfo, ImmutOrigin.external],
     )
     var cmd_push_descriptor_set_with_template_2: fn(
-        commandBuffer: CommandBuffer, pPushDescriptorSetWithTemplateInfo: Ptr[PushDescriptorSetWithTemplateInfo]
+        commandBuffer: CommandBuffer,
+        pPushDescriptorSetWithTemplateInfo: Ptr[PushDescriptorSetWithTemplateInfo, ImmutOrigin.external],
     )
     var copy_memory_to_image: fn(
-        device: Device, pCopyMemoryToImageInfo: Ptr[CopyMemoryToImageInfo]
+        device: Device, pCopyMemoryToImageInfo: Ptr[CopyMemoryToImageInfo, ImmutOrigin.external]
     ) -> Result
     var copy_image_to_memory: fn(
-        device: Device, pCopyImageToMemoryInfo: Ptr[CopyImageToMemoryInfo]
+        device: Device, pCopyImageToMemoryInfo: Ptr[CopyImageToMemoryInfo, ImmutOrigin.external]
     ) -> Result
     var copy_image_to_image: fn(
-        device: Device, pCopyImageToImageInfo: Ptr[CopyImageToImageInfo]
+        device: Device, pCopyImageToImageInfo: Ptr[CopyImageToImageInfo, ImmutOrigin.external]
     ) -> Result
     var transition_image_layout: fn(
-        device: Device, transitionCount: UInt32, pTransitions: Ptr[HostImageLayoutTransitionInfo]
+        device: Device,
+        transitionCount: UInt32,
+        pTransitions: Ptr[HostImageLayoutTransitionInfo, ImmutOrigin.external],
     ) -> Result
 
-    fn __init__(out self, device: Device, handle: DLHandle) raises:
+    fn __init__(out self, device: Device, handle: OwnedDLHandle) raises:
         get_device_proc_addr = handle.get_function[
-            fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self.cmd_set_line_stipple = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetLineStipple".unsafe_ptr()

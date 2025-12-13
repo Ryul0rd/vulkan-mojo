@@ -11,7 +11,8 @@ package = "mojo package vk -o vk.mojopkg"
 build = {depends-on = ["bindgen", "package"]}
 
 [build-dependencies]
+max = "==26.1.0.dev2025120805"
 python = ">=3.10,<3.11"
 
-[dependencies]
-max = ">=25.6.0.dev2025092105,<26"
+[host-dependencies]
+max = ">=26.1.0.dev2025120805,<26"

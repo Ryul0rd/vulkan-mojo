@@ -1,39 +1,39 @@
-alias MemoryUnmapFlagsKHR = MemoryUnmapFlags
-alias GeometryFlagsNV = GeometryFlagsKHR
-alias GeometryInstanceFlagsNV = GeometryInstanceFlagsKHR
-alias BuildAccelerationStructureFlagsNV = BuildAccelerationStructureFlagsKHR
-alias PrivateDataSlotCreateFlagsEXT = PrivateDataSlotCreateFlags
-alias DescriptorUpdateTemplateCreateFlagsKHR = DescriptorUpdateTemplateCreateFlags
-alias PipelineCreationFeedbackFlagsEXT = PipelineCreationFeedbackFlags
-alias SemaphoreWaitFlagsKHR = SemaphoreWaitFlags
-alias AccessFlags2KHR = AccessFlags2
-alias PipelineStageFlags2KHR = PipelineStageFlags2
-alias FormatFeatureFlags2KHR = FormatFeatureFlags2
-alias RenderingFlagsKHR = RenderingFlags
-alias PipelineCreateFlags2KHR = PipelineCreateFlags2
-alias BufferUsageFlags2KHR = BufferUsageFlags2
-alias PeerMemoryFeatureFlagsKHR = PeerMemoryFeatureFlags
-alias MemoryAllocateFlagsKHR = MemoryAllocateFlags
-alias CommandPoolTrimFlagsKHR = CommandPoolTrimFlags
-alias ExternalMemoryHandleTypeFlagsKHR = ExternalMemoryHandleTypeFlags
-alias ExternalMemoryFeatureFlagsKHR = ExternalMemoryFeatureFlags
-alias ExternalSemaphoreHandleTypeFlagsKHR = ExternalSemaphoreHandleTypeFlags
-alias ExternalSemaphoreFeatureFlagsKHR = ExternalSemaphoreFeatureFlags
-alias SemaphoreImportFlagsKHR = SemaphoreImportFlags
-alias ExternalFenceHandleTypeFlagsKHR = ExternalFenceHandleTypeFlags
-alias ExternalFenceFeatureFlagsKHR = ExternalFenceFeatureFlags
-alias FenceImportFlagsKHR = FenceImportFlags
-alias DescriptorBindingFlagsEXT = DescriptorBindingFlags
-alias ResolveModeFlagsKHR = ResolveModeFlags
-alias ToolPurposeFlagsEXT = ToolPurposeFlags
-alias SubmitFlagsKHR = SubmitFlags
-alias HostImageCopyFlagsEXT = HostImageCopyFlags
-alias PresentScalingFlagsEXT = PresentScalingFlagsKHR
-alias PresentGravityFlagsEXT = PresentGravityFlagsKHR
+comptime MemoryUnmapFlagsKHR = MemoryUnmapFlags
+comptime GeometryFlagsNV = GeometryFlagsKHR
+comptime GeometryInstanceFlagsNV = GeometryInstanceFlagsKHR
+comptime BuildAccelerationStructureFlagsNV = BuildAccelerationStructureFlagsKHR
+comptime PrivateDataSlotCreateFlagsEXT = PrivateDataSlotCreateFlags
+comptime DescriptorUpdateTemplateCreateFlagsKHR = DescriptorUpdateTemplateCreateFlags
+comptime PipelineCreationFeedbackFlagsEXT = PipelineCreationFeedbackFlags
+comptime SemaphoreWaitFlagsKHR = SemaphoreWaitFlags
+comptime AccessFlags2KHR = AccessFlags2
+comptime PipelineStageFlags2KHR = PipelineStageFlags2
+comptime FormatFeatureFlags2KHR = FormatFeatureFlags2
+comptime RenderingFlagsKHR = RenderingFlags
+comptime PipelineCreateFlags2KHR = PipelineCreateFlags2
+comptime BufferUsageFlags2KHR = BufferUsageFlags2
+comptime PeerMemoryFeatureFlagsKHR = PeerMemoryFeatureFlags
+comptime MemoryAllocateFlagsKHR = MemoryAllocateFlags
+comptime CommandPoolTrimFlagsKHR = CommandPoolTrimFlags
+comptime ExternalMemoryHandleTypeFlagsKHR = ExternalMemoryHandleTypeFlags
+comptime ExternalMemoryFeatureFlagsKHR = ExternalMemoryFeatureFlags
+comptime ExternalSemaphoreHandleTypeFlagsKHR = ExternalSemaphoreHandleTypeFlags
+comptime ExternalSemaphoreFeatureFlagsKHR = ExternalSemaphoreFeatureFlags
+comptime SemaphoreImportFlagsKHR = SemaphoreImportFlags
+comptime ExternalFenceHandleTypeFlagsKHR = ExternalFenceHandleTypeFlags
+comptime ExternalFenceFeatureFlagsKHR = ExternalFenceFeatureFlags
+comptime FenceImportFlagsKHR = FenceImportFlags
+comptime DescriptorBindingFlagsEXT = DescriptorBindingFlags
+comptime ResolveModeFlagsKHR = ResolveModeFlags
+comptime ToolPurposeFlagsEXT = ToolPurposeFlags
+comptime SubmitFlagsKHR = SubmitFlags
+comptime HostImageCopyFlagsEXT = HostImageCopyFlags
+comptime PresentScalingFlagsEXT = PresentScalingFlagsKHR
+comptime PresentGravityFlagsEXT = PresentGravityFlagsKHR
 
 
 @register_passable("trivial")
-struct FramebufferCreateFlags(EqualityComparable):
+struct FramebufferCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -61,9 +61,8 @@ struct FramebufferCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct FramebufferCreateFlagBits:
+struct FramebufferCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -75,15 +74,12 @@ struct FramebufferCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> FramebufferCreateFlags:
         return FramebufferCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct QueryPoolCreateFlags(EqualityComparable):
+struct QueryPoolCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -111,9 +107,8 @@ struct QueryPoolCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct QueryPoolCreateFlagBits:
+struct QueryPoolCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -125,15 +120,12 @@ struct QueryPoolCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> QueryPoolCreateFlags:
         return QueryPoolCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct RenderPassCreateFlags(EqualityComparable):
+struct RenderPassCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -161,9 +153,8 @@ struct RenderPassCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct RenderPassCreateFlagBits:
+struct RenderPassCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -175,15 +166,12 @@ struct RenderPassCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> RenderPassCreateFlags:
         return RenderPassCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SamplerCreateFlags(EqualityComparable):
+struct SamplerCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -211,9 +199,8 @@ struct SamplerCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct SamplerCreateFlagBits:
+struct SamplerCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -225,15 +212,12 @@ struct SamplerCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SamplerCreateFlags:
         return SamplerCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineLayoutCreateFlags(EqualityComparable):
+struct PipelineLayoutCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -261,9 +245,8 @@ struct PipelineLayoutCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineLayoutCreateFlagBits:
+struct PipelineLayoutCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -275,15 +258,12 @@ struct PipelineLayoutCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineLayoutCreateFlags:
         return PipelineLayoutCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineCacheCreateFlags(EqualityComparable):
+struct PipelineCacheCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -311,9 +291,8 @@ struct PipelineCacheCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineCacheCreateFlagBits:
+struct PipelineCacheCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -325,15 +304,12 @@ struct PipelineCacheCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineCacheCreateFlags:
         return PipelineCacheCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineDepthStencilStateCreateFlags(EqualityComparable):
+struct PipelineDepthStencilStateCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -361,9 +337,8 @@ struct PipelineDepthStencilStateCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineDepthStencilStateCreateFlagBits:
+struct PipelineDepthStencilStateCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -375,15 +350,12 @@ struct PipelineDepthStencilStateCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineDepthStencilStateCreateFlags:
         return PipelineDepthStencilStateCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineDynamicStateCreateFlags(EqualityComparable):
+struct PipelineDynamicStateCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -411,9 +383,8 @@ struct PipelineDynamicStateCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineDynamicStateCreateFlagBits:
+struct PipelineDynamicStateCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -425,15 +396,12 @@ struct PipelineDynamicStateCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineDynamicStateCreateFlags:
         return PipelineDynamicStateCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineColorBlendStateCreateFlags(EqualityComparable):
+struct PipelineColorBlendStateCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -461,9 +429,8 @@ struct PipelineColorBlendStateCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineColorBlendStateCreateFlagBits:
+struct PipelineColorBlendStateCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -475,15 +442,12 @@ struct PipelineColorBlendStateCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineColorBlendStateCreateFlags:
         return PipelineColorBlendStateCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineMultisampleStateCreateFlags(EqualityComparable):
+struct PipelineMultisampleStateCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -511,9 +475,8 @@ struct PipelineMultisampleStateCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineMultisampleStateCreateFlagBits:
+struct PipelineMultisampleStateCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -525,15 +488,12 @@ struct PipelineMultisampleStateCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineMultisampleStateCreateFlags:
         return PipelineMultisampleStateCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineRasterizationStateCreateFlags(EqualityComparable):
+struct PipelineRasterizationStateCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -561,9 +521,8 @@ struct PipelineRasterizationStateCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineRasterizationStateCreateFlagBits:
+struct PipelineRasterizationStateCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -575,15 +534,12 @@ struct PipelineRasterizationStateCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineRasterizationStateCreateFlags:
         return PipelineRasterizationStateCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineViewportStateCreateFlags(EqualityComparable):
+struct PipelineViewportStateCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -611,9 +567,8 @@ struct PipelineViewportStateCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineViewportStateCreateFlagBits:
+struct PipelineViewportStateCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -625,15 +580,12 @@ struct PipelineViewportStateCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineViewportStateCreateFlags:
         return PipelineViewportStateCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineTessellationStateCreateFlags(EqualityComparable):
+struct PipelineTessellationStateCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -661,9 +613,8 @@ struct PipelineTessellationStateCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineTessellationStateCreateFlagBits:
+struct PipelineTessellationStateCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -675,15 +626,12 @@ struct PipelineTessellationStateCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineTessellationStateCreateFlags:
         return PipelineTessellationStateCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineInputAssemblyStateCreateFlags(EqualityComparable):
+struct PipelineInputAssemblyStateCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -711,9 +659,8 @@ struct PipelineInputAssemblyStateCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineInputAssemblyStateCreateFlagBits:
+struct PipelineInputAssemblyStateCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -725,15 +672,12 @@ struct PipelineInputAssemblyStateCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineInputAssemblyStateCreateFlags:
         return PipelineInputAssemblyStateCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineVertexInputStateCreateFlags(EqualityComparable):
+struct PipelineVertexInputStateCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -761,9 +705,8 @@ struct PipelineVertexInputStateCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineVertexInputStateCreateFlagBits:
+struct PipelineVertexInputStateCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -775,15 +718,12 @@ struct PipelineVertexInputStateCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineVertexInputStateCreateFlags:
         return PipelineVertexInputStateCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineShaderStageCreateFlags(EqualityComparable):
+struct PipelineShaderStageCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -811,9 +751,8 @@ struct PipelineShaderStageCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineShaderStageCreateFlagBits:
+struct PipelineShaderStageCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -825,15 +764,12 @@ struct PipelineShaderStageCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineShaderStageCreateFlags:
         return PipelineShaderStageCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DescriptorSetLayoutCreateFlags(EqualityComparable):
+struct DescriptorSetLayoutCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -861,9 +797,8 @@ struct DescriptorSetLayoutCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct DescriptorSetLayoutCreateFlagBits:
+struct DescriptorSetLayoutCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -875,15 +810,12 @@ struct DescriptorSetLayoutCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DescriptorSetLayoutCreateFlags:
         return DescriptorSetLayoutCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct BufferViewCreateFlags(EqualityComparable):
+struct BufferViewCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -911,9 +843,8 @@ struct BufferViewCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct BufferViewCreateFlagBits:
+struct BufferViewCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -925,15 +856,12 @@ struct BufferViewCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> BufferViewCreateFlags:
         return BufferViewCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct InstanceCreateFlags(EqualityComparable):
+struct InstanceCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -961,9 +889,8 @@ struct InstanceCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct InstanceCreateFlagBits:
+struct InstanceCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -975,15 +902,12 @@ struct InstanceCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> InstanceCreateFlags:
         return InstanceCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DeviceCreateFlags(EqualityComparable):
+struct DeviceCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1011,9 +935,8 @@ struct DeviceCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct DeviceCreateFlagBits:
+struct DeviceCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1025,15 +948,12 @@ struct DeviceCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DeviceCreateFlags:
         return DeviceCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DeviceQueueCreateFlags(EqualityComparable):
+struct DeviceQueueCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1061,9 +981,8 @@ struct DeviceQueueCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct DeviceQueueCreateFlagBits:
+struct DeviceQueueCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1075,15 +994,12 @@ struct DeviceQueueCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DeviceQueueCreateFlags:
         return DeviceQueueCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct QueueFlags(EqualityComparable):
+struct QueueFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1110,15 +1026,14 @@ struct QueueFlags(EqualityComparable):
     fn __contains__(self, bit: QueueFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias GRAPHICS = QueueFlagBits(raw = 1 << 0)
-    alias COMPUTE = QueueFlagBits(raw = 1 << 1)
-    alias TRANSFER = QueueFlagBits(raw = 1 << 2)
-    alias SPARSE_BINDING = QueueFlagBits(raw = 1 << 3)
+    comptime GRAPHICS = QueueFlagBits(raw = 1 << 0)
+    comptime COMPUTE = QueueFlagBits(raw = 1 << 1)
+    comptime TRANSFER = QueueFlagBits(raw = 1 << 2)
+    comptime SPARSE_BINDING = QueueFlagBits(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct QueueFlagBits:
+struct QueueFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1130,15 +1045,12 @@ struct QueueFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> QueueFlags:
         return QueueFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct MemoryPropertyFlags(EqualityComparable):
+struct MemoryPropertyFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1165,16 +1077,15 @@ struct MemoryPropertyFlags(EqualityComparable):
     fn __contains__(self, bit: MemoryPropertyFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DEVICE_LOCAL = MemoryPropertyFlagBits(raw = 1 << 0)
-    alias HOST_VISIBLE = MemoryPropertyFlagBits(raw = 1 << 1)
-    alias HOST_COHERENT = MemoryPropertyFlagBits(raw = 1 << 2)
-    alias HOST_CACHED = MemoryPropertyFlagBits(raw = 1 << 3)
-    alias LAZILY_ALLOCATED = MemoryPropertyFlagBits(raw = 1 << 4)
+    comptime DEVICE_LOCAL = MemoryPropertyFlagBits(raw = 1 << 0)
+    comptime HOST_VISIBLE = MemoryPropertyFlagBits(raw = 1 << 1)
+    comptime HOST_COHERENT = MemoryPropertyFlagBits(raw = 1 << 2)
+    comptime HOST_CACHED = MemoryPropertyFlagBits(raw = 1 << 3)
+    comptime LAZILY_ALLOCATED = MemoryPropertyFlagBits(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct MemoryPropertyFlagBits:
+struct MemoryPropertyFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1186,15 +1097,12 @@ struct MemoryPropertyFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> MemoryPropertyFlags:
         return MemoryPropertyFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct MemoryHeapFlags(EqualityComparable):
+struct MemoryHeapFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1221,12 +1129,11 @@ struct MemoryHeapFlags(EqualityComparable):
     fn __contains__(self, bit: MemoryHeapFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DEVICE_LOCAL = MemoryHeapFlagBits(raw = 1 << 0)
+    comptime DEVICE_LOCAL = MemoryHeapFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct MemoryHeapFlagBits:
+struct MemoryHeapFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1238,15 +1145,12 @@ struct MemoryHeapFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> MemoryHeapFlags:
         return MemoryHeapFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct AccessFlags(EqualityComparable):
+struct AccessFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1273,28 +1177,27 @@ struct AccessFlags(EqualityComparable):
     fn __contains__(self, bit: AccessFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias INDIRECT_COMMAND_READ = AccessFlagBits(raw = 1 << 0)
-    alias INDEX_READ = AccessFlagBits(raw = 1 << 1)
-    alias VERTEX_ATTRIBUTE_READ = AccessFlagBits(raw = 1 << 2)
-    alias UNIFORM_READ = AccessFlagBits(raw = 1 << 3)
-    alias INPUT_ATTACHMENT_READ = AccessFlagBits(raw = 1 << 4)
-    alias SHADER_READ = AccessFlagBits(raw = 1 << 5)
-    alias SHADER_WRITE = AccessFlagBits(raw = 1 << 6)
-    alias COLOR_ATTACHMENT_READ = AccessFlagBits(raw = 1 << 7)
-    alias COLOR_ATTACHMENT_WRITE = AccessFlagBits(raw = 1 << 8)
-    alias DEPTH_STENCIL_ATTACHMENT_READ = AccessFlagBits(raw = 1 << 9)
-    alias DEPTH_STENCIL_ATTACHMENT_WRITE = AccessFlagBits(raw = 1 << 10)
-    alias TRANSFER_READ = AccessFlagBits(raw = 1 << 11)
-    alias TRANSFER_WRITE = AccessFlagBits(raw = 1 << 12)
-    alias HOST_READ = AccessFlagBits(raw = 1 << 13)
-    alias HOST_WRITE = AccessFlagBits(raw = 1 << 14)
-    alias MEMORY_READ = AccessFlagBits(raw = 1 << 15)
-    alias MEMORY_WRITE = AccessFlagBits(raw = 1 << 16)
+    comptime INDIRECT_COMMAND_READ = AccessFlagBits(raw = 1 << 0)
+    comptime INDEX_READ = AccessFlagBits(raw = 1 << 1)
+    comptime VERTEX_ATTRIBUTE_READ = AccessFlagBits(raw = 1 << 2)
+    comptime UNIFORM_READ = AccessFlagBits(raw = 1 << 3)
+    comptime INPUT_ATTACHMENT_READ = AccessFlagBits(raw = 1 << 4)
+    comptime SHADER_READ = AccessFlagBits(raw = 1 << 5)
+    comptime SHADER_WRITE = AccessFlagBits(raw = 1 << 6)
+    comptime COLOR_ATTACHMENT_READ = AccessFlagBits(raw = 1 << 7)
+    comptime COLOR_ATTACHMENT_WRITE = AccessFlagBits(raw = 1 << 8)
+    comptime DEPTH_STENCIL_ATTACHMENT_READ = AccessFlagBits(raw = 1 << 9)
+    comptime DEPTH_STENCIL_ATTACHMENT_WRITE = AccessFlagBits(raw = 1 << 10)
+    comptime TRANSFER_READ = AccessFlagBits(raw = 1 << 11)
+    comptime TRANSFER_WRITE = AccessFlagBits(raw = 1 << 12)
+    comptime HOST_READ = AccessFlagBits(raw = 1 << 13)
+    comptime HOST_WRITE = AccessFlagBits(raw = 1 << 14)
+    comptime MEMORY_READ = AccessFlagBits(raw = 1 << 15)
+    comptime MEMORY_WRITE = AccessFlagBits(raw = 1 << 16)
 
 
 @register_passable("trivial")
-struct AccessFlagBits:
+struct AccessFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1306,15 +1209,12 @@ struct AccessFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> AccessFlags:
         return AccessFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct BufferUsageFlags(EqualityComparable):
+struct BufferUsageFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1341,20 +1241,19 @@ struct BufferUsageFlags(EqualityComparable):
     fn __contains__(self, bit: BufferUsageFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias TRANSFER_SRC = BufferUsageFlagBits(raw = 1 << 0)
-    alias TRANSFER_DST = BufferUsageFlagBits(raw = 1 << 1)
-    alias UNIFORM_TEXEL_BUFFER = BufferUsageFlagBits(raw = 1 << 2)
-    alias STORAGE_TEXEL_BUFFER = BufferUsageFlagBits(raw = 1 << 3)
-    alias UNIFORM_BUFFER = BufferUsageFlagBits(raw = 1 << 4)
-    alias STORAGE_BUFFER = BufferUsageFlagBits(raw = 1 << 5)
-    alias INDEX_BUFFER = BufferUsageFlagBits(raw = 1 << 6)
-    alias VERTEX_BUFFER = BufferUsageFlagBits(raw = 1 << 7)
-    alias INDIRECT_BUFFER = BufferUsageFlagBits(raw = 1 << 8)
+    comptime TRANSFER_SRC = BufferUsageFlagBits(raw = 1 << 0)
+    comptime TRANSFER_DST = BufferUsageFlagBits(raw = 1 << 1)
+    comptime UNIFORM_TEXEL_BUFFER = BufferUsageFlagBits(raw = 1 << 2)
+    comptime STORAGE_TEXEL_BUFFER = BufferUsageFlagBits(raw = 1 << 3)
+    comptime UNIFORM_BUFFER = BufferUsageFlagBits(raw = 1 << 4)
+    comptime STORAGE_BUFFER = BufferUsageFlagBits(raw = 1 << 5)
+    comptime INDEX_BUFFER = BufferUsageFlagBits(raw = 1 << 6)
+    comptime VERTEX_BUFFER = BufferUsageFlagBits(raw = 1 << 7)
+    comptime INDIRECT_BUFFER = BufferUsageFlagBits(raw = 1 << 8)
 
 
 @register_passable("trivial")
-struct BufferUsageFlagBits:
+struct BufferUsageFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1366,15 +1265,12 @@ struct BufferUsageFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> BufferUsageFlags:
         return BufferUsageFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct BufferCreateFlags(EqualityComparable):
+struct BufferCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1401,14 +1297,13 @@ struct BufferCreateFlags(EqualityComparable):
     fn __contains__(self, bit: BufferCreateFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias SPARSE_BINDING = BufferCreateFlagBits(raw = 1 << 0)
-    alias SPARSE_RESIDENCY = BufferCreateFlagBits(raw = 1 << 1)
-    alias SPARSE_ALIASED = BufferCreateFlagBits(raw = 1 << 2)
+    comptime SPARSE_BINDING = BufferCreateFlagBits(raw = 1 << 0)
+    comptime SPARSE_RESIDENCY = BufferCreateFlagBits(raw = 1 << 1)
+    comptime SPARSE_ALIASED = BufferCreateFlagBits(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct BufferCreateFlagBits:
+struct BufferCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1420,15 +1315,12 @@ struct BufferCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> BufferCreateFlags:
         return BufferCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ShaderStageFlags(EqualityComparable):
+struct ShaderStageFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1455,19 +1347,18 @@ struct ShaderStageFlags(EqualityComparable):
     fn __contains__(self, bit: ShaderStageFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias ALL_GRAPHICS = ShaderStageFlagBits(raw = 31)
-    alias ALL = ShaderStageFlagBits(raw = 2147483647)
-    alias VERTEX = ShaderStageFlagBits(raw = 1 << 0)
-    alias TESSELLATION_CONTROL = ShaderStageFlagBits(raw = 1 << 1)
-    alias TESSELLATION_EVALUATION = ShaderStageFlagBits(raw = 1 << 2)
-    alias GEOMETRY = ShaderStageFlagBits(raw = 1 << 3)
-    alias FRAGMENT = ShaderStageFlagBits(raw = 1 << 4)
-    alias COMPUTE = ShaderStageFlagBits(raw = 1 << 5)
+    comptime ALL_GRAPHICS = ShaderStageFlagBits(raw = 31)
+    comptime ALL = ShaderStageFlagBits(raw = 2147483647)
+    comptime VERTEX = ShaderStageFlagBits(raw = 1 << 0)
+    comptime TESSELLATION_CONTROL = ShaderStageFlagBits(raw = 1 << 1)
+    comptime TESSELLATION_EVALUATION = ShaderStageFlagBits(raw = 1 << 2)
+    comptime GEOMETRY = ShaderStageFlagBits(raw = 1 << 3)
+    comptime FRAGMENT = ShaderStageFlagBits(raw = 1 << 4)
+    comptime COMPUTE = ShaderStageFlagBits(raw = 1 << 5)
 
 
 @register_passable("trivial")
-struct ShaderStageFlagBits:
+struct ShaderStageFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1479,15 +1370,12 @@ struct ShaderStageFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ShaderStageFlags:
         return ShaderStageFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ImageUsageFlags(EqualityComparable):
+struct ImageUsageFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1514,19 +1402,18 @@ struct ImageUsageFlags(EqualityComparable):
     fn __contains__(self, bit: ImageUsageFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias TRANSFER_SRC = ImageUsageFlagBits(raw = 1 << 0)
-    alias TRANSFER_DST = ImageUsageFlagBits(raw = 1 << 1)
-    alias SAMPLED = ImageUsageFlagBits(raw = 1 << 2)
-    alias STORAGE = ImageUsageFlagBits(raw = 1 << 3)
-    alias COLOR_ATTACHMENT = ImageUsageFlagBits(raw = 1 << 4)
-    alias DEPTH_STENCIL_ATTACHMENT = ImageUsageFlagBits(raw = 1 << 5)
-    alias TRANSIENT_ATTACHMENT = ImageUsageFlagBits(raw = 1 << 6)
-    alias INPUT_ATTACHMENT = ImageUsageFlagBits(raw = 1 << 7)
+    comptime TRANSFER_SRC = ImageUsageFlagBits(raw = 1 << 0)
+    comptime TRANSFER_DST = ImageUsageFlagBits(raw = 1 << 1)
+    comptime SAMPLED = ImageUsageFlagBits(raw = 1 << 2)
+    comptime STORAGE = ImageUsageFlagBits(raw = 1 << 3)
+    comptime COLOR_ATTACHMENT = ImageUsageFlagBits(raw = 1 << 4)
+    comptime DEPTH_STENCIL_ATTACHMENT = ImageUsageFlagBits(raw = 1 << 5)
+    comptime TRANSIENT_ATTACHMENT = ImageUsageFlagBits(raw = 1 << 6)
+    comptime INPUT_ATTACHMENT = ImageUsageFlagBits(raw = 1 << 7)
 
 
 @register_passable("trivial")
-struct ImageUsageFlagBits:
+struct ImageUsageFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1538,15 +1425,12 @@ struct ImageUsageFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ImageUsageFlags:
         return ImageUsageFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ImageCreateFlags(EqualityComparable):
+struct ImageCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1573,16 +1457,15 @@ struct ImageCreateFlags(EqualityComparable):
     fn __contains__(self, bit: ImageCreateFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias SPARSE_BINDING = ImageCreateFlagBits(raw = 1 << 0)
-    alias SPARSE_RESIDENCY = ImageCreateFlagBits(raw = 1 << 1)
-    alias SPARSE_ALIASED = ImageCreateFlagBits(raw = 1 << 2)
-    alias MUTABLE_FORMAT = ImageCreateFlagBits(raw = 1 << 3)
-    alias CUBE_COMPATIBLE = ImageCreateFlagBits(raw = 1 << 4)
+    comptime SPARSE_BINDING = ImageCreateFlagBits(raw = 1 << 0)
+    comptime SPARSE_RESIDENCY = ImageCreateFlagBits(raw = 1 << 1)
+    comptime SPARSE_ALIASED = ImageCreateFlagBits(raw = 1 << 2)
+    comptime MUTABLE_FORMAT = ImageCreateFlagBits(raw = 1 << 3)
+    comptime CUBE_COMPATIBLE = ImageCreateFlagBits(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct ImageCreateFlagBits:
+struct ImageCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1594,15 +1477,12 @@ struct ImageCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ImageCreateFlags:
         return ImageCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ImageViewCreateFlags(EqualityComparable):
+struct ImageViewCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1630,9 +1510,8 @@ struct ImageViewCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct ImageViewCreateFlagBits:
+struct ImageViewCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1644,15 +1523,12 @@ struct ImageViewCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ImageViewCreateFlags:
         return ImageViewCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineCreateFlags(EqualityComparable):
+struct PipelineCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1679,14 +1555,13 @@ struct PipelineCreateFlags(EqualityComparable):
     fn __contains__(self, bit: PipelineCreateFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DISABLE_OPTIMIZATION = PipelineCreateFlagBits(raw = 1 << 0)
-    alias ALLOW_DERIVATIVES = PipelineCreateFlagBits(raw = 1 << 1)
-    alias DERIVATIVE = PipelineCreateFlagBits(raw = 1 << 2)
+    comptime DISABLE_OPTIMIZATION = PipelineCreateFlagBits(raw = 1 << 0)
+    comptime ALLOW_DERIVATIVES = PipelineCreateFlagBits(raw = 1 << 1)
+    comptime DERIVATIVE = PipelineCreateFlagBits(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct PipelineCreateFlagBits:
+struct PipelineCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1698,15 +1573,12 @@ struct PipelineCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineCreateFlags:
         return PipelineCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ColorComponentFlags(EqualityComparable):
+struct ColorComponentFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1733,15 +1605,14 @@ struct ColorComponentFlags(EqualityComparable):
     fn __contains__(self, bit: ColorComponentFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias R = ColorComponentFlagBits(raw = 1 << 0)
-    alias G = ColorComponentFlagBits(raw = 1 << 1)
-    alias B = ColorComponentFlagBits(raw = 1 << 2)
-    alias A = ColorComponentFlagBits(raw = 1 << 3)
+    comptime R = ColorComponentFlagBits(raw = 1 << 0)
+    comptime G = ColorComponentFlagBits(raw = 1 << 1)
+    comptime B = ColorComponentFlagBits(raw = 1 << 2)
+    comptime A = ColorComponentFlagBits(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct ColorComponentFlagBits:
+struct ColorComponentFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1753,15 +1624,12 @@ struct ColorComponentFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ColorComponentFlags:
         return ColorComponentFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct FenceCreateFlags(EqualityComparable):
+struct FenceCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1788,12 +1656,11 @@ struct FenceCreateFlags(EqualityComparable):
     fn __contains__(self, bit: FenceCreateFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias SIGNALED = FenceCreateFlagBits(raw = 1 << 0)
+    comptime SIGNALED = FenceCreateFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct FenceCreateFlagBits:
+struct FenceCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1805,15 +1672,12 @@ struct FenceCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> FenceCreateFlags:
         return FenceCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SemaphoreCreateFlags(EqualityComparable):
+struct SemaphoreCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1841,9 +1705,8 @@ struct SemaphoreCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct SemaphoreCreateFlagBits:
+struct SemaphoreCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1855,15 +1718,12 @@ struct SemaphoreCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SemaphoreCreateFlags:
         return SemaphoreCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct FormatFeatureFlags(EqualityComparable):
+struct FormatFeatureFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1890,24 +1750,23 @@ struct FormatFeatureFlags(EqualityComparable):
     fn __contains__(self, bit: FormatFeatureFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias SAMPLED_IMAGE = FormatFeatureFlagBits(raw = 1 << 0)
-    alias STORAGE_IMAGE = FormatFeatureFlagBits(raw = 1 << 1)
-    alias STORAGE_IMAGE_ATOMIC = FormatFeatureFlagBits(raw = 1 << 2)
-    alias UNIFORM_TEXEL_BUFFER = FormatFeatureFlagBits(raw = 1 << 3)
-    alias STORAGE_TEXEL_BUFFER = FormatFeatureFlagBits(raw = 1 << 4)
-    alias STORAGE_TEXEL_BUFFER_ATOMIC = FormatFeatureFlagBits(raw = 1 << 5)
-    alias VERTEX_BUFFER = FormatFeatureFlagBits(raw = 1 << 6)
-    alias COLOR_ATTACHMENT = FormatFeatureFlagBits(raw = 1 << 7)
-    alias COLOR_ATTACHMENT_BLEND = FormatFeatureFlagBits(raw = 1 << 8)
-    alias DEPTH_STENCIL_ATTACHMENT = FormatFeatureFlagBits(raw = 1 << 9)
-    alias BLIT_SRC = FormatFeatureFlagBits(raw = 1 << 10)
-    alias BLIT_DST = FormatFeatureFlagBits(raw = 1 << 11)
-    alias SAMPLED_IMAGE_FILTER_LINEAR = FormatFeatureFlagBits(raw = 1 << 12)
+    comptime SAMPLED_IMAGE = FormatFeatureFlagBits(raw = 1 << 0)
+    comptime STORAGE_IMAGE = FormatFeatureFlagBits(raw = 1 << 1)
+    comptime STORAGE_IMAGE_ATOMIC = FormatFeatureFlagBits(raw = 1 << 2)
+    comptime UNIFORM_TEXEL_BUFFER = FormatFeatureFlagBits(raw = 1 << 3)
+    comptime STORAGE_TEXEL_BUFFER = FormatFeatureFlagBits(raw = 1 << 4)
+    comptime STORAGE_TEXEL_BUFFER_ATOMIC = FormatFeatureFlagBits(raw = 1 << 5)
+    comptime VERTEX_BUFFER = FormatFeatureFlagBits(raw = 1 << 6)
+    comptime COLOR_ATTACHMENT = FormatFeatureFlagBits(raw = 1 << 7)
+    comptime COLOR_ATTACHMENT_BLEND = FormatFeatureFlagBits(raw = 1 << 8)
+    comptime DEPTH_STENCIL_ATTACHMENT = FormatFeatureFlagBits(raw = 1 << 9)
+    comptime BLIT_SRC = FormatFeatureFlagBits(raw = 1 << 10)
+    comptime BLIT_DST = FormatFeatureFlagBits(raw = 1 << 11)
+    comptime SAMPLED_IMAGE_FILTER_LINEAR = FormatFeatureFlagBits(raw = 1 << 12)
 
 
 @register_passable("trivial")
-struct FormatFeatureFlagBits:
+struct FormatFeatureFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1919,15 +1778,12 @@ struct FormatFeatureFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> FormatFeatureFlags:
         return FormatFeatureFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct QueryControlFlags(EqualityComparable):
+struct QueryControlFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -1954,12 +1810,11 @@ struct QueryControlFlags(EqualityComparable):
     fn __contains__(self, bit: QueryControlFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias PRECISE = QueryControlFlagBits(raw = 1 << 0)
+    comptime PRECISE = QueryControlFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct QueryControlFlagBits:
+struct QueryControlFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -1971,15 +1826,12 @@ struct QueryControlFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> QueryControlFlags:
         return QueryControlFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct QueryResultFlags(EqualityComparable):
+struct QueryResultFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2006,15 +1858,14 @@ struct QueryResultFlags(EqualityComparable):
     fn __contains__(self, bit: QueryResultFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias N_64 = QueryResultFlagBits(raw = 1 << 0)
-    alias WAIT = QueryResultFlagBits(raw = 1 << 1)
-    alias WITH_AVAILABILITY = QueryResultFlagBits(raw = 1 << 2)
-    alias PARTIAL = QueryResultFlagBits(raw = 1 << 3)
+    comptime N_64 = QueryResultFlagBits(raw = 1 << 0)
+    comptime WAIT = QueryResultFlagBits(raw = 1 << 1)
+    comptime WITH_AVAILABILITY = QueryResultFlagBits(raw = 1 << 2)
+    comptime PARTIAL = QueryResultFlagBits(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct QueryResultFlagBits:
+struct QueryResultFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2026,15 +1877,12 @@ struct QueryResultFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> QueryResultFlags:
         return QueryResultFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ShaderModuleCreateFlags(EqualityComparable):
+struct ShaderModuleCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2062,9 +1910,8 @@ struct ShaderModuleCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct ShaderModuleCreateFlagBits:
+struct ShaderModuleCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2076,15 +1923,12 @@ struct ShaderModuleCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ShaderModuleCreateFlags:
         return ShaderModuleCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct EventCreateFlags(EqualityComparable):
+struct EventCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2112,9 +1956,8 @@ struct EventCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct EventCreateFlagBits:
+struct EventCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2126,15 +1969,12 @@ struct EventCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> EventCreateFlags:
         return EventCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct CommandPoolCreateFlags(EqualityComparable):
+struct CommandPoolCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2161,13 +2001,12 @@ struct CommandPoolCreateFlags(EqualityComparable):
     fn __contains__(self, bit: CommandPoolCreateFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias TRANSIENT = CommandPoolCreateFlagBits(raw = 1 << 0)
-    alias RESET_COMMAND_BUFFER = CommandPoolCreateFlagBits(raw = 1 << 1)
+    comptime TRANSIENT = CommandPoolCreateFlagBits(raw = 1 << 0)
+    comptime RESET_COMMAND_BUFFER = CommandPoolCreateFlagBits(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct CommandPoolCreateFlagBits:
+struct CommandPoolCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2179,15 +2018,12 @@ struct CommandPoolCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> CommandPoolCreateFlags:
         return CommandPoolCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct CommandPoolResetFlags(EqualityComparable):
+struct CommandPoolResetFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2214,12 +2050,11 @@ struct CommandPoolResetFlags(EqualityComparable):
     fn __contains__(self, bit: CommandPoolResetFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias RELEASE_RESOURCES = CommandPoolResetFlagBits(raw = 1 << 0)
+    comptime RELEASE_RESOURCES = CommandPoolResetFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct CommandPoolResetFlagBits:
+struct CommandPoolResetFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2231,15 +2066,12 @@ struct CommandPoolResetFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> CommandPoolResetFlags:
         return CommandPoolResetFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct CommandBufferResetFlags(EqualityComparable):
+struct CommandBufferResetFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2266,12 +2098,11 @@ struct CommandBufferResetFlags(EqualityComparable):
     fn __contains__(self, bit: CommandBufferResetFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias RELEASE_RESOURCES = CommandBufferResetFlagBits(raw = 1 << 0)
+    comptime RELEASE_RESOURCES = CommandBufferResetFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct CommandBufferResetFlagBits:
+struct CommandBufferResetFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2283,15 +2114,12 @@ struct CommandBufferResetFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> CommandBufferResetFlags:
         return CommandBufferResetFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct CommandBufferUsageFlags(EqualityComparable):
+struct CommandBufferUsageFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2318,14 +2146,13 @@ struct CommandBufferUsageFlags(EqualityComparable):
     fn __contains__(self, bit: CommandBufferUsageFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias ONE_TIME_SUBMIT = CommandBufferUsageFlagBits(raw = 1 << 0)
-    alias RENDER_PASS_CONTINUE = CommandBufferUsageFlagBits(raw = 1 << 1)
-    alias SIMULTANEOUS_USE = CommandBufferUsageFlagBits(raw = 1 << 2)
+    comptime ONE_TIME_SUBMIT = CommandBufferUsageFlagBits(raw = 1 << 0)
+    comptime RENDER_PASS_CONTINUE = CommandBufferUsageFlagBits(raw = 1 << 1)
+    comptime SIMULTANEOUS_USE = CommandBufferUsageFlagBits(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct CommandBufferUsageFlagBits:
+struct CommandBufferUsageFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2337,15 +2164,12 @@ struct CommandBufferUsageFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> CommandBufferUsageFlags:
         return CommandBufferUsageFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct QueryPipelineStatisticFlags(EqualityComparable):
+struct QueryPipelineStatisticFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2372,22 +2196,21 @@ struct QueryPipelineStatisticFlags(EqualityComparable):
     fn __contains__(self, bit: QueryPipelineStatisticFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias INPUT_ASSEMBLY_VERTICES = QueryPipelineStatisticFlagBits(raw = 1 << 0)
-    alias INPUT_ASSEMBLY_PRIMITIVES = QueryPipelineStatisticFlagBits(raw = 1 << 1)
-    alias VERTEX_SHADER_INVOCATIONS = QueryPipelineStatisticFlagBits(raw = 1 << 2)
-    alias GEOMETRY_SHADER_INVOCATIONS = QueryPipelineStatisticFlagBits(raw = 1 << 3)
-    alias GEOMETRY_SHADER_PRIMITIVES = QueryPipelineStatisticFlagBits(raw = 1 << 4)
-    alias CLIPPING_INVOCATIONS = QueryPipelineStatisticFlagBits(raw = 1 << 5)
-    alias CLIPPING_PRIMITIVES = QueryPipelineStatisticFlagBits(raw = 1 << 6)
-    alias FRAGMENT_SHADER_INVOCATIONS = QueryPipelineStatisticFlagBits(raw = 1 << 7)
-    alias TESSELLATION_CONTROL_SHADER_PATCHES = QueryPipelineStatisticFlagBits(raw = 1 << 8)
-    alias TESSELLATION_EVALUATION_SHADER_INVOCATIONS = QueryPipelineStatisticFlagBits(raw = 1 << 9)
-    alias COMPUTE_SHADER_INVOCATIONS = QueryPipelineStatisticFlagBits(raw = 1 << 10)
+    comptime INPUT_ASSEMBLY_VERTICES = QueryPipelineStatisticFlagBits(raw = 1 << 0)
+    comptime INPUT_ASSEMBLY_PRIMITIVES = QueryPipelineStatisticFlagBits(raw = 1 << 1)
+    comptime VERTEX_SHADER_INVOCATIONS = QueryPipelineStatisticFlagBits(raw = 1 << 2)
+    comptime GEOMETRY_SHADER_INVOCATIONS = QueryPipelineStatisticFlagBits(raw = 1 << 3)
+    comptime GEOMETRY_SHADER_PRIMITIVES = QueryPipelineStatisticFlagBits(raw = 1 << 4)
+    comptime CLIPPING_INVOCATIONS = QueryPipelineStatisticFlagBits(raw = 1 << 5)
+    comptime CLIPPING_PRIMITIVES = QueryPipelineStatisticFlagBits(raw = 1 << 6)
+    comptime FRAGMENT_SHADER_INVOCATIONS = QueryPipelineStatisticFlagBits(raw = 1 << 7)
+    comptime TESSELLATION_CONTROL_SHADER_PATCHES = QueryPipelineStatisticFlagBits(raw = 1 << 8)
+    comptime TESSELLATION_EVALUATION_SHADER_INVOCATIONS = QueryPipelineStatisticFlagBits(raw = 1 << 9)
+    comptime COMPUTE_SHADER_INVOCATIONS = QueryPipelineStatisticFlagBits(raw = 1 << 10)
 
 
 @register_passable("trivial")
-struct QueryPipelineStatisticFlagBits:
+struct QueryPipelineStatisticFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2399,15 +2222,12 @@ struct QueryPipelineStatisticFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> QueryPipelineStatisticFlags:
         return QueryPipelineStatisticFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct MemoryMapFlags(EqualityComparable):
+struct MemoryMapFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2435,9 +2255,8 @@ struct MemoryMapFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct MemoryMapFlagBits:
+struct MemoryMapFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2449,15 +2268,12 @@ struct MemoryMapFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> MemoryMapFlags:
         return MemoryMapFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct MemoryUnmapFlags(EqualityComparable):
+struct MemoryUnmapFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2485,9 +2301,8 @@ struct MemoryUnmapFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct MemoryUnmapFlagBits:
+struct MemoryUnmapFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2499,15 +2314,12 @@ struct MemoryUnmapFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> MemoryUnmapFlags:
         return MemoryUnmapFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ImageAspectFlags(EqualityComparable):
+struct ImageAspectFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2534,15 +2346,14 @@ struct ImageAspectFlags(EqualityComparable):
     fn __contains__(self, bit: ImageAspectFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias COLOR = ImageAspectFlagBits(raw = 1 << 0)
-    alias DEPTH = ImageAspectFlagBits(raw = 1 << 1)
-    alias STENCIL = ImageAspectFlagBits(raw = 1 << 2)
-    alias METADATA = ImageAspectFlagBits(raw = 1 << 3)
+    comptime COLOR = ImageAspectFlagBits(raw = 1 << 0)
+    comptime DEPTH = ImageAspectFlagBits(raw = 1 << 1)
+    comptime STENCIL = ImageAspectFlagBits(raw = 1 << 2)
+    comptime METADATA = ImageAspectFlagBits(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct ImageAspectFlagBits:
+struct ImageAspectFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2554,15 +2365,12 @@ struct ImageAspectFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ImageAspectFlags:
         return ImageAspectFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SparseMemoryBindFlags(EqualityComparable):
+struct SparseMemoryBindFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2589,12 +2397,11 @@ struct SparseMemoryBindFlags(EqualityComparable):
     fn __contains__(self, bit: SparseMemoryBindFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias METADATA = SparseMemoryBindFlagBits(raw = 1 << 0)
+    comptime METADATA = SparseMemoryBindFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct SparseMemoryBindFlagBits:
+struct SparseMemoryBindFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2606,15 +2413,12 @@ struct SparseMemoryBindFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SparseMemoryBindFlags:
         return SparseMemoryBindFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SparseImageFormatFlags(EqualityComparable):
+struct SparseImageFormatFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2641,14 +2445,13 @@ struct SparseImageFormatFlags(EqualityComparable):
     fn __contains__(self, bit: SparseImageFormatFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias SINGLE_MIPTAIL = SparseImageFormatFlagBits(raw = 1 << 0)
-    alias ALIGNED_MIP_SIZE = SparseImageFormatFlagBits(raw = 1 << 1)
-    alias NONSTANDARD_BLOCK_SIZE = SparseImageFormatFlagBits(raw = 1 << 2)
+    comptime SINGLE_MIPTAIL = SparseImageFormatFlagBits(raw = 1 << 0)
+    comptime ALIGNED_MIP_SIZE = SparseImageFormatFlagBits(raw = 1 << 1)
+    comptime NONSTANDARD_BLOCK_SIZE = SparseImageFormatFlagBits(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct SparseImageFormatFlagBits:
+struct SparseImageFormatFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2660,15 +2463,12 @@ struct SparseImageFormatFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SparseImageFormatFlags:
         return SparseImageFormatFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SubpassDescriptionFlags(EqualityComparable):
+struct SubpassDescriptionFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2696,9 +2496,8 @@ struct SubpassDescriptionFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct SubpassDescriptionFlagBits:
+struct SubpassDescriptionFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2710,15 +2509,12 @@ struct SubpassDescriptionFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SubpassDescriptionFlags:
         return SubpassDescriptionFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineStageFlags(EqualityComparable):
+struct PipelineStageFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2745,28 +2541,27 @@ struct PipelineStageFlags(EqualityComparable):
     fn __contains__(self, bit: PipelineStageFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias TOP_OF_PIPE = PipelineStageFlagBits(raw = 1 << 0)
-    alias DRAW_INDIRECT = PipelineStageFlagBits(raw = 1 << 1)
-    alias VERTEX_INPUT = PipelineStageFlagBits(raw = 1 << 2)
-    alias VERTEX_SHADER = PipelineStageFlagBits(raw = 1 << 3)
-    alias TESSELLATION_CONTROL_SHADER = PipelineStageFlagBits(raw = 1 << 4)
-    alias TESSELLATION_EVALUATION_SHADER = PipelineStageFlagBits(raw = 1 << 5)
-    alias GEOMETRY_SHADER = PipelineStageFlagBits(raw = 1 << 6)
-    alias FRAGMENT_SHADER = PipelineStageFlagBits(raw = 1 << 7)
-    alias EARLY_FRAGMENT_TESTS = PipelineStageFlagBits(raw = 1 << 8)
-    alias LATE_FRAGMENT_TESTS = PipelineStageFlagBits(raw = 1 << 9)
-    alias COLOR_ATTACHMENT_OUTPUT = PipelineStageFlagBits(raw = 1 << 10)
-    alias COMPUTE_SHADER = PipelineStageFlagBits(raw = 1 << 11)
-    alias TRANSFER = PipelineStageFlagBits(raw = 1 << 12)
-    alias BOTTOM_OF_PIPE = PipelineStageFlagBits(raw = 1 << 13)
-    alias HOST = PipelineStageFlagBits(raw = 1 << 14)
-    alias ALL_GRAPHICS = PipelineStageFlagBits(raw = 1 << 15)
-    alias ALL_COMMANDS = PipelineStageFlagBits(raw = 1 << 16)
+    comptime TOP_OF_PIPE = PipelineStageFlagBits(raw = 1 << 0)
+    comptime DRAW_INDIRECT = PipelineStageFlagBits(raw = 1 << 1)
+    comptime VERTEX_INPUT = PipelineStageFlagBits(raw = 1 << 2)
+    comptime VERTEX_SHADER = PipelineStageFlagBits(raw = 1 << 3)
+    comptime TESSELLATION_CONTROL_SHADER = PipelineStageFlagBits(raw = 1 << 4)
+    comptime TESSELLATION_EVALUATION_SHADER = PipelineStageFlagBits(raw = 1 << 5)
+    comptime GEOMETRY_SHADER = PipelineStageFlagBits(raw = 1 << 6)
+    comptime FRAGMENT_SHADER = PipelineStageFlagBits(raw = 1 << 7)
+    comptime EARLY_FRAGMENT_TESTS = PipelineStageFlagBits(raw = 1 << 8)
+    comptime LATE_FRAGMENT_TESTS = PipelineStageFlagBits(raw = 1 << 9)
+    comptime COLOR_ATTACHMENT_OUTPUT = PipelineStageFlagBits(raw = 1 << 10)
+    comptime COMPUTE_SHADER = PipelineStageFlagBits(raw = 1 << 11)
+    comptime TRANSFER = PipelineStageFlagBits(raw = 1 << 12)
+    comptime BOTTOM_OF_PIPE = PipelineStageFlagBits(raw = 1 << 13)
+    comptime HOST = PipelineStageFlagBits(raw = 1 << 14)
+    comptime ALL_GRAPHICS = PipelineStageFlagBits(raw = 1 << 15)
+    comptime ALL_COMMANDS = PipelineStageFlagBits(raw = 1 << 16)
 
 
 @register_passable("trivial")
-struct PipelineStageFlagBits:
+struct PipelineStageFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2778,15 +2573,12 @@ struct PipelineStageFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineStageFlags:
         return PipelineStageFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SampleCountFlags(EqualityComparable):
+struct SampleCountFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2813,18 +2605,17 @@ struct SampleCountFlags(EqualityComparable):
     fn __contains__(self, bit: SampleCountFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias N_1 = SampleCountFlagBits(raw = 1 << 0)
-    alias N_2 = SampleCountFlagBits(raw = 1 << 1)
-    alias N_4 = SampleCountFlagBits(raw = 1 << 2)
-    alias N_8 = SampleCountFlagBits(raw = 1 << 3)
-    alias N_16 = SampleCountFlagBits(raw = 1 << 4)
-    alias N_32 = SampleCountFlagBits(raw = 1 << 5)
-    alias N_64 = SampleCountFlagBits(raw = 1 << 6)
+    comptime N_1 = SampleCountFlagBits(raw = 1 << 0)
+    comptime N_2 = SampleCountFlagBits(raw = 1 << 1)
+    comptime N_4 = SampleCountFlagBits(raw = 1 << 2)
+    comptime N_8 = SampleCountFlagBits(raw = 1 << 3)
+    comptime N_16 = SampleCountFlagBits(raw = 1 << 4)
+    comptime N_32 = SampleCountFlagBits(raw = 1 << 5)
+    comptime N_64 = SampleCountFlagBits(raw = 1 << 6)
 
 
 @register_passable("trivial")
-struct SampleCountFlagBits:
+struct SampleCountFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2836,15 +2627,12 @@ struct SampleCountFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SampleCountFlags:
         return SampleCountFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct AttachmentDescriptionFlags(EqualityComparable):
+struct AttachmentDescriptionFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2871,12 +2659,11 @@ struct AttachmentDescriptionFlags(EqualityComparable):
     fn __contains__(self, bit: AttachmentDescriptionFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias MAY_ALIAS = AttachmentDescriptionFlagBits(raw = 1 << 0)
+    comptime MAY_ALIAS = AttachmentDescriptionFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct AttachmentDescriptionFlagBits:
+struct AttachmentDescriptionFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2888,15 +2675,12 @@ struct AttachmentDescriptionFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> AttachmentDescriptionFlags:
         return AttachmentDescriptionFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct StencilFaceFlags(EqualityComparable):
+struct StencilFaceFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2923,14 +2707,13 @@ struct StencilFaceFlags(EqualityComparable):
     fn __contains__(self, bit: StencilFaceFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias FRONT_AND_BACK = StencilFaceFlagBits(raw = 3)
-    alias FRONT = StencilFaceFlagBits(raw = 1 << 0)
-    alias BACK = StencilFaceFlagBits(raw = 1 << 1)
+    comptime FRONT_AND_BACK = StencilFaceFlagBits(raw = 3)
+    comptime FRONT = StencilFaceFlagBits(raw = 1 << 0)
+    comptime BACK = StencilFaceFlagBits(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct StencilFaceFlagBits:
+struct StencilFaceFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2942,15 +2725,12 @@ struct StencilFaceFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> StencilFaceFlags:
         return StencilFaceFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct CullModeFlags(EqualityComparable):
+struct CullModeFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -2977,15 +2757,14 @@ struct CullModeFlags(EqualityComparable):
     fn __contains__(self, bit: CullModeFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias NONE = CullModeFlagBits(raw = 0)
-    alias FRONT_AND_BACK = CullModeFlagBits(raw = 3)
-    alias FRONT = CullModeFlagBits(raw = 1 << 0)
-    alias BACK = CullModeFlagBits(raw = 1 << 1)
+    comptime NONE = CullModeFlagBits(raw = 0)
+    comptime FRONT_AND_BACK = CullModeFlagBits(raw = 3)
+    comptime FRONT = CullModeFlagBits(raw = 1 << 0)
+    comptime BACK = CullModeFlagBits(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct CullModeFlagBits:
+struct CullModeFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -2997,15 +2776,12 @@ struct CullModeFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> CullModeFlags:
         return CullModeFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DescriptorPoolCreateFlags(EqualityComparable):
+struct DescriptorPoolCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3032,12 +2808,11 @@ struct DescriptorPoolCreateFlags(EqualityComparable):
     fn __contains__(self, bit: DescriptorPoolCreateFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias FREE_DESCRIPTOR_SET = DescriptorPoolCreateFlagBits(raw = 1 << 0)
+    comptime FREE_DESCRIPTOR_SET = DescriptorPoolCreateFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct DescriptorPoolCreateFlagBits:
+struct DescriptorPoolCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3049,15 +2824,12 @@ struct DescriptorPoolCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DescriptorPoolCreateFlags:
         return DescriptorPoolCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DescriptorPoolResetFlags(EqualityComparable):
+struct DescriptorPoolResetFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3085,9 +2857,8 @@ struct DescriptorPoolResetFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct DescriptorPoolResetFlagBits:
+struct DescriptorPoolResetFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3099,15 +2870,12 @@ struct DescriptorPoolResetFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DescriptorPoolResetFlags:
         return DescriptorPoolResetFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DependencyFlags(EqualityComparable):
+struct DependencyFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3134,12 +2902,11 @@ struct DependencyFlags(EqualityComparable):
     fn __contains__(self, bit: DependencyFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias BY_REGION = DependencyFlagBits(raw = 1 << 0)
+    comptime BY_REGION = DependencyFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct DependencyFlagBits:
+struct DependencyFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3151,15 +2918,12 @@ struct DependencyFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DependencyFlags:
         return DependencyFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SubgroupFeatureFlags(EqualityComparable):
+struct SubgroupFeatureFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3186,19 +2950,18 @@ struct SubgroupFeatureFlags(EqualityComparable):
     fn __contains__(self, bit: SubgroupFeatureFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias BASIC = SubgroupFeatureFlagBits(raw = 1 << 0)
-    alias VOTE = SubgroupFeatureFlagBits(raw = 1 << 1)
-    alias ARITHMETIC = SubgroupFeatureFlagBits(raw = 1 << 2)
-    alias BALLOT = SubgroupFeatureFlagBits(raw = 1 << 3)
-    alias SHUFFLE = SubgroupFeatureFlagBits(raw = 1 << 4)
-    alias SHUFFLE_RELATIVE = SubgroupFeatureFlagBits(raw = 1 << 5)
-    alias CLUSTERED = SubgroupFeatureFlagBits(raw = 1 << 6)
-    alias QUAD = SubgroupFeatureFlagBits(raw = 1 << 7)
+    comptime BASIC = SubgroupFeatureFlagBits(raw = 1 << 0)
+    comptime VOTE = SubgroupFeatureFlagBits(raw = 1 << 1)
+    comptime ARITHMETIC = SubgroupFeatureFlagBits(raw = 1 << 2)
+    comptime BALLOT = SubgroupFeatureFlagBits(raw = 1 << 3)
+    comptime SHUFFLE = SubgroupFeatureFlagBits(raw = 1 << 4)
+    comptime SHUFFLE_RELATIVE = SubgroupFeatureFlagBits(raw = 1 << 5)
+    comptime CLUSTERED = SubgroupFeatureFlagBits(raw = 1 << 6)
+    comptime QUAD = SubgroupFeatureFlagBits(raw = 1 << 7)
 
 
 @register_passable("trivial")
-struct SubgroupFeatureFlagBits:
+struct SubgroupFeatureFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3210,15 +2973,12 @@ struct SubgroupFeatureFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SubgroupFeatureFlags:
         return SubgroupFeatureFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct IndirectCommandsLayoutUsageFlagsNV(EqualityComparable):
+struct IndirectCommandsLayoutUsageFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3245,14 +3005,13 @@ struct IndirectCommandsLayoutUsageFlagsNV(EqualityComparable):
     fn __contains__(self, bit: IndirectCommandsLayoutUsageFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias EXPLICIT_PREPROCESS_NV = IndirectCommandsLayoutUsageFlagBitsNV(raw = 1 << 0)
-    alias INDEXED_SEQUENCES_NV = IndirectCommandsLayoutUsageFlagBitsNV(raw = 1 << 1)
-    alias UNORDERED_SEQUENCES_NV = IndirectCommandsLayoutUsageFlagBitsNV(raw = 1 << 2)
+    comptime EXPLICIT_PREPROCESS_NV = IndirectCommandsLayoutUsageFlagBitsNV(raw = 1 << 0)
+    comptime INDEXED_SEQUENCES_NV = IndirectCommandsLayoutUsageFlagBitsNV(raw = 1 << 1)
+    comptime UNORDERED_SEQUENCES_NV = IndirectCommandsLayoutUsageFlagBitsNV(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct IndirectCommandsLayoutUsageFlagBitsNV:
+struct IndirectCommandsLayoutUsageFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3264,15 +3023,12 @@ struct IndirectCommandsLayoutUsageFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> IndirectCommandsLayoutUsageFlagsNV:
         return IndirectCommandsLayoutUsageFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct IndirectStateFlagsNV(EqualityComparable):
+struct IndirectStateFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3299,12 +3055,11 @@ struct IndirectStateFlagsNV(EqualityComparable):
     fn __contains__(self, bit: IndirectStateFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias FLAG_FRONTFACE_NV = IndirectStateFlagBitsNV(raw = 1 << 0)
+    comptime FLAG_FRONTFACE_NV = IndirectStateFlagBitsNV(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct IndirectStateFlagBitsNV:
+struct IndirectStateFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3316,15 +3071,12 @@ struct IndirectStateFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> IndirectStateFlagsNV:
         return IndirectStateFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct GeometryFlagsKHR(EqualityComparable):
+struct GeometryFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3351,13 +3103,12 @@ struct GeometryFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: GeometryFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias OPAQUE_KHR = GeometryFlagBitsKHR(raw = 1 << 0)
-    alias NO_DUPLICATE_ANY_HIT_INVOCATION_KHR = GeometryFlagBitsKHR(raw = 1 << 1)
+    comptime OPAQUE_KHR = GeometryFlagBitsKHR(raw = 1 << 0)
+    comptime NO_DUPLICATE_ANY_HIT_INVOCATION_KHR = GeometryFlagBitsKHR(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct GeometryFlagBitsKHR:
+struct GeometryFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3369,15 +3120,12 @@ struct GeometryFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> GeometryFlagsKHR:
         return GeometryFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct GeometryInstanceFlagsKHR(EqualityComparable):
+struct GeometryInstanceFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3404,15 +3152,14 @@ struct GeometryInstanceFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: GeometryInstanceFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias TRIANGLE_FACING_CULL_DISABLE_KHR = GeometryInstanceFlagBitsKHR(raw = 1 << 0)
-    alias TRIANGLE_FLIP_FACING_KHR = GeometryInstanceFlagBitsKHR(raw = 1 << 1)
-    alias FORCE_OPAQUE_KHR = GeometryInstanceFlagBitsKHR(raw = 1 << 2)
-    alias FORCE_NO_OPAQUE_KHR = GeometryInstanceFlagBitsKHR(raw = 1 << 3)
+    comptime TRIANGLE_FACING_CULL_DISABLE_KHR = GeometryInstanceFlagBitsKHR(raw = 1 << 0)
+    comptime TRIANGLE_FLIP_FACING_KHR = GeometryInstanceFlagBitsKHR(raw = 1 << 1)
+    comptime FORCE_OPAQUE_KHR = GeometryInstanceFlagBitsKHR(raw = 1 << 2)
+    comptime FORCE_NO_OPAQUE_KHR = GeometryInstanceFlagBitsKHR(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct GeometryInstanceFlagBitsKHR:
+struct GeometryInstanceFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3424,15 +3171,12 @@ struct GeometryInstanceFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> GeometryInstanceFlagsKHR:
         return GeometryInstanceFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ClusterAccelerationStructureGeometryFlagsNV(EqualityComparable):
+struct ClusterAccelerationStructureGeometryFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3459,14 +3203,13 @@ struct ClusterAccelerationStructureGeometryFlagsNV(EqualityComparable):
     fn __contains__(self, bit: ClusterAccelerationStructureGeometryFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias CULL_DISABLE_NV = ClusterAccelerationStructureGeometryFlagBitsNV(raw = 1 << 0)
-    alias NO_DUPLICATE_ANYHIT_INVOCATION_NV = ClusterAccelerationStructureGeometryFlagBitsNV(raw = 1 << 1)
-    alias OPAQUE_NV = ClusterAccelerationStructureGeometryFlagBitsNV(raw = 1 << 2)
+    comptime CULL_DISABLE_NV = ClusterAccelerationStructureGeometryFlagBitsNV(raw = 1 << 0)
+    comptime NO_DUPLICATE_ANYHIT_INVOCATION_NV = ClusterAccelerationStructureGeometryFlagBitsNV(raw = 1 << 1)
+    comptime OPAQUE_NV = ClusterAccelerationStructureGeometryFlagBitsNV(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct ClusterAccelerationStructureGeometryFlagBitsNV:
+struct ClusterAccelerationStructureGeometryFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3478,15 +3221,12 @@ struct ClusterAccelerationStructureGeometryFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ClusterAccelerationStructureGeometryFlagsNV:
         return ClusterAccelerationStructureGeometryFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ClusterAccelerationStructureClusterFlagsNV(EqualityComparable):
+struct ClusterAccelerationStructureClusterFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3513,12 +3253,11 @@ struct ClusterAccelerationStructureClusterFlagsNV(EqualityComparable):
     fn __contains__(self, bit: ClusterAccelerationStructureClusterFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias ALLOW_DISABLE_OPACITY_MICROMAPS_NV = ClusterAccelerationStructureClusterFlagBitsNV(raw = 1 << 0)
+    comptime ALLOW_DISABLE_OPACITY_MICROMAPS_NV = ClusterAccelerationStructureClusterFlagBitsNV(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct ClusterAccelerationStructureClusterFlagBitsNV:
+struct ClusterAccelerationStructureClusterFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3530,15 +3269,12 @@ struct ClusterAccelerationStructureClusterFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ClusterAccelerationStructureClusterFlagsNV:
         return ClusterAccelerationStructureClusterFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ClusterAccelerationStructureAddressResolutionFlagsNV(EqualityComparable):
+struct ClusterAccelerationStructureAddressResolutionFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3565,18 +3301,17 @@ struct ClusterAccelerationStructureAddressResolutionFlagsNV(EqualityComparable):
     fn __contains__(self, bit: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias NONE_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 0)
-    alias INDIRECTED_DST_IMPLICIT_DATA_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 1 << 0)
-    alias INDIRECTED_SCRATCH_DATA_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 1 << 1)
-    alias INDIRECTED_DST_ADDRESS_ARRAY_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 1 << 2)
-    alias INDIRECTED_DST_SIZES_ARRAY_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 1 << 3)
-    alias INDIRECTED_SRC_INFOS_ARRAY_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 1 << 4)
-    alias INDIRECTED_SRC_INFOS_COUNT_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 1 << 5)
+    comptime NONE_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 0)
+    comptime INDIRECTED_DST_IMPLICIT_DATA_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 1 << 0)
+    comptime INDIRECTED_SCRATCH_DATA_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 1 << 1)
+    comptime INDIRECTED_DST_ADDRESS_ARRAY_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 1 << 2)
+    comptime INDIRECTED_DST_SIZES_ARRAY_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 1 << 3)
+    comptime INDIRECTED_SRC_INFOS_ARRAY_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 1 << 4)
+    comptime INDIRECTED_SRC_INFOS_COUNT_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(raw = 1 << 5)
 
 
 @register_passable("trivial")
-struct ClusterAccelerationStructureAddressResolutionFlagBitsNV:
+struct ClusterAccelerationStructureAddressResolutionFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3588,15 +3323,12 @@ struct ClusterAccelerationStructureAddressResolutionFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ClusterAccelerationStructureAddressResolutionFlagsNV:
         return ClusterAccelerationStructureAddressResolutionFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct BuildAccelerationStructureFlagsKHR(EqualityComparable):
+struct BuildAccelerationStructureFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3623,16 +3355,15 @@ struct BuildAccelerationStructureFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: BuildAccelerationStructureFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias ALLOW_UPDATE_KHR = BuildAccelerationStructureFlagBitsKHR(raw = 1 << 0)
-    alias ALLOW_COMPACTION_KHR = BuildAccelerationStructureFlagBitsKHR(raw = 1 << 1)
-    alias PREFER_FAST_TRACE_KHR = BuildAccelerationStructureFlagBitsKHR(raw = 1 << 2)
-    alias PREFER_FAST_BUILD_KHR = BuildAccelerationStructureFlagBitsKHR(raw = 1 << 3)
-    alias LOW_MEMORY_KHR = BuildAccelerationStructureFlagBitsKHR(raw = 1 << 4)
+    comptime ALLOW_UPDATE_KHR = BuildAccelerationStructureFlagBitsKHR(raw = 1 << 0)
+    comptime ALLOW_COMPACTION_KHR = BuildAccelerationStructureFlagBitsKHR(raw = 1 << 1)
+    comptime PREFER_FAST_TRACE_KHR = BuildAccelerationStructureFlagBitsKHR(raw = 1 << 2)
+    comptime PREFER_FAST_BUILD_KHR = BuildAccelerationStructureFlagBitsKHR(raw = 1 << 3)
+    comptime LOW_MEMORY_KHR = BuildAccelerationStructureFlagBitsKHR(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct BuildAccelerationStructureFlagBitsKHR:
+struct BuildAccelerationStructureFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3644,15 +3375,12 @@ struct BuildAccelerationStructureFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> BuildAccelerationStructureFlagsKHR:
         return BuildAccelerationStructureFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PrivateDataSlotCreateFlags(EqualityComparable):
+struct PrivateDataSlotCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3680,9 +3408,8 @@ struct PrivateDataSlotCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PrivateDataSlotCreateFlagBits:
+struct PrivateDataSlotCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3694,15 +3421,12 @@ struct PrivateDataSlotCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PrivateDataSlotCreateFlags:
         return PrivateDataSlotCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct AccelerationStructureCreateFlagsKHR(EqualityComparable):
+struct AccelerationStructureCreateFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3729,12 +3453,11 @@ struct AccelerationStructureCreateFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: AccelerationStructureCreateFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DEVICE_ADDRESS_CAPTURE_REPLAY_KHR = AccelerationStructureCreateFlagBitsKHR(raw = 1 << 0)
+    comptime DEVICE_ADDRESS_CAPTURE_REPLAY_KHR = AccelerationStructureCreateFlagBitsKHR(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct AccelerationStructureCreateFlagBitsKHR:
+struct AccelerationStructureCreateFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3746,15 +3469,12 @@ struct AccelerationStructureCreateFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> AccelerationStructureCreateFlagsKHR:
         return AccelerationStructureCreateFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DescriptorUpdateTemplateCreateFlags(EqualityComparable):
+struct DescriptorUpdateTemplateCreateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3782,9 +3502,8 @@ struct DescriptorUpdateTemplateCreateFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct DescriptorUpdateTemplateCreateFlagBits:
+struct DescriptorUpdateTemplateCreateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3796,15 +3515,12 @@ struct DescriptorUpdateTemplateCreateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DescriptorUpdateTemplateCreateFlags:
         return DescriptorUpdateTemplateCreateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineCreationFeedbackFlags(EqualityComparable):
+struct PipelineCreationFeedbackFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3831,14 +3547,13 @@ struct PipelineCreationFeedbackFlags(EqualityComparable):
     fn __contains__(self, bit: PipelineCreationFeedbackFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias VALID = PipelineCreationFeedbackFlagBits(raw = 1 << 0)
-    alias APPLICATION_PIPELINE_CACHE_HIT = PipelineCreationFeedbackFlagBits(raw = 1 << 1)
-    alias BASE_PIPELINE_ACCELERATION = PipelineCreationFeedbackFlagBits(raw = 1 << 2)
+    comptime VALID = PipelineCreationFeedbackFlagBits(raw = 1 << 0)
+    comptime APPLICATION_PIPELINE_CACHE_HIT = PipelineCreationFeedbackFlagBits(raw = 1 << 1)
+    comptime BASE_PIPELINE_ACCELERATION = PipelineCreationFeedbackFlagBits(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct PipelineCreationFeedbackFlagBits:
+struct PipelineCreationFeedbackFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3850,15 +3565,12 @@ struct PipelineCreationFeedbackFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineCreationFeedbackFlags:
         return PipelineCreationFeedbackFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PerformanceCounterDescriptionFlagsKHR(EqualityComparable):
+struct PerformanceCounterDescriptionFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3885,13 +3597,12 @@ struct PerformanceCounterDescriptionFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: PerformanceCounterDescriptionFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias PERFORMANCE_IMPACTING_KHR = PerformanceCounterDescriptionFlagBitsKHR(raw = 1 << 0)
-    alias CONCURRENTLY_IMPACTED_KHR = PerformanceCounterDescriptionFlagBitsKHR(raw = 1 << 1)
+    comptime PERFORMANCE_IMPACTING_KHR = PerformanceCounterDescriptionFlagBitsKHR(raw = 1 << 0)
+    comptime CONCURRENTLY_IMPACTED_KHR = PerformanceCounterDescriptionFlagBitsKHR(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct PerformanceCounterDescriptionFlagBitsKHR:
+struct PerformanceCounterDescriptionFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3903,15 +3614,12 @@ struct PerformanceCounterDescriptionFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PerformanceCounterDescriptionFlagsKHR:
         return PerformanceCounterDescriptionFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct AcquireProfilingLockFlagsKHR(EqualityComparable):
+struct AcquireProfilingLockFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3939,9 +3647,8 @@ struct AcquireProfilingLockFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct AcquireProfilingLockFlagBitsKHR:
+struct AcquireProfilingLockFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -3953,15 +3660,12 @@ struct AcquireProfilingLockFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> AcquireProfilingLockFlagsKHR:
         return AcquireProfilingLockFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SemaphoreWaitFlags(EqualityComparable):
+struct SemaphoreWaitFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -3988,12 +3692,11 @@ struct SemaphoreWaitFlags(EqualityComparable):
     fn __contains__(self, bit: SemaphoreWaitFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias ANY = SemaphoreWaitFlagBits(raw = 1 << 0)
+    comptime ANY = SemaphoreWaitFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct SemaphoreWaitFlagBits:
+struct SemaphoreWaitFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -4005,15 +3708,12 @@ struct SemaphoreWaitFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SemaphoreWaitFlags:
         return SemaphoreWaitFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineCompilerControlFlagsAMD(EqualityComparable):
+struct PipelineCompilerControlFlagsAMD(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -4041,9 +3741,8 @@ struct PipelineCompilerControlFlagsAMD(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineCompilerControlFlagBitsAMD:
+struct PipelineCompilerControlFlagBitsAMD(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -4055,15 +3754,12 @@ struct PipelineCompilerControlFlagBitsAMD:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineCompilerControlFlagsAMD:
         return PipelineCompilerControlFlagsAMD(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ShaderCorePropertiesFlagsAMD(EqualityComparable):
+struct ShaderCorePropertiesFlagsAMD(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -4091,9 +3787,8 @@ struct ShaderCorePropertiesFlagsAMD(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct ShaderCorePropertiesFlagBitsAMD:
+struct ShaderCorePropertiesFlagBitsAMD(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -4105,15 +3800,12 @@ struct ShaderCorePropertiesFlagBitsAMD:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ShaderCorePropertiesFlagsAMD:
         return ShaderCorePropertiesFlagsAMD(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DeviceDiagnosticsConfigFlagsNV(EqualityComparable):
+struct DeviceDiagnosticsConfigFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -4140,15 +3832,14 @@ struct DeviceDiagnosticsConfigFlagsNV(EqualityComparable):
     fn __contains__(self, bit: DeviceDiagnosticsConfigFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias ENABLE_SHADER_DEBUG_INFO_NV = DeviceDiagnosticsConfigFlagBitsNV(raw = 1 << 0)
-    alias ENABLE_RESOURCE_TRACKING_NV = DeviceDiagnosticsConfigFlagBitsNV(raw = 1 << 1)
-    alias ENABLE_AUTOMATIC_CHECKPOINTS_NV = DeviceDiagnosticsConfigFlagBitsNV(raw = 1 << 2)
-    alias ENABLE_SHADER_ERROR_REPORTING_NV = DeviceDiagnosticsConfigFlagBitsNV(raw = 1 << 3)
+    comptime ENABLE_SHADER_DEBUG_INFO_NV = DeviceDiagnosticsConfigFlagBitsNV(raw = 1 << 0)
+    comptime ENABLE_RESOURCE_TRACKING_NV = DeviceDiagnosticsConfigFlagBitsNV(raw = 1 << 1)
+    comptime ENABLE_AUTOMATIC_CHECKPOINTS_NV = DeviceDiagnosticsConfigFlagBitsNV(raw = 1 << 2)
+    comptime ENABLE_SHADER_ERROR_REPORTING_NV = DeviceDiagnosticsConfigFlagBitsNV(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct DeviceDiagnosticsConfigFlagBitsNV:
+struct DeviceDiagnosticsConfigFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -4160,15 +3851,12 @@ struct DeviceDiagnosticsConfigFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DeviceDiagnosticsConfigFlagsNV:
         return DeviceDiagnosticsConfigFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct RefreshObjectFlagsKHR(EqualityComparable):
+struct RefreshObjectFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -4196,9 +3884,8 @@ struct RefreshObjectFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct RefreshObjectFlagBitsKHR:
+struct RefreshObjectFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -4210,15 +3897,12 @@ struct RefreshObjectFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> RefreshObjectFlagsKHR:
         return RefreshObjectFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct AccessFlags2(EqualityComparable):
+struct AccessFlags2(Equatable):
     var _raw: UInt64
 
     @implicit
@@ -4245,32 +3929,31 @@ struct AccessFlags2(EqualityComparable):
     fn __contains__(self, bit: AccessFlagBits2) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias VK_ACCESS_2_NONE = AccessFlagBits2(raw = 0)
-    alias VK_ACCESS_2_INDIRECT_COMMAND_READ = AccessFlagBits2(raw = 1 << 0)
-    alias VK_ACCESS_2_INDEX_READ = AccessFlagBits2(raw = 1 << 1)
-    alias VK_ACCESS_2_VERTEX_ATTRIBUTE_READ = AccessFlagBits2(raw = 1 << 2)
-    alias VK_ACCESS_2_UNIFORM_READ = AccessFlagBits2(raw = 1 << 3)
-    alias VK_ACCESS_2_INPUT_ATTACHMENT_READ = AccessFlagBits2(raw = 1 << 4)
-    alias VK_ACCESS_2_SHADER_READ = AccessFlagBits2(raw = 1 << 5)
-    alias VK_ACCESS_2_SHADER_WRITE = AccessFlagBits2(raw = 1 << 6)
-    alias VK_ACCESS_2_COLOR_ATTACHMENT_READ = AccessFlagBits2(raw = 1 << 7)
-    alias VK_ACCESS_2_COLOR_ATTACHMENT_WRITE = AccessFlagBits2(raw = 1 << 8)
-    alias VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_READ = AccessFlagBits2(raw = 1 << 9)
-    alias VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_WRITE = AccessFlagBits2(raw = 1 << 10)
-    alias VK_ACCESS_2_TRANSFER_READ = AccessFlagBits2(raw = 1 << 11)
-    alias VK_ACCESS_2_TRANSFER_WRITE = AccessFlagBits2(raw = 1 << 12)
-    alias VK_ACCESS_2_HOST_READ = AccessFlagBits2(raw = 1 << 13)
-    alias VK_ACCESS_2_HOST_WRITE = AccessFlagBits2(raw = 1 << 14)
-    alias VK_ACCESS_2_MEMORY_READ = AccessFlagBits2(raw = 1 << 15)
-    alias VK_ACCESS_2_MEMORY_WRITE = AccessFlagBits2(raw = 1 << 16)
-    alias VK_ACCESS_2_SHADER_SAMPLED_READ = AccessFlagBits2(raw = 1 << 32)
-    alias VK_ACCESS_2_SHADER_STORAGE_READ = AccessFlagBits2(raw = 1 << 33)
-    alias VK_ACCESS_2_SHADER_STORAGE_WRITE = AccessFlagBits2(raw = 1 << 34)
+    comptime NONE = AccessFlagBits2(raw = 0)
+    comptime INDIRECT_COMMAND_READ = AccessFlagBits2(raw = 1 << 0)
+    comptime INDEX_READ = AccessFlagBits2(raw = 1 << 1)
+    comptime VERTEX_ATTRIBUTE_READ = AccessFlagBits2(raw = 1 << 2)
+    comptime UNIFORM_READ = AccessFlagBits2(raw = 1 << 3)
+    comptime INPUT_ATTACHMENT_READ = AccessFlagBits2(raw = 1 << 4)
+    comptime SHADER_READ = AccessFlagBits2(raw = 1 << 5)
+    comptime SHADER_WRITE = AccessFlagBits2(raw = 1 << 6)
+    comptime COLOR_ATTACHMENT_READ = AccessFlagBits2(raw = 1 << 7)
+    comptime COLOR_ATTACHMENT_WRITE = AccessFlagBits2(raw = 1 << 8)
+    comptime DEPTH_STENCIL_ATTACHMENT_READ = AccessFlagBits2(raw = 1 << 9)
+    comptime DEPTH_STENCIL_ATTACHMENT_WRITE = AccessFlagBits2(raw = 1 << 10)
+    comptime TRANSFER_READ = AccessFlagBits2(raw = 1 << 11)
+    comptime TRANSFER_WRITE = AccessFlagBits2(raw = 1 << 12)
+    comptime HOST_READ = AccessFlagBits2(raw = 1 << 13)
+    comptime HOST_WRITE = AccessFlagBits2(raw = 1 << 14)
+    comptime MEMORY_READ = AccessFlagBits2(raw = 1 << 15)
+    comptime MEMORY_WRITE = AccessFlagBits2(raw = 1 << 16)
+    comptime SHADER_SAMPLED_READ = AccessFlagBits2(raw = 1 << 32)
+    comptime SHADER_STORAGE_READ = AccessFlagBits2(raw = 1 << 33)
+    comptime SHADER_STORAGE_WRITE = AccessFlagBits2(raw = 1 << 34)
 
 
 @register_passable("trivial")
-struct AccessFlagBits2:
+struct AccessFlagBits2(Equatable):
     var _raw: UInt64
 
     fn __init__(out self, *, raw: UInt64):
@@ -4282,15 +3965,12 @@ struct AccessFlagBits2:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> AccessFlags2:
         return AccessFlags2(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineStageFlags2(EqualityComparable):
+struct PipelineStageFlags2(Equatable):
     var _raw: UInt64
 
     @implicit
@@ -4317,36 +3997,35 @@ struct PipelineStageFlags2(EqualityComparable):
     fn __contains__(self, bit: PipelineStageFlagBits2) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias VK_PIPELINE_STAGE_2_NONE = PipelineStageFlagBits2(raw = 0)
-    alias VK_PIPELINE_STAGE_2_TOP_OF_PIPE = PipelineStageFlagBits2(raw = 1 << 0)
-    alias VK_PIPELINE_STAGE_2_DRAW_INDIRECT = PipelineStageFlagBits2(raw = 1 << 1)
-    alias VK_PIPELINE_STAGE_2_VERTEX_INPUT = PipelineStageFlagBits2(raw = 1 << 2)
-    alias VK_PIPELINE_STAGE_2_VERTEX_SHADER = PipelineStageFlagBits2(raw = 1 << 3)
-    alias VK_PIPELINE_STAGE_2_TESSELLATION_CONTROL_SHADER = PipelineStageFlagBits2(raw = 1 << 4)
-    alias VK_PIPELINE_STAGE_2_TESSELLATION_EVALUATION_SHADER = PipelineStageFlagBits2(raw = 1 << 5)
-    alias VK_PIPELINE_STAGE_2_GEOMETRY_SHADER = PipelineStageFlagBits2(raw = 1 << 6)
-    alias VK_PIPELINE_STAGE_2_FRAGMENT_SHADER = PipelineStageFlagBits2(raw = 1 << 7)
-    alias VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS = PipelineStageFlagBits2(raw = 1 << 8)
-    alias VK_PIPELINE_STAGE_2_LATE_FRAGMENT_TESTS = PipelineStageFlagBits2(raw = 1 << 9)
-    alias VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT = PipelineStageFlagBits2(raw = 1 << 10)
-    alias VK_PIPELINE_STAGE_2_COMPUTE_SHADER = PipelineStageFlagBits2(raw = 1 << 11)
-    alias VK_PIPELINE_STAGE_2_ALL_TRANSFER = PipelineStageFlagBits2(raw = 1 << 12)
-    alias VK_PIPELINE_STAGE_2_BOTTOM_OF_PIPE = PipelineStageFlagBits2(raw = 1 << 13)
-    alias VK_PIPELINE_STAGE_2_HOST = PipelineStageFlagBits2(raw = 1 << 14)
-    alias VK_PIPELINE_STAGE_2_ALL_GRAPHICS = PipelineStageFlagBits2(raw = 1 << 15)
-    alias VK_PIPELINE_STAGE_2_ALL_COMMANDS = PipelineStageFlagBits2(raw = 1 << 16)
-    alias VK_PIPELINE_STAGE_2_COPY = PipelineStageFlagBits2(raw = 1 << 32)
-    alias VK_PIPELINE_STAGE_2_RESOLVE = PipelineStageFlagBits2(raw = 1 << 33)
-    alias VK_PIPELINE_STAGE_2_BLIT = PipelineStageFlagBits2(raw = 1 << 34)
-    alias VK_PIPELINE_STAGE_2_CLEAR = PipelineStageFlagBits2(raw = 1 << 35)
-    alias VK_PIPELINE_STAGE_2_INDEX_INPUT = PipelineStageFlagBits2(raw = 1 << 36)
-    alias VK_PIPELINE_STAGE_2_VERTEX_ATTRIBUTE_INPUT = PipelineStageFlagBits2(raw = 1 << 37)
-    alias VK_PIPELINE_STAGE_2_PRE_RASTERIZATION_SHADERS = PipelineStageFlagBits2(raw = 1 << 38)
+    comptime NONE = PipelineStageFlagBits2(raw = 0)
+    comptime TOP_OF_PIPE = PipelineStageFlagBits2(raw = 1 << 0)
+    comptime DRAW_INDIRECT = PipelineStageFlagBits2(raw = 1 << 1)
+    comptime VERTEX_INPUT = PipelineStageFlagBits2(raw = 1 << 2)
+    comptime VERTEX_SHADER = PipelineStageFlagBits2(raw = 1 << 3)
+    comptime TESSELLATION_CONTROL_SHADER = PipelineStageFlagBits2(raw = 1 << 4)
+    comptime TESSELLATION_EVALUATION_SHADER = PipelineStageFlagBits2(raw = 1 << 5)
+    comptime GEOMETRY_SHADER = PipelineStageFlagBits2(raw = 1 << 6)
+    comptime FRAGMENT_SHADER = PipelineStageFlagBits2(raw = 1 << 7)
+    comptime EARLY_FRAGMENT_TESTS = PipelineStageFlagBits2(raw = 1 << 8)
+    comptime LATE_FRAGMENT_TESTS = PipelineStageFlagBits2(raw = 1 << 9)
+    comptime COLOR_ATTACHMENT_OUTPUT = PipelineStageFlagBits2(raw = 1 << 10)
+    comptime COMPUTE_SHADER = PipelineStageFlagBits2(raw = 1 << 11)
+    comptime ALL_TRANSFER = PipelineStageFlagBits2(raw = 1 << 12)
+    comptime BOTTOM_OF_PIPE = PipelineStageFlagBits2(raw = 1 << 13)
+    comptime HOST = PipelineStageFlagBits2(raw = 1 << 14)
+    comptime ALL_GRAPHICS = PipelineStageFlagBits2(raw = 1 << 15)
+    comptime ALL_COMMANDS = PipelineStageFlagBits2(raw = 1 << 16)
+    comptime COPY = PipelineStageFlagBits2(raw = 1 << 32)
+    comptime RESOLVE = PipelineStageFlagBits2(raw = 1 << 33)
+    comptime BLIT = PipelineStageFlagBits2(raw = 1 << 34)
+    comptime CLEAR = PipelineStageFlagBits2(raw = 1 << 35)
+    comptime INDEX_INPUT = PipelineStageFlagBits2(raw = 1 << 36)
+    comptime VERTEX_ATTRIBUTE_INPUT = PipelineStageFlagBits2(raw = 1 << 37)
+    comptime PRE_RASTERIZATION_SHADERS = PipelineStageFlagBits2(raw = 1 << 38)
 
 
 @register_passable("trivial")
-struct PipelineStageFlagBits2:
+struct PipelineStageFlagBits2(Equatable):
     var _raw: UInt64
 
     fn __init__(out self, *, raw: UInt64):
@@ -4358,15 +4037,12 @@ struct PipelineStageFlagBits2:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineStageFlags2:
         return PipelineStageFlags2(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct AccelerationStructureMotionInfoFlagsNV(EqualityComparable):
+struct AccelerationStructureMotionInfoFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -4394,9 +4070,8 @@ struct AccelerationStructureMotionInfoFlagsNV(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct AccelerationStructureMotionInfoFlagBitsNV:
+struct AccelerationStructureMotionInfoFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -4408,15 +4083,12 @@ struct AccelerationStructureMotionInfoFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> AccelerationStructureMotionInfoFlagsNV:
         return AccelerationStructureMotionInfoFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct AccelerationStructureMotionInstanceFlagsNV(EqualityComparable):
+struct AccelerationStructureMotionInstanceFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -4444,9 +4116,8 @@ struct AccelerationStructureMotionInstanceFlagsNV(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct AccelerationStructureMotionInstanceFlagBitsNV:
+struct AccelerationStructureMotionInstanceFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -4458,15 +4129,12 @@ struct AccelerationStructureMotionInstanceFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> AccelerationStructureMotionInstanceFlagsNV:
         return AccelerationStructureMotionInstanceFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct FormatFeatureFlags2(EqualityComparable):
+struct FormatFeatureFlags2(Equatable):
     var _raw: UInt64
 
     @implicit
@@ -4493,37 +4161,36 @@ struct FormatFeatureFlags2(EqualityComparable):
     fn __contains__(self, bit: FormatFeatureFlagBits2) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias VK_FORMAT_FEATURE_2_SAMPLED_IMAGE = FormatFeatureFlagBits2(raw = 1 << 0)
-    alias VK_FORMAT_FEATURE_2_STORAGE_IMAGE = FormatFeatureFlagBits2(raw = 1 << 1)
-    alias VK_FORMAT_FEATURE_2_STORAGE_IMAGE_ATOMIC = FormatFeatureFlagBits2(raw = 1 << 2)
-    alias VK_FORMAT_FEATURE_2_UNIFORM_TEXEL_BUFFER = FormatFeatureFlagBits2(raw = 1 << 3)
-    alias VK_FORMAT_FEATURE_2_STORAGE_TEXEL_BUFFER = FormatFeatureFlagBits2(raw = 1 << 4)
-    alias VK_FORMAT_FEATURE_2_STORAGE_TEXEL_BUFFER_ATOMIC = FormatFeatureFlagBits2(raw = 1 << 5)
-    alias VK_FORMAT_FEATURE_2_VERTEX_BUFFER = FormatFeatureFlagBits2(raw = 1 << 6)
-    alias VK_FORMAT_FEATURE_2_COLOR_ATTACHMENT = FormatFeatureFlagBits2(raw = 1 << 7)
-    alias VK_FORMAT_FEATURE_2_COLOR_ATTACHMENT_BLEND = FormatFeatureFlagBits2(raw = 1 << 8)
-    alias VK_FORMAT_FEATURE_2_DEPTH_STENCIL_ATTACHMENT = FormatFeatureFlagBits2(raw = 1 << 9)
-    alias VK_FORMAT_FEATURE_2_BLIT_SRC = FormatFeatureFlagBits2(raw = 1 << 10)
-    alias VK_FORMAT_FEATURE_2_BLIT_DST = FormatFeatureFlagBits2(raw = 1 << 11)
-    alias VK_FORMAT_FEATURE_2_SAMPLED_IMAGE_FILTER_LINEAR = FormatFeatureFlagBits2(raw = 1 << 12)
-    alias VK_FORMAT_FEATURE_2_TRANSFER_SRC = FormatFeatureFlagBits2(raw = 1 << 14)
-    alias VK_FORMAT_FEATURE_2_TRANSFER_DST = FormatFeatureFlagBits2(raw = 1 << 15)
-    alias VK_FORMAT_FEATURE_2_SAMPLED_IMAGE_FILTER_MINMAX = FormatFeatureFlagBits2(raw = 1 << 16)
-    alias VK_FORMAT_FEATURE_2_MIDPOINT_CHROMA_SAMPLES = FormatFeatureFlagBits2(raw = 1 << 17)
-    alias VK_FORMAT_FEATURE_2_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER = FormatFeatureFlagBits2(raw = 1 << 18)
-    alias VK_FORMAT_FEATURE_2_SAMPLED_IMAGE_YCBCR_CONVERSION_SEPARATE_RECONSTRUCTION_FILTER = FormatFeatureFlagBits2(raw = 1 << 19)
-    alias VK_FORMAT_FEATURE_2_SAMPLED_IMAGE_YCBCR_CONVERSION_CHROMA_RECONSTRUCTION_EXPLICIT = FormatFeatureFlagBits2(raw = 1 << 20)
-    alias VK_FORMAT_FEATURE_2_SAMPLED_IMAGE_YCBCR_CONVERSION_CHROMA_RECONSTRUCTION_EXPLICIT_FORCEABLE = FormatFeatureFlagBits2(raw = 1 << 21)
-    alias VK_FORMAT_FEATURE_2_DISJOINT = FormatFeatureFlagBits2(raw = 1 << 22)
-    alias VK_FORMAT_FEATURE_2_COSITED_CHROMA_SAMPLES = FormatFeatureFlagBits2(raw = 1 << 23)
-    alias VK_FORMAT_FEATURE_2_STORAGE_READ_WITHOUT_FORMAT = FormatFeatureFlagBits2(raw = 1 << 31)
-    alias VK_FORMAT_FEATURE_2_STORAGE_WRITE_WITHOUT_FORMAT = FormatFeatureFlagBits2(raw = 1 << 32)
-    alias VK_FORMAT_FEATURE_2_SAMPLED_IMAGE_DEPTH_COMPARISON = FormatFeatureFlagBits2(raw = 1 << 33)
+    comptime SAMPLED_IMAGE = FormatFeatureFlagBits2(raw = 1 << 0)
+    comptime STORAGE_IMAGE = FormatFeatureFlagBits2(raw = 1 << 1)
+    comptime STORAGE_IMAGE_ATOMIC = FormatFeatureFlagBits2(raw = 1 << 2)
+    comptime UNIFORM_TEXEL_BUFFER = FormatFeatureFlagBits2(raw = 1 << 3)
+    comptime STORAGE_TEXEL_BUFFER = FormatFeatureFlagBits2(raw = 1 << 4)
+    comptime STORAGE_TEXEL_BUFFER_ATOMIC = FormatFeatureFlagBits2(raw = 1 << 5)
+    comptime VERTEX_BUFFER = FormatFeatureFlagBits2(raw = 1 << 6)
+    comptime COLOR_ATTACHMENT = FormatFeatureFlagBits2(raw = 1 << 7)
+    comptime COLOR_ATTACHMENT_BLEND = FormatFeatureFlagBits2(raw = 1 << 8)
+    comptime DEPTH_STENCIL_ATTACHMENT = FormatFeatureFlagBits2(raw = 1 << 9)
+    comptime BLIT_SRC = FormatFeatureFlagBits2(raw = 1 << 10)
+    comptime BLIT_DST = FormatFeatureFlagBits2(raw = 1 << 11)
+    comptime SAMPLED_IMAGE_FILTER_LINEAR = FormatFeatureFlagBits2(raw = 1 << 12)
+    comptime TRANSFER_SRC = FormatFeatureFlagBits2(raw = 1 << 14)
+    comptime TRANSFER_DST = FormatFeatureFlagBits2(raw = 1 << 15)
+    comptime SAMPLED_IMAGE_FILTER_MINMAX = FormatFeatureFlagBits2(raw = 1 << 16)
+    comptime MIDPOINT_CHROMA_SAMPLES = FormatFeatureFlagBits2(raw = 1 << 17)
+    comptime SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER = FormatFeatureFlagBits2(raw = 1 << 18)
+    comptime SAMPLED_IMAGE_YCBCR_CONVERSION_SEPARATE_RECONSTRUCTION_FILTER = FormatFeatureFlagBits2(raw = 1 << 19)
+    comptime SAMPLED_IMAGE_YCBCR_CONVERSION_CHROMA_RECONSTRUCTION_EXPLICIT = FormatFeatureFlagBits2(raw = 1 << 20)
+    comptime SAMPLED_IMAGE_YCBCR_CONVERSION_CHROMA_RECONSTRUCTION_EXPLICIT_FORCEABLE = FormatFeatureFlagBits2(raw = 1 << 21)
+    comptime DISJOINT = FormatFeatureFlagBits2(raw = 1 << 22)
+    comptime COSITED_CHROMA_SAMPLES = FormatFeatureFlagBits2(raw = 1 << 23)
+    comptime STORAGE_READ_WITHOUT_FORMAT = FormatFeatureFlagBits2(raw = 1 << 31)
+    comptime STORAGE_WRITE_WITHOUT_FORMAT = FormatFeatureFlagBits2(raw = 1 << 32)
+    comptime SAMPLED_IMAGE_DEPTH_COMPARISON = FormatFeatureFlagBits2(raw = 1 << 33)
 
 
 @register_passable("trivial")
-struct FormatFeatureFlagBits2:
+struct FormatFeatureFlagBits2(Equatable):
     var _raw: UInt64
 
     fn __init__(out self, *, raw: UInt64):
@@ -4535,15 +4202,12 @@ struct FormatFeatureFlagBits2:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> FormatFeatureFlags2:
         return FormatFeatureFlags2(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct RenderingFlags(EqualityComparable):
+struct RenderingFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -4570,14 +4234,13 @@ struct RenderingFlags(EqualityComparable):
     fn __contains__(self, bit: RenderingFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias CONTENTS_SECONDARY_COMMAND_BUFFERS = RenderingFlagBits(raw = 1 << 0)
-    alias SUSPENDING = RenderingFlagBits(raw = 1 << 1)
-    alias RESUMING = RenderingFlagBits(raw = 1 << 2)
+    comptime CONTENTS_SECONDARY_COMMAND_BUFFERS = RenderingFlagBits(raw = 1 << 0)
+    comptime SUSPENDING = RenderingFlagBits(raw = 1 << 1)
+    comptime RESUMING = RenderingFlagBits(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct RenderingFlagBits:
+struct RenderingFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -4589,15 +4252,12 @@ struct RenderingFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> RenderingFlags:
         return RenderingFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct MemoryDecompressionMethodFlagsNV(EqualityComparable):
+struct MemoryDecompressionMethodFlagsNV(Equatable):
     var _raw: UInt64
 
     @implicit
@@ -4624,12 +4284,11 @@ struct MemoryDecompressionMethodFlagsNV(EqualityComparable):
     fn __contains__(self, bit: MemoryDecompressionMethodFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias GDEFLATE_1_0_NV = MemoryDecompressionMethodFlagBitsNV(raw = 1 << 0)
+    comptime GDEFLATE_1_0_NV = MemoryDecompressionMethodFlagBitsNV(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct MemoryDecompressionMethodFlagBitsNV:
+struct MemoryDecompressionMethodFlagBitsNV(Equatable):
     var _raw: UInt64
 
     fn __init__(out self, *, raw: UInt64):
@@ -4641,15 +4300,12 @@ struct MemoryDecompressionMethodFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> MemoryDecompressionMethodFlagsNV:
         return MemoryDecompressionMethodFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct BuildMicromapFlagsEXT(EqualityComparable):
+struct BuildMicromapFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -4676,14 +4332,13 @@ struct BuildMicromapFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: BuildMicromapFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias PREFER_FAST_TRACE_EXT = BuildMicromapFlagBitsEXT(raw = 1 << 0)
-    alias PREFER_FAST_BUILD_EXT = BuildMicromapFlagBitsEXT(raw = 1 << 1)
-    alias ALLOW_COMPACTION_EXT = BuildMicromapFlagBitsEXT(raw = 1 << 2)
+    comptime PREFER_FAST_TRACE_EXT = BuildMicromapFlagBitsEXT(raw = 1 << 0)
+    comptime PREFER_FAST_BUILD_EXT = BuildMicromapFlagBitsEXT(raw = 1 << 1)
+    comptime ALLOW_COMPACTION_EXT = BuildMicromapFlagBitsEXT(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct BuildMicromapFlagBitsEXT:
+struct BuildMicromapFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -4695,15 +4350,12 @@ struct BuildMicromapFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> BuildMicromapFlagsEXT:
         return BuildMicromapFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct MicromapCreateFlagsEXT(EqualityComparable):
+struct MicromapCreateFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -4730,12 +4382,11 @@ struct MicromapCreateFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: MicromapCreateFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DEVICE_ADDRESS_CAPTURE_REPLAY_EXT = MicromapCreateFlagBitsEXT(raw = 1 << 0)
+    comptime DEVICE_ADDRESS_CAPTURE_REPLAY_EXT = MicromapCreateFlagBitsEXT(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct MicromapCreateFlagBitsEXT:
+struct MicromapCreateFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -4747,15 +4398,12 @@ struct MicromapCreateFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> MicromapCreateFlagsEXT:
         return MicromapCreateFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct IndirectCommandsLayoutUsageFlagsEXT(EqualityComparable):
+struct IndirectCommandsLayoutUsageFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -4782,13 +4430,12 @@ struct IndirectCommandsLayoutUsageFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: IndirectCommandsLayoutUsageFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias EXPLICIT_PREPROCESS_EXT = IndirectCommandsLayoutUsageFlagBitsEXT(raw = 1 << 0)
-    alias UNORDERED_SEQUENCES_EXT = IndirectCommandsLayoutUsageFlagBitsEXT(raw = 1 << 1)
+    comptime EXPLICIT_PREPROCESS_EXT = IndirectCommandsLayoutUsageFlagBitsEXT(raw = 1 << 0)
+    comptime UNORDERED_SEQUENCES_EXT = IndirectCommandsLayoutUsageFlagBitsEXT(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct IndirectCommandsLayoutUsageFlagBitsEXT:
+struct IndirectCommandsLayoutUsageFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -4800,15 +4447,12 @@ struct IndirectCommandsLayoutUsageFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> IndirectCommandsLayoutUsageFlagsEXT:
         return IndirectCommandsLayoutUsageFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct IndirectCommandsInputModeFlagsEXT(EqualityComparable):
+struct IndirectCommandsInputModeFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -4835,13 +4479,12 @@ struct IndirectCommandsInputModeFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: IndirectCommandsInputModeFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias VULKAN_INDEX_BUFFER_EXT = IndirectCommandsInputModeFlagBitsEXT(raw = 1 << 0)
-    alias DXGI_INDEX_BUFFER_EXT = IndirectCommandsInputModeFlagBitsEXT(raw = 1 << 1)
+    comptime VULKAN_INDEX_BUFFER_EXT = IndirectCommandsInputModeFlagBitsEXT(raw = 1 << 0)
+    comptime DXGI_INDEX_BUFFER_EXT = IndirectCommandsInputModeFlagBitsEXT(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct IndirectCommandsInputModeFlagBitsEXT:
+struct IndirectCommandsInputModeFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -4853,15 +4496,12 @@ struct IndirectCommandsInputModeFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> IndirectCommandsInputModeFlagsEXT:
         return IndirectCommandsInputModeFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DirectDriverLoadingFlagsLUNARG(EqualityComparable):
+struct DirectDriverLoadingFlagsLUNARG(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -4889,9 +4529,8 @@ struct DirectDriverLoadingFlagsLUNARG(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct DirectDriverLoadingFlagBitsLUNARG:
+struct DirectDriverLoadingFlagBitsLUNARG(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -4903,15 +4542,12 @@ struct DirectDriverLoadingFlagBitsLUNARG:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DirectDriverLoadingFlagsLUNARG:
         return DirectDriverLoadingFlagsLUNARG(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineCreateFlags2(EqualityComparable):
+struct PipelineCreateFlags2(Equatable):
     var _raw: UInt64
 
     @implicit
@@ -4938,20 +4574,19 @@ struct PipelineCreateFlags2(EqualityComparable):
     fn __contains__(self, bit: PipelineCreateFlagBits2) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias VK_PIPELINE_CREATE_2_DISABLE_OPTIMIZATION = PipelineCreateFlagBits2(raw = 1 << 0)
-    alias VK_PIPELINE_CREATE_2_ALLOW_DERIVATIVES = PipelineCreateFlagBits2(raw = 1 << 1)
-    alias VK_PIPELINE_CREATE_2_DERIVATIVE = PipelineCreateFlagBits2(raw = 1 << 2)
-    alias VK_PIPELINE_CREATE_2_VIEW_INDEX_FROM_DEVICE_INDEX = PipelineCreateFlagBits2(raw = 1 << 3)
-    alias VK_PIPELINE_CREATE_2_DISPATCH_BASE = PipelineCreateFlagBits2(raw = 1 << 4)
-    alias VK_PIPELINE_CREATE_2_FAIL_ON_PIPELINE_COMPILE_REQUIRED = PipelineCreateFlagBits2(raw = 1 << 8)
-    alias VK_PIPELINE_CREATE_2_EARLY_RETURN_ON_FAILURE = PipelineCreateFlagBits2(raw = 1 << 9)
-    alias VK_PIPELINE_CREATE_2_NO_PROTECTED_ACCESS = PipelineCreateFlagBits2(raw = 1 << 27)
-    alias VK_PIPELINE_CREATE_2_PROTECTED_ACCESS_ONLY = PipelineCreateFlagBits2(raw = 1 << 30)
+    comptime DISABLE_OPTIMIZATION = PipelineCreateFlagBits2(raw = 1 << 0)
+    comptime ALLOW_DERIVATIVES = PipelineCreateFlagBits2(raw = 1 << 1)
+    comptime DERIVATIVE = PipelineCreateFlagBits2(raw = 1 << 2)
+    comptime VIEW_INDEX_FROM_DEVICE_INDEX = PipelineCreateFlagBits2(raw = 1 << 3)
+    comptime DISPATCH_BASE = PipelineCreateFlagBits2(raw = 1 << 4)
+    comptime FAIL_ON_PIPELINE_COMPILE_REQUIRED = PipelineCreateFlagBits2(raw = 1 << 8)
+    comptime EARLY_RETURN_ON_FAILURE = PipelineCreateFlagBits2(raw = 1 << 9)
+    comptime NO_PROTECTED_ACCESS = PipelineCreateFlagBits2(raw = 1 << 27)
+    comptime PROTECTED_ACCESS_ONLY = PipelineCreateFlagBits2(raw = 1 << 30)
 
 
 @register_passable("trivial")
-struct PipelineCreateFlagBits2:
+struct PipelineCreateFlagBits2(Equatable):
     var _raw: UInt64
 
     fn __init__(out self, *, raw: UInt64):
@@ -4963,15 +4598,12 @@ struct PipelineCreateFlagBits2:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineCreateFlags2:
         return PipelineCreateFlags2(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct BufferUsageFlags2(EqualityComparable):
+struct BufferUsageFlags2(Equatable):
     var _raw: UInt64
 
     @implicit
@@ -4998,20 +4630,19 @@ struct BufferUsageFlags2(EqualityComparable):
     fn __contains__(self, bit: BufferUsageFlagBits2) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias VK_BUFFER_USAGE_2_TRANSFER_SRC = BufferUsageFlagBits2(raw = 1 << 0)
-    alias VK_BUFFER_USAGE_2_TRANSFER_DST = BufferUsageFlagBits2(raw = 1 << 1)
-    alias VK_BUFFER_USAGE_2_UNIFORM_TEXEL_BUFFER = BufferUsageFlagBits2(raw = 1 << 2)
-    alias VK_BUFFER_USAGE_2_STORAGE_TEXEL_BUFFER = BufferUsageFlagBits2(raw = 1 << 3)
-    alias VK_BUFFER_USAGE_2_UNIFORM_BUFFER = BufferUsageFlagBits2(raw = 1 << 4)
-    alias VK_BUFFER_USAGE_2_STORAGE_BUFFER = BufferUsageFlagBits2(raw = 1 << 5)
-    alias VK_BUFFER_USAGE_2_INDEX_BUFFER = BufferUsageFlagBits2(raw = 1 << 6)
-    alias VK_BUFFER_USAGE_2_VERTEX_BUFFER = BufferUsageFlagBits2(raw = 1 << 7)
-    alias VK_BUFFER_USAGE_2_INDIRECT_BUFFER = BufferUsageFlagBits2(raw = 1 << 8)
+    comptime TRANSFER_SRC = BufferUsageFlagBits2(raw = 1 << 0)
+    comptime TRANSFER_DST = BufferUsageFlagBits2(raw = 1 << 1)
+    comptime UNIFORM_TEXEL_BUFFER = BufferUsageFlagBits2(raw = 1 << 2)
+    comptime STORAGE_TEXEL_BUFFER = BufferUsageFlagBits2(raw = 1 << 3)
+    comptime UNIFORM_BUFFER = BufferUsageFlagBits2(raw = 1 << 4)
+    comptime STORAGE_BUFFER = BufferUsageFlagBits2(raw = 1 << 5)
+    comptime INDEX_BUFFER = BufferUsageFlagBits2(raw = 1 << 6)
+    comptime VERTEX_BUFFER = BufferUsageFlagBits2(raw = 1 << 7)
+    comptime INDIRECT_BUFFER = BufferUsageFlagBits2(raw = 1 << 8)
 
 
 @register_passable("trivial")
-struct BufferUsageFlagBits2:
+struct BufferUsageFlagBits2(Equatable):
     var _raw: UInt64
 
     fn __init__(out self, *, raw: UInt64):
@@ -5023,15 +4654,12 @@ struct BufferUsageFlagBits2:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> BufferUsageFlags2:
         return BufferUsageFlags2(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct TensorCreateFlagsARM(EqualityComparable):
+struct TensorCreateFlagsARM(Equatable):
     var _raw: UInt64
 
     @implicit
@@ -5058,13 +4686,12 @@ struct TensorCreateFlagsARM(EqualityComparable):
     fn __contains__(self, bit: TensorCreateFlagBitsARM) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias MUTABLE_FORMAT_ARM = TensorCreateFlagBitsARM(raw = 1 << 0)
-    alias PROTECTED_ARM = TensorCreateFlagBitsARM(raw = 1 << 1)
+    comptime MUTABLE_FORMAT_ARM = TensorCreateFlagBitsARM(raw = 1 << 0)
+    comptime PROTECTED_ARM = TensorCreateFlagBitsARM(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct TensorCreateFlagBitsARM:
+struct TensorCreateFlagBitsARM(Equatable):
     var _raw: UInt64
 
     fn __init__(out self, *, raw: UInt64):
@@ -5076,15 +4703,12 @@ struct TensorCreateFlagBitsARM:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> TensorCreateFlagsARM:
         return TensorCreateFlagsARM(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct TensorUsageFlagsARM(EqualityComparable):
+struct TensorUsageFlagsARM(Equatable):
     var _raw: UInt64
 
     @implicit
@@ -5111,15 +4735,14 @@ struct TensorUsageFlagsARM(EqualityComparable):
     fn __contains__(self, bit: TensorUsageFlagBitsARM) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias SHADER_ARM = TensorUsageFlagBitsARM(raw = 1 << 1)
-    alias TRANSFER_SRC_ARM = TensorUsageFlagBitsARM(raw = 1 << 2)
-    alias TRANSFER_DST_ARM = TensorUsageFlagBitsARM(raw = 1 << 3)
-    alias IMAGE_ALIASING_ARM = TensorUsageFlagBitsARM(raw = 1 << 4)
+    comptime SHADER_ARM = TensorUsageFlagBitsARM(raw = 1 << 1)
+    comptime TRANSFER_SRC_ARM = TensorUsageFlagBitsARM(raw = 1 << 2)
+    comptime TRANSFER_DST_ARM = TensorUsageFlagBitsARM(raw = 1 << 3)
+    comptime IMAGE_ALIASING_ARM = TensorUsageFlagBitsARM(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct TensorUsageFlagBitsARM:
+struct TensorUsageFlagBitsARM(Equatable):
     var _raw: UInt64
 
     fn __init__(out self, *, raw: UInt64):
@@ -5131,15 +4754,12 @@ struct TensorUsageFlagBitsARM:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> TensorUsageFlagsARM:
         return TensorUsageFlagsARM(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct TensorViewCreateFlagsARM(EqualityComparable):
+struct TensorViewCreateFlagsARM(Equatable):
     var _raw: UInt64
 
     @implicit
@@ -5167,9 +4787,8 @@ struct TensorViewCreateFlagsARM(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct TensorViewCreateFlagBitsARM:
+struct TensorViewCreateFlagBitsARM(Equatable):
     var _raw: UInt64
 
     fn __init__(out self, *, raw: UInt64):
@@ -5181,15 +4800,12 @@ struct TensorViewCreateFlagBitsARM:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> TensorViewCreateFlagsARM:
         return TensorViewCreateFlagsARM(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DataGraphPipelineSessionCreateFlagsARM(EqualityComparable):
+struct DataGraphPipelineSessionCreateFlagsARM(Equatable):
     var _raw: UInt64
 
     @implicit
@@ -5216,12 +4832,11 @@ struct DataGraphPipelineSessionCreateFlagsARM(EqualityComparable):
     fn __contains__(self, bit: DataGraphPipelineSessionCreateFlagBitsARM) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias PROTECTED_ARM = DataGraphPipelineSessionCreateFlagBitsARM(raw = 1 << 0)
+    comptime PROTECTED_ARM = DataGraphPipelineSessionCreateFlagBitsARM(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct DataGraphPipelineSessionCreateFlagBitsARM:
+struct DataGraphPipelineSessionCreateFlagBitsARM(Equatable):
     var _raw: UInt64
 
     fn __init__(out self, *, raw: UInt64):
@@ -5233,15 +4848,12 @@ struct DataGraphPipelineSessionCreateFlagBitsARM:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DataGraphPipelineSessionCreateFlagsARM:
         return DataGraphPipelineSessionCreateFlagsARM(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DataGraphPipelineDispatchFlagsARM(EqualityComparable):
+struct DataGraphPipelineDispatchFlagsARM(Equatable):
     var _raw: UInt64
 
     @implicit
@@ -5269,9 +4881,8 @@ struct DataGraphPipelineDispatchFlagsARM(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct DataGraphPipelineDispatchFlagBitsARM:
+struct DataGraphPipelineDispatchFlagBitsARM(Equatable):
     var _raw: UInt64
 
     fn __init__(out self, *, raw: UInt64):
@@ -5283,15 +4894,12 @@ struct DataGraphPipelineDispatchFlagBitsARM:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DataGraphPipelineDispatchFlagsARM:
         return DataGraphPipelineDispatchFlagsARM(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeRgbModelConversionFlagsVALVE(EqualityComparable):
+struct VideoEncodeRgbModelConversionFlagsVALVE(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -5318,16 +4926,15 @@ struct VideoEncodeRgbModelConversionFlagsVALVE(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias RGB_IDENTITY_VALVE = VideoEncodeRgbModelConversionFlagBitsVALVE(raw = 1 << 0)
-    alias YCBCR_IDENTITY_VALVE = VideoEncodeRgbModelConversionFlagBitsVALVE(raw = 1 << 1)
-    alias YCBCR_709_VALVE = VideoEncodeRgbModelConversionFlagBitsVALVE(raw = 1 << 2)
-    alias YCBCR_601_VALVE = VideoEncodeRgbModelConversionFlagBitsVALVE(raw = 1 << 3)
-    alias YCBCR_2020_VALVE = VideoEncodeRgbModelConversionFlagBitsVALVE(raw = 1 << 4)
+    comptime RGB_IDENTITY_VALVE = VideoEncodeRgbModelConversionFlagBitsVALVE(raw = 1 << 0)
+    comptime YCBCR_IDENTITY_VALVE = VideoEncodeRgbModelConversionFlagBitsVALVE(raw = 1 << 1)
+    comptime YCBCR_709_VALVE = VideoEncodeRgbModelConversionFlagBitsVALVE(raw = 1 << 2)
+    comptime YCBCR_601_VALVE = VideoEncodeRgbModelConversionFlagBitsVALVE(raw = 1 << 3)
+    comptime YCBCR_2020_VALVE = VideoEncodeRgbModelConversionFlagBitsVALVE(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct VideoEncodeRgbModelConversionFlagBitsVALVE:
+struct VideoEncodeRgbModelConversionFlagBitsVALVE(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -5339,15 +4946,12 @@ struct VideoEncodeRgbModelConversionFlagBitsVALVE:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeRgbModelConversionFlagsVALVE:
         return VideoEncodeRgbModelConversionFlagsVALVE(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeRgbRangeCompressionFlagsVALVE(EqualityComparable):
+struct VideoEncodeRgbRangeCompressionFlagsVALVE(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -5374,13 +4978,12 @@ struct VideoEncodeRgbRangeCompressionFlagsVALVE(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias FULL_RANGE_VALVE = VideoEncodeRgbRangeCompressionFlagBitsVALVE(raw = 1 << 0)
-    alias NARROW_RANGE_VALVE = VideoEncodeRgbRangeCompressionFlagBitsVALVE(raw = 1 << 1)
+    comptime FULL_RANGE_VALVE = VideoEncodeRgbRangeCompressionFlagBitsVALVE(raw = 1 << 0)
+    comptime NARROW_RANGE_VALVE = VideoEncodeRgbRangeCompressionFlagBitsVALVE(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct VideoEncodeRgbRangeCompressionFlagBitsVALVE:
+struct VideoEncodeRgbRangeCompressionFlagBitsVALVE(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -5392,15 +4995,12 @@ struct VideoEncodeRgbRangeCompressionFlagBitsVALVE:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeRgbRangeCompressionFlagsVALVE:
         return VideoEncodeRgbRangeCompressionFlagsVALVE(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeRgbChromaOffsetFlagsVALVE(EqualityComparable):
+struct VideoEncodeRgbChromaOffsetFlagsVALVE(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -5427,13 +5027,12 @@ struct VideoEncodeRgbChromaOffsetFlagsVALVE(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias COSITED_EVEN_VALVE = VideoEncodeRgbChromaOffsetFlagBitsVALVE(raw = 1 << 0)
-    alias MIDPOINT_VALVE = VideoEncodeRgbChromaOffsetFlagBitsVALVE(raw = 1 << 1)
+    comptime COSITED_EVEN_VALVE = VideoEncodeRgbChromaOffsetFlagBitsVALVE(raw = 1 << 0)
+    comptime MIDPOINT_VALVE = VideoEncodeRgbChromaOffsetFlagBitsVALVE(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct VideoEncodeRgbChromaOffsetFlagBitsVALVE:
+struct VideoEncodeRgbChromaOffsetFlagBitsVALVE(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -5445,15 +5044,12 @@ struct VideoEncodeRgbChromaOffsetFlagBitsVALVE:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeRgbChromaOffsetFlagsVALVE:
         return VideoEncodeRgbChromaOffsetFlagsVALVE(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct CompositeAlphaFlagsKHR(EqualityComparable):
+struct CompositeAlphaFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -5480,15 +5076,14 @@ struct CompositeAlphaFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: CompositeAlphaFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias OPAQUE_KHR = CompositeAlphaFlagBitsKHR(raw = 1 << 0)
-    alias PRE_MULTIPLIED_KHR = CompositeAlphaFlagBitsKHR(raw = 1 << 1)
-    alias POST_MULTIPLIED_KHR = CompositeAlphaFlagBitsKHR(raw = 1 << 2)
-    alias INHERIT_KHR = CompositeAlphaFlagBitsKHR(raw = 1 << 3)
+    comptime OPAQUE_KHR = CompositeAlphaFlagBitsKHR(raw = 1 << 0)
+    comptime PRE_MULTIPLIED_KHR = CompositeAlphaFlagBitsKHR(raw = 1 << 1)
+    comptime POST_MULTIPLIED_KHR = CompositeAlphaFlagBitsKHR(raw = 1 << 2)
+    comptime INHERIT_KHR = CompositeAlphaFlagBitsKHR(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct CompositeAlphaFlagBitsKHR:
+struct CompositeAlphaFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -5500,15 +5095,12 @@ struct CompositeAlphaFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> CompositeAlphaFlagsKHR:
         return CompositeAlphaFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DisplayPlaneAlphaFlagsKHR(EqualityComparable):
+struct DisplayPlaneAlphaFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -5535,15 +5127,14 @@ struct DisplayPlaneAlphaFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: DisplayPlaneAlphaFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias OPAQUE_KHR = DisplayPlaneAlphaFlagBitsKHR(raw = 1 << 0)
-    alias GLOBAL_KHR = DisplayPlaneAlphaFlagBitsKHR(raw = 1 << 1)
-    alias PER_PIXEL_KHR = DisplayPlaneAlphaFlagBitsKHR(raw = 1 << 2)
-    alias PER_PIXEL_PREMULTIPLIED_KHR = DisplayPlaneAlphaFlagBitsKHR(raw = 1 << 3)
+    comptime OPAQUE_KHR = DisplayPlaneAlphaFlagBitsKHR(raw = 1 << 0)
+    comptime GLOBAL_KHR = DisplayPlaneAlphaFlagBitsKHR(raw = 1 << 1)
+    comptime PER_PIXEL_KHR = DisplayPlaneAlphaFlagBitsKHR(raw = 1 << 2)
+    comptime PER_PIXEL_PREMULTIPLIED_KHR = DisplayPlaneAlphaFlagBitsKHR(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct DisplayPlaneAlphaFlagBitsKHR:
+struct DisplayPlaneAlphaFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -5555,15 +5146,12 @@ struct DisplayPlaneAlphaFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DisplayPlaneAlphaFlagsKHR:
         return DisplayPlaneAlphaFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SurfaceTransformFlagsKHR(EqualityComparable):
+struct SurfaceTransformFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -5590,20 +5178,19 @@ struct SurfaceTransformFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: SurfaceTransformFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias IDENTITY_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 0)
-    alias ROTATE_90_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 1)
-    alias ROTATE_180_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 2)
-    alias ROTATE_270_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 3)
-    alias HORIZONTAL_MIRROR_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 4)
-    alias HORIZONTAL_MIRROR_ROTATE_90_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 5)
-    alias HORIZONTAL_MIRROR_ROTATE_180_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 6)
-    alias HORIZONTAL_MIRROR_ROTATE_270_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 7)
-    alias INHERIT_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 8)
+    comptime IDENTITY_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 0)
+    comptime ROTATE_90_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 1)
+    comptime ROTATE_180_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 2)
+    comptime ROTATE_270_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 3)
+    comptime HORIZONTAL_MIRROR_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 4)
+    comptime HORIZONTAL_MIRROR_ROTATE_90_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 5)
+    comptime HORIZONTAL_MIRROR_ROTATE_180_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 6)
+    comptime HORIZONTAL_MIRROR_ROTATE_270_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 7)
+    comptime INHERIT_KHR = SurfaceTransformFlagBitsKHR(raw = 1 << 8)
 
 
 @register_passable("trivial")
-struct SurfaceTransformFlagBitsKHR:
+struct SurfaceTransformFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -5615,15 +5202,12 @@ struct SurfaceTransformFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SurfaceTransformFlagsKHR:
         return SurfaceTransformFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SwapchainCreateFlagsKHR(EqualityComparable):
+struct SwapchainCreateFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -5651,9 +5235,8 @@ struct SwapchainCreateFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct SwapchainCreateFlagBitsKHR:
+struct SwapchainCreateFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -5665,15 +5248,12 @@ struct SwapchainCreateFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SwapchainCreateFlagsKHR:
         return SwapchainCreateFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DisplayModeCreateFlagsKHR(EqualityComparable):
+struct DisplayModeCreateFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -5701,9 +5281,8 @@ struct DisplayModeCreateFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct DisplayModeCreateFlagBitsKHR:
+struct DisplayModeCreateFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -5715,15 +5294,12 @@ struct DisplayModeCreateFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DisplayModeCreateFlagsKHR:
         return DisplayModeCreateFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DisplaySurfaceCreateFlagsKHR(EqualityComparable):
+struct DisplaySurfaceCreateFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -5751,9 +5327,8 @@ struct DisplaySurfaceCreateFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct DisplaySurfaceCreateFlagBitsKHR:
+struct DisplaySurfaceCreateFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -5765,15 +5340,12 @@ struct DisplaySurfaceCreateFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DisplaySurfaceCreateFlagsKHR:
         return DisplaySurfaceCreateFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct AndroidSurfaceCreateFlagsKHR(EqualityComparable):
+struct AndroidSurfaceCreateFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -5801,9 +5373,8 @@ struct AndroidSurfaceCreateFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct AndroidSurfaceCreateFlagBitsKHR:
+struct AndroidSurfaceCreateFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -5815,15 +5386,12 @@ struct AndroidSurfaceCreateFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> AndroidSurfaceCreateFlagsKHR:
         return AndroidSurfaceCreateFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ViSurfaceCreateFlagsNN(EqualityComparable):
+struct ViSurfaceCreateFlagsNN(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -5851,9 +5419,8 @@ struct ViSurfaceCreateFlagsNN(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct ViSurfaceCreateFlagBitsNN:
+struct ViSurfaceCreateFlagBitsNN(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -5865,15 +5432,12 @@ struct ViSurfaceCreateFlagBitsNN:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ViSurfaceCreateFlagsNN:
         return ViSurfaceCreateFlagsNN(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct WaylandSurfaceCreateFlagsKHR(EqualityComparable):
+struct WaylandSurfaceCreateFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -5901,9 +5465,8 @@ struct WaylandSurfaceCreateFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct WaylandSurfaceCreateFlagBitsKHR:
+struct WaylandSurfaceCreateFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -5915,15 +5478,12 @@ struct WaylandSurfaceCreateFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> WaylandSurfaceCreateFlagsKHR:
         return WaylandSurfaceCreateFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct Win32SurfaceCreateFlagsKHR(EqualityComparable):
+struct Win32SurfaceCreateFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -5951,9 +5511,8 @@ struct Win32SurfaceCreateFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct Win32SurfaceCreateFlagBitsKHR:
+struct Win32SurfaceCreateFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -5965,15 +5524,12 @@ struct Win32SurfaceCreateFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> Win32SurfaceCreateFlagsKHR:
         return Win32SurfaceCreateFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct XlibSurfaceCreateFlagsKHR(EqualityComparable):
+struct XlibSurfaceCreateFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6001,9 +5557,8 @@ struct XlibSurfaceCreateFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct XlibSurfaceCreateFlagBitsKHR:
+struct XlibSurfaceCreateFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6015,15 +5570,12 @@ struct XlibSurfaceCreateFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> XlibSurfaceCreateFlagsKHR:
         return XlibSurfaceCreateFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct XcbSurfaceCreateFlagsKHR(EqualityComparable):
+struct XcbSurfaceCreateFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6051,9 +5603,8 @@ struct XcbSurfaceCreateFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct XcbSurfaceCreateFlagBitsKHR:
+struct XcbSurfaceCreateFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6065,15 +5616,12 @@ struct XcbSurfaceCreateFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> XcbSurfaceCreateFlagsKHR:
         return XcbSurfaceCreateFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DirectFBSurfaceCreateFlagsEXT(EqualityComparable):
+struct DirectFBSurfaceCreateFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6101,9 +5649,8 @@ struct DirectFBSurfaceCreateFlagsEXT(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct DirectFBSurfaceCreateFlagBitsEXT:
+struct DirectFBSurfaceCreateFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6115,15 +5662,12 @@ struct DirectFBSurfaceCreateFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DirectFBSurfaceCreateFlagsEXT:
         return DirectFBSurfaceCreateFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct IOSSurfaceCreateFlagsMVK(EqualityComparable):
+struct IOSSurfaceCreateFlagsMVK(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6151,9 +5695,8 @@ struct IOSSurfaceCreateFlagsMVK(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct IOSSurfaceCreateFlagBitsMVK:
+struct IOSSurfaceCreateFlagBitsMVK(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6165,15 +5708,12 @@ struct IOSSurfaceCreateFlagBitsMVK:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> IOSSurfaceCreateFlagsMVK:
         return IOSSurfaceCreateFlagsMVK(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct MacOSSurfaceCreateFlagsMVK(EqualityComparable):
+struct MacOSSurfaceCreateFlagsMVK(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6201,9 +5741,8 @@ struct MacOSSurfaceCreateFlagsMVK(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct MacOSSurfaceCreateFlagBitsMVK:
+struct MacOSSurfaceCreateFlagBitsMVK(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6215,15 +5754,12 @@ struct MacOSSurfaceCreateFlagBitsMVK:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> MacOSSurfaceCreateFlagsMVK:
         return MacOSSurfaceCreateFlagsMVK(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct MetalSurfaceCreateFlagsEXT(EqualityComparable):
+struct MetalSurfaceCreateFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6251,9 +5787,8 @@ struct MetalSurfaceCreateFlagsEXT(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct MetalSurfaceCreateFlagBitsEXT:
+struct MetalSurfaceCreateFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6265,15 +5800,12 @@ struct MetalSurfaceCreateFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> MetalSurfaceCreateFlagsEXT:
         return MetalSurfaceCreateFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ImagePipeSurfaceCreateFlagsFUCHSIA(EqualityComparable):
+struct ImagePipeSurfaceCreateFlagsFUCHSIA(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6301,9 +5833,8 @@ struct ImagePipeSurfaceCreateFlagsFUCHSIA(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct ImagePipeSurfaceCreateFlagBitsFUCHSIA:
+struct ImagePipeSurfaceCreateFlagBitsFUCHSIA(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6315,15 +5846,12 @@ struct ImagePipeSurfaceCreateFlagBitsFUCHSIA:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ImagePipeSurfaceCreateFlagsFUCHSIA:
         return ImagePipeSurfaceCreateFlagsFUCHSIA(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct StreamDescriptorSurfaceCreateFlagsGGP(EqualityComparable):
+struct StreamDescriptorSurfaceCreateFlagsGGP(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6351,9 +5879,8 @@ struct StreamDescriptorSurfaceCreateFlagsGGP(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct StreamDescriptorSurfaceCreateFlagBitsGGP:
+struct StreamDescriptorSurfaceCreateFlagBitsGGP(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6365,15 +5892,12 @@ struct StreamDescriptorSurfaceCreateFlagBitsGGP:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> StreamDescriptorSurfaceCreateFlagsGGP:
         return StreamDescriptorSurfaceCreateFlagsGGP(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct HeadlessSurfaceCreateFlagsEXT(EqualityComparable):
+struct HeadlessSurfaceCreateFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6401,9 +5925,8 @@ struct HeadlessSurfaceCreateFlagsEXT(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct HeadlessSurfaceCreateFlagBitsEXT:
+struct HeadlessSurfaceCreateFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6415,15 +5938,12 @@ struct HeadlessSurfaceCreateFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> HeadlessSurfaceCreateFlagsEXT:
         return HeadlessSurfaceCreateFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ScreenSurfaceCreateFlagsQNX(EqualityComparable):
+struct ScreenSurfaceCreateFlagsQNX(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6451,9 +5971,8 @@ struct ScreenSurfaceCreateFlagsQNX(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct ScreenSurfaceCreateFlagBitsQNX:
+struct ScreenSurfaceCreateFlagBitsQNX(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6465,15 +5984,12 @@ struct ScreenSurfaceCreateFlagBitsQNX:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ScreenSurfaceCreateFlagsQNX:
         return ScreenSurfaceCreateFlagsQNX(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PeerMemoryFeatureFlags(EqualityComparable):
+struct PeerMemoryFeatureFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6500,15 +6016,14 @@ struct PeerMemoryFeatureFlags(EqualityComparable):
     fn __contains__(self, bit: PeerMemoryFeatureFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias COPY_SRC = PeerMemoryFeatureFlagBits(raw = 1 << 0)
-    alias COPY_DST = PeerMemoryFeatureFlagBits(raw = 1 << 1)
-    alias GENERIC_SRC = PeerMemoryFeatureFlagBits(raw = 1 << 2)
-    alias GENERIC_DST = PeerMemoryFeatureFlagBits(raw = 1 << 3)
+    comptime COPY_SRC = PeerMemoryFeatureFlagBits(raw = 1 << 0)
+    comptime COPY_DST = PeerMemoryFeatureFlagBits(raw = 1 << 1)
+    comptime GENERIC_SRC = PeerMemoryFeatureFlagBits(raw = 1 << 2)
+    comptime GENERIC_DST = PeerMemoryFeatureFlagBits(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct PeerMemoryFeatureFlagBits:
+struct PeerMemoryFeatureFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6520,15 +6035,12 @@ struct PeerMemoryFeatureFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PeerMemoryFeatureFlags:
         return PeerMemoryFeatureFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct MemoryAllocateFlags(EqualityComparable):
+struct MemoryAllocateFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6555,12 +6067,11 @@ struct MemoryAllocateFlags(EqualityComparable):
     fn __contains__(self, bit: MemoryAllocateFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DEVICE_MASK = MemoryAllocateFlagBits(raw = 1 << 0)
+    comptime DEVICE_MASK = MemoryAllocateFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct MemoryAllocateFlagBits:
+struct MemoryAllocateFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6572,15 +6083,12 @@ struct MemoryAllocateFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> MemoryAllocateFlags:
         return MemoryAllocateFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DeviceGroupPresentModeFlagsKHR(EqualityComparable):
+struct DeviceGroupPresentModeFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6607,15 +6115,14 @@ struct DeviceGroupPresentModeFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: DeviceGroupPresentModeFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias LOCAL_KHR = DeviceGroupPresentModeFlagBitsKHR(raw = 1 << 0)
-    alias REMOTE_KHR = DeviceGroupPresentModeFlagBitsKHR(raw = 1 << 1)
-    alias SUM_KHR = DeviceGroupPresentModeFlagBitsKHR(raw = 1 << 2)
-    alias LOCAL_MULTI_DEVICE_KHR = DeviceGroupPresentModeFlagBitsKHR(raw = 1 << 3)
+    comptime LOCAL_KHR = DeviceGroupPresentModeFlagBitsKHR(raw = 1 << 0)
+    comptime REMOTE_KHR = DeviceGroupPresentModeFlagBitsKHR(raw = 1 << 1)
+    comptime SUM_KHR = DeviceGroupPresentModeFlagBitsKHR(raw = 1 << 2)
+    comptime LOCAL_MULTI_DEVICE_KHR = DeviceGroupPresentModeFlagBitsKHR(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct DeviceGroupPresentModeFlagBitsKHR:
+struct DeviceGroupPresentModeFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6627,15 +6134,12 @@ struct DeviceGroupPresentModeFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DeviceGroupPresentModeFlagsKHR:
         return DeviceGroupPresentModeFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DebugReportFlagsEXT(EqualityComparable):
+struct DebugReportFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6662,16 +6166,15 @@ struct DebugReportFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: DebugReportFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias INFORMATION_EXT = DebugReportFlagBitsEXT(raw = 1 << 0)
-    alias WARNING_EXT = DebugReportFlagBitsEXT(raw = 1 << 1)
-    alias PERFORMANCE_WARNING_EXT = DebugReportFlagBitsEXT(raw = 1 << 2)
-    alias ERROR_EXT = DebugReportFlagBitsEXT(raw = 1 << 3)
-    alias DEBUG_EXT = DebugReportFlagBitsEXT(raw = 1 << 4)
+    comptime INFORMATION_EXT = DebugReportFlagBitsEXT(raw = 1 << 0)
+    comptime WARNING_EXT = DebugReportFlagBitsEXT(raw = 1 << 1)
+    comptime PERFORMANCE_WARNING_EXT = DebugReportFlagBitsEXT(raw = 1 << 2)
+    comptime ERROR_EXT = DebugReportFlagBitsEXT(raw = 1 << 3)
+    comptime DEBUG_EXT = DebugReportFlagBitsEXT(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct DebugReportFlagBitsEXT:
+struct DebugReportFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6683,15 +6186,12 @@ struct DebugReportFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DebugReportFlagsEXT:
         return DebugReportFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct CommandPoolTrimFlags(EqualityComparable):
+struct CommandPoolTrimFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6719,9 +6219,8 @@ struct CommandPoolTrimFlags(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct CommandPoolTrimFlagBits:
+struct CommandPoolTrimFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6733,15 +6232,12 @@ struct CommandPoolTrimFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> CommandPoolTrimFlags:
         return CommandPoolTrimFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ExternalMemoryHandleTypeFlagsNV(EqualityComparable):
+struct ExternalMemoryHandleTypeFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6768,15 +6264,14 @@ struct ExternalMemoryHandleTypeFlagsNV(EqualityComparable):
     fn __contains__(self, bit: ExternalMemoryHandleTypeFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias OPAQUE_WIN32_NV = ExternalMemoryHandleTypeFlagBitsNV(raw = 1 << 0)
-    alias OPAQUE_WIN32_KMT_NV = ExternalMemoryHandleTypeFlagBitsNV(raw = 1 << 1)
-    alias D3D11_IMAGE_NV = ExternalMemoryHandleTypeFlagBitsNV(raw = 1 << 2)
-    alias D3D11_IMAGE_KMT_NV = ExternalMemoryHandleTypeFlagBitsNV(raw = 1 << 3)
+    comptime OPAQUE_WIN32_NV = ExternalMemoryHandleTypeFlagBitsNV(raw = 1 << 0)
+    comptime OPAQUE_WIN32_KMT_NV = ExternalMemoryHandleTypeFlagBitsNV(raw = 1 << 1)
+    comptime D3D11_IMAGE_NV = ExternalMemoryHandleTypeFlagBitsNV(raw = 1 << 2)
+    comptime D3D11_IMAGE_KMT_NV = ExternalMemoryHandleTypeFlagBitsNV(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct ExternalMemoryHandleTypeFlagBitsNV:
+struct ExternalMemoryHandleTypeFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6788,15 +6283,12 @@ struct ExternalMemoryHandleTypeFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ExternalMemoryHandleTypeFlagsNV:
         return ExternalMemoryHandleTypeFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ClusterAccelerationStructureIndexFormatFlagsNV(EqualityComparable):
+struct ClusterAccelerationStructureIndexFormatFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6823,14 +6315,13 @@ struct ClusterAccelerationStructureIndexFormatFlagsNV(EqualityComparable):
     fn __contains__(self, bit: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias N_8BIT_NV = ClusterAccelerationStructureIndexFormatFlagBitsNV(raw = 1 << 0)
-    alias N_16BIT_NV = ClusterAccelerationStructureIndexFormatFlagBitsNV(raw = 1 << 1)
-    alias N_32BIT_NV = ClusterAccelerationStructureIndexFormatFlagBitsNV(raw = 1 << 2)
+    comptime N_8BIT_NV = ClusterAccelerationStructureIndexFormatFlagBitsNV(raw = 1 << 0)
+    comptime N_16BIT_NV = ClusterAccelerationStructureIndexFormatFlagBitsNV(raw = 1 << 1)
+    comptime N_32BIT_NV = ClusterAccelerationStructureIndexFormatFlagBitsNV(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct ClusterAccelerationStructureIndexFormatFlagBitsNV:
+struct ClusterAccelerationStructureIndexFormatFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6842,15 +6333,12 @@ struct ClusterAccelerationStructureIndexFormatFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ClusterAccelerationStructureIndexFormatFlagsNV:
         return ClusterAccelerationStructureIndexFormatFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ExternalMemoryFeatureFlagsNV(EqualityComparable):
+struct ExternalMemoryFeatureFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6877,14 +6365,13 @@ struct ExternalMemoryFeatureFlagsNV(EqualityComparable):
     fn __contains__(self, bit: ExternalMemoryFeatureFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DEDICATED_ONLY_NV = ExternalMemoryFeatureFlagBitsNV(raw = 1 << 0)
-    alias EXPORTABLE_NV = ExternalMemoryFeatureFlagBitsNV(raw = 1 << 1)
-    alias IMPORTABLE_NV = ExternalMemoryFeatureFlagBitsNV(raw = 1 << 2)
+    comptime DEDICATED_ONLY_NV = ExternalMemoryFeatureFlagBitsNV(raw = 1 << 0)
+    comptime EXPORTABLE_NV = ExternalMemoryFeatureFlagBitsNV(raw = 1 << 1)
+    comptime IMPORTABLE_NV = ExternalMemoryFeatureFlagBitsNV(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct ExternalMemoryFeatureFlagBitsNV:
+struct ExternalMemoryFeatureFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6896,15 +6383,12 @@ struct ExternalMemoryFeatureFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ExternalMemoryFeatureFlagsNV:
         return ExternalMemoryFeatureFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ExternalMemoryHandleTypeFlags(EqualityComparable):
+struct ExternalMemoryHandleTypeFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6931,18 +6415,17 @@ struct ExternalMemoryHandleTypeFlags(EqualityComparable):
     fn __contains__(self, bit: ExternalMemoryHandleTypeFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias OPAQUE_FD = ExternalMemoryHandleTypeFlagBits(raw = 1 << 0)
-    alias OPAQUE_WIN32 = ExternalMemoryHandleTypeFlagBits(raw = 1 << 1)
-    alias OPAQUE_WIN32_KMT = ExternalMemoryHandleTypeFlagBits(raw = 1 << 2)
-    alias D3D11_TEXTURE = ExternalMemoryHandleTypeFlagBits(raw = 1 << 3)
-    alias D3D11_TEXTURE_KMT = ExternalMemoryHandleTypeFlagBits(raw = 1 << 4)
-    alias D3D12_HEAP = ExternalMemoryHandleTypeFlagBits(raw = 1 << 5)
-    alias D3D12_RESOURCE = ExternalMemoryHandleTypeFlagBits(raw = 1 << 6)
+    comptime OPAQUE_FD = ExternalMemoryHandleTypeFlagBits(raw = 1 << 0)
+    comptime OPAQUE_WIN32 = ExternalMemoryHandleTypeFlagBits(raw = 1 << 1)
+    comptime OPAQUE_WIN32_KMT = ExternalMemoryHandleTypeFlagBits(raw = 1 << 2)
+    comptime D3D11_TEXTURE = ExternalMemoryHandleTypeFlagBits(raw = 1 << 3)
+    comptime D3D11_TEXTURE_KMT = ExternalMemoryHandleTypeFlagBits(raw = 1 << 4)
+    comptime D3D12_HEAP = ExternalMemoryHandleTypeFlagBits(raw = 1 << 5)
+    comptime D3D12_RESOURCE = ExternalMemoryHandleTypeFlagBits(raw = 1 << 6)
 
 
 @register_passable("trivial")
-struct ExternalMemoryHandleTypeFlagBits:
+struct ExternalMemoryHandleTypeFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -6954,15 +6437,12 @@ struct ExternalMemoryHandleTypeFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ExternalMemoryHandleTypeFlags:
         return ExternalMemoryHandleTypeFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ExternalMemoryFeatureFlags(EqualityComparable):
+struct ExternalMemoryFeatureFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -6989,14 +6469,13 @@ struct ExternalMemoryFeatureFlags(EqualityComparable):
     fn __contains__(self, bit: ExternalMemoryFeatureFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DEDICATED_ONLY = ExternalMemoryFeatureFlagBits(raw = 1 << 0)
-    alias EXPORTABLE = ExternalMemoryFeatureFlagBits(raw = 1 << 1)
-    alias IMPORTABLE = ExternalMemoryFeatureFlagBits(raw = 1 << 2)
+    comptime DEDICATED_ONLY = ExternalMemoryFeatureFlagBits(raw = 1 << 0)
+    comptime EXPORTABLE = ExternalMemoryFeatureFlagBits(raw = 1 << 1)
+    comptime IMPORTABLE = ExternalMemoryFeatureFlagBits(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct ExternalMemoryFeatureFlagBits:
+struct ExternalMemoryFeatureFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7008,15 +6487,12 @@ struct ExternalMemoryFeatureFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ExternalMemoryFeatureFlags:
         return ExternalMemoryFeatureFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ExternalSemaphoreHandleTypeFlags(EqualityComparable):
+struct ExternalSemaphoreHandleTypeFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7043,16 +6519,15 @@ struct ExternalSemaphoreHandleTypeFlags(EqualityComparable):
     fn __contains__(self, bit: ExternalSemaphoreHandleTypeFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias OPAQUE_FD = ExternalSemaphoreHandleTypeFlagBits(raw = 1 << 0)
-    alias OPAQUE_WIN32 = ExternalSemaphoreHandleTypeFlagBits(raw = 1 << 1)
-    alias OPAQUE_WIN32_KMT = ExternalSemaphoreHandleTypeFlagBits(raw = 1 << 2)
-    alias D3D12_FENCE = ExternalSemaphoreHandleTypeFlagBits(raw = 1 << 3)
-    alias SYNC_FD = ExternalSemaphoreHandleTypeFlagBits(raw = 1 << 4)
+    comptime OPAQUE_FD = ExternalSemaphoreHandleTypeFlagBits(raw = 1 << 0)
+    comptime OPAQUE_WIN32 = ExternalSemaphoreHandleTypeFlagBits(raw = 1 << 1)
+    comptime OPAQUE_WIN32_KMT = ExternalSemaphoreHandleTypeFlagBits(raw = 1 << 2)
+    comptime D3D12_FENCE = ExternalSemaphoreHandleTypeFlagBits(raw = 1 << 3)
+    comptime SYNC_FD = ExternalSemaphoreHandleTypeFlagBits(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct ExternalSemaphoreHandleTypeFlagBits:
+struct ExternalSemaphoreHandleTypeFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7064,15 +6539,12 @@ struct ExternalSemaphoreHandleTypeFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ExternalSemaphoreHandleTypeFlags:
         return ExternalSemaphoreHandleTypeFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ExternalSemaphoreFeatureFlags(EqualityComparable):
+struct ExternalSemaphoreFeatureFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7099,13 +6571,12 @@ struct ExternalSemaphoreFeatureFlags(EqualityComparable):
     fn __contains__(self, bit: ExternalSemaphoreFeatureFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias EXPORTABLE = ExternalSemaphoreFeatureFlagBits(raw = 1 << 0)
-    alias IMPORTABLE = ExternalSemaphoreFeatureFlagBits(raw = 1 << 1)
+    comptime EXPORTABLE = ExternalSemaphoreFeatureFlagBits(raw = 1 << 0)
+    comptime IMPORTABLE = ExternalSemaphoreFeatureFlagBits(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct ExternalSemaphoreFeatureFlagBits:
+struct ExternalSemaphoreFeatureFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7117,15 +6588,12 @@ struct ExternalSemaphoreFeatureFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ExternalSemaphoreFeatureFlags:
         return ExternalSemaphoreFeatureFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SemaphoreImportFlags(EqualityComparable):
+struct SemaphoreImportFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7152,12 +6620,11 @@ struct SemaphoreImportFlags(EqualityComparable):
     fn __contains__(self, bit: SemaphoreImportFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias TEMPORARY = SemaphoreImportFlagBits(raw = 1 << 0)
+    comptime TEMPORARY = SemaphoreImportFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct SemaphoreImportFlagBits:
+struct SemaphoreImportFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7169,15 +6636,12 @@ struct SemaphoreImportFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SemaphoreImportFlags:
         return SemaphoreImportFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ExternalFenceHandleTypeFlags(EqualityComparable):
+struct ExternalFenceHandleTypeFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7204,15 +6668,14 @@ struct ExternalFenceHandleTypeFlags(EqualityComparable):
     fn __contains__(self, bit: ExternalFenceHandleTypeFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias OPAQUE_FD = ExternalFenceHandleTypeFlagBits(raw = 1 << 0)
-    alias OPAQUE_WIN32 = ExternalFenceHandleTypeFlagBits(raw = 1 << 1)
-    alias OPAQUE_WIN32_KMT = ExternalFenceHandleTypeFlagBits(raw = 1 << 2)
-    alias SYNC_FD = ExternalFenceHandleTypeFlagBits(raw = 1 << 3)
+    comptime OPAQUE_FD = ExternalFenceHandleTypeFlagBits(raw = 1 << 0)
+    comptime OPAQUE_WIN32 = ExternalFenceHandleTypeFlagBits(raw = 1 << 1)
+    comptime OPAQUE_WIN32_KMT = ExternalFenceHandleTypeFlagBits(raw = 1 << 2)
+    comptime SYNC_FD = ExternalFenceHandleTypeFlagBits(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct ExternalFenceHandleTypeFlagBits:
+struct ExternalFenceHandleTypeFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7224,15 +6687,12 @@ struct ExternalFenceHandleTypeFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ExternalFenceHandleTypeFlags:
         return ExternalFenceHandleTypeFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ExternalFenceFeatureFlags(EqualityComparable):
+struct ExternalFenceFeatureFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7259,13 +6719,12 @@ struct ExternalFenceFeatureFlags(EqualityComparable):
     fn __contains__(self, bit: ExternalFenceFeatureFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias EXPORTABLE = ExternalFenceFeatureFlagBits(raw = 1 << 0)
-    alias IMPORTABLE = ExternalFenceFeatureFlagBits(raw = 1 << 1)
+    comptime EXPORTABLE = ExternalFenceFeatureFlagBits(raw = 1 << 0)
+    comptime IMPORTABLE = ExternalFenceFeatureFlagBits(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct ExternalFenceFeatureFlagBits:
+struct ExternalFenceFeatureFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7277,15 +6736,12 @@ struct ExternalFenceFeatureFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ExternalFenceFeatureFlags:
         return ExternalFenceFeatureFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct FenceImportFlags(EqualityComparable):
+struct FenceImportFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7312,12 +6768,11 @@ struct FenceImportFlags(EqualityComparable):
     fn __contains__(self, bit: FenceImportFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias TEMPORARY = FenceImportFlagBits(raw = 1 << 0)
+    comptime TEMPORARY = FenceImportFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct FenceImportFlagBits:
+struct FenceImportFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7329,15 +6784,12 @@ struct FenceImportFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> FenceImportFlags:
         return FenceImportFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SurfaceCounterFlagsEXT(EqualityComparable):
+struct SurfaceCounterFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7364,12 +6816,11 @@ struct SurfaceCounterFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: SurfaceCounterFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias VBLANK_EXT = SurfaceCounterFlagBitsEXT(raw = 1 << 0)
+    comptime VBLANK_EXT = SurfaceCounterFlagBitsEXT(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct SurfaceCounterFlagBitsEXT:
+struct SurfaceCounterFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7381,15 +6832,12 @@ struct SurfaceCounterFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SurfaceCounterFlagsEXT:
         return SurfaceCounterFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineViewportSwizzleStateCreateFlagsNV(EqualityComparable):
+struct PipelineViewportSwizzleStateCreateFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7417,9 +6865,8 @@ struct PipelineViewportSwizzleStateCreateFlagsNV(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineViewportSwizzleStateCreateFlagBitsNV:
+struct PipelineViewportSwizzleStateCreateFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7431,15 +6878,12 @@ struct PipelineViewportSwizzleStateCreateFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineViewportSwizzleStateCreateFlagsNV:
         return PipelineViewportSwizzleStateCreateFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineDiscardRectangleStateCreateFlagsEXT(EqualityComparable):
+struct PipelineDiscardRectangleStateCreateFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7467,9 +6911,8 @@ struct PipelineDiscardRectangleStateCreateFlagsEXT(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineDiscardRectangleStateCreateFlagBitsEXT:
+struct PipelineDiscardRectangleStateCreateFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7481,15 +6924,12 @@ struct PipelineDiscardRectangleStateCreateFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineDiscardRectangleStateCreateFlagsEXT:
         return PipelineDiscardRectangleStateCreateFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineCoverageToColorStateCreateFlagsNV(EqualityComparable):
+struct PipelineCoverageToColorStateCreateFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7517,9 +6957,8 @@ struct PipelineCoverageToColorStateCreateFlagsNV(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineCoverageToColorStateCreateFlagBitsNV:
+struct PipelineCoverageToColorStateCreateFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7531,15 +6970,12 @@ struct PipelineCoverageToColorStateCreateFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineCoverageToColorStateCreateFlagsNV:
         return PipelineCoverageToColorStateCreateFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineCoverageModulationStateCreateFlagsNV(EqualityComparable):
+struct PipelineCoverageModulationStateCreateFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7567,9 +7003,8 @@ struct PipelineCoverageModulationStateCreateFlagsNV(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineCoverageModulationStateCreateFlagBitsNV:
+struct PipelineCoverageModulationStateCreateFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7581,15 +7016,12 @@ struct PipelineCoverageModulationStateCreateFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineCoverageModulationStateCreateFlagsNV:
         return PipelineCoverageModulationStateCreateFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineCoverageReductionStateCreateFlagsNV(EqualityComparable):
+struct PipelineCoverageReductionStateCreateFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7617,9 +7049,8 @@ struct PipelineCoverageReductionStateCreateFlagsNV(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineCoverageReductionStateCreateFlagBitsNV:
+struct PipelineCoverageReductionStateCreateFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7631,15 +7062,12 @@ struct PipelineCoverageReductionStateCreateFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineCoverageReductionStateCreateFlagsNV:
         return PipelineCoverageReductionStateCreateFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ValidationCacheCreateFlagsEXT(EqualityComparable):
+struct ValidationCacheCreateFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7667,9 +7095,8 @@ struct ValidationCacheCreateFlagsEXT(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct ValidationCacheCreateFlagBitsEXT:
+struct ValidationCacheCreateFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7681,15 +7108,12 @@ struct ValidationCacheCreateFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ValidationCacheCreateFlagsEXT:
         return ValidationCacheCreateFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DebugUtilsMessageSeverityFlagsEXT(EqualityComparable):
+struct DebugUtilsMessageSeverityFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7716,15 +7140,14 @@ struct DebugUtilsMessageSeverityFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: DebugUtilsMessageSeverityFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias VERBOSE_EXT = DebugUtilsMessageSeverityFlagBitsEXT(raw = 1 << 0)
-    alias INFO_EXT = DebugUtilsMessageSeverityFlagBitsEXT(raw = 1 << 4)
-    alias WARNING_EXT = DebugUtilsMessageSeverityFlagBitsEXT(raw = 1 << 8)
-    alias ERROR_EXT = DebugUtilsMessageSeverityFlagBitsEXT(raw = 1 << 12)
+    comptime VERBOSE_EXT = DebugUtilsMessageSeverityFlagBitsEXT(raw = 1 << 0)
+    comptime INFO_EXT = DebugUtilsMessageSeverityFlagBitsEXT(raw = 1 << 4)
+    comptime WARNING_EXT = DebugUtilsMessageSeverityFlagBitsEXT(raw = 1 << 8)
+    comptime ERROR_EXT = DebugUtilsMessageSeverityFlagBitsEXT(raw = 1 << 12)
 
 
 @register_passable("trivial")
-struct DebugUtilsMessageSeverityFlagBitsEXT:
+struct DebugUtilsMessageSeverityFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7736,15 +7159,12 @@ struct DebugUtilsMessageSeverityFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DebugUtilsMessageSeverityFlagsEXT:
         return DebugUtilsMessageSeverityFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DebugUtilsMessageTypeFlagsEXT(EqualityComparable):
+struct DebugUtilsMessageTypeFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7771,14 +7191,13 @@ struct DebugUtilsMessageTypeFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: DebugUtilsMessageTypeFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias GENERAL_EXT = DebugUtilsMessageTypeFlagBitsEXT(raw = 1 << 0)
-    alias VALIDATION_EXT = DebugUtilsMessageTypeFlagBitsEXT(raw = 1 << 1)
-    alias PERFORMANCE_EXT = DebugUtilsMessageTypeFlagBitsEXT(raw = 1 << 2)
+    comptime GENERAL_EXT = DebugUtilsMessageTypeFlagBitsEXT(raw = 1 << 0)
+    comptime VALIDATION_EXT = DebugUtilsMessageTypeFlagBitsEXT(raw = 1 << 1)
+    comptime PERFORMANCE_EXT = DebugUtilsMessageTypeFlagBitsEXT(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct DebugUtilsMessageTypeFlagBitsEXT:
+struct DebugUtilsMessageTypeFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7790,15 +7209,12 @@ struct DebugUtilsMessageTypeFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DebugUtilsMessageTypeFlagsEXT:
         return DebugUtilsMessageTypeFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DebugUtilsMessengerCreateFlagsEXT(EqualityComparable):
+struct DebugUtilsMessengerCreateFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7826,9 +7242,8 @@ struct DebugUtilsMessengerCreateFlagsEXT(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct DebugUtilsMessengerCreateFlagBitsEXT:
+struct DebugUtilsMessengerCreateFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7840,15 +7255,12 @@ struct DebugUtilsMessengerCreateFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DebugUtilsMessengerCreateFlagsEXT:
         return DebugUtilsMessengerCreateFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DebugUtilsMessengerCallbackDataFlagsEXT(EqualityComparable):
+struct DebugUtilsMessengerCallbackDataFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7876,9 +7288,8 @@ struct DebugUtilsMessengerCallbackDataFlagsEXT(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct DebugUtilsMessengerCallbackDataFlagBitsEXT:
+struct DebugUtilsMessengerCallbackDataFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7890,15 +7301,12 @@ struct DebugUtilsMessengerCallbackDataFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DebugUtilsMessengerCallbackDataFlagsEXT:
         return DebugUtilsMessengerCallbackDataFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DeviceMemoryReportFlagsEXT(EqualityComparable):
+struct DeviceMemoryReportFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7926,9 +7334,8 @@ struct DeviceMemoryReportFlagsEXT(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct DeviceMemoryReportFlagBitsEXT:
+struct DeviceMemoryReportFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7940,15 +7347,12 @@ struct DeviceMemoryReportFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DeviceMemoryReportFlagsEXT:
         return DeviceMemoryReportFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineRasterizationConservativeStateCreateFlagsEXT(EqualityComparable):
+struct PipelineRasterizationConservativeStateCreateFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -7976,9 +7380,8 @@ struct PipelineRasterizationConservativeStateCreateFlagsEXT(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineRasterizationConservativeStateCreateFlagBitsEXT:
+struct PipelineRasterizationConservativeStateCreateFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -7990,15 +7393,12 @@ struct PipelineRasterizationConservativeStateCreateFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineRasterizationConservativeStateCreateFlagsEXT:
         return PipelineRasterizationConservativeStateCreateFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DescriptorBindingFlags(EqualityComparable):
+struct DescriptorBindingFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8025,15 +7425,14 @@ struct DescriptorBindingFlags(EqualityComparable):
     fn __contains__(self, bit: DescriptorBindingFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias UPDATE_AFTER_BIND = DescriptorBindingFlagBits(raw = 1 << 0)
-    alias UPDATE_UNUSED_WHILE_PENDING = DescriptorBindingFlagBits(raw = 1 << 1)
-    alias PARTIALLY_BOUND = DescriptorBindingFlagBits(raw = 1 << 2)
-    alias VARIABLE_DESCRIPTOR_COUNT = DescriptorBindingFlagBits(raw = 1 << 3)
+    comptime UPDATE_AFTER_BIND = DescriptorBindingFlagBits(raw = 1 << 0)
+    comptime UPDATE_UNUSED_WHILE_PENDING = DescriptorBindingFlagBits(raw = 1 << 1)
+    comptime PARTIALLY_BOUND = DescriptorBindingFlagBits(raw = 1 << 2)
+    comptime VARIABLE_DESCRIPTOR_COUNT = DescriptorBindingFlagBits(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct DescriptorBindingFlagBits:
+struct DescriptorBindingFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8045,15 +7444,12 @@ struct DescriptorBindingFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DescriptorBindingFlags:
         return DescriptorBindingFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ConditionalRenderingFlagsEXT(EqualityComparable):
+struct ConditionalRenderingFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8080,12 +7476,11 @@ struct ConditionalRenderingFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: ConditionalRenderingFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias INVERTED_EXT = ConditionalRenderingFlagBitsEXT(raw = 1 << 0)
+    comptime INVERTED_EXT = ConditionalRenderingFlagBitsEXT(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct ConditionalRenderingFlagBitsEXT:
+struct ConditionalRenderingFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8097,15 +7492,12 @@ struct ConditionalRenderingFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ConditionalRenderingFlagsEXT:
         return ConditionalRenderingFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ResolveModeFlags(EqualityComparable):
+struct ResolveModeFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8132,16 +7524,15 @@ struct ResolveModeFlags(EqualityComparable):
     fn __contains__(self, bit: ResolveModeFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias NONE = ResolveModeFlagBits(raw = 0)
-    alias SAMPLE_ZERO = ResolveModeFlagBits(raw = 1 << 0)
-    alias AVERAGE = ResolveModeFlagBits(raw = 1 << 1)
-    alias MIN = ResolveModeFlagBits(raw = 1 << 2)
-    alias MAX = ResolveModeFlagBits(raw = 1 << 3)
+    comptime NONE = ResolveModeFlagBits(raw = 0)
+    comptime SAMPLE_ZERO = ResolveModeFlagBits(raw = 1 << 0)
+    comptime AVERAGE = ResolveModeFlagBits(raw = 1 << 1)
+    comptime MIN = ResolveModeFlagBits(raw = 1 << 2)
+    comptime MAX = ResolveModeFlagBits(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct ResolveModeFlagBits:
+struct ResolveModeFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8153,15 +7544,12 @@ struct ResolveModeFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ResolveModeFlags:
         return ResolveModeFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineRasterizationStateStreamCreateFlagsEXT(EqualityComparable):
+struct PipelineRasterizationStateStreamCreateFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8189,9 +7577,8 @@ struct PipelineRasterizationStateStreamCreateFlagsEXT(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineRasterizationStateStreamCreateFlagBitsEXT:
+struct PipelineRasterizationStateStreamCreateFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8203,15 +7590,12 @@ struct PipelineRasterizationStateStreamCreateFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineRasterizationStateStreamCreateFlagsEXT:
         return PipelineRasterizationStateStreamCreateFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PipelineRasterizationDepthClipStateCreateFlagsEXT(EqualityComparable):
+struct PipelineRasterizationDepthClipStateCreateFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8239,9 +7623,8 @@ struct PipelineRasterizationDepthClipStateCreateFlagsEXT(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct PipelineRasterizationDepthClipStateCreateFlagBitsEXT:
+struct PipelineRasterizationDepthClipStateCreateFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8253,15 +7636,12 @@ struct PipelineRasterizationDepthClipStateCreateFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PipelineRasterizationDepthClipStateCreateFlagsEXT:
         return PipelineRasterizationDepthClipStateCreateFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SwapchainImageUsageFlagsANDROID(EqualityComparable):
+struct SwapchainImageUsageFlagsANDROID(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8288,12 +7668,11 @@ struct SwapchainImageUsageFlagsANDROID(EqualityComparable):
     fn __contains__(self, bit: SwapchainImageUsageFlagBitsANDROID) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias VK_SWAPCHAIN_IMAGE_USAGE_SHARED_ANDROID = SwapchainImageUsageFlagBitsANDROID(raw = 1 << 0)
+    comptime VK_SWAPCHAIN_IMAGE_USAGE_SHARED_ANDROID = SwapchainImageUsageFlagBitsANDROID(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct SwapchainImageUsageFlagBitsANDROID:
+struct SwapchainImageUsageFlagBitsANDROID(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8305,15 +7684,12 @@ struct SwapchainImageUsageFlagBitsANDROID:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SwapchainImageUsageFlagsANDROID:
         return SwapchainImageUsageFlagsANDROID(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ToolPurposeFlags(EqualityComparable):
+struct ToolPurposeFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8340,16 +7716,15 @@ struct ToolPurposeFlags(EqualityComparable):
     fn __contains__(self, bit: ToolPurposeFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias VALIDATION = ToolPurposeFlagBits(raw = 1 << 0)
-    alias PROFILING = ToolPurposeFlagBits(raw = 1 << 1)
-    alias TRACING = ToolPurposeFlagBits(raw = 1 << 2)
-    alias ADDITIONAL_FEATURES = ToolPurposeFlagBits(raw = 1 << 3)
-    alias MODIFYING_FEATURES = ToolPurposeFlagBits(raw = 1 << 4)
+    comptime VALIDATION = ToolPurposeFlagBits(raw = 1 << 0)
+    comptime PROFILING = ToolPurposeFlagBits(raw = 1 << 1)
+    comptime TRACING = ToolPurposeFlagBits(raw = 1 << 2)
+    comptime ADDITIONAL_FEATURES = ToolPurposeFlagBits(raw = 1 << 3)
+    comptime MODIFYING_FEATURES = ToolPurposeFlagBits(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct ToolPurposeFlagBits:
+struct ToolPurposeFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8361,15 +7736,12 @@ struct ToolPurposeFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ToolPurposeFlags:
         return ToolPurposeFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SubmitFlags(EqualityComparable):
+struct SubmitFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8396,12 +7768,11 @@ struct SubmitFlags(EqualityComparable):
     fn __contains__(self, bit: SubmitFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias PROTECTED = SubmitFlagBits(raw = 1 << 0)
+    comptime PROTECTED = SubmitFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct SubmitFlagBits:
+struct SubmitFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8413,15 +7784,12 @@ struct SubmitFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SubmitFlags:
         return SubmitFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ImageFormatConstraintsFlagsFUCHSIA(EqualityComparable):
+struct ImageFormatConstraintsFlagsFUCHSIA(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8449,9 +7817,8 @@ struct ImageFormatConstraintsFlagsFUCHSIA(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct ImageFormatConstraintsFlagBitsFUCHSIA:
+struct ImageFormatConstraintsFlagBitsFUCHSIA(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8463,15 +7830,12 @@ struct ImageFormatConstraintsFlagBitsFUCHSIA:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ImageFormatConstraintsFlagsFUCHSIA:
         return ImageFormatConstraintsFlagsFUCHSIA(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct HostImageCopyFlags(EqualityComparable):
+struct HostImageCopyFlags(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8498,12 +7862,11 @@ struct HostImageCopyFlags(EqualityComparable):
     fn __contains__(self, bit: HostImageCopyFlagBits) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias MEMCPY = HostImageCopyFlagBits(raw = 1 << 0)
+    comptime MEMCPY = HostImageCopyFlagBits(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct HostImageCopyFlagBits:
+struct HostImageCopyFlagBits(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8515,15 +7878,12 @@ struct HostImageCopyFlagBits:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> HostImageCopyFlags:
         return HostImageCopyFlags(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PartitionedAccelerationStructureInstanceFlagsNV(EqualityComparable):
+struct PartitionedAccelerationStructureInstanceFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8550,16 +7910,15 @@ struct PartitionedAccelerationStructureInstanceFlagsNV(EqualityComparable):
     fn __contains__(self, bit: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias FLAG_TRIANGLE_FACING_CULL_DISABLE_NV = PartitionedAccelerationStructureInstanceFlagBitsNV(raw = 1 << 0)
-    alias FLAG_TRIANGLE_FLIP_FACING_NV = PartitionedAccelerationStructureInstanceFlagBitsNV(raw = 1 << 1)
-    alias FLAG_FORCE_OPAQUE_NV = PartitionedAccelerationStructureInstanceFlagBitsNV(raw = 1 << 2)
-    alias FLAG_FORCE_NO_OPAQUE_NV = PartitionedAccelerationStructureInstanceFlagBitsNV(raw = 1 << 3)
-    alias FLAG_ENABLE_EXPLICIT_BOUNDING_BOX_NV = PartitionedAccelerationStructureInstanceFlagBitsNV(raw = 1 << 4)
+    comptime FLAG_TRIANGLE_FACING_CULL_DISABLE_NV = PartitionedAccelerationStructureInstanceFlagBitsNV(raw = 1 << 0)
+    comptime FLAG_TRIANGLE_FLIP_FACING_NV = PartitionedAccelerationStructureInstanceFlagBitsNV(raw = 1 << 1)
+    comptime FLAG_FORCE_OPAQUE_NV = PartitionedAccelerationStructureInstanceFlagBitsNV(raw = 1 << 2)
+    comptime FLAG_FORCE_NO_OPAQUE_NV = PartitionedAccelerationStructureInstanceFlagBitsNV(raw = 1 << 3)
+    comptime FLAG_ENABLE_EXPLICIT_BOUNDING_BOX_NV = PartitionedAccelerationStructureInstanceFlagBitsNV(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct PartitionedAccelerationStructureInstanceFlagBitsNV:
+struct PartitionedAccelerationStructureInstanceFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8571,15 +7930,12 @@ struct PartitionedAccelerationStructureInstanceFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PartitionedAccelerationStructureInstanceFlagsNV:
         return PartitionedAccelerationStructureInstanceFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ImageConstraintsInfoFlagsFUCHSIA(EqualityComparable):
+struct ImageConstraintsInfoFlagsFUCHSIA(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8606,16 +7962,15 @@ struct ImageConstraintsInfoFlagsFUCHSIA(EqualityComparable):
     fn __contains__(self, bit: ImageConstraintsInfoFlagBitsFUCHSIA) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias CPU_READ_RARELY_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(raw = 1 << 0)
-    alias CPU_READ_OFTEN_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(raw = 1 << 1)
-    alias CPU_WRITE_RARELY_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(raw = 1 << 2)
-    alias CPU_WRITE_OFTEN_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(raw = 1 << 3)
-    alias PROTECTED_OPTIONAL_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(raw = 1 << 4)
+    comptime CPU_READ_RARELY_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(raw = 1 << 0)
+    comptime CPU_READ_OFTEN_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(raw = 1 << 1)
+    comptime CPU_WRITE_RARELY_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(raw = 1 << 2)
+    comptime CPU_WRITE_OFTEN_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(raw = 1 << 3)
+    comptime PROTECTED_OPTIONAL_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct ImageConstraintsInfoFlagBitsFUCHSIA:
+struct ImageConstraintsInfoFlagBitsFUCHSIA(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8627,15 +7982,12 @@ struct ImageConstraintsInfoFlagBitsFUCHSIA:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ImageConstraintsInfoFlagsFUCHSIA:
         return ImageConstraintsInfoFlagsFUCHSIA(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct GraphicsPipelineLibraryFlagsEXT(EqualityComparable):
+struct GraphicsPipelineLibraryFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8662,15 +8014,14 @@ struct GraphicsPipelineLibraryFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: GraphicsPipelineLibraryFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias VERTEX_INPUT_INTERFACE_EXT = GraphicsPipelineLibraryFlagBitsEXT(raw = 1 << 0)
-    alias PRE_RASTERIZATION_SHADERS_EXT = GraphicsPipelineLibraryFlagBitsEXT(raw = 1 << 1)
-    alias FRAGMENT_SHADER_EXT = GraphicsPipelineLibraryFlagBitsEXT(raw = 1 << 2)
-    alias FRAGMENT_OUTPUT_INTERFACE_EXT = GraphicsPipelineLibraryFlagBitsEXT(raw = 1 << 3)
+    comptime VERTEX_INPUT_INTERFACE_EXT = GraphicsPipelineLibraryFlagBitsEXT(raw = 1 << 0)
+    comptime PRE_RASTERIZATION_SHADERS_EXT = GraphicsPipelineLibraryFlagBitsEXT(raw = 1 << 1)
+    comptime FRAGMENT_SHADER_EXT = GraphicsPipelineLibraryFlagBitsEXT(raw = 1 << 2)
+    comptime FRAGMENT_OUTPUT_INTERFACE_EXT = GraphicsPipelineLibraryFlagBitsEXT(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct GraphicsPipelineLibraryFlagBitsEXT:
+struct GraphicsPipelineLibraryFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8682,15 +8033,12 @@ struct GraphicsPipelineLibraryFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> GraphicsPipelineLibraryFlagsEXT:
         return GraphicsPipelineLibraryFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ImageCompressionFlagsEXT(EqualityComparable):
+struct ImageCompressionFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8717,15 +8065,14 @@ struct ImageCompressionFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: ImageCompressionFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DEFAULT_EXT = ImageCompressionFlagBitsEXT(raw = 0)
-    alias FIXED_RATE_DEFAULT_EXT = ImageCompressionFlagBitsEXT(raw = 1 << 0)
-    alias FIXED_RATE_EXPLICIT_EXT = ImageCompressionFlagBitsEXT(raw = 1 << 1)
-    alias DISABLED_EXT = ImageCompressionFlagBitsEXT(raw = 1 << 2)
+    comptime DEFAULT_EXT = ImageCompressionFlagBitsEXT(raw = 0)
+    comptime FIXED_RATE_DEFAULT_EXT = ImageCompressionFlagBitsEXT(raw = 1 << 0)
+    comptime FIXED_RATE_EXPLICIT_EXT = ImageCompressionFlagBitsEXT(raw = 1 << 1)
+    comptime DISABLED_EXT = ImageCompressionFlagBitsEXT(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct ImageCompressionFlagBitsEXT:
+struct ImageCompressionFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8737,15 +8084,12 @@ struct ImageCompressionFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ImageCompressionFlagsEXT:
         return ImageCompressionFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ImageCompressionFixedRateFlagsEXT(EqualityComparable):
+struct ImageCompressionFixedRateFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8772,36 +8116,35 @@ struct ImageCompressionFixedRateFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: ImageCompressionFixedRateFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias NONE_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 0)
-    alias N_1BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 0)
-    alias N_2BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 1)
-    alias N_3BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 2)
-    alias N_4BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 3)
-    alias N_5BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 4)
-    alias N_6BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 5)
-    alias N_7BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 6)
-    alias N_8BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 7)
-    alias N_9BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 8)
-    alias N_10BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 9)
-    alias N_11BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 10)
-    alias N_12BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 11)
-    alias N_13BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 12)
-    alias N_14BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 13)
-    alias N_15BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 14)
-    alias N_16BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 15)
-    alias N_17BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 16)
-    alias N_18BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 17)
-    alias N_19BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 18)
-    alias N_20BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 19)
-    alias N_21BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 20)
-    alias N_22BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 21)
-    alias N_23BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 22)
-    alias N_24BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 23)
+    comptime NONE_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 0)
+    comptime N_1BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 0)
+    comptime N_2BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 1)
+    comptime N_3BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 2)
+    comptime N_4BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 3)
+    comptime N_5BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 4)
+    comptime N_6BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 5)
+    comptime N_7BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 6)
+    comptime N_8BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 7)
+    comptime N_9BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 8)
+    comptime N_10BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 9)
+    comptime N_11BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 10)
+    comptime N_12BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 11)
+    comptime N_13BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 12)
+    comptime N_14BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 13)
+    comptime N_15BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 14)
+    comptime N_16BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 15)
+    comptime N_17BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 16)
+    comptime N_18BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 17)
+    comptime N_19BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 18)
+    comptime N_20BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 19)
+    comptime N_21BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 20)
+    comptime N_22BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 21)
+    comptime N_23BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 22)
+    comptime N_24BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(raw = 1 << 23)
 
 
 @register_passable("trivial")
-struct ImageCompressionFixedRateFlagBitsEXT:
+struct ImageCompressionFixedRateFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8813,15 +8156,12 @@ struct ImageCompressionFixedRateFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ImageCompressionFixedRateFlagsEXT:
         return ImageCompressionFixedRateFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ExportMetalObjectTypeFlagsEXT(EqualityComparable):
+struct ExportMetalObjectTypeFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8848,17 +8188,16 @@ struct ExportMetalObjectTypeFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: ExportMetalObjectTypeFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias METAL_DEVICE_EXT = ExportMetalObjectTypeFlagBitsEXT(raw = 1 << 0)
-    alias METAL_COMMAND_QUEUE_EXT = ExportMetalObjectTypeFlagBitsEXT(raw = 1 << 1)
-    alias METAL_BUFFER_EXT = ExportMetalObjectTypeFlagBitsEXT(raw = 1 << 2)
-    alias METAL_TEXTURE_EXT = ExportMetalObjectTypeFlagBitsEXT(raw = 1 << 3)
-    alias METAL_IOSURFACE_EXT = ExportMetalObjectTypeFlagBitsEXT(raw = 1 << 4)
-    alias METAL_SHARED_EVENT_EXT = ExportMetalObjectTypeFlagBitsEXT(raw = 1 << 5)
+    comptime METAL_DEVICE_EXT = ExportMetalObjectTypeFlagBitsEXT(raw = 1 << 0)
+    comptime METAL_COMMAND_QUEUE_EXT = ExportMetalObjectTypeFlagBitsEXT(raw = 1 << 1)
+    comptime METAL_BUFFER_EXT = ExportMetalObjectTypeFlagBitsEXT(raw = 1 << 2)
+    comptime METAL_TEXTURE_EXT = ExportMetalObjectTypeFlagBitsEXT(raw = 1 << 3)
+    comptime METAL_IOSURFACE_EXT = ExportMetalObjectTypeFlagBitsEXT(raw = 1 << 4)
+    comptime METAL_SHARED_EVENT_EXT = ExportMetalObjectTypeFlagBitsEXT(raw = 1 << 5)
 
 
 @register_passable("trivial")
-struct ExportMetalObjectTypeFlagBitsEXT:
+struct ExportMetalObjectTypeFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8870,15 +8209,12 @@ struct ExportMetalObjectTypeFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ExportMetalObjectTypeFlagsEXT:
         return ExportMetalObjectTypeFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct DeviceAddressBindingFlagsEXT(EqualityComparable):
+struct DeviceAddressBindingFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8905,12 +8241,11 @@ struct DeviceAddressBindingFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: DeviceAddressBindingFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias INTERNAL_OBJECT_EXT = DeviceAddressBindingFlagBitsEXT(raw = 1 << 0)
+    comptime INTERNAL_OBJECT_EXT = DeviceAddressBindingFlagBitsEXT(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct DeviceAddressBindingFlagBitsEXT:
+struct DeviceAddressBindingFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8922,15 +8257,12 @@ struct DeviceAddressBindingFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> DeviceAddressBindingFlagsEXT:
         return DeviceAddressBindingFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct OpticalFlowGridSizeFlagsNV(EqualityComparable):
+struct OpticalFlowGridSizeFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -8957,16 +8289,15 @@ struct OpticalFlowGridSizeFlagsNV(EqualityComparable):
     fn __contains__(self, bit: OpticalFlowGridSizeFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias UNKNOWN_NV = OpticalFlowGridSizeFlagBitsNV(raw = 0)
-    alias N_1X1_NV = OpticalFlowGridSizeFlagBitsNV(raw = 1 << 0)
-    alias N_2X2_NV = OpticalFlowGridSizeFlagBitsNV(raw = 1 << 1)
-    alias N_4X4_NV = OpticalFlowGridSizeFlagBitsNV(raw = 1 << 2)
-    alias N_8X8_NV = OpticalFlowGridSizeFlagBitsNV(raw = 1 << 3)
+    comptime UNKNOWN_NV = OpticalFlowGridSizeFlagBitsNV(raw = 0)
+    comptime N_1X1_NV = OpticalFlowGridSizeFlagBitsNV(raw = 1 << 0)
+    comptime N_2X2_NV = OpticalFlowGridSizeFlagBitsNV(raw = 1 << 1)
+    comptime N_4X4_NV = OpticalFlowGridSizeFlagBitsNV(raw = 1 << 2)
+    comptime N_8X8_NV = OpticalFlowGridSizeFlagBitsNV(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct OpticalFlowGridSizeFlagBitsNV:
+struct OpticalFlowGridSizeFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -8978,15 +8309,12 @@ struct OpticalFlowGridSizeFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> OpticalFlowGridSizeFlagsNV:
         return OpticalFlowGridSizeFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct OpticalFlowUsageFlagsNV(EqualityComparable):
+struct OpticalFlowUsageFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9013,17 +8341,16 @@ struct OpticalFlowUsageFlagsNV(EqualityComparable):
     fn __contains__(self, bit: OpticalFlowUsageFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias UNKNOWN_NV = OpticalFlowUsageFlagBitsNV(raw = 0)
-    alias INPUT_NV = OpticalFlowUsageFlagBitsNV(raw = 1 << 0)
-    alias OUTPUT_NV = OpticalFlowUsageFlagBitsNV(raw = 1 << 1)
-    alias HINT_NV = OpticalFlowUsageFlagBitsNV(raw = 1 << 2)
-    alias COST_NV = OpticalFlowUsageFlagBitsNV(raw = 1 << 3)
-    alias GLOBAL_FLOW_NV = OpticalFlowUsageFlagBitsNV(raw = 1 << 4)
+    comptime UNKNOWN_NV = OpticalFlowUsageFlagBitsNV(raw = 0)
+    comptime INPUT_NV = OpticalFlowUsageFlagBitsNV(raw = 1 << 0)
+    comptime OUTPUT_NV = OpticalFlowUsageFlagBitsNV(raw = 1 << 1)
+    comptime HINT_NV = OpticalFlowUsageFlagBitsNV(raw = 1 << 2)
+    comptime COST_NV = OpticalFlowUsageFlagBitsNV(raw = 1 << 3)
+    comptime GLOBAL_FLOW_NV = OpticalFlowUsageFlagBitsNV(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct OpticalFlowUsageFlagBitsNV:
+struct OpticalFlowUsageFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9035,15 +8362,12 @@ struct OpticalFlowUsageFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> OpticalFlowUsageFlagsNV:
         return OpticalFlowUsageFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct OpticalFlowSessionCreateFlagsNV(EqualityComparable):
+struct OpticalFlowSessionCreateFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9070,16 +8394,15 @@ struct OpticalFlowSessionCreateFlagsNV(EqualityComparable):
     fn __contains__(self, bit: OpticalFlowSessionCreateFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias ENABLE_HINT_NV = OpticalFlowSessionCreateFlagBitsNV(raw = 1 << 0)
-    alias ENABLE_COST_NV = OpticalFlowSessionCreateFlagBitsNV(raw = 1 << 1)
-    alias ENABLE_GLOBAL_FLOW_NV = OpticalFlowSessionCreateFlagBitsNV(raw = 1 << 2)
-    alias ALLOW_REGIONS_NV = OpticalFlowSessionCreateFlagBitsNV(raw = 1 << 3)
-    alias BOTH_DIRECTIONS_NV = OpticalFlowSessionCreateFlagBitsNV(raw = 1 << 4)
+    comptime ENABLE_HINT_NV = OpticalFlowSessionCreateFlagBitsNV(raw = 1 << 0)
+    comptime ENABLE_COST_NV = OpticalFlowSessionCreateFlagBitsNV(raw = 1 << 1)
+    comptime ENABLE_GLOBAL_FLOW_NV = OpticalFlowSessionCreateFlagBitsNV(raw = 1 << 2)
+    comptime ALLOW_REGIONS_NV = OpticalFlowSessionCreateFlagBitsNV(raw = 1 << 3)
+    comptime BOTH_DIRECTIONS_NV = OpticalFlowSessionCreateFlagBitsNV(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct OpticalFlowSessionCreateFlagBitsNV:
+struct OpticalFlowSessionCreateFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9091,15 +8414,12 @@ struct OpticalFlowSessionCreateFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> OpticalFlowSessionCreateFlagsNV:
         return OpticalFlowSessionCreateFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct OpticalFlowExecuteFlagsNV(EqualityComparable):
+struct OpticalFlowExecuteFlagsNV(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9126,12 +8446,11 @@ struct OpticalFlowExecuteFlagsNV(EqualityComparable):
     fn __contains__(self, bit: OpticalFlowExecuteFlagBitsNV) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DISABLE_TEMPORAL_HINTS_NV = OpticalFlowExecuteFlagBitsNV(raw = 1 << 0)
+    comptime DISABLE_TEMPORAL_HINTS_NV = OpticalFlowExecuteFlagBitsNV(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct OpticalFlowExecuteFlagBitsNV:
+struct OpticalFlowExecuteFlagBitsNV(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9143,15 +8462,12 @@ struct OpticalFlowExecuteFlagBitsNV:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> OpticalFlowExecuteFlagsNV:
         return OpticalFlowExecuteFlagsNV(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct FrameBoundaryFlagsEXT(EqualityComparable):
+struct FrameBoundaryFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9178,12 +8494,11 @@ struct FrameBoundaryFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: FrameBoundaryFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias FRAME_END_EXT = FrameBoundaryFlagBitsEXT(raw = 1 << 0)
+    comptime FRAME_END_EXT = FrameBoundaryFlagBitsEXT(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct FrameBoundaryFlagBitsEXT:
+struct FrameBoundaryFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9195,15 +8510,12 @@ struct FrameBoundaryFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> FrameBoundaryFlagsEXT:
         return FrameBoundaryFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PresentScalingFlagsKHR(EqualityComparable):
+struct PresentScalingFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9230,14 +8542,13 @@ struct PresentScalingFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: PresentScalingFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias ONE_TO_ONE_KHR = PresentScalingFlagBitsKHR(raw = 1 << 0)
-    alias ASPECT_RATIO_STRETCH_KHR = PresentScalingFlagBitsKHR(raw = 1 << 1)
-    alias STRETCH_KHR = PresentScalingFlagBitsKHR(raw = 1 << 2)
+    comptime ONE_TO_ONE_KHR = PresentScalingFlagBitsKHR(raw = 1 << 0)
+    comptime ASPECT_RATIO_STRETCH_KHR = PresentScalingFlagBitsKHR(raw = 1 << 1)
+    comptime STRETCH_KHR = PresentScalingFlagBitsKHR(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct PresentScalingFlagBitsKHR:
+struct PresentScalingFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9249,15 +8560,12 @@ struct PresentScalingFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PresentScalingFlagsKHR:
         return PresentScalingFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PresentGravityFlagsKHR(EqualityComparable):
+struct PresentGravityFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9284,14 +8592,13 @@ struct PresentGravityFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: PresentGravityFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias MIN_KHR = PresentGravityFlagBitsKHR(raw = 1 << 0)
-    alias MAX_KHR = PresentGravityFlagBitsKHR(raw = 1 << 1)
-    alias CENTERED_KHR = PresentGravityFlagBitsKHR(raw = 1 << 2)
+    comptime MIN_KHR = PresentGravityFlagBitsKHR(raw = 1 << 0)
+    comptime MAX_KHR = PresentGravityFlagBitsKHR(raw = 1 << 1)
+    comptime CENTERED_KHR = PresentGravityFlagBitsKHR(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct PresentGravityFlagBitsKHR:
+struct PresentGravityFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9303,15 +8610,12 @@ struct PresentGravityFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PresentGravityFlagsKHR:
         return PresentGravityFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct ShaderCreateFlagsEXT(EqualityComparable):
+struct ShaderCreateFlagsEXT(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9338,12 +8642,11 @@ struct ShaderCreateFlagsEXT(EqualityComparable):
     fn __contains__(self, bit: ShaderCreateFlagBitsEXT) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias LINK_STAGE_EXT = ShaderCreateFlagBitsEXT(raw = 1 << 0)
+    comptime LINK_STAGE_EXT = ShaderCreateFlagBitsEXT(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct ShaderCreateFlagBitsEXT:
+struct ShaderCreateFlagBitsEXT(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9355,15 +8658,12 @@ struct ShaderCreateFlagBitsEXT:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> ShaderCreateFlagsEXT:
         return ShaderCreateFlagsEXT(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct TileShadingRenderPassFlagsQCOM(EqualityComparable):
+struct TileShadingRenderPassFlagsQCOM(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9390,13 +8690,12 @@ struct TileShadingRenderPassFlagsQCOM(EqualityComparable):
     fn __contains__(self, bit: TileShadingRenderPassFlagBitsQCOM) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias ENABLE_QCOM = TileShadingRenderPassFlagBitsQCOM(raw = 1 << 0)
-    alias PER_TILE_EXECUTION_QCOM = TileShadingRenderPassFlagBitsQCOM(raw = 1 << 1)
+    comptime ENABLE_QCOM = TileShadingRenderPassFlagBitsQCOM(raw = 1 << 0)
+    comptime PER_TILE_EXECUTION_QCOM = TileShadingRenderPassFlagBitsQCOM(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct TileShadingRenderPassFlagBitsQCOM:
+struct TileShadingRenderPassFlagBitsQCOM(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9408,15 +8707,12 @@ struct TileShadingRenderPassFlagBitsQCOM:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> TileShadingRenderPassFlagsQCOM:
         return TileShadingRenderPassFlagsQCOM(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct PhysicalDeviceSchedulingControlsFlagsARM(EqualityComparable):
+struct PhysicalDeviceSchedulingControlsFlagsARM(Equatable):
     var _raw: UInt64
 
     @implicit
@@ -9443,12 +8739,11 @@ struct PhysicalDeviceSchedulingControlsFlagsARM(EqualityComparable):
     fn __contains__(self, bit: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias SHADER_CORE_COUNT_ARM = PhysicalDeviceSchedulingControlsFlagBitsARM(raw = 1 << 0)
+    comptime SHADER_CORE_COUNT_ARM = PhysicalDeviceSchedulingControlsFlagBitsARM(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct PhysicalDeviceSchedulingControlsFlagBitsARM:
+struct PhysicalDeviceSchedulingControlsFlagBitsARM(Equatable):
     var _raw: UInt64
 
     fn __init__(out self, *, raw: UInt64):
@@ -9460,15 +8755,12 @@ struct PhysicalDeviceSchedulingControlsFlagBitsARM:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> PhysicalDeviceSchedulingControlsFlagsARM:
         return PhysicalDeviceSchedulingControlsFlagsARM(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct SurfaceCreateFlagsOHOS(EqualityComparable):
+struct SurfaceCreateFlagsOHOS(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9496,9 +8788,8 @@ struct SurfaceCreateFlagsOHOS(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct SurfaceCreateFlagBitsOHOS:
+struct SurfaceCreateFlagBitsOHOS(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9510,15 +8801,12 @@ struct SurfaceCreateFlagBitsOHOS:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> SurfaceCreateFlagsOHOS:
         return SurfaceCreateFlagsOHOS(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoCodecOperationFlagsKHR(EqualityComparable):
+struct VideoCodecOperationFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9545,12 +8833,11 @@ struct VideoCodecOperationFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoCodecOperationFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias NONE_KHR = VideoCodecOperationFlagBitsKHR(raw = 0)
+    comptime NONE_KHR = VideoCodecOperationFlagBitsKHR(raw = 0)
 
 
 @register_passable("trivial")
-struct VideoCodecOperationFlagBitsKHR:
+struct VideoCodecOperationFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9562,15 +8849,12 @@ struct VideoCodecOperationFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoCodecOperationFlagsKHR:
         return VideoCodecOperationFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoCapabilityFlagsKHR(EqualityComparable):
+struct VideoCapabilityFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9597,13 +8881,12 @@ struct VideoCapabilityFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoCapabilityFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias PROTECTED_CONTENT_KHR = VideoCapabilityFlagBitsKHR(raw = 1 << 0)
-    alias SEPARATE_REFERENCE_IMAGES_KHR = VideoCapabilityFlagBitsKHR(raw = 1 << 1)
+    comptime PROTECTED_CONTENT_KHR = VideoCapabilityFlagBitsKHR(raw = 1 << 0)
+    comptime SEPARATE_REFERENCE_IMAGES_KHR = VideoCapabilityFlagBitsKHR(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct VideoCapabilityFlagBitsKHR:
+struct VideoCapabilityFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9615,15 +8898,12 @@ struct VideoCapabilityFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoCapabilityFlagsKHR:
         return VideoCapabilityFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoSessionCreateFlagsKHR(EqualityComparable):
+struct VideoSessionCreateFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9650,12 +8930,11 @@ struct VideoSessionCreateFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoSessionCreateFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias PROTECTED_CONTENT_KHR = VideoSessionCreateFlagBitsKHR(raw = 1 << 0)
+    comptime PROTECTED_CONTENT_KHR = VideoSessionCreateFlagBitsKHR(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct VideoSessionCreateFlagBitsKHR:
+struct VideoSessionCreateFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9667,15 +8946,12 @@ struct VideoSessionCreateFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoSessionCreateFlagsKHR:
         return VideoSessionCreateFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoSessionParametersCreateFlagsKHR(EqualityComparable):
+struct VideoSessionParametersCreateFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9703,9 +8979,8 @@ struct VideoSessionParametersCreateFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct VideoSessionParametersCreateFlagBitsKHR:
+struct VideoSessionParametersCreateFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9717,15 +8992,12 @@ struct VideoSessionParametersCreateFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoSessionParametersCreateFlagsKHR:
         return VideoSessionParametersCreateFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoBeginCodingFlagsKHR(EqualityComparable):
+struct VideoBeginCodingFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9753,9 +9025,8 @@ struct VideoBeginCodingFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct VideoBeginCodingFlagBitsKHR:
+struct VideoBeginCodingFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9767,15 +9038,12 @@ struct VideoBeginCodingFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoBeginCodingFlagsKHR:
         return VideoBeginCodingFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEndCodingFlagsKHR(EqualityComparable):
+struct VideoEndCodingFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9803,9 +9071,8 @@ struct VideoEndCodingFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct VideoEndCodingFlagBitsKHR:
+struct VideoEndCodingFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9817,15 +9084,12 @@ struct VideoEndCodingFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEndCodingFlagsKHR:
         return VideoEndCodingFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoCodingControlFlagsKHR(EqualityComparable):
+struct VideoCodingControlFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9852,12 +9116,11 @@ struct VideoCodingControlFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoCodingControlFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias RESET_KHR = VideoCodingControlFlagBitsKHR(raw = 1 << 0)
+    comptime RESET_KHR = VideoCodingControlFlagBitsKHR(raw = 1 << 0)
 
 
 @register_passable("trivial")
-struct VideoCodingControlFlagBitsKHR:
+struct VideoCodingControlFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9869,15 +9132,12 @@ struct VideoCodingControlFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoCodingControlFlagsKHR:
         return VideoCodingControlFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoDecodeUsageFlagsKHR(EqualityComparable):
+struct VideoDecodeUsageFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9904,15 +9164,14 @@ struct VideoDecodeUsageFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoDecodeUsageFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DEFAULT_KHR = VideoDecodeUsageFlagBitsKHR(raw = 0)
-    alias TRANSCODING_KHR = VideoDecodeUsageFlagBitsKHR(raw = 1 << 0)
-    alias OFFLINE_KHR = VideoDecodeUsageFlagBitsKHR(raw = 1 << 1)
-    alias STREAMING_KHR = VideoDecodeUsageFlagBitsKHR(raw = 1 << 2)
+    comptime DEFAULT_KHR = VideoDecodeUsageFlagBitsKHR(raw = 0)
+    comptime TRANSCODING_KHR = VideoDecodeUsageFlagBitsKHR(raw = 1 << 0)
+    comptime OFFLINE_KHR = VideoDecodeUsageFlagBitsKHR(raw = 1 << 1)
+    comptime STREAMING_KHR = VideoDecodeUsageFlagBitsKHR(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct VideoDecodeUsageFlagBitsKHR:
+struct VideoDecodeUsageFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9924,15 +9183,12 @@ struct VideoDecodeUsageFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoDecodeUsageFlagsKHR:
         return VideoDecodeUsageFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoDecodeCapabilityFlagsKHR(EqualityComparable):
+struct VideoDecodeCapabilityFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -9959,13 +9215,12 @@ struct VideoDecodeCapabilityFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoDecodeCapabilityFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DPB_AND_OUTPUT_COINCIDE_KHR = VideoDecodeCapabilityFlagBitsKHR(raw = 1 << 0)
-    alias DPB_AND_OUTPUT_DISTINCT_KHR = VideoDecodeCapabilityFlagBitsKHR(raw = 1 << 1)
+    comptime DPB_AND_OUTPUT_COINCIDE_KHR = VideoDecodeCapabilityFlagBitsKHR(raw = 1 << 0)
+    comptime DPB_AND_OUTPUT_DISTINCT_KHR = VideoDecodeCapabilityFlagBitsKHR(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct VideoDecodeCapabilityFlagBitsKHR:
+struct VideoDecodeCapabilityFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -9977,15 +9232,12 @@ struct VideoDecodeCapabilityFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoDecodeCapabilityFlagsKHR:
         return VideoDecodeCapabilityFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoDecodeFlagsKHR(EqualityComparable):
+struct VideoDecodeFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10013,9 +9265,8 @@ struct VideoDecodeFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct VideoDecodeFlagBitsKHR:
+struct VideoDecodeFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10027,15 +9278,12 @@ struct VideoDecodeFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoDecodeFlagsKHR:
         return VideoDecodeFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoDecodeH264PictureLayoutFlagsKHR(EqualityComparable):
+struct VideoDecodeH264PictureLayoutFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10062,14 +9310,13 @@ struct VideoDecodeH264PictureLayoutFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias PROGRESSIVE_KHR = VideoDecodeH264PictureLayoutFlagBitsKHR(raw = 0)
-    alias INTERLACED_INTERLEAVED_LINES_KHR = VideoDecodeH264PictureLayoutFlagBitsKHR(raw = 1 << 0)
-    alias INTERLACED_SEPARATE_PLANES_KHR = VideoDecodeH264PictureLayoutFlagBitsKHR(raw = 1 << 1)
+    comptime PROGRESSIVE_KHR = VideoDecodeH264PictureLayoutFlagBitsKHR(raw = 0)
+    comptime INTERLACED_INTERLEAVED_LINES_KHR = VideoDecodeH264PictureLayoutFlagBitsKHR(raw = 1 << 0)
+    comptime INTERLACED_SEPARATE_PLANES_KHR = VideoDecodeH264PictureLayoutFlagBitsKHR(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct VideoDecodeH264PictureLayoutFlagBitsKHR:
+struct VideoDecodeH264PictureLayoutFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10081,15 +9328,12 @@ struct VideoDecodeH264PictureLayoutFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoDecodeH264PictureLayoutFlagsKHR:
         return VideoDecodeH264PictureLayoutFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeFlagsKHR(EqualityComparable):
+struct VideoEncodeFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10117,9 +9361,8 @@ struct VideoEncodeFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct VideoEncodeFlagBitsKHR:
+struct VideoEncodeFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10131,15 +9374,12 @@ struct VideoEncodeFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeFlagsKHR:
         return VideoEncodeFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeUsageFlagsKHR(EqualityComparable):
+struct VideoEncodeUsageFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10166,16 +9406,15 @@ struct VideoEncodeUsageFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeUsageFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DEFAULT_KHR = VideoEncodeUsageFlagBitsKHR(raw = 0)
-    alias TRANSCODING_KHR = VideoEncodeUsageFlagBitsKHR(raw = 1 << 0)
-    alias STREAMING_KHR = VideoEncodeUsageFlagBitsKHR(raw = 1 << 1)
-    alias RECORDING_KHR = VideoEncodeUsageFlagBitsKHR(raw = 1 << 2)
-    alias CONFERENCING_KHR = VideoEncodeUsageFlagBitsKHR(raw = 1 << 3)
+    comptime DEFAULT_KHR = VideoEncodeUsageFlagBitsKHR(raw = 0)
+    comptime TRANSCODING_KHR = VideoEncodeUsageFlagBitsKHR(raw = 1 << 0)
+    comptime STREAMING_KHR = VideoEncodeUsageFlagBitsKHR(raw = 1 << 1)
+    comptime RECORDING_KHR = VideoEncodeUsageFlagBitsKHR(raw = 1 << 2)
+    comptime CONFERENCING_KHR = VideoEncodeUsageFlagBitsKHR(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct VideoEncodeUsageFlagBitsKHR:
+struct VideoEncodeUsageFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10187,15 +9426,12 @@ struct VideoEncodeUsageFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeUsageFlagsKHR:
         return VideoEncodeUsageFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeContentFlagsKHR(EqualityComparable):
+struct VideoEncodeContentFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10222,15 +9458,14 @@ struct VideoEncodeContentFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeContentFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DEFAULT_KHR = VideoEncodeContentFlagBitsKHR(raw = 0)
-    alias CAMERA_KHR = VideoEncodeContentFlagBitsKHR(raw = 1 << 0)
-    alias DESKTOP_KHR = VideoEncodeContentFlagBitsKHR(raw = 1 << 1)
-    alias RENDERED_KHR = VideoEncodeContentFlagBitsKHR(raw = 1 << 2)
+    comptime DEFAULT_KHR = VideoEncodeContentFlagBitsKHR(raw = 0)
+    comptime CAMERA_KHR = VideoEncodeContentFlagBitsKHR(raw = 1 << 0)
+    comptime DESKTOP_KHR = VideoEncodeContentFlagBitsKHR(raw = 1 << 1)
+    comptime RENDERED_KHR = VideoEncodeContentFlagBitsKHR(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct VideoEncodeContentFlagBitsKHR:
+struct VideoEncodeContentFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10242,15 +9477,12 @@ struct VideoEncodeContentFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeContentFlagsKHR:
         return VideoEncodeContentFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeCapabilityFlagsKHR(EqualityComparable):
+struct VideoEncodeCapabilityFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10277,13 +9509,12 @@ struct VideoEncodeCapabilityFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeCapabilityFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias PRECEDING_EXTERNALLY_ENCODED_BYTES_KHR = VideoEncodeCapabilityFlagBitsKHR(raw = 1 << 0)
-    alias INSUFFICIENT_BITSTREAM_BUFFER_RANGE_DETECTION_KHR = VideoEncodeCapabilityFlagBitsKHR(raw = 1 << 1)
+    comptime PRECEDING_EXTERNALLY_ENCODED_BYTES_KHR = VideoEncodeCapabilityFlagBitsKHR(raw = 1 << 0)
+    comptime INSUFFICIENT_BITSTREAM_BUFFER_RANGE_DETECTION_KHR = VideoEncodeCapabilityFlagBitsKHR(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct VideoEncodeCapabilityFlagBitsKHR:
+struct VideoEncodeCapabilityFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10295,15 +9526,12 @@ struct VideoEncodeCapabilityFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeCapabilityFlagsKHR:
         return VideoEncodeCapabilityFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeFeedbackFlagsKHR(EqualityComparable):
+struct VideoEncodeFeedbackFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10330,14 +9558,13 @@ struct VideoEncodeFeedbackFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeFeedbackFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias BITSTREAM_BUFFER_OFFSET_KHR = VideoEncodeFeedbackFlagBitsKHR(raw = 1 << 0)
-    alias BITSTREAM_BYTES_WRITTEN_KHR = VideoEncodeFeedbackFlagBitsKHR(raw = 1 << 1)
-    alias BITSTREAM_HAS_OVERRIDES_KHR = VideoEncodeFeedbackFlagBitsKHR(raw = 1 << 2)
+    comptime BITSTREAM_BUFFER_OFFSET_KHR = VideoEncodeFeedbackFlagBitsKHR(raw = 1 << 0)
+    comptime BITSTREAM_BYTES_WRITTEN_KHR = VideoEncodeFeedbackFlagBitsKHR(raw = 1 << 1)
+    comptime BITSTREAM_HAS_OVERRIDES_KHR = VideoEncodeFeedbackFlagBitsKHR(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct VideoEncodeFeedbackFlagBitsKHR:
+struct VideoEncodeFeedbackFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10349,15 +9576,12 @@ struct VideoEncodeFeedbackFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeFeedbackFlagsKHR:
         return VideoEncodeFeedbackFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeRateControlFlagsKHR(EqualityComparable):
+struct VideoEncodeRateControlFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10385,9 +9609,8 @@ struct VideoEncodeRateControlFlagsKHR(EqualityComparable):
         return Bool(self.raw() & bit.raw())
 
 
-
 @register_passable("trivial")
-struct VideoEncodeRateControlFlagBitsKHR:
+struct VideoEncodeRateControlFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10399,15 +9622,12 @@ struct VideoEncodeRateControlFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeRateControlFlagsKHR:
         return VideoEncodeRateControlFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeRateControlModeFlagsKHR(EqualityComparable):
+struct VideoEncodeRateControlModeFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10434,15 +9654,14 @@ struct VideoEncodeRateControlModeFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeRateControlModeFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias DEFAULT_KHR = VideoEncodeRateControlModeFlagBitsKHR(raw = 0)
-    alias DISABLED_KHR = VideoEncodeRateControlModeFlagBitsKHR(raw = 1 << 0)
-    alias CBR_KHR = VideoEncodeRateControlModeFlagBitsKHR(raw = 1 << 1)
-    alias VBR_KHR = VideoEncodeRateControlModeFlagBitsKHR(raw = 1 << 2)
+    comptime DEFAULT_KHR = VideoEncodeRateControlModeFlagBitsKHR(raw = 0)
+    comptime DISABLED_KHR = VideoEncodeRateControlModeFlagBitsKHR(raw = 1 << 0)
+    comptime CBR_KHR = VideoEncodeRateControlModeFlagBitsKHR(raw = 1 << 1)
+    comptime VBR_KHR = VideoEncodeRateControlModeFlagBitsKHR(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct VideoEncodeRateControlModeFlagBitsKHR:
+struct VideoEncodeRateControlModeFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10454,15 +9673,12 @@ struct VideoEncodeRateControlModeFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeRateControlModeFlagsKHR:
         return VideoEncodeRateControlModeFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeIntraRefreshModeFlagsKHR(EqualityComparable):
+struct VideoEncodeIntraRefreshModeFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10489,16 +9705,15 @@ struct VideoEncodeIntraRefreshModeFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias NONE_KHR = VideoEncodeIntraRefreshModeFlagBitsKHR(raw = 0)
-    alias PER_PICTURE_PARTITION_KHR = VideoEncodeIntraRefreshModeFlagBitsKHR(raw = 1 << 0)
-    alias BLOCK_BASED_KHR = VideoEncodeIntraRefreshModeFlagBitsKHR(raw = 1 << 1)
-    alias BLOCK_ROW_BASED_KHR = VideoEncodeIntraRefreshModeFlagBitsKHR(raw = 1 << 2)
-    alias BLOCK_COLUMN_BASED_KHR = VideoEncodeIntraRefreshModeFlagBitsKHR(raw = 1 << 3)
+    comptime NONE_KHR = VideoEncodeIntraRefreshModeFlagBitsKHR(raw = 0)
+    comptime PER_PICTURE_PARTITION_KHR = VideoEncodeIntraRefreshModeFlagBitsKHR(raw = 1 << 0)
+    comptime BLOCK_BASED_KHR = VideoEncodeIntraRefreshModeFlagBitsKHR(raw = 1 << 1)
+    comptime BLOCK_ROW_BASED_KHR = VideoEncodeIntraRefreshModeFlagBitsKHR(raw = 1 << 2)
+    comptime BLOCK_COLUMN_BASED_KHR = VideoEncodeIntraRefreshModeFlagBitsKHR(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct VideoEncodeIntraRefreshModeFlagBitsKHR:
+struct VideoEncodeIntraRefreshModeFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10510,15 +9725,12 @@ struct VideoEncodeIntraRefreshModeFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeIntraRefreshModeFlagsKHR:
         return VideoEncodeIntraRefreshModeFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoChromaSubsamplingFlagsKHR(EqualityComparable):
+struct VideoChromaSubsamplingFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10545,16 +9757,15 @@ struct VideoChromaSubsamplingFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoChromaSubsamplingFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias INVALID_KHR = VideoChromaSubsamplingFlagBitsKHR(raw = 0)
-    alias MONOCHROME_KHR = VideoChromaSubsamplingFlagBitsKHR(raw = 1 << 0)
-    alias N_420_KHR = VideoChromaSubsamplingFlagBitsKHR(raw = 1 << 1)
-    alias N_422_KHR = VideoChromaSubsamplingFlagBitsKHR(raw = 1 << 2)
-    alias N_444_KHR = VideoChromaSubsamplingFlagBitsKHR(raw = 1 << 3)
+    comptime INVALID_KHR = VideoChromaSubsamplingFlagBitsKHR(raw = 0)
+    comptime MONOCHROME_KHR = VideoChromaSubsamplingFlagBitsKHR(raw = 1 << 0)
+    comptime N_420_KHR = VideoChromaSubsamplingFlagBitsKHR(raw = 1 << 1)
+    comptime N_422_KHR = VideoChromaSubsamplingFlagBitsKHR(raw = 1 << 2)
+    comptime N_444_KHR = VideoChromaSubsamplingFlagBitsKHR(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct VideoChromaSubsamplingFlagBitsKHR:
+struct VideoChromaSubsamplingFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10566,15 +9777,12 @@ struct VideoChromaSubsamplingFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoChromaSubsamplingFlagsKHR:
         return VideoChromaSubsamplingFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoComponentBitDepthFlagsKHR(EqualityComparable):
+struct VideoComponentBitDepthFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10601,15 +9809,14 @@ struct VideoComponentBitDepthFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoComponentBitDepthFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias INVALID_KHR = VideoComponentBitDepthFlagBitsKHR(raw = 0)
-    alias N_8_KHR = VideoComponentBitDepthFlagBitsKHR(raw = 1 << 0)
-    alias N_10_KHR = VideoComponentBitDepthFlagBitsKHR(raw = 1 << 2)
-    alias N_12_KHR = VideoComponentBitDepthFlagBitsKHR(raw = 1 << 4)
+    comptime INVALID_KHR = VideoComponentBitDepthFlagBitsKHR(raw = 0)
+    comptime N_8_KHR = VideoComponentBitDepthFlagBitsKHR(raw = 1 << 0)
+    comptime N_10_KHR = VideoComponentBitDepthFlagBitsKHR(raw = 1 << 2)
+    comptime N_12_KHR = VideoComponentBitDepthFlagBitsKHR(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct VideoComponentBitDepthFlagBitsKHR:
+struct VideoComponentBitDepthFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10621,15 +9828,12 @@ struct VideoComponentBitDepthFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoComponentBitDepthFlagsKHR:
         return VideoComponentBitDepthFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeH264CapabilityFlagsKHR(EqualityComparable):
+struct VideoEncodeH264CapabilityFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10656,20 +9860,19 @@ struct VideoEncodeH264CapabilityFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeH264CapabilityFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias HRD_COMPLIANCE_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 0)
-    alias PREDICTION_WEIGHT_TABLE_GENERATED_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 1)
-    alias ROW_UNALIGNED_SLICE_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 2)
-    alias DIFFERENT_SLICE_TYPE_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 3)
-    alias B_FRAME_IN_L0_LIST_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 4)
-    alias B_FRAME_IN_L1_LIST_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 5)
-    alias PER_PICTURE_TYPE_MIN_MAX_QP_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 6)
-    alias PER_SLICE_CONSTANT_QP_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 7)
-    alias GENERATE_PREFIX_NALU_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 8)
+    comptime HRD_COMPLIANCE_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 0)
+    comptime PREDICTION_WEIGHT_TABLE_GENERATED_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 1)
+    comptime ROW_UNALIGNED_SLICE_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 2)
+    comptime DIFFERENT_SLICE_TYPE_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 3)
+    comptime B_FRAME_IN_L0_LIST_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 4)
+    comptime B_FRAME_IN_L1_LIST_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 5)
+    comptime PER_PICTURE_TYPE_MIN_MAX_QP_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 6)
+    comptime PER_SLICE_CONSTANT_QP_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 7)
+    comptime GENERATE_PREFIX_NALU_KHR = VideoEncodeH264CapabilityFlagBitsKHR(raw = 1 << 8)
 
 
 @register_passable("trivial")
-struct VideoEncodeH264CapabilityFlagBitsKHR:
+struct VideoEncodeH264CapabilityFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10681,15 +9884,12 @@ struct VideoEncodeH264CapabilityFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeH264CapabilityFlagsKHR:
         return VideoEncodeH264CapabilityFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeH264StdFlagsKHR(EqualityComparable):
+struct VideoEncodeH264StdFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10716,31 +9916,30 @@ struct VideoEncodeH264StdFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeH264StdFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias SEPARATE_COLOR_PLANE_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 0)
-    alias QPPRIME_Y_ZERO_TRANSFORM_BYPASS_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 1)
-    alias SCALING_MATRIX_PRESENT_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 2)
-    alias CHROMA_QP_INDEX_OFFSET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 3)
-    alias SECOND_CHROMA_QP_INDEX_OFFSET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 4)
-    alias PIC_INIT_QP_MINUS26_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 5)
-    alias WEIGHTED_PRED_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 6)
-    alias WEIGHTED_BIPRED_IDC_EXPLICIT_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 7)
-    alias WEIGHTED_BIPRED_IDC_IMPLICIT_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 8)
-    alias TRANSFORM_8X8_MODE_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 9)
-    alias DIRECT_SPATIAL_MV_PRED_FLAG_UNSET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 10)
-    alias ENTROPY_CODING_MODE_FLAG_UNSET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 11)
-    alias ENTROPY_CODING_MODE_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 12)
-    alias DIRECT_8X8_INFERENCE_FLAG_UNSET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 13)
-    alias CONSTRAINED_INTRA_PRED_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 14)
-    alias DEBLOCKING_FILTER_DISABLED_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 15)
-    alias DEBLOCKING_FILTER_ENABLED_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 16)
-    alias DEBLOCKING_FILTER_PARTIAL_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 17)
-    alias SLICE_QP_DELTA_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 19)
-    alias DIFFERENT_SLICE_QP_DELTA_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 20)
+    comptime SEPARATE_COLOR_PLANE_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 0)
+    comptime QPPRIME_Y_ZERO_TRANSFORM_BYPASS_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 1)
+    comptime SCALING_MATRIX_PRESENT_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 2)
+    comptime CHROMA_QP_INDEX_OFFSET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 3)
+    comptime SECOND_CHROMA_QP_INDEX_OFFSET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 4)
+    comptime PIC_INIT_QP_MINUS26_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 5)
+    comptime WEIGHTED_PRED_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 6)
+    comptime WEIGHTED_BIPRED_IDC_EXPLICIT_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 7)
+    comptime WEIGHTED_BIPRED_IDC_IMPLICIT_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 8)
+    comptime TRANSFORM_8X8_MODE_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 9)
+    comptime DIRECT_SPATIAL_MV_PRED_FLAG_UNSET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 10)
+    comptime ENTROPY_CODING_MODE_FLAG_UNSET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 11)
+    comptime ENTROPY_CODING_MODE_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 12)
+    comptime DIRECT_8X8_INFERENCE_FLAG_UNSET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 13)
+    comptime CONSTRAINED_INTRA_PRED_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 14)
+    comptime DEBLOCKING_FILTER_DISABLED_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 15)
+    comptime DEBLOCKING_FILTER_ENABLED_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 16)
+    comptime DEBLOCKING_FILTER_PARTIAL_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 17)
+    comptime SLICE_QP_DELTA_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 19)
+    comptime DIFFERENT_SLICE_QP_DELTA_KHR = VideoEncodeH264StdFlagBitsKHR(raw = 1 << 20)
 
 
 @register_passable("trivial")
-struct VideoEncodeH264StdFlagBitsKHR:
+struct VideoEncodeH264StdFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10752,15 +9951,12 @@ struct VideoEncodeH264StdFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeH264StdFlagsKHR:
         return VideoEncodeH264StdFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeH264RateControlFlagsKHR(EqualityComparable):
+struct VideoEncodeH264RateControlFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10787,16 +9983,15 @@ struct VideoEncodeH264RateControlFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeH264RateControlFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias ATTEMPT_HRD_COMPLIANCE_KHR = VideoEncodeH264RateControlFlagBitsKHR(raw = 1 << 0)
-    alias REGULAR_GOP_KHR = VideoEncodeH264RateControlFlagBitsKHR(raw = 1 << 1)
-    alias REFERENCE_PATTERN_FLAT_KHR = VideoEncodeH264RateControlFlagBitsKHR(raw = 1 << 2)
-    alias REFERENCE_PATTERN_DYADIC_KHR = VideoEncodeH264RateControlFlagBitsKHR(raw = 1 << 3)
-    alias TEMPORAL_LAYER_PATTERN_DYADIC_KHR = VideoEncodeH264RateControlFlagBitsKHR(raw = 1 << 4)
+    comptime ATTEMPT_HRD_COMPLIANCE_KHR = VideoEncodeH264RateControlFlagBitsKHR(raw = 1 << 0)
+    comptime REGULAR_GOP_KHR = VideoEncodeH264RateControlFlagBitsKHR(raw = 1 << 1)
+    comptime REFERENCE_PATTERN_FLAT_KHR = VideoEncodeH264RateControlFlagBitsKHR(raw = 1 << 2)
+    comptime REFERENCE_PATTERN_DYADIC_KHR = VideoEncodeH264RateControlFlagBitsKHR(raw = 1 << 3)
+    comptime TEMPORAL_LAYER_PATTERN_DYADIC_KHR = VideoEncodeH264RateControlFlagBitsKHR(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct VideoEncodeH264RateControlFlagBitsKHR:
+struct VideoEncodeH264RateControlFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10808,15 +10003,12 @@ struct VideoEncodeH264RateControlFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeH264RateControlFlagsKHR:
         return VideoEncodeH264RateControlFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeH265CapabilityFlagsKHR(EqualityComparable):
+struct VideoEncodeH265CapabilityFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10843,21 +10035,20 @@ struct VideoEncodeH265CapabilityFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeH265CapabilityFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias HRD_COMPLIANCE_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 0)
-    alias PREDICTION_WEIGHT_TABLE_GENERATED_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 1)
-    alias ROW_UNALIGNED_SLICE_SEGMENT_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 2)
-    alias DIFFERENT_SLICE_SEGMENT_TYPE_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 3)
-    alias B_FRAME_IN_L0_LIST_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 4)
-    alias B_FRAME_IN_L1_LIST_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 5)
-    alias PER_PICTURE_TYPE_MIN_MAX_QP_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 6)
-    alias PER_SLICE_SEGMENT_CONSTANT_QP_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 7)
-    alias MULTIPLE_TILES_PER_SLICE_SEGMENT_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 8)
-    alias MULTIPLE_SLICE_SEGMENTS_PER_TILE_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 9)
+    comptime HRD_COMPLIANCE_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 0)
+    comptime PREDICTION_WEIGHT_TABLE_GENERATED_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 1)
+    comptime ROW_UNALIGNED_SLICE_SEGMENT_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 2)
+    comptime DIFFERENT_SLICE_SEGMENT_TYPE_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 3)
+    comptime B_FRAME_IN_L0_LIST_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 4)
+    comptime B_FRAME_IN_L1_LIST_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 5)
+    comptime PER_PICTURE_TYPE_MIN_MAX_QP_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 6)
+    comptime PER_SLICE_SEGMENT_CONSTANT_QP_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 7)
+    comptime MULTIPLE_TILES_PER_SLICE_SEGMENT_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 8)
+    comptime MULTIPLE_SLICE_SEGMENTS_PER_TILE_KHR = VideoEncodeH265CapabilityFlagBitsKHR(raw = 1 << 9)
 
 
 @register_passable("trivial")
-struct VideoEncodeH265CapabilityFlagBitsKHR:
+struct VideoEncodeH265CapabilityFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10869,15 +10060,12 @@ struct VideoEncodeH265CapabilityFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeH265CapabilityFlagsKHR:
         return VideoEncodeH265CapabilityFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeH265StdFlagsKHR(EqualityComparable):
+struct VideoEncodeH265StdFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10904,32 +10092,31 @@ struct VideoEncodeH265StdFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeH265StdFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias SEPARATE_COLOR_PLANE_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 0)
-    alias SAMPLE_ADAPTIVE_OFFSET_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 1)
-    alias SCALING_LIST_DATA_PRESENT_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 2)
-    alias PCM_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 3)
-    alias SPS_TEMPORAL_MVP_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 4)
-    alias INIT_QP_MINUS26_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 5)
-    alias WEIGHTED_PRED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 6)
-    alias WEIGHTED_BIPRED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 7)
-    alias LOG2_PARALLEL_MERGE_LEVEL_MINUS2_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 8)
-    alias SIGN_DATA_HIDING_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 9)
-    alias TRANSFORM_SKIP_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 10)
-    alias TRANSFORM_SKIP_ENABLED_FLAG_UNSET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 11)
-    alias PPS_SLICE_CHROMA_QP_OFFSETS_PRESENT_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 12)
-    alias TRANSQUANT_BYPASS_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 13)
-    alias CONSTRAINED_INTRA_PRED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 14)
-    alias ENTROPY_CODING_SYNC_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 15)
-    alias DEBLOCKING_FILTER_OVERRIDE_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 16)
-    alias DEPENDENT_SLICE_SEGMENTS_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 17)
-    alias DEPENDENT_SLICE_SEGMENT_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 18)
-    alias SLICE_QP_DELTA_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 19)
-    alias DIFFERENT_SLICE_QP_DELTA_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 20)
+    comptime SEPARATE_COLOR_PLANE_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 0)
+    comptime SAMPLE_ADAPTIVE_OFFSET_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 1)
+    comptime SCALING_LIST_DATA_PRESENT_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 2)
+    comptime PCM_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 3)
+    comptime SPS_TEMPORAL_MVP_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 4)
+    comptime INIT_QP_MINUS26_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 5)
+    comptime WEIGHTED_PRED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 6)
+    comptime WEIGHTED_BIPRED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 7)
+    comptime LOG2_PARALLEL_MERGE_LEVEL_MINUS2_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 8)
+    comptime SIGN_DATA_HIDING_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 9)
+    comptime TRANSFORM_SKIP_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 10)
+    comptime TRANSFORM_SKIP_ENABLED_FLAG_UNSET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 11)
+    comptime PPS_SLICE_CHROMA_QP_OFFSETS_PRESENT_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 12)
+    comptime TRANSQUANT_BYPASS_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 13)
+    comptime CONSTRAINED_INTRA_PRED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 14)
+    comptime ENTROPY_CODING_SYNC_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 15)
+    comptime DEBLOCKING_FILTER_OVERRIDE_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 16)
+    comptime DEPENDENT_SLICE_SEGMENTS_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 17)
+    comptime DEPENDENT_SLICE_SEGMENT_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 18)
+    comptime SLICE_QP_DELTA_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 19)
+    comptime DIFFERENT_SLICE_QP_DELTA_KHR = VideoEncodeH265StdFlagBitsKHR(raw = 1 << 20)
 
 
 @register_passable("trivial")
-struct VideoEncodeH265StdFlagBitsKHR:
+struct VideoEncodeH265StdFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10941,15 +10128,12 @@ struct VideoEncodeH265StdFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeH265StdFlagsKHR:
         return VideoEncodeH265StdFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeH265RateControlFlagsKHR(EqualityComparable):
+struct VideoEncodeH265RateControlFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -10976,16 +10160,15 @@ struct VideoEncodeH265RateControlFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeH265RateControlFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias ATTEMPT_HRD_COMPLIANCE_KHR = VideoEncodeH265RateControlFlagBitsKHR(raw = 1 << 0)
-    alias REGULAR_GOP_KHR = VideoEncodeH265RateControlFlagBitsKHR(raw = 1 << 1)
-    alias REFERENCE_PATTERN_FLAT_KHR = VideoEncodeH265RateControlFlagBitsKHR(raw = 1 << 2)
-    alias REFERENCE_PATTERN_DYADIC_KHR = VideoEncodeH265RateControlFlagBitsKHR(raw = 1 << 3)
-    alias TEMPORAL_SUB_LAYER_PATTERN_DYADIC_KHR = VideoEncodeH265RateControlFlagBitsKHR(raw = 1 << 4)
+    comptime ATTEMPT_HRD_COMPLIANCE_KHR = VideoEncodeH265RateControlFlagBitsKHR(raw = 1 << 0)
+    comptime REGULAR_GOP_KHR = VideoEncodeH265RateControlFlagBitsKHR(raw = 1 << 1)
+    comptime REFERENCE_PATTERN_FLAT_KHR = VideoEncodeH265RateControlFlagBitsKHR(raw = 1 << 2)
+    comptime REFERENCE_PATTERN_DYADIC_KHR = VideoEncodeH265RateControlFlagBitsKHR(raw = 1 << 3)
+    comptime TEMPORAL_SUB_LAYER_PATTERN_DYADIC_KHR = VideoEncodeH265RateControlFlagBitsKHR(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct VideoEncodeH265RateControlFlagBitsKHR:
+struct VideoEncodeH265RateControlFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -10997,15 +10180,12 @@ struct VideoEncodeH265RateControlFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeH265RateControlFlagsKHR:
         return VideoEncodeH265RateControlFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeH265CtbSizeFlagsKHR(EqualityComparable):
+struct VideoEncodeH265CtbSizeFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -11032,14 +10212,13 @@ struct VideoEncodeH265CtbSizeFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeH265CtbSizeFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias N_16_KHR = VideoEncodeH265CtbSizeFlagBitsKHR(raw = 1 << 0)
-    alias N_32_KHR = VideoEncodeH265CtbSizeFlagBitsKHR(raw = 1 << 1)
-    alias N_64_KHR = VideoEncodeH265CtbSizeFlagBitsKHR(raw = 1 << 2)
+    comptime N_16_KHR = VideoEncodeH265CtbSizeFlagBitsKHR(raw = 1 << 0)
+    comptime N_32_KHR = VideoEncodeH265CtbSizeFlagBitsKHR(raw = 1 << 1)
+    comptime N_64_KHR = VideoEncodeH265CtbSizeFlagBitsKHR(raw = 1 << 2)
 
 
 @register_passable("trivial")
-struct VideoEncodeH265CtbSizeFlagBitsKHR:
+struct VideoEncodeH265CtbSizeFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -11051,15 +10230,12 @@ struct VideoEncodeH265CtbSizeFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeH265CtbSizeFlagsKHR:
         return VideoEncodeH265CtbSizeFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeH265TransformBlockSizeFlagsKHR(EqualityComparable):
+struct VideoEncodeH265TransformBlockSizeFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -11086,15 +10262,14 @@ struct VideoEncodeH265TransformBlockSizeFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias N_4_KHR = VideoEncodeH265TransformBlockSizeFlagBitsKHR(raw = 1 << 0)
-    alias N_8_KHR = VideoEncodeH265TransformBlockSizeFlagBitsKHR(raw = 1 << 1)
-    alias N_16_KHR = VideoEncodeH265TransformBlockSizeFlagBitsKHR(raw = 1 << 2)
-    alias N_32_KHR = VideoEncodeH265TransformBlockSizeFlagBitsKHR(raw = 1 << 3)
+    comptime N_4_KHR = VideoEncodeH265TransformBlockSizeFlagBitsKHR(raw = 1 << 0)
+    comptime N_8_KHR = VideoEncodeH265TransformBlockSizeFlagBitsKHR(raw = 1 << 1)
+    comptime N_16_KHR = VideoEncodeH265TransformBlockSizeFlagBitsKHR(raw = 1 << 2)
+    comptime N_32_KHR = VideoEncodeH265TransformBlockSizeFlagBitsKHR(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct VideoEncodeH265TransformBlockSizeFlagBitsKHR:
+struct VideoEncodeH265TransformBlockSizeFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -11106,15 +10281,12 @@ struct VideoEncodeH265TransformBlockSizeFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeH265TransformBlockSizeFlagsKHR:
         return VideoEncodeH265TransformBlockSizeFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeAV1CapabilityFlagsKHR(EqualityComparable):
+struct VideoEncodeAV1CapabilityFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -11141,16 +10313,15 @@ struct VideoEncodeAV1CapabilityFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeAV1CapabilityFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias PER_RATE_CONTROL_GROUP_MIN_MAX_Q_INDEX_KHR = VideoEncodeAV1CapabilityFlagBitsKHR(raw = 1 << 0)
-    alias GENERATE_OBU_EXTENSION_HEADER_KHR = VideoEncodeAV1CapabilityFlagBitsKHR(raw = 1 << 1)
-    alias PRIMARY_REFERENCE_CDF_ONLY_KHR = VideoEncodeAV1CapabilityFlagBitsKHR(raw = 1 << 2)
-    alias FRAME_SIZE_OVERRIDE_KHR = VideoEncodeAV1CapabilityFlagBitsKHR(raw = 1 << 3)
-    alias MOTION_VECTOR_SCALING_KHR = VideoEncodeAV1CapabilityFlagBitsKHR(raw = 1 << 4)
+    comptime PER_RATE_CONTROL_GROUP_MIN_MAX_Q_INDEX_KHR = VideoEncodeAV1CapabilityFlagBitsKHR(raw = 1 << 0)
+    comptime GENERATE_OBU_EXTENSION_HEADER_KHR = VideoEncodeAV1CapabilityFlagBitsKHR(raw = 1 << 1)
+    comptime PRIMARY_REFERENCE_CDF_ONLY_KHR = VideoEncodeAV1CapabilityFlagBitsKHR(raw = 1 << 2)
+    comptime FRAME_SIZE_OVERRIDE_KHR = VideoEncodeAV1CapabilityFlagBitsKHR(raw = 1 << 3)
+    comptime MOTION_VECTOR_SCALING_KHR = VideoEncodeAV1CapabilityFlagBitsKHR(raw = 1 << 4)
 
 
 @register_passable("trivial")
-struct VideoEncodeAV1CapabilityFlagBitsKHR:
+struct VideoEncodeAV1CapabilityFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -11162,15 +10333,12 @@ struct VideoEncodeAV1CapabilityFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeAV1CapabilityFlagsKHR:
         return VideoEncodeAV1CapabilityFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeAV1StdFlagsKHR(EqualityComparable):
+struct VideoEncodeAV1StdFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -11197,15 +10365,14 @@ struct VideoEncodeAV1StdFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeAV1StdFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias UNIFORM_TILE_SPACING_FLAG_SET_KHR = VideoEncodeAV1StdFlagBitsKHR(raw = 1 << 0)
-    alias SKIP_MODE_PRESENT_UNSET_KHR = VideoEncodeAV1StdFlagBitsKHR(raw = 1 << 1)
-    alias PRIMARY_REF_FRAME_KHR = VideoEncodeAV1StdFlagBitsKHR(raw = 1 << 2)
-    alias DELTA_Q_KHR = VideoEncodeAV1StdFlagBitsKHR(raw = 1 << 3)
+    comptime UNIFORM_TILE_SPACING_FLAG_SET_KHR = VideoEncodeAV1StdFlagBitsKHR(raw = 1 << 0)
+    comptime SKIP_MODE_PRESENT_UNSET_KHR = VideoEncodeAV1StdFlagBitsKHR(raw = 1 << 1)
+    comptime PRIMARY_REF_FRAME_KHR = VideoEncodeAV1StdFlagBitsKHR(raw = 1 << 2)
+    comptime DELTA_Q_KHR = VideoEncodeAV1StdFlagBitsKHR(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct VideoEncodeAV1StdFlagBitsKHR:
+struct VideoEncodeAV1StdFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -11217,15 +10384,12 @@ struct VideoEncodeAV1StdFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeAV1StdFlagsKHR:
         return VideoEncodeAV1StdFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeAV1RateControlFlagsKHR(EqualityComparable):
+struct VideoEncodeAV1RateControlFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -11252,15 +10416,14 @@ struct VideoEncodeAV1RateControlFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeAV1RateControlFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias REGULAR_GOP_KHR = VideoEncodeAV1RateControlFlagBitsKHR(raw = 1 << 0)
-    alias TEMPORAL_LAYER_PATTERN_DYADIC_KHR = VideoEncodeAV1RateControlFlagBitsKHR(raw = 1 << 1)
-    alias REFERENCE_PATTERN_FLAT_KHR = VideoEncodeAV1RateControlFlagBitsKHR(raw = 1 << 2)
-    alias REFERENCE_PATTERN_DYADIC_KHR = VideoEncodeAV1RateControlFlagBitsKHR(raw = 1 << 3)
+    comptime REGULAR_GOP_KHR = VideoEncodeAV1RateControlFlagBitsKHR(raw = 1 << 0)
+    comptime TEMPORAL_LAYER_PATTERN_DYADIC_KHR = VideoEncodeAV1RateControlFlagBitsKHR(raw = 1 << 1)
+    comptime REFERENCE_PATTERN_FLAT_KHR = VideoEncodeAV1RateControlFlagBitsKHR(raw = 1 << 2)
+    comptime REFERENCE_PATTERN_DYADIC_KHR = VideoEncodeAV1RateControlFlagBitsKHR(raw = 1 << 3)
 
 
 @register_passable("trivial")
-struct VideoEncodeAV1RateControlFlagBitsKHR:
+struct VideoEncodeAV1RateControlFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -11272,15 +10435,12 @@ struct VideoEncodeAV1RateControlFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeAV1RateControlFlagsKHR:
         return VideoEncodeAV1RateControlFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct VideoEncodeAV1SuperblockSizeFlagsKHR(EqualityComparable):
+struct VideoEncodeAV1SuperblockSizeFlagsKHR(Equatable):
     var _raw: UInt32
 
     @implicit
@@ -11307,13 +10467,12 @@ struct VideoEncodeAV1SuperblockSizeFlagsKHR(EqualityComparable):
     fn __contains__(self, bit: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias N_64_KHR = VideoEncodeAV1SuperblockSizeFlagBitsKHR(raw = 1 << 0)
-    alias N_128_KHR = VideoEncodeAV1SuperblockSizeFlagBitsKHR(raw = 1 << 1)
+    comptime N_64_KHR = VideoEncodeAV1SuperblockSizeFlagBitsKHR(raw = 1 << 0)
+    comptime N_128_KHR = VideoEncodeAV1SuperblockSizeFlagBitsKHR(raw = 1 << 1)
 
 
 @register_passable("trivial")
-struct VideoEncodeAV1SuperblockSizeFlagBitsKHR:
+struct VideoEncodeAV1SuperblockSizeFlagBitsKHR(Equatable):
     var _raw: UInt32
 
     fn __init__(out self, *, raw: UInt32):
@@ -11325,15 +10484,12 @@ struct VideoEncodeAV1SuperblockSizeFlagBitsKHR:
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
     fn __or__(self, bit: Self) -> VideoEncodeAV1SuperblockSizeFlagsKHR:
         return VideoEncodeAV1SuperblockSizeFlagsKHR(raw = self.raw() | bit.raw())
 
 
 @register_passable("trivial")
-struct AccessFlags3KHR(EqualityComparable):
+struct AccessFlags3KHR(Equatable):
     var _raw: UInt64
 
     @implicit
@@ -11360,12 +10516,11 @@ struct AccessFlags3KHR(EqualityComparable):
     fn __contains__(self, bit: AccessFlagBits3KHR) -> Bool:
         return Bool(self.raw() & bit.raw())
 
-
-    alias VK_ACCESS_3_NONE_KHR = AccessFlagBits3KHR(raw = 0)
+    comptime NONE_KHR = AccessFlagBits3KHR(raw = 0)
 
 
 @register_passable("trivial")
-struct AccessFlagBits3KHR:
+struct AccessFlagBits3KHR(Equatable):
     var _raw: UInt64
 
     fn __init__(out self, *, raw: UInt64):
@@ -11376,9 +10531,6 @@ struct AccessFlagBits3KHR:
 
     fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
-
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
 
     fn __or__(self, bit: Self) -> AccessFlags3KHR:
         return AccessFlags3KHR(raw = self.raw() | bit.raw())

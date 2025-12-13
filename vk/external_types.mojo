@@ -1,7 +1,6 @@
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct Display(Copyable, Movable):
+struct Display:
     pass
 
 
@@ -38,13 +37,11 @@ struct RROutput:
         return self._raw
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct wl_display(Copyable, Movable):
+struct wl_display:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct wl_surface(Copyable, Movable):
+struct wl_surface:
     pass
 
 
@@ -92,8 +89,7 @@ struct HANDLE:
         return self._raw
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct SECURITY_ATTRIBUTES(Copyable, Movable):
+struct SECURITY_ATTRIBUTES:
     pass
 
 
@@ -119,8 +115,7 @@ struct LPCWSTR:
         return self._raw
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct xcb_connection_t(Copyable, Movable):
+struct xcb_connection_t:
     pass
 
 
@@ -146,13 +141,11 @@ struct xcb_window_t:
         return self._raw
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct IDirectFB(Copyable, Movable):
+struct IDirectFB:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct IDirectFBSurface(Copyable, Movable):
+struct IDirectFBSurface:
     pass
 
 
@@ -167,8 +160,7 @@ struct zx_handle_t:
         return self._raw
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct OHNativeWindow(Copyable, Movable):
+struct OHNativeWindow:
     pass
 
 
@@ -249,8 +241,7 @@ struct NvSciSyncObj:
         return self._raw
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct NvSciSyncFence(Copyable, Movable):
+struct NvSciSyncFence:
     pass
 
 
@@ -276,18 +267,15 @@ struct NvSciBufObj:
         return self._raw
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct ANativeWindow(Copyable, Movable):
+struct ANativeWindow:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct AHardwareBuffer(Copyable, Movable):
+struct AHardwareBuffer:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct CAMetalLayer(Copyable, Movable):
+struct CAMetalLayer:
     pass
 
 
@@ -358,7 +346,7 @@ struct IOSurfaceRef:
 
 
 @register_passable("trivial")
-struct StdVideoH264ProfileIdc:
+struct StdVideoH264ProfileIdc(Equatable):
     var _raw: Int32
 
     fn __init__(out self, *, raw: Int32):
@@ -368,21 +356,17 @@ struct StdVideoH264ProfileIdc:
         return self._raw
 
     fn __eq__(self, other: Self) -> Bool:
-
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
-    alias BASELINE = StdVideoH264ProfileIdc(raw = 66)
-    alias MAIN = StdVideoH264ProfileIdc(raw = 77)
-    alias HIGH = StdVideoH264ProfileIdc(raw = 100)
-    alias HIGH_444_PREDICTIVE = StdVideoH264ProfileIdc(raw = 244)
-    alias INVALID = StdVideoH264ProfileIdc(raw = 2147483647)
+    comptime BASELINE = StdVideoH264ProfileIdc(raw = 66)
+    comptime MAIN = StdVideoH264ProfileIdc(raw = 77)
+    comptime HIGH = StdVideoH264ProfileIdc(raw = 100)
+    comptime HIGH_444_PREDICTIVE = StdVideoH264ProfileIdc(raw = 244)
+    comptime INVALID = StdVideoH264ProfileIdc(raw = 2147483647)
 
 
 @register_passable("trivial")
-struct StdVideoH264LevelIdc:
+struct StdVideoH264LevelIdc(Equatable):
     var _raw: Int32
 
     fn __init__(out self, *, raw: Int32):
@@ -392,71 +376,60 @@ struct StdVideoH264LevelIdc:
         return self._raw
 
     fn __eq__(self, other: Self) -> Bool:
-
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
-    alias LEVEL_1_0 = StdVideoH264LevelIdc(raw = 0)
-    alias LEVEL_1_1 = StdVideoH264LevelIdc(raw = 1)
-    alias LEVEL_1_2 = StdVideoH264LevelIdc(raw = 2)
-    alias LEVEL_1_3 = StdVideoH264LevelIdc(raw = 3)
-    alias LEVEL_2_0 = StdVideoH264LevelIdc(raw = 4)
-    alias LEVEL_2_1 = StdVideoH264LevelIdc(raw = 5)
-    alias LEVEL_2_2 = StdVideoH264LevelIdc(raw = 6)
-    alias LEVEL_3_0 = StdVideoH264LevelIdc(raw = 7)
-    alias LEVEL_3_1 = StdVideoH264LevelIdc(raw = 8)
-    alias LEVEL_3_2 = StdVideoH264LevelIdc(raw = 9)
-    alias LEVEL_4_0 = StdVideoH264LevelIdc(raw = 10)
-    alias LEVEL_4_1 = StdVideoH264LevelIdc(raw = 11)
-    alias LEVEL_4_2 = StdVideoH264LevelIdc(raw = 12)
-    alias LEVEL_5_0 = StdVideoH264LevelIdc(raw = 13)
-    alias LEVEL_5_1 = StdVideoH264LevelIdc(raw = 14)
-    alias LEVEL_5_2 = StdVideoH264LevelIdc(raw = 15)
-    alias LEVEL_6_0 = StdVideoH264LevelIdc(raw = 16)
-    alias LEVEL_6_1 = StdVideoH264LevelIdc(raw = 17)
-    alias LEVEL_6_2 = StdVideoH264LevelIdc(raw = 18)
-    alias INVALID = StdVideoH264LevelIdc(raw = 2147483647)
+    comptime LEVEL_1_0 = StdVideoH264LevelIdc(raw = 0)
+    comptime LEVEL_1_1 = StdVideoH264LevelIdc(raw = 1)
+    comptime LEVEL_1_2 = StdVideoH264LevelIdc(raw = 2)
+    comptime LEVEL_1_3 = StdVideoH264LevelIdc(raw = 3)
+    comptime LEVEL_2_0 = StdVideoH264LevelIdc(raw = 4)
+    comptime LEVEL_2_1 = StdVideoH264LevelIdc(raw = 5)
+    comptime LEVEL_2_2 = StdVideoH264LevelIdc(raw = 6)
+    comptime LEVEL_3_0 = StdVideoH264LevelIdc(raw = 7)
+    comptime LEVEL_3_1 = StdVideoH264LevelIdc(raw = 8)
+    comptime LEVEL_3_2 = StdVideoH264LevelIdc(raw = 9)
+    comptime LEVEL_4_0 = StdVideoH264LevelIdc(raw = 10)
+    comptime LEVEL_4_1 = StdVideoH264LevelIdc(raw = 11)
+    comptime LEVEL_4_2 = StdVideoH264LevelIdc(raw = 12)
+    comptime LEVEL_5_0 = StdVideoH264LevelIdc(raw = 13)
+    comptime LEVEL_5_1 = StdVideoH264LevelIdc(raw = 14)
+    comptime LEVEL_5_2 = StdVideoH264LevelIdc(raw = 15)
+    comptime LEVEL_6_0 = StdVideoH264LevelIdc(raw = 16)
+    comptime LEVEL_6_1 = StdVideoH264LevelIdc(raw = 17)
+    comptime LEVEL_6_2 = StdVideoH264LevelIdc(raw = 18)
+    comptime INVALID = StdVideoH264LevelIdc(raw = 2147483647)
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoH264SequenceParameterSet(Copyable, Movable):
+struct StdVideoH264SequenceParameterSet:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoH264PictureParameterSet(Copyable, Movable):
+struct StdVideoH264PictureParameterSet:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoEncodeH264SliceHeader(Copyable, Movable):
+struct StdVideoEncodeH264SliceHeader:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoEncodeH264PictureInfo(Copyable, Movable):
+struct StdVideoEncodeH264PictureInfo:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoDecodeH264PictureInfo(Copyable, Movable):
+struct StdVideoDecodeH264PictureInfo:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoEncodeH264ReferenceInfo(Copyable, Movable):
+struct StdVideoEncodeH264ReferenceInfo:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoDecodeH264ReferenceInfo(Copyable, Movable):
+struct StdVideoDecodeH264ReferenceInfo:
     pass
 
 
 @register_passable("trivial")
-struct StdVideoH265ProfileIdc:
+struct StdVideoH265ProfileIdc(Equatable):
     var _raw: Int32
 
     fn __init__(out self, *, raw: Int32):
@@ -466,22 +439,18 @@ struct StdVideoH265ProfileIdc:
         return self._raw
 
     fn __eq__(self, other: Self) -> Bool:
-
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
-    alias MAIN = StdVideoH265ProfileIdc(raw = 1)
-    alias MAIN_10 = StdVideoH265ProfileIdc(raw = 2)
-    alias MAIN_STILL_PICTURE = StdVideoH265ProfileIdc(raw = 3)
-    alias FORMAT_RANGE_EXTENSIONS = StdVideoH265ProfileIdc(raw = 4)
-    alias SCC_EXTENSIONS = StdVideoH265ProfileIdc(raw = 9)
-    alias INVALID = StdVideoH265ProfileIdc(raw = 2147483647)
+    comptime MAIN = StdVideoH265ProfileIdc(raw = 1)
+    comptime MAIN_10 = StdVideoH265ProfileIdc(raw = 2)
+    comptime MAIN_STILL_PICTURE = StdVideoH265ProfileIdc(raw = 3)
+    comptime FORMAT_RANGE_EXTENSIONS = StdVideoH265ProfileIdc(raw = 4)
+    comptime SCC_EXTENSIONS = StdVideoH265ProfileIdc(raw = 9)
+    comptime INVALID = StdVideoH265ProfileIdc(raw = 2147483647)
 
 
 @register_passable("trivial")
-struct StdVideoH265LevelIdc:
+struct StdVideoH265LevelIdc(Equatable):
     var _raw: Int32
 
     fn __init__(out self, *, raw: Int32):
@@ -491,70 +460,58 @@ struct StdVideoH265LevelIdc:
         return self._raw
 
     fn __eq__(self, other: Self) -> Bool:
-
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
-    alias LEVEL_1_0 = StdVideoH265LevelIdc(raw = 0)
-    alias LEVEL_2_0 = StdVideoH265LevelIdc(raw = 1)
-    alias LEVEL_2_1 = StdVideoH265LevelIdc(raw = 2)
-    alias LEVEL_3_0 = StdVideoH265LevelIdc(raw = 3)
-    alias LEVEL_3_1 = StdVideoH265LevelIdc(raw = 4)
-    alias LEVEL_4_0 = StdVideoH265LevelIdc(raw = 5)
-    alias LEVEL_4_1 = StdVideoH265LevelIdc(raw = 6)
-    alias LEVEL_5_0 = StdVideoH265LevelIdc(raw = 7)
-    alias LEVEL_5_1 = StdVideoH265LevelIdc(raw = 8)
-    alias LEVEL_5_2 = StdVideoH265LevelIdc(raw = 9)
-    alias LEVEL_6_0 = StdVideoH265LevelIdc(raw = 10)
-    alias LEVEL_6_1 = StdVideoH265LevelIdc(raw = 11)
-    alias LEVEL_6_2 = StdVideoH265LevelIdc(raw = 12)
-    alias INVALID = StdVideoH265LevelIdc(raw = 2147483647)
+    comptime LEVEL_1_0 = StdVideoH265LevelIdc(raw = 0)
+    comptime LEVEL_2_0 = StdVideoH265LevelIdc(raw = 1)
+    comptime LEVEL_2_1 = StdVideoH265LevelIdc(raw = 2)
+    comptime LEVEL_3_0 = StdVideoH265LevelIdc(raw = 3)
+    comptime LEVEL_3_1 = StdVideoH265LevelIdc(raw = 4)
+    comptime LEVEL_4_0 = StdVideoH265LevelIdc(raw = 5)
+    comptime LEVEL_4_1 = StdVideoH265LevelIdc(raw = 6)
+    comptime LEVEL_5_0 = StdVideoH265LevelIdc(raw = 7)
+    comptime LEVEL_5_1 = StdVideoH265LevelIdc(raw = 8)
+    comptime LEVEL_5_2 = StdVideoH265LevelIdc(raw = 9)
+    comptime LEVEL_6_0 = StdVideoH265LevelIdc(raw = 10)
+    comptime LEVEL_6_1 = StdVideoH265LevelIdc(raw = 11)
+    comptime LEVEL_6_2 = StdVideoH265LevelIdc(raw = 12)
+    comptime INVALID = StdVideoH265LevelIdc(raw = 2147483647)
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoH265VideoParameterSet(Copyable, Movable):
+struct StdVideoH265VideoParameterSet:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoH265SequenceParameterSet(Copyable, Movable):
+struct StdVideoH265SequenceParameterSet:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoH265PictureParameterSet(Copyable, Movable):
+struct StdVideoH265PictureParameterSet:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoEncodeH265SliceSegmentHeader(Copyable, Movable):
+struct StdVideoEncodeH265SliceSegmentHeader:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoEncodeH265PictureInfo(Copyable, Movable):
+struct StdVideoEncodeH265PictureInfo:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoDecodeH265PictureInfo(Copyable, Movable):
+struct StdVideoDecodeH265PictureInfo:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoEncodeH265ReferenceInfo(Copyable, Movable):
+struct StdVideoEncodeH265ReferenceInfo:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoDecodeH265ReferenceInfo(Copyable, Movable):
+struct StdVideoDecodeH265ReferenceInfo:
     pass
 
 
 @register_passable("trivial")
-struct StdVideoAV1Profile:
+struct StdVideoAV1Profile(Equatable):
     var _raw: Int32
 
     fn __init__(out self, *, raw: Int32):
@@ -564,20 +521,16 @@ struct StdVideoAV1Profile:
         return self._raw
 
     fn __eq__(self, other: Self) -> Bool:
-
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
-    alias MAIN = StdVideoAV1Profile(raw = 0)
-    alias HIGH = StdVideoAV1Profile(raw = 1)
-    alias PROFESSIONAL = StdVideoAV1Profile(raw = 2)
-    alias INVALID = StdVideoAV1Profile(raw = 2147483647)
+    comptime MAIN = StdVideoAV1Profile(raw = 0)
+    comptime HIGH = StdVideoAV1Profile(raw = 1)
+    comptime PROFESSIONAL = StdVideoAV1Profile(raw = 2)
+    comptime INVALID = StdVideoAV1Profile(raw = 2147483647)
 
 
 @register_passable("trivial")
-struct StdVideoAV1Level:
+struct StdVideoAV1Level(Equatable):
     var _raw: Int32
 
     fn __init__(out self, *, raw: Int32):
@@ -587,126 +540,105 @@ struct StdVideoAV1Level:
         return self._raw
 
     fn __eq__(self, other: Self) -> Bool:
-
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
-    alias LEVEL_2_0 = StdVideoAV1Level(raw = 0)
-    alias LEVEL_2_1 = StdVideoAV1Level(raw = 1)
-    alias LEVEL_2_2 = StdVideoAV1Level(raw = 2)
-    alias LEVEL_2_3 = StdVideoAV1Level(raw = 3)
-    alias LEVEL_3_0 = StdVideoAV1Level(raw = 4)
-    alias LEVEL_3_1 = StdVideoAV1Level(raw = 5)
-    alias LEVEL_3_2 = StdVideoAV1Level(raw = 6)
-    alias LEVEL_3_3 = StdVideoAV1Level(raw = 7)
-    alias LEVEL_4_0 = StdVideoAV1Level(raw = 8)
-    alias LEVEL_4_1 = StdVideoAV1Level(raw = 9)
-    alias LEVEL_4_2 = StdVideoAV1Level(raw = 10)
-    alias LEVEL_4_3 = StdVideoAV1Level(raw = 11)
-    alias LEVEL_5_0 = StdVideoAV1Level(raw = 12)
-    alias LEVEL_5_1 = StdVideoAV1Level(raw = 13)
-    alias LEVEL_5_2 = StdVideoAV1Level(raw = 14)
-    alias LEVEL_5_3 = StdVideoAV1Level(raw = 15)
-    alias LEVEL_6_0 = StdVideoAV1Level(raw = 16)
-    alias LEVEL_6_1 = StdVideoAV1Level(raw = 17)
-    alias LEVEL_6_2 = StdVideoAV1Level(raw = 18)
-    alias LEVEL_6_3 = StdVideoAV1Level(raw = 19)
-    alias LEVEL_7_0 = StdVideoAV1Level(raw = 20)
-    alias LEVEL_7_1 = StdVideoAV1Level(raw = 21)
-    alias LEVEL_7_2 = StdVideoAV1Level(raw = 22)
-    alias LEVEL_7_3 = StdVideoAV1Level(raw = 23)
-    alias INVALID = StdVideoAV1Level(raw = 2147483647)
+    comptime LEVEL_2_0 = StdVideoAV1Level(raw = 0)
+    comptime LEVEL_2_1 = StdVideoAV1Level(raw = 1)
+    comptime LEVEL_2_2 = StdVideoAV1Level(raw = 2)
+    comptime LEVEL_2_3 = StdVideoAV1Level(raw = 3)
+    comptime LEVEL_3_0 = StdVideoAV1Level(raw = 4)
+    comptime LEVEL_3_1 = StdVideoAV1Level(raw = 5)
+    comptime LEVEL_3_2 = StdVideoAV1Level(raw = 6)
+    comptime LEVEL_3_3 = StdVideoAV1Level(raw = 7)
+    comptime LEVEL_4_0 = StdVideoAV1Level(raw = 8)
+    comptime LEVEL_4_1 = StdVideoAV1Level(raw = 9)
+    comptime LEVEL_4_2 = StdVideoAV1Level(raw = 10)
+    comptime LEVEL_4_3 = StdVideoAV1Level(raw = 11)
+    comptime LEVEL_5_0 = StdVideoAV1Level(raw = 12)
+    comptime LEVEL_5_1 = StdVideoAV1Level(raw = 13)
+    comptime LEVEL_5_2 = StdVideoAV1Level(raw = 14)
+    comptime LEVEL_5_3 = StdVideoAV1Level(raw = 15)
+    comptime LEVEL_6_0 = StdVideoAV1Level(raw = 16)
+    comptime LEVEL_6_1 = StdVideoAV1Level(raw = 17)
+    comptime LEVEL_6_2 = StdVideoAV1Level(raw = 18)
+    comptime LEVEL_6_3 = StdVideoAV1Level(raw = 19)
+    comptime LEVEL_7_0 = StdVideoAV1Level(raw = 20)
+    comptime LEVEL_7_1 = StdVideoAV1Level(raw = 21)
+    comptime LEVEL_7_2 = StdVideoAV1Level(raw = 22)
+    comptime LEVEL_7_3 = StdVideoAV1Level(raw = 23)
+    comptime INVALID = StdVideoAV1Level(raw = 2147483647)
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoAV1SequenceHeader(Copyable, Movable):
+struct StdVideoAV1SequenceHeader:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoAV1TimingInfo(Copyable, Movable):
+struct StdVideoAV1TimingInfo:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoAV1ColorConfig(Copyable, Movable):
+struct StdVideoAV1ColorConfig:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoAV1TileInfo(Copyable, Movable):
+struct StdVideoAV1TileInfo:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoAV1Quantization(Copyable, Movable):
+struct StdVideoAV1Quantization:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoAV1Segmentation(Copyable, Movable):
+struct StdVideoAV1Segmentation:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoAV1LoopFilter(Copyable, Movable):
+struct StdVideoAV1LoopFilter:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoAV1CDEF(Copyable, Movable):
+struct StdVideoAV1CDEF:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoAV1LoopRestoration(Copyable, Movable):
+struct StdVideoAV1LoopRestoration:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoAV1FilmGrain(Copyable, Movable):
+struct StdVideoAV1FilmGrain:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoEncodeAV1PictureInfo(Copyable, Movable):
+struct StdVideoEncodeAV1PictureInfo:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoDecodeAV1PictureInfo(Copyable, Movable):
+struct StdVideoDecodeAV1PictureInfo:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoEncodeAV1ExtensionHeader(Copyable, Movable):
+struct StdVideoEncodeAV1ExtensionHeader:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoEncodeAV1DecoderModelInfo(Copyable, Movable):
+struct StdVideoEncodeAV1DecoderModelInfo:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoEncodeAV1OperatingPointInfo(Copyable, Movable):
+struct StdVideoEncodeAV1OperatingPointInfo:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoEncodeAV1ReferenceInfo(Copyable, Movable):
+struct StdVideoEncodeAV1ReferenceInfo:
     pass
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoDecodeAV1ReferenceInfo(Copyable, Movable):
+struct StdVideoDecodeAV1ReferenceInfo:
     pass
 
 
 @register_passable("trivial")
-struct StdVideoVP9Profile:
+struct StdVideoVP9Profile(Equatable):
     var _raw: Int32
 
     fn __init__(out self, *, raw: Int32):
@@ -716,21 +648,17 @@ struct StdVideoVP9Profile:
         return self._raw
 
     fn __eq__(self, other: Self) -> Bool:
-
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
-    alias PROFILE_0 = StdVideoVP9Profile(raw = 0)
-    alias PROFILE_1 = StdVideoVP9Profile(raw = 1)
-    alias PROFILE_2 = StdVideoVP9Profile(raw = 2)
-    alias PROFILE_3 = StdVideoVP9Profile(raw = 3)
-    alias INVALID = StdVideoVP9Profile(raw = 2147483647)
+    comptime PROFILE_0 = StdVideoVP9Profile(raw = 0)
+    comptime PROFILE_1 = StdVideoVP9Profile(raw = 1)
+    comptime PROFILE_2 = StdVideoVP9Profile(raw = 2)
+    comptime PROFILE_3 = StdVideoVP9Profile(raw = 3)
+    comptime INVALID = StdVideoVP9Profile(raw = 2147483647)
 
 
 @register_passable("trivial")
-struct StdVideoVP9Level:
+struct StdVideoVP9Level(Equatable):
     var _raw: Int32
 
     fn __init__(out self, *, raw: Int32):
@@ -740,29 +668,24 @@ struct StdVideoVP9Level:
         return self._raw
 
     fn __eq__(self, other: Self) -> Bool:
-
         return self._raw == other._raw
 
-    fn __ne__(self, other: Self) -> Bool:
-        return self._raw != other._raw
-
-    alias LEVEL_1_0 = StdVideoVP9Level(raw = 0)
-    alias LEVEL_1_1 = StdVideoVP9Level(raw = 1)
-    alias LEVEL_2_0 = StdVideoVP9Level(raw = 2)
-    alias LEVEL_2_1 = StdVideoVP9Level(raw = 3)
-    alias LEVEL_3_0 = StdVideoVP9Level(raw = 4)
-    alias LEVEL_3_1 = StdVideoVP9Level(raw = 5)
-    alias LEVEL_4_0 = StdVideoVP9Level(raw = 6)
-    alias LEVEL_4_1 = StdVideoVP9Level(raw = 7)
-    alias LEVEL_5_0 = StdVideoVP9Level(raw = 8)
-    alias LEVEL_5_1 = StdVideoVP9Level(raw = 9)
-    alias LEVEL_5_2 = StdVideoVP9Level(raw = 10)
-    alias LEVEL_6_0 = StdVideoVP9Level(raw = 11)
-    alias LEVEL_6_1 = StdVideoVP9Level(raw = 12)
-    alias LEVEL_6_2 = StdVideoVP9Level(raw = 13)
-    alias INVALID = StdVideoVP9Level(raw = 2147483647)
+    comptime LEVEL_1_0 = StdVideoVP9Level(raw = 0)
+    comptime LEVEL_1_1 = StdVideoVP9Level(raw = 1)
+    comptime LEVEL_2_0 = StdVideoVP9Level(raw = 2)
+    comptime LEVEL_2_1 = StdVideoVP9Level(raw = 3)
+    comptime LEVEL_3_0 = StdVideoVP9Level(raw = 4)
+    comptime LEVEL_3_1 = StdVideoVP9Level(raw = 5)
+    comptime LEVEL_4_0 = StdVideoVP9Level(raw = 6)
+    comptime LEVEL_4_1 = StdVideoVP9Level(raw = 7)
+    comptime LEVEL_5_0 = StdVideoVP9Level(raw = 8)
+    comptime LEVEL_5_1 = StdVideoVP9Level(raw = 9)
+    comptime LEVEL_5_2 = StdVideoVP9Level(raw = 10)
+    comptime LEVEL_6_0 = StdVideoVP9Level(raw = 11)
+    comptime LEVEL_6_1 = StdVideoVP9Level(raw = 12)
+    comptime LEVEL_6_2 = StdVideoVP9Level(raw = 13)
+    comptime INVALID = StdVideoVP9Level(raw = 2147483647)
 
 
-# remove Copyable and Movable traits once Collections no longer require it
-struct StdVideoDecodeVP9PictureInfo(Copyable, Movable):
+struct StdVideoDecodeVP9PictureInfo:
     pass

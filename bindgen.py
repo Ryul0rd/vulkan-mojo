@@ -1,102 +1,271 @@
 from __future__ import annotations
-from typing import Dict, List, Optional, TypeVar, Literal, Any, Type, ClassVar, Iterable
-from collections import defaultdict
+from typing import Dict, List, Optional, TypeVar, Literal, Any, Type, Iterable
 from dataclasses import dataclass
+from collections import defaultdict
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 import os
 import re
 
 
-T = TypeVar("T")
-
-
 def main():
     registry = ElementTree.parse("vk.xml").getroot()
-    parsed_registry = parse_registry(registry)
-    files = emit_bindings(parsed_registry)
-    output_root = "vk"
+    files: Dict[str, str] = {}
+
+    emit_constants(files, parse_constants(registry))
+    emit_basetypes(files, parse_basetypes(registry))
+    emit_external_types(files, parse_external_types(registry))
+    emit_enums(files, parse_enums(registry))
+    emit_flags(files, parse_flags(registry))
+    emit_handles(files, parse_handles(registry))
+    emit_fn_types(files, parse_fn_types(registry))
+    emit_structs(files, parse_structs(registry))
+    emit_unions(files, parse_unions(registry))
+    emit_commands(files, parse_commands(registry))
+
+    OUTPUT_ROOT = "vk"
     for rel_path, content in files.items():
-        path = os.path.join(output_root, rel_path)
+        path = os.path.join(OUTPUT_ROOT, rel_path)
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w", encoding="utf-8") as f:
             f.write(content)
 
 
-def parse_registry(registry: Element) -> ParsedRegistry:
-    # constants
+# ----------------
+# Data Types
+# ----------------
+
+
+VkLevel = Literal["global", "instance", "device"]
+
+
+@dataclass
+class VkType:
+    # This can be flat because we never have multidim arrays and constness only affects innermost type
+    name: str
+    ptr_level: int = 0
+    const: bool = False
+    array_dim: Optional[str] = None
+
+
+@dataclass
+class VkConstant:
+    name: str
+    type: VkType
+    value: str
+
+
+@dataclass
+class VkWrapperType:
+    name: str
+    underlying_type: VkType | Literal["OPAQUE_TYPE"]
+
+
+@dataclass
+class VkEnum:
+    name: str
+    values: List[VkEnumValue]
+
+
+@dataclass
+class VkEnumValue:
+    name: str
+    value: int
+
+
+@dataclass
+class VkTypeAlias:
+    declared_type_name: str
+    aliased_type_name: str
+
+
+@dataclass
+class VkFlags:
+    flags_name: str
+    flag_bits: VkFlagBits
+    width: Literal[32, 64]
+
+
+@dataclass
+class VkFlagBits:
+    name: str
+    values: List[VkFlagValue]
+    bits: List[VkFlagBit]
+
+
+@dataclass
+class VkFlagValue:
+    name: str
+    value: int
+
+
+@dataclass
+class VkFlagBit:
+    name: str
+    bitpos: int
+
+
+@dataclass
+class VkHandle:
+    name: str
+    type: Literal["VK_DEFINE_HANDLE", "VK_DEFINE_NON_DISPATCHABLE_HANDLE"]
+
+
+@dataclass
+class VkFnType:
+    name: str
+    return_type: VkType
+    params: List[VkFnParam]
+
+
+@dataclass
+class VkFnParam:
+    name: str
+    type: VkType
+
+
+@dataclass
+class VkStruct:
+    name: str
+    members: List[VkStructMember]
+
+
+@dataclass
+class VkStructMember:
+    name: str
+    type: VkType
+    value: Optional[str]
+
+
+@dataclass
+class VkUnion:
+    name: str
+    member_types: List[VkType]
+
+
+@dataclass
+class VkVersionedCommand:
+    version: VkVersion
+    command: VkCommand
+
+
+@dataclass(frozen=True)
+class VkVersion:
+    major: int
+    minor: int
+
+
+@dataclass
+class VkCommand:
+    name: str
+    return_type: VkType
+    params: List[VkCommandParam]
+
+
+@dataclass
+class VkCommandParam:
+    # optional and length work here because our bindings only care about the optional and length of the outermost ptr
+    name: str
+    type: VkType
+    length: Optional[str]
+    optional: bool
+
+
+@dataclass
+class VkExtensionCommands:
+    name: str
+    type: Literal["instance", "device"]
+    commands: List[VkCommand]
+
+
+@dataclass
+class VkParsedCommands:
+    core_commands: Dict[VkLevel, Dict[VkVersion, List[VkVersionedCommand]]]
+    extension_commands: Dict[str, List[VkExtensionCommands]]
+
+
+# ----------------
+# Parsing
+# ----------------
+
+
+def parse_constants(registry: Element) -> List[VkConstant]:
     constants: List[VkConstant] = []
     api_constants = next(el for el in registry.findall("enums") if el.get("name") == "API Constants")
     for constant_el in api_constants.findall("enum"):
         name = constant_el.attrib["name"]
         type = constant_el.attrib["type"]
         value = constant_el.attrib["value"]
-        constants.append(VkConstant(name, type, value))
+        constants.append(VkConstant(name, VkType(type), value))
+    return constants
 
-    # basetypes
+
+def parse_basetypes(registry: Element) -> List[VkWrapperType]:
     # hardcoded because parsing these is way too complicated and there aren't many
-    basetypes: List[VkBasetype] = [
-        VkBasetype("VkSampleMask", VkType("uint32_t")),
-        VkBasetype("VkDeviceSize", VkType("uint64_t")),
-        VkBasetype("VkDeviceAddress", VkType("uint64_t")),
-        VkBasetype("VkRemoteAddressNV", VkType("void", ptr_level=1)),
+    basetypes: List[VkWrapperType] = [
+        VkWrapperType("VkSampleMask", VkType("uint32_t")),
+        VkWrapperType("VkDeviceSize", VkType("uint64_t")),
+        VkWrapperType("VkDeviceAddress", VkType("uint64_t")),
+        VkWrapperType("VkRemoteAddressNV", VkType("void", ptr_level=1)),
     ]
+    return basetypes
 
-    # external types
-    # hardcoded because parsing these is way too complicated and there aren't many
-    external_types: List[VkExternalType | VkEnum] = [
+
+def parse_external_types(registry: Element) -> List[VkWrapperType | VkEnum]:
+    # hardcoded because parsing these is way too complicated
+    external_types: List[VkWrapperType | VkEnum] = [
         # Platform types
         # Xlib / Xrandr
-        VkExternalType("Display", None),
-        VkExternalType("VisualID", "uint32_t"),
-        VkExternalType("Window", "uint32_t"),
-        VkExternalType("RROutput", "uint32_t"),
+        VkWrapperType("Display", "OPAQUE_TYPE"),
+        VkWrapperType("VisualID", VkType("uint32_t")),
+        VkWrapperType("Window", VkType("uint32_t")),
+        VkWrapperType("RROutput", VkType("uint32_t")),
         # Wayland
-        VkExternalType("wl_display", None),
-        VkExternalType("wl_surface", None),
+        VkWrapperType("wl_display", "OPAQUE_TYPE"),
+        VkWrapperType("wl_surface", "OPAQUE_TYPE"),
         # Win32
-        VkExternalType("HINSTANCE", "size_t"),
-        VkExternalType("HWND", "size_t"),
-        VkExternalType("HMONITOR", "size_t"),
-        VkExternalType("HANDLE", "size_t"),
-        VkExternalType("SECURITY_ATTRIBUTES", None),
-        VkExternalType("DWORD", "uint32_t"),
-        VkExternalType("LPCWSTR", "size_t"),
+        VkWrapperType("HINSTANCE", VkType("size_t")),
+        VkWrapperType("HWND", VkType("size_t")),
+        VkWrapperType("HMONITOR", VkType("size_t")),
+        VkWrapperType("HANDLE", VkType("size_t")),
+        VkWrapperType("SECURITY_ATTRIBUTES", "OPAQUE_TYPE"),
+        VkWrapperType("DWORD", VkType("uint32_t")),
+        VkWrapperType("LPCWSTR", VkType("size_t")),
         # XCB
-        VkExternalType("xcb_connection_t", None),
-        VkExternalType("xcb_visualid_t", "uint32_t"),
-        VkExternalType("xcb_window_t", "uint32_t"),
+        VkWrapperType("xcb_connection_t", "OPAQUE_TYPE"),
+        VkWrapperType("xcb_visualid_t", VkType("uint32_t")),
+        VkWrapperType("xcb_window_t", VkType("uint32_t")),
         # DirectFB
-        VkExternalType("IDirectFB", None),
-        VkExternalType("IDirectFBSurface", None),
+        VkWrapperType("IDirectFB", "OPAQUE_TYPE"),
+        VkWrapperType("IDirectFBSurface", "OPAQUE_TYPE"),
         # Fuchsia (Zircon)
-        VkExternalType("zx_handle_t", "uint32_t"),
+        VkWrapperType("zx_handle_t", VkType("uint32_t")),
         # OpenHarmony / OHOS (WSI)
-        VkExternalType("OHNativeWindow", None),
+        VkWrapperType("OHNativeWindow", "OPAQUE_TYPE"),
         # Google Games Platform (GGP)
-        VkExternalType("GgpStreamDescriptor", "uint32_t"),
-        VkExternalType("GgpFrameToken", "uint32_t"),
+        VkWrapperType("GgpStreamDescriptor", VkType("uint32_t")),
+        VkWrapperType("GgpFrameToken", VkType("uint32_t")),
         # QNX Screen
-        VkExternalType("screen_context_t", "size_t"),
-        VkExternalType("screen_window_t", "size_t"),
-        VkExternalType("screen_buffer_t", "size_t"),
+        VkWrapperType("screen_context_t", VkType("size_t")),
+        VkWrapperType("screen_window_t", VkType("size_t")),
+        VkWrapperType("screen_buffer_t", VkType("size_t")),
         # NVIDIA SciSync / SciBuf
-        VkExternalType("NvSciSyncAttrList", "size_t"),
-        VkExternalType("NvSciSyncObj", "size_t"),
-        VkExternalType("NvSciSyncFence", None),
-        VkExternalType("NvSciBufAttrList", "size_t"),
-        VkExternalType("NvSciBufObj", "size_t"),
+        VkWrapperType("NvSciSyncAttrList", VkType("size_t")),
+        VkWrapperType("NvSciSyncObj", VkType("size_t")),
+        VkWrapperType("NvSciSyncFence", "OPAQUE_TYPE"),
+        VkWrapperType("NvSciBufAttrList", VkType("size_t")),
+        VkWrapperType("NvSciBufObj", VkType("size_t")),
         # Android NDK
-        VkExternalType("ANativeWindow", None),
-        VkExternalType("AHardwareBuffer", None),
+        VkWrapperType("ANativeWindow", "OPAQUE_TYPE"),
+        VkWrapperType("AHardwareBuffer", "OPAQUE_TYPE"),
         # Apple CoreAnimation / Metal / IOSurface (non-ObjC paths are opaque)
-        VkExternalType("CAMetalLayer", None),
-        VkExternalType("MTLDevice_id", "size_t"),
-        VkExternalType("MTLCommandQueue_id", "size_t"),
-        VkExternalType("MTLBuffer_id", "size_t"),
-        VkExternalType("MTLTexture_id", "size_t"),
-        VkExternalType("MTLSharedEvent_id", "size_t"),
-        VkExternalType("IOSurfaceRef", "size_t"),
+        VkWrapperType("CAMetalLayer", "OPAQUE_TYPE"),
+        VkWrapperType("MTLDevice_id", VkType("size_t")),
+        VkWrapperType("MTLCommandQueue_id", VkType("size_t")),
+        VkWrapperType("MTLBuffer_id", VkType("size_t")),
+        VkWrapperType("MTLTexture_id", VkType("size_t")),
+        VkWrapperType("MTLSharedEvent_id", VkType("size_t")),
+        VkWrapperType("IOSurfaceRef", VkType("size_t")),
         # Video encoding types
         # H.264
         VkEnum("StdVideoH264ProfileIdc", [
@@ -128,13 +297,13 @@ def parse_registry(registry: Element) -> ParsedRegistry:
             VkEnumValue("LEVEL_6_2", 18),
             VkEnumValue("INVALID", 0x7FFFFFFF),
         ]),
-        VkExternalType("StdVideoH264SequenceParameterSet", None),
-        VkExternalType("StdVideoH264PictureParameterSet", None),
-        VkExternalType("StdVideoEncodeH264SliceHeader", None),
-        VkExternalType("StdVideoEncodeH264PictureInfo", None),
-        VkExternalType("StdVideoDecodeH264PictureInfo", None),
-        VkExternalType("StdVideoEncodeH264ReferenceInfo", None),
-        VkExternalType("StdVideoDecodeH264ReferenceInfo", None),
+        VkWrapperType("StdVideoH264SequenceParameterSet", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoH264PictureParameterSet", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoEncodeH264SliceHeader", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoEncodeH264PictureInfo", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoDecodeH264PictureInfo", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoEncodeH264ReferenceInfo", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoDecodeH264ReferenceInfo", "OPAQUE_TYPE"),
         # H.265/HEVC
         VkEnum("StdVideoH265ProfileIdc", [
             VkEnumValue("MAIN", 1),
@@ -160,14 +329,14 @@ def parse_registry(registry: Element) -> ParsedRegistry:
             VkEnumValue("LEVEL_6_2", 12),
             VkEnumValue("INVALID", 0x7FFFFFFF),
         ]),
-        VkExternalType("StdVideoH265VideoParameterSet", None),
-        VkExternalType("StdVideoH265SequenceParameterSet", None),
-        VkExternalType("StdVideoH265PictureParameterSet", None),
-        VkExternalType("StdVideoEncodeH265SliceSegmentHeader", None),
-        VkExternalType("StdVideoEncodeH265PictureInfo", None),
-        VkExternalType("StdVideoDecodeH265PictureInfo", None),
-        VkExternalType("StdVideoEncodeH265ReferenceInfo", None),
-        VkExternalType("StdVideoDecodeH265ReferenceInfo", None),
+        VkWrapperType("StdVideoH265VideoParameterSet", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoH265SequenceParameterSet", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoH265PictureParameterSet", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoEncodeH265SliceSegmentHeader", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoEncodeH265PictureInfo", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoDecodeH265PictureInfo", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoEncodeH265ReferenceInfo", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoDecodeH265ReferenceInfo", "OPAQUE_TYPE"),
         # AV1
         VkEnum("StdVideoAV1Profile", [
             VkEnumValue("MAIN", 0),
@@ -202,23 +371,23 @@ def parse_registry(registry: Element) -> ParsedRegistry:
             VkEnumValue("LEVEL_7_3", 23),
             VkEnumValue("INVALID", 0x7FFFFFFF),
         ]),
-        VkExternalType("StdVideoAV1SequenceHeader", None),
-        VkExternalType("StdVideoAV1TimingInfo", None),
-        VkExternalType("StdVideoAV1ColorConfig", None),
-        VkExternalType("StdVideoAV1TileInfo", None),
-        VkExternalType("StdVideoAV1Quantization", None),
-        VkExternalType("StdVideoAV1Segmentation", None),
-        VkExternalType("StdVideoAV1LoopFilter", None),
-        VkExternalType("StdVideoAV1CDEF", None),
-        VkExternalType("StdVideoAV1LoopRestoration", None),
-        VkExternalType("StdVideoAV1FilmGrain", None),
-        VkExternalType("StdVideoEncodeAV1PictureInfo", None),
-        VkExternalType("StdVideoDecodeAV1PictureInfo", None),
-        VkExternalType("StdVideoEncodeAV1ExtensionHeader", None),
-        VkExternalType("StdVideoEncodeAV1DecoderModelInfo", None),
-        VkExternalType("StdVideoEncodeAV1OperatingPointInfo", None),
-        VkExternalType("StdVideoEncodeAV1ReferenceInfo", None),
-        VkExternalType("StdVideoDecodeAV1ReferenceInfo", None),
+        VkWrapperType("StdVideoAV1SequenceHeader", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoAV1TimingInfo", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoAV1ColorConfig", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoAV1TileInfo", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoAV1Quantization", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoAV1Segmentation", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoAV1LoopFilter", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoAV1CDEF", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoAV1LoopRestoration", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoAV1FilmGrain", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoEncodeAV1PictureInfo", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoDecodeAV1PictureInfo", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoEncodeAV1ExtensionHeader", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoEncodeAV1DecoderModelInfo", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoEncodeAV1OperatingPointInfo", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoEncodeAV1ReferenceInfo", "OPAQUE_TYPE"),
+        VkWrapperType("StdVideoDecodeAV1ReferenceInfo", "OPAQUE_TYPE"),
         # VP9
         VkEnum("StdVideoVP9Profile", [
             VkEnumValue("PROFILE_0", 0),
@@ -244,10 +413,12 @@ def parse_registry(registry: Element) -> ParsedRegistry:
             VkEnumValue("LEVEL_6_2", 13),
             VkEnumValue("INVALID", 0x7FFFFFFF),
         ]),
-        VkExternalType("StdVideoDecodeVP9PictureInfo", None),
+        VkWrapperType("StdVideoDecodeVP9PictureInfo", "OPAQUE_TYPE"),
     ]
-    
-    # enums
+    return external_types
+
+
+def parse_enums(registry: Element) -> List[VkEnum | VkTypeAlias]:
     enum_aliases: List[VkTypeAlias] = []
     for type_el in registry.findall("types/type"):
         if type_el.get("category") != "enum" or "alias" not in type_el.attrib:
@@ -318,7 +489,10 @@ def parse_registry(registry: Element) -> ParsedRegistry:
                 continue
             enum_to_extend.values.append(VkEnumValue(name, value))
 
-    # flags
+    return enum_aliases + enums
+
+
+def parse_flags(registry: Element) -> List[VkFlags | VkTypeAlias]:
     flag_aliases: List[VkTypeAlias] = []
     for type_el in registry.findall("types/type"):
         if type_el.get("category") != "bitmask" or "alias" not in type_el.attrib:
@@ -326,7 +500,7 @@ def parse_registry(registry: Element) -> ParsedRegistry:
         declared_type_name = type_el.attrib["name"]
         aliased_type_name = type_el.attrib["alias"]
         flag_aliases.append(VkTypeAlias(declared_type_name, aliased_type_name))
-    
+
     flag_bits: List[VkFlagBits] = []
     for enums_el in registry.findall("enums"):
         if enums_el.get("type") != "bitmask":
@@ -344,7 +518,7 @@ def parse_registry(registry: Element) -> ParsedRegistry:
                 bitpos = int(enum_el.attrib["bitpos"])
                 bits.append(VkFlagBit(bit_name, bitpos))
         flag_bits.append(VkFlagBits(name, flag_values, bits))
-
+    
     flags: List[VkFlags] = []
     flag_bits_by_name = {fb.name: fb for fb in flag_bits}
     for type_el in registry.findall("types/type"):
@@ -358,8 +532,11 @@ def parse_registry(registry: Element) -> ParsedRegistry:
         if current_flag_bits is None:
             current_flag_bits = VkFlagBits(flag_bits_name, [], [])
         flags.append(VkFlags(flags_name, current_flag_bits, width))
+    
+    return flag_aliases + flags
 
-    # handles
+
+def parse_handles(registry: Element) -> List[VkHandle]:
     handles: List[VkHandle] = []
     for type_el in registry.findall("types/type"):
         if type_el.get("category") != "handle" or type_el.get("alias") is not None:
@@ -369,37 +546,41 @@ def parse_registry(registry: Element) -> ParsedRegistry:
         if type not in ("VK_DEFINE_HANDLE", "VK_DEFINE_NON_DISPATCHABLE_HANDLE"):
             raise ValueError("Unexpected type value")
         handles.append(VkHandle(name, type))
+    return handles
 
-    # fn types
+
+def parse_fn_types(registry: Element) -> List[VkFnType]:
+    PATTERN = re.compile(
+        r"typedef\s+(?P<ret>.+?)\s*\(\s*VKAPI_PTR\s*\*\s*(?P<name>\w+)\s*\)\s*\((?P<args>.*)\)\s*;",
+        re.DOTALL,
+    )
+
     fn_types: List[VkFnType] = []
     for type_el in registry.findall("types/type"):
         if type_el.get("category") != "funcpointer":
             continue
         name = assert_type(str, type_el.findtext("name"))
-        type_text = assert_type(str, type_el.text)
-        type_str = type_text.split()[1] if len(type_text.split()) > 1 else "void"
-        return_type = type_str.strip("*")
-        return_ptr_level = type_str.count("*")
-        fn_ptr_args: List[VkFnArg] = []
-        for arg_el in type_el.findall("type"):
-            arg_name = (
-                assert_type(str, arg_el.tail)
-                .replace("*", "")
-                .replace(",", "")
-                .replace(";", "")
-                .replace(")", "")
-                .strip()
-            )
-            const = False
-            if arg_name.endswith("const"):
-                const = True
-                arg_name = arg_name[:-5].strip()
-            arg_base_type = assert_type(str, arg_el.text)
-            arg_ptr_lvl = assert_type(str, arg_el.tail).count("*")
-            fn_ptr_args.append(VkFnArg(arg_name, VkType(arg_base_type, arg_ptr_lvl), const))
-        fn_types.append(VkFnType(name, VkType(return_type, return_ptr_level), fn_ptr_args))
+        sig = "".join(type_el.itertext()).strip()
+        m = PATTERN.fullmatch(sig)
+        if m is None:
+            raise ValueError(f"Unexpected fn_type string: {sig}")
+        ret_str = assert_type(str, m.group("ret")).strip()
+        args_str = assert_type(str, m.group("args")).strip()
+        return_type = parse_type_str(ret_str)
+        fn_ptr_args: List[VkFnParam] = []
+        if args_str and args_str != "void":
+            for arg in args_str.split(","):
+                arg = arg.strip()
+                tokens = arg.split()
+                arg_name = tokens[-1]
+                type_part = " ".join(tokens[:-1])
+                arg_type = parse_type_str(type_part)
+                fn_ptr_args.append(VkFnParam(arg_name, arg_type))
+        fn_types.append(VkFnType(name, return_type, fn_ptr_args))
+    return fn_types
 
-    # structs
+
+def parse_structs(registry: Element) -> List[VkStruct | VkTypeAlias]:
     struct_aliases: List[VkTypeAlias] = []
     for type_el in registry.findall("types/type"):
         if type_el.get("category") != "struct" or "alias" not in type_el.attrib:
@@ -407,7 +588,7 @@ def parse_registry(registry: Element) -> ParsedRegistry:
         declared_type_name = type_el.attrib["name"]
         aliased_type_name = type_el.attrib["alias"]
         struct_aliases.append(VkTypeAlias(declared_type_name, aliased_type_name))
-
+    
     structs: List[VkStruct] = []
     for type_el in registry.findall("types/type"):
         if type_el.get("category") != "struct" or "alias" in type_el.attrib:
@@ -417,45 +598,33 @@ def parse_registry(registry: Element) -> ParsedRegistry:
         for member_el in type_el.findall("member"):
             if member_el.get("api") == "vulkansc":
                 continue
-            name = assert_type(str, member_el.findtext("name"))
-            base_type = assert_type(str, member_el.findtext("type"))
-            ptr_level = assert_type(str, assert_type(Element, member_el.find("type")).tail).count("*")
-            member_str = ElementTree.tostring(member_el, encoding="unicode")
-            array_dim = None
-            if m := re.search(r"</name>\[([^\]]+)\]", member_str):
-                m2 = re.search(r"<enum>([^<]+)</enum>", m.group(1))
-                array_dim = m2.group(1) if m2 else m.group(1)
-            type = VkType(base_type, ptr_level, array_dim)
-            value = None
-            if base_type == "VkStructureType" and member_el.get("values") is not None:
-                value = member_el.get("values")
-            length = member_el.get("len")
-            struct_members.append(VkStructMember(name, type, value, length))
+            name_el = assert_type(Element, member_el.find("name"))
+            member_name = assert_type(str, name_el.text)
+            member_type = parse_type(member_el)
+            member_value = member_el.get("values")
+            struct_members.append(VkStructMember(member_name, member_type, member_value))
         structs.append(VkStruct(struct_name, struct_members))
 
-    # unions
+    return struct_aliases + structs
+
+
+def parse_unions(registry: Element) -> List[VkUnion]:
     unions: List[VkUnion] = []
     for type_el in registry.findall("types/type"):
-        if type_el.get("category") != "union" or type_el.get("alias") is not None:
+        if type_el.get("category") != "union" or "alias" in type_el.attrib:
             continue
-        name = type_el.attrib["name"]
+        union_name = type_el.attrib["name"]
         member_types: List[VkType] = []
         for member_el in type_el.findall("member"):
             if member_el.get("api") == "vulkansc":
                 continue
-            base_type = assert_type(str, member_el.findtext("type"))
-            ptr_level = (assert_type(Element, member_el.find("type")).tail or "").count("*")
-            member_str = ElementTree.tostring(member_el, encoding="unicode")
-            array_dim = None
-            if m := re.search(r"</name>\[([^\]]+)\]", member_str):
-                m2 = re.search(r"<enum>([^<]+)</enum>", m.group(1))
-                array_dim = m2.group(1) if m2 else m.group(1)
-            member_type = VkType(base_type, ptr_level, array_dim)
-            if member_type not in member_types:
-                member_types.append(member_type)
-        unions.append(VkUnion(name, member_types))
+            member_types.append(parse_type(member_el))
+        unions.append(VkUnion(union_name, member_types))
+    return unions
 
-    # functions/commands
+
+def parse_commands(registry: Element) -> VkParsedCommands:
+    # Gather up all commands
     commands_by_name: Dict[str, VkCommand] = {}
     for command_el in registry.findall("commands/command"):
         if "alias" in command_el.attrib:
@@ -465,32 +634,28 @@ def parse_registry(registry: Element) -> ParsedRegistry:
         proto_el = assert_type(Element, command_el.find("proto"))
         name_el = assert_type(Element, proto_el.find("name"))
         name = assert_type(str, name_el.text)
-        type_el = assert_type(Element, proto_el.find("type"))
-        return_type_name = assert_type(str, type_el.text)
-        return_ptr_level = "".join(proto_el.itertext()).count("*")
-        return_type = VkType(return_type_name, return_ptr_level)
-        args: List[VkCommandArg] = []
+        return_type = parse_type(proto_el)
+        args: List[VkCommandParam] = []
         for param_el in command_el.findall("param"):
             if param_el.get("api") == "vulkansc":
                 continue
-            arg_name_el = assert_type(Element, param_el.find("name"))
-            arg_name = assert_type(str, arg_name_el.text)
-            arg_type_el = assert_type(Element, param_el.find("type"))
-            arg_type_name = assert_type(str, arg_type_el.text)
-            arg_ptr_level = (arg_type_el.tail or "").count("*")
-            arg_type = VkType(arg_type_name, arg_ptr_level)
-            is_const = (param_el.text or "").startswith("const")
+            param_name_el = assert_type(Element, param_el.find("name"))
+            param_name = assert_type(str, param_name_el.text)
+            param_type = parse_type(param_el)
             length = param_el.get("len")
             raw_optional = param_el.get("optional")
-            # an absent value is an implicit "false"
             if raw_optional is None:
+                # optional being excluded is implicitly false
                 raw_optional = "false"
             if raw_optional not in ("false", "true", "false,true", "true,true"):
                 raise ValueError("Unexpected optional value")
+            # We only care about outermost optional
             optional = raw_optional.startswith("true")
-            args.append(VkCommandArg(arg_name, arg_type, is_const, length, optional))
+            length = param_el.get("len")
+            args.append(VkCommandParam(param_name, param_type, length, optional))
         commands_by_name[name] = VkCommand(name, return_type, args)
-    
+
+    # Duplicate commands if theyre aliased
     for command_el in registry.findall("commands/command"):
         if "alias" not in command_el.attrib:
             continue
@@ -500,6 +665,7 @@ def parse_registry(registry: Element) -> ParsedRegistry:
         alias = command_el.attrib["alias"]
         commands_by_name[name] = commands_by_name[alias]
 
+    # Attach version info to each command
     versioned_commands: List[VkVersionedCommand] = []
     for feature in registry.findall("feature"):
         if "vulkan" not in feature.attrib["api"].split(","):
@@ -512,6 +678,7 @@ def parse_registry(registry: Element) -> ParsedRegistry:
             command = commands_by_name[command_name]
             versioned_commands.append(VkVersionedCommand(version, command))
 
+    # Organize commands by level and version such that commands are present for all versions they're included in.
     versions = list({vc.version for vc in versioned_commands})
     versions.sort(key=lambda v: (v.major, v.minor))
     core_commands: Dict[VkLevel, Dict[VkVersion, List[VkVersionedCommand]]] = {
@@ -529,9 +696,9 @@ def parse_registry(registry: Element) -> ParsedRegistry:
             if not command_in_version:
                 continue
             command = versioned_command.command
-            if len(command.args) == 0:
+            if len(command.params) == 0:
                 raise ValueError("Expected command to have some args")
-            first_arg_type = command.args[0].type
+            first_arg_type = command.params[0].type
             if command.name == "vkGetInstanceProcAddr":
                 core_commands["global"][version].append(versioned_command)
             elif first_arg_type.name in ("VkInstance", "VkPhysicalDevice") or command.name == "vkGetDeviceProcAddr":
@@ -541,6 +708,7 @@ def parse_registry(registry: Element) -> ParsedRegistry:
             else:
                 core_commands["global"][version].append(versioned_command)
 
+    # Organize extension commands by extension
     extension_commands: Dict[str, List[VkExtensionCommands]] = defaultdict(list)
     for extension_el in registry.findall("extensions/extension"):
         if "vulkan" not in (extension_el.get("supported") or "").split(","):
@@ -559,625 +727,15 @@ def parse_registry(registry: Element) -> ParsedRegistry:
         extension_tag = name.split("_")[1]
         extension_commands[extension_tag].append(VkExtensionCommands(name, type, commands))
 
-    return ParsedRegistry(
-        constants,
-        basetypes,
-        external_types,
-        enum_aliases, enums,
-        flag_aliases, flags,
-        handles,
-        fn_types,
-        struct_aliases, structs,
-        unions,
-        core_commands, extension_commands,
-    )
+    return VkParsedCommands(core_commands, extension_commands)
 
 
-def emit_bindings(parsed_registry: ParsedRegistry) -> Dict[str, str]:
-    files: Dict[str, str] = dict()
-    module_init_writer = CodeWriter()
-    module_init_writer.write_line("from .misc import zero_init, Bool32, Version")
+# ----------------
+# Parsing Helpers
+# ----------------
 
-    # constants
-    constants_writer = CodeWriter()
-    for constant in parsed_registry.constants:
-        name = constant.name.removeprefix("VK_")
-        type = new_type_name(constant.type)
-        value = constant.value
-        if value.endswith("F"):
-            value = value[:-1]
-        elif member := re.match(r"\(~([0-9]{1,9})ULL\)", value):
-            value = f"~UInt64({member.group(1)})"
-        elif member := re.match(r"\(~([0-9]{1,9})U\)", value):
-            value = f"~UInt32({member.group(1)})"
-        constants_writer.write_line(f"alias {name}: {type} = {value}")
-    files["constants.mojo"] = constants_writer.content()
-    module_init_writer.write_line("from .constants import *")
 
-    # basetypes
-    basetypes_writer = CodeWriter()
-    basetypes_writer.write_line("alias Ptr = UnsafePointer")
-    for basetype in parsed_registry.basetypes:
-        name = new_type_name(basetype.name)
-        underlying_type = mojo_type(basetype.underlying_type)
-        basetypes_writer.newline(2)
-        basetypes_writer.write_lines((
-            f'@register_passable("trivial")',
-            f"struct {name}:",
-            f"    var _raw: {underlying_type}\n",
-            f"    fn __init__(out self):",
-            f"        self._raw = {underlying_type}()\n",
-            f"    fn __init__(out self, *, raw: {underlying_type}):",
-            f"        self._raw = raw\n",
-            f"    fn raw(self) -> {underlying_type}:",
-            f"        return self._raw",
-        ))
-    files["basetypes.mojo"] = basetypes_writer.content()
-    module_init_writer.write_line("from .basetypes import *")
-
-    # external types
-    external_types_writer = CodeWriter()
-    for external_type in parsed_registry.external_types:
-        external_types_writer.newline(2)
-        if isinstance(external_type, VkEnum):
-            external_types_writer.write_lines((
-                f'@register_passable("trivial")',
-                f"struct {external_type.name}:",
-                f"    var _raw: Int32\n",
-                f"    fn __init__(out self, *, raw: Int32):",
-                f"        self._raw = raw\n",
-                f"    fn raw(self) -> Int32:",
-                f"        return self._raw\n",
-                f"    fn __eq__(self, other: Self) -> Bool:\n",
-                f"        return self._raw == other._raw\n",
-                f"    fn __ne__(self, other: Self) -> Bool:",
-                f"        return self._raw != other._raw",
-            ))
-            if len(external_type.values) > 0:
-                external_types_writer.newline()
-            for value in external_type.values:
-                external_types_writer.write_line(f"    alias {value.name} = {external_type.name}(raw = {value.value})")
-        elif external_type.underlying_type is None:
-            external_types_writer.write_lines((
-                f"# remove Copyable and Movable traits once Collections no longer require it",
-                f"struct {external_type.name}(Copyable, Movable):",
-                f"    pass",
-            ))
-        else:
-            underlying_type = new_type_name(external_type.underlying_type)
-            external_types_writer.write_lines((
-                f'@register_passable("trivial")',
-                f"struct {external_type.name}:",
-                f"    var _raw: {underlying_type}\n",
-                f"    fn __init__(out self, *, raw: {underlying_type}):",
-                f"        self._raw = raw\n",
-                f"    fn raw(self) -> {underlying_type}:",
-                f"        return self._raw",
-            ))
-    files["external_types.mojo"] = external_types_writer.content()
-    module_init_writer.write_line("from .external_types import *")
-
-    # enums
-    enums_writer = CodeWriter()
-    for enum_alias in parsed_registry.enum_aliases:
-        declared_type_name = new_type_name(enum_alias.declared_type_name)
-        aliased_type_name = new_type_name(enum_alias.aliased_type_name)
-        enums_writer.write_line(f"alias {declared_type_name} = {aliased_type_name}")
-    for enum in parsed_registry.enums:
-        enum_name = new_type_name(enum.name)
-        enums_writer.newline(2)
-        enums_writer.write_line('@register_passable("trivial")')
-        if enum.name == "VkResult":
-            enums_writer.write_line("struct Result(EqualityComparable, Writable):")
-        else:
-            enums_writer.write_line(f"struct {enum_name}(EqualityComparable):")
-        enum_body_writer = enums_writer.indented()
-        enum_body_writer.write_lines((
-            "var _raw: Int32\n",
-            "fn __init__(out self, *, raw: Int32):",
-            "    self._raw = raw\n",
-            "fn raw(self) -> Int32:",
-            "    return self._raw\n",
-            "fn __eq__(self, other: Self) -> Bool:",
-            "    return self._raw == other._raw\n",
-        ))
-        if enum.name == "VkResult":
-            enum_body_writer.write_lines((
-                "fn is_error(self) -> Bool:",
-                "    return self.raw() < 0\n",
-                "fn __str__(self) -> String:",
-                "    return String.write(self)\n",
-                "fn write_to[W: Writer](self, mut writer: W):",
-                "    writer.write(self.raw())\n",
-            ))
-        for value in enum.values:
-            if enum.name == "VkResult":
-                value_name = value.name.removeprefix("VK_")
-            else:
-                prefix = pascal_to_snake(strip_extension_suffix(enum.name) + "_").upper()
-                value_name = value.name.removeprefix(prefix)
-            if value_name[0].isdigit():
-                value_name = f"N_{value_name}"
-            enum_name = new_type_name(enum.name)
-            enum_body_writer.write_line(f"alias {value_name} = {enum_name}(raw = {value.value})")
-    files["enums.mojo"] = enums_writer.content()
-    module_init_writer.write_line("from .enums import *")
-
-    # flags
-    flags_writer = CodeWriter()
-    for flag_alias in parsed_registry.flag_aliases:
-        declared_type_name = new_type_name(flag_alias.declared_type_name)
-        aliased_type_name = new_type_name(flag_alias.aliased_type_name)
-        flags_writer.write_line(f"alias {declared_type_name} = {aliased_type_name}")
-    for flags in parsed_registry.flags:
-        flags_name = new_type_name(flags.flags_name)
-        flag_bits_name = new_type_name(flags.flag_bits.name)
-        flags_writer.newline(2)
-        flags_writer.write_lines((
-            f'@register_passable("trivial")',
-            f"struct {flags_name}(EqualityComparable):",
-        ))
-        flags_body_writer = flags_writer.indented()
-        flags_body_writer.write_lines((
-            f"var _raw: UInt{flags.width}\n",
-            f"@implicit",
-            f"fn __init__(out self, *bits: {flag_bits_name}):",
-            f"    self._raw = 0",
-            f"    for bit in bits:",
-            f"        self._raw |= bit.raw()\n",
-            f"fn __init__(out self, *, raw: UInt{flags.width}):",
-            f"    self._raw = raw\n",
-            f"fn raw(self) -> UInt{flags.width}:",
-            f"    return self._raw\n",
-            f"fn __eq__(self, other: Self) -> Bool:",
-            f"    return self._raw == other._raw\n",
-            f"fn __or__(self, bit: {flag_bits_name}) -> Self:",
-            f"    return Self(raw = self.raw() | bit.raw())\n",
-            f"fn __ror__(self, bit: {flag_bits_name}) -> Self:",
-            f"    return Self(raw = self.raw() | bit.raw())\n",
-            f"fn __contains__(self, bit: {flag_bits_name}) -> Bool:",
-            f"    return Bool(self.raw() & bit.raw())\n",
-        ))
-        if len(flags.flag_bits.values) > 0 or len(flags.flag_bits.bits) > 0:
-            flags_writer.newline()
-        for value in flags.flag_bits.values:
-            prefix = pascal_to_snake(strip_extension_suffix(flags.flags_name).removesuffix("Flags") + "_").upper()
-            value_name = value.name.removeprefix(prefix)
-            flags_body_writer.write_line(f"alias {value_name} = {flag_bits_name}(raw = {value.value})")
-        for bit in flags.flag_bits.bits:
-            prefix = pascal_to_snake(strip_extension_suffix(flags.flags_name).removesuffix("Flags") + "_").upper()
-            bit_name = bit.name.removeprefix(prefix).removesuffix("_BIT").replace("_BIT_", "_")
-            if bit_name[0].isdigit():
-                bit_name = f"N_{bit_name}"
-            flags_body_writer.write_line(f"alias {bit_name} = {flag_bits_name}(raw = 1 << {bit.bitpos})")
-        flags_writer.newline(2)
-        flags_writer.write_lines((
-            f'@register_passable("trivial")',
-            f"struct {flag_bits_name}:",
-            f"    var _raw: UInt{flags.width}\n",
-            f"    fn __init__(out self, *, raw: UInt{flags.width}):",
-            f"        self._raw = raw\n",
-            f"    fn raw(self) -> UInt{flags.width}:",
-            f"        return self._raw\n",
-            f"    fn __eq__(self, other: Self) -> Bool:",
-            f"        return self._raw == other._raw\n",
-            f"    fn __ne__(self, other: Self) -> Bool:",
-            f"        return self._raw != other._raw\n",
-            f"    fn __or__(self, bit: Self) -> {flags_name}:",
-            f"        return {flags_name}(raw = self.raw() | bit.raw())",
-        ))
-    files["flags.mojo"] = flags_writer.content()
-    module_init_writer.write_line("from .flags import *")
-
-    # handles
-    handles_writer = CodeWriter()
-    handle_type_mapping: Dict[str, Literal["UInt", "UInt64"]] = {
-        "VK_DEFINE_HANDLE": "UInt",
-        "VK_DEFINE_NON_DISPATCHABLE_HANDLE": "UInt64",
-    }
-    for handle in parsed_registry.handles:
-        handle_name = new_type_name(handle.name)
-        handle_type = handle_type_mapping[handle.type]
-        handles_writer.newline(2)
-        handles_writer.write_lines((
-            f'@register_passable("trivial")',
-            f"struct {handle_name}(EqualityComparable, Writable):",
-            f"    var _raw: {handle_type}\n",
-            f"    alias NULL = Self(raw = 0)\n",
-            f"    fn __init__(out self, *, raw: {handle_type}):",
-            f"        self._raw = raw\n",
-            f"    fn raw(self) -> {handle_type}:",
-            f"        return self._raw\n",
-            f"    fn __eq__(self, other: {handle_name}) -> Bool:",
-            f"        return self._raw == other._raw\n",
-            f"    fn __str__(self) -> String:",
-            f"        return hex(self._raw)\n",
-            f"    fn write_to(self, mut writer: Some[Writer]):",
-            f"        writer.write(String(self))",
-        ))
-    files["handles.mojo"] = handles_writer.content()
-    module_init_writer.write_line("from .handles import *")
-
-    # fn types
-    fn_types_writer = CodeWriter()
-    fn_types_writer.write_lines((
-        "from .handles import *",
-        "from .structs import *",
-        "from .misc import *",
-        "\n",
-        "alias Ptr = UnsafePointer",
-    ))
-    fn_types_writer.newline()
-    for fn_type in parsed_registry.fn_types:
-        args_part = ", ".join(mojo_type(arg.type) for arg in fn_type.args)
-        has_return = fn_type.return_type.name != "void"
-        return_part = f" -> {mojo_type(fn_type.return_type)}" if has_return else ""
-        one_liner = f"alias {fn_type.name} = fn({args_part}){return_part}"
-        fn_types_writer.newline()
-        if not fn_types_writer.line_too_long(one_liner):
-            fn_types_writer.write_line(one_liner)
-            continue
-        fn_types_writer.write_line(f"alias {fn_type.name} = fn(")
-        fn_type_args_writer = fn_types_writer.indented()
-        for arg in fn_type.args:
-            fn_type_args_writer.write_line(f"{mojo_type(arg.type)},")
-        fn_types_writer.write_line(f"){return_part}")
-    files["fn_types.mojo"] = fn_types_writer.content()
-    module_init_writer.write_line("from .fn_types import *")
-
-    # structs
-    struct_writer = CodeWriter()
-    struct_writer.write_lines((
-        "from .constants import *",
-        "from .basetypes import *",
-        "from .external_types import *",
-        "from .enums import *",
-        "from .flags import *",
-        "from .handles import *",
-        "from .fn_types import *",
-        "from .unions import *",
-        "from .misc import *",
-        "\n",
-        "alias Ptr = UnsafePointer",
-        "\n",
-    ))
-    for struct_alias in parsed_registry.struct_aliases:
-        declared_type_name = new_type_name(struct_alias.declared_type_name)
-        aliased_type_name = new_type_name(struct_alias.aliased_type_name)
-        struct_writer.write_line(f"alias {declared_type_name} = {aliased_type_name}")
-    for struct in parsed_registry.structs:
-        struct_name = new_type_name(struct.name)
-        struct_writer.newline(2)
-        struct_writer.write_line(f"struct {struct_name}(ImplicitlyCopyable, Movable):")
-        struct_body_writer = struct_writer.indented()
-        if len(struct.members) == 0:
-            struct_body_writer.write_line("pass")
-            continue
-        for member in struct.members:
-            member_name = pascal_to_snake(member.name)
-            is_version = member_name.endswith("version") and mojo_type(member.type) == "UInt32"
-            member_type = "Version" if is_version else mojo_type(member.type)
-            struct_body_writer.write_line(f"var {member_name}: {member_type}")
-        # c style init method
-        struct_body_writer.newline()
-        struct_body_writer.write_line("fn __init__(")
-        struct_init_writer = struct_body_writer.indented()
-        struct_init_writer.write_line("out self,")
-        for member in struct.members:
-            if member.type.name == "VkStructureType" and member.value is not None:
-                continue
-            member_name = pascal_to_snake(member.name)
-            is_version = member_name.endswith("version") and mojo_type(member.type) == "UInt32"
-            member_type = "Version" if is_version else mojo_type(member.type)
-            struct_init_writer.write_line(f"{member_name}: {member_type} = zero_init[{member_type}](),")
-        struct_body_writer.write_line("):")
-        for member in struct.members:
-            member_name = pascal_to_snake(member.name)
-            if member.type.name == "VkStructureType" and member.value is not None:
-                member_value = f"StructureType.{member.value.removeprefix('VK_STRUCTURE_TYPE_')}"
-                struct_init_writer.write_line(f"self.s_type = {member_value}")
-            else:
-                struct_init_writer.write_line(f"self.{member_name} = {member_name}")
-        for member in struct.members:
-            if member.type.array_dim is None or member.type.name != "char":
-                continue
-            member_name = pascal_to_snake(member.name)
-            struct_body_writer.newline()
-            struct_body_writer.write_lines((
-                f"fn {member_name}_slice(self) -> StringSlice[__origin_of(self.{member_name})]:",
-                f"    return StringSlice[__origin_of(self.{member_name})](unsafe_from_utf8_ptr = self.{member_name}.unsafe_ptr())",
-            ))
-        # span based init method
-        # disabled because it seems footgunny atm
-        # will revisit when better origin handling is here
-        # member_names = {member.name for member in struct.members}
-        # count_count: Dict[str, int] = defaultdict(int)
-        # for member in struct.members:
-        #     if member.length is not None and member.length in member_names:
-        #         count_count[member.length] += 1
-        # c_member_name_to_count_name: Dict[str, str] = {}
-        # for member in struct.members:
-        #     if member.length is not None and member.type.ptr_level == 1 and count_count[member.length] == 1:
-        #         c_member_name_to_count_name[member.name] = member.length
-        # count_name_to_c_member_name = {v: k for k, v in c_member_name_to_count_name.items()}
-        # if len(count_name_to_c_member_name) > 0:
-        #     struct_body_writer.newline()
-        #     struct_body_writer.write_line("@staticmethod")
-        #     struct_body_writer.write_line("fn from_spans[")
-        #     from_span_writer = struct_body_writer.indented()
-        #     for c_member_name in c_member_name_to_count_name.keys():
-        #         member_name = pascal_to_snake(c_member_name).removeprefix("p_")
-        #         from_span_writer.write_line(f"{member_name}_origin: ImmutableOrigin=ImmutableAnyOrigin,")
-        #     struct_body_writer.write_line("](")
-        #     for member in struct.members:
-        #         if member.type.name == "VkStructureType" and member.value is not None:
-        #             pass
-        #         elif member.name in count_name_to_c_member_name:
-        #             pass
-        #         elif member.name in c_member_name_to_count_name:
-        #             member_name = pascal_to_snake(member.name).removeprefix("p_")
-        #             member_type = f"Span[{mojo_type(member.type, no_ptr=True)}, {member_name}_origin]"
-        #             from_span_writer.write_line(f"{member_name}: {member_type} = zero_init[{member_type}](),")
-        #         else:
-        #             member_name = pascal_to_snake(member.name)
-        #             is_version = member_name.endswith("version") and mojo_type(member.type) == "UInt32"
-        #             member_type = "Version" if is_version else mojo_type(member.type)
-        #             from_span_writer.write_line(f"{member_name}: {member_type} = zero_init[{member_type}](),")
-        #     struct_body_writer.write_line(f") -> {struct_name}:")
-        #     from_span_writer.write_line(f"return {struct_name}(")
-        #     init_args_writer = from_span_writer.indented()
-        #     for member in struct.members:
-        #         member_name = pascal_to_snake(member.name)
-        #         if member.type.name == "VkStructureType" and member.value is not None:
-        #             pass
-        #         elif member.name in count_name_to_c_member_name:
-        #             span_name = pascal_to_snake(count_name_to_c_member_name[member.name]).removeprefix("p_")
-        #             init_args_writer.write_line(f"{member_name} = len({span_name}),")
-        #         elif member.name in c_member_name_to_count_name:
-        #             span_name = member_name.removeprefix("p_")
-        #             init_args_writer.write_line(f"{member_name} = {span_name}.unsafe_ptr(),")
-        #         else:
-        #             init_args_writer.write_line(f"{member_name} = {member_name},")
-        #     from_span_writer.write_line(")")
-    files["structs.mojo"] = struct_writer.content()
-    module_init_writer.write_line("from .structs import *")
-
-    # unions
-    union_writer = CodeWriter()
-    union_writer.write_lines((
-        "from memory import memcpy",
-        "from sys import size_of",
-        "from .structs import *",
-        "\n",
-        "alias Ptr = UnsafePointer",
-    ))
-    union_name_to_align_type: Dict[str, Literal["UInt32", "UInt", "UInt64"]] = {
-            "VkClearColorValue": "UInt32",
-            "VkClearValue": "UInt32",
-            "VkClusterAccelerationStructureOpInputNV": "UInt",
-            "VkPerformanceCounterResultKHR": "UInt64",
-            "VkPerformanceValueDataINTEL": "UInt64",
-            "VkPipelineExecutableStatisticValueKHR": "UInt64",
-            "VkDeviceOrHostAddressKHR": "UInt64",
-            "VkDeviceOrHostAddressConstKHR": "UInt64",
-            "VkDeviceOrHostAddressConstAMDX": "UInt64",
-            "VkAccelerationStructureGeometryDataKHR": "UInt64",
-            "VkIndirectExecutionSetInfoEXT": "UInt",
-            "VkIndirectCommandsTokenDataEXT": "UInt",
-            "VkDescriptorDataEXT": "UInt64",
-            "VkAccelerationStructureMotionInstanceDataNV": "UInt64",
-        }
-    for union in parsed_registry.unions:
-        align_type = union_name_to_align_type[union.name]
-        union_name = new_type_name(union.name)
-        union_writer.newline(2)
-        union_writer.write_line(f"struct {union_name}(ImplicitlyCopyable, Movable):")
-        union_body_writer = union_writer.indented()
-        union_body_writer.write_line("alias _size = max(")
-        union_sizeof_writer = union_body_writer.indented()
-        for member_type in union.member_types:
-            union_sizeof_writer.write_line(f"size_of[{mojo_type(member_type)}](),")
-        union_body_writer.write_lines((
-            f")",
-            f"alias _AlignType = {align_type}",
-            f"alias _InnerType = InlineArray[Self._AlignType, Self._size//size_of[Self._AlignType]()]",
-            f"var _value: Self._InnerType",
-        ))
-        for member_type in union.member_types:
-            union_body_writer.newline()
-            union_body_writer.write_lines((
-                f"fn __init__(out self, value: {mojo_type(member_type)}):",
-                f"    self._value = zero_init[Self._InnerType]()",
-                f"    memcpy(",
-                f"        dest = Ptr(to=self._value).bitcast[Byte](),",
-                f"        src = Ptr(to=value).bitcast[Byte](),",
-                f"        count = size_of[{mojo_type(member_type)}](),",
-                f"    )",
-            ))
-    files["unions.mojo"] = union_writer.content()
-    module_init_writer.write_line("from .unions import *")
-
-    # functions/commands
-    core_fns_writer = CodeWriter()
-    core_fns_writer.write_lines((
-        "from sys import DLHandle, RTLD",
-        "from .fn_types import *",
-        "from .handles import *",
-        "from .structs import *",
-        "from .misc import *",
-        "\n",
-        "alias Ptr = UnsafePointer",
-        "\n",
-        "trait GlobalFunctions:",
-        "    fn handle(self) -> DLHandle:",
-        "        ...",
-    ))
-    core_fn_imports: Dict[VkLevel, List[str]] = {
-        "global": [],
-        "instance": [],
-        "device": [],
-    }
-    for command_level, core_versions in parsed_registry.core_commands.items():
-        # per-version {level}Functions
-        for core_version, versioned_commands in core_versions.items():
-            fn_group_name = f"{command_level.capitalize()}FunctionsV{core_version.major}_{core_version.minor}"
-            core_fn_imports[command_level].append(fn_group_name)
-            traits = (["GlobalFunctions"] if command_level == "global" else []) + ["Copyable", "Movable"]
-            trait_section = f"({', '.join(traits)})"
-            addition_versions = list({cmd.version for cmd in versioned_commands})
-            addition_versions.sort(key=lambda v: (v.major, v.minor))
-
-            core_fns_writer.newline(2)
-            core_fns_writer.write_line(f"struct {fn_group_name}{trait_section}:")
-            core_fns_body_writer = core_fns_writer.indented()
-            if command_level == "global":
-                core_fns_body_writer.write_line("var _handle: DLHandle")
-            for addition_version in addition_versions:
-                req_ver_str = f"{addition_version.major}_{addition_version.minor}"
-                core_fns_body_writer.write_line(f"var _v{req_ver_str}: {command_level.capitalize()}FunctionAdditionsV{req_ver_str}")
-            core_fns_body_writer.newline()
-            if command_level == "global":
-                core_fns_body_writer.write_lines((
-                    "fn __init__(out self) raises:",
-                    '    self._handle = DLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)',
-                ))
-            else:
-                args = [
-                    f"out self",
-                    f"global_functions: GlobalFunctionsV{core_version.major}_{core_version.minor}",
-                    f"{command_level}: {command_level.capitalize()}",
-                ]
-                core_fns_body_writer.write_line(f"fn __init__({', '.join(args)}) raises:")
-            core_fns_init_body_writer = core_fns_body_writer.indented()
-            for addition_version in addition_versions:
-                req_ver_str = f"{addition_version.major}_{addition_version.minor}"
-                args = "self._handle" if command_level == "global" else f"{command_level}, global_functions.handle()"
-                core_fns_init_body_writer.write_line(
-                    f"self._v{req_ver_str} = {command_level.capitalize()}FunctionAdditionsV{req_ver_str}({args})"
-                )
-            if command_level == "global":
-                core_fns_body_writer.newline()
-                core_fns_body_writer.write_lines((
-                    "fn handle(self) -> DLHandle:",
-                    "    return self._handle",
-                ))
-            for versioned_command in versioned_commands:
-                generic_function_definition(core_fns_body_writer, versioned_command.command, versioned_command.version)
-            
-        # per-version {level}FunctionAdditions
-        for core_version, versioned_commands in core_versions.items():
-            new_commands = [cmd for cmd in versioned_commands if cmd.version == core_version]
-            if len(new_commands) == 0:
-                continue
-            core_fns_writer.newline(2)
-            core_fns_writer.write_line(
-                f"struct {command_level.capitalize()}FunctionAdditionsV{core_version.major}_{core_version.minor}(Copyable, Movable):"
-            )
-            fn_addition_body_writer = core_fns_writer.indented()
-            for new_command in new_commands:
-                mojo_command_name = pascal_to_snake(new_command.command.name).removeprefix("vk_")
-                args = ", ".join(f"{arg.name}: {mojo_type(arg.type)}" for arg in new_command.command.args)
-                ret_type = mojo_type(new_command.command.return_type)
-                sig_ret = f" -> {ret_type}" if ret_type != "NoneType" else ""
-                fn_addition_body_writer.write_lines((
-                    f"var {mojo_command_name}: fn(",
-                    f"    {args}",
-                    f"){sig_ret}",
-                ))
-            fn_addition_body_writer.newline()
-            if command_level == "global":
-                fn_addition_body_writer.write_line("fn __init__(out self, handle: DLHandle) raises:")
-            else:
-                fn_addition_body_writer.write_line(
-                    f"fn __init__(out self, {command_level}: {command_level.capitalize()}, handle: DLHandle) raises:"
-                )
-            init_body_writer = fn_addition_body_writer.indented()
-            get_proc_level = "instance" if command_level == "global" else command_level
-            if len(versioned_commands) == 0:
-                init_body_writer.write_line("pass")
-            else:
-                init_body_writer.write_lines((
-                    f"get_{get_proc_level}_proc_addr = handle.get_function[",
-                    f"    fn({get_proc_level}: {get_proc_level.capitalize()}, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction",
-                    f']("vkGet{get_proc_level.capitalize()}ProcAddr")',
-                ))
-            for new_command in new_commands:
-                mojo_command_name = pascal_to_snake(new_command.command.name).removeprefix("vk_")
-                handle_arg = "Instance.NULL" if command_level == "global" else command_level
-                init_body_writer.write_lines((
-                    f"self.{mojo_command_name} = Ptr(to=get_{get_proc_level}_proc_addr(",
-                    f'    {handle_arg}, "{new_command.command.name}".unsafe_ptr()',
-                    f")).bitcast[__type_of(self.{mojo_command_name})]()[]",
-                ))
-
-    files["core_functions.mojo"] = core_fns_writer.content()
-    module_init_writer.write_line("from .core_functions import (")
-    module_init_core_fns_writer = module_init_writer.indented()
-    line_fn_group_names: List[str] = []
-    for command_level_fn_group_names in core_fn_imports.values():
-        for fn_group_name in command_level_fn_group_names:
-            import_item = f"{fn_group_name},"
-            if len(line_fn_group_names) == 0:
-                line_fn_group_names.append(import_item)
-            elif module_init_core_fns_writer.line_too_long(" ".join(line_fn_group_names + [import_item])):
-                module_init_core_fns_writer.write_line(" ".join(line_fn_group_names))
-                line_fn_group_names = [import_item]
-            else:
-                line_fn_group_names.append(import_item)
-        module_init_core_fns_writer.write_line(" ".join(line_fn_group_names))
-        line_fn_group_names = []
-    module_init_writer.write_line(")")
-
-    extension_writers = {extension_tag: CodeWriter() for extension_tag in parsed_registry.extension_commands.keys()}
-    for writer in extension_writers.values():
-        writer.write_line("from vk.core_functions import GlobalFunctions")
-    for extension_tag, extensions in parsed_registry.extension_commands.items():
-        for extension in extensions:
-            extension_writer = extension_writers[extension_tag]
-            extension_name = "".join(word.capitalize() for word in extension.name.split("_")[2:])
-            extension_writer.newline(2)
-            extension_writer.write_line(f"struct {extension_name}(Copyable, Movable):")
-            extension_body_writer = extension_writer.indented()
-            for command in extension.commands:
-                mojo_command_name = pascal_to_snake(command.name).removeprefix("vk_")
-                args = ", ".join(f"{arg.name}: {mojo_type(arg.type)}" for arg in command.args)
-                ret_type = mojo_type(command.return_type)
-                sig_ret = f" -> {ret_type}" if ret_type != "NoneType" else ""
-                extension_body_writer.write_lines((
-                    f"var _{mojo_command_name}: fn(",
-                    f"    {args}",
-                    f"){sig_ret}",
-                ))
-            extension_body_writer.newline()
-            extension_body_writer.write_line(
-                f"fn __init__[T: GlobalFunctions](out self, global_fns: T, {extension.type}: {extension.type.capitalize()}):"
-            )
-            init_body_writer = extension_body_writer.indented()
-            init_body_writer.write_lines((
-                f"var get_{extension.type}_proc_addr = global_fns.handle().get_function[",
-                f"    fn({extension.type}: {extension.type.capitalize()}, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction",
-                f']("vkGet{extension.type.capitalize()}ProcAddr")',
-            ))
-            for command in extension.commands:
-                mojo_command_name = pascal_to_snake(command.name).removeprefix("vk_")
-                init_body_writer.write_lines((
-                    f"self._{mojo_command_name} = Ptr(to=get_{extension.type}_proc_addr(",
-                    f'    {extension.type}, "{command.name}".unsafe_ptr()',
-                    f")).bitcast[__type_of(self._{mojo_command_name})]()[]",
-                ))
-            for command in extension.commands:
-                generic_function_definition(extension_body_writer, command)
-
-    extensions_module_writer = CodeWriter()
-    for extension_tag in parsed_registry.extension_commands.keys():
-        extensions_module_writer.write_line(f"import .{extension_tag.lower()}")
-    files["extensions/__init__.mojo"] = extensions_module_writer.content()
-    for extension_tag, writer in extension_writers.items():
-        files[f"extensions/{extension_tag.lower()}.mojo"] = writer.content()
-    module_init_writer.write_line("from .extensions import *")
-
-    files["__init__.mojo"] = module_init_writer.content()
-    return files
+T = TypeVar("T")
 
 
 def assert_type(t: Type[T], value: Any) -> T:
@@ -1200,21 +758,768 @@ def assert_type(t: Type[T], value: Any) -> T:
     return value
 
 
-def new_type_name(old_name: str) -> str:
-    """Convert a Vulkan C type name to a Mojo-friendly alias.
-
-    Performs explicit remapping for common C types and Vulkan
-    typedefs, and otherwise removes a leading 'Vk' prefix.
-
-    Args:
-        old_name: Original type name from vk.xml.
-
-    Returns:
-        A type name suitable for generated APIs.
+def parse_type(parent_el: Element) -> VkType:
     """
+    Parse a Vulkan XML <proto>, <param>, or <member> element into a VkType.
+    """
+    parts: List[str] = []
+    if parent_el.text is not None:
+        parts.append(parent_el.text)
+    for child in parent_el:
+        if child.tag == "name":
+            break
+        parts.extend(t for t in (child.text, child.tail) if t)
+    type_part = "".join(parts).strip()
+
+    name_el = assert_type(Element, parent_el.find("name"))
+    children = list(parent_el)
+    name_idx = children.index(name_el)
+    suffix_parts = [name_el.tail or ""]
+    for sib in children[name_idx+1:]:
+        if sib.tag == "comment":
+            suffix_parts.append(sib.tail if sib.tail else "")
+        else:
+            suffix_parts.extend(t for t in (sib.text, sib.tail) if t)
+    suffix = "".join(suffix_parts).strip()
+
+    return parse_type_str(type_part + suffix)
+    
+
+def parse_type_str(type: str) -> VkType:
+    array_dim: Optional[str] = None
+    m = re.search(r"\[\s*([^\]]+?)\s*\]\s*$", type)
+    if m is not None:
+        array_dim = m.group(1).strip()
+        type = type[:m.start()].rstrip()
+
+    type = type.replace("*", " * ")
+    tokens = [t for t in type.split() if t]
+    ptr_level = tokens.count("*")
+    prestar_tokens = tokens if ptr_level == 0 else tokens[:-ptr_level]
+    const = "const" in prestar_tokens
+    name = prestar_tokens[-1]
+
+    return VkType(name, ptr_level, const, array_dim)
+
+
+# ----------------
+# Emission
+# ----------------
+
+
+def emit_constants(files: Dict[str, str], constants: List[VkConstant]):
+    parts: List[str] = []
+    for constant in constants:
+        name = constant.name.removeprefix("VK_")
+        type = emit_mojo_type(constant.type)
+        value = constant.value
+        if value.endswith("F"):
+            value = value[:-1]
+        elif member := re.match(r"\(~([0-9]{1,9})ULL\)", value):
+            value = f"~UInt64({member.group(1)})"
+        elif member := re.match(r"\(~([0-9]{1,9})U\)", value):
+            value = f"~UInt32({member.group(1)})"
+        parts.append(f"comptime {name}: {type} = {value}\n")
+    files["constants.mojo"] = "".join(parts)
+
+
+def emit_basetypes(files: Dict[str, str], basetypes: List[VkWrapperType]):
+    parts: List[str] = []
+    for basetype in basetypes:
+        parts.append("\n\n")
+        parts.append(emit_wrapper_type(basetype))
+    files["basetypes.mojo"] = "".join(parts)
+
+
+def emit_wrapper_type(wrapper_type: VkWrapperType) -> str:
+    mojo_name = emit_mojo_type_name(wrapper_type.name)
+    if wrapper_type.underlying_type == "OPAQUE_TYPE":
+        return (
+            f"struct {mojo_name}:\n"
+            f"    pass\n"
+        )
+    mojo_type = emit_mojo_type(wrapper_type.underlying_type)
+    return (
+        f'@register_passable("trivial")\n'
+        f"struct {mojo_name}:\n"
+        f"    var _raw: {mojo_type}\n"
+        f"\n"
+        f"    fn __init__(out self, *, raw: {mojo_type}):\n"
+        f"        self._raw = raw\n"
+        f"\n"
+        f"    fn raw(self) -> {mojo_type}:\n"
+        f"        return self._raw\n"
+    )
+
+
+def emit_external_types(files: Dict[str, str], external_types: List[VkWrapperType | VkEnum]):
+    parts: List[str] = []
+    for external_type in external_types:
+        parts.append("\n\n")
+        if isinstance(external_type, VkWrapperType):
+            parts.append(emit_wrapper_type(external_type))
+        else:
+            parts.append(emit_enum(external_type))
+    files["external_types.mojo"] = "".join(parts)
+
+
+def emit_enum(enum: VkEnum) -> str:
+    parts: List[str] = []
+    enum_name = emit_mojo_type_name(enum.name)
+    parts.append('@register_passable("trivial")\n')
+    if enum.name == "VkResult":
+        parts.append("struct Result(Equatable, Writable):\n")
+    else:
+        parts.append(f"struct {enum_name}(Equatable):\n")
+    parts.append((
+        "    var _raw: Int32\n"
+        "\n"
+        "    fn __init__(out self, *, raw: Int32):\n"
+        "        self._raw = raw\n"
+        "\n"
+        "    fn raw(self) -> Int32:\n"
+        "        return self._raw\n"
+        "\n"
+        "    fn __eq__(self, other: Self) -> Bool:\n"
+        "        return self._raw == other._raw\n"
+        "\n"
+    ))
+    if enum.name == "VkResult":
+        parts.append((
+            "    fn is_error(self) -> Bool:\n"
+            "        return self.raw() < 0\n"
+            "\n"
+            "    fn __str__(self) -> String:\n"
+            "        return String.write(self)\n"
+            "\n"
+            "    fn write_to[W: Writer](self, mut writer: W):\n"
+            "        writer.write(self.raw())\n"
+            "\n"
+        ))
+    for value in enum.values:
+        if enum.name == "VkResult":
+            value_name = value.name.removeprefix("VK_")
+        else:
+            prefix = pascal_to_snake(strip_extension_suffix(enum.name) + "_").upper()
+            value_name = value.name.removeprefix(prefix)
+        if value_name[0].isdigit():
+            value_name = f"N_{value_name}"
+        parts.append(f"    comptime {value_name} = {enum_name}(raw = {value.value})\n")
+    return "".join(parts)
+
+
+def emit_enums(files: Dict[str, str], enums: List[VkEnum | VkTypeAlias]):
+    parts: List[str] = []
+    for enum in enums:
+        if isinstance(enum, VkTypeAlias):
+            parts.append(emit_type_alias(enum))
+    for enum in enums:
+        if isinstance(enum, VkEnum):
+            parts.append("\n\n")
+            parts.append(emit_enum(enum))
+    files["enums.mojo"] = "".join(parts)
+
+
+def emit_type_alias(type_alias: VkTypeAlias) -> str:
+    declared_type_name = emit_mojo_type_name(type_alias.declared_type_name)
+    aliased_type_name = emit_mojo_type_name(type_alias.aliased_type_name)
+    return f"comptime {declared_type_name} = {aliased_type_name}\n"
+
+
+def emit_flags(files: Dict[str, str], flags: List[VkFlags | VkTypeAlias]):
+    parts: List[str] = []
+    for flag in flags:
+        if isinstance(flag, VkTypeAlias):
+            parts.append(emit_type_alias(flag))
+    for flag in flags:
+        if not isinstance(flag, VkFlags):
+            continue
+        flags_name = emit_mojo_type_name(flag.flags_name)
+        flag_bits_name = emit_mojo_type_name(flag.flag_bits.name)
+        parts.append((
+            f"\n\n"
+            f'@register_passable("trivial")\n'
+            f"struct {flags_name}(Equatable):\n"
+            f"    var _raw: UInt{flag.width}\n"
+            f"\n"
+            f"    @implicit\n"
+            f"    fn __init__(out self, *bits: {flag_bits_name}):\n"
+            f"        self._raw = 0\n"
+            f"        for bit in bits:\n"
+            f"            self._raw |= bit.raw()\n"
+            f"\n"
+            f"    fn __init__(out self, *, raw: UInt{flag.width}):\n"
+            f"        self._raw = raw\n"
+            f"\n"
+            f"    fn raw(self) -> UInt{flag.width}:\n"
+            f"        return self._raw\n"
+            f"\n"
+            f"    fn __eq__(self, other: Self) -> Bool:\n"
+            f"        return self._raw == other._raw\n"
+            f"\n"
+            f"    fn __or__(self, bit: {flag_bits_name}) -> Self:\n"
+            f"        return Self(raw = self.raw() | bit.raw())\n"
+            f"\n"
+            f"    fn __ror__(self, bit: {flag_bits_name}) -> Self:\n"
+            f"        return Self(raw = self.raw() | bit.raw())\n"
+            f"\n"
+            f"    fn __contains__(self, bit: {flag_bits_name}) -> Bool:\n"
+            f"        return Bool(self.raw() & bit.raw())\n"
+        ))
+        if len(flag.flag_bits.values) > 0 or len(flag.flag_bits.bits) > 0:
+            parts.append("\n")
+        prefix = pascal_to_snake(strip_extension_suffix(flag.flags_name) + "_").replace("_flags", "").upper()
+        for value in flag.flag_bits.values:
+            value_name = value.name.removeprefix(prefix)
+            parts.append(f"    comptime {value_name} = {flag_bits_name}(raw = {value.value})\n")
+        for bit in flag.flag_bits.bits:
+            bit_name = bit.name.removeprefix(prefix).removesuffix("_BIT").replace("_BIT_", "_")
+            if bit_name[0].isdigit():
+                bit_name = f"N_{bit_name}"
+            parts.append(f"    comptime {bit_name} = {flag_bits_name}(raw = 1 << {bit.bitpos})\n")
+        parts.append((
+            "\n\n"
+            f'@register_passable("trivial")\n'
+            f"struct {flag_bits_name}(Equatable):\n"
+            f"    var _raw: UInt{flag.width}\n"
+            f"\n"
+            f"    fn __init__(out self, *, raw: UInt{flag.width}):\n"
+            f"        self._raw = raw\n"
+            f"\n"
+            f"    fn raw(self) -> UInt{flag.width}:\n"
+            f"        return self._raw\n"
+            f"\n"
+            f"    fn __eq__(self, other: Self) -> Bool:\n"
+            f"        return self._raw == other._raw\n"
+            f"\n"
+            f"    fn __or__(self, bit: Self) -> {flags_name}:\n"
+            f"        return {flags_name}(raw = self.raw() | bit.raw())\n"
+        ))
+    files["flags.mojo"] = "".join(parts)
+
+
+def emit_handles(files: Dict[str, str], handles: List[VkHandle]):
+    HANDLE_TYPE_MAPPING: Dict[str, Literal["UInt", "UInt64"]] = {
+        "VK_DEFINE_HANDLE": "UInt",
+        "VK_DEFINE_NON_DISPATCHABLE_HANDLE": "UInt64",
+    }
+    parts: List[str] = []
+    for handle in handles:
+        handle_name = emit_mojo_type_name(handle.name)
+        handle_type = HANDLE_TYPE_MAPPING[handle.type]
+        parts.append((
+            f"\n\n"
+            f'@register_passable("trivial")\n'
+            f"struct {handle_name}(Equatable, Writable):\n"
+            f"    var _raw: {handle_type}\n"
+            f"    comptime NULL = Self(raw = 0)\n"
+            f"\n"
+            f"    fn __init__(out self, *, raw: {handle_type}):\n"
+            f"        self._raw = raw\n"
+            f"\n"
+            f"    fn raw(self) -> {handle_type}:\n"
+            f"        return self._raw\n"
+            f"\n"
+            f"    fn __eq__(self, other: Self) -> Bool:\n"
+            f"        return self._raw == other._raw\n"
+            f"\n"
+            f"    fn __str__(self) -> String:\n"
+            f"        return hex(self._raw)\n"
+            f"\n"
+            f"    fn write_to(self, mut writer: Some[Writer]):\n"
+            f"        writer.write(String(self))\n"
+        ))
+    files["handles.mojo"] = "".join(parts)
+
+
+def emit_fn_types(files: Dict[str, str], fn_types: List[VkFnType]):
+    parts: List[str] = []
+    parts.append((
+        "from .handles import *\n"
+        "from .structs import *\n"
+        "from .misc import *\n"
+        "\n"
+        "comptime Ptr = UnsafePointer\n"
+    ))
+    for fn_type in fn_types:
+        has_return = fn_type.return_type.name != "void"
+        return_part = f" -> {emit_mojo_type(fn_type.return_type)}" if has_return else ""
+        parts.append("\n\n")
+        parts.append(emit_fn_like(
+            f"comptime {fn_type.name} = fn(",
+            [f"{emit_mojo_type(arg.type)}" for arg in fn_type.params],
+            f"){return_part}",
+        ))
+    files["fn_types.mojo"] = "".join(parts)
+
+
+def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
+    parts: List[str] = []
+    parts.append((
+        "from .constants import *\n"
+        "from .basetypes import *\n"
+        "from .external_types import *\n"
+        "from .enums import *\n"
+        "from .flags import *\n"
+        "from .handles import *\n"
+        "from .fn_types import *\n"
+        "from .unions import *\n"
+        "from .misc import *\n"
+        "\n\n"
+        "comptime Ptr = UnsafePointer\n"
+        "\n\n"
+    ))
+    for struct in structs:
+        if isinstance(struct, VkTypeAlias):
+            parts.append(emit_type_alias(struct))
+    for struct in structs:
+        if not isinstance(struct, VkStruct):
+            continue
+        # name and members
+        struct_name = emit_mojo_type_name(struct.name)
+        parts.append((
+            f"\n\n"
+            f"struct {struct_name}(ImplicitlyCopyable):\n"
+        ))
+        if len(struct.members) == 0:
+            parts.append("    pass\n")
+        for member in struct.members:
+            member_name = pascal_to_snake(member.name)
+            is_version = member_name.endswith("version") and emit_mojo_type(member.type) == "UInt32"
+            member_type = "Version" if is_version else emit_mojo_type(member.type)
+            parts.append(f"    var {member_name}: {member_type}\n")
+        # init method
+        init_args = ["out self"]
+        for member in struct.members:
+            if member.type.name == "VkStructureType" and member.value is not None:
+                continue
+            member_name = pascal_to_snake(member.name)
+            is_version = member_name.endswith("version") and emit_mojo_type(member.type) == "UInt32"
+            member_type = "Version" if is_version else emit_mojo_type(member.type)
+            init_args.append(f"{member_name}: {member_type} = zero_init[{member_type}]()")
+        parts.append("\n")
+        parts.append(emit_fn_like(
+            "fn __init__(",
+            init_args,
+            "):\n",
+            base_indent_level = 1,
+        ))
+        for member in struct.members:
+            if member.type.name == "VkStructureType" and member.value is not None:
+                stype = assert_type(str, member.value).removeprefix('VK_STRUCTURE_TYPE_')
+                parts.append(f"        self.s_type = StructureType.{stype}\n")
+            else:
+                member_name = pascal_to_snake(member.name)
+                parts.append(f"        self.{member_name} = {member_name}\n")
+        # string helpers
+        for member in struct.members:
+            if not is_string(member.type):
+                continue
+            member_name = pascal_to_snake(member.name)
+            parts.append((
+                f"\n"
+                f"    fn {member_name}_slice(self) -> CStringSlice[origin_of(self.{member_name})]:\n"
+                f"        return CStringSlice[origin_of(self.{member_name})](unsafe_from_ptr = self.{member_name}.unsafe_ptr())\n"
+            ))
+    files["structs.mojo"] = "".join(parts)
+
+
+def emit_unions(files: Dict[str, str], unions: List[VkUnion]):
+    UNION_NAME_TO_ALIGN_TYPE: Dict[str, Literal["UInt32", "UInt", "UInt64"]] = {
+        "VkClearColorValue": "UInt32",
+        "VkClearValue": "UInt32",
+        "VkClusterAccelerationStructureOpInputNV": "UInt",
+        "VkPerformanceCounterResultKHR": "UInt64",
+        "VkPerformanceValueDataINTEL": "UInt64",
+        "VkPipelineExecutableStatisticValueKHR": "UInt64",
+        "VkDeviceOrHostAddressKHR": "UInt64",
+        "VkDeviceOrHostAddressConstKHR": "UInt64",
+        "VkDeviceOrHostAddressConstAMDX": "UInt64",
+        "VkAccelerationStructureGeometryDataKHR": "UInt64",
+        "VkIndirectExecutionSetInfoEXT": "UInt",
+        "VkIndirectCommandsTokenDataEXT": "UInt",
+        "VkDescriptorDataEXT": "UInt64",
+        "VkAccelerationStructureMotionInstanceDataNV": "UInt64",
+    }
+    parts: List[str] = []
+    parts.append((
+        "from memory import memcpy\n"
+        "from sys import size_of\n"
+        "from .structs import *\n"
+        "\n\n"
+        "comptime Ptr = UnsafePointer\n"
+    ))
+    for union in unions:
+        union_name = emit_mojo_type_name(union.name)
+        align_type = UNION_NAME_TO_ALIGN_TYPE[union.name]
+        parts.append("".join((
+            f"\n\n",
+            f"struct {union_name}(ImplicitlyCopyable):\n",
+            f"    comptime _size = max(\n",
+            *(f"        size_of[{emit_mojo_type(member_type)}](),\n" for member_type in union.member_types),
+            f"    )\n",
+            f"    comptime _AlignType = {align_type}\n",
+            f"    comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]\n",
+            f"    var _value: Self._InnerType\n",
+        )))
+        for member_type in union.member_types:
+            parts.append((
+                f"\n"
+                f"    fn __init__(out self, value: {emit_mojo_type(member_type)}):\n"
+                f"        self._value = zero_init[Self._InnerType]()\n"
+                f"        memcpy(\n"
+                f"            dest = Ptr(to=self._value).bitcast[Byte](),\n"
+                f"            src = Ptr(to=value).bitcast[Byte](),\n"
+                f"            count = size_of[{emit_mojo_type(member_type)}](),\n"
+                f"        )\n"
+            ))
+    files["unions.mojo"] = "".join(parts)
+
+
+def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
+    # Core Functions
+    parts: List[str] = []
+    parts.append((
+        "from sys import OwnedDLHandle, RTLD\n"
+        "from .fn_types import *\n"
+        "from .handles import *\n"
+        "from .structs import *\n"
+        "from .misc import *\n"
+        "\n\n"
+        "comptime Ptr = UnsafePointer\n"
+        "\n\n"
+        "trait GlobalFunctions:\n"
+        "    fn handle(self) -> ref [self] OwnedDLHandle:\n"
+        "        ...\n"
+    ))
+    for command_level, core_versions in parsed_commands.core_commands.items():
+        # per-version {level}Functions
+        for core_version, versioned_commands in core_versions.items():
+            fn_group_name = f"{command_level.capitalize()}FunctionsV{core_version.major}_{core_version.minor}"
+            traits = (["GlobalFunctions"] if command_level == "global" else []) + ["Movable"]
+            trait_section = f"({', '.join(traits)})"
+            addition_versions = list({cmd.version for cmd in versioned_commands})
+            addition_versions.sort(key=lambda v: (v.major, v.minor))
+
+            parts.append((
+                f"\n\n"
+                f"struct {fn_group_name}{trait_section}:\n"
+                f"    var _handle: OwnedDLHandle\n" if command_level == "global" else ""
+            ))
+            for addition_version in addition_versions:
+                req_ver_str = f"{addition_version.major}_{addition_version.minor}"
+                parts.append(f"    var _v{req_ver_str}: {command_level.capitalize()}FunctionAdditionsV{req_ver_str}\n")
+            parts.append("\n")
+            if command_level == "global":
+                parts.append((
+                    "    fn __init__(out self) raises:\n"
+                    '        self._handle = OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)\n'
+                ))
+            else:
+                parts.append(emit_fn_like(
+                    f"fn __init__(\n",
+                    [
+                        f"out self",
+                        f"global_functions: GlobalFunctionsV{core_version.major}_{core_version.minor}",
+                        f"{command_level}: {command_level.capitalize()}",
+                    ],
+                    f") raises:\n",
+                    base_indent_level = 1,
+                ))
+            for addition_version in addition_versions:
+                req_ver_str = f"{addition_version.major}_{addition_version.minor}"
+                args = "self._handle" if command_level == "global" else f"{command_level}, global_functions.handle()"
+                parts.append(
+                    f"        self._v{req_ver_str} = {command_level.capitalize()}FunctionAdditionsV{req_ver_str}({args})\n"
+                )
+            if command_level == "global":
+                parts.append((
+                    "\n"
+                    "    fn handle(self) -> ref [self] OwnedDLHandle:\n"
+                    "        return self._handle\n"
+                ))
+            for versioned_command in versioned_commands:
+                parts.append(emit_generic_function_definition(versioned_command.command, versioned_command.version))
+
+        # per-version {level}FunctionAdditions
+        for core_version, versioned_commands in core_versions.items():
+            new_commands = [cmd for cmd in versioned_commands if cmd.version == core_version]
+            if len(new_commands) == 0:
+                continue
+            parts.append((
+                f"\n\n"
+                f"struct {command_level.capitalize()}FunctionAdditionsV{core_version.major}_{core_version.minor}(Copyable, Movable):\n"
+            ))
+            for new_command in new_commands:
+                mojo_command_name = pascal_to_snake(new_command.command.name).removeprefix("vk_")
+                ret_type = emit_mojo_type(new_command.command.return_type)
+                sig_ret = f" -> {ret_type}" if ret_type != "NoneType" else ""
+                parts.append(emit_fn_like(
+                    f"var {mojo_command_name}: fn(",
+                    [f"{arg.name}: {emit_mojo_type(arg.type)}" for arg in new_command.command.params],
+                    f"){sig_ret}\n",
+                    base_indent_level = 1,
+                ))
+            parts.append("\n")
+            if command_level == "global":
+                parts.append("    fn __init__(out self, handle: OwnedDLHandle) raises:\n")
+            else:
+                parts.append(
+                    f"    fn __init__(out self, {command_level}: {command_level.capitalize()}, handle: OwnedDLHandle) raises:\n"
+                )
+            get_proc_level = "instance" if command_level == "global" else command_level
+            if len(versioned_commands) == 0:
+                parts.append("pass")
+            else:
+                level_arg = f"{get_proc_level}: {get_proc_level.capitalize()}"
+                parts.append((
+                    f"        get_{get_proc_level}_proc_addr = handle.get_function[\n"
+                    f"            fn({level_arg}, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction\n"
+                    f'        ]("vkGet{get_proc_level.capitalize()}ProcAddr")\n'
+                ))
+            for new_command in new_commands:
+                mojo_command_name = pascal_to_snake(new_command.command.name).removeprefix("vk_")
+                handle_arg = "Instance.NULL" if command_level == "global" else command_level
+                parts.append((
+                    f"        self.{mojo_command_name} = Ptr(to=get_{get_proc_level}_proc_addr(\n"
+                    f'            {handle_arg}, "{new_command.command.name}".unsafe_ptr()\n'
+                    f"        )).bitcast[__type_of(self.{mojo_command_name})]()[]\n"
+                ))
+    files["core_functions.mojo"] = "".join(parts)
+
+    # Extension Functions
+    extension_parts_by_tag: Dict[str, List[str]] = {extension_tag: [] for extension_tag in parsed_commands.extension_commands.keys()}
+    for parts in extension_parts_by_tag.values():
+        parts.append("from vk.core_functions import GlobalFunctions\n")
+    for extension_tag, extensions in parsed_commands.extension_commands.items():
+        for extension in extensions:
+            extension_parts = extension_parts_by_tag[extension_tag]
+            # eg. "VK_KHR_swapchain" -> "Swapchain" or "VK_EXT_debug_utils" -> "DebugUtils"
+            extension_name = "".join(word.capitalize() for word in extension.name.split("_")[2:])
+            extension_parts.append((
+                f"\n\n"
+                f"struct {extension_name}(Copyable):"
+            ))
+            for command in extension.commands:
+                mojo_command_name = pascal_to_snake(emit_mojo_type_name(command.name))
+                ret_type = emit_mojo_type(command.return_type)
+                sig_ret = f" -> {ret_type}" if ret_type != "NoneType" else ""
+                extension_parts.append(emit_fn_like(
+                    f"var _{mojo_command_name}: fn(",
+                    [f"{arg.name}: {emit_mojo_type(arg.type)}" for arg in command.params],
+                    f"){sig_ret}\n",
+                    base_indent_level = 1,
+                ))
+            parts.append((
+                f"\n"
+                f"fn __init__[T: GlobalFunctions](out self, global_fns: T, {extension.type}: {extension.type.capitalize()}):\n"
+                f"    var get_{extension.type}_proc_addr = global_fns.handle().get_function[\n"
+                f"        fn({extension.type}: {extension.type.capitalize()}, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction\n"
+                f'    ]("vkGet{extension.type.capitalize()}ProcAddr")\n'
+            ))
+            for command in extension.commands:
+                mojo_command_name = pascal_to_snake(emit_mojo_type_name(command.name))
+                parts.append((
+                    f"    self._{mojo_command_name} = Ptr(to=get_{extension.type}_proc_addr("
+                    f'        {extension.type}, "{command.name}".unsafe_ptr()'
+                    f"    )).bitcast[__type_of(self._{mojo_command_name})]()[]"
+                ))
+            for command in extension.commands:
+                parts.append(emit_generic_function_definition(command))
+
+    extension_module_parts: List[str] = []
+    for extension_tag in parsed_commands.extension_commands.keys():
+        extension_module_parts.append(f"import .{extension_tag.lower()}")
+    files["extensions/__init__.mojo"] = "".join(extension_module_parts)
+    for extension_tag, extension_parts in extension_parts_by_tag.items():
+        files[f"extensions/{extension_tag.lower()}.mojo"] = "".join(extension_parts)
+
+
+def emit_generic_function_definition(command: VkCommand, version: Optional[VkVersion]=None) -> str:
+    # we special case this because it's the only command that deals with the Version type directly
+    if command.name == "vkEnumerateInstanceVersion":
+        return (
+            "\n"
+            "fn enumerate_instance_version(self, mut version: Version) -> Result:\n"
+            '    """See official vulkan docs for details.\n'
+            "\n"
+            "    https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html\n"
+            '    """\n'
+            "    return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())\n"
+        )
+
+    sig_arg_strs: List[str] = ["self"]
+    ffi_call_args: List[str] = []
+    wrapper_call_args: List[str] = []
+    for arg in command.params:
+        mojo_arg_name = pascal_to_snake(arg.name)
+        is_qnx_type = arg.type.ptr_level == 1 and arg.type.name in ("_screen_context", "_screen_window", "_screen_buffer")
+        is_required_ptr_to_scalar = not arg.optional and arg.type.ptr_level == 1 and arg.type.array_dim is None
+        if is_qnx_type and arg.type.const:
+            sig_arg_strs.append(f"{mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type)}")
+            ffi_call_args.append(mojo_arg_name.removeprefix('p_'))
+            wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
+        elif is_qnx_type and not arg.type.const:
+            sig_arg_strs.append(f"mut {mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type)}")
+            ffi_call_args.append(mojo_arg_name.removeprefix('p_'))
+            wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
+        elif is_required_ptr_to_scalar and arg.type.const:
+            sig_arg_strs.append(f"{mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type, strip_ptr=True)}")
+            ffi_call_args.append(f"Ptr(to={mojo_arg_name.removeprefix('p_')})")
+            wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
+        elif is_required_ptr_to_scalar and not arg.type.const:
+            sig_arg_strs.append(f"mut {mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type, strip_ptr=True)}")
+            ffi_call_args.append(f"Ptr(to={mojo_arg_name.removeprefix('p_')})")
+            wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
+        else:
+            sig_arg_strs.append(f"{mojo_arg_name}: {emit_mojo_type(arg.type)}")
+            ffi_call_args.append(mojo_arg_name)
+            wrapper_call_args.append(mojo_arg_name)
+
+    # function for wrapping raw c function
+    mojo_command_name = pascal_to_snake(command.name).removeprefix("vk_")
+    mojo_type = emit_mojo_type(command.return_type)
+    sig_return_section = "" if mojo_type == "NoneType" else f" -> {emit_mojo_type(command.return_type)}"
+    
+    parts: List[str] = []
+    parts.append("\n")
+    parts.append(emit_fn_like(
+        f"fn {mojo_command_name}(",
+        sig_arg_strs,
+        f"){sig_return_section}:\n",
+        base_indent_level = 1,
+    ))
+    parts.append((
+        f'        """See official vulkan docs for details.\n'
+        f'\n'
+        f'        https://registry.khronos.org/vulkan/specs/latest/man/html/{command.name}.html\n'
+        f'        """\n'
+    ))
+    version_part = f"v{version.major}_{version.minor}." if version else ""
+    parts.append(emit_fn_like(
+        f"return self._{version_part}{mojo_command_name}(",
+        ffi_call_args,
+        f")\n",
+        base_indent_level = 2,
+    ))
+
+    # convenience function for functions that use the 2 call pattern
+    follows_2_call_pattern = False
+    if len(command.params) >= 2:
+        count_arg = command.params[-2]
+        data_arg = command.params[-1]
+        follows_2_call_pattern = (
+            command.return_type.name in ("VkResult", "void")
+            and count_arg.type.ptr_level == 1
+            and count_arg.type.name in ("uint32_t", "size_t")
+            and not count_arg.type.const
+            and data_arg.type.ptr_level >= 1
+            and not data_arg.type.const
+            and data_arg.optional
+            and data_arg.length == count_arg.name
+        )
+    if not follows_2_call_pattern:
+        return "".join(parts)
+    
+    has_result = command.return_type.name == "VkResult"
+    count_type = emit_mojo_type(command.params[-2].type, strip_ptr=True)
+    original_list_type = emit_mojo_type(command.params[-1].type, strip_ptr=True)
+    two_call_sig_arg_strs = sig_arg_strs[:-2]
+    if original_list_type == "NoneType":
+        list_type = "UInt8"
+        get_count_call_args = wrapper_call_args[:-2] + ["count", "Ptr[NoneType, MutAnyOrigin]()"]
+        fill_buffer_call_args = wrapper_call_args[:-2] + ["count", "list.unsafe_ptr().bitcast[NoneType]()"]
+    else:
+        list_type = original_list_type
+        get_count_call_args = wrapper_call_args[:-2] + ["count", f"Ptr[{list_type}, MutAnyOrigin]()"]
+        fill_buffer_call_args = wrapper_call_args[:-2] + ["count", "list.unsafe_ptr()"]
+
+    parts.append("\n")
+    if has_result:
+        parts.append(emit_fn_like(
+            f"fn {mojo_command_name}(",
+            two_call_sig_arg_strs,
+            f") -> ListResult[{list_type}]:\n",
+            base_indent_level = 1,
+        ))
+        parts.append((
+            f'        """See official vulkan docs for details.\n'
+            f"\n"
+            f'        https://registry.khronos.org/vulkan/specs/latest/man/html/{command.name}.html\n'
+            f'        """\n'
+            f"        var list = List[{list_type}]()\n"
+            f"        var count: {count_type} = 0\n"
+            f"        var result = Result.INCOMPLETE\n"
+            f"        while result == Result.INCOMPLETE:\n"
+        ))
+        parts.append(emit_fn_like(
+            f"result = self.{mojo_command_name}(",
+            get_count_call_args,
+            ")\n",
+            base_indent_level = 3,  
+        ))
+        parts.append((
+            "        if result == Result.SUCCESS and count > 0:\n"
+            "            list.reserve(Int(count))\n"
+        ))
+        parts.append(emit_fn_like(
+            f"result = self.{mojo_command_name}(",
+            fill_buffer_call_args,
+            ")\n",
+            base_indent_level = 3,
+        ))
+        parts.append((
+            f"        list._len = Int(count)\n"
+            f"        return ListResult(list^, result)\n"
+        ))
+    else:
+        parts.append(emit_fn_like(
+            f"fn {mojo_command_name}(",
+            two_call_sig_arg_strs,
+            f") -> List[{list_type}]:\n",
+            base_indent_level = 1,
+        ))
+        parts.append((
+            f'        """See official vulkan docs for details.\n'
+            f"\n"
+            f'        https://registry.khronos.org/vulkan/specs/latest/man/html/{command.name}.html\n'
+            f'        """\n'
+            f"        var list = List[{list_type}]()\n"
+            f"        var count: {count_type} = 0\n"
+        ))
+        parts.append(emit_fn_like(
+            f"self.{mojo_command_name}(",
+            get_count_call_args,
+            ")\n",
+            base_indent_level = 2,
+        ))
+        parts.append((
+            "        if count > 0:\n"
+            "            list.reserve(Int(count))\n"
+        ))
+        parts.append(emit_fn_like(
+            f"self.{mojo_command_name}(",
+            fill_buffer_call_args,
+            ")\n",
+            base_indent_level = 3,
+        ))
+        parts.append((
+            f"        list._len = Int(count)\n"
+            f"        return list^\n"
+        ))
+
+    return "".join(parts)
+
+
+# ----------------
+# Emission Helpers
+# ----------------
+
+
+def emit_mojo_type_name(old_name: str) -> str:
     mapping = {
         "void": "NoneType",
-        "char": "UInt8",
+        "char": "c_char",
         "size_t": "UInt",
         "int": "Int32",
         "int8_t": "Int8",
@@ -1232,6 +1537,53 @@ def new_type_name(old_name: str) -> str:
     if old_name in mapping:
         return mapping[old_name]
     return old_name.removeprefix("Vk")
+
+
+def emit_mojo_type(type: VkType, strip_ptr: bool=False, use_any_origin: bool=False) -> str:
+    MUT_ORIGIN = "MutAnyOrigin" if use_any_origin else "MutOrigin.external"
+    IMMUT_ORIGIN = "ImmutAnyOrigin" if use_any_origin else "ImmutOrigin.external"
+
+    mojo_type = emit_mojo_type_name(type.name)
+    pointers_remaining = type.ptr_level-1 if strip_ptr else type.ptr_level
+    if pointers_remaining >= 1:
+        mojo_type = f"Ptr[{mojo_type}, {IMMUT_ORIGIN if type.const else MUT_ORIGIN}]"
+        pointers_remaining -= 1
+    for _ in range(pointers_remaining):
+        mojo_type = f"Ptr[{mojo_type}, {MUT_ORIGIN}]"
+    if type.array_dim is not None:
+        mojo_type = f"InlineArray[{mojo_type}, Int({type.array_dim})]"
+
+    return mojo_type
+
+
+def is_string(type: VkType) -> bool:
+    is_array_string = type.array_dim is not None and type.name == "char"
+    is_char_ptr = type.ptr_level >= 1 and type.name == "char"
+    return is_array_string or is_char_ptr
+
+
+def emit_fn_like(
+    initial_line: str, arg_lines: Iterable[str], final_line: str,
+    spaces_per_indent: int=4, base_indent_level: int=0, max_line_len: Optional[int]=100,
+) -> str:
+    base_indent = " " * spaces_per_indent * base_indent_level
+    inner_indent = " " * spaces_per_indent * (base_indent_level + 1)
+    one_line_args = ", ".join(arg_lines)
+    one_liner = base_indent + initial_line + one_line_args + final_line
+    if max_line_len is None or len(one_liner) <= max_line_len:
+        return one_liner
+    lines: List[str] = [
+        base_indent + initial_line,
+        inner_indent + one_line_args,
+        base_indent + final_line,
+    ]
+    if all(len(line) <= max_line_len for line in lines):
+        return "\n".join(lines)
+    lines = [base_indent, initial_line, "\n"]
+    for arg_line in arg_lines:
+        lines.append(inner_indent + arg_line + ",\n")
+    lines.append(base_indent + final_line)
+    return "".join(lines)
 
 
 def strip_extension_suffix(name: str) -> str:
@@ -1290,442 +1642,6 @@ def pascal_to_snake(name: str) -> str:
     # digit -> letter, e.g. "AV1Thing" -> "AV1_Thing", "3D" -> "3_D"
     s = re.sub(r'(\d)([A-Za-z])', r'\1_\2', s)
     return s.lower()
-
-
-def mojo_type(vk_type: VkType, no_ptr: bool=False) -> str:
-    # vk.xml spells QNX handles as `struct _screen_* *` because it can\u2019t use typedefs.
-    # In QNX headers those are always typedef\u2019d to `screen_*_t`, which is what users see.
-    # We special-case rewrite them so generated APIs match the public typedefs, not the
-    # underscored struct tags.
-    if vk_type.name in ("_screen_context", "_screen_window", "_screen_buffer") and vk_type.ptr_level == 1:
-        return vk_type.name.removeprefix("_") + "_t"
-    # typical path
-    t = new_type_name(vk_type.name)
-    if vk_type.array_dim is not None:
-        return f"InlineArray[{t}, Int({vk_type.array_dim.removeprefix('VK_')})]"
-    if not no_ptr:
-        for _ in range(vk_type.ptr_level):
-            t = f"Ptr[{t}]"
-    return t
-
-
-def generic_function_definition(fn_writer: CodeWriter | CodeWriterView, command: VkCommand, version: Optional[VkVersion]=None):
-    # we special case this because it's the only command that deals with the Version type directly
-    if command.name == "vkEnumerateInstanceVersion":
-        fn_writer.newline()
-        fn_writer.write_line("fn enumerate_instance_version(self, mut version: Version) -> Result:")
-        body_writer = fn_writer.indented()
-        body_writer.write_lines((
-            '"""See official vulkan docs for details.\n',
-            "https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html",
-            '"""',
-            "return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())",
-        ))
-        return
-
-    sig_arg_strs: List[str] = ["self"]
-    ffi_call_args: List[str] = []
-    wrapper_call_args: List[str] = []
-    for arg in command.args:
-        mojo_arg_name = pascal_to_snake(arg.name)
-        is_qnx_type = arg.type.name in ("_screen_context", "_screen_window", "_screen_buffer") and arg.type.ptr_level == 1
-        is_required_ptr_to_scalar = arg.type.ptr_level == 1 and arg.length is None and not arg.optional
-        if is_qnx_type and arg.const:
-            sig_arg_strs.append(f"{mojo_arg_name.removeprefix('p_')}: {mojo_type(arg.type)}")
-            ffi_call_args.append(mojo_arg_name.removeprefix('p_'))
-            wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
-        elif is_qnx_type and not arg.const:
-            sig_arg_strs.append(f"mut {mojo_arg_name.removeprefix('p_')}: {mojo_type(arg.type)}")
-            ffi_call_args.append(mojo_arg_name.removeprefix('p_'))
-            wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
-        elif is_required_ptr_to_scalar and arg.const:
-            sig_arg_strs.append(f"{mojo_arg_name.removeprefix('p_')}: {mojo_type(arg.type, no_ptr=True)}")
-            ffi_call_args.append(f"Ptr(to={mojo_arg_name.removeprefix('p_')})")
-            wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
-        elif is_required_ptr_to_scalar and not arg.const:
-            sig_arg_strs.append(f"mut {mojo_arg_name.removeprefix('p_')}: {mojo_type(arg.type, no_ptr=True)}")
-            ffi_call_args.append(f"Ptr(to={mojo_arg_name.removeprefix('p_')})")
-            wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
-        else:
-            sig_arg_strs.append(f"{mojo_arg_name}: {mojo_type(arg.type)}")
-            ffi_call_args.append(mojo_arg_name)
-            wrapper_call_args.append(mojo_arg_name)
-
-    # function for wrapping raw c function
-    mojo_command_name = pascal_to_snake(command.name).removeprefix("vk_")
-    sig_return_section = "" if command.return_type.name == "void" else f" -> {mojo_type(command.return_type)}"
-
-    fn_writer.newline()
-    fn_writer.write_fn_sig_or_call(
-        initial_line = f"fn {mojo_command_name}(",
-        body_lines = sig_arg_strs,
-        final_line = f"){sig_return_section}:",
-    )
-    body_writer = fn_writer.indented()
-    body_writer.write_lines((
-        '"""See official vulkan docs for details.\n',
-        'https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html',
-        '"""',
-    ))
-    version_part = f"v{version.major}_{version.minor}." if version else ""
-    body_writer.write_fn_sig_or_call(
-        initial_line = f"return self._{version_part}{mojo_command_name}(",
-        body_lines = ffi_call_args,
-        final_line = ")",
-    )
-
-    # convenience function for functions that use the 2 call pattern
-    follows_2_call_pattern = False
-    if len(command.args) >= 2:
-        count_arg = command.args[-2]
-        data_arg = command.args[-1]
-        follows_2_call_pattern = (
-            command.return_type.name in ("VkResult", "void")
-            and count_arg.type.ptr_level == 1
-            and count_arg.type.name in ("uint32_t", "size_t")
-            and not count_arg.const
-            and data_arg.type.ptr_level >= 1
-            and not data_arg.const
-            and data_arg.optional
-            and data_arg.length == count_arg.name
-        )
-    if follows_2_call_pattern:
-        has_result = command.return_type.name == "VkResult"
-        count_type = mojo_type(command.args[-2].type, no_ptr=True)
-        original_list_type = mojo_type(command.args[-1].type, no_ptr=True)
-        two_call_sig_arg_strs = sig_arg_strs[:-2]
-        if original_list_type == "NoneType":
-            list_type = "UInt8"
-            get_count_call_args = wrapper_call_args[:-2] + ["count", "Ptr[NoneType]()"]
-            fill_buffer_call_args = wrapper_call_args[:-2] + ["count", "list.unsafe_ptr().bitcast[NoneType]()"]
-        else:
-            list_type = original_list_type
-            get_count_call_args = wrapper_call_args[:-2] + ["count", f"Ptr[{list_type}]()"]
-            fill_buffer_call_args = wrapper_call_args[:-2] + ["count", "list.unsafe_ptr()"]
-
-        fn_writer.newline()
-        if has_result:
-            fn_writer.write_fn_sig_or_call(
-                initial_line = f"fn {mojo_command_name}(",
-                body_lines = two_call_sig_arg_strs,
-                final_line = f") -> ListResult[{list_type}]:",
-            )
-            body_writer = fn_writer.indented()
-            body_writer.write_lines((
-                f'"""See official vulkan docs for details.\n',
-                f'https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html',
-                f'"""',
-                f"var list = List[{list_type}]()",
-                f"var count: {count_type} = 0",
-                f"var result = Result.INCOMPLETE",
-                f"while result == Result.INCOMPLETE:",
-            ))
-            loop_writer = body_writer.indented()
-            loop_writer.write_fn_sig_or_call(
-                initial_line = f"result = self.{mojo_command_name}(",
-                body_lines = get_count_call_args,
-                final_line = ")",
-            )
-            loop_writer.write_line("if result == Result.SUCCESS and count > 0:")
-            if_block_writer = loop_writer.indented()
-            if_block_writer.write_line("list.reserve(Int(count))")
-            if_block_writer.write_fn_sig_or_call(
-                initial_line = f"result = self.{mojo_command_name}(",
-                body_lines = fill_buffer_call_args,
-                final_line = ")",
-            )
-            body_writer.write_lines((
-                f"list._len = Int(count)",
-                f"return ListResult(list^, result)",
-            ))
-        else:
-            fn_writer.write_fn_sig_or_call(
-                initial_line = f"fn {mojo_command_name}(",
-                body_lines = two_call_sig_arg_strs,
-                final_line = f") -> List[{list_type}]:",
-            )
-            body_writer = fn_writer.indented()
-            body_writer.write_lines((
-                f'"""See official vulkan docs for details.\n',
-                f'https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html',
-                f'"""',
-                f"var list = List[{list_type}]()",
-                f"var count: {count_type} = 0",
-            ))
-            body_writer.write_fn_sig_or_call(
-                initial_line = f"self.{mojo_command_name}(",
-                body_lines = get_count_call_args,
-                final_line = ")",
-            )
-            body_writer.write_line("if count > 0:")
-            if_block_writer = body_writer.indented()
-            if_block_writer.write_line("list.reserve(Int(count))")
-            if_block_writer.write_fn_sig_or_call(
-                initial_line = f"self.{mojo_command_name}(",
-                body_lines = fill_buffer_call_args,
-                final_line = ")",
-            )
-            body_writer.write_lines((
-                f"list._len = Int(count)",
-                f"return list^",
-            ))
-
-
-@dataclass
-class CodeWriter:
-    SPACES_PER_INDENT: ClassVar[int] = 4
-    MAX_LINE_LEN: ClassVar[int] = 100
-    parts: List[str]
-    indent_level: int
-
-    def __init__(self, indent_level: int=0):
-        self.parts = []
-        self.indent_level = max(0, indent_level)
-    
-    def content(self) -> str:
-        return "".join(self.parts)
-
-    def write_line(self, line: str, extra_indent: int=0):
-        self.parts.append(" " * ((self.indent_level + extra_indent) * self.SPACES_PER_INDENT))
-        self.parts.append(line)
-        self.parts.append("\n")
-
-    def write_lines(self, lines: Iterable[str], extra_indent: int=0):
-        for line in lines:
-            self.write_line(line, extra_indent)
-
-    def write_fn_sig_or_call(self, initial_line: str, body_lines: Iterable[str], final_line: str):
-        one_line_body = ", ".join(body_lines)
-        one_liner = f"{initial_line}{one_line_body}{final_line}"
-        if not self.line_too_long(one_liner):
-            self.write_line(one_liner)
-            return
-        three_liner_lines = (
-            initial_line,
-            (" " * self.SPACES_PER_INDENT) + one_line_body,
-            final_line,
-        )
-        if not any(self.line_too_long(line) for line in three_liner_lines):
-            self.write_lines(three_liner_lines)
-            return
-        self.write_line(initial_line)
-        self.indented().write_lines(f"{line}," for line in body_lines)
-        self.write_line(final_line)
-    
-    def newline(self, n: int=1):
-        self.parts.append("\n" * n)
-
-    def line_too_long(self, line: str, extra_indent: int=0) -> bool:
-        line_len = len(line) + (self.indent_level + extra_indent) * self.SPACES_PER_INDENT
-        return line_len > self.MAX_LINE_LEN
-    
-    def indented(self, n_levels: int=1) -> CodeWriterView:
-        return CodeWriterView(self, n_levels)
-
-
-@dataclass
-class CodeWriterView:
-    base: CodeWriter
-    extra_indent: int
-
-    def write_line(self, line: str, extra_indent: int=0):
-        self.base.write_line(line, self.extra_indent + extra_indent)
-    
-    def write_lines(self, lines: Iterable[str], extra_indent: int=0):
-        self.base.write_lines(lines, self.extra_indent + extra_indent)
-    
-    def write_fn_sig_or_call(self, initial_line: str, body_lines: Iterable[str], final_line: str):
-        one_line_body = ", ".join(body_lines)
-        one_liner = f"{initial_line}{one_line_body}{final_line}"
-        if not self.line_too_long(one_liner):
-            self.write_line(one_liner)
-            return
-        three_liner_lines = (
-            initial_line,
-            (" " * self.base.SPACES_PER_INDENT) + one_line_body,
-            final_line,
-        )
-        if not any(self.line_too_long(line) for line in three_liner_lines):
-            self.write_lines(three_liner_lines)
-            return
-        self.write_line(initial_line)
-        self.indented().write_lines(f"{line}," for line in body_lines)
-        self.write_line(final_line)
-
-    def newline(self, n: int=1):
-        self.base.newline(n)
-    
-    def line_too_long(self, line: str, extra_indent: int=0) -> bool:
-        return self.base.line_too_long(line, self.extra_indent + extra_indent)
-
-    def indented(self, n_levels: int=1) -> CodeWriterView:
-        return CodeWriterView(self.base, self.extra_indent + n_levels)
-
-
-VkLevel = Literal["global", "instance", "device"]
-
-
-@dataclass
-class ParsedRegistry:
-    constants: List[VkConstant]
-    basetypes: List[VkBasetype]
-    external_types: List[VkExternalType | VkEnum]
-    enum_aliases: List[VkTypeAlias]
-    enums: List[VkEnum]
-    flag_aliases: List[VkTypeAlias]
-    flags: List[VkFlags]
-    handles: List[VkHandle]
-    fn_types: List[VkFnType]
-    struct_aliases: List[VkTypeAlias]
-    structs: List[VkStruct]
-    unions: List[VkUnion]
-    core_commands: Dict[VkLevel, Dict[VkVersion, List[VkVersionedCommand]]]
-    extension_commands: Dict[str, List[VkExtensionCommands]]
-
-
-@dataclass
-class VkConstant:
-    name: str
-    type: str
-    value: str
-
-
-@dataclass
-class VkBasetype:
-    name: str
-    underlying_type: VkType
-
-
-@dataclass
-class VkExternalType:
-    name: str
-    underlying_type: Optional[Literal["uint32_t", "size_t"]]
-
-
-@dataclass
-class VkType:
-    name: str
-    ptr_level: int = 0
-    array_dim: Optional[str] = None
-
-
-@dataclass
-class VkTypeAlias:
-    declared_type_name: str
-    aliased_type_name: str
-
-
-@dataclass
-class VkEnum:
-    name: str
-    values: List[VkEnumValue]
-
-
-@dataclass
-class VkEnumValue:
-    name: str
-    value: int
-
-
-@dataclass
-class VkFlags:
-    flags_name: str
-    flag_bits: VkFlagBits
-    width: Literal[32, 64]
-
-
-@dataclass
-class VkFlagBits:
-    name: str
-    values: List[VkFlagValue]
-    bits: List[VkFlagBit]
-
-
-@dataclass
-class VkFlagValue:
-    name: str
-    value: int
-
-
-@dataclass
-class VkFlagBit:
-    name: str
-    bitpos: int
-
-
-@dataclass
-class VkHandle:
-    name: str
-    type: Literal["VK_DEFINE_HANDLE", "VK_DEFINE_NON_DISPATCHABLE_HANDLE"]
-
-
-@dataclass
-class VkFnType:
-    name: str
-    return_type: VkType
-    args: List[VkFnArg]
-
-
-@dataclass
-class VkFnArg:
-    name: str
-    type: VkType
-    const: bool
-
-
-@dataclass
-class VkStruct:
-    name: str
-    members: List[VkStructMember]
-
-
-@dataclass
-class VkStructMember:
-    name: str
-    type: VkType
-    value: Optional[str]
-    length: Optional[str]
-
-
-@dataclass
-class VkUnion:
-    name: str
-    member_types: List[VkType]
-
-
-@dataclass
-class VkVersionedCommand:
-    version: VkVersion
-    command: VkCommand
-
-
-@dataclass
-class VkExtensionCommands:
-    name: str
-    type: Literal["instance", "device"]
-    commands: List[VkCommand]
-
-
-@dataclass(frozen=True)
-class VkVersion:
-    major: int
-    minor: int
-
-
-@dataclass
-class VkCommand:
-    name: str
-    return_type: VkType
-    args: List[VkCommandArg]
-
-
-@dataclass
-class VkCommandArg:
-    name: str
-    type: VkType
-    const: bool
-    length: Optional[str]
-    optional: bool
 
 
 if __name__ == "__main__":

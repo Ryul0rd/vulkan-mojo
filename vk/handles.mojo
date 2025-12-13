@@ -1,10 +1,9 @@
 
 
 @register_passable("trivial")
-struct Instance(EqualityComparable, Writable):
+struct Instance(Equatable, Writable):
     var _raw: UInt
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt):
         self._raw = raw
@@ -12,7 +11,7 @@ struct Instance(EqualityComparable, Writable):
     fn raw(self) -> UInt:
         return self._raw
 
-    fn __eq__(self, other: Instance) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -23,10 +22,9 @@ struct Instance(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct PhysicalDevice(EqualityComparable, Writable):
+struct PhysicalDevice(Equatable, Writable):
     var _raw: UInt
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt):
         self._raw = raw
@@ -34,7 +32,7 @@ struct PhysicalDevice(EqualityComparable, Writable):
     fn raw(self) -> UInt:
         return self._raw
 
-    fn __eq__(self, other: PhysicalDevice) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -45,10 +43,9 @@ struct PhysicalDevice(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct Device(EqualityComparable, Writable):
+struct Device(Equatable, Writable):
     var _raw: UInt
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt):
         self._raw = raw
@@ -56,7 +53,7 @@ struct Device(EqualityComparable, Writable):
     fn raw(self) -> UInt:
         return self._raw
 
-    fn __eq__(self, other: Device) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -67,10 +64,9 @@ struct Device(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct Queue(EqualityComparable, Writable):
+struct Queue(Equatable, Writable):
     var _raw: UInt
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt):
         self._raw = raw
@@ -78,7 +74,7 @@ struct Queue(EqualityComparable, Writable):
     fn raw(self) -> UInt:
         return self._raw
 
-    fn __eq__(self, other: Queue) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -89,10 +85,9 @@ struct Queue(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct CommandBuffer(EqualityComparable, Writable):
+struct CommandBuffer(Equatable, Writable):
     var _raw: UInt
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt):
         self._raw = raw
@@ -100,7 +95,7 @@ struct CommandBuffer(EqualityComparable, Writable):
     fn raw(self) -> UInt:
         return self._raw
 
-    fn __eq__(self, other: CommandBuffer) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -111,10 +106,9 @@ struct CommandBuffer(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct DeviceMemory(EqualityComparable, Writable):
+struct DeviceMemory(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -122,7 +116,7 @@ struct DeviceMemory(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: DeviceMemory) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -133,10 +127,9 @@ struct DeviceMemory(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct CommandPool(EqualityComparable, Writable):
+struct CommandPool(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -144,7 +137,7 @@ struct CommandPool(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: CommandPool) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -155,10 +148,9 @@ struct CommandPool(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct Buffer(EqualityComparable, Writable):
+struct Buffer(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -166,7 +158,7 @@ struct Buffer(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: Buffer) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -177,10 +169,9 @@ struct Buffer(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct BufferView(EqualityComparable, Writable):
+struct BufferView(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -188,7 +179,7 @@ struct BufferView(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: BufferView) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -199,10 +190,9 @@ struct BufferView(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct Image(EqualityComparable, Writable):
+struct Image(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -210,7 +200,7 @@ struct Image(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: Image) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -221,10 +211,9 @@ struct Image(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct ImageView(EqualityComparable, Writable):
+struct ImageView(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -232,7 +221,7 @@ struct ImageView(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: ImageView) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -243,10 +232,9 @@ struct ImageView(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct ShaderModule(EqualityComparable, Writable):
+struct ShaderModule(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -254,7 +242,7 @@ struct ShaderModule(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: ShaderModule) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -265,10 +253,9 @@ struct ShaderModule(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct Pipeline(EqualityComparable, Writable):
+struct Pipeline(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -276,7 +263,7 @@ struct Pipeline(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: Pipeline) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -287,10 +274,9 @@ struct Pipeline(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct PipelineLayout(EqualityComparable, Writable):
+struct PipelineLayout(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -298,7 +284,7 @@ struct PipelineLayout(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: PipelineLayout) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -309,10 +295,9 @@ struct PipelineLayout(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct Sampler(EqualityComparable, Writable):
+struct Sampler(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -320,7 +305,7 @@ struct Sampler(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: Sampler) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -331,10 +316,9 @@ struct Sampler(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct DescriptorSet(EqualityComparable, Writable):
+struct DescriptorSet(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -342,7 +326,7 @@ struct DescriptorSet(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: DescriptorSet) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -353,10 +337,9 @@ struct DescriptorSet(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct DescriptorSetLayout(EqualityComparable, Writable):
+struct DescriptorSetLayout(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -364,7 +347,7 @@ struct DescriptorSetLayout(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: DescriptorSetLayout) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -375,10 +358,9 @@ struct DescriptorSetLayout(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct DescriptorPool(EqualityComparable, Writable):
+struct DescriptorPool(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -386,7 +368,7 @@ struct DescriptorPool(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: DescriptorPool) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -397,10 +379,9 @@ struct DescriptorPool(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct Fence(EqualityComparable, Writable):
+struct Fence(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -408,7 +389,7 @@ struct Fence(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: Fence) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -419,10 +400,9 @@ struct Fence(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct Semaphore(EqualityComparable, Writable):
+struct Semaphore(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -430,7 +410,7 @@ struct Semaphore(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: Semaphore) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -441,10 +421,9 @@ struct Semaphore(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct Event(EqualityComparable, Writable):
+struct Event(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -452,7 +431,7 @@ struct Event(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: Event) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -463,10 +442,9 @@ struct Event(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct QueryPool(EqualityComparable, Writable):
+struct QueryPool(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -474,7 +452,7 @@ struct QueryPool(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: QueryPool) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -485,10 +463,9 @@ struct QueryPool(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct Framebuffer(EqualityComparable, Writable):
+struct Framebuffer(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -496,7 +473,7 @@ struct Framebuffer(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: Framebuffer) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -507,10 +484,9 @@ struct Framebuffer(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct RenderPass(EqualityComparable, Writable):
+struct RenderPass(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -518,7 +494,7 @@ struct RenderPass(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: RenderPass) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -529,10 +505,9 @@ struct RenderPass(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct PipelineCache(EqualityComparable, Writable):
+struct PipelineCache(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -540,7 +515,7 @@ struct PipelineCache(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: PipelineCache) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -551,10 +526,9 @@ struct PipelineCache(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct PipelineBinaryKHR(EqualityComparable, Writable):
+struct PipelineBinaryKHR(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -562,7 +536,7 @@ struct PipelineBinaryKHR(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: PipelineBinaryKHR) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -573,10 +547,9 @@ struct PipelineBinaryKHR(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct IndirectCommandsLayoutNV(EqualityComparable, Writable):
+struct IndirectCommandsLayoutNV(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -584,7 +557,7 @@ struct IndirectCommandsLayoutNV(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: IndirectCommandsLayoutNV) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -595,10 +568,9 @@ struct IndirectCommandsLayoutNV(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct IndirectCommandsLayoutEXT(EqualityComparable, Writable):
+struct IndirectCommandsLayoutEXT(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -606,7 +578,7 @@ struct IndirectCommandsLayoutEXT(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: IndirectCommandsLayoutEXT) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -617,10 +589,9 @@ struct IndirectCommandsLayoutEXT(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct IndirectExecutionSetEXT(EqualityComparable, Writable):
+struct IndirectExecutionSetEXT(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -628,7 +599,7 @@ struct IndirectExecutionSetEXT(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: IndirectExecutionSetEXT) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -639,10 +610,9 @@ struct IndirectExecutionSetEXT(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct DescriptorUpdateTemplate(EqualityComparable, Writable):
+struct DescriptorUpdateTemplate(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -650,7 +620,7 @@ struct DescriptorUpdateTemplate(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: DescriptorUpdateTemplate) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -661,10 +631,9 @@ struct DescriptorUpdateTemplate(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct SamplerYcbcrConversion(EqualityComparable, Writable):
+struct SamplerYcbcrConversion(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -672,7 +641,7 @@ struct SamplerYcbcrConversion(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: SamplerYcbcrConversion) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -683,10 +652,9 @@ struct SamplerYcbcrConversion(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct ValidationCacheEXT(EqualityComparable, Writable):
+struct ValidationCacheEXT(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -694,7 +662,7 @@ struct ValidationCacheEXT(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: ValidationCacheEXT) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -705,10 +673,9 @@ struct ValidationCacheEXT(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct AccelerationStructureKHR(EqualityComparable, Writable):
+struct AccelerationStructureKHR(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -716,7 +683,7 @@ struct AccelerationStructureKHR(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: AccelerationStructureKHR) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -727,10 +694,9 @@ struct AccelerationStructureKHR(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct AccelerationStructureNV(EqualityComparable, Writable):
+struct AccelerationStructureNV(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -738,7 +704,7 @@ struct AccelerationStructureNV(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: AccelerationStructureNV) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -749,10 +715,9 @@ struct AccelerationStructureNV(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct PerformanceConfigurationINTEL(EqualityComparable, Writable):
+struct PerformanceConfigurationINTEL(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -760,7 +725,7 @@ struct PerformanceConfigurationINTEL(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: PerformanceConfigurationINTEL) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -771,10 +736,9 @@ struct PerformanceConfigurationINTEL(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct BufferCollectionFUCHSIA(EqualityComparable, Writable):
+struct BufferCollectionFUCHSIA(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -782,7 +746,7 @@ struct BufferCollectionFUCHSIA(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: BufferCollectionFUCHSIA) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -793,10 +757,9 @@ struct BufferCollectionFUCHSIA(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct DeferredOperationKHR(EqualityComparable, Writable):
+struct DeferredOperationKHR(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -804,7 +767,7 @@ struct DeferredOperationKHR(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: DeferredOperationKHR) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -815,10 +778,9 @@ struct DeferredOperationKHR(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct PrivateDataSlot(EqualityComparable, Writable):
+struct PrivateDataSlot(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -826,7 +788,7 @@ struct PrivateDataSlot(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: PrivateDataSlot) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -837,10 +799,9 @@ struct PrivateDataSlot(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct CuModuleNVX(EqualityComparable, Writable):
+struct CuModuleNVX(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -848,7 +809,7 @@ struct CuModuleNVX(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: CuModuleNVX) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -859,10 +820,9 @@ struct CuModuleNVX(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct CuFunctionNVX(EqualityComparable, Writable):
+struct CuFunctionNVX(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -870,7 +830,7 @@ struct CuFunctionNVX(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: CuFunctionNVX) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -881,10 +841,9 @@ struct CuFunctionNVX(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct OpticalFlowSessionNV(EqualityComparable, Writable):
+struct OpticalFlowSessionNV(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -892,7 +851,7 @@ struct OpticalFlowSessionNV(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: OpticalFlowSessionNV) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -903,10 +862,9 @@ struct OpticalFlowSessionNV(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct MicromapEXT(EqualityComparable, Writable):
+struct MicromapEXT(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -914,7 +872,7 @@ struct MicromapEXT(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: MicromapEXT) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -925,10 +883,9 @@ struct MicromapEXT(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct ShaderEXT(EqualityComparable, Writable):
+struct ShaderEXT(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -936,7 +893,7 @@ struct ShaderEXT(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: ShaderEXT) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -947,10 +904,9 @@ struct ShaderEXT(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct TensorARM(EqualityComparable, Writable):
+struct TensorARM(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -958,7 +914,7 @@ struct TensorARM(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: TensorARM) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -969,10 +925,9 @@ struct TensorARM(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct TensorViewARM(EqualityComparable, Writable):
+struct TensorViewARM(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -980,7 +935,7 @@ struct TensorViewARM(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: TensorViewARM) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -991,10 +946,9 @@ struct TensorViewARM(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct DataGraphPipelineSessionARM(EqualityComparable, Writable):
+struct DataGraphPipelineSessionARM(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -1002,7 +956,7 @@ struct DataGraphPipelineSessionARM(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: DataGraphPipelineSessionARM) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -1013,10 +967,9 @@ struct DataGraphPipelineSessionARM(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct DisplayKHR(EqualityComparable, Writable):
+struct DisplayKHR(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -1024,7 +977,7 @@ struct DisplayKHR(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: DisplayKHR) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -1035,10 +988,9 @@ struct DisplayKHR(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct DisplayModeKHR(EqualityComparable, Writable):
+struct DisplayModeKHR(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -1046,7 +998,7 @@ struct DisplayModeKHR(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: DisplayModeKHR) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -1057,10 +1009,9 @@ struct DisplayModeKHR(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct SurfaceKHR(EqualityComparable, Writable):
+struct SurfaceKHR(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -1068,7 +1019,7 @@ struct SurfaceKHR(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: SurfaceKHR) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -1079,10 +1030,9 @@ struct SurfaceKHR(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct SwapchainKHR(EqualityComparable, Writable):
+struct SwapchainKHR(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -1090,7 +1040,7 @@ struct SwapchainKHR(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: SwapchainKHR) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -1101,10 +1051,9 @@ struct SwapchainKHR(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct DebugReportCallbackEXT(EqualityComparable, Writable):
+struct DebugReportCallbackEXT(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -1112,7 +1061,7 @@ struct DebugReportCallbackEXT(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: DebugReportCallbackEXT) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -1123,10 +1072,9 @@ struct DebugReportCallbackEXT(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct DebugUtilsMessengerEXT(EqualityComparable, Writable):
+struct DebugUtilsMessengerEXT(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -1134,7 +1082,7 @@ struct DebugUtilsMessengerEXT(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: DebugUtilsMessengerEXT) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -1145,10 +1093,9 @@ struct DebugUtilsMessengerEXT(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct VideoSessionKHR(EqualityComparable, Writable):
+struct VideoSessionKHR(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -1156,7 +1103,7 @@ struct VideoSessionKHR(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: VideoSessionKHR) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -1167,10 +1114,9 @@ struct VideoSessionKHR(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct VideoSessionParametersKHR(EqualityComparable, Writable):
+struct VideoSessionParametersKHR(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -1178,7 +1124,7 @@ struct VideoSessionParametersKHR(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: VideoSessionParametersKHR) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -1189,10 +1135,9 @@ struct VideoSessionParametersKHR(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct SemaphoreSciSyncPoolNV(EqualityComparable, Writable):
+struct SemaphoreSciSyncPoolNV(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -1200,7 +1145,7 @@ struct SemaphoreSciSyncPoolNV(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: SemaphoreSciSyncPoolNV) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -1211,10 +1156,9 @@ struct SemaphoreSciSyncPoolNV(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct CudaModuleNV(EqualityComparable, Writable):
+struct CudaModuleNV(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -1222,7 +1166,7 @@ struct CudaModuleNV(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: CudaModuleNV) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -1233,10 +1177,9 @@ struct CudaModuleNV(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct CudaFunctionNV(EqualityComparable, Writable):
+struct CudaFunctionNV(Equatable, Writable):
     var _raw: UInt64
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt64):
         self._raw = raw
@@ -1244,7 +1187,7 @@ struct CudaFunctionNV(EqualityComparable, Writable):
     fn raw(self) -> UInt64:
         return self._raw
 
-    fn __eq__(self, other: CudaFunctionNV) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
@@ -1255,10 +1198,9 @@ struct CudaFunctionNV(EqualityComparable, Writable):
 
 
 @register_passable("trivial")
-struct ExternalComputeQueueNV(EqualityComparable, Writable):
+struct ExternalComputeQueueNV(Equatable, Writable):
     var _raw: UInt
-
-    alias NULL = Self(raw = 0)
+    comptime NULL = Self(raw = 0)
 
     fn __init__(out self, *, raw: UInt):
         self._raw = raw
@@ -1266,7 +1208,7 @@ struct ExternalComputeQueueNV(EqualityComparable, Writable):
     fn raw(self) -> UInt:
         return self._raw
 
-    fn __eq__(self, other: ExternalComputeQueueNV) -> Bool:
+    fn __eq__(self, other: Self) -> Bool:
         return self._raw == other._raw
 
     fn __str__(self) -> String:
