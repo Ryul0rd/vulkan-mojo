@@ -1,3 +1,4 @@
+from sys.ffi import CStringSlice, c_char
 from vk.core_functions import GlobalFunctions
 
 
@@ -26,8 +27,8 @@ struct ShaderInfo(Copyable):    var _vk_get_shader_info_amd: fn(
         pipeline: Pipeline,
         shaderStage: ShaderStageFlagBits,
         infoType: ShaderInfoTypeAMD,
-        pInfoSize: Ptr[UInt, MutOrigin.external],
-        pInfo: Ptr[NoneType, MutOrigin.external],
+        pInfoSize: Ptr[UInt, MutAnyOrigin],
+        pInfo: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
 
 
@@ -52,4 +53,4 @@ struct DisplayNativeHdr(Copyable):    var _vk_set_local_dimming_amd: fn(
     )
 
 
-struct AntiLag(Copyable):    var _vk_anti_lag_update_amd: fn(device: Device, pData: Ptr[AntiLagDataAMD, MutOrigin.external])
+struct AntiLag(Copyable):    var _vk_anti_lag_update_amd: fn(device: Device, pData: Ptr[AntiLagDataAMD, ImmutAnyOrigin])

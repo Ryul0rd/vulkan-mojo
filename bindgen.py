@@ -1208,9 +1208,11 @@ def emit_unions(files: Dict[str, str], unions: List[VkUnion]):
         "VkDescriptorDataEXT": "UInt64",
         "VkAccelerationStructureMotionInstanceDataNV": "UInt64",
     }
+
     parts: List[str] = []
     parts.append((
         "from memory import memcpy\n"
+        "from math import ceildiv\n"
         "from sys import size_of\n"
         "from .structs import *\n"
         "\n\n"
@@ -1219,25 +1221,30 @@ def emit_unions(files: Dict[str, str], unions: List[VkUnion]):
     for union in unions:
         union_name = emit_mojo_type_name(union.name)
         align_type = UNION_NAME_TO_ALIGN_TYPE[union.name]
+        unique_member_type_names: List[str] = []
+        for member_type in union.member_types:
+            if emit_mojo_type(member_type) not in unique_member_type_names:
+                unique_member_type_names.append(emit_mojo_type(member_type))
+
         parts.append("".join((
             f"\n\n",
             f"struct {union_name}(ImplicitlyCopyable):\n",
             f"    comptime _size = max(\n",
-            *(f"        size_of[{emit_mojo_type(member_type)}](),\n" for member_type in union.member_types),
+            *(f"        size_of[{member_type_name}](),\n" for member_type_name in unique_member_type_names),
             f"    )\n",
             f"    comptime _AlignType = {align_type}\n",
             f"    comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]\n",
             f"    var _value: Self._InnerType\n",
         )))
-        for member_type in union.member_types:
+        for member_type_name in unique_member_type_names:
             parts.append((
                 f"\n"
-                f"    fn __init__(out self, value: {emit_mojo_type(member_type)}):\n"
+                f"    fn __init__(out self, value: {member_type_name}):\n"
                 f"        self._value = zero_init[Self._InnerType]()\n"
                 f"        memcpy(\n"
                 f"            dest = Ptr(to=self._value).bitcast[Byte](),\n"
                 f"            src = Ptr(to=value).bitcast[Byte](),\n"
-                f"            count = size_of[{emit_mojo_type(member_type)}](),\n"
+                f"            count = size_of[{member_type_name}](),\n"
                 f"        )\n"
             ))
     files["unions.mojo"] = "".join(parts)
@@ -1247,7 +1254,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
     # Core Functions
     parts: List[str] = []
     parts.append((
-        "from sys.ffi import OwnedDLHandle, _DLHandle, RTLD\n"
+        "from sys.ffi import OwnedDLHandle, _DLHandle, RTLD, CStringSlice, c_char\n"
         "from .fn_types import *\n"
         "from .handles import *\n"
         "from .structs import *\n"
@@ -1271,8 +1278,9 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
             parts.append((
                 f"\n\n"
                 f"struct {fn_group_name}{trait_section}:\n"
-                f"    var _handle: OwnedDLHandle\n" if command_level == "global" else ""
             ))
+            if command_level == "global":
+                parts.append(f"    var _handle: OwnedDLHandle\n")
             for addition_version in addition_versions:
                 req_ver_str = f"{addition_version.major}_{addition_version.minor}"
                 parts.append(f"    var _v{req_ver_str}: {command_level.capitalize()}FunctionAdditionsV{req_ver_str}\n")
@@ -1284,7 +1292,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 ))
             else:
                 parts.append(emit_fn_like(
-                    f"fn __init__(\n",
+                    f"fn __init__(",
                     [
                         f"out self",
                         f"global_functions: GlobalFunctionsV{core_version.major}_{core_version.minor}",
@@ -1295,7 +1303,9 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 ))
             for addition_version in addition_versions:
                 req_ver_str = f"{addition_version.major}_{addition_version.minor}"
-                args = "self._handle" if command_level == "global" else f"{command_level}, global_functions.handle()"
+                args = f"{command_level}, global_functions.borrow_handle()"
+                if command_level == "global":
+                    args = "self._handle.borrow()"
                 parts.append(
                     f"        self._v{req_ver_str} = {command_level.capitalize()}FunctionAdditionsV{req_ver_str}({args})\n"
                 )
@@ -1323,16 +1333,16 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 sig_ret = f" -> {ret_type}" if ret_type != "NoneType" else ""
                 parts.append(emit_fn_like(
                     f"var {mojo_command_name}: fn(",
-                    [f"{arg.name}: {emit_mojo_type(arg.type)}" for arg in new_command.command.params],
+                    [f"{arg.name}: {emit_mojo_type(arg.type, use_any_origin=True)}" for arg in new_command.command.params],
                     f"){sig_ret}\n",
                     base_indent_level = 1,
                 ))
             parts.append("\n")
             if command_level == "global":
-                parts.append("    fn __init__(out self, handle: OwnedDLHandle) raises:\n")
+                parts.append("    fn __init__(out self, handle: _DLHandle) raises:\n")
             else:
                 parts.append(
-                    f"    fn __init__(out self, {command_level}: {command_level.capitalize()}, handle: OwnedDLHandle) raises:\n"
+                    f"    fn __init__(out self, {command_level}: {command_level.capitalize()}, handle: _DLHandle) raises:\n"
                 )
             get_proc_level = "instance" if command_level == "global" else command_level
             if len(versioned_commands) == 0:
@@ -1357,6 +1367,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
     # Extension Functions
     extension_parts_by_tag: Dict[str, List[str]] = {extension_tag: [] for extension_tag in parsed_commands.extension_commands.keys()}
     for parts in extension_parts_by_tag.values():
+        parts.append("from sys.ffi import CStringSlice, c_char\n")
         parts.append("from vk.core_functions import GlobalFunctions\n")
     for extension_tag, extensions in parsed_commands.extension_commands.items():
         for extension in extensions:
@@ -1373,15 +1384,15 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 sig_ret = f" -> {ret_type}" if ret_type != "NoneType" else ""
                 extension_parts.append(emit_fn_like(
                     f"var _{mojo_command_name}: fn(",
-                    [f"{arg.name}: {emit_mojo_type(arg.type)}" for arg in command.params],
+                    [f"{arg.name}: {emit_mojo_type(arg.type, use_any_origin=True)}" for arg in command.params],
                     f"){sig_ret}\n",
                     base_indent_level = 1,
                 ))
             parts.append((
                 f"\n"
                 f"fn __init__[T: GlobalFunctions](out self, global_fns: T, {extension.type}: {extension.type.capitalize()}):\n"
-                f"    var get_{extension.type}_proc_addr = global_fns.handle().get_function[\n"
-                f"        fn({extension.type}: {extension.type.capitalize()}, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction\n"
+                f"    var get_{extension.type}_proc_addr = global_fns.borrow_handle().get_function[\n"
+                f"        fn({extension.type}: {extension.type.capitalize()}, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction\n"
                 f'    ]("vkGet{extension.type.capitalize()}ProcAddr")\n'
             ))
             for command in extension.commands:
@@ -1407,12 +1418,12 @@ def emit_generic_function_definition(command: VkCommand, version: Optional[VkVer
     if command.name == "vkEnumerateInstanceVersion":
         return (
             "\n"
-            "fn enumerate_instance_version(self, mut version: Version) -> Result:\n"
-            '    """See official vulkan docs for details.\n'
+            "    fn enumerate_instance_version(self, mut version: Version) -> Result:\n"
+            '        """See official vulkan docs for details.\n'
             "\n"
-            "    https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html\n"
-            '    """\n'
-            "    return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())\n"
+            "        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html\n"
+            '        """\n'
+            "        return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())\n"
         )
 
     sig_arg_strs: List[str] = ["self"]
@@ -1421,25 +1432,30 @@ def emit_generic_function_definition(command: VkCommand, version: Optional[VkVer
     for arg in command.params:
         mojo_arg_name = pascal_to_snake(arg.name)
         is_qnx_type = arg.type.ptr_level == 1 and arg.type.name in ("_screen_context", "_screen_window", "_screen_buffer")
-        is_required_ptr_to_scalar = not arg.optional and arg.type.ptr_level == 1 and arg.type.array_dim is None
-        if is_qnx_type and arg.type.const:
+        is_required_ptr_to_scalar = (
+            not arg.optional
+            and arg.type.ptr_level == 1
+            and arg.length is None
+            and arg.type.name != "char"
+        )
+        if is_qnx_type and arg.type.const[-1]:
             sig_arg_strs.append(f"{mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type)}")
             ffi_call_args.append(mojo_arg_name.removeprefix('p_'))
             wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
-        elif is_qnx_type and not arg.type.const:
+        elif is_qnx_type and not arg.type.const[-1]:
             sig_arg_strs.append(f"mut {mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type)}")
             ffi_call_args.append(mojo_arg_name.removeprefix('p_'))
             wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
-        elif is_required_ptr_to_scalar and arg.type.const:
+        elif is_required_ptr_to_scalar and arg.type.const[-1]:
             sig_arg_strs.append(f"{mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type, strip_ptr=True)}")
-            ffi_call_args.append(f"Ptr(to={mojo_arg_name.removeprefix('p_')})")
+            ffi_call_args.append(f"Ptr(to={mojo_arg_name.removeprefix('p_')}).bitcast[{emit_mojo_type(arg.type, strip_ptr=True)}]()")
             wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
-        elif is_required_ptr_to_scalar and not arg.type.const:
+        elif is_required_ptr_to_scalar and not arg.type.const[-1]:
             sig_arg_strs.append(f"mut {mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type, strip_ptr=True)}")
-            ffi_call_args.append(f"Ptr(to={mojo_arg_name.removeprefix('p_')})")
+            ffi_call_args.append(f"Ptr(to={mojo_arg_name.removeprefix('p_')}).bitcast[{emit_mojo_type(arg.type, strip_ptr=True)}]()")
             wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
         else:
-            sig_arg_strs.append(f"{mojo_arg_name}: {emit_mojo_type(arg.type)}")
+            sig_arg_strs.append(f"{mojo_arg_name}: {emit_mojo_type(arg.type, use_any_origin=True)}")
             ffi_call_args.append(mojo_arg_name)
             wrapper_call_args.append(mojo_arg_name)
 
@@ -1479,12 +1495,13 @@ def emit_generic_function_definition(command: VkCommand, version: Optional[VkVer
             command.return_type.name in ("VkResult", "void")
             and count_arg.type.ptr_level == 1
             and count_arg.type.name in ("uint32_t", "size_t")
-            and not count_arg.type.const
+            and not count_arg.type.const[-1]
             and data_arg.type.ptr_level >= 1
-            and not data_arg.type.const
+            and not data_arg.type.const[-1]
             and data_arg.optional
             and data_arg.length == count_arg.name
         )
+    follows_2_call_pattern = False # TODO: REMOVE
     if not follows_2_call_pattern:
         return "".join(parts)
     
@@ -1622,7 +1639,7 @@ def emit_mojo_type(type: VkType, strip_ptr: bool=False, use_any_origin: bool=Fal
     mojo_type = emit_mojo_type_name(_type.name)
     if is_string:
         mojo_type = f"CStringSlice[{IMMUT_ORIGIN}]"
-    for i in range(_type.ptr_level):
+    for i in range(1, _type.ptr_level+1):
         mojo_type = f"Ptr[{mojo_type}, {IMMUT_ORIGIN if _type.const[-i] else MUT_ORIGIN}]"
     if _type.array_dim is not None:
         mojo_type = f"InlineArray[{mojo_type}, Int({_type.array_dim.removeprefix('VK_')})]"

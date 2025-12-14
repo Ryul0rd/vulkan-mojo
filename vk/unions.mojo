@@ -1,4 +1,5 @@
 from memory import memcpy
+from math import ceildiv
 from sys import size_of
 from .structs import *
 
@@ -290,7 +291,7 @@ struct DeviceOrHostAddressKHR(ImplicitlyCopyable):
 struct DeviceOrHostAddressConstKHR(ImplicitlyCopyable):
     comptime _size = max(
         size_of[DeviceAddress](),
-        size_of[Ptr[NoneType, MutOrigin.external]](),
+        size_of[Ptr[NoneType, ImmutOrigin.external]](),
     )
     comptime _AlignType = UInt64
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
@@ -304,19 +305,19 @@ struct DeviceOrHostAddressConstKHR(ImplicitlyCopyable):
             count = size_of[DeviceAddress](),
         )
 
-    fn __init__(out self, value: Ptr[NoneType, MutOrigin.external]):
+    fn __init__(out self, value: Ptr[NoneType, ImmutOrigin.external]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[NoneType, MutOrigin.external]](),
+            count = size_of[Ptr[NoneType, ImmutOrigin.external]](),
         )
 
 
 struct DeviceOrHostAddressConstAMDX(ImplicitlyCopyable):
     comptime _size = max(
         size_of[DeviceAddress](),
-        size_of[Ptr[NoneType, MutOrigin.external]](),
+        size_of[Ptr[NoneType, ImmutOrigin.external]](),
     )
     comptime _AlignType = UInt64
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
@@ -330,12 +331,12 @@ struct DeviceOrHostAddressConstAMDX(ImplicitlyCopyable):
             count = size_of[DeviceAddress](),
         )
 
-    fn __init__(out self, value: Ptr[NoneType, MutOrigin.external]):
+    fn __init__(out self, value: Ptr[NoneType, ImmutOrigin.external]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[NoneType, MutOrigin.external]](),
+            count = size_of[Ptr[NoneType, ImmutOrigin.external]](),
         )
 
 
@@ -376,161 +377,107 @@ struct AccelerationStructureGeometryDataKHR(ImplicitlyCopyable):
 
 struct IndirectExecutionSetInfoEXT(ImplicitlyCopyable):
     comptime _size = max(
-        size_of[Ptr[IndirectExecutionSetPipelineInfoEXT, MutOrigin.external]](),
-        size_of[Ptr[IndirectExecutionSetShaderInfoEXT, MutOrigin.external]](),
+        size_of[Ptr[IndirectExecutionSetPipelineInfoEXT, ImmutOrigin.external]](),
+        size_of[Ptr[IndirectExecutionSetShaderInfoEXT, ImmutOrigin.external]](),
     )
     comptime _AlignType = UInt
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: Ptr[IndirectExecutionSetPipelineInfoEXT, MutOrigin.external]):
+    fn __init__(out self, value: Ptr[IndirectExecutionSetPipelineInfoEXT, ImmutOrigin.external]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[IndirectExecutionSetPipelineInfoEXT, MutOrigin.external]](),
+            count = size_of[Ptr[IndirectExecutionSetPipelineInfoEXT, ImmutOrigin.external]](),
         )
 
-    fn __init__(out self, value: Ptr[IndirectExecutionSetShaderInfoEXT, MutOrigin.external]):
+    fn __init__(out self, value: Ptr[IndirectExecutionSetShaderInfoEXT, ImmutOrigin.external]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[IndirectExecutionSetShaderInfoEXT, MutOrigin.external]](),
+            count = size_of[Ptr[IndirectExecutionSetShaderInfoEXT, ImmutOrigin.external]](),
         )
 
 
 struct IndirectCommandsTokenDataEXT(ImplicitlyCopyable):
     comptime _size = max(
-        size_of[Ptr[IndirectCommandsPushConstantTokenEXT, MutOrigin.external]](),
-        size_of[Ptr[IndirectCommandsVertexBufferTokenEXT, MutOrigin.external]](),
-        size_of[Ptr[IndirectCommandsIndexBufferTokenEXT, MutOrigin.external]](),
-        size_of[Ptr[IndirectCommandsExecutionSetTokenEXT, MutOrigin.external]](),
+        size_of[Ptr[IndirectCommandsPushConstantTokenEXT, ImmutOrigin.external]](),
+        size_of[Ptr[IndirectCommandsVertexBufferTokenEXT, ImmutOrigin.external]](),
+        size_of[Ptr[IndirectCommandsIndexBufferTokenEXT, ImmutOrigin.external]](),
+        size_of[Ptr[IndirectCommandsExecutionSetTokenEXT, ImmutOrigin.external]](),
     )
     comptime _AlignType = UInt
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: Ptr[IndirectCommandsPushConstantTokenEXT, MutOrigin.external]):
+    fn __init__(out self, value: Ptr[IndirectCommandsPushConstantTokenEXT, ImmutOrigin.external]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[IndirectCommandsPushConstantTokenEXT, MutOrigin.external]](),
+            count = size_of[Ptr[IndirectCommandsPushConstantTokenEXT, ImmutOrigin.external]](),
         )
 
-    fn __init__(out self, value: Ptr[IndirectCommandsVertexBufferTokenEXT, MutOrigin.external]):
+    fn __init__(out self, value: Ptr[IndirectCommandsVertexBufferTokenEXT, ImmutOrigin.external]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[IndirectCommandsVertexBufferTokenEXT, MutOrigin.external]](),
+            count = size_of[Ptr[IndirectCommandsVertexBufferTokenEXT, ImmutOrigin.external]](),
         )
 
-    fn __init__(out self, value: Ptr[IndirectCommandsIndexBufferTokenEXT, MutOrigin.external]):
+    fn __init__(out self, value: Ptr[IndirectCommandsIndexBufferTokenEXT, ImmutOrigin.external]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[IndirectCommandsIndexBufferTokenEXT, MutOrigin.external]](),
+            count = size_of[Ptr[IndirectCommandsIndexBufferTokenEXT, ImmutOrigin.external]](),
         )
 
-    fn __init__(out self, value: Ptr[IndirectCommandsExecutionSetTokenEXT, MutOrigin.external]):
+    fn __init__(out self, value: Ptr[IndirectCommandsExecutionSetTokenEXT, ImmutOrigin.external]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[IndirectCommandsExecutionSetTokenEXT, MutOrigin.external]](),
+            count = size_of[Ptr[IndirectCommandsExecutionSetTokenEXT, ImmutOrigin.external]](),
         )
 
 
 struct DescriptorDataEXT(ImplicitlyCopyable):
     comptime _size = max(
-        size_of[Ptr[Sampler, MutOrigin.external]](),
-        size_of[Ptr[DescriptorImageInfo, MutOrigin.external]](),
-        size_of[Ptr[DescriptorImageInfo, MutOrigin.external]](),
-        size_of[Ptr[DescriptorImageInfo, MutOrigin.external]](),
-        size_of[Ptr[DescriptorImageInfo, MutOrigin.external]](),
-        size_of[Ptr[DescriptorAddressInfoEXT, MutOrigin.external]](),
-        size_of[Ptr[DescriptorAddressInfoEXT, MutOrigin.external]](),
-        size_of[Ptr[DescriptorAddressInfoEXT, MutOrigin.external]](),
-        size_of[Ptr[DescriptorAddressInfoEXT, MutOrigin.external]](),
+        size_of[Ptr[Sampler, ImmutOrigin.external]](),
+        size_of[Ptr[DescriptorImageInfo, ImmutOrigin.external]](),
+        size_of[Ptr[DescriptorAddressInfoEXT, ImmutOrigin.external]](),
         size_of[DeviceAddress](),
     )
     comptime _AlignType = UInt64
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: Ptr[Sampler, MutOrigin.external]):
+    fn __init__(out self, value: Ptr[Sampler, ImmutOrigin.external]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[Sampler, MutOrigin.external]](),
+            count = size_of[Ptr[Sampler, ImmutOrigin.external]](),
         )
 
-    fn __init__(out self, value: Ptr[DescriptorImageInfo, MutOrigin.external]):
+    fn __init__(out self, value: Ptr[DescriptorImageInfo, ImmutOrigin.external]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[DescriptorImageInfo, MutOrigin.external]](),
+            count = size_of[Ptr[DescriptorImageInfo, ImmutOrigin.external]](),
         )
 
-    fn __init__(out self, value: Ptr[DescriptorImageInfo, MutOrigin.external]):
+    fn __init__(out self, value: Ptr[DescriptorAddressInfoEXT, ImmutOrigin.external]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[DescriptorImageInfo, MutOrigin.external]](),
-        )
-
-    fn __init__(out self, value: Ptr[DescriptorImageInfo, MutOrigin.external]):
-        self._value = zero_init[Self._InnerType]()
-        memcpy(
-            dest = Ptr(to=self._value).bitcast[Byte](),
-            src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[DescriptorImageInfo, MutOrigin.external]](),
-        )
-
-    fn __init__(out self, value: Ptr[DescriptorImageInfo, MutOrigin.external]):
-        self._value = zero_init[Self._InnerType]()
-        memcpy(
-            dest = Ptr(to=self._value).bitcast[Byte](),
-            src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[DescriptorImageInfo, MutOrigin.external]](),
-        )
-
-    fn __init__(out self, value: Ptr[DescriptorAddressInfoEXT, MutOrigin.external]):
-        self._value = zero_init[Self._InnerType]()
-        memcpy(
-            dest = Ptr(to=self._value).bitcast[Byte](),
-            src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[DescriptorAddressInfoEXT, MutOrigin.external]](),
-        )
-
-    fn __init__(out self, value: Ptr[DescriptorAddressInfoEXT, MutOrigin.external]):
-        self._value = zero_init[Self._InnerType]()
-        memcpy(
-            dest = Ptr(to=self._value).bitcast[Byte](),
-            src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[DescriptorAddressInfoEXT, MutOrigin.external]](),
-        )
-
-    fn __init__(out self, value: Ptr[DescriptorAddressInfoEXT, MutOrigin.external]):
-        self._value = zero_init[Self._InnerType]()
-        memcpy(
-            dest = Ptr(to=self._value).bitcast[Byte](),
-            src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[DescriptorAddressInfoEXT, MutOrigin.external]](),
-        )
-
-    fn __init__(out self, value: Ptr[DescriptorAddressInfoEXT, MutOrigin.external]):
-        self._value = zero_init[Self._InnerType]()
-        memcpy(
-            dest = Ptr(to=self._value).bitcast[Byte](),
-            src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[DescriptorAddressInfoEXT, MutOrigin.external]](),
+            count = size_of[Ptr[DescriptorAddressInfoEXT, ImmutOrigin.external]](),
         )
 
     fn __init__(out self, value: DeviceAddress):

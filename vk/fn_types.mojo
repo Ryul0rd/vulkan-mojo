@@ -54,16 +54,16 @@ comptime PFN_vkDebugReportCallbackEXT = fn(
 comptime PFN_vkDebugUtilsMessengerCallbackEXT = fn(
     message_severity: DebugUtilsMessageSeverityFlagBitsEXT,
     message_types: DebugUtilsMessageTypeFlagsEXT,
-    p_callback_data: Ptr[DebugUtilsMessengerCallbackDataEXT, MutOrigin.external],
+    p_callback_data: Ptr[DebugUtilsMessengerCallbackDataEXT, ImmutOrigin.external],
     p_user_data: Ptr[NoneType, MutOrigin.external],
 ) -> Bool32
 
 comptime PFN_vkFaultCallbackFunction = fn(
-    unrecorded_faults: Bool32, fault_count: UInt32, p_faults: Ptr[FaultData, MutOrigin.external]
+    unrecorded_faults: Bool32, fault_count: UInt32, p_faults: Ptr[FaultData, ImmutOrigin.external]
 )
 
 comptime PFN_vkDeviceMemoryReportCallbackEXT = fn(
-    p_callback_data: Ptr[DeviceMemoryReportCallbackDataEXT, MutOrigin.external],
+    p_callback_data: Ptr[DeviceMemoryReportCallbackDataEXT, ImmutOrigin.external],
     p_user_data: Ptr[NoneType, MutOrigin.external],
 )
 

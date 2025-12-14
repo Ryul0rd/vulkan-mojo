@@ -1,3 +1,4 @@
+from sys.ffi import CStringSlice, c_char
 from vk.core_functions import GlobalFunctions
 
 
@@ -5,20 +6,20 @@ struct ShaderEnqueue(Copyable):    var _vk_create_execution_graph_pipelines_amdx
         device: Device,
         pipelineCache: PipelineCache,
         createInfoCount: UInt32,
-        pCreateInfos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, MutOrigin.external],
-        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        pPipelines: Ptr[Pipeline, MutOrigin.external],
+        pCreateInfos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutAnyOrigin],
+        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        pPipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result
     var _vk_get_execution_graph_pipeline_scratch_size_amdx: fn(
         device: Device,
         executionGraph: Pipeline,
-        pSizeInfo: Ptr[ExecutionGraphPipelineScratchSizeAMDX, MutOrigin.external],
+        pSizeInfo: Ptr[ExecutionGraphPipelineScratchSizeAMDX, MutAnyOrigin],
     ) -> Result
     var _vk_get_execution_graph_pipeline_node_index_amdx: fn(
         device: Device,
         executionGraph: Pipeline,
-        pNodeInfo: Ptr[PipelineShaderStageNodeCreateInfoAMDX, MutOrigin.external],
-        pNodeIndex: Ptr[UInt32, MutOrigin.external],
+        pNodeInfo: Ptr[PipelineShaderStageNodeCreateInfoAMDX, ImmutAnyOrigin],
+        pNodeIndex: Ptr[UInt32, MutAnyOrigin],
     ) -> Result
     var _vk_cmd_initialize_graph_scratch_memory_amdx: fn(
         commandBuffer: CommandBuffer,
@@ -30,13 +31,13 @@ struct ShaderEnqueue(Copyable):    var _vk_create_execution_graph_pipelines_amdx
         commandBuffer: CommandBuffer,
         scratch: DeviceAddress,
         scratchSize: DeviceSize,
-        pCountInfo: Ptr[DispatchGraphCountInfoAMDX, MutOrigin.external],
+        pCountInfo: Ptr[DispatchGraphCountInfoAMDX, ImmutAnyOrigin],
     )
     var _vk_cmd_dispatch_graph_indirect_amdx: fn(
         commandBuffer: CommandBuffer,
         scratch: DeviceAddress,
         scratchSize: DeviceSize,
-        pCountInfo: Ptr[DispatchGraphCountInfoAMDX, MutOrigin.external],
+        pCountInfo: Ptr[DispatchGraphCountInfoAMDX, ImmutAnyOrigin],
     )
     var _vk_cmd_dispatch_graph_indirect_count_amdx: fn(
         commandBuffer: CommandBuffer,

@@ -1,8 +1,9 @@
+from sys.ffi import CStringSlice, c_char
 from vk.core_functions import GlobalFunctions
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_destroy_surface_khr = Ptr(to=get_instance_proc_addr(
         instance, "vkDestroySurfaceKHR".unsafe_ptr()
@@ -24,7 +25,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         surface: SurfaceKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -37,63 +38,66 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
         surface: SurfaceKHR,
-        supported: Bool32,
+        mut supported: Bool32,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceSupportKHR.html
         """
         return self._get_physical_device_surface_support_khr(
-            physical_device, queue_family_index, surface, Ptr(to=supported)
+            physical_device, queue_family_index, surface, Ptr(to=supported).bitcast[Bool32]()
         )
 
     fn get_physical_device_surface_capabilities_khr(
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
-        surface_capabilities: SurfaceCapabilitiesKHR,
+        mut surface_capabilities: SurfaceCapabilitiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceCapabilitiesKHR.html
         """
         return self._get_physical_device_surface_capabilities_khr(
-            physical_device, surface, Ptr(to=surface_capabilities)
+            physical_device, surface, Ptr(to=surface_capabilities).bitcast[SurfaceCapabilitiesKHR]()
         )
 
     fn get_physical_device_surface_formats_khr(
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
-        surface_format_count: UInt32,
-        p_surface_formats: Ptr[SurfaceFormatKHR, MutOrigin.external],
+        mut surface_format_count: UInt32,
+        p_surface_formats: Ptr[SurfaceFormatKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceFormatsKHR.html
         """
         return self._get_physical_device_surface_formats_khr(
-            physical_device, surface, Ptr(to=surface_format_count), p_surface_formats
+            physical_device,
+            surface,
+            Ptr(to=surface_format_count).bitcast[UInt32](),
+            p_surface_formats,
         )
 
     fn get_physical_device_surface_present_modes_khr(
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
-        present_mode_count: UInt32,
-        p_present_modes: Ptr[PresentModeKHR, MutOrigin.external],
+        mut present_mode_count: UInt32,
+        p_present_modes: Ptr[PresentModeKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfacePresentModesKHR.html
         """
         return self._get_physical_device_surface_present_modes_khr(
-            physical_device, surface, Ptr(to=present_mode_count), p_present_modes
+            physical_device, surface, Ptr(to=present_mode_count).bitcast[UInt32](), p_present_modes
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_swapchain_khr = Ptr(to=get_device_proc_addr(
         device, "vkCreateSwapchainKHR".unsafe_ptr()
@@ -127,22 +131,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: SwapchainCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        swapchain: SwapchainKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut swapchain: SwapchainKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSwapchainKHR.html
         """
         return self._create_swapchain_khr(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=swapchain)
+            device,
+            Ptr(to=create_info).bitcast[SwapchainCreateInfoKHR](),
+            p_allocator,
+            Ptr(to=swapchain).bitcast[SwapchainKHR](),
         )
 
     fn destroy_swapchain_khr(
         self,
         device: Device,
         swapchain: SwapchainKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -154,15 +161,15 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         swapchain: SwapchainKHR,
-        swapchain_image_count: UInt32,
-        p_swapchain_images: Ptr[Image, MutOrigin.external],
+        mut swapchain_image_count: UInt32,
+        p_swapchain_images: Ptr[Image, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSwapchainImagesKHR.html
         """
         return self._get_swapchain_images_khr(
-            device, swapchain, Ptr(to=swapchain_image_count), p_swapchain_images
+            device, swapchain, Ptr(to=swapchain_image_count).bitcast[UInt32](), p_swapchain_images
         )
 
     fn acquire_next_image_khr(
@@ -172,14 +179,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         timeout: UInt64,
         semaphore: Semaphore,
         fence: Fence,
-        image_index: UInt32,
+        mut image_index: UInt32,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireNextImageKHR.html
         """
         return self._acquire_next_image_khr(
-            device, swapchain, timeout, semaphore, fence, Ptr(to=image_index)
+            device, swapchain, timeout, semaphore, fence, Ptr(to=image_index).bitcast[UInt32]()
         )
 
     fn queue_present_khr(self, queue: Queue, present_info: PresentInfoKHR) -> Result:
@@ -187,55 +194,64 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueuePresentKHR.html
         """
-        return self._queue_present_khr(queue, Ptr(to=present_info))
+        return self._queue_present_khr(queue, Ptr(to=present_info).bitcast[PresentInfoKHR]())
 
     fn get_device_group_present_capabilities_khr(
-        self, device: Device, device_group_present_capabilities: DeviceGroupPresentCapabilitiesKHR
+        self,
+        device: Device,
+        mut device_group_present_capabilities: DeviceGroupPresentCapabilitiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupPresentCapabilitiesKHR.html
         """
         return self._get_device_group_present_capabilities_khr(
-            device, Ptr(to=device_group_present_capabilities)
+            device,
+            Ptr(to=device_group_present_capabilities).bitcast[DeviceGroupPresentCapabilitiesKHR](),
         )
 
     fn get_device_group_surface_present_modes_khr(
-        self, device: Device, surface: SurfaceKHR, modes: DeviceGroupPresentModeFlagsKHR
+        self, device: Device, surface: SurfaceKHR, mut modes: DeviceGroupPresentModeFlagsKHR
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupSurfacePresentModesKHR.html
         """
-        return self._get_device_group_surface_present_modes_khr(device, surface, Ptr(to=modes))
+        return self._get_device_group_surface_present_modes_khr(
+            device, surface, Ptr(to=modes).bitcast[DeviceGroupPresentModeFlagsKHR]()
+        )
 
     fn get_physical_device_present_rectangles_khr(
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
-        rect_count: UInt32,
-        p_rects: Ptr[Rect2D, MutOrigin.external],
+        mut rect_count: UInt32,
+        p_rects: Ptr[Rect2D, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDevicePresentRectanglesKHR.html
         """
         return self._get_physical_device_present_rectangles_khr(
-            physical_device, surface, Ptr(to=rect_count), p_rects
+            physical_device, surface, Ptr(to=rect_count).bitcast[UInt32](), p_rects
         )
 
     fn acquire_next_image_2_khr(
-        self, device: Device, acquire_info: AcquireNextImageInfoKHR, image_index: UInt32
+        self, device: Device, acquire_info: AcquireNextImageInfoKHR, mut image_index: UInt32
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireNextImage2KHR.html
         """
-        return self._acquire_next_image_2_khr(device, Ptr(to=acquire_info), Ptr(to=image_index))
+        return self._acquire_next_image_2_khr(
+            device,
+            Ptr(to=acquire_info).bitcast[AcquireNextImageInfoKHR](),
+            Ptr(to=image_index).bitcast[UInt32](),
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_get_physical_device_display_properties_khr = Ptr(to=get_instance_proc_addr(
         instance, "vkGetPhysicalDeviceDisplayPropertiesKHR".unsafe_ptr()
@@ -262,59 +278,59 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     fn get_physical_device_display_properties_khr(
         self,
         physical_device: PhysicalDevice,
-        property_count: UInt32,
-        p_properties: Ptr[DisplayPropertiesKHR, MutOrigin.external],
+        mut property_count: UInt32,
+        p_properties: Ptr[DisplayPropertiesKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPropertiesKHR.html
         """
         return self._get_physical_device_display_properties_khr(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn get_physical_device_display_plane_properties_khr(
         self,
         physical_device: PhysicalDevice,
-        property_count: UInt32,
-        p_properties: Ptr[DisplayPlanePropertiesKHR, MutOrigin.external],
+        mut property_count: UInt32,
+        p_properties: Ptr[DisplayPlanePropertiesKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPlanePropertiesKHR.html
         """
         return self._get_physical_device_display_plane_properties_khr(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn get_display_plane_supported_displays_khr(
         self,
         physical_device: PhysicalDevice,
         plane_index: UInt32,
-        display_count: UInt32,
-        p_displays: Ptr[DisplayKHR, MutOrigin.external],
+        mut display_count: UInt32,
+        p_displays: Ptr[DisplayKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayPlaneSupportedDisplaysKHR.html
         """
         return self._get_display_plane_supported_displays_khr(
-            physical_device, plane_index, Ptr(to=display_count), p_displays
+            physical_device, plane_index, Ptr(to=display_count).bitcast[UInt32](), p_displays
         )
 
     fn get_display_mode_properties_khr(
         self,
         physical_device: PhysicalDevice,
         display: DisplayKHR,
-        property_count: UInt32,
-        p_properties: Ptr[DisplayModePropertiesKHR, MutOrigin.external],
+        mut property_count: UInt32,
+        p_properties: Ptr[DisplayModePropertiesKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayModePropertiesKHR.html
         """
         return self._get_display_mode_properties_khr(
-            physical_device, display, Ptr(to=property_count), p_properties
+            physical_device, display, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn create_display_mode_khr(
@@ -322,15 +338,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         physical_device: PhysicalDevice,
         display: DisplayKHR,
         create_info: DisplayModeCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        mode: DisplayModeKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut mode: DisplayModeKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDisplayModeKHR.html
         """
         return self._create_display_mode_khr(
-            physical_device, display, Ptr(to=create_info), p_allocator, Ptr(to=mode)
+            physical_device,
+            display,
+            Ptr(to=create_info).bitcast[DisplayModeCreateInfoKHR](),
+            p_allocator,
+            Ptr(to=mode).bitcast[DisplayModeKHR](),
         )
 
     fn get_display_plane_capabilities_khr(
@@ -338,34 +358,40 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         physical_device: PhysicalDevice,
         mode: DisplayModeKHR,
         plane_index: UInt32,
-        capabilities: DisplayPlaneCapabilitiesKHR,
+        mut capabilities: DisplayPlaneCapabilitiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayPlaneCapabilitiesKHR.html
         """
         return self._get_display_plane_capabilities_khr(
-            physical_device, mode, plane_index, Ptr(to=capabilities)
+            physical_device,
+            mode,
+            plane_index,
+            Ptr(to=capabilities).bitcast[DisplayPlaneCapabilitiesKHR](),
         )
 
     fn create_display_plane_surface_khr(
         self,
         instance: Instance,
         create_info: DisplaySurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDisplayPlaneSurfaceKHR.html
         """
         return self._create_display_plane_surface_khr(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[DisplaySurfaceCreateInfoKHR](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_shared_swapchains_khr = Ptr(to=get_device_proc_addr(
         device, "vkCreateSharedSwapchainsKHR".unsafe_ptr()
@@ -375,21 +401,21 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         swapchain_count: UInt32,
-        create_infos: SwapchainCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        swapchains: SwapchainKHR,
+        p_create_infos: Ptr[SwapchainCreateInfoKHR, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_swapchains: Ptr[SwapchainKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSharedSwapchainsKHR.html
         """
         return self._create_shared_swapchains_khr(
-            device, swapchain_count, Ptr(to=create_infos), p_allocator, Ptr(to=swapchains)
+            device, swapchain_count, p_create_infos, p_allocator, p_swapchains
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_xlib_surface_khr = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateXlibSurfaceKHR".unsafe_ptr()
@@ -402,22 +428,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: XlibSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateXlibSurfaceKHR.html
         """
         return self._create_xlib_surface_khr(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[XlibSurfaceCreateInfoKHR](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
     fn get_physical_device_xlib_presentation_support_khr(
         self,
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
-        dpy: Display,
+        mut dpy: Display,
         visual_id: VisualID,
     ) -> Bool32:
         """See official vulkan docs for details.
@@ -425,12 +454,12 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceXlibPresentationSupportKHR.html
         """
         return self._get_physical_device_xlib_presentation_support_khr(
-            physical_device, queue_family_index, Ptr(to=dpy), visual_id
+            physical_device, queue_family_index, Ptr(to=dpy).bitcast[Display](), visual_id
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_xcb_surface_khr = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateXcbSurfaceKHR".unsafe_ptr()
@@ -443,22 +472,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: XcbSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateXcbSurfaceKHR.html
         """
         return self._create_xcb_surface_khr(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[XcbSurfaceCreateInfoKHR](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
     fn get_physical_device_xcb_presentation_support_khr(
         self,
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
-        connection: xcb_connection_t,
+        mut connection: xcb_connection_t,
         visual_id: xcb_visualid_t,
     ) -> Bool32:
         """See official vulkan docs for details.
@@ -466,12 +498,15 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceXcbPresentationSupportKHR.html
         """
         return self._get_physical_device_xcb_presentation_support_khr(
-            physical_device, queue_family_index, Ptr(to=connection), visual_id
+            physical_device,
+            queue_family_index,
+            Ptr(to=connection).bitcast[xcb_connection_t](),
+            visual_id,
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_wayland_surface_khr = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateWaylandSurfaceKHR".unsafe_ptr()
@@ -484,31 +519,34 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: WaylandSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateWaylandSurfaceKHR.html
         """
         return self._create_wayland_surface_khr(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[WaylandSurfaceCreateInfoKHR](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
     fn get_physical_device_wayland_presentation_support_khr(
-        self, physical_device: PhysicalDevice, queue_family_index: UInt32, display: wl_display
+        self, physical_device: PhysicalDevice, queue_family_index: UInt32, mut display: wl_display
     ) -> Bool32:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceWaylandPresentationSupportKHR.html
         """
         return self._get_physical_device_wayland_presentation_support_khr(
-            physical_device, queue_family_index, Ptr(to=display)
+            physical_device, queue_family_index, Ptr(to=display).bitcast[wl_display]()
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_android_surface_khr = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateAndroidSurfaceKHR".unsafe_ptr()
@@ -518,20 +556,23 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: AndroidSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateAndroidSurfaceKHR.html
         """
         return self._create_android_surface_khr(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[AndroidSurfaceCreateInfoKHR](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_win_32_surface_khr = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateWin32SurfaceKHR".unsafe_ptr()
@@ -544,15 +585,18 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: Win32SurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateWin32SurfaceKHR.html
         """
         return self._create_win_32_surface_khr(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[Win32SurfaceCreateInfoKHR](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
     fn get_physical_device_win_32_presentation_support_khr(
@@ -567,8 +611,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_physical_device_video_capabilities_khr = Ptr(to=get_device_proc_addr(
         device, "vkGetPhysicalDeviceVideoCapabilitiesKHR".unsafe_ptr()
@@ -611,22 +655,24 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         video_profile: VideoProfileInfoKHR,
-        capabilities: VideoCapabilitiesKHR,
+        mut capabilities: VideoCapabilitiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceVideoCapabilitiesKHR.html
         """
         return self._get_physical_device_video_capabilities_khr(
-            physical_device, Ptr(to=video_profile), Ptr(to=capabilities)
+            physical_device,
+            Ptr(to=video_profile).bitcast[VideoProfileInfoKHR](),
+            Ptr(to=capabilities).bitcast[VideoCapabilitiesKHR](),
         )
 
     fn get_physical_device_video_format_properties_khr(
         self,
         physical_device: PhysicalDevice,
         video_format_info: PhysicalDeviceVideoFormatInfoKHR,
-        video_format_property_count: UInt32,
-        p_video_format_properties: Ptr[VideoFormatPropertiesKHR, MutOrigin.external],
+        mut video_format_property_count: UInt32,
+        p_video_format_properties: Ptr[VideoFormatPropertiesKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -634,8 +680,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._get_physical_device_video_format_properties_khr(
             physical_device,
-            Ptr(to=video_format_info),
-            Ptr(to=video_format_property_count),
+            Ptr(to=video_format_info).bitcast[PhysicalDeviceVideoFormatInfoKHR](),
+            Ptr(to=video_format_property_count).bitcast[UInt32](),
             p_video_format_properties,
         )
 
@@ -643,22 +689,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: VideoSessionCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        video_session: VideoSessionKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut video_session: VideoSessionKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateVideoSessionKHR.html
         """
         return self._create_video_session_khr(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=video_session)
+            device,
+            Ptr(to=create_info).bitcast[VideoSessionCreateInfoKHR](),
+            p_allocator,
+            Ptr(to=video_session).bitcast[VideoSessionKHR](),
         )
 
     fn destroy_video_session_khr(
         self,
         device: Device,
         video_session: VideoSessionKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -670,15 +719,18 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         video_session: VideoSessionKHR,
-        memory_requirements_count: UInt32,
-        p_memory_requirements: Ptr[VideoSessionMemoryRequirementsKHR, MutOrigin.external],
+        mut memory_requirements_count: UInt32,
+        p_memory_requirements: Ptr[VideoSessionMemoryRequirementsKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetVideoSessionMemoryRequirementsKHR.html
         """
         return self._get_video_session_memory_requirements_khr(
-            device, video_session, Ptr(to=memory_requirements_count), p_memory_requirements
+            device,
+            video_session,
+            Ptr(to=memory_requirements_count).bitcast[UInt32](),
+            p_memory_requirements,
         )
 
     fn bind_video_session_memory_khr(
@@ -686,29 +738,32 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         video_session: VideoSessionKHR,
         bind_session_memory_info_count: UInt32,
-        bind_session_memory_infos: BindVideoSessionMemoryInfoKHR,
+        p_bind_session_memory_infos: Ptr[BindVideoSessionMemoryInfoKHR, ImmutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindVideoSessionMemoryKHR.html
         """
         return self._bind_video_session_memory_khr(
-            device, video_session, bind_session_memory_info_count, Ptr(to=bind_session_memory_infos)
+            device, video_session, bind_session_memory_info_count, p_bind_session_memory_infos
         )
 
     fn create_video_session_parameters_khr(
         self,
         device: Device,
         create_info: VideoSessionParametersCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        video_session_parameters: VideoSessionParametersKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut video_session_parameters: VideoSessionParametersKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateVideoSessionParametersKHR.html
         """
         return self._create_video_session_parameters_khr(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=video_session_parameters)
+            device,
+            Ptr(to=create_info).bitcast[VideoSessionParametersCreateInfoKHR](),
+            p_allocator,
+            Ptr(to=video_session_parameters).bitcast[VideoSessionParametersKHR](),
         )
 
     fn update_video_session_parameters_khr(
@@ -722,14 +777,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateVideoSessionParametersKHR.html
         """
         return self._update_video_session_parameters_khr(
-            device, video_session_parameters, Ptr(to=update_info)
+            device,
+            video_session_parameters,
+            Ptr(to=update_info).bitcast[VideoSessionParametersUpdateInfoKHR](),
         )
 
     fn destroy_video_session_parameters_khr(
         self,
         device: Device,
         video_session_parameters: VideoSessionParametersKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -746,7 +803,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginVideoCodingKHR.html
         """
-        return self._cmd_begin_video_coding_khr(command_buffer, Ptr(to=begin_info))
+        return self._cmd_begin_video_coding_khr(
+            command_buffer, Ptr(to=begin_info).bitcast[VideoBeginCodingInfoKHR]()
+        )
 
     fn cmd_end_video_coding_khr(
         self, command_buffer: CommandBuffer, end_coding_info: VideoEndCodingInfoKHR
@@ -755,7 +814,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndVideoCodingKHR.html
         """
-        return self._cmd_end_video_coding_khr(command_buffer, Ptr(to=end_coding_info))
+        return self._cmd_end_video_coding_khr(
+            command_buffer, Ptr(to=end_coding_info).bitcast[VideoEndCodingInfoKHR]()
+        )
 
     fn cmd_control_video_coding_khr(
         self, command_buffer: CommandBuffer, coding_control_info: VideoCodingControlInfoKHR
@@ -764,11 +825,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdControlVideoCodingKHR.html
         """
-        return self._cmd_control_video_coding_khr(command_buffer, Ptr(to=coding_control_info))
+        return self._cmd_control_video_coding_khr(
+            command_buffer, Ptr(to=coding_control_info).bitcast[VideoCodingControlInfoKHR]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_decode_video_khr = Ptr(to=get_device_proc_addr(
         device, "vkCmdDecodeVideoKHR".unsafe_ptr()
@@ -779,11 +842,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDecodeVideoKHR.html
         """
-        return self._cmd_decode_video_khr(command_buffer, Ptr(to=decode_info))
+        return self._cmd_decode_video_khr(
+            command_buffer, Ptr(to=decode_info).bitcast[VideoDecodeInfoKHR]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_begin_rendering = Ptr(to=get_device_proc_addr(
         device, "vkCmdBeginRendering".unsafe_ptr()
@@ -797,7 +862,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRendering.html
         """
-        return self._cmd_begin_rendering(command_buffer, Ptr(to=rendering_info))
+        return self._cmd_begin_rendering(
+            command_buffer, Ptr(to=rendering_info).bitcast[RenderingInfo]()
+        )
 
     fn cmd_end_rendering(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
@@ -807,8 +874,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_end_rendering(command_buffer)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_get_physical_device_features_2 = Ptr(to=get_instance_proc_addr(
         instance, "vkGetPhysicalDeviceFeatures2".unsafe_ptr()
@@ -833,91 +900,107 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     )).bitcast[type_of(self._vk_get_physical_device_sparse_image_format_properties_2)]()[]
 
     fn get_physical_device_features_2(
-        self, physical_device: PhysicalDevice, features: PhysicalDeviceFeatures2
+        self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures2
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
         """
-        return self._get_physical_device_features_2(physical_device, Ptr(to=features))
+        return self._get_physical_device_features_2(
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()
+        )
 
     fn get_physical_device_properties_2(
-        self, physical_device: PhysicalDevice, properties: PhysicalDeviceProperties2
+        self, physical_device: PhysicalDevice, mut properties: PhysicalDeviceProperties2
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
         """
-        return self._get_physical_device_properties_2(physical_device, Ptr(to=properties))
+        return self._get_physical_device_properties_2(
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()
+        )
 
     fn get_physical_device_format_properties_2(
-        self, physical_device: PhysicalDevice, format: Format, format_properties: FormatProperties2
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        mut format_properties: FormatProperties2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
         """
         return self._get_physical_device_format_properties_2(
-            physical_device, format, Ptr(to=format_properties)
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()
         )
 
     fn get_physical_device_image_format_properties_2(
         self,
         physical_device: PhysicalDevice,
         image_format_info: PhysicalDeviceImageFormatInfo2,
-        image_format_properties: ImageFormatProperties2,
+        mut image_format_properties: ImageFormatProperties2,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties2.html
         """
         return self._get_physical_device_image_format_properties_2(
-            physical_device, Ptr(to=image_format_info), Ptr(to=image_format_properties)
+            physical_device,
+            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2](),
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2](),
         )
 
     fn get_physical_device_queue_family_properties_2(
         self,
         physical_device: PhysicalDevice,
-        queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutOrigin.external],
+        mut queue_family_property_count: UInt32,
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         return self._get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
+            physical_device,
+            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            p_queue_family_properties,
         )
 
     fn get_physical_device_memory_properties_2(
-        self, physical_device: PhysicalDevice, memory_properties: PhysicalDeviceMemoryProperties2
+        self,
+        physical_device: PhysicalDevice,
+        mut memory_properties: PhysicalDeviceMemoryProperties2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
         """
         return self._get_physical_device_memory_properties_2(
-            physical_device, Ptr(to=memory_properties)
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()
         )
 
     fn get_physical_device_sparse_image_format_properties_2(
         self,
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
-        property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties2, MutOrigin.external],
+        mut property_count: UInt32,
+        p_properties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         return self._get_physical_device_sparse_image_format_properties_2(
-            physical_device, Ptr(to=format_info), Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2](),
+            Ptr(to=property_count).bitcast[UInt32](),
+            p_properties,
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_device_group_peer_memory_features = Ptr(to=get_device_proc_addr(
         device, "vkGetDeviceGroupPeerMemoryFeatures".unsafe_ptr()
@@ -947,7 +1030,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         heap_index: UInt32,
         local_device_index: UInt32,
         remote_device_index: UInt32,
-        peer_memory_features: PeerMemoryFeatureFlags,
+        mut peer_memory_features: PeerMemoryFeatureFlags,
     ):
         """See official vulkan docs for details.
 
@@ -958,7 +1041,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             heap_index,
             local_device_index,
             remote_device_index,
-            Ptr(to=peer_memory_features),
+            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
         )
 
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
@@ -993,52 +1076,61 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_device_group_present_capabilities_khr(
-        self, device: Device, device_group_present_capabilities: DeviceGroupPresentCapabilitiesKHR
+        self,
+        device: Device,
+        mut device_group_present_capabilities: DeviceGroupPresentCapabilitiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupPresentCapabilitiesKHR.html
         """
         return self._get_device_group_present_capabilities_khr(
-            device, Ptr(to=device_group_present_capabilities)
+            device,
+            Ptr(to=device_group_present_capabilities).bitcast[DeviceGroupPresentCapabilitiesKHR](),
         )
 
     fn get_device_group_surface_present_modes_khr(
-        self, device: Device, surface: SurfaceKHR, modes: DeviceGroupPresentModeFlagsKHR
+        self, device: Device, surface: SurfaceKHR, mut modes: DeviceGroupPresentModeFlagsKHR
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupSurfacePresentModesKHR.html
         """
-        return self._get_device_group_surface_present_modes_khr(device, surface, Ptr(to=modes))
+        return self._get_device_group_surface_present_modes_khr(
+            device, surface, Ptr(to=modes).bitcast[DeviceGroupPresentModeFlagsKHR]()
+        )
 
     fn get_physical_device_present_rectangles_khr(
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
-        rect_count: UInt32,
-        p_rects: Ptr[Rect2D, MutOrigin.external],
+        mut rect_count: UInt32,
+        p_rects: Ptr[Rect2D, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDevicePresentRectanglesKHR.html
         """
         return self._get_physical_device_present_rectangles_khr(
-            physical_device, surface, Ptr(to=rect_count), p_rects
+            physical_device, surface, Ptr(to=rect_count).bitcast[UInt32](), p_rects
         )
 
     fn acquire_next_image_2_khr(
-        self, device: Device, acquire_info: AcquireNextImageInfoKHR, image_index: UInt32
+        self, device: Device, acquire_info: AcquireNextImageInfoKHR, mut image_index: UInt32
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireNextImage2KHR.html
         """
-        return self._acquire_next_image_2_khr(device, Ptr(to=acquire_info), Ptr(to=image_index))
+        return self._acquire_next_image_2_khr(
+            device,
+            Ptr(to=acquire_info).bitcast[AcquireNextImageInfoKHR](),
+            Ptr(to=image_index).bitcast[UInt32](),
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_trim_command_pool = Ptr(to=get_device_proc_addr(
         device, "vkTrimCommandPool".unsafe_ptr()
@@ -1054,8 +1146,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._trim_command_pool(device, command_pool, flags)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_enumerate_physical_device_groups = Ptr(to=get_instance_proc_addr(
         instance, "vkEnumeratePhysicalDeviceGroups".unsafe_ptr()
@@ -1064,20 +1156,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     fn enumerate_physical_device_groups(
         self,
         instance: Instance,
-        physical_device_group_count: UInt32,
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutOrigin.external],
+        mut physical_device_group_count: UInt32,
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         return self._enumerate_physical_device_groups(
-            instance, Ptr(to=physical_device_group_count), p_physical_device_group_properties
+            instance,
+            Ptr(to=physical_device_group_count).bitcast[UInt32](),
+            p_physical_device_group_properties,
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_get_physical_device_external_buffer_properties = Ptr(to=get_instance_proc_addr(
         instance, "vkGetPhysicalDeviceExternalBufferProperties".unsafe_ptr()
@@ -1087,19 +1181,21 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         external_buffer_info: PhysicalDeviceExternalBufferInfo,
-        external_buffer_properties: ExternalBufferProperties,
+        mut external_buffer_properties: ExternalBufferProperties,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalBufferProperties.html
         """
         return self._get_physical_device_external_buffer_properties(
-            physical_device, Ptr(to=external_buffer_info), Ptr(to=external_buffer_properties)
+            physical_device,
+            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo](),
+            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_memory_win_32_handle_khr = Ptr(to=get_device_proc_addr(
         device, "vkGetMemoryWin32HandleKHR".unsafe_ptr()
@@ -1109,14 +1205,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     )).bitcast[type_of(self._vk_get_memory_win_32_handle_properties_khr)]()[]
 
     fn get_memory_win_32_handle_khr(
-        self, device: Device, get_win_32_handle_info: MemoryGetWin32HandleInfoKHR, handle: HANDLE
+        self,
+        device: Device,
+        get_win_32_handle_info: MemoryGetWin32HandleInfoKHR,
+        mut handle: HANDLE,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryWin32HandleKHR.html
         """
         return self._get_memory_win_32_handle_khr(
-            device, Ptr(to=get_win_32_handle_info), Ptr(to=handle)
+            device,
+            Ptr(to=get_win_32_handle_info).bitcast[MemoryGetWin32HandleInfoKHR](),
+            Ptr(to=handle).bitcast[HANDLE](),
         )
 
     fn get_memory_win_32_handle_properties_khr(
@@ -1124,19 +1225,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
         handle: HANDLE,
-        memory_win_32_handle_properties: MemoryWin32HandlePropertiesKHR,
+        mut memory_win_32_handle_properties: MemoryWin32HandlePropertiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryWin32HandlePropertiesKHR.html
         """
         return self._get_memory_win_32_handle_properties_khr(
-            device, handle_type, handle, Ptr(to=memory_win_32_handle_properties)
+            device,
+            handle_type,
+            handle,
+            Ptr(to=memory_win_32_handle_properties).bitcast[MemoryWin32HandlePropertiesKHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_memory_fd_khr = Ptr(to=get_device_proc_addr(
         device, "vkGetMemoryFdKHR".unsafe_ptr()
@@ -1146,32 +1250,34 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     )).bitcast[type_of(self._vk_get_memory_fd_properties_khr)]()[]
 
     fn get_memory_fd_khr(
-        self, device: Device, get_fd_info: MemoryGetFdInfoKHR, fd: Int32
+        self, device: Device, get_fd_info: MemoryGetFdInfoKHR, mut fd: Int32
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryFdKHR.html
         """
-        return self._get_memory_fd_khr(device, Ptr(to=get_fd_info), Ptr(to=fd))
+        return self._get_memory_fd_khr(
+            device, Ptr(to=get_fd_info).bitcast[MemoryGetFdInfoKHR](), Ptr(to=fd).bitcast[Int32]()
+        )
 
     fn get_memory_fd_properties_khr(
         self,
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
         fd: Int32,
-        memory_fd_properties: MemoryFdPropertiesKHR,
+        mut memory_fd_properties: MemoryFdPropertiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryFdPropertiesKHR.html
         """
         return self._get_memory_fd_properties_khr(
-            device, handle_type, fd, Ptr(to=memory_fd_properties)
+            device, handle_type, fd, Ptr(to=memory_fd_properties).bitcast[MemoryFdPropertiesKHR]()
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_get_physical_device_external_semaphore_properties = Ptr(to=get_instance_proc_addr(
         instance, "vkGetPhysicalDeviceExternalSemaphoreProperties".unsafe_ptr()
@@ -1181,19 +1287,21 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         external_semaphore_info: PhysicalDeviceExternalSemaphoreInfo,
-        external_semaphore_properties: ExternalSemaphoreProperties,
+        mut external_semaphore_properties: ExternalSemaphoreProperties,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalSemaphoreProperties.html
         """
         return self._get_physical_device_external_semaphore_properties(
-            physical_device, Ptr(to=external_semaphore_info), Ptr(to=external_semaphore_properties)
+            physical_device,
+            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo](),
+            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_import_semaphore_win_32_handle_khr = Ptr(to=get_device_proc_addr(
         device, "vkImportSemaphoreWin32HandleKHR".unsafe_ptr()
@@ -1210,23 +1318,29 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportSemaphoreWin32HandleKHR.html
         """
         return self._import_semaphore_win_32_handle_khr(
-            device, Ptr(to=import_semaphore_win_32_handle_info)
+            device,
+            Ptr(to=import_semaphore_win_32_handle_info).bitcast[ImportSemaphoreWin32HandleInfoKHR](),
         )
 
     fn get_semaphore_win_32_handle_khr(
-        self, device: Device, get_win_32_handle_info: SemaphoreGetWin32HandleInfoKHR, handle: HANDLE
+        self,
+        device: Device,
+        get_win_32_handle_info: SemaphoreGetWin32HandleInfoKHR,
+        mut handle: HANDLE,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreWin32HandleKHR.html
         """
         return self._get_semaphore_win_32_handle_khr(
-            device, Ptr(to=get_win_32_handle_info), Ptr(to=handle)
+            device,
+            Ptr(to=get_win_32_handle_info).bitcast[SemaphoreGetWin32HandleInfoKHR](),
+            Ptr(to=handle).bitcast[HANDLE](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_import_semaphore_fd_khr = Ptr(to=get_device_proc_addr(
         device, "vkImportSemaphoreFdKHR".unsafe_ptr()
@@ -1242,20 +1356,26 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportSemaphoreFdKHR.html
         """
-        return self._import_semaphore_fd_khr(device, Ptr(to=import_semaphore_fd_info))
+        return self._import_semaphore_fd_khr(
+            device, Ptr(to=import_semaphore_fd_info).bitcast[ImportSemaphoreFdInfoKHR]()
+        )
 
     fn get_semaphore_fd_khr(
-        self, device: Device, get_fd_info: SemaphoreGetFdInfoKHR, fd: Int32
+        self, device: Device, get_fd_info: SemaphoreGetFdInfoKHR, mut fd: Int32
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreFdKHR.html
         """
-        return self._get_semaphore_fd_khr(device, Ptr(to=get_fd_info), Ptr(to=fd))
+        return self._get_semaphore_fd_khr(
+            device,
+            Ptr(to=get_fd_info).bitcast[SemaphoreGetFdInfoKHR](),
+            Ptr(to=fd).bitcast[Int32](),
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_push_descriptor_set = Ptr(to=get_device_proc_addr(
         device, "vkCmdPushDescriptorSet".unsafe_ptr()
@@ -1271,7 +1391,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         layout: PipelineLayout,
         set: UInt32,
         descriptor_write_count: UInt32,
-        descriptor_writes: WriteDescriptorSet,
+        p_descriptor_writes: Ptr[WriteDescriptorSet, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -1283,7 +1403,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             layout,
             set,
             descriptor_write_count,
-            Ptr(to=descriptor_writes),
+            p_descriptor_writes,
         )
 
     fn cmd_push_descriptor_set_with_template(
@@ -1299,12 +1419,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSetWithTemplate.html
         """
         return self._cmd_push_descriptor_set_with_template(
-            command_buffer, descriptor_update_template, layout, set, Ptr(to=data)
+            command_buffer,
+            descriptor_update_template,
+            layout,
+            set,
+            Ptr(to=data).bitcast[NoneType](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_descriptor_update_template = Ptr(to=get_device_proc_addr(
         device, "vkCreateDescriptorUpdateTemplate".unsafe_ptr()
@@ -1323,22 +1447,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        descriptor_update_template: DescriptorUpdateTemplate,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorUpdateTemplate.html
         """
         return self._create_descriptor_update_template(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_update_template)
+            device,
+            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
+            p_allocator,
+            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
         )
 
     fn destroy_descriptor_update_template(
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -1360,7 +1487,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._update_descriptor_set_with_template(
-            device, descriptor_set, descriptor_update_template, Ptr(to=data)
+            device, descriptor_set, descriptor_update_template, Ptr(to=data).bitcast[NoneType]()
         )
 
     fn cmd_push_descriptor_set_with_template(
@@ -1376,12 +1503,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSetWithTemplate.html
         """
         return self._cmd_push_descriptor_set_with_template(
-            command_buffer, descriptor_update_template, layout, set, Ptr(to=data)
+            command_buffer,
+            descriptor_update_template,
+            layout,
+            set,
+            Ptr(to=data).bitcast[NoneType](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_render_pass_2 = Ptr(to=get_device_proc_addr(
         device, "vkCreateRenderPass2".unsafe_ptr()
@@ -1400,15 +1531,18 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: RenderPassCreateInfo2,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        render_pass: RenderPass,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass2.html
         """
         return self._create_render_pass_2(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass)
+            device,
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo2](),
+            p_allocator,
+            Ptr(to=render_pass).bitcast[RenderPass](),
         )
 
     fn cmd_begin_render_pass_2(
@@ -1422,7 +1556,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass2.html
         """
         return self._cmd_begin_render_pass_2(
-            command_buffer, Ptr(to=render_pass_begin), Ptr(to=subpass_begin_info)
+            command_buffer,
+            Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](),
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
         )
 
     fn cmd_next_subpass_2(
@@ -1436,7 +1572,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdNextSubpass2.html
         """
         return self._cmd_next_subpass_2(
-            command_buffer, Ptr(to=subpass_begin_info), Ptr(to=subpass_end_info)
+            command_buffer,
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
+            Ptr(to=subpass_end_info).bitcast[SubpassEndInfo](),
         )
 
     fn cmd_end_render_pass_2(
@@ -1446,11 +1584,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass2.html
         """
-        return self._cmd_end_render_pass_2(command_buffer, Ptr(to=subpass_end_info))
+        return self._cmd_end_render_pass_2(
+            command_buffer, Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_swapchain_status_khr = Ptr(to=get_device_proc_addr(
         device, "vkGetSwapchainStatusKHR".unsafe_ptr()
@@ -1464,8 +1604,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_swapchain_status_khr(device, swapchain)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_get_physical_device_external_fence_properties = Ptr(to=get_instance_proc_addr(
         instance, "vkGetPhysicalDeviceExternalFenceProperties".unsafe_ptr()
@@ -1475,19 +1615,21 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         external_fence_info: PhysicalDeviceExternalFenceInfo,
-        external_fence_properties: ExternalFenceProperties,
+        mut external_fence_properties: ExternalFenceProperties,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalFenceProperties.html
         """
         return self._get_physical_device_external_fence_properties(
-            physical_device, Ptr(to=external_fence_info), Ptr(to=external_fence_properties)
+            physical_device,
+            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo](),
+            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_import_fence_win_32_handle_khr = Ptr(to=get_device_proc_addr(
         device, "vkImportFenceWin32HandleKHR".unsafe_ptr()
@@ -1504,23 +1646,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportFenceWin32HandleKHR.html
         """
         return self._import_fence_win_32_handle_khr(
-            device, Ptr(to=import_fence_win_32_handle_info)
+            device, Ptr(to=import_fence_win_32_handle_info).bitcast[ImportFenceWin32HandleInfoKHR]()
         )
 
     fn get_fence_win_32_handle_khr(
-        self, device: Device, get_win_32_handle_info: FenceGetWin32HandleInfoKHR, handle: HANDLE
+        self, device: Device, get_win_32_handle_info: FenceGetWin32HandleInfoKHR, mut handle: HANDLE
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceWin32HandleKHR.html
         """
         return self._get_fence_win_32_handle_khr(
-            device, Ptr(to=get_win_32_handle_info), Ptr(to=handle)
+            device,
+            Ptr(to=get_win_32_handle_info).bitcast[FenceGetWin32HandleInfoKHR](),
+            Ptr(to=handle).bitcast[HANDLE](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_import_fence_fd_khr = Ptr(to=get_device_proc_addr(
         device, "vkImportFenceFdKHR".unsafe_ptr()
@@ -1536,18 +1680,24 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportFenceFdKHR.html
         """
-        return self._import_fence_fd_khr(device, Ptr(to=import_fence_fd_info))
+        return self._import_fence_fd_khr(
+            device, Ptr(to=import_fence_fd_info).bitcast[ImportFenceFdInfoKHR]()
+        )
 
-    fn get_fence_fd_khr(self, device: Device, get_fd_info: FenceGetFdInfoKHR, fd: Int32) -> Result:
+    fn get_fence_fd_khr(
+        self, device: Device, get_fd_info: FenceGetFdInfoKHR, mut fd: Int32
+    ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceFdKHR.html
         """
-        return self._get_fence_fd_khr(device, Ptr(to=get_fd_info), Ptr(to=fd))
+        return self._get_fence_fd_khr(
+            device, Ptr(to=get_fd_info).bitcast[FenceGetFdInfoKHR](), Ptr(to=fd).bitcast[Int32]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_enumerate_physical_device_queue_family_performance_query_counters_khr = Ptr(to=get_device_proc_addr(
         device, "vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR".unsafe_ptr()
@@ -1566,9 +1716,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
-        counter_count: UInt32,
-        p_counters: Ptr[PerformanceCounterKHR, MutOrigin.external],
-        p_counter_descriptions: Ptr[PerformanceCounterDescriptionKHR, MutOrigin.external],
+        mut counter_count: UInt32,
+        p_counters: Ptr[PerformanceCounterKHR, MutAnyOrigin],
+        p_counter_descriptions: Ptr[PerformanceCounterDescriptionKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1577,7 +1727,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._enumerate_physical_device_queue_family_performance_query_counters_khr(
             physical_device,
             queue_family_index,
-            Ptr(to=counter_count),
+            Ptr(to=counter_count).bitcast[UInt32](),
             p_counters,
             p_counter_descriptions,
         )
@@ -1586,14 +1736,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         performance_query_create_info: QueryPoolPerformanceCreateInfoKHR,
-        num_passes: UInt32,
+        mut num_passes: UInt32,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR.html
         """
         return self._get_physical_device_queue_family_performance_query_passes_khr(
-            physical_device, Ptr(to=performance_query_create_info), Ptr(to=num_passes)
+            physical_device,
+            Ptr(to=performance_query_create_info).bitcast[QueryPoolPerformanceCreateInfoKHR](),
+            Ptr(to=num_passes).bitcast[UInt32](),
         )
 
     fn acquire_profiling_lock_khr(
@@ -1603,7 +1755,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireProfilingLockKHR.html
         """
-        return self._acquire_profiling_lock_khr(device, Ptr(to=info))
+        return self._acquire_profiling_lock_khr(
+            device, Ptr(to=info).bitcast[AcquireProfilingLockInfoKHR]()
+        )
 
     fn release_profiling_lock_khr(self, device: Device):
         """See official vulkan docs for details.
@@ -1613,8 +1767,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._release_profiling_lock_khr(device)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_get_physical_device_surface_capabilities_2_khr = Ptr(to=get_instance_proc_addr(
         instance, "vkGetPhysicalDeviceSurfaceCapabilities2KHR".unsafe_ptr()
@@ -1627,34 +1781,39 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         surface_info: PhysicalDeviceSurfaceInfo2KHR,
-        surface_capabilities: SurfaceCapabilities2KHR,
+        mut surface_capabilities: SurfaceCapabilities2KHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceCapabilities2KHR.html
         """
         return self._get_physical_device_surface_capabilities_2_khr(
-            physical_device, Ptr(to=surface_info), Ptr(to=surface_capabilities)
+            physical_device,
+            Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR](),
+            Ptr(to=surface_capabilities).bitcast[SurfaceCapabilities2KHR](),
         )
 
     fn get_physical_device_surface_formats_2_khr(
         self,
         physical_device: PhysicalDevice,
         surface_info: PhysicalDeviceSurfaceInfo2KHR,
-        surface_format_count: UInt32,
-        p_surface_formats: Ptr[SurfaceFormat2KHR, MutOrigin.external],
+        mut surface_format_count: UInt32,
+        p_surface_formats: Ptr[SurfaceFormat2KHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceFormats2KHR.html
         """
         return self._get_physical_device_surface_formats_2_khr(
-            physical_device, Ptr(to=surface_info), Ptr(to=surface_format_count), p_surface_formats
+            physical_device,
+            Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR](),
+            Ptr(to=surface_format_count).bitcast[UInt32](),
+            p_surface_formats,
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_get_physical_device_display_properties_2_khr = Ptr(to=get_instance_proc_addr(
         instance, "vkGetPhysicalDeviceDisplayProperties2KHR".unsafe_ptr()
@@ -1672,63 +1831,65 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     fn get_physical_device_display_properties_2_khr(
         self,
         physical_device: PhysicalDevice,
-        property_count: UInt32,
-        p_properties: Ptr[DisplayProperties2KHR, MutOrigin.external],
+        mut property_count: UInt32,
+        p_properties: Ptr[DisplayProperties2KHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayProperties2KHR.html
         """
         return self._get_physical_device_display_properties_2_khr(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn get_physical_device_display_plane_properties_2_khr(
         self,
         physical_device: PhysicalDevice,
-        property_count: UInt32,
-        p_properties: Ptr[DisplayPlaneProperties2KHR, MutOrigin.external],
+        mut property_count: UInt32,
+        p_properties: Ptr[DisplayPlaneProperties2KHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPlaneProperties2KHR.html
         """
         return self._get_physical_device_display_plane_properties_2_khr(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn get_display_mode_properties_2_khr(
         self,
         physical_device: PhysicalDevice,
         display: DisplayKHR,
-        property_count: UInt32,
-        p_properties: Ptr[DisplayModeProperties2KHR, MutOrigin.external],
+        mut property_count: UInt32,
+        p_properties: Ptr[DisplayModeProperties2KHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayModeProperties2KHR.html
         """
         return self._get_display_mode_properties_2_khr(
-            physical_device, display, Ptr(to=property_count), p_properties
+            physical_device, display, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn get_display_plane_capabilities_2_khr(
         self,
         physical_device: PhysicalDevice,
         display_plane_info: DisplayPlaneInfo2KHR,
-        capabilities: DisplayPlaneCapabilities2KHR,
+        mut capabilities: DisplayPlaneCapabilities2KHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayPlaneCapabilities2KHR.html
         """
         return self._get_display_plane_capabilities_2_khr(
-            physical_device, Ptr(to=display_plane_info), Ptr(to=capabilities)
+            physical_device,
+            Ptr(to=display_plane_info).bitcast[DisplayPlaneInfo2KHR](),
+            Ptr(to=capabilities).bitcast[DisplayPlaneCapabilities2KHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_image_memory_requirements_2 = Ptr(to=get_device_proc_addr(
         device, "vkGetImageMemoryRequirements2".unsafe_ptr()
@@ -1744,36 +1905,40 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: ImageMemoryRequirementsInfo2,
-        memory_requirements: MemoryRequirements2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements2.html
         """
         return self._get_image_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=memory_requirements)
+            device,
+            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_buffer_memory_requirements_2(
         self,
         device: Device,
         info: BufferMemoryRequirementsInfo2,
-        memory_requirements: MemoryRequirements2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements2.html
         """
         return self._get_buffer_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=memory_requirements)
+            device,
+            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_image_sparse_memory_requirements_2(
         self,
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
-        sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutOrigin.external],
+        mut sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -1781,14 +1946,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._get_image_sparse_memory_requirements_2(
             device,
-            Ptr(to=info),
-            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
         device, "vkCreateAccelerationStructureKHR".unsafe_ptr()
@@ -1843,22 +2008,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: AccelerationStructureCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        acceleration_structure: AccelerationStructureKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut acceleration_structure: AccelerationStructureKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateAccelerationStructureKHR.html
         """
         return self._create_acceleration_structure_khr(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=acceleration_structure)
+            device,
+            Ptr(to=create_info).bitcast[AccelerationStructureCreateInfoKHR](),
+            p_allocator,
+            Ptr(to=acceleration_structure).bitcast[AccelerationStructureKHR](),
         )
 
     fn destroy_acceleration_structure_khr(
         self,
         device: Device,
         acceleration_structure: AccelerationStructureKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -1872,25 +2040,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         info_count: UInt32,
-        infos: AccelerationStructureBuildGeometryInfoKHR,
-        pp_build_range_infos: Ptr[Ptr[AccelerationStructureBuildRangeInfoKHR, MutOrigin.external], ImmutOrigin.external],
+        p_infos: Ptr[AccelerationStructureBuildGeometryInfoKHR, ImmutAnyOrigin],
+        pp_build_range_infos: Ptr[Ptr[AccelerationStructureBuildRangeInfoKHR, ImmutAnyOrigin], ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBuildAccelerationStructuresKHR.html
         """
         return self._cmd_build_acceleration_structures_khr(
-            command_buffer, info_count, Ptr(to=infos), pp_build_range_infos
+            command_buffer, info_count, p_infos, pp_build_range_infos
         )
 
     fn cmd_build_acceleration_structures_indirect_khr(
         self,
         command_buffer: CommandBuffer,
         info_count: UInt32,
-        infos: AccelerationStructureBuildGeometryInfoKHR,
-        indirect_device_addresses: DeviceAddress,
-        indirect_strides: UInt32,
-        pp_max_primitive_counts: Ptr[Ptr[UInt32, MutOrigin.external], ImmutOrigin.external],
+        p_infos: Ptr[AccelerationStructureBuildGeometryInfoKHR, ImmutAnyOrigin],
+        p_indirect_device_addresses: Ptr[DeviceAddress, ImmutAnyOrigin],
+        p_indirect_strides: Ptr[UInt32, ImmutAnyOrigin],
+        pp_max_primitive_counts: Ptr[Ptr[UInt32, ImmutAnyOrigin], ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -1899,9 +2067,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_build_acceleration_structures_indirect_khr(
             command_buffer,
             info_count,
-            Ptr(to=infos),
-            Ptr(to=indirect_device_addresses),
-            Ptr(to=indirect_strides),
+            p_infos,
+            p_indirect_device_addresses,
+            p_indirect_strides,
             pp_max_primitive_counts,
         )
 
@@ -1910,15 +2078,15 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         deferred_operation: DeferredOperationKHR,
         info_count: UInt32,
-        infos: AccelerationStructureBuildGeometryInfoKHR,
-        pp_build_range_infos: Ptr[Ptr[AccelerationStructureBuildRangeInfoKHR, MutOrigin.external], ImmutOrigin.external],
+        p_infos: Ptr[AccelerationStructureBuildGeometryInfoKHR, ImmutAnyOrigin],
+        pp_build_range_infos: Ptr[Ptr[AccelerationStructureBuildRangeInfoKHR, ImmutAnyOrigin], ImmutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBuildAccelerationStructuresKHR.html
         """
         return self._build_acceleration_structures_khr(
-            device, deferred_operation, info_count, Ptr(to=infos), pp_build_range_infos
+            device, deferred_operation, info_count, p_infos, pp_build_range_infos
         )
 
     fn copy_acceleration_structure_khr(
@@ -1931,7 +2099,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyAccelerationStructureKHR.html
         """
-        return self._copy_acceleration_structure_khr(device, deferred_operation, Ptr(to=info))
+        return self._copy_acceleration_structure_khr(
+            device, deferred_operation, Ptr(to=info).bitcast[CopyAccelerationStructureInfoKHR]()
+        )
 
     fn copy_acceleration_structure_to_memory_khr(
         self,
@@ -1944,7 +2114,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyAccelerationStructureToMemoryKHR.html
         """
         return self._copy_acceleration_structure_to_memory_khr(
-            device, deferred_operation, Ptr(to=info)
+            device,
+            deferred_operation,
+            Ptr(to=info).bitcast[CopyAccelerationStructureToMemoryInfoKHR](),
         )
 
     fn copy_memory_to_acceleration_structure_khr(
@@ -1958,17 +2130,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMemoryToAccelerationStructureKHR.html
         """
         return self._copy_memory_to_acceleration_structure_khr(
-            device, deferred_operation, Ptr(to=info)
+            device,
+            deferred_operation,
+            Ptr(to=info).bitcast[CopyMemoryToAccelerationStructureInfoKHR](),
         )
 
     fn write_acceleration_structures_properties_khr(
         self,
         device: Device,
         acceleration_structure_count: UInt32,
-        acceleration_structures: AccelerationStructureKHR,
+        p_acceleration_structures: Ptr[AccelerationStructureKHR, ImmutAnyOrigin],
         query_type: QueryType,
         data_size: UInt,
-        data: NoneType,
+        p_data: Ptr[NoneType, MutAnyOrigin],
         stride: UInt,
     ) -> Result:
         """See official vulkan docs for details.
@@ -1978,10 +2152,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._write_acceleration_structures_properties_khr(
             device,
             acceleration_structure_count,
-            Ptr(to=acceleration_structures),
+            p_acceleration_structures,
             query_type,
             data_size,
-            Ptr(to=data),
+            p_data,
             stride,
         )
 
@@ -1992,7 +2166,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyAccelerationStructureKHR.html
         """
-        return self._cmd_copy_acceleration_structure_khr(command_buffer, Ptr(to=info))
+        return self._cmd_copy_acceleration_structure_khr(
+            command_buffer, Ptr(to=info).bitcast[CopyAccelerationStructureInfoKHR]()
+        )
 
     fn cmd_copy_acceleration_structure_to_memory_khr(
         self, command_buffer: CommandBuffer, info: CopyAccelerationStructureToMemoryInfoKHR
@@ -2001,7 +2177,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyAccelerationStructureToMemoryKHR.html
         """
-        return self._cmd_copy_acceleration_structure_to_memory_khr(command_buffer, Ptr(to=info))
+        return self._cmd_copy_acceleration_structure_to_memory_khr(
+            command_buffer, Ptr(to=info).bitcast[CopyAccelerationStructureToMemoryInfoKHR]()
+        )
 
     fn cmd_copy_memory_to_acceleration_structure_khr(
         self, command_buffer: CommandBuffer, info: CopyMemoryToAccelerationStructureInfoKHR
@@ -2010,7 +2188,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMemoryToAccelerationStructureKHR.html
         """
-        return self._cmd_copy_memory_to_acceleration_structure_khr(command_buffer, Ptr(to=info))
+        return self._cmd_copy_memory_to_acceleration_structure_khr(
+            command_buffer, Ptr(to=info).bitcast[CopyMemoryToAccelerationStructureInfoKHR]()
+        )
 
     fn get_acceleration_structure_device_address_khr(
         self, device: Device, info: AccelerationStructureDeviceAddressInfoKHR
@@ -2019,13 +2199,15 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAccelerationStructureDeviceAddressKHR.html
         """
-        return self._get_acceleration_structure_device_address_khr(device, Ptr(to=info))
+        return self._get_acceleration_structure_device_address_khr(
+            device, Ptr(to=info).bitcast[AccelerationStructureDeviceAddressInfoKHR]()
+        )
 
     fn cmd_write_acceleration_structures_properties_khr(
         self,
         command_buffer: CommandBuffer,
         acceleration_structure_count: UInt32,
-        acceleration_structures: AccelerationStructureKHR,
+        p_acceleration_structures: Ptr[AccelerationStructureKHR, ImmutAnyOrigin],
         query_type: QueryType,
         query_pool: QueryPool,
         first_query: UInt32,
@@ -2037,7 +2219,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_write_acceleration_structures_properties_khr(
             command_buffer,
             acceleration_structure_count,
-            Ptr(to=acceleration_structures),
+            p_acceleration_structures,
             query_type,
             query_pool,
             first_query,
@@ -2047,14 +2229,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         version_info: AccelerationStructureVersionInfoKHR,
-        compatibility: AccelerationStructureCompatibilityKHR,
+        mut compatibility: AccelerationStructureCompatibilityKHR,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceAccelerationStructureCompatibilityKHR.html
         """
         return self._get_device_acceleration_structure_compatibility_khr(
-            device, Ptr(to=version_info), Ptr(to=compatibility)
+            device,
+            Ptr(to=version_info).bitcast[AccelerationStructureVersionInfoKHR](),
+            Ptr(to=compatibility).bitcast[AccelerationStructureCompatibilityKHR](),
         )
 
     fn get_acceleration_structure_build_sizes_khr(
@@ -2062,20 +2246,24 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         build_type: AccelerationStructureBuildTypeKHR,
         build_info: AccelerationStructureBuildGeometryInfoKHR,
-        p_max_primitive_counts: Ptr[UInt32, MutOrigin.external],
-        size_info: AccelerationStructureBuildSizesInfoKHR,
+        p_max_primitive_counts: Ptr[UInt32, ImmutAnyOrigin],
+        mut size_info: AccelerationStructureBuildSizesInfoKHR,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAccelerationStructureBuildSizesKHR.html
         """
         return self._get_acceleration_structure_build_sizes_khr(
-            device, build_type, Ptr(to=build_info), p_max_primitive_counts, Ptr(to=size_info)
+            device,
+            build_type,
+            Ptr(to=build_info).bitcast[AccelerationStructureBuildGeometryInfoKHR](),
+            p_max_primitive_counts,
+            Ptr(to=size_info).bitcast[AccelerationStructureBuildSizesInfoKHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_trace_rays_khr = Ptr(to=get_device_proc_addr(
         device, "vkCmdTraceRaysKHR".unsafe_ptr()
@@ -2116,10 +2304,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._cmd_trace_rays_khr(
             command_buffer,
-            Ptr(to=raygen_shader_binding_table),
-            Ptr(to=miss_shader_binding_table),
-            Ptr(to=hit_shader_binding_table),
-            Ptr(to=callable_shader_binding_table),
+            Ptr(to=raygen_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
+            Ptr(to=miss_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
+            Ptr(to=hit_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
+            Ptr(to=callable_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
             width,
             height,
             depth,
@@ -2131,9 +2319,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         deferred_operation: DeferredOperationKHR,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        create_infos: RayTracingPipelineCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        pipelines: Pipeline,
+        p_create_infos: Ptr[RayTracingPipelineCreateInfoKHR, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -2144,9 +2332,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             deferred_operation,
             pipeline_cache,
             create_info_count,
-            Ptr(to=create_infos),
+            p_create_infos,
             p_allocator,
-            Ptr(to=pipelines),
+            p_pipelines,
         )
 
     fn get_ray_tracing_shader_group_handles_khr(
@@ -2156,14 +2344,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         first_group: UInt32,
         group_count: UInt32,
         data_size: UInt,
-        data: NoneType,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRayTracingShaderGroupHandlesKHR.html
         """
         return self._get_ray_tracing_shader_group_handles_khr(
-            device, pipeline, first_group, group_count, data_size, Ptr(to=data)
+            device, pipeline, first_group, group_count, data_size, p_data
         )
 
     fn get_ray_tracing_capture_replay_shader_group_handles_khr(
@@ -2173,14 +2361,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         first_group: UInt32,
         group_count: UInt32,
         data_size: UInt,
-        data: NoneType,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRayTracingCaptureReplayShaderGroupHandlesKHR.html
         """
         return self._get_ray_tracing_capture_replay_shader_group_handles_khr(
-            device, pipeline, first_group, group_count, data_size, Ptr(to=data)
+            device, pipeline, first_group, group_count, data_size, p_data
         )
 
     fn cmd_trace_rays_indirect_khr(
@@ -2198,10 +2386,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._cmd_trace_rays_indirect_khr(
             command_buffer,
-            Ptr(to=raygen_shader_binding_table),
-            Ptr(to=miss_shader_binding_table),
-            Ptr(to=hit_shader_binding_table),
-            Ptr(to=callable_shader_binding_table),
+            Ptr(to=raygen_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
+            Ptr(to=miss_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
+            Ptr(to=hit_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
+            Ptr(to=callable_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
             indirect_device_address,
         )
 
@@ -2228,8 +2416,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_sampler_ycbcr_conversion = Ptr(to=get_device_proc_addr(
         device, "vkCreateSamplerYcbcrConversion".unsafe_ptr()
@@ -2242,22 +2430,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        ycbcr_conversion: SamplerYcbcrConversion,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSamplerYcbcrConversion.html
         """
         return self._create_sampler_ycbcr_conversion(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=ycbcr_conversion)
+            device,
+            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
+            p_allocator,
+            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
         )
 
     fn destroy_sampler_ycbcr_conversion(
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -2266,8 +2457,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._destroy_sampler_ycbcr_conversion(device, ycbcr_conversion, p_allocator)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_bind_buffer_memory_2 = Ptr(to=get_device_proc_addr(
         device, "vkBindBufferMemory2".unsafe_ptr()
@@ -2277,26 +2468,32 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     )).bitcast[type_of(self._vk_bind_image_memory_2)]()[]
 
     fn bind_buffer_memory_2(
-        self, device: Device, bind_info_count: UInt32, bind_infos: BindBufferMemoryInfo
+        self,
+        device: Device,
+        bind_info_count: UInt32,
+        p_bind_infos: Ptr[BindBufferMemoryInfo, ImmutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory2.html
         """
-        return self._bind_buffer_memory_2(device, bind_info_count, Ptr(to=bind_infos))
+        return self._bind_buffer_memory_2(device, bind_info_count, p_bind_infos)
 
     fn bind_image_memory_2(
-        self, device: Device, bind_info_count: UInt32, bind_infos: BindImageMemoryInfo
+        self,
+        device: Device,
+        bind_info_count: UInt32,
+        p_bind_infos: Ptr[BindImageMemoryInfo, ImmutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory2.html
         """
-        return self._bind_image_memory_2(device, bind_info_count, Ptr(to=bind_infos))
+        return self._bind_image_memory_2(device, bind_info_count, p_bind_infos)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_descriptor_set_layout_support = Ptr(to=get_device_proc_addr(
         device, "vkGetDescriptorSetLayoutSupport".unsafe_ptr()
@@ -2306,19 +2503,21 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
-        support: DescriptorSetLayoutSupport,
+        mut support: DescriptorSetLayoutSupport,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutSupport.html
         """
         return self._get_descriptor_set_layout_support(
-            device, Ptr(to=create_info), Ptr(to=support)
+            device,
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=support).bitcast[DescriptorSetLayoutSupport](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(
         device, "vkCmdDrawIndirectCount".unsafe_ptr()
@@ -2376,8 +2575,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_semaphore_counter_value = Ptr(to=get_device_proc_addr(
         device, "vkGetSemaphoreCounterValue".unsafe_ptr()
@@ -2390,13 +2589,15 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     )).bitcast[type_of(self._vk_signal_semaphore)]()[]
 
     fn get_semaphore_counter_value(
-        self, device: Device, semaphore: Semaphore, value: UInt64
+        self, device: Device, semaphore: Semaphore, mut value: UInt64
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreCounterValue.html
         """
-        return self._get_semaphore_counter_value(device, semaphore, Ptr(to=value))
+        return self._get_semaphore_counter_value(
+            device, semaphore, Ptr(to=value).bitcast[UInt64]()
+        )
 
     fn wait_semaphores(
         self, device: Device, wait_info: SemaphoreWaitInfo, timeout: UInt64
@@ -2405,18 +2606,20 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitSemaphores.html
         """
-        return self._wait_semaphores(device, Ptr(to=wait_info), timeout)
+        return self._wait_semaphores(
+            device, Ptr(to=wait_info).bitcast[SemaphoreWaitInfo](), timeout
+        )
 
     fn signal_semaphore(self, device: Device, signal_info: SemaphoreSignalInfo) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSignalSemaphore.html
         """
-        return self._signal_semaphore(device, Ptr(to=signal_info))
+        return self._signal_semaphore(device, Ptr(to=signal_info).bitcast[SemaphoreSignalInfo]())
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_physical_device_fragment_shading_rates_khr = Ptr(to=get_device_proc_addr(
         device, "vkGetPhysicalDeviceFragmentShadingRatesKHR".unsafe_ptr()
@@ -2428,15 +2631,17 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_fragment_shading_rates_khr(
         self,
         physical_device: PhysicalDevice,
-        fragment_shading_rate_count: UInt32,
-        p_fragment_shading_rates: Ptr[PhysicalDeviceFragmentShadingRateKHR, MutOrigin.external],
+        mut fragment_shading_rate_count: UInt32,
+        p_fragment_shading_rates: Ptr[PhysicalDeviceFragmentShadingRateKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFragmentShadingRatesKHR.html
         """
         return self._get_physical_device_fragment_shading_rates_khr(
-            physical_device, Ptr(to=fragment_shading_rate_count), p_fragment_shading_rates
+            physical_device,
+            Ptr(to=fragment_shading_rate_count).bitcast[UInt32](),
+            p_fragment_shading_rates,
         )
 
     fn cmd_set_fragment_shading_rate_khr(
@@ -2450,12 +2655,12 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetFragmentShadingRateKHR.html
         """
         return self._cmd_set_fragment_shading_rate_khr(
-            command_buffer, Ptr(to=fragment_size), combiner_ops
+            command_buffer, Ptr(to=fragment_size).bitcast[Extent2D](), combiner_ops
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_rendering_attachment_locations = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetRenderingAttachmentLocations".unsafe_ptr()
@@ -2471,7 +2676,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRenderingAttachmentLocations.html
         """
-        return self._cmd_set_rendering_attachment_locations(command_buffer, Ptr(to=location_info))
+        return self._cmd_set_rendering_attachment_locations(
+            command_buffer, Ptr(to=location_info).bitcast[RenderingAttachmentLocationInfo]()
+        )
 
     fn cmd_set_rendering_input_attachment_indices(
         self,
@@ -2483,12 +2690,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRenderingInputAttachmentIndices.html
         """
         return self._cmd_set_rendering_input_attachment_indices(
-            command_buffer, Ptr(to=input_attachment_index_info)
+            command_buffer,
+            Ptr(to=input_attachment_index_info).bitcast[RenderingInputAttachmentIndexInfo](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_wait_for_present_khr = Ptr(to=get_device_proc_addr(
         device, "vkWaitForPresentKHR".unsafe_ptr()
@@ -2504,8 +2712,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._wait_for_present_khr(device, swapchain, present_id, timeout)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_buffer_device_address = Ptr(to=get_device_proc_addr(
         device, "vkGetBufferDeviceAddress".unsafe_ptr()
@@ -2524,7 +2732,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
-        return self._get_buffer_device_address(device, Ptr(to=info))
+        return self._get_buffer_device_address(
+            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
+        )
 
     fn get_buffer_opaque_capture_address(
         self, device: Device, info: BufferDeviceAddressInfo
@@ -2533,7 +2743,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureAddress.html
         """
-        return self._get_buffer_opaque_capture_address(device, Ptr(to=info))
+        return self._get_buffer_opaque_capture_address(
+            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
+        )
 
     fn get_device_memory_opaque_capture_address(
         self, device: Device, info: DeviceMemoryOpaqueCaptureAddressInfo
@@ -2542,11 +2754,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryOpaqueCaptureAddress.html
         """
-        return self._get_device_memory_opaque_capture_address(device, Ptr(to=info))
+        return self._get_device_memory_opaque_capture_address(
+            device, Ptr(to=info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_deferred_operation_khr = Ptr(to=get_device_proc_addr(
         device, "vkCreateDeferredOperationKHR".unsafe_ptr()
@@ -2567,20 +2781,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn create_deferred_operation_khr(
         self,
         device: Device,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        deferred_operation: DeferredOperationKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut deferred_operation: DeferredOperationKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDeferredOperationKHR.html
         """
-        return self._create_deferred_operation_khr(device, p_allocator, Ptr(to=deferred_operation))
+        return self._create_deferred_operation_khr(
+            device, p_allocator, Ptr(to=deferred_operation).bitcast[DeferredOperationKHR]()
+        )
 
     fn destroy_deferred_operation_khr(
         self,
         device: Device,
         operation: DeferredOperationKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -2616,8 +2832,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._deferred_operation_join_khr(device, operation)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_pipeline_executable_properties_khr = Ptr(to=get_device_proc_addr(
         device, "vkGetPipelineExecutablePropertiesKHR".unsafe_ptr()
@@ -2633,38 +2849,44 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         pipeline_info: PipelineInfoKHR,
-        executable_count: UInt32,
-        p_properties: Ptr[PipelineExecutablePropertiesKHR, MutOrigin.external],
+        mut executable_count: UInt32,
+        p_properties: Ptr[PipelineExecutablePropertiesKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutablePropertiesKHR.html
         """
         return self._get_pipeline_executable_properties_khr(
-            device, Ptr(to=pipeline_info), Ptr(to=executable_count), p_properties
+            device,
+            Ptr(to=pipeline_info).bitcast[PipelineInfoKHR](),
+            Ptr(to=executable_count).bitcast[UInt32](),
+            p_properties,
         )
 
     fn get_pipeline_executable_statistics_khr(
         self,
         device: Device,
         executable_info: PipelineExecutableInfoKHR,
-        statistic_count: UInt32,
-        p_statistics: Ptr[PipelineExecutableStatisticKHR, MutOrigin.external],
+        mut statistic_count: UInt32,
+        p_statistics: Ptr[PipelineExecutableStatisticKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutableStatisticsKHR.html
         """
         return self._get_pipeline_executable_statistics_khr(
-            device, Ptr(to=executable_info), Ptr(to=statistic_count), p_statistics
+            device,
+            Ptr(to=executable_info).bitcast[PipelineExecutableInfoKHR](),
+            Ptr(to=statistic_count).bitcast[UInt32](),
+            p_statistics,
         )
 
     fn get_pipeline_executable_internal_representations_khr(
         self,
         device: Device,
         executable_info: PipelineExecutableInfoKHR,
-        internal_representation_count: UInt32,
-        p_internal_representations: Ptr[PipelineExecutableInternalRepresentationKHR, MutOrigin.external],
+        mut internal_representation_count: UInt32,
+        p_internal_representations: Ptr[PipelineExecutableInternalRepresentationKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -2672,14 +2894,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._get_pipeline_executable_internal_representations_khr(
             device,
-            Ptr(to=executable_info),
-            Ptr(to=internal_representation_count),
+            Ptr(to=executable_info).bitcast[PipelineExecutableInfoKHR](),
+            Ptr(to=internal_representation_count).bitcast[UInt32](),
             p_internal_representations,
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_map_memory_2 = Ptr(to=get_device_proc_addr(
         device, "vkMapMemory2".unsafe_ptr()
@@ -2692,24 +2914,26 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         memory_map_info: MemoryMapInfo,
-        pp_data: Ptr[Ptr[NoneType, MutOrigin.external], MutOrigin.external],
+        pp_data: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory2.html
         """
-        return self._map_memory_2(device, Ptr(to=memory_map_info), pp_data)
+        return self._map_memory_2(
+            device, Ptr(to=memory_map_info).bitcast[MemoryMapInfo](), pp_data
+        )
 
     fn unmap_memory_2(self, device: Device, memory_unmap_info: MemoryUnmapInfo) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUnmapMemory2.html
         """
-        return self._unmap_memory_2(device, Ptr(to=memory_unmap_info))
+        return self._unmap_memory_2(device, Ptr(to=memory_unmap_info).bitcast[MemoryUnmapInfo]())
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_physical_device_video_encode_quality_level_properties_khr = Ptr(to=get_device_proc_addr(
         device, "vkGetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR".unsafe_ptr()
@@ -2725,23 +2949,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         quality_level_info: PhysicalDeviceVideoEncodeQualityLevelInfoKHR,
-        quality_level_properties: VideoEncodeQualityLevelPropertiesKHR,
+        mut quality_level_properties: VideoEncodeQualityLevelPropertiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR.html
         """
         return self._get_physical_device_video_encode_quality_level_properties_khr(
-            physical_device, Ptr(to=quality_level_info), Ptr(to=quality_level_properties)
+            physical_device,
+            Ptr(to=quality_level_info).bitcast[PhysicalDeviceVideoEncodeQualityLevelInfoKHR](),
+            Ptr(to=quality_level_properties).bitcast[VideoEncodeQualityLevelPropertiesKHR](),
         )
 
     fn get_encoded_video_session_parameters_khr(
         self,
         device: Device,
         video_session_parameters_info: VideoEncodeSessionParametersGetInfoKHR,
-        p_feedback_info: Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutOrigin.external],
-        data_size: UInt,
-        p_data: Ptr[NoneType, MutOrigin.external],
+        p_feedback_info: Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutAnyOrigin],
+        mut data_size: UInt,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -2749,9 +2975,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._get_encoded_video_session_parameters_khr(
             device,
-            Ptr(to=video_session_parameters_info),
+            Ptr(to=video_session_parameters_info).bitcast[VideoEncodeSessionParametersGetInfoKHR](),
             p_feedback_info,
-            Ptr(to=data_size),
+            Ptr(to=data_size).bitcast[UInt](),
             p_data,
         )
 
@@ -2760,11 +2986,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEncodeVideoKHR.html
         """
-        return self._cmd_encode_video_khr(command_buffer, Ptr(to=encode_info))
+        return self._cmd_encode_video_khr(
+            command_buffer, Ptr(to=encode_info).bitcast[VideoEncodeInfoKHR]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_event_2 = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetEvent2".unsafe_ptr()
@@ -2792,7 +3020,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetEvent2.html
         """
-        return self._cmd_set_event_2(command_buffer, event, Ptr(to=dependency_info))
+        return self._cmd_set_event_2(
+            command_buffer, event, Ptr(to=dependency_info).bitcast[DependencyInfo]()
+        )
 
     fn cmd_reset_event_2(
         self, command_buffer: CommandBuffer, event: Event, stage_mask: PipelineStageFlags2
@@ -2807,16 +3037,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        events: Event,
-        dependency_infos: DependencyInfo,
+        p_events: Ptr[Event, ImmutAnyOrigin],
+        p_dependency_infos: Ptr[DependencyInfo, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWaitEvents2.html
         """
-        return self._cmd_wait_events_2(
-            command_buffer, event_count, Ptr(to=events), Ptr(to=dependency_infos)
-        )
+        return self._cmd_wait_events_2(command_buffer, event_count, p_events, p_dependency_infos)
 
     fn cmd_pipeline_barrier_2(
         self, command_buffer: CommandBuffer, dependency_info: DependencyInfo
@@ -2825,7 +3053,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPipelineBarrier2.html
         """
-        return self._cmd_pipeline_barrier_2(command_buffer, Ptr(to=dependency_info))
+        return self._cmd_pipeline_barrier_2(
+            command_buffer, Ptr(to=dependency_info).bitcast[DependencyInfo]()
+        )
 
     fn cmd_write_timestamp_2(
         self,
@@ -2841,17 +3071,21 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_write_timestamp_2(command_buffer, stage, query_pool, query)
 
     fn queue_submit_2(
-        self, queue: Queue, submit_count: UInt32, submits: SubmitInfo2, fence: Fence
+        self,
+        queue: Queue,
+        submit_count: UInt32,
+        p_submits: Ptr[SubmitInfo2, ImmutAnyOrigin],
+        fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit2.html
         """
-        return self._queue_submit_2(queue, submit_count, Ptr(to=submits), fence)
+        return self._queue_submit_2(queue, submit_count, p_submits, fence)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_copy_buffer_2 = Ptr(to=get_device_proc_addr(
         device, "vkCmdCopyBuffer2".unsafe_ptr()
@@ -2877,14 +3111,18 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer2.html
         """
-        return self._cmd_copy_buffer_2(command_buffer, Ptr(to=copy_buffer_info))
+        return self._cmd_copy_buffer_2(
+            command_buffer, Ptr(to=copy_buffer_info).bitcast[CopyBufferInfo2]()
+        )
 
     fn cmd_copy_image_2(self, command_buffer: CommandBuffer, copy_image_info: CopyImageInfo2):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImage2.html
         """
-        return self._cmd_copy_image_2(command_buffer, Ptr(to=copy_image_info))
+        return self._cmd_copy_image_2(
+            command_buffer, Ptr(to=copy_image_info).bitcast[CopyImageInfo2]()
+        )
 
     fn cmd_copy_buffer_to_image_2(
         self, command_buffer: CommandBuffer, copy_buffer_to_image_info: CopyBufferToImageInfo2
@@ -2893,7 +3131,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage2.html
         """
-        return self._cmd_copy_buffer_to_image_2(command_buffer, Ptr(to=copy_buffer_to_image_info))
+        return self._cmd_copy_buffer_to_image_2(
+            command_buffer, Ptr(to=copy_buffer_to_image_info).bitcast[CopyBufferToImageInfo2]()
+        )
 
     fn cmd_copy_image_to_buffer_2(
         self, command_buffer: CommandBuffer, copy_image_to_buffer_info: CopyImageToBufferInfo2
@@ -2902,14 +3142,18 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer2.html
         """
-        return self._cmd_copy_image_to_buffer_2(command_buffer, Ptr(to=copy_image_to_buffer_info))
+        return self._cmd_copy_image_to_buffer_2(
+            command_buffer, Ptr(to=copy_image_to_buffer_info).bitcast[CopyImageToBufferInfo2]()
+        )
 
     fn cmd_blit_image_2(self, command_buffer: CommandBuffer, blit_image_info: BlitImageInfo2):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBlitImage2.html
         """
-        return self._cmd_blit_image_2(command_buffer, Ptr(to=blit_image_info))
+        return self._cmd_blit_image_2(
+            command_buffer, Ptr(to=blit_image_info).bitcast[BlitImageInfo2]()
+        )
 
     fn cmd_resolve_image_2(
         self, command_buffer: CommandBuffer, resolve_image_info: ResolveImageInfo2
@@ -2918,11 +3162,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResolveImage2.html
         """
-        return self._cmd_resolve_image_2(command_buffer, Ptr(to=resolve_image_info))
+        return self._cmd_resolve_image_2(
+            command_buffer, Ptr(to=resolve_image_info).bitcast[ResolveImageInfo2]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_trace_rays_indirect_2_khr = Ptr(to=get_device_proc_addr(
         device, "vkCmdTraceRaysIndirect2KHR".unsafe_ptr()
@@ -2938,8 +3184,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_trace_rays_indirect_2_khr(command_buffer, indirect_device_address)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_device_buffer_memory_requirements = Ptr(to=get_device_proc_addr(
         device, "vkGetDeviceBufferMemoryRequirements".unsafe_ptr()
@@ -2955,36 +3201,40 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: DeviceBufferMemoryRequirements,
-        memory_requirements: MemoryRequirements2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceBufferMemoryRequirements.html
         """
         return self._get_device_buffer_memory_requirements(
-            device, Ptr(to=info), Ptr(to=memory_requirements)
+            device,
+            Ptr(to=info).bitcast[DeviceBufferMemoryRequirements](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_device_image_memory_requirements(
         self,
         device: Device,
         info: DeviceImageMemoryRequirements,
-        memory_requirements: MemoryRequirements2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageMemoryRequirements.html
         """
         return self._get_device_image_memory_requirements(
-            device, Ptr(to=info), Ptr(to=memory_requirements)
+            device,
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_device_image_sparse_memory_requirements(
         self,
         device: Device,
         info: DeviceImageMemoryRequirements,
-        sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutOrigin.external],
+        mut sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -2992,14 +3242,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._get_device_image_sparse_memory_requirements(
             device,
-            Ptr(to=info),
-            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_bind_index_buffer_2 = Ptr(to=get_device_proc_addr(
         device, "vkCmdBindIndexBuffer2".unsafe_ptr()
@@ -3029,43 +3279,52 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_bind_index_buffer_2(command_buffer, buffer, offset, size, index_type)
 
     fn get_rendering_area_granularity(
-        self, device: Device, rendering_area_info: RenderingAreaInfo, granularity: Extent2D
+        self, device: Device, rendering_area_info: RenderingAreaInfo, mut granularity: Extent2D
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderingAreaGranularity.html
         """
         return self._get_rendering_area_granularity(
-            device, Ptr(to=rendering_area_info), Ptr(to=granularity)
+            device,
+            Ptr(to=rendering_area_info).bitcast[RenderingAreaInfo](),
+            Ptr(to=granularity).bitcast[Extent2D](),
         )
 
     fn get_device_image_subresource_layout(
-        self, device: Device, info: DeviceImageSubresourceInfo, layout: SubresourceLayout2
+        self, device: Device, info: DeviceImageSubresourceInfo, mut layout: SubresourceLayout2
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSubresourceLayout.html
         """
-        return self._get_device_image_subresource_layout(device, Ptr(to=info), Ptr(to=layout))
+        return self._get_device_image_subresource_layout(
+            device,
+            Ptr(to=info).bitcast[DeviceImageSubresourceInfo](),
+            Ptr(to=layout).bitcast[SubresourceLayout2](),
+        )
 
     fn get_image_subresource_layout_2(
         self,
         device: Device,
         image: Image,
         subresource: ImageSubresource2,
-        layout: SubresourceLayout2,
+        mut layout: SubresourceLayout2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout2.html
         """
         return self._get_image_subresource_layout_2(
-            device, image, Ptr(to=subresource), Ptr(to=layout)
+            device,
+            image,
+            Ptr(to=subresource).bitcast[ImageSubresource2](),
+            Ptr(to=layout).bitcast[SubresourceLayout2](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_wait_for_present_2_khr = Ptr(to=get_device_proc_addr(
         device, "vkWaitForPresent2KHR".unsafe_ptr()
@@ -3078,11 +3337,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitForPresent2KHR.html
         """
-        return self._wait_for_present_2_khr(device, swapchain, Ptr(to=present_wait_2_info))
+        return self._wait_for_present_2_khr(
+            device, swapchain, Ptr(to=present_wait_2_info).bitcast[PresentWait2InfoKHR]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_pipeline_binaries_khr = Ptr(to=get_device_proc_addr(
         device, "vkCreatePipelineBinariesKHR".unsafe_ptr()
@@ -3104,22 +3365,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: PipelineBinaryCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        binaries: PipelineBinaryHandlesInfoKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut binaries: PipelineBinaryHandlesInfoKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineBinariesKHR.html
         """
         return self._create_pipeline_binaries_khr(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=binaries)
+            device,
+            Ptr(to=create_info).bitcast[PipelineBinaryCreateInfoKHR](),
+            p_allocator,
+            Ptr(to=binaries).bitcast[PipelineBinaryHandlesInfoKHR](),
         )
 
     fn destroy_pipeline_binary_khr(
         self,
         device: Device,
         pipeline_binary: PipelineBinaryKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -3130,22 +3394,24 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_pipeline_key_khr(
         self,
         device: Device,
-        p_pipeline_create_info: Ptr[PipelineCreateInfoKHR, MutOrigin.external],
-        pipeline_key: PipelineBinaryKeyKHR,
+        p_pipeline_create_info: Ptr[PipelineCreateInfoKHR, ImmutAnyOrigin],
+        mut pipeline_key: PipelineBinaryKeyKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineKeyKHR.html
         """
-        return self._get_pipeline_key_khr(device, p_pipeline_create_info, Ptr(to=pipeline_key))
+        return self._get_pipeline_key_khr(
+            device, p_pipeline_create_info, Ptr(to=pipeline_key).bitcast[PipelineBinaryKeyKHR]()
+        )
 
     fn get_pipeline_binary_data_khr(
         self,
         device: Device,
         info: PipelineBinaryDataInfoKHR,
-        pipeline_binary_key: PipelineBinaryKeyKHR,
-        pipeline_binary_data_size: UInt,
-        p_pipeline_binary_data: Ptr[NoneType, MutOrigin.external],
+        mut pipeline_binary_key: PipelineBinaryKeyKHR,
+        mut pipeline_binary_data_size: UInt,
+        p_pipeline_binary_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3153,9 +3419,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._get_pipeline_binary_data_khr(
             device,
-            Ptr(to=info),
-            Ptr(to=pipeline_binary_key),
-            Ptr(to=pipeline_binary_data_size),
+            Ptr(to=info).bitcast[PipelineBinaryDataInfoKHR](),
+            Ptr(to=pipeline_binary_key).bitcast[PipelineBinaryKeyKHR](),
+            Ptr(to=pipeline_binary_data_size).bitcast[UInt](),
             p_pipeline_binary_data,
         )
 
@@ -3163,17 +3429,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: ReleaseCapturedPipelineDataInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkReleaseCapturedPipelineDataKHR.html
         """
-        return self._release_captured_pipeline_data_khr(device, Ptr(to=info), p_allocator)
+        return self._release_captured_pipeline_data_khr(
+            device, Ptr(to=info).bitcast[ReleaseCapturedPipelineDataInfoKHR](), p_allocator
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_release_swapchain_images_khr = Ptr(to=get_device_proc_addr(
         device, "vkReleaseSwapchainImagesKHR".unsafe_ptr()
@@ -3186,11 +3454,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkReleaseSwapchainImagesKHR.html
         """
-        return self._release_swapchain_images_khr(device, Ptr(to=release_info))
+        return self._release_swapchain_images_khr(
+            device, Ptr(to=release_info).bitcast[ReleaseSwapchainImagesInfoKHR]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_physical_device_cooperative_matrix_properties_khr = Ptr(to=get_device_proc_addr(
         device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR".unsafe_ptr()
@@ -3199,20 +3469,20 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_cooperative_matrix_properties_khr(
         self,
         physical_device: PhysicalDevice,
-        property_count: UInt32,
-        p_properties: Ptr[CooperativeMatrixPropertiesKHR, MutOrigin.external],
+        mut property_count: UInt32,
+        p_properties: Ptr[CooperativeMatrixPropertiesKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR.html
         """
         return self._get_physical_device_cooperative_matrix_properties_khr(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_line_stipple = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetLineStipple".unsafe_ptr()
@@ -3233,8 +3503,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_physical_device_calibrateable_time_domains_khr = Ptr(to=get_device_proc_addr(
         device, "vkGetPhysicalDeviceCalibrateableTimeDomainsKHR".unsafe_ptr()
@@ -3246,24 +3516,24 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_calibrateable_time_domains_khr(
         self,
         physical_device: PhysicalDevice,
-        time_domain_count: UInt32,
-        p_time_domains: Ptr[TimeDomainKHR, MutOrigin.external],
+        mut time_domain_count: UInt32,
+        p_time_domains: Ptr[TimeDomainKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCalibrateableTimeDomainsKHR.html
         """
         return self._get_physical_device_calibrateable_time_domains_khr(
-            physical_device, Ptr(to=time_domain_count), p_time_domains
+            physical_device, Ptr(to=time_domain_count).bitcast[UInt32](), p_time_domains
         )
 
     fn get_calibrated_timestamps_khr(
         self,
         device: Device,
         timestamp_count: UInt32,
-        timestamp_infos: CalibratedTimestampInfoKHR,
-        timestamps: UInt64,
-        max_deviation: UInt64,
+        p_timestamp_infos: Ptr[CalibratedTimestampInfoKHR, ImmutAnyOrigin],
+        p_timestamps: Ptr[UInt64, MutAnyOrigin],
+        mut max_deviation: UInt64,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3272,14 +3542,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_calibrated_timestamps_khr(
             device,
             timestamp_count,
-            Ptr(to=timestamp_infos),
-            Ptr(to=timestamps),
-            Ptr(to=max_deviation),
+            p_timestamp_infos,
+            p_timestamps,
+            Ptr(to=max_deviation).bitcast[UInt64](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_bind_descriptor_sets_2 = Ptr(to=get_device_proc_addr(
         device, "vkCmdBindDescriptorSets2".unsafe_ptr()
@@ -3307,7 +3577,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorSets2.html
         """
-        return self._cmd_bind_descriptor_sets_2(command_buffer, Ptr(to=bind_descriptor_sets_info))
+        return self._cmd_bind_descriptor_sets_2(
+            command_buffer, Ptr(to=bind_descriptor_sets_info).bitcast[BindDescriptorSetsInfo]()
+        )
 
     fn cmd_push_constants_2(
         self, command_buffer: CommandBuffer, push_constants_info: PushConstantsInfo
@@ -3316,7 +3588,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants2.html
         """
-        return self._cmd_push_constants_2(command_buffer, Ptr(to=push_constants_info))
+        return self._cmd_push_constants_2(
+            command_buffer, Ptr(to=push_constants_info).bitcast[PushConstantsInfo]()
+        )
 
     fn cmd_push_descriptor_set_2(
         self, command_buffer: CommandBuffer, push_descriptor_set_info: PushDescriptorSetInfo
@@ -3325,7 +3599,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSet2.html
         """
-        return self._cmd_push_descriptor_set_2(command_buffer, Ptr(to=push_descriptor_set_info))
+        return self._cmd_push_descriptor_set_2(
+            command_buffer, Ptr(to=push_descriptor_set_info).bitcast[PushDescriptorSetInfo]()
+        )
 
     fn cmd_push_descriptor_set_with_template_2(
         self,
@@ -3337,7 +3613,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSetWithTemplate2.html
         """
         return self._cmd_push_descriptor_set_with_template_2(
-            command_buffer, Ptr(to=push_descriptor_set_with_template_info)
+            command_buffer,
+            Ptr(to=push_descriptor_set_with_template_info).bitcast[PushDescriptorSetWithTemplateInfo](),
         )
 
     fn cmd_set_descriptor_buffer_offsets_2_ext(
@@ -3350,7 +3627,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDescriptorBufferOffsets2EXT.html
         """
         return self._cmd_set_descriptor_buffer_offsets_2_ext(
-            command_buffer, Ptr(to=set_descriptor_buffer_offsets_info)
+            command_buffer,
+            Ptr(to=set_descriptor_buffer_offsets_info).bitcast[SetDescriptorBufferOffsetsInfoEXT](),
         )
 
     fn cmd_bind_descriptor_buffer_embedded_samplers_2_ext(
@@ -3363,12 +3641,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorBufferEmbeddedSamplers2EXT.html
         """
         return self._cmd_bind_descriptor_buffer_embedded_samplers_2_ext(
-            command_buffer, Ptr(to=bind_descriptor_buffer_embedded_samplers_info)
+            command_buffer,
+            Ptr(to=bind_descriptor_buffer_embedded_samplers_info).bitcast[BindDescriptorBufferEmbeddedSamplersInfoEXT](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_debug_report_callback_ext = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateDebugReportCallbackEXT".unsafe_ptr()
@@ -3384,22 +3663,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: DebugReportCallbackCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        callback: DebugReportCallbackEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut callback: DebugReportCallbackEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDebugReportCallbackEXT.html
         """
         return self._create_debug_report_callback_ext(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=callback)
+            instance,
+            Ptr(to=create_info).bitcast[DebugReportCallbackCreateInfoEXT](),
+            p_allocator,
+            Ptr(to=callback).bitcast[DebugReportCallbackEXT](),
         )
 
     fn destroy_debug_report_callback_ext(
         self,
         instance: Instance,
         callback: DebugReportCallbackEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -3415,27 +3697,20 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         object: UInt64,
         location: UInt,
         message_code: Int32,
-        layer_prefix: c_char,
-        message: c_char,
+        p_layer_prefix: CStringSlice[ImmutAnyOrigin],
+        p_message: CStringSlice[ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDebugReportMessageEXT.html
         """
         return self._debug_report_message_ext(
-            instance,
-            flags,
-            object_type,
-            object,
-            location,
-            message_code,
-            Ptr(to=layer_prefix),
-            Ptr(to=message),
+            instance, flags, object_type, object, location, message_code, p_layer_prefix, p_message
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_debug_marker_set_object_tag_ext = Ptr(to=get_device_proc_addr(
         device, "vkDebugMarkerSetObjectTagEXT".unsafe_ptr()
@@ -3460,7 +3735,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDebugMarkerSetObjectTagEXT.html
         """
-        return self._debug_marker_set_object_tag_ext(device, Ptr(to=tag_info))
+        return self._debug_marker_set_object_tag_ext(
+            device, Ptr(to=tag_info).bitcast[DebugMarkerObjectTagInfoEXT]()
+        )
 
     fn debug_marker_set_object_name_ext(
         self, device: Device, name_info: DebugMarkerObjectNameInfoEXT
@@ -3469,7 +3746,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDebugMarkerSetObjectNameEXT.html
         """
-        return self._debug_marker_set_object_name_ext(device, Ptr(to=name_info))
+        return self._debug_marker_set_object_name_ext(
+            device, Ptr(to=name_info).bitcast[DebugMarkerObjectNameInfoEXT]()
+        )
 
     fn cmd_debug_marker_begin_ext(
         self, command_buffer: CommandBuffer, marker_info: DebugMarkerMarkerInfoEXT
@@ -3478,7 +3757,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDebugMarkerBeginEXT.html
         """
-        return self._cmd_debug_marker_begin_ext(command_buffer, Ptr(to=marker_info))
+        return self._cmd_debug_marker_begin_ext(
+            command_buffer, Ptr(to=marker_info).bitcast[DebugMarkerMarkerInfoEXT]()
+        )
 
     fn cmd_debug_marker_end_ext(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
@@ -3494,11 +3775,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDebugMarkerInsertEXT.html
         """
-        return self._cmd_debug_marker_insert_ext(command_buffer, Ptr(to=marker_info))
+        return self._cmd_debug_marker_insert_ext(
+            command_buffer, Ptr(to=marker_info).bitcast[DebugMarkerMarkerInfoEXT]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_bind_transform_feedback_buffers_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdBindTransformFeedbackBuffersEXT".unsafe_ptr()
@@ -3524,16 +3807,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        buffers: Buffer,
-        offsets: DeviceSize,
-        p_sizes: Ptr[DeviceSize, MutOrigin.external],
+        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
+        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindTransformFeedbackBuffersEXT.html
         """
         return self._cmd_bind_transform_feedback_buffers_ext(
-            command_buffer, first_binding, binding_count, Ptr(to=buffers), Ptr(to=offsets), p_sizes
+            command_buffer, first_binding, binding_count, p_buffers, p_offsets, p_sizes
         )
 
     fn cmd_begin_transform_feedback_ext(
@@ -3541,8 +3824,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_counter_buffer: UInt32,
         counter_buffer_count: UInt32,
-        counter_buffers: Buffer,
-        p_counter_buffer_offsets: Ptr[DeviceSize, MutOrigin.external],
+        p_counter_buffers: Ptr[Buffer, ImmutAnyOrigin],
+        p_counter_buffer_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -3552,7 +3835,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             command_buffer,
             first_counter_buffer,
             counter_buffer_count,
-            Ptr(to=counter_buffers),
+            p_counter_buffers,
             p_counter_buffer_offsets,
         )
 
@@ -3561,8 +3844,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_counter_buffer: UInt32,
         counter_buffer_count: UInt32,
-        counter_buffers: Buffer,
-        p_counter_buffer_offsets: Ptr[DeviceSize, MutOrigin.external],
+        p_counter_buffers: Ptr[Buffer, ImmutAnyOrigin],
+        p_counter_buffer_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -3572,7 +3855,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             command_buffer,
             first_counter_buffer,
             counter_buffer_count,
-            Ptr(to=counter_buffers),
+            p_counter_buffers,
             p_counter_buffer_offsets,
         )
 
@@ -3624,8 +3907,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_begin_conditional_rendering_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdBeginConditionalRenderingEXT".unsafe_ptr()
@@ -3644,7 +3927,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginConditionalRenderingEXT.html
         """
         return self._cmd_begin_conditional_rendering_ext(
-            command_buffer, Ptr(to=conditional_rendering_begin)
+            command_buffer,
+            Ptr(to=conditional_rendering_begin).bitcast[ConditionalRenderingBeginInfoEXT](),
         )
 
     fn cmd_end_conditional_rendering_ext(self, command_buffer: CommandBuffer):
@@ -3655,8 +3939,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_end_conditional_rendering_ext(command_buffer)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_release_display_ext = Ptr(to=get_instance_proc_addr(
         instance, "vkReleaseDisplayEXT".unsafe_ptr()
@@ -3670,8 +3954,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         return self._release_display_ext(physical_device, display)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_acquire_xlib_display_ext = Ptr(to=get_instance_proc_addr(
         instance, "vkAcquireXlibDisplayEXT".unsafe_ptr()
@@ -3681,32 +3965,37 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     )).bitcast[type_of(self._vk_get_rand_r_output_display_ext)]()[]
 
     fn acquire_xlib_display_ext(
-        self, physical_device: PhysicalDevice, dpy: Display, display: DisplayKHR
+        self, physical_device: PhysicalDevice, mut dpy: Display, display: DisplayKHR
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireXlibDisplayEXT.html
         """
-        return self._acquire_xlib_display_ext(physical_device, Ptr(to=dpy), display)
+        return self._acquire_xlib_display_ext(
+            physical_device, Ptr(to=dpy).bitcast[Display](), display
+        )
 
     fn get_rand_r_output_display_ext(
         self,
         physical_device: PhysicalDevice,
-        dpy: Display,
+        mut dpy: Display,
         rr_output: RROutput,
-        display: DisplayKHR,
+        mut display: DisplayKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRandROutputDisplayEXT.html
         """
         return self._get_rand_r_output_display_ext(
-            physical_device, Ptr(to=dpy), rr_output, Ptr(to=display)
+            physical_device,
+            Ptr(to=dpy).bitcast[Display](),
+            rr_output,
+            Ptr(to=display).bitcast[DisplayKHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_get_physical_device_surface_capabilities_2_ext = Ptr(to=get_instance_proc_addr(
         instance, "vkGetPhysicalDeviceSurfaceCapabilities2EXT".unsafe_ptr()
@@ -3716,19 +4005,21 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
-        surface_capabilities: SurfaceCapabilities2EXT,
+        mut surface_capabilities: SurfaceCapabilities2EXT,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceCapabilities2EXT.html
         """
         return self._get_physical_device_surface_capabilities_2_ext(
-            physical_device, surface, Ptr(to=surface_capabilities)
+            physical_device,
+            surface,
+            Ptr(to=surface_capabilities).bitcast[SurfaceCapabilities2EXT](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_display_power_control_ext = Ptr(to=get_device_proc_addr(
         device, "vkDisplayPowerControlEXT".unsafe_ptr()
@@ -3750,21 +4041,26 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDisplayPowerControlEXT.html
         """
-        return self._display_power_control_ext(device, display, Ptr(to=display_power_info))
+        return self._display_power_control_ext(
+            device, display, Ptr(to=display_power_info).bitcast[DisplayPowerInfoEXT]()
+        )
 
     fn register_device_event_ext(
         self,
         device: Device,
         device_event_info: DeviceEventInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkRegisterDeviceEventEXT.html
         """
         return self._register_device_event_ext(
-            device, Ptr(to=device_event_info), p_allocator, Ptr(to=fence)
+            device,
+            Ptr(to=device_event_info).bitcast[DeviceEventInfoEXT](),
+            p_allocator,
+            Ptr(to=fence).bitcast[Fence](),
         )
 
     fn register_display_event_ext(
@@ -3772,15 +4068,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         display: DisplayKHR,
         display_event_info: DisplayEventInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkRegisterDisplayEventEXT.html
         """
         return self._register_display_event_ext(
-            device, display, Ptr(to=display_event_info), p_allocator, Ptr(to=fence)
+            device,
+            display,
+            Ptr(to=display_event_info).bitcast[DisplayEventInfoEXT](),
+            p_allocator,
+            Ptr(to=fence).bitcast[Fence](),
         )
 
     fn get_swapchain_counter_ext(
@@ -3788,17 +4088,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         swapchain: SwapchainKHR,
         counter: SurfaceCounterFlagBitsEXT,
-        counter_value: UInt64,
+        mut counter_value: UInt64,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSwapchainCounterEXT.html
         """
-        return self._get_swapchain_counter_ext(device, swapchain, counter, Ptr(to=counter_value))
+        return self._get_swapchain_counter_ext(
+            device, swapchain, counter, Ptr(to=counter_value).bitcast[UInt64]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_discard_rectangle_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetDiscardRectangleEXT".unsafe_ptr()
@@ -3815,17 +4117,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_discard_rectangle: UInt32,
         discard_rectangle_count: UInt32,
-        discard_rectangles: Rect2D,
+        p_discard_rectangles: Ptr[Rect2D, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDiscardRectangleEXT.html
         """
         return self._cmd_set_discard_rectangle_ext(
-            command_buffer,
-            first_discard_rectangle,
-            discard_rectangle_count,
-            Ptr(to=discard_rectangles),
+            command_buffer, first_discard_rectangle, discard_rectangle_count, p_discard_rectangles
         )
 
     fn cmd_set_discard_rectangle_enable_ext(
@@ -3847,8 +4146,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_set_discard_rectangle_mode_ext(command_buffer, discard_rectangle_mode)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_set_hdr_metadata_ext = Ptr(to=get_device_proc_addr(
         device, "vkSetHdrMetadataEXT".unsafe_ptr()
@@ -3858,20 +4157,18 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         swapchain_count: UInt32,
-        swapchains: SwapchainKHR,
-        metadata: HdrMetadataEXT,
+        p_swapchains: Ptr[SwapchainKHR, ImmutAnyOrigin],
+        p_metadata: Ptr[HdrMetadataEXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetHdrMetadataEXT.html
         """
-        return self._set_hdr_metadata_ext(
-            device, swapchain_count, Ptr(to=swapchains), Ptr(to=metadata)
-        )
+        return self._set_hdr_metadata_ext(device, swapchain_count, p_swapchains, p_metadata)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_set_debug_utils_object_name_ext = Ptr(to=get_instance_proc_addr(
         instance, "vkSetDebugUtilsObjectNameEXT".unsafe_ptr()
@@ -3914,7 +4211,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetDebugUtilsObjectNameEXT.html
         """
-        return self._set_debug_utils_object_name_ext(device, Ptr(to=name_info))
+        return self._set_debug_utils_object_name_ext(
+            device, Ptr(to=name_info).bitcast[DebugUtilsObjectNameInfoEXT]()
+        )
 
     fn set_debug_utils_object_tag_ext(
         self, device: Device, tag_info: DebugUtilsObjectTagInfoEXT
@@ -3923,14 +4222,18 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetDebugUtilsObjectTagEXT.html
         """
-        return self._set_debug_utils_object_tag_ext(device, Ptr(to=tag_info))
+        return self._set_debug_utils_object_tag_ext(
+            device, Ptr(to=tag_info).bitcast[DebugUtilsObjectTagInfoEXT]()
+        )
 
     fn queue_begin_debug_utils_label_ext(self, queue: Queue, label_info: DebugUtilsLabelEXT):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBeginDebugUtilsLabelEXT.html
         """
-        return self._queue_begin_debug_utils_label_ext(queue, Ptr(to=label_info))
+        return self._queue_begin_debug_utils_label_ext(
+            queue, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()
+        )
 
     fn queue_end_debug_utils_label_ext(self, queue: Queue):
         """See official vulkan docs for details.
@@ -3944,7 +4247,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueInsertDebugUtilsLabelEXT.html
         """
-        return self._queue_insert_debug_utils_label_ext(queue, Ptr(to=label_info))
+        return self._queue_insert_debug_utils_label_ext(
+            queue, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()
+        )
 
     fn cmd_begin_debug_utils_label_ext(
         self, command_buffer: CommandBuffer, label_info: DebugUtilsLabelEXT
@@ -3953,7 +4258,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginDebugUtilsLabelEXT.html
         """
-        return self._cmd_begin_debug_utils_label_ext(command_buffer, Ptr(to=label_info))
+        return self._cmd_begin_debug_utils_label_ext(
+            command_buffer, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()
+        )
 
     fn cmd_end_debug_utils_label_ext(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
@@ -3969,28 +4276,33 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdInsertDebugUtilsLabelEXT.html
         """
-        return self._cmd_insert_debug_utils_label_ext(command_buffer, Ptr(to=label_info))
+        return self._cmd_insert_debug_utils_label_ext(
+            command_buffer, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()
+        )
 
     fn create_debug_utils_messenger_ext(
         self,
         instance: Instance,
         create_info: DebugUtilsMessengerCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        messenger: DebugUtilsMessengerEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut messenger: DebugUtilsMessengerEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDebugUtilsMessengerEXT.html
         """
         return self._create_debug_utils_messenger_ext(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=messenger)
+            instance,
+            Ptr(to=create_info).bitcast[DebugUtilsMessengerCreateInfoEXT](),
+            p_allocator,
+            Ptr(to=messenger).bitcast[DebugUtilsMessengerEXT](),
         )
 
     fn destroy_debug_utils_messenger_ext(
         self,
         instance: Instance,
         messenger: DebugUtilsMessengerEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -4010,12 +4322,15 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSubmitDebugUtilsMessageEXT.html
         """
         return self._submit_debug_utils_message_ext(
-            instance, message_severity, message_types, Ptr(to=callback_data)
+            instance,
+            message_severity,
+            message_types,
+            Ptr(to=callback_data).bitcast[DebugUtilsMessengerCallbackDataEXT](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_sample_locations_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetSampleLocationsEXT".unsafe_ptr()
@@ -4031,44 +4346,48 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetSampleLocationsEXT.html
         """
-        return self._cmd_set_sample_locations_ext(command_buffer, Ptr(to=sample_locations_info))
+        return self._cmd_set_sample_locations_ext(
+            command_buffer, Ptr(to=sample_locations_info).bitcast[SampleLocationsInfoEXT]()
+        )
 
     fn get_physical_device_multisample_properties_ext(
         self,
         physical_device: PhysicalDevice,
         samples: SampleCountFlagBits,
-        multisample_properties: MultisamplePropertiesEXT,
+        mut multisample_properties: MultisamplePropertiesEXT,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMultisamplePropertiesEXT.html
         """
         return self._get_physical_device_multisample_properties_ext(
-            physical_device, samples, Ptr(to=multisample_properties)
+            physical_device,
+            samples,
+            Ptr(to=multisample_properties).bitcast[MultisamplePropertiesEXT](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_image_drm_format_modifier_properties_ext = Ptr(to=get_device_proc_addr(
         device, "vkGetImageDrmFormatModifierPropertiesEXT".unsafe_ptr()
     )).bitcast[type_of(self._vk_get_image_drm_format_modifier_properties_ext)]()[]
 
     fn get_image_drm_format_modifier_properties_ext(
-        self, device: Device, image: Image, properties: ImageDrmFormatModifierPropertiesEXT
+        self, device: Device, image: Image, mut properties: ImageDrmFormatModifierPropertiesEXT
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageDrmFormatModifierPropertiesEXT.html
         """
         return self._get_image_drm_format_modifier_properties_ext(
-            device, image, Ptr(to=properties)
+            device, image, Ptr(to=properties).bitcast[ImageDrmFormatModifierPropertiesEXT]()
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_validation_cache_ext = Ptr(to=get_device_proc_addr(
         device, "vkCreateValidationCacheEXT".unsafe_ptr()
@@ -4087,22 +4406,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: ValidationCacheCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        validation_cache: ValidationCacheEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut validation_cache: ValidationCacheEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateValidationCacheEXT.html
         """
         return self._create_validation_cache_ext(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=validation_cache)
+            device,
+            Ptr(to=create_info).bitcast[ValidationCacheCreateInfoEXT](),
+            p_allocator,
+            Ptr(to=validation_cache).bitcast[ValidationCacheEXT](),
         )
 
     fn destroy_validation_cache_ext(
         self,
         device: Device,
         validation_cache: ValidationCacheEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -4115,34 +4437,32 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         dst_cache: ValidationCacheEXT,
         src_cache_count: UInt32,
-        src_caches: ValidationCacheEXT,
+        p_src_caches: Ptr[ValidationCacheEXT, ImmutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMergeValidationCachesEXT.html
         """
-        return self._merge_validation_caches_ext(
-            device, dst_cache, src_cache_count, Ptr(to=src_caches)
-        )
+        return self._merge_validation_caches_ext(device, dst_cache, src_cache_count, p_src_caches)
 
     fn get_validation_cache_data_ext(
         self,
         device: Device,
         validation_cache: ValidationCacheEXT,
-        data_size: UInt,
-        p_data: Ptr[NoneType, MutOrigin.external],
+        mut data_size: UInt,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetValidationCacheDataEXT.html
         """
         return self._get_validation_cache_data_ext(
-            device, validation_cache, Ptr(to=data_size), p_data
+            device, validation_cache, Ptr(to=data_size).bitcast[UInt](), p_data
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_memory_host_pointer_properties_ext = Ptr(to=get_device_proc_addr(
         device, "vkGetMemoryHostPointerPropertiesEXT".unsafe_ptr()
@@ -4153,19 +4473,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
         host_pointer: NoneType,
-        memory_host_pointer_properties: MemoryHostPointerPropertiesEXT,
+        mut memory_host_pointer_properties: MemoryHostPointerPropertiesEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryHostPointerPropertiesEXT.html
         """
         return self._get_memory_host_pointer_properties_ext(
-            device, handle_type, Ptr(to=host_pointer), Ptr(to=memory_host_pointer_properties)
+            device,
+            handle_type,
+            Ptr(to=host_pointer).bitcast[NoneType](),
+            Ptr(to=memory_host_pointer_properties).bitcast[MemoryHostPointerPropertiesEXT](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_physical_device_calibrateable_time_domains_khr = Ptr(to=get_device_proc_addr(
         device, "vkGetPhysicalDeviceCalibrateableTimeDomainsKHR".unsafe_ptr()
@@ -4177,24 +4500,24 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_calibrateable_time_domains_khr(
         self,
         physical_device: PhysicalDevice,
-        time_domain_count: UInt32,
-        p_time_domains: Ptr[TimeDomainKHR, MutOrigin.external],
+        mut time_domain_count: UInt32,
+        p_time_domains: Ptr[TimeDomainKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCalibrateableTimeDomainsKHR.html
         """
         return self._get_physical_device_calibrateable_time_domains_khr(
-            physical_device, Ptr(to=time_domain_count), p_time_domains
+            physical_device, Ptr(to=time_domain_count).bitcast[UInt32](), p_time_domains
         )
 
     fn get_calibrated_timestamps_khr(
         self,
         device: Device,
         timestamp_count: UInt32,
-        timestamp_infos: CalibratedTimestampInfoKHR,
-        timestamps: UInt64,
-        max_deviation: UInt64,
+        p_timestamp_infos: Ptr[CalibratedTimestampInfoKHR, ImmutAnyOrigin],
+        p_timestamps: Ptr[UInt64, MutAnyOrigin],
+        mut max_deviation: UInt64,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4203,14 +4526,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_calibrated_timestamps_khr(
             device,
             timestamp_count,
-            Ptr(to=timestamp_infos),
-            Ptr(to=timestamps),
-            Ptr(to=max_deviation),
+            p_timestamp_infos,
+            p_timestamps,
+            Ptr(to=max_deviation).bitcast[UInt64](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_metal_surface_ext = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateMetalSurfaceEXT".unsafe_ptr()
@@ -4220,20 +4543,23 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: MetalSurfaceCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateMetalSurfaceEXT.html
         """
         return self._create_metal_surface_ext(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[MetalSurfaceCreateInfoEXT](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_buffer_device_address = Ptr(to=get_device_proc_addr(
         device, "vkGetBufferDeviceAddress".unsafe_ptr()
@@ -4246,11 +4572,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
-        return self._get_buffer_device_address(device, Ptr(to=info))
+        return self._get_buffer_device_address(
+            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_physical_device_tool_properties = Ptr(to=get_device_proc_addr(
         device, "vkGetPhysicalDeviceToolProperties".unsafe_ptr()
@@ -4259,20 +4587,20 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_tool_properties(
         self,
         physical_device: PhysicalDevice,
-        tool_count: UInt32,
-        p_tool_properties: Ptr[PhysicalDeviceToolProperties, MutOrigin.external],
+        mut tool_count: UInt32,
+        p_tool_properties: Ptr[PhysicalDeviceToolProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
         """
         return self._get_physical_device_tool_properties(
-            physical_device, Ptr(to=tool_count), p_tool_properties
+            physical_device, Ptr(to=tool_count).bitcast[UInt32](), p_tool_properties
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_physical_device_surface_present_modes_2_ext = Ptr(to=get_device_proc_addr(
         device, "vkGetPhysicalDeviceSurfacePresentModes2EXT".unsafe_ptr()
@@ -4291,15 +4619,18 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         surface_info: PhysicalDeviceSurfaceInfo2KHR,
-        present_mode_count: UInt32,
-        p_present_modes: Ptr[PresentModeKHR, MutOrigin.external],
+        mut present_mode_count: UInt32,
+        p_present_modes: Ptr[PresentModeKHR, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfacePresentModes2EXT.html
         """
         return self._get_physical_device_surface_present_modes_2_ext(
-            physical_device, Ptr(to=surface_info), Ptr(to=present_mode_count), p_present_modes
+            physical_device,
+            Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR](),
+            Ptr(to=present_mode_count).bitcast[UInt32](),
+            p_present_modes,
         )
 
     fn acquire_full_screen_exclusive_mode_ext(
@@ -4324,19 +4655,21 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         surface_info: PhysicalDeviceSurfaceInfo2KHR,
-        modes: DeviceGroupPresentModeFlagsKHR,
+        mut modes: DeviceGroupPresentModeFlagsKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupSurfacePresentModes2EXT.html
         """
         return self._get_device_group_surface_present_modes_2_ext(
-            device, Ptr(to=surface_info), Ptr(to=modes)
+            device,
+            Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR](),
+            Ptr(to=modes).bitcast[DeviceGroupPresentModeFlagsKHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_headless_surface_ext = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateHeadlessSurfaceEXT".unsafe_ptr()
@@ -4346,20 +4679,23 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: HeadlessSurfaceCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateHeadlessSurfaceEXT.html
         """
         return self._create_headless_surface_ext(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[HeadlessSurfaceCreateInfoEXT](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_line_stipple = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetLineStipple".unsafe_ptr()
@@ -4380,8 +4716,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_reset_query_pool = Ptr(to=get_device_proc_addr(
         device, "vkResetQueryPool".unsafe_ptr()
@@ -4397,8 +4733,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._reset_query_pool(device, query_pool, first_query, query_count)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_cull_mode = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetCullMode".unsafe_ptr()
@@ -4461,45 +4797,45 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_set_primitive_topology(command_buffer, primitive_topology)
 
     fn cmd_set_viewport_with_count(
-        self, command_buffer: CommandBuffer, viewport_count: UInt32, viewports: Viewport
+        self,
+        command_buffer: CommandBuffer,
+        viewport_count: UInt32,
+        p_viewports: Ptr[Viewport, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWithCount.html
         """
-        return self._cmd_set_viewport_with_count(command_buffer, viewport_count, Ptr(to=viewports))
+        return self._cmd_set_viewport_with_count(command_buffer, viewport_count, p_viewports)
 
     fn cmd_set_scissor_with_count(
-        self, command_buffer: CommandBuffer, scissor_count: UInt32, scissors: Rect2D
+        self,
+        command_buffer: CommandBuffer,
+        scissor_count: UInt32,
+        p_scissors: Ptr[Rect2D, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissorWithCount.html
         """
-        return self._cmd_set_scissor_with_count(command_buffer, scissor_count, Ptr(to=scissors))
+        return self._cmd_set_scissor_with_count(command_buffer, scissor_count, p_scissors)
 
     fn cmd_bind_vertex_buffers_2(
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        buffers: Buffer,
-        offsets: DeviceSize,
-        p_sizes: Ptr[DeviceSize, MutOrigin.external],
-        p_strides: Ptr[DeviceSize, MutOrigin.external],
+        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
+        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_strides: Ptr[DeviceSize, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers2.html
         """
         return self._cmd_bind_vertex_buffers_2(
-            command_buffer,
-            first_binding,
-            binding_count,
-            Ptr(to=buffers),
-            Ptr(to=offsets),
-            p_sizes,
-            p_strides,
+            command_buffer, first_binding, binding_count, p_buffers, p_offsets, p_sizes, p_strides
         )
 
     fn cmd_set_depth_test_enable(self, command_buffer: CommandBuffer, depth_test_enable: Bool32):
@@ -4559,8 +4895,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_copy_memory_to_image = Ptr(to=get_device_proc_addr(
         device, "vkCopyMemoryToImage".unsafe_ptr()
@@ -4585,7 +4921,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMemoryToImage.html
         """
-        return self._copy_memory_to_image(device, Ptr(to=copy_memory_to_image_info))
+        return self._copy_memory_to_image(
+            device, Ptr(to=copy_memory_to_image_info).bitcast[CopyMemoryToImageInfo]()
+        )
 
     fn copy_image_to_memory(
         self, device: Device, copy_image_to_memory_info: CopyImageToMemoryInfo
@@ -4594,7 +4932,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyImageToMemory.html
         """
-        return self._copy_image_to_memory(device, Ptr(to=copy_image_to_memory_info))
+        return self._copy_image_to_memory(
+            device, Ptr(to=copy_image_to_memory_info).bitcast[CopyImageToMemoryInfo]()
+        )
 
     fn copy_image_to_image(
         self, device: Device, copy_image_to_image_info: CopyImageToImageInfo
@@ -4603,35 +4943,43 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyImageToImage.html
         """
-        return self._copy_image_to_image(device, Ptr(to=copy_image_to_image_info))
+        return self._copy_image_to_image(
+            device, Ptr(to=copy_image_to_image_info).bitcast[CopyImageToImageInfo]()
+        )
 
     fn transition_image_layout(
-        self, device: Device, transition_count: UInt32, transitions: HostImageLayoutTransitionInfo
+        self,
+        device: Device,
+        transition_count: UInt32,
+        p_transitions: Ptr[HostImageLayoutTransitionInfo, ImmutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkTransitionImageLayout.html
         """
-        return self._transition_image_layout(device, transition_count, Ptr(to=transitions))
+        return self._transition_image_layout(device, transition_count, p_transitions)
 
     fn get_image_subresource_layout_2(
         self,
         device: Device,
         image: Image,
         subresource: ImageSubresource2,
-        layout: SubresourceLayout2,
+        mut layout: SubresourceLayout2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout2.html
         """
         return self._get_image_subresource_layout_2(
-            device, image, Ptr(to=subresource), Ptr(to=layout)
+            device,
+            image,
+            Ptr(to=subresource).bitcast[ImageSubresource2](),
+            Ptr(to=layout).bitcast[SubresourceLayout2](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_release_swapchain_images_khr = Ptr(to=get_device_proc_addr(
         device, "vkReleaseSwapchainImagesKHR".unsafe_ptr()
@@ -4644,11 +4992,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkReleaseSwapchainImagesKHR.html
         """
-        return self._release_swapchain_images_khr(device, Ptr(to=release_info))
+        return self._release_swapchain_images_khr(
+            device, Ptr(to=release_info).bitcast[ReleaseSwapchainImagesInfoKHR]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_depth_bias_2_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetDepthBias2EXT".unsafe_ptr()
@@ -4661,11 +5011,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBias2EXT.html
         """
-        return self._cmd_set_depth_bias_2_ext(command_buffer, Ptr(to=depth_bias_info))
+        return self._cmd_set_depth_bias_2_ext(
+            command_buffer, Ptr(to=depth_bias_info).bitcast[DepthBiasInfoEXT]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_acquire_drm_display_ext = Ptr(to=get_instance_proc_addr(
         instance, "vkAcquireDrmDisplayEXT".unsafe_ptr()
@@ -4688,17 +5040,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         physical_device: PhysicalDevice,
         drm_fd: Int32,
         connector_id: UInt32,
-        display: DisplayKHR,
+        mut display: DisplayKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDrmDisplayEXT.html
         """
-        return self._get_drm_display_ext(physical_device, drm_fd, connector_id, Ptr(to=display))
+        return self._get_drm_display_ext(
+            physical_device, drm_fd, connector_id, Ptr(to=display).bitcast[DisplayKHR]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_private_data_slot = Ptr(to=get_device_proc_addr(
         device, "vkCreatePrivateDataSlot".unsafe_ptr()
@@ -4717,22 +5071,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: PrivateDataSlotCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        private_data_slot: PrivateDataSlot,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut private_data_slot: PrivateDataSlot,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePrivateDataSlot.html
         """
         return self._create_private_data_slot(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=private_data_slot)
+            device,
+            Ptr(to=create_info).bitcast[PrivateDataSlotCreateInfo](),
+            p_allocator,
+            Ptr(to=private_data_slot).bitcast[PrivateDataSlot](),
         )
 
     fn destroy_private_data_slot(
         self,
         device: Device,
         private_data_slot: PrivateDataSlot,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -4760,36 +5117,38 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         object_type: ObjectType,
         object_handle: UInt64,
         private_data_slot: PrivateDataSlot,
-        data: UInt64,
+        mut data: UInt64,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPrivateData.html
         """
         return self._get_private_data(
-            device, object_type, object_handle, private_data_slot, Ptr(to=data)
+            device, object_type, object_handle, private_data_slot, Ptr(to=data).bitcast[UInt64]()
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_export_metal_objects_ext = Ptr(to=get_device_proc_addr(
         device, "vkExportMetalObjectsEXT".unsafe_ptr()
     )).bitcast[type_of(self._vk_export_metal_objects_ext)]()[]
 
     fn export_metal_objects_ext(
-        self, device: Device, metal_objects_info: ExportMetalObjectsInfoEXT
+        self, device: Device, mut metal_objects_info: ExportMetalObjectsInfoEXT
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkExportMetalObjectsEXT.html
         """
-        return self._export_metal_objects_ext(device, Ptr(to=metal_objects_info))
+        return self._export_metal_objects_ext(
+            device, Ptr(to=metal_objects_info).bitcast[ExportMetalObjectsInfoEXT]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_descriptor_set_layout_size_ext = Ptr(to=get_device_proc_addr(
         device, "vkGetDescriptorSetLayoutSizeEXT".unsafe_ptr()
@@ -4826,25 +5185,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     )).bitcast[type_of(self._vk_get_acceleration_structure_opaque_capture_descriptor_data_ext)]()[]
 
     fn get_descriptor_set_layout_size_ext(
-        self, device: Device, layout: DescriptorSetLayout, layout_size_in_bytes: DeviceSize
+        self, device: Device, layout: DescriptorSetLayout, mut layout_size_in_bytes: DeviceSize
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutSizeEXT.html
         """
         return self._get_descriptor_set_layout_size_ext(
-            device, layout, Ptr(to=layout_size_in_bytes)
+            device, layout, Ptr(to=layout_size_in_bytes).bitcast[DeviceSize]()
         )
 
     fn get_descriptor_set_layout_binding_offset_ext(
-        self, device: Device, layout: DescriptorSetLayout, binding: UInt32, offset: DeviceSize
+        self, device: Device, layout: DescriptorSetLayout, binding: UInt32, mut offset: DeviceSize
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutBindingOffsetEXT.html
         """
         return self._get_descriptor_set_layout_binding_offset_ext(
-            device, layout, binding, Ptr(to=offset)
+            device, layout, binding, Ptr(to=offset).bitcast[DeviceSize]()
         )
 
     fn get_descriptor_ext(
@@ -4852,29 +5211,27 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         descriptor_info: DescriptorGetInfoEXT,
         data_size: UInt,
-        descriptor: NoneType,
+        p_descriptor: Ptr[NoneType, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorEXT.html
         """
         return self._get_descriptor_ext(
-            device, Ptr(to=descriptor_info), data_size, Ptr(to=descriptor)
+            device, Ptr(to=descriptor_info).bitcast[DescriptorGetInfoEXT](), data_size, p_descriptor
         )
 
     fn cmd_bind_descriptor_buffers_ext(
         self,
         command_buffer: CommandBuffer,
         buffer_count: UInt32,
-        binding_infos: DescriptorBufferBindingInfoEXT,
+        p_binding_infos: Ptr[DescriptorBufferBindingInfoEXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorBuffersEXT.html
         """
-        return self._cmd_bind_descriptor_buffers_ext(
-            command_buffer, buffer_count, Ptr(to=binding_infos)
-        )
+        return self._cmd_bind_descriptor_buffers_ext(command_buffer, buffer_count, p_binding_infos)
 
     fn cmd_set_descriptor_buffer_offsets_ext(
         self,
@@ -4883,8 +5240,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         layout: PipelineLayout,
         first_set: UInt32,
         set_count: UInt32,
-        buffer_indices: UInt32,
-        offsets: DeviceSize,
+        p_buffer_indices: Ptr[UInt32, ImmutAnyOrigin],
+        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -4896,8 +5253,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             layout,
             first_set,
             set_count,
-            Ptr(to=buffer_indices),
-            Ptr(to=offsets),
+            p_buffer_indices,
+            p_offsets,
         )
 
     fn cmd_bind_descriptor_buffer_embedded_samplers_ext(
@@ -4916,66 +5273,76 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_buffer_opaque_capture_descriptor_data_ext(
-        self, device: Device, info: BufferCaptureDescriptorDataInfoEXT, data: NoneType
+        self, device: Device, info: BufferCaptureDescriptorDataInfoEXT, mut data: NoneType
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_buffer_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info), Ptr(to=data)
+            device,
+            Ptr(to=info).bitcast[BufferCaptureDescriptorDataInfoEXT](),
+            Ptr(to=data).bitcast[NoneType](),
         )
 
     fn get_image_opaque_capture_descriptor_data_ext(
-        self, device: Device, info: ImageCaptureDescriptorDataInfoEXT, data: NoneType
+        self, device: Device, info: ImageCaptureDescriptorDataInfoEXT, mut data: NoneType
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_image_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info), Ptr(to=data)
+            device,
+            Ptr(to=info).bitcast[ImageCaptureDescriptorDataInfoEXT](),
+            Ptr(to=data).bitcast[NoneType](),
         )
 
     fn get_image_view_opaque_capture_descriptor_data_ext(
-        self, device: Device, info: ImageViewCaptureDescriptorDataInfoEXT, data: NoneType
+        self, device: Device, info: ImageViewCaptureDescriptorDataInfoEXT, mut data: NoneType
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_image_view_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info), Ptr(to=data)
+            device,
+            Ptr(to=info).bitcast[ImageViewCaptureDescriptorDataInfoEXT](),
+            Ptr(to=data).bitcast[NoneType](),
         )
 
     fn get_sampler_opaque_capture_descriptor_data_ext(
-        self, device: Device, info: SamplerCaptureDescriptorDataInfoEXT, data: NoneType
+        self, device: Device, info: SamplerCaptureDescriptorDataInfoEXT, mut data: NoneType
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSamplerOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_sampler_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info), Ptr(to=data)
+            device,
+            Ptr(to=info).bitcast[SamplerCaptureDescriptorDataInfoEXT](),
+            Ptr(to=data).bitcast[NoneType](),
         )
 
     fn get_acceleration_structure_opaque_capture_descriptor_data_ext(
         self,
         device: Device,
         info: AccelerationStructureCaptureDescriptorDataInfoEXT,
-        data: NoneType,
+        mut data: NoneType,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_acceleration_structure_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info), Ptr(to=data)
+            device,
+            Ptr(to=info).bitcast[AccelerationStructureCaptureDescriptorDataInfoEXT](),
+            Ptr(to=data).bitcast[NoneType](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_draw_mesh_tasks_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdDrawMeshTasksEXT".unsafe_ptr()
@@ -5043,8 +5410,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_image_subresource_layout_2 = Ptr(to=get_device_proc_addr(
         device, "vkGetImageSubresourceLayout2".unsafe_ptr()
@@ -5055,19 +5422,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         image: Image,
         subresource: ImageSubresource2,
-        layout: SubresourceLayout2,
+        mut layout: SubresourceLayout2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout2.html
         """
         return self._get_image_subresource_layout_2(
-            device, image, Ptr(to=subresource), Ptr(to=layout)
+            device,
+            image,
+            Ptr(to=subresource).bitcast[ImageSubresource2](),
+            Ptr(to=layout).bitcast[SubresourceLayout2](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_device_fault_info_ext = Ptr(to=get_device_proc_addr(
         device, "vkGetDeviceFaultInfoEXT".unsafe_ptr()
@@ -5076,18 +5446,20 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_device_fault_info_ext(
         self,
         device: Device,
-        fault_counts: DeviceFaultCountsEXT,
-        p_fault_info: Ptr[DeviceFaultInfoEXT, MutOrigin.external],
+        mut fault_counts: DeviceFaultCountsEXT,
+        p_fault_info: Ptr[DeviceFaultInfoEXT, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceFaultInfoEXT.html
         """
-        return self._get_device_fault_info_ext(device, Ptr(to=fault_counts), p_fault_info)
+        return self._get_device_fault_info_ext(
+            device, Ptr(to=fault_counts).bitcast[DeviceFaultCountsEXT](), p_fault_info
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_direct_fb_surface_ext = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateDirectFBSurfaceEXT".unsafe_ptr()
@@ -5100,31 +5472,34 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: DirectFBSurfaceCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDirectFBSurfaceEXT.html
         """
         return self._create_direct_fb_surface_ext(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[DirectFBSurfaceCreateInfoEXT](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
     fn get_physical_device_direct_fb_presentation_support_ext(
-        self, physical_device: PhysicalDevice, queue_family_index: UInt32, dfb: IDirectFB
+        self, physical_device: PhysicalDevice, queue_family_index: UInt32, mut dfb: IDirectFB
     ) -> Bool32:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDirectFBPresentationSupportEXT.html
         """
         return self._get_physical_device_direct_fb_presentation_support_ext(
-            physical_device, queue_family_index, Ptr(to=dfb)
+            physical_device, queue_family_index, Ptr(to=dfb).bitcast[IDirectFB]()
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_vertex_input_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetVertexInputEXT".unsafe_ptr()
@@ -5134,9 +5509,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         vertex_binding_description_count: UInt32,
-        vertex_binding_descriptions: VertexInputBindingDescription2EXT,
+        p_vertex_binding_descriptions: Ptr[VertexInputBindingDescription2EXT, ImmutAnyOrigin],
         vertex_attribute_description_count: UInt32,
-        vertex_attribute_descriptions: VertexInputAttributeDescription2EXT,
+        p_vertex_attribute_descriptions: Ptr[VertexInputAttributeDescription2EXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -5145,33 +5520,38 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_set_vertex_input_ext(
             command_buffer,
             vertex_binding_description_count,
-            Ptr(to=vertex_binding_descriptions),
+            p_vertex_binding_descriptions,
             vertex_attribute_description_count,
-            Ptr(to=vertex_attribute_descriptions),
+            p_vertex_attribute_descriptions,
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_pipeline_properties_ext = Ptr(to=get_device_proc_addr(
         device, "vkGetPipelinePropertiesEXT".unsafe_ptr()
     )).bitcast[type_of(self._vk_get_pipeline_properties_ext)]()[]
 
     fn get_pipeline_properties_ext(
-        self, device: Device, pipeline_info: PipelineInfoEXT, pipeline_properties: BaseOutStructure
+        self,
+        device: Device,
+        pipeline_info: PipelineInfoEXT,
+        mut pipeline_properties: BaseOutStructure,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelinePropertiesEXT.html
         """
         return self._get_pipeline_properties_ext(
-            device, Ptr(to=pipeline_info), Ptr(to=pipeline_properties)
+            device,
+            Ptr(to=pipeline_info).bitcast[PipelineInfoEXT](),
+            Ptr(to=pipeline_properties).bitcast[BaseOutStructure](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_patch_control_points_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetPatchControlPointsEXT".unsafe_ptr()
@@ -5231,27 +5611,30 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_set_primitive_restart_enable(command_buffer, primitive_restart_enable)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_color_write_enable_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetColorWriteEnableEXT".unsafe_ptr()
     )).bitcast[type_of(self._vk_cmd_set_color_write_enable_ext)]()[]
 
     fn cmd_set_color_write_enable_ext(
-        self, command_buffer: CommandBuffer, attachment_count: UInt32, color_write_enables: Bool32
+        self,
+        command_buffer: CommandBuffer,
+        attachment_count: UInt32,
+        p_color_write_enables: Ptr[Bool32, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorWriteEnableEXT.html
         """
         return self._cmd_set_color_write_enable_ext(
-            command_buffer, attachment_count, Ptr(to=color_write_enables)
+            command_buffer, attachment_count, p_color_write_enables
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_draw_multi_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdDrawMultiEXT".unsafe_ptr()
@@ -5264,7 +5647,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         draw_count: UInt32,
-        vertex_info: MultiDrawInfoEXT,
+        p_vertex_info: Ptr[MultiDrawInfoEXT, ImmutAnyOrigin],
         instance_count: UInt32,
         first_instance: UInt32,
         stride: UInt32,
@@ -5274,18 +5657,18 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawMultiEXT.html
         """
         return self._cmd_draw_multi_ext(
-            command_buffer, draw_count, Ptr(to=vertex_info), instance_count, first_instance, stride
+            command_buffer, draw_count, p_vertex_info, instance_count, first_instance, stride
         )
 
     fn cmd_draw_multi_indexed_ext(
         self,
         command_buffer: CommandBuffer,
         draw_count: UInt32,
-        index_info: MultiDrawIndexedInfoEXT,
+        p_index_info: Ptr[MultiDrawIndexedInfoEXT, ImmutAnyOrigin],
         instance_count: UInt32,
         first_instance: UInt32,
         stride: UInt32,
-        p_vertex_offset: Ptr[Int32, MutOrigin.external],
+        p_vertex_offset: Ptr[Int32, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -5294,7 +5677,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_draw_multi_indexed_ext(
             command_buffer,
             draw_count,
-            Ptr(to=index_info),
+            p_index_info,
             instance_count,
             first_instance,
             stride,
@@ -5302,8 +5685,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_micromap_ext = Ptr(to=get_device_proc_addr(
         device, "vkCreateMicromapEXT".unsafe_ptr()
@@ -5352,22 +5735,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: MicromapCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        micromap: MicromapEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut micromap: MicromapEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateMicromapEXT.html
         """
         return self._create_micromap_ext(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=micromap)
+            device,
+            Ptr(to=create_info).bitcast[MicromapCreateInfoEXT](),
+            p_allocator,
+            Ptr(to=micromap).bitcast[MicromapEXT](),
         )
 
     fn destroy_micromap_ext(
         self,
         device: Device,
         micromap: MicromapEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -5376,26 +5762,29 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._destroy_micromap_ext(device, micromap, p_allocator)
 
     fn cmd_build_micromaps_ext(
-        self, command_buffer: CommandBuffer, info_count: UInt32, infos: MicromapBuildInfoEXT
+        self,
+        command_buffer: CommandBuffer,
+        info_count: UInt32,
+        p_infos: Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBuildMicromapsEXT.html
         """
-        return self._cmd_build_micromaps_ext(command_buffer, info_count, Ptr(to=infos))
+        return self._cmd_build_micromaps_ext(command_buffer, info_count, p_infos)
 
     fn build_micromaps_ext(
         self,
         device: Device,
         deferred_operation: DeferredOperationKHR,
         info_count: UInt32,
-        infos: MicromapBuildInfoEXT,
+        p_infos: Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBuildMicromapsEXT.html
         """
-        return self._build_micromaps_ext(device, deferred_operation, info_count, Ptr(to=infos))
+        return self._build_micromaps_ext(device, deferred_operation, info_count, p_infos)
 
     fn copy_micromap_ext(
         self, device: Device, deferred_operation: DeferredOperationKHR, info: CopyMicromapInfoEXT
@@ -5404,7 +5793,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMicromapEXT.html
         """
-        return self._copy_micromap_ext(device, deferred_operation, Ptr(to=info))
+        return self._copy_micromap_ext(
+            device, deferred_operation, Ptr(to=info).bitcast[CopyMicromapInfoEXT]()
+        )
 
     fn copy_micromap_to_memory_ext(
         self,
@@ -5416,7 +5807,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMicromapToMemoryEXT.html
         """
-        return self._copy_micromap_to_memory_ext(device, deferred_operation, Ptr(to=info))
+        return self._copy_micromap_to_memory_ext(
+            device, deferred_operation, Ptr(to=info).bitcast[CopyMicromapToMemoryInfoEXT]()
+        )
 
     fn copy_memory_to_micromap_ext(
         self,
@@ -5428,16 +5821,18 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMemoryToMicromapEXT.html
         """
-        return self._copy_memory_to_micromap_ext(device, deferred_operation, Ptr(to=info))
+        return self._copy_memory_to_micromap_ext(
+            device, deferred_operation, Ptr(to=info).bitcast[CopyMemoryToMicromapInfoEXT]()
+        )
 
     fn write_micromaps_properties_ext(
         self,
         device: Device,
         micromap_count: UInt32,
-        micromaps: MicromapEXT,
+        p_micromaps: Ptr[MicromapEXT, ImmutAnyOrigin],
         query_type: QueryType,
         data_size: UInt,
-        data: NoneType,
+        p_data: Ptr[NoneType, MutAnyOrigin],
         stride: UInt,
     ) -> Result:
         """See official vulkan docs for details.
@@ -5445,7 +5840,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWriteMicromapsPropertiesEXT.html
         """
         return self._write_micromaps_properties_ext(
-            device, micromap_count, Ptr(to=micromaps), query_type, data_size, Ptr(to=data), stride
+            device, micromap_count, p_micromaps, query_type, data_size, p_data, stride
         )
 
     fn cmd_copy_micromap_ext(self, command_buffer: CommandBuffer, info: CopyMicromapInfoEXT):
@@ -5453,7 +5848,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMicromapEXT.html
         """
-        return self._cmd_copy_micromap_ext(command_buffer, Ptr(to=info))
+        return self._cmd_copy_micromap_ext(
+            command_buffer, Ptr(to=info).bitcast[CopyMicromapInfoEXT]()
+        )
 
     fn cmd_copy_micromap_to_memory_ext(
         self, command_buffer: CommandBuffer, info: CopyMicromapToMemoryInfoEXT
@@ -5462,7 +5859,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMicromapToMemoryEXT.html
         """
-        return self._cmd_copy_micromap_to_memory_ext(command_buffer, Ptr(to=info))
+        return self._cmd_copy_micromap_to_memory_ext(
+            command_buffer, Ptr(to=info).bitcast[CopyMicromapToMemoryInfoEXT]()
+        )
 
     fn cmd_copy_memory_to_micromap_ext(
         self, command_buffer: CommandBuffer, info: CopyMemoryToMicromapInfoEXT
@@ -5471,13 +5870,15 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMemoryToMicromapEXT.html
         """
-        return self._cmd_copy_memory_to_micromap_ext(command_buffer, Ptr(to=info))
+        return self._cmd_copy_memory_to_micromap_ext(
+            command_buffer, Ptr(to=info).bitcast[CopyMemoryToMicromapInfoEXT]()
+        )
 
     fn cmd_write_micromaps_properties_ext(
         self,
         command_buffer: CommandBuffer,
         micromap_count: UInt32,
-        micromaps: MicromapEXT,
+        p_micromaps: Ptr[MicromapEXT, ImmutAnyOrigin],
         query_type: QueryType,
         query_pool: QueryPool,
         first_query: UInt32,
@@ -5487,21 +5888,23 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWriteMicromapsPropertiesEXT.html
         """
         return self._cmd_write_micromaps_properties_ext(
-            command_buffer, micromap_count, Ptr(to=micromaps), query_type, query_pool, first_query
+            command_buffer, micromap_count, p_micromaps, query_type, query_pool, first_query
         )
 
     fn get_device_micromap_compatibility_ext(
         self,
         device: Device,
         version_info: MicromapVersionInfoEXT,
-        compatibility: AccelerationStructureCompatibilityKHR,
+        mut compatibility: AccelerationStructureCompatibilityKHR,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMicromapCompatibilityEXT.html
         """
         return self._get_device_micromap_compatibility_ext(
-            device, Ptr(to=version_info), Ptr(to=compatibility)
+            device,
+            Ptr(to=version_info).bitcast[MicromapVersionInfoEXT](),
+            Ptr(to=compatibility).bitcast[AccelerationStructureCompatibilityKHR](),
         )
 
     fn get_micromap_build_sizes_ext(
@@ -5509,19 +5912,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         build_type: AccelerationStructureBuildTypeKHR,
         build_info: MicromapBuildInfoEXT,
-        size_info: MicromapBuildSizesInfoEXT,
+        mut size_info: MicromapBuildSizesInfoEXT,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMicromapBuildSizesEXT.html
         """
         return self._get_micromap_build_sizes_ext(
-            device, build_type, Ptr(to=build_info), Ptr(to=size_info)
+            device,
+            build_type,
+            Ptr(to=build_info).bitcast[MicromapBuildInfoEXT](),
+            Ptr(to=size_info).bitcast[MicromapBuildSizesInfoEXT](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_set_device_memory_priority_ext = Ptr(to=get_device_proc_addr(
         device, "vkSetDeviceMemoryPriorityEXT".unsafe_ptr()
@@ -5537,8 +5943,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._set_device_memory_priority_ext(device, memory, priority)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_depth_clamp_enable_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetDepthClampEnableEXT".unsafe_ptr()
@@ -5660,13 +6066,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_set_rasterization_samples_ext(command_buffer, rasterization_samples)
 
     fn cmd_set_sample_mask_ext(
-        self, command_buffer: CommandBuffer, samples: SampleCountFlagBits, sample_mask: SampleMask
+        self,
+        command_buffer: CommandBuffer,
+        samples: SampleCountFlagBits,
+        p_sample_mask: Ptr[SampleMask, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetSampleMaskEXT.html
         """
-        return self._cmd_set_sample_mask_ext(command_buffer, samples, Ptr(to=sample_mask))
+        return self._cmd_set_sample_mask_ext(command_buffer, samples, p_sample_mask)
 
     fn cmd_set_alpha_to_coverage_enable_ext(
         self, command_buffer: CommandBuffer, alpha_to_coverage_enable: Bool32
@@ -5698,14 +6107,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
-        color_blend_enables: Bool32,
+        p_color_blend_enables: Ptr[Bool32, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorBlendEnableEXT.html
         """
         return self._cmd_set_color_blend_enable_ext(
-            command_buffer, first_attachment, attachment_count, Ptr(to=color_blend_enables)
+            command_buffer, first_attachment, attachment_count, p_color_blend_enables
         )
 
     fn cmd_set_color_blend_equation_ext(
@@ -5713,14 +6122,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
-        color_blend_equations: ColorBlendEquationEXT,
+        p_color_blend_equations: Ptr[ColorBlendEquationEXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorBlendEquationEXT.html
         """
         return self._cmd_set_color_blend_equation_ext(
-            command_buffer, first_attachment, attachment_count, Ptr(to=color_blend_equations)
+            command_buffer, first_attachment, attachment_count, p_color_blend_equations
         )
 
     fn cmd_set_color_write_mask_ext(
@@ -5728,14 +6137,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
-        color_write_masks: ColorComponentFlags,
+        p_color_write_masks: Ptr[ColorComponentFlags, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorWriteMaskEXT.html
         """
         return self._cmd_set_color_write_mask_ext(
-            command_buffer, first_attachment, attachment_count, Ptr(to=color_write_masks)
+            command_buffer, first_attachment, attachment_count, p_color_write_masks
         )
 
     fn cmd_set_tessellation_domain_origin_ext(
@@ -5803,14 +6212,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
-        color_blend_advanced: ColorBlendAdvancedEXT,
+        p_color_blend_advanced: Ptr[ColorBlendAdvancedEXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorBlendAdvancedEXT.html
         """
         return self._cmd_set_color_blend_advanced_ext(
-            command_buffer, first_attachment, attachment_count, Ptr(to=color_blend_advanced)
+            command_buffer, first_attachment, attachment_count, p_color_blend_advanced
         )
 
     fn cmd_set_provoking_vertex_mode_ext(
@@ -5867,14 +6276,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        viewport_swizzles: ViewportSwizzleNV,
+        p_viewport_swizzles: Ptr[ViewportSwizzleNV, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportSwizzleNV.html
         """
         return self._cmd_set_viewport_swizzle_nv(
-            command_buffer, first_viewport, viewport_count, Ptr(to=viewport_swizzles)
+            command_buffer, first_viewport, viewport_count, p_viewport_swizzles
         )
 
     fn cmd_set_coverage_to_color_enable_nv(
@@ -5921,14 +6330,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         coverage_modulation_table_count: UInt32,
-        coverage_modulation_table: Float32,
+        p_coverage_modulation_table: Ptr[Float32, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageModulationTableNV.html
         """
         return self._cmd_set_coverage_modulation_table_nv(
-            command_buffer, coverage_modulation_table_count, Ptr(to=coverage_modulation_table)
+            command_buffer, coverage_modulation_table_count, p_coverage_modulation_table
         )
 
     fn cmd_set_shading_rate_image_enable_nv(
@@ -5963,8 +6372,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_set_coverage_reduction_mode_nv(command_buffer, coverage_reduction_mode)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_shader_module_identifier_ext = Ptr(to=get_device_proc_addr(
         device, "vkGetShaderModuleIdentifierEXT".unsafe_ptr()
@@ -5974,31 +6383,35 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     )).bitcast[type_of(self._vk_get_shader_module_create_info_identifier_ext)]()[]
 
     fn get_shader_module_identifier_ext(
-        self, device: Device, shader_module: ShaderModule, identifier: ShaderModuleIdentifierEXT
+        self, device: Device, shader_module: ShaderModule, mut identifier: ShaderModuleIdentifierEXT
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderModuleIdentifierEXT.html
         """
-        return self._get_shader_module_identifier_ext(device, shader_module, Ptr(to=identifier))
+        return self._get_shader_module_identifier_ext(
+            device, shader_module, Ptr(to=identifier).bitcast[ShaderModuleIdentifierEXT]()
+        )
 
     fn get_shader_module_create_info_identifier_ext(
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
-        identifier: ShaderModuleIdentifierEXT,
+        mut identifier: ShaderModuleIdentifierEXT,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderModuleCreateInfoIdentifierEXT.html
         """
         return self._get_shader_module_create_info_identifier_ext(
-            device, Ptr(to=create_info), Ptr(to=identifier)
+            device,
+            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo](),
+            Ptr(to=identifier).bitcast[ShaderModuleIdentifierEXT](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_shaders_ext = Ptr(to=get_device_proc_addr(
         device, "vkCreateShadersEXT".unsafe_ptr()
@@ -6167,23 +6580,23 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info_count: UInt32,
-        create_infos: ShaderCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        shaders: ShaderEXT,
+        p_create_infos: Ptr[ShaderCreateInfoEXT, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_shaders: Ptr[ShaderEXT, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateShadersEXT.html
         """
         return self._create_shaders_ext(
-            device, create_info_count, Ptr(to=create_infos), p_allocator, Ptr(to=shaders)
+            device, create_info_count, p_create_infos, p_allocator, p_shaders
         )
 
     fn destroy_shader_ext(
         self,
         device: Device,
         shader: ShaderEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -6195,27 +6608,29 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         shader: ShaderEXT,
-        data_size: UInt,
-        p_data: Ptr[NoneType, MutOrigin.external],
+        mut data_size: UInt,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderBinaryDataEXT.html
         """
-        return self._get_shader_binary_data_ext(device, shader, Ptr(to=data_size), p_data)
+        return self._get_shader_binary_data_ext(
+            device, shader, Ptr(to=data_size).bitcast[UInt](), p_data
+        )
 
     fn cmd_bind_shaders_ext(
         self,
         command_buffer: CommandBuffer,
         stage_count: UInt32,
-        stages: ShaderStageFlagBits,
-        p_shaders: Ptr[ShaderEXT, MutOrigin.external],
+        p_stages: Ptr[ShaderStageFlagBits, ImmutAnyOrigin],
+        p_shaders: Ptr[ShaderEXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindShadersEXT.html
         """
-        return self._cmd_bind_shaders_ext(command_buffer, stage_count, Ptr(to=stages), p_shaders)
+        return self._cmd_bind_shaders_ext(command_buffer, stage_count, p_stages, p_shaders)
 
     fn cmd_set_cull_mode(self, command_buffer: CommandBuffer, cull_mode: CullModeFlags):
         """See official vulkan docs for details.
@@ -6241,45 +6656,45 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_set_primitive_topology(command_buffer, primitive_topology)
 
     fn cmd_set_viewport_with_count(
-        self, command_buffer: CommandBuffer, viewport_count: UInt32, viewports: Viewport
+        self,
+        command_buffer: CommandBuffer,
+        viewport_count: UInt32,
+        p_viewports: Ptr[Viewport, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWithCount.html
         """
-        return self._cmd_set_viewport_with_count(command_buffer, viewport_count, Ptr(to=viewports))
+        return self._cmd_set_viewport_with_count(command_buffer, viewport_count, p_viewports)
 
     fn cmd_set_scissor_with_count(
-        self, command_buffer: CommandBuffer, scissor_count: UInt32, scissors: Rect2D
+        self,
+        command_buffer: CommandBuffer,
+        scissor_count: UInt32,
+        p_scissors: Ptr[Rect2D, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissorWithCount.html
         """
-        return self._cmd_set_scissor_with_count(command_buffer, scissor_count, Ptr(to=scissors))
+        return self._cmd_set_scissor_with_count(command_buffer, scissor_count, p_scissors)
 
     fn cmd_bind_vertex_buffers_2(
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        buffers: Buffer,
-        offsets: DeviceSize,
-        p_sizes: Ptr[DeviceSize, MutOrigin.external],
-        p_strides: Ptr[DeviceSize, MutOrigin.external],
+        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
+        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_strides: Ptr[DeviceSize, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers2.html
         """
         return self._cmd_bind_vertex_buffers_2(
-            command_buffer,
-            first_binding,
-            binding_count,
-            Ptr(to=buffers),
-            Ptr(to=offsets),
-            p_sizes,
-            p_strides,
+            command_buffer, first_binding, binding_count, p_buffers, p_offsets, p_sizes, p_strides
         )
 
     fn cmd_set_depth_test_enable(self, command_buffer: CommandBuffer, depth_test_enable: Bool32):
@@ -6342,9 +6757,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         vertex_binding_description_count: UInt32,
-        vertex_binding_descriptions: VertexInputBindingDescription2EXT,
+        p_vertex_binding_descriptions: Ptr[VertexInputBindingDescription2EXT, ImmutAnyOrigin],
         vertex_attribute_description_count: UInt32,
-        vertex_attribute_descriptions: VertexInputAttributeDescription2EXT,
+        p_vertex_attribute_descriptions: Ptr[VertexInputAttributeDescription2EXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -6353,9 +6768,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_set_vertex_input_ext(
             command_buffer,
             vertex_binding_description_count,
-            Ptr(to=vertex_binding_descriptions),
+            p_vertex_binding_descriptions,
             vertex_attribute_description_count,
-            Ptr(to=vertex_attribute_descriptions),
+            p_vertex_attribute_descriptions,
         )
 
     fn cmd_set_patch_control_points_ext(
@@ -6434,13 +6849,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_set_rasterization_samples_ext(command_buffer, rasterization_samples)
 
     fn cmd_set_sample_mask_ext(
-        self, command_buffer: CommandBuffer, samples: SampleCountFlagBits, sample_mask: SampleMask
+        self,
+        command_buffer: CommandBuffer,
+        samples: SampleCountFlagBits,
+        p_sample_mask: Ptr[SampleMask, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetSampleMaskEXT.html
         """
-        return self._cmd_set_sample_mask_ext(command_buffer, samples, Ptr(to=sample_mask))
+        return self._cmd_set_sample_mask_ext(command_buffer, samples, p_sample_mask)
 
     fn cmd_set_alpha_to_coverage_enable_ext(
         self, command_buffer: CommandBuffer, alpha_to_coverage_enable: Bool32
@@ -6472,14 +6890,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
-        color_blend_enables: Bool32,
+        p_color_blend_enables: Ptr[Bool32, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorBlendEnableEXT.html
         """
         return self._cmd_set_color_blend_enable_ext(
-            command_buffer, first_attachment, attachment_count, Ptr(to=color_blend_enables)
+            command_buffer, first_attachment, attachment_count, p_color_blend_enables
         )
 
     fn cmd_set_color_blend_equation_ext(
@@ -6487,14 +6905,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
-        color_blend_equations: ColorBlendEquationEXT,
+        p_color_blend_equations: Ptr[ColorBlendEquationEXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorBlendEquationEXT.html
         """
         return self._cmd_set_color_blend_equation_ext(
-            command_buffer, first_attachment, attachment_count, Ptr(to=color_blend_equations)
+            command_buffer, first_attachment, attachment_count, p_color_blend_equations
         )
 
     fn cmd_set_color_write_mask_ext(
@@ -6502,14 +6920,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
-        color_write_masks: ColorComponentFlags,
+        p_color_write_masks: Ptr[ColorComponentFlags, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorWriteMaskEXT.html
         """
         return self._cmd_set_color_write_mask_ext(
-            command_buffer, first_attachment, attachment_count, Ptr(to=color_write_masks)
+            command_buffer, first_attachment, attachment_count, p_color_write_masks
         )
 
     fn cmd_set_rasterization_stream_ext(
@@ -6568,14 +6986,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
-        color_blend_advanced: ColorBlendAdvancedEXT,
+        p_color_blend_advanced: Ptr[ColorBlendAdvancedEXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorBlendAdvancedEXT.html
         """
         return self._cmd_set_color_blend_advanced_ext(
-            command_buffer, first_attachment, attachment_count, Ptr(to=color_blend_advanced)
+            command_buffer, first_attachment, attachment_count, p_color_blend_advanced
         )
 
     fn cmd_set_provoking_vertex_mode_ext(
@@ -6632,14 +7050,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        viewport_swizzles: ViewportSwizzleNV,
+        p_viewport_swizzles: Ptr[ViewportSwizzleNV, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportSwizzleNV.html
         """
         return self._cmd_set_viewport_swizzle_nv(
-            command_buffer, first_viewport, viewport_count, Ptr(to=viewport_swizzles)
+            command_buffer, first_viewport, viewport_count, p_viewport_swizzles
         )
 
     fn cmd_set_coverage_to_color_enable_nv(
@@ -6686,14 +7104,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         coverage_modulation_table_count: UInt32,
-        coverage_modulation_table: Float32,
+        p_coverage_modulation_table: Ptr[Float32, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageModulationTableNV.html
         """
         return self._cmd_set_coverage_modulation_table_nv(
-            command_buffer, coverage_modulation_table_count, Ptr(to=coverage_modulation_table)
+            command_buffer, coverage_modulation_table_count, p_coverage_modulation_table
         )
 
     fn cmd_set_shading_rate_image_enable_nv(
@@ -6731,7 +7149,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         depth_clamp_mode: DepthClampModeEXT,
-        p_depth_clamp_range: Ptr[DepthClampRangeEXT, MutOrigin.external],
+        p_depth_clamp_range: Ptr[DepthClampRangeEXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -6742,8 +7160,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_attachment_feedback_loop_enable_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetAttachmentFeedbackLoopEnableEXT".unsafe_ptr()
@@ -6759,8 +7177,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_set_attachment_feedback_loop_enable_ext(command_buffer, aspect_mask)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_generated_commands_memory_requirements_ext = Ptr(to=get_device_proc_addr(
         device, "vkGetGeneratedCommandsMemoryRequirementsEXT".unsafe_ptr()
@@ -6794,14 +7212,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: GeneratedCommandsMemoryRequirementsInfoEXT,
-        memory_requirements: MemoryRequirements2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetGeneratedCommandsMemoryRequirementsEXT.html
         """
         return self._get_generated_commands_memory_requirements_ext(
-            device, Ptr(to=info), Ptr(to=memory_requirements)
+            device,
+            Ptr(to=info).bitcast[GeneratedCommandsMemoryRequirementsInfoEXT](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn cmd_preprocess_generated_commands_ext(
@@ -6815,7 +7235,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPreprocessGeneratedCommandsEXT.html
         """
         return self._cmd_preprocess_generated_commands_ext(
-            command_buffer, Ptr(to=generated_commands_info), state_command_buffer
+            command_buffer,
+            Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoEXT](),
+            state_command_buffer,
         )
 
     fn cmd_execute_generated_commands_ext(
@@ -6829,29 +7251,34 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteGeneratedCommandsEXT.html
         """
         return self._cmd_execute_generated_commands_ext(
-            command_buffer, is_preprocessed, Ptr(to=generated_commands_info)
+            command_buffer,
+            is_preprocessed,
+            Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoEXT](),
         )
 
     fn create_indirect_commands_layout_ext(
         self,
         device: Device,
         create_info: IndirectCommandsLayoutCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        indirect_commands_layout: IndirectCommandsLayoutEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut indirect_commands_layout: IndirectCommandsLayoutEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateIndirectCommandsLayoutEXT.html
         """
         return self._create_indirect_commands_layout_ext(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=indirect_commands_layout)
+            device,
+            Ptr(to=create_info).bitcast[IndirectCommandsLayoutCreateInfoEXT](),
+            p_allocator,
+            Ptr(to=indirect_commands_layout).bitcast[IndirectCommandsLayoutEXT](),
         )
 
     fn destroy_indirect_commands_layout_ext(
         self,
         device: Device,
         indirect_commands_layout: IndirectCommandsLayoutEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -6865,22 +7292,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: IndirectExecutionSetCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        indirect_execution_set: IndirectExecutionSetEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut indirect_execution_set: IndirectExecutionSetEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateIndirectExecutionSetEXT.html
         """
         return self._create_indirect_execution_set_ext(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=indirect_execution_set)
+            device,
+            Ptr(to=create_info).bitcast[IndirectExecutionSetCreateInfoEXT](),
+            p_allocator,
+            Ptr(to=indirect_execution_set).bitcast[IndirectExecutionSetEXT](),
         )
 
     fn destroy_indirect_execution_set_ext(
         self,
         device: Device,
         indirect_execution_set: IndirectExecutionSetEXT,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -6895,14 +7325,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         indirect_execution_set: IndirectExecutionSetEXT,
         execution_set_write_count: UInt32,
-        execution_set_writes: WriteIndirectExecutionSetPipelineEXT,
+        p_execution_set_writes: Ptr[WriteIndirectExecutionSetPipelineEXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateIndirectExecutionSetPipelineEXT.html
         """
         return self._update_indirect_execution_set_pipeline_ext(
-            device, indirect_execution_set, execution_set_write_count, Ptr(to=execution_set_writes)
+            device, indirect_execution_set, execution_set_write_count, p_execution_set_writes
         )
 
     fn update_indirect_execution_set_shader_ext(
@@ -6910,19 +7340,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         indirect_execution_set: IndirectExecutionSetEXT,
         execution_set_write_count: UInt32,
-        execution_set_writes: WriteIndirectExecutionSetShaderEXT,
+        p_execution_set_writes: Ptr[WriteIndirectExecutionSetShaderEXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateIndirectExecutionSetShaderEXT.html
         """
         return self._update_indirect_execution_set_shader_ext(
-            device, indirect_execution_set, execution_set_write_count, Ptr(to=execution_set_writes)
+            device, indirect_execution_set, execution_set_write_count, p_execution_set_writes
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_depth_clamp_range_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetDepthClampRangeEXT".unsafe_ptr()
@@ -6932,7 +7362,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         depth_clamp_mode: DepthClampModeEXT,
-        p_depth_clamp_range: Ptr[DepthClampRangeEXT, MutOrigin.external],
+        p_depth_clamp_range: Ptr[DepthClampRangeEXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -6943,8 +7373,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_memory_metal_handle_ext = Ptr(to=get_device_proc_addr(
         device, "vkGetMemoryMetalHandleEXT".unsafe_ptr()
@@ -6957,32 +7387,37 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         get_metal_handle_info: MemoryGetMetalHandleInfoEXT,
-        p_handle: Ptr[Ptr[NoneType, MutOrigin.external], MutOrigin.external],
+        p_handle: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryMetalHandleEXT.html
         """
-        return self._get_memory_metal_handle_ext(device, Ptr(to=get_metal_handle_info), p_handle)
+        return self._get_memory_metal_handle_ext(
+            device, Ptr(to=get_metal_handle_info).bitcast[MemoryGetMetalHandleInfoEXT](), p_handle
+        )
 
     fn get_memory_metal_handle_properties_ext(
         self,
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
         handle: NoneType,
-        memory_metal_handle_properties: MemoryMetalHandlePropertiesEXT,
+        mut memory_metal_handle_properties: MemoryMetalHandlePropertiesEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryMetalHandlePropertiesEXT.html
         """
         return self._get_memory_metal_handle_properties_ext(
-            device, handle_type, Ptr(to=handle), Ptr(to=memory_metal_handle_properties)
+            device,
+            handle_type,
+            Ptr(to=handle).bitcast[NoneType](),
+            Ptr(to=memory_metal_handle_properties).bitcast[MemoryMetalHandlePropertiesEXT](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_end_rendering_2_ext = Ptr(to=get_device_proc_addr(
         device, "vkCmdEndRendering2EXT".unsafe_ptr()
@@ -6991,7 +7426,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn cmd_end_rendering_2_ext(
         self,
         command_buffer: CommandBuffer,
-        p_rendering_end_info: Ptr[RenderingEndInfoEXT, MutOrigin.external],
+        p_rendering_end_info: Ptr[RenderingEndInfoEXT, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -7000,8 +7435,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_end_rendering_2_ext(command_buffer, p_rendering_end_info)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_cu_module_nvx = Ptr(to=get_device_proc_addr(
         device, "vkCreateCuModuleNVX".unsafe_ptr()
@@ -7023,35 +7458,43 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: CuModuleCreateInfoNVX,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        module: CuModuleNVX,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut module: CuModuleNVX,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCuModuleNVX.html
         """
-        return self._create_cu_module_nvx(device, Ptr(to=create_info), p_allocator, Ptr(to=module))
+        return self._create_cu_module_nvx(
+            device,
+            Ptr(to=create_info).bitcast[CuModuleCreateInfoNVX](),
+            p_allocator,
+            Ptr(to=module).bitcast[CuModuleNVX](),
+        )
 
     fn create_cu_function_nvx(
         self,
         device: Device,
         create_info: CuFunctionCreateInfoNVX,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        function: CuFunctionNVX,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut function: CuFunctionNVX,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCuFunctionNVX.html
         """
         return self._create_cu_function_nvx(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=function)
+            device,
+            Ptr(to=create_info).bitcast[CuFunctionCreateInfoNVX](),
+            p_allocator,
+            Ptr(to=function).bitcast[CuFunctionNVX](),
         )
 
     fn destroy_cu_module_nvx(
         self,
         device: Device,
         module: CuModuleNVX,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -7063,7 +7506,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         function: CuFunctionNVX,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -7076,11 +7519,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCuLaunchKernelNVX.html
         """
-        return self._cmd_cu_launch_kernel_nvx(command_buffer, Ptr(to=launch_info))
+        return self._cmd_cu_launch_kernel_nvx(
+            command_buffer, Ptr(to=launch_info).bitcast[CuLaunchInfoNVX]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_image_view_handle_nvx = Ptr(to=get_device_proc_addr(
         device, "vkGetImageViewHandleNVX".unsafe_ptr()
@@ -7097,27 +7542,33 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewHandleNVX.html
         """
-        return self._get_image_view_handle_nvx(device, Ptr(to=info))
+        return self._get_image_view_handle_nvx(
+            device, Ptr(to=info).bitcast[ImageViewHandleInfoNVX]()
+        )
 
     fn get_image_view_handle_64_nvx(self, device: Device, info: ImageViewHandleInfoNVX) -> UInt64:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewHandle64NVX.html
         """
-        return self._get_image_view_handle_64_nvx(device, Ptr(to=info))
+        return self._get_image_view_handle_64_nvx(
+            device, Ptr(to=info).bitcast[ImageViewHandleInfoNVX]()
+        )
 
     fn get_image_view_address_nvx(
-        self, device: Device, image_view: ImageView, properties: ImageViewAddressPropertiesNVX
+        self, device: Device, image_view: ImageView, mut properties: ImageViewAddressPropertiesNVX
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewAddressNVX.html
         """
-        return self._get_image_view_address_nvx(device, image_view, Ptr(to=properties))
+        return self._get_image_view_address_nvx(
+            device, image_view, Ptr(to=properties).bitcast[ImageViewAddressPropertiesNVX]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(
         device, "vkCmdDrawIndirectCount".unsafe_ptr()
@@ -7175,8 +7626,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_shader_info_amd = Ptr(to=get_device_proc_addr(
         device, "vkGetShaderInfoAMD".unsafe_ptr()
@@ -7188,20 +7639,20 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         pipeline: Pipeline,
         shader_stage: ShaderStageFlagBits,
         info_type: ShaderInfoTypeAMD,
-        info_size: UInt,
-        p_info: Ptr[NoneType, MutOrigin.external],
+        mut info_size: UInt,
+        p_info: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderInfoAMD.html
         """
         return self._get_shader_info_amd(
-            device, pipeline, shader_stage, info_type, Ptr(to=info_size), p_info
+            device, pipeline, shader_stage, info_type, Ptr(to=info_size).bitcast[UInt](), p_info
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_write_buffer_marker_amd = Ptr(to=get_device_proc_addr(
         device, "vkCmdWriteBufferMarkerAMD".unsafe_ptr()
@@ -7243,8 +7694,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_set_local_dimming_amd = Ptr(to=get_device_proc_addr(
         device, "vkSetLocalDimmingAMD".unsafe_ptr()
@@ -7260,8 +7711,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._set_local_dimming_amd(device, swap_chain, local_dimming_enable)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_anti_lag_update_amd = Ptr(to=get_device_proc_addr(
         device, "vkAntiLagUpdateAMD".unsafe_ptr()
@@ -7272,11 +7723,11 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAntiLagUpdateAMD.html
         """
-        return self._anti_lag_update_amd(device, Ptr(to=data))
+        return self._anti_lag_update_amd(device, Ptr(to=data).bitcast[AntiLagDataAMD]())
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_stream_descriptor_surface_ggp = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateStreamDescriptorSurfaceGGP".unsafe_ptr()
@@ -7286,20 +7737,23 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: StreamDescriptorSurfaceCreateInfoGGP,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateStreamDescriptorSurfaceGGP.html
         """
         return self._create_stream_descriptor_surface_ggp(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[StreamDescriptorSurfaceCreateInfoGGP](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_get_physical_device_external_image_format_properties_nv = Ptr(to=get_instance_proc_addr(
         instance, "vkGetPhysicalDeviceExternalImageFormatPropertiesNV".unsafe_ptr()
@@ -7314,7 +7768,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         usage: ImageUsageFlags,
         flags: ImageCreateFlags,
         external_handle_type: ExternalMemoryHandleTypeFlagsNV,
-        external_image_format_properties: ExternalImageFormatPropertiesNV,
+        mut external_image_format_properties: ExternalImageFormatPropertiesNV,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -7328,12 +7782,12 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             usage,
             flags,
             external_handle_type,
-            Ptr(to=external_image_format_properties),
+            Ptr(to=external_image_format_properties).bitcast[ExternalImageFormatPropertiesNV](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_memory_win_32_handle_nv = Ptr(to=get_device_proc_addr(
         device, "vkGetMemoryWin32HandleNV".unsafe_ptr()
@@ -7344,17 +7798,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         memory: DeviceMemory,
         handle_type: ExternalMemoryHandleTypeFlagsNV,
-        handle: HANDLE,
+        mut handle: HANDLE,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryWin32HandleNV.html
         """
-        return self._get_memory_win_32_handle_nv(device, memory, handle_type, Ptr(to=handle))
+        return self._get_memory_win_32_handle_nv(
+            device, memory, handle_type, Ptr(to=handle).bitcast[HANDLE]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_viewport_w_scaling_nv = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetViewportWScalingNV".unsafe_ptr()
@@ -7365,19 +7821,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        viewport_w_scalings: ViewportWScalingNV,
+        p_viewport_w_scalings: Ptr[ViewportWScalingNV, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWScalingNV.html
         """
         return self._cmd_set_viewport_w_scaling_nv(
-            command_buffer, first_viewport, viewport_count, Ptr(to=viewport_w_scalings)
+            command_buffer, first_viewport, viewport_count, p_viewport_w_scalings
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_bind_shading_rate_image_nv = Ptr(to=get_device_proc_addr(
         device, "vkCmdBindShadingRateImageNV".unsafe_ptr()
@@ -7403,14 +7859,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        shading_rate_palettes: ShadingRatePaletteNV,
+        p_shading_rate_palettes: Ptr[ShadingRatePaletteNV, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportShadingRatePaletteNV.html
         """
         return self._cmd_set_viewport_shading_rate_palette_nv(
-            command_buffer, first_viewport, viewport_count, Ptr(to=shading_rate_palettes)
+            command_buffer, first_viewport, viewport_count, p_shading_rate_palettes
         )
 
     fn cmd_set_coarse_sample_order_nv(
@@ -7418,22 +7874,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         sample_order_type: CoarseSampleOrderTypeNV,
         custom_sample_order_count: UInt32,
-        custom_sample_orders: CoarseSampleOrderCustomNV,
+        p_custom_sample_orders: Ptr[CoarseSampleOrderCustomNV, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoarseSampleOrderNV.html
         """
         return self._cmd_set_coarse_sample_order_nv(
-            command_buffer,
-            sample_order_type,
-            custom_sample_order_count,
-            Ptr(to=custom_sample_orders),
+            command_buffer, sample_order_type, custom_sample_order_count, p_custom_sample_orders
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_acceleration_structure_nv = Ptr(to=get_device_proc_addr(
         device, "vkCreateAccelerationStructureNV".unsafe_ptr()
@@ -7476,22 +7929,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: AccelerationStructureCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        acceleration_structure: AccelerationStructureNV,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut acceleration_structure: AccelerationStructureNV,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateAccelerationStructureNV.html
         """
         return self._create_acceleration_structure_nv(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=acceleration_structure)
+            device,
+            Ptr(to=create_info).bitcast[AccelerationStructureCreateInfoNV](),
+            p_allocator,
+            Ptr(to=acceleration_structure).bitcast[AccelerationStructureNV](),
         )
 
     fn destroy_acceleration_structure_nv(
         self,
         device: Device,
         acceleration_structure: AccelerationStructureNV,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -7503,29 +7959,29 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: AccelerationStructureMemoryRequirementsInfoNV,
-        memory_requirements: MemoryRequirements2KHR,
+        mut memory_requirements: MemoryRequirements2KHR,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAccelerationStructureMemoryRequirementsNV.html
         """
         return self._get_acceleration_structure_memory_requirements_nv(
-            device, Ptr(to=info), Ptr(to=memory_requirements)
+            device,
+            Ptr(to=info).bitcast[AccelerationStructureMemoryRequirementsInfoNV](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2KHR](),
         )
 
     fn bind_acceleration_structure_memory_nv(
         self,
         device: Device,
         bind_info_count: UInt32,
-        bind_infos: BindAccelerationStructureMemoryInfoNV,
+        p_bind_infos: Ptr[BindAccelerationStructureMemoryInfoNV, ImmutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindAccelerationStructureMemoryNV.html
         """
-        return self._bind_acceleration_structure_memory_nv(
-            device, bind_info_count, Ptr(to=bind_infos)
-        )
+        return self._bind_acceleration_structure_memory_nv(device, bind_info_count, p_bind_infos)
 
     fn cmd_build_acceleration_structure_nv(
         self,
@@ -7545,7 +8001,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._cmd_build_acceleration_structure_nv(
             command_buffer,
-            Ptr(to=info),
+            Ptr(to=info).bitcast[AccelerationStructureInfoNV](),
             instance_data,
             instance_offset,
             update,
@@ -7613,21 +8069,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        create_infos: RayTracingPipelineCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        pipelines: Pipeline,
+        p_create_infos: Ptr[RayTracingPipelineCreateInfoNV, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRayTracingPipelinesNV.html
         """
         return self._create_ray_tracing_pipelines_nv(
-            device,
-            pipeline_cache,
-            create_info_count,
-            Ptr(to=create_infos),
-            p_allocator,
-            Ptr(to=pipelines),
+            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
         )
 
     fn get_ray_tracing_shader_group_handles_khr(
@@ -7637,14 +8088,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         first_group: UInt32,
         group_count: UInt32,
         data_size: UInt,
-        data: NoneType,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRayTracingShaderGroupHandlesKHR.html
         """
         return self._get_ray_tracing_shader_group_handles_khr(
-            device, pipeline, first_group, group_count, data_size, Ptr(to=data)
+            device, pipeline, first_group, group_count, data_size, p_data
         )
 
     fn get_acceleration_structure_handle_nv(
@@ -7652,21 +8103,21 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         acceleration_structure: AccelerationStructureNV,
         data_size: UInt,
-        data: NoneType,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAccelerationStructureHandleNV.html
         """
         return self._get_acceleration_structure_handle_nv(
-            device, acceleration_structure, data_size, Ptr(to=data)
+            device, acceleration_structure, data_size, p_data
         )
 
     fn cmd_write_acceleration_structures_properties_nv(
         self,
         command_buffer: CommandBuffer,
         acceleration_structure_count: UInt32,
-        acceleration_structures: AccelerationStructureNV,
+        p_acceleration_structures: Ptr[AccelerationStructureNV, ImmutAnyOrigin],
         query_type: QueryType,
         query_pool: QueryPool,
         first_query: UInt32,
@@ -7678,7 +8129,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_write_acceleration_structures_properties_nv(
             command_buffer,
             acceleration_structure_count,
-            Ptr(to=acceleration_structures),
+            p_acceleration_structures,
             query_type,
             query_pool,
             first_query,
@@ -7692,8 +8143,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._compile_deferred_nv(device, pipeline, shader)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_draw_mesh_tasks_nv = Ptr(to=get_device_proc_addr(
         device, "vkCmdDrawMeshTasksNV".unsafe_ptr()
@@ -7755,8 +8206,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_exclusive_scissor_enable_nv = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetExclusiveScissorEnableNV".unsafe_ptr()
@@ -7770,7 +8221,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_exclusive_scissor: UInt32,
         exclusive_scissor_count: UInt32,
-        exclusive_scissor_enables: Bool32,
+        p_exclusive_scissor_enables: Ptr[Bool32, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -7780,7 +8231,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             command_buffer,
             first_exclusive_scissor,
             exclusive_scissor_count,
-            Ptr(to=exclusive_scissor_enables),
+            p_exclusive_scissor_enables,
         )
 
     fn cmd_set_exclusive_scissor_nv(
@@ -7788,22 +8239,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         first_exclusive_scissor: UInt32,
         exclusive_scissor_count: UInt32,
-        exclusive_scissors: Rect2D,
+        p_exclusive_scissors: Ptr[Rect2D, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetExclusiveScissorNV.html
         """
         return self._cmd_set_exclusive_scissor_nv(
-            command_buffer,
-            first_exclusive_scissor,
-            exclusive_scissor_count,
-            Ptr(to=exclusive_scissors),
+            command_buffer, first_exclusive_scissor, exclusive_scissor_count, p_exclusive_scissors
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_checkpoint_nv = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetCheckpointNV".unsafe_ptr()
@@ -7820,39 +8268,41 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCheckpointNV.html
         """
-        return self._cmd_set_checkpoint_nv(command_buffer, Ptr(to=checkpoint_marker))
+        return self._cmd_set_checkpoint_nv(
+            command_buffer, Ptr(to=checkpoint_marker).bitcast[NoneType]()
+        )
 
     fn get_queue_checkpoint_data_nv(
         self,
         queue: Queue,
-        checkpoint_data_count: UInt32,
-        p_checkpoint_data: Ptr[CheckpointDataNV, MutOrigin.external],
+        mut checkpoint_data_count: UInt32,
+        p_checkpoint_data: Ptr[CheckpointDataNV, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointDataNV.html
         """
         return self._get_queue_checkpoint_data_nv(
-            queue, Ptr(to=checkpoint_data_count), p_checkpoint_data
+            queue, Ptr(to=checkpoint_data_count).bitcast[UInt32](), p_checkpoint_data
         )
 
     fn get_queue_checkpoint_data_2_nv(
         self,
         queue: Queue,
-        checkpoint_data_count: UInt32,
-        p_checkpoint_data: Ptr[CheckpointData2NV, MutOrigin.external],
+        mut checkpoint_data_count: UInt32,
+        p_checkpoint_data: Ptr[CheckpointData2NV, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointData2NV.html
         """
         return self._get_queue_checkpoint_data_2_nv(
-            queue, Ptr(to=checkpoint_data_count), p_checkpoint_data
+            queue, Ptr(to=checkpoint_data_count).bitcast[UInt32](), p_checkpoint_data
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_physical_device_cooperative_matrix_properties_nv = Ptr(to=get_device_proc_addr(
         device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesNV".unsafe_ptr()
@@ -7861,20 +8311,20 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_cooperative_matrix_properties_nv(
         self,
         physical_device: PhysicalDevice,
-        property_count: UInt32,
-        p_properties: Ptr[CooperativeMatrixPropertiesNV, MutOrigin.external],
+        mut property_count: UInt32,
+        p_properties: Ptr[CooperativeMatrixPropertiesNV, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixPropertiesNV.html
         """
         return self._get_physical_device_cooperative_matrix_properties_nv(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_physical_device_supported_framebuffer_mixed_samples_combinations_nv = Ptr(to=get_device_proc_addr(
         device, "vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV".unsafe_ptr()
@@ -7883,20 +8333,20 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
         self,
         physical_device: PhysicalDevice,
-        combination_count: UInt32,
-        p_combinations: Ptr[FramebufferMixedSamplesCombinationNV, MutOrigin.external],
+        mut combination_count: UInt32,
+        p_combinations: Ptr[FramebufferMixedSamplesCombinationNV, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV.html
         """
         return self._get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
-            physical_device, Ptr(to=combination_count), p_combinations
+            physical_device, Ptr(to=combination_count).bitcast[UInt32](), p_combinations
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_generated_commands_memory_requirements_nv = Ptr(to=get_device_proc_addr(
         device, "vkGetGeneratedCommandsMemoryRequirementsNV".unsafe_ptr()
@@ -7921,14 +8371,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: GeneratedCommandsMemoryRequirementsInfoNV,
-        memory_requirements: MemoryRequirements2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetGeneratedCommandsMemoryRequirementsNV.html
         """
         return self._get_generated_commands_memory_requirements_nv(
-            device, Ptr(to=info), Ptr(to=memory_requirements)
+            device,
+            Ptr(to=info).bitcast[GeneratedCommandsMemoryRequirementsInfoNV](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn cmd_preprocess_generated_commands_nv(
@@ -7939,7 +8391,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPreprocessGeneratedCommandsNV.html
         """
         return self._cmd_preprocess_generated_commands_nv(
-            command_buffer, Ptr(to=generated_commands_info)
+            command_buffer, Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoNV]()
         )
 
     fn cmd_execute_generated_commands_nv(
@@ -7953,7 +8405,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteGeneratedCommandsNV.html
         """
         return self._cmd_execute_generated_commands_nv(
-            command_buffer, is_preprocessed, Ptr(to=generated_commands_info)
+            command_buffer,
+            is_preprocessed,
+            Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoNV](),
         )
 
     fn cmd_bind_pipeline_shader_group_nv(
@@ -7975,22 +8429,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: IndirectCommandsLayoutCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        indirect_commands_layout: IndirectCommandsLayoutNV,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut indirect_commands_layout: IndirectCommandsLayoutNV,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateIndirectCommandsLayoutNV.html
         """
         return self._create_indirect_commands_layout_nv(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=indirect_commands_layout)
+            device,
+            Ptr(to=create_info).bitcast[IndirectCommandsLayoutCreateInfoNV](),
+            p_allocator,
+            Ptr(to=indirect_commands_layout).bitcast[IndirectCommandsLayoutNV](),
         )
 
     fn destroy_indirect_commands_layout_nv(
         self,
         device: Device,
         indirect_commands_layout: IndirectCommandsLayoutNV,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -8001,8 +8458,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_cuda_module_nv = Ptr(to=get_device_proc_addr(
         device, "vkCreateCudaModuleNV".unsafe_ptr()
@@ -8027,50 +8484,58 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: CudaModuleCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        module: CudaModuleNV,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut module: CudaModuleNV,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCudaModuleNV.html
         """
         return self._create_cuda_module_nv(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=module)
+            device,
+            Ptr(to=create_info).bitcast[CudaModuleCreateInfoNV](),
+            p_allocator,
+            Ptr(to=module).bitcast[CudaModuleNV](),
         )
 
     fn get_cuda_module_cache_nv(
         self,
         device: Device,
         module: CudaModuleNV,
-        cache_size: UInt,
-        p_cache_data: Ptr[NoneType, MutOrigin.external],
+        mut cache_size: UInt,
+        p_cache_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetCudaModuleCacheNV.html
         """
-        return self._get_cuda_module_cache_nv(device, module, Ptr(to=cache_size), p_cache_data)
+        return self._get_cuda_module_cache_nv(
+            device, module, Ptr(to=cache_size).bitcast[UInt](), p_cache_data
+        )
 
     fn create_cuda_function_nv(
         self,
         device: Device,
         create_info: CudaFunctionCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        function: CudaFunctionNV,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut function: CudaFunctionNV,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCudaFunctionNV.html
         """
         return self._create_cuda_function_nv(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=function)
+            device,
+            Ptr(to=create_info).bitcast[CudaFunctionCreateInfoNV](),
+            p_allocator,
+            Ptr(to=function).bitcast[CudaFunctionNV](),
         )
 
     fn destroy_cuda_module_nv(
         self,
         device: Device,
         module: CudaModuleNV,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -8082,7 +8547,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         function: CudaFunctionNV,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -8097,11 +8562,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCudaLaunchKernelNV.html
         """
-        return self._cmd_cuda_launch_kernel_nv(command_buffer, Ptr(to=launch_info))
+        return self._cmd_cuda_launch_kernel_nv(
+            command_buffer, Ptr(to=launch_info).bitcast[CudaLaunchInfoNV]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_set_fragment_shading_rate_enum_nv = Ptr(to=get_device_proc_addr(
         device, "vkCmdSetFragmentShadingRateEnumNV".unsafe_ptr()
@@ -8122,8 +8589,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_acquire_winrt_display_nv = Ptr(to=get_device_proc_addr(
         device, "vkAcquireWinrtDisplayNV".unsafe_ptr()
@@ -8142,17 +8609,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._acquire_winrt_display_nv(physical_device, display)
 
     fn get_winrt_display_nv(
-        self, physical_device: PhysicalDevice, device_relative_id: UInt32, display: DisplayKHR
+        self, physical_device: PhysicalDevice, device_relative_id: UInt32, mut display: DisplayKHR
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetWinrtDisplayNV.html
         """
-        return self._get_winrt_display_nv(physical_device, device_relative_id, Ptr(to=display))
+        return self._get_winrt_display_nv(
+            physical_device, device_relative_id, Ptr(to=display).bitcast[DisplayKHR]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_memory_remote_address_nv = Ptr(to=get_device_proc_addr(
         device, "vkGetMemoryRemoteAddressNV".unsafe_ptr()
@@ -8162,19 +8631,21 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         memory_get_remote_address_info: MemoryGetRemoteAddressInfoNV,
-        address: RemoteAddressNV,
+        mut address: RemoteAddressNV,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryRemoteAddressNV.html
         """
         return self._get_memory_remote_address_nv(
-            device, Ptr(to=memory_get_remote_address_info), Ptr(to=address)
+            device,
+            Ptr(to=memory_get_remote_address_info).bitcast[MemoryGetRemoteAddressInfoNV](),
+            Ptr(to=address).bitcast[RemoteAddressNV](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_copy_memory_indirect_nv = Ptr(to=get_device_proc_addr(
         device, "vkCmdCopyMemoryIndirectNV".unsafe_ptr()
@@ -8206,7 +8677,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         stride: UInt32,
         dst_image: Image,
         dst_image_layout: ImageLayout,
-        image_subresources: ImageSubresourceLayers,
+        p_image_subresources: Ptr[ImageSubresourceLayers, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -8219,12 +8690,12 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             stride,
             dst_image,
             dst_image_layout,
-            Ptr(to=image_subresources),
+            p_image_subresources,
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_decompress_memory_nv = Ptr(to=get_device_proc_addr(
         device, "vkCmdDecompressMemoryNV".unsafe_ptr()
@@ -8237,14 +8708,14 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         decompress_region_count: UInt32,
-        decompress_memory_regions: DecompressMemoryRegionNV,
+        p_decompress_memory_regions: Ptr[DecompressMemoryRegionNV, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDecompressMemoryNV.html
         """
         return self._cmd_decompress_memory_nv(
-            command_buffer, decompress_region_count, Ptr(to=decompress_memory_regions)
+            command_buffer, decompress_region_count, p_decompress_memory_regions
         )
 
     fn cmd_decompress_memory_indirect_count_nv(
@@ -8263,8 +8734,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_pipeline_indirect_memory_requirements_nv = Ptr(to=get_device_proc_addr(
         device, "vkGetPipelineIndirectMemoryRequirementsNV".unsafe_ptr()
@@ -8280,14 +8751,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: ComputePipelineCreateInfo,
-        memory_requirements: MemoryRequirements2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineIndirectMemoryRequirementsNV.html
         """
         return self._get_pipeline_indirect_memory_requirements_nv(
-            device, Ptr(to=create_info), Ptr(to=memory_requirements)
+            device,
+            Ptr(to=create_info).bitcast[ComputePipelineCreateInfo](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn cmd_update_pipeline_indirect_buffer_nv(
@@ -8311,11 +8784,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineIndirectDeviceAddressNV.html
         """
-        return self._get_pipeline_indirect_device_address_nv(device, Ptr(to=info))
+        return self._get_pipeline_indirect_device_address_nv(
+            device, Ptr(to=info).bitcast[PipelineIndirectDeviceAddressInfoNV]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_physical_device_optical_flow_image_formats_nv = Ptr(to=get_device_proc_addr(
         device, "vkGetPhysicalDeviceOpticalFlowImageFormatsNV".unsafe_ptr()
@@ -8337,8 +8812,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         optical_flow_image_format_info: OpticalFlowImageFormatInfoNV,
-        format_count: UInt32,
-        p_image_format_properties: Ptr[OpticalFlowImageFormatPropertiesNV, MutOrigin.external],
+        mut format_count: UInt32,
+        p_image_format_properties: Ptr[OpticalFlowImageFormatPropertiesNV, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8346,8 +8821,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._get_physical_device_optical_flow_image_formats_nv(
             physical_device,
-            Ptr(to=optical_flow_image_format_info),
-            Ptr(to=format_count),
+            Ptr(to=optical_flow_image_format_info).bitcast[OpticalFlowImageFormatInfoNV](),
+            Ptr(to=format_count).bitcast[UInt32](),
             p_image_format_properties,
         )
 
@@ -8355,22 +8830,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: OpticalFlowSessionCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        session: OpticalFlowSessionNV,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut session: OpticalFlowSessionNV,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateOpticalFlowSessionNV.html
         """
         return self._create_optical_flow_session_nv(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=session)
+            device,
+            Ptr(to=create_info).bitcast[OpticalFlowSessionCreateInfoNV](),
+            p_allocator,
+            Ptr(to=session).bitcast[OpticalFlowSessionNV](),
         )
 
     fn destroy_optical_flow_session_nv(
         self,
         device: Device,
         session: OpticalFlowSessionNV,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -8404,11 +8882,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdOpticalFlowExecuteNV.html
         """
-        return self._cmd_optical_flow_execute_nv(command_buffer, session, Ptr(to=execute_info))
+        return self._cmd_optical_flow_execute_nv(
+            command_buffer, session, Ptr(to=execute_info).bitcast[OpticalFlowExecuteInfoNV]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_physical_device_cooperative_vector_properties_nv = Ptr(to=get_device_proc_addr(
         device, "vkGetPhysicalDeviceCooperativeVectorPropertiesNV".unsafe_ptr()
@@ -8423,15 +8903,15 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_cooperative_vector_properties_nv(
         self,
         physical_device: PhysicalDevice,
-        property_count: UInt32,
-        p_properties: Ptr[CooperativeVectorPropertiesNV, MutOrigin.external],
+        mut property_count: UInt32,
+        p_properties: Ptr[CooperativeVectorPropertiesNV, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeVectorPropertiesNV.html
         """
         return self._get_physical_device_cooperative_vector_properties_nv(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn convert_cooperative_vector_matrix_nv(
@@ -8441,25 +8921,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkConvertCooperativeVectorMatrixNV.html
         """
-        return self._convert_cooperative_vector_matrix_nv(device, Ptr(to=info))
+        return self._convert_cooperative_vector_matrix_nv(
+            device, Ptr(to=info).bitcast[ConvertCooperativeVectorMatrixInfoNV]()
+        )
 
     fn cmd_convert_cooperative_vector_matrix_nv(
         self,
         command_buffer: CommandBuffer,
         info_count: UInt32,
-        infos: ConvertCooperativeVectorMatrixInfoNV,
+        p_infos: Ptr[ConvertCooperativeVectorMatrixInfoNV, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdConvertCooperativeVectorMatrixNV.html
         """
-        return self._cmd_convert_cooperative_vector_matrix_nv(
-            command_buffer, info_count, Ptr(to=infos)
-        )
+        return self._cmd_convert_cooperative_vector_matrix_nv(command_buffer, info_count, p_infos)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_set_latency_sleep_mode_nv = Ptr(to=get_device_proc_addr(
         device, "vkSetLatencySleepModeNV".unsafe_ptr()
@@ -8484,7 +8964,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetLatencySleepModeNV.html
         """
-        return self._set_latency_sleep_mode_nv(device, swapchain, Ptr(to=sleep_mode_info))
+        return self._set_latency_sleep_mode_nv(
+            device, swapchain, Ptr(to=sleep_mode_info).bitcast[LatencySleepModeInfoNV]()
+        )
 
     fn latency_sleep_nv(
         self, device: Device, swapchain: SwapchainKHR, sleep_info: LatencySleepInfoNV
@@ -8493,7 +8975,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkLatencySleepNV.html
         """
-        return self._latency_sleep_nv(device, swapchain, Ptr(to=sleep_info))
+        return self._latency_sleep_nv(
+            device, swapchain, Ptr(to=sleep_info).bitcast[LatencySleepInfoNV]()
+        )
 
     fn set_latency_marker_nv(
         self, device: Device, swapchain: SwapchainKHR, latency_marker_info: SetLatencyMarkerInfoNV
@@ -8502,27 +8986,36 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetLatencyMarkerNV.html
         """
-        return self._set_latency_marker_nv(device, swapchain, Ptr(to=latency_marker_info))
+        return self._set_latency_marker_nv(
+            device, swapchain, Ptr(to=latency_marker_info).bitcast[SetLatencyMarkerInfoNV]()
+        )
 
     fn get_latency_timings_nv(
-        self, device: Device, swapchain: SwapchainKHR, latency_marker_info: GetLatencyMarkerInfoNV
+        self,
+        device: Device,
+        swapchain: SwapchainKHR,
+        mut latency_marker_info: GetLatencyMarkerInfoNV,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetLatencyTimingsNV.html
         """
-        return self._get_latency_timings_nv(device, swapchain, Ptr(to=latency_marker_info))
+        return self._get_latency_timings_nv(
+            device, swapchain, Ptr(to=latency_marker_info).bitcast[GetLatencyMarkerInfoNV]()
+        )
 
     fn queue_notify_out_of_band_nv(self, queue: Queue, queue_type_info: OutOfBandQueueTypeInfoNV):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueNotifyOutOfBandNV.html
         """
-        return self._queue_notify_out_of_band_nv(queue, Ptr(to=queue_type_info))
+        return self._queue_notify_out_of_band_nv(
+            queue, Ptr(to=queue_type_info).bitcast[OutOfBandQueueTypeInfoNV]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_external_compute_queue_nv = Ptr(to=get_device_proc_addr(
         device, "vkCreateExternalComputeQueueNV".unsafe_ptr()
@@ -8538,22 +9031,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: ExternalComputeQueueCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        external_queue: ExternalComputeQueueNV,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut external_queue: ExternalComputeQueueNV,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateExternalComputeQueueNV.html
         """
         return self._create_external_compute_queue_nv(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=external_queue)
+            device,
+            Ptr(to=create_info).bitcast[ExternalComputeQueueCreateInfoNV](),
+            p_allocator,
+            Ptr(to=external_queue).bitcast[ExternalComputeQueueNV](),
         )
 
     fn destroy_external_compute_queue_nv(
         self,
         device: Device,
         external_queue: ExternalComputeQueueNV,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -8564,20 +9060,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_external_compute_queue_data_nv(
         self,
         external_queue: ExternalComputeQueueNV,
-        params: ExternalComputeQueueDataParamsNV,
-        data: NoneType,
+        mut params: ExternalComputeQueueDataParamsNV,
+        mut data: NoneType,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetExternalComputeQueueDataNV.html
         """
         return self._get_external_compute_queue_data_nv(
-            external_queue, Ptr(to=params), Ptr(to=data)
+            external_queue,
+            Ptr(to=params).bitcast[ExternalComputeQueueDataParamsNV](),
+            Ptr(to=data).bitcast[NoneType](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_cluster_acceleration_structure_build_sizes_nv = Ptr(to=get_device_proc_addr(
         device, "vkGetClusterAccelerationStructureBuildSizesNV".unsafe_ptr()
@@ -8590,14 +9088,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: ClusterAccelerationStructureInputInfoNV,
-        size_info: AccelerationStructureBuildSizesInfoKHR,
+        mut size_info: AccelerationStructureBuildSizesInfoKHR,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetClusterAccelerationStructureBuildSizesNV.html
         """
         return self._get_cluster_acceleration_structure_build_sizes_nv(
-            device, Ptr(to=info), Ptr(to=size_info)
+            device,
+            Ptr(to=info).bitcast[ClusterAccelerationStructureInputInfoNV](),
+            Ptr(to=size_info).bitcast[AccelerationStructureBuildSizesInfoKHR](),
         )
 
     fn cmd_build_cluster_acceleration_structure_indirect_nv(
@@ -8610,12 +9110,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBuildClusterAccelerationStructureIndirectNV.html
         """
         return self._cmd_build_cluster_acceleration_structure_indirect_nv(
-            command_buffer, Ptr(to=command_infos)
+            command_buffer,
+            Ptr(to=command_infos).bitcast[ClusterAccelerationStructureCommandsInfoNV](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_partitioned_acceleration_structures_build_sizes_nv = Ptr(to=get_device_proc_addr(
         device, "vkGetPartitionedAccelerationStructuresBuildSizesNV".unsafe_ptr()
@@ -8628,14 +9129,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: PartitionedAccelerationStructureInstancesInputNV,
-        size_info: AccelerationStructureBuildSizesInfoKHR,
+        mut size_info: AccelerationStructureBuildSizesInfoKHR,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPartitionedAccelerationStructuresBuildSizesNV.html
         """
         return self._get_partitioned_acceleration_structures_build_sizes_nv(
-            device, Ptr(to=info), Ptr(to=size_info)
+            device,
+            Ptr(to=info).bitcast[PartitionedAccelerationStructureInstancesInputNV](),
+            Ptr(to=size_info).bitcast[AccelerationStructureBuildSizesInfoKHR](),
         )
 
     fn cmd_build_partitioned_acceleration_structures_nv(
@@ -8646,12 +9149,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBuildPartitionedAccelerationStructuresNV.html
         """
         return self._cmd_build_partitioned_acceleration_structures_nv(
-            command_buffer, Ptr(to=build_info)
+            command_buffer,
+            Ptr(to=build_info).bitcast[BuildPartitionedAccelerationStructureInfoNV](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv = Ptr(to=get_device_proc_addr(
         device, "vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV".unsafe_ptr()
@@ -8660,20 +9164,20 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
         self,
         physical_device: PhysicalDevice,
-        property_count: UInt32,
-        p_properties: Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutOrigin.external],
+        mut property_count: UInt32,
+        p_properties: Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV.html
         """
         return self._get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_vi_surface_nn = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateViSurfaceNN".unsafe_ptr()
@@ -8683,20 +9187,23 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: ViSurfaceCreateInfoNN,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateViSurfaceNN.html
         """
         return self._create_vi_surface_nn(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[ViSurfaceCreateInfoNN](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_refresh_cycle_duration_google = Ptr(to=get_device_proc_addr(
         device, "vkGetRefreshCycleDurationGOOGLE".unsafe_ptr()
@@ -8709,34 +9216,39 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         swapchain: SwapchainKHR,
-        display_timing_properties: RefreshCycleDurationGOOGLE,
+        mut display_timing_properties: RefreshCycleDurationGOOGLE,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRefreshCycleDurationGOOGLE.html
         """
         return self._get_refresh_cycle_duration_google(
-            device, swapchain, Ptr(to=display_timing_properties)
+            device,
+            swapchain,
+            Ptr(to=display_timing_properties).bitcast[RefreshCycleDurationGOOGLE](),
         )
 
     fn get_past_presentation_timing_google(
         self,
         device: Device,
         swapchain: SwapchainKHR,
-        presentation_timing_count: UInt32,
-        p_presentation_timings: Ptr[PastPresentationTimingGOOGLE, MutOrigin.external],
+        mut presentation_timing_count: UInt32,
+        p_presentation_timings: Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPastPresentationTimingGOOGLE.html
         """
         return self._get_past_presentation_timing_google(
-            device, swapchain, Ptr(to=presentation_timing_count), p_presentation_timings
+            device,
+            swapchain,
+            Ptr(to=presentation_timing_count).bitcast[UInt32](),
+            p_presentation_timings,
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_ios_surface_mvk = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateIOSSurfaceMVK".unsafe_ptr()
@@ -8746,20 +9258,23 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: IOSSurfaceCreateInfoMVK,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateIOSSurfaceMVK.html
         """
         return self._create_ios_surface_mvk(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[IOSSurfaceCreateInfoMVK](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_mac_os_surface_mvk = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateMacOSSurfaceMVK".unsafe_ptr()
@@ -8769,20 +9284,23 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: MacOSSurfaceCreateInfoMVK,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateMacOSSurfaceMVK.html
         """
         return self._create_mac_os_surface_mvk(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[MacOSSurfaceCreateInfoMVK](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_android_hardware_buffer_properties_android = Ptr(to=get_device_proc_addr(
         device, "vkGetAndroidHardwareBufferPropertiesANDROID".unsafe_ptr()
@@ -8795,31 +9313,35 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         buffer: AHardwareBuffer,
-        properties: AndroidHardwareBufferPropertiesANDROID,
+        mut properties: AndroidHardwareBufferPropertiesANDROID,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAndroidHardwareBufferPropertiesANDROID.html
         """
         return self._get_android_hardware_buffer_properties_android(
-            device, Ptr(to=buffer), Ptr(to=properties)
+            device,
+            Ptr(to=buffer).bitcast[AHardwareBuffer](),
+            Ptr(to=properties).bitcast[AndroidHardwareBufferPropertiesANDROID](),
         )
 
     fn get_memory_android_hardware_buffer_android(
         self,
         device: Device,
         info: MemoryGetAndroidHardwareBufferInfoANDROID,
-        p_buffer: Ptr[Ptr[AHardwareBuffer, MutOrigin.external], MutOrigin.external],
+        p_buffer: Ptr[Ptr[AHardwareBuffer, MutAnyOrigin], MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryAndroidHardwareBufferANDROID.html
         """
-        return self._get_memory_android_hardware_buffer_android(device, Ptr(to=info), p_buffer)
+        return self._get_memory_android_hardware_buffer_android(
+            device, Ptr(to=info).bitcast[MemoryGetAndroidHardwareBufferInfoANDROID](), p_buffer
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_execution_graph_pipelines_amdx = Ptr(to=get_device_proc_addr(
         device, "vkCreateExecutionGraphPipelinesAMDX".unsafe_ptr()
@@ -8848,35 +9370,32 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        create_infos: ExecutionGraphPipelineCreateInfoAMDX,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        pipelines: Pipeline,
+        p_create_infos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateExecutionGraphPipelinesAMDX.html
         """
         return self._create_execution_graph_pipelines_amdx(
-            device,
-            pipeline_cache,
-            create_info_count,
-            Ptr(to=create_infos),
-            p_allocator,
-            Ptr(to=pipelines),
+            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
         )
 
     fn get_execution_graph_pipeline_scratch_size_amdx(
         self,
         device: Device,
         execution_graph: Pipeline,
-        size_info: ExecutionGraphPipelineScratchSizeAMDX,
+        mut size_info: ExecutionGraphPipelineScratchSizeAMDX,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetExecutionGraphPipelineScratchSizeAMDX.html
         """
         return self._get_execution_graph_pipeline_scratch_size_amdx(
-            device, execution_graph, Ptr(to=size_info)
+            device,
+            execution_graph,
+            Ptr(to=size_info).bitcast[ExecutionGraphPipelineScratchSizeAMDX](),
         )
 
     fn get_execution_graph_pipeline_node_index_amdx(
@@ -8884,14 +9403,17 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         execution_graph: Pipeline,
         node_info: PipelineShaderStageNodeCreateInfoAMDX,
-        node_index: UInt32,
+        mut node_index: UInt32,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetExecutionGraphPipelineNodeIndexAMDX.html
         """
         return self._get_execution_graph_pipeline_node_index_amdx(
-            device, execution_graph, Ptr(to=node_info), Ptr(to=node_index)
+            device,
+            execution_graph,
+            Ptr(to=node_info).bitcast[PipelineShaderStageNodeCreateInfoAMDX](),
+            Ptr(to=node_index).bitcast[UInt32](),
         )
 
     fn cmd_initialize_graph_scratch_memory_amdx(
@@ -8921,7 +9443,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchGraphAMDX.html
         """
         return self._cmd_dispatch_graph_amdx(
-            command_buffer, scratch, scratch_size, Ptr(to=count_info)
+            command_buffer,
+            scratch,
+            scratch_size,
+            Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX](),
         )
 
     fn cmd_dispatch_graph_indirect_amdx(
@@ -8936,7 +9461,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchGraphIndirectAMDX.html
         """
         return self._cmd_dispatch_graph_indirect_amdx(
-            command_buffer, scratch, scratch_size, Ptr(to=count_info)
+            command_buffer,
+            scratch,
+            scratch_size,
+            Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX](),
         )
 
     fn cmd_dispatch_graph_indirect_count_amdx(
@@ -8955,8 +9483,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_initialize_performance_api_intel = Ptr(to=get_device_proc_addr(
         device, "vkInitializePerformanceApiINTEL".unsafe_ptr()
@@ -8993,7 +9521,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkInitializePerformanceApiINTEL.html
         """
-        return self._initialize_performance_api_intel(device, Ptr(to=initialize_info))
+        return self._initialize_performance_api_intel(
+            device, Ptr(to=initialize_info).bitcast[InitializePerformanceApiInfoINTEL]()
+        )
 
     fn uninitialize_performance_api_intel(self, device: Device):
         """See official vulkan docs for details.
@@ -9009,7 +9539,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPerformanceMarkerINTEL.html
         """
-        return self._cmd_set_performance_marker_intel(command_buffer, Ptr(to=marker_info))
+        return self._cmd_set_performance_marker_intel(
+            command_buffer, Ptr(to=marker_info).bitcast[PerformanceMarkerInfoINTEL]()
+        )
 
     fn cmd_set_performance_stream_marker_intel(
         self, command_buffer: CommandBuffer, marker_info: PerformanceStreamMarkerInfoINTEL
@@ -9018,7 +9550,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPerformanceStreamMarkerINTEL.html
         """
-        return self._cmd_set_performance_stream_marker_intel(command_buffer, Ptr(to=marker_info))
+        return self._cmd_set_performance_stream_marker_intel(
+            command_buffer, Ptr(to=marker_info).bitcast[PerformanceStreamMarkerInfoINTEL]()
+        )
 
     fn cmd_set_performance_override_intel(
         self, command_buffer: CommandBuffer, override_info: PerformanceOverrideInfoINTEL
@@ -9027,20 +9561,24 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPerformanceOverrideINTEL.html
         """
-        return self._cmd_set_performance_override_intel(command_buffer, Ptr(to=override_info))
+        return self._cmd_set_performance_override_intel(
+            command_buffer, Ptr(to=override_info).bitcast[PerformanceOverrideInfoINTEL]()
+        )
 
     fn acquire_performance_configuration_intel(
         self,
         device: Device,
         acquire_info: PerformanceConfigurationAcquireInfoINTEL,
-        configuration: PerformanceConfigurationINTEL,
+        mut configuration: PerformanceConfigurationINTEL,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquirePerformanceConfigurationINTEL.html
         """
         return self._acquire_performance_configuration_intel(
-            device, Ptr(to=acquire_info), Ptr(to=configuration)
+            device,
+            Ptr(to=acquire_info).bitcast[PerformanceConfigurationAcquireInfoINTEL](),
+            Ptr(to=configuration).bitcast[PerformanceConfigurationINTEL](),
         )
 
     fn release_performance_configuration_intel(
@@ -9062,17 +9600,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._queue_set_performance_configuration_intel(queue, configuration)
 
     fn get_performance_parameter_intel(
-        self, device: Device, parameter: PerformanceParameterTypeINTEL, value: PerformanceValueINTEL
+        self,
+        device: Device,
+        parameter: PerformanceParameterTypeINTEL,
+        mut value: PerformanceValueINTEL,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPerformanceParameterINTEL.html
         """
-        return self._get_performance_parameter_intel(device, parameter, Ptr(to=value))
+        return self._get_performance_parameter_intel(
+            device, parameter, Ptr(to=value).bitcast[PerformanceValueINTEL]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_image_pipe_surface_fuchsia = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateImagePipeSurfaceFUCHSIA".unsafe_ptr()
@@ -9082,20 +9625,23 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: ImagePipeSurfaceCreateInfoFUCHSIA,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImagePipeSurfaceFUCHSIA.html
         """
         return self._create_image_pipe_surface_fuchsia(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[ImagePipeSurfaceCreateInfoFUCHSIA](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_memory_zircon_handle_fuchsia = Ptr(to=get_device_proc_addr(
         device, "vkGetMemoryZirconHandleFUCHSIA".unsafe_ptr()
@@ -9108,14 +9654,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         get_zircon_handle_info: MemoryGetZirconHandleInfoFUCHSIA,
-        zircon_handle: zx_handle_t,
+        mut zircon_handle: zx_handle_t,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryZirconHandleFUCHSIA.html
         """
         return self._get_memory_zircon_handle_fuchsia(
-            device, Ptr(to=get_zircon_handle_info), Ptr(to=zircon_handle)
+            device,
+            Ptr(to=get_zircon_handle_info).bitcast[MemoryGetZirconHandleInfoFUCHSIA](),
+            Ptr(to=zircon_handle).bitcast[zx_handle_t](),
         )
 
     fn get_memory_zircon_handle_properties_fuchsia(
@@ -9123,19 +9671,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
         zircon_handle: zx_handle_t,
-        memory_zircon_handle_properties: MemoryZirconHandlePropertiesFUCHSIA,
+        mut memory_zircon_handle_properties: MemoryZirconHandlePropertiesFUCHSIA,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryZirconHandlePropertiesFUCHSIA.html
         """
         return self._get_memory_zircon_handle_properties_fuchsia(
-            device, handle_type, zircon_handle, Ptr(to=memory_zircon_handle_properties)
+            device,
+            handle_type,
+            zircon_handle,
+            Ptr(to=memory_zircon_handle_properties).bitcast[MemoryZirconHandlePropertiesFUCHSIA](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_import_semaphore_zircon_handle_fuchsia = Ptr(to=get_device_proc_addr(
         device, "vkImportSemaphoreZirconHandleFUCHSIA".unsafe_ptr()
@@ -9154,26 +9705,29 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportSemaphoreZirconHandleFUCHSIA.html
         """
         return self._import_semaphore_zircon_handle_fuchsia(
-            device, Ptr(to=import_semaphore_zircon_handle_info)
+            device,
+            Ptr(to=import_semaphore_zircon_handle_info).bitcast[ImportSemaphoreZirconHandleInfoFUCHSIA](),
         )
 
     fn get_semaphore_zircon_handle_fuchsia(
         self,
         device: Device,
         get_zircon_handle_info: SemaphoreGetZirconHandleInfoFUCHSIA,
-        zircon_handle: zx_handle_t,
+        mut zircon_handle: zx_handle_t,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreZirconHandleFUCHSIA.html
         """
         return self._get_semaphore_zircon_handle_fuchsia(
-            device, Ptr(to=get_zircon_handle_info), Ptr(to=zircon_handle)
+            device,
+            Ptr(to=get_zircon_handle_info).bitcast[SemaphoreGetZirconHandleInfoFUCHSIA](),
+            Ptr(to=zircon_handle).bitcast[zx_handle_t](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_buffer_collection_fuchsia = Ptr(to=get_device_proc_addr(
         device, "vkCreateBufferCollectionFUCHSIA".unsafe_ptr()
@@ -9195,15 +9749,18 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: BufferCollectionCreateInfoFUCHSIA,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        collection: BufferCollectionFUCHSIA,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut collection: BufferCollectionFUCHSIA,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBufferCollectionFUCHSIA.html
         """
         return self._create_buffer_collection_fuchsia(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=collection)
+            device,
+            Ptr(to=create_info).bitcast[BufferCollectionCreateInfoFUCHSIA](),
+            p_allocator,
+            Ptr(to=collection).bitcast[BufferCollectionFUCHSIA](),
         )
 
     fn set_buffer_collection_image_constraints_fuchsia(
@@ -9217,7 +9774,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetBufferCollectionImageConstraintsFUCHSIA.html
         """
         return self._set_buffer_collection_image_constraints_fuchsia(
-            device, collection, Ptr(to=image_constraints_info)
+            device,
+            collection,
+            Ptr(to=image_constraints_info).bitcast[ImageConstraintsInfoFUCHSIA](),
         )
 
     fn set_buffer_collection_buffer_constraints_fuchsia(
@@ -9231,14 +9790,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetBufferCollectionBufferConstraintsFUCHSIA.html
         """
         return self._set_buffer_collection_buffer_constraints_fuchsia(
-            device, collection, Ptr(to=buffer_constraints_info)
+            device,
+            collection,
+            Ptr(to=buffer_constraints_info).bitcast[BufferConstraintsInfoFUCHSIA](),
         )
 
     fn destroy_buffer_collection_fuchsia(
         self,
         device: Device,
         collection: BufferCollectionFUCHSIA,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -9250,19 +9811,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         collection: BufferCollectionFUCHSIA,
-        properties: BufferCollectionPropertiesFUCHSIA,
+        mut properties: BufferCollectionPropertiesFUCHSIA,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferCollectionPropertiesFUCHSIA.html
         """
         return self._get_buffer_collection_properties_fuchsia(
-            device, collection, Ptr(to=properties)
+            device, collection, Ptr(to=properties).bitcast[BufferCollectionPropertiesFUCHSIA]()
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_dispatch_tile_qcom = Ptr(to=get_device_proc_addr(
         device, "vkCmdDispatchTileQCOM".unsafe_ptr()
@@ -9281,7 +9842,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchTileQCOM.html
         """
-        return self._cmd_dispatch_tile_qcom(command_buffer, Ptr(to=dispatch_tile_info))
+        return self._cmd_dispatch_tile_qcom(
+            command_buffer, Ptr(to=dispatch_tile_info).bitcast[DispatchTileInfoQCOM]()
+        )
 
     fn cmd_begin_per_tile_execution_qcom(
         self, command_buffer: CommandBuffer, per_tile_begin_info: PerTileBeginInfoQCOM
@@ -9290,7 +9853,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginPerTileExecutionQCOM.html
         """
-        return self._cmd_begin_per_tile_execution_qcom(command_buffer, Ptr(to=per_tile_begin_info))
+        return self._cmd_begin_per_tile_execution_qcom(
+            command_buffer, Ptr(to=per_tile_begin_info).bitcast[PerTileBeginInfoQCOM]()
+        )
 
     fn cmd_end_per_tile_execution_qcom(
         self, command_buffer: CommandBuffer, per_tile_end_info: PerTileEndInfoQCOM
@@ -9299,11 +9864,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndPerTileExecutionQCOM.html
         """
-        return self._cmd_end_per_tile_execution_qcom(command_buffer, Ptr(to=per_tile_end_info))
+        return self._cmd_end_per_tile_execution_qcom(
+            command_buffer, Ptr(to=per_tile_end_info).bitcast[PerTileEndInfoQCOM]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_framebuffer_tile_properties_qcom = Ptr(to=get_device_proc_addr(
         device, "vkGetFramebufferTilePropertiesQCOM".unsafe_ptr()
@@ -9316,31 +9883,33 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         framebuffer: Framebuffer,
-        properties_count: UInt32,
-        p_properties: Ptr[TilePropertiesQCOM, MutOrigin.external],
+        mut properties_count: UInt32,
+        p_properties: Ptr[TilePropertiesQCOM, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFramebufferTilePropertiesQCOM.html
         """
         return self._get_framebuffer_tile_properties_qcom(
-            device, framebuffer, Ptr(to=properties_count), p_properties
+            device, framebuffer, Ptr(to=properties_count).bitcast[UInt32](), p_properties
         )
 
     fn get_dynamic_rendering_tile_properties_qcom(
-        self, device: Device, rendering_info: RenderingInfo, properties: TilePropertiesQCOM
+        self, device: Device, rendering_info: RenderingInfo, mut properties: TilePropertiesQCOM
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDynamicRenderingTilePropertiesQCOM.html
         """
         return self._get_dynamic_rendering_tile_properties_qcom(
-            device, Ptr(to=rendering_info), Ptr(to=properties)
+            device,
+            Ptr(to=rendering_info).bitcast[RenderingInfo](),
+            Ptr(to=properties).bitcast[TilePropertiesQCOM](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_bind_tile_memory_qcom = Ptr(to=get_device_proc_addr(
         device, "vkCmdBindTileMemoryQCOM".unsafe_ptr()
@@ -9349,7 +9918,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn cmd_bind_tile_memory_qcom(
         self,
         command_buffer: CommandBuffer,
-        p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, MutOrigin.external],
+        p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -9358,8 +9927,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_bind_tile_memory_qcom(command_buffer, p_tile_memory_bind_info)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_device_subpass_shading_max_workgroup_size_huawei = Ptr(to=get_device_proc_addr(
         device, "vkGetDeviceSubpassShadingMaxWorkgroupSizeHUAWEI".unsafe_ptr()
@@ -9369,14 +9938,17 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     )).bitcast[type_of(self._vk_cmd_subpass_shading_huawei)]()[]
 
     fn get_device_subpass_shading_max_workgroup_size_huawei(
-        self, device: Device, renderpass: RenderPass, max_workgroup_size: Extent2D
+        self,
+        device: Device,
+        renderpass: RenderPass,
+        p_max_workgroup_size: Ptr[Extent2D, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceSubpassShadingMaxWorkgroupSizeHUAWEI.html
         """
         return self._get_device_subpass_shading_max_workgroup_size_huawei(
-            device, renderpass, Ptr(to=max_workgroup_size)
+            device, renderpass, p_max_workgroup_size
         )
 
     fn cmd_subpass_shading_huawei(self, command_buffer: CommandBuffer):
@@ -9387,8 +9959,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_subpass_shading_huawei(command_buffer)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_bind_invocation_mask_huawei = Ptr(to=get_device_proc_addr(
         device, "vkCmdBindInvocationMaskHUAWEI".unsafe_ptr()
@@ -9404,8 +9976,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_bind_invocation_mask_huawei(command_buffer, image_view, image_layout)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_cmd_draw_cluster_huawei = Ptr(to=get_device_proc_addr(
         device, "vkCmdDrawClusterHUAWEI".unsafe_ptr()
@@ -9439,8 +10011,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_draw_cluster_indirect_huawei(command_buffer, buffer, offset)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_screen_surface_qnx = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateScreenSurfaceQNX".unsafe_ptr()
@@ -9453,22 +10025,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: ScreenSurfaceCreateInfoQNX,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateScreenSurfaceQNX.html
         """
         return self._create_screen_surface_qnx(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[ScreenSurfaceCreateInfoQNX](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
     fn get_physical_device_screen_presentation_support_qnx(
         self,
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
-        window: Ptr[_screen_window, MutOrigin.external],
+        mut window: Ptr[_screen_window, MutOrigin.external],
     ) -> Bool32:
         """See official vulkan docs for details.
 
@@ -9479,8 +10054,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_screen_buffer_properties_qnx = Ptr(to=get_device_proc_addr(
         device, "vkGetScreenBufferPropertiesQNX".unsafe_ptr()
@@ -9489,18 +10064,20 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_screen_buffer_properties_qnx(
         self,
         device: Device,
-        buffer: Ptr[_screen_buffer, MutOrigin.external],
-        properties: ScreenBufferPropertiesQNX,
+        buffer: Ptr[_screen_buffer, ImmutOrigin.external],
+        mut properties: ScreenBufferPropertiesQNX,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetScreenBufferPropertiesQNX.html
         """
-        return self._get_screen_buffer_properties_qnx(device, buffer, Ptr(to=properties))
+        return self._get_screen_buffer_properties_qnx(
+            device, buffer, Ptr(to=properties).bitcast[ScreenBufferPropertiesQNX]()
+        )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_get_descriptor_set_layout_host_mapping_info_valve = Ptr(to=get_device_proc_addr(
         device, "vkGetDescriptorSetLayoutHostMappingInfoVALVE".unsafe_ptr()
@@ -9513,21 +10090,23 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         binding_reference: DescriptorSetBindingReferenceVALVE,
-        host_mapping: DescriptorSetLayoutHostMappingInfoVALVE,
+        mut host_mapping: DescriptorSetLayoutHostMappingInfoVALVE,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutHostMappingInfoVALVE.html
         """
         return self._get_descriptor_set_layout_host_mapping_info_valve(
-            device, Ptr(to=binding_reference), Ptr(to=host_mapping)
+            device,
+            Ptr(to=binding_reference).bitcast[DescriptorSetBindingReferenceVALVE](),
+            Ptr(to=host_mapping).bitcast[DescriptorSetLayoutHostMappingInfoVALVE](),
         )
 
     fn get_descriptor_set_host_mapping_valve(
         self,
         device: Device,
         descriptor_set: DescriptorSet,
-        pp_data: Ptr[Ptr[NoneType, MutOrigin.external], MutOrigin.external],
+        pp_data: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -9536,8 +10115,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_descriptor_set_host_mapping_valve(device, descriptor_set, pp_data)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_tensor_arm = Ptr(to=get_device_proc_addr(
         device, "vkCreateTensorARM".unsafe_ptr()
@@ -9577,20 +10156,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: TensorCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        tensor: TensorARM,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut tensor: TensorARM,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateTensorARM.html
         """
-        return self._create_tensor_arm(device, Ptr(to=create_info), p_allocator, Ptr(to=tensor))
+        return self._create_tensor_arm(
+            device,
+            Ptr(to=create_info).bitcast[TensorCreateInfoARM](),
+            p_allocator,
+            Ptr(to=tensor).bitcast[TensorARM](),
+        )
 
     fn destroy_tensor_arm(
         self,
         device: Device,
         tensor: TensorARM,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -9602,20 +10186,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: TensorViewCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        view: TensorViewARM,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut view: TensorViewARM,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateTensorViewARM.html
         """
-        return self._create_tensor_view_arm(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._create_tensor_view_arm(
+            device,
+            Ptr(to=create_info).bitcast[TensorViewCreateInfoARM](),
+            p_allocator,
+            Ptr(to=view).bitcast[TensorViewARM](),
+        )
 
     fn destroy_tensor_view_arm(
         self,
         device: Device,
         tensor_view: TensorViewARM,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -9627,37 +10216,44 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: TensorMemoryRequirementsInfoARM,
-        memory_requirements: MemoryRequirements2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorMemoryRequirementsARM.html
         """
         return self._get_tensor_memory_requirements_arm(
-            device, Ptr(to=info), Ptr(to=memory_requirements)
+            device,
+            Ptr(to=info).bitcast[TensorMemoryRequirementsInfoARM](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn bind_tensor_memory_arm(
-        self, device: Device, bind_info_count: UInt32, bind_infos: BindTensorMemoryInfoARM
+        self,
+        device: Device,
+        bind_info_count: UInt32,
+        p_bind_infos: Ptr[BindTensorMemoryInfoARM, ImmutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindTensorMemoryARM.html
         """
-        return self._bind_tensor_memory_arm(device, bind_info_count, Ptr(to=bind_infos))
+        return self._bind_tensor_memory_arm(device, bind_info_count, p_bind_infos)
 
     fn get_device_tensor_memory_requirements_arm(
         self,
         device: Device,
         info: DeviceTensorMemoryRequirementsARM,
-        memory_requirements: MemoryRequirements2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceTensorMemoryRequirementsARM.html
         """
         return self._get_device_tensor_memory_requirements_arm(
-            device, Ptr(to=info), Ptr(to=memory_requirements)
+            device,
+            Ptr(to=info).bitcast[DeviceTensorMemoryRequirementsARM](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn cmd_copy_tensor_arm(
@@ -9667,47 +10263,55 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyTensorARM.html
         """
-        return self._cmd_copy_tensor_arm(command_buffer, Ptr(to=copy_tensor_info))
+        return self._cmd_copy_tensor_arm(
+            command_buffer, Ptr(to=copy_tensor_info).bitcast[CopyTensorInfoARM]()
+        )
 
     fn get_physical_device_external_tensor_properties_arm(
         self,
         physical_device: PhysicalDevice,
         external_tensor_info: PhysicalDeviceExternalTensorInfoARM,
-        external_tensor_properties: ExternalTensorPropertiesARM,
+        mut external_tensor_properties: ExternalTensorPropertiesARM,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalTensorPropertiesARM.html
         """
         return self._get_physical_device_external_tensor_properties_arm(
-            physical_device, Ptr(to=external_tensor_info), Ptr(to=external_tensor_properties)
+            physical_device,
+            Ptr(to=external_tensor_info).bitcast[PhysicalDeviceExternalTensorInfoARM](),
+            Ptr(to=external_tensor_properties).bitcast[ExternalTensorPropertiesARM](),
         )
 
     fn get_tensor_opaque_capture_descriptor_data_arm(
-        self, device: Device, info: TensorCaptureDescriptorDataInfoARM, data: NoneType
+        self, device: Device, info: TensorCaptureDescriptorDataInfoARM, mut data: NoneType
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorOpaqueCaptureDescriptorDataARM.html
         """
         return self._get_tensor_opaque_capture_descriptor_data_arm(
-            device, Ptr(to=info), Ptr(to=data)
+            device,
+            Ptr(to=info).bitcast[TensorCaptureDescriptorDataInfoARM](),
+            Ptr(to=data).bitcast[NoneType](),
         )
 
     fn get_tensor_view_opaque_capture_descriptor_data_arm(
-        self, device: Device, info: TensorViewCaptureDescriptorDataInfoARM, data: NoneType
+        self, device: Device, info: TensorViewCaptureDescriptorDataInfoARM, mut data: NoneType
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorViewOpaqueCaptureDescriptorDataARM.html
         """
         return self._get_tensor_view_opaque_capture_descriptor_data_arm(
-            device, Ptr(to=info), Ptr(to=data)
+            device,
+            Ptr(to=info).bitcast[TensorViewCaptureDescriptorDataInfoARM](),
+            Ptr(to=data).bitcast[NoneType](),
         )
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
-    var get_device_proc_addr = global_fns.handle().get_function[
-        fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_device_proc_addr = global_fns.borrow_handle().get_function[
+        fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
     self._vk_create_data_graph_pipelines_arm = Ptr(to=get_device_proc_addr(
         device, "vkCreateDataGraphPipelinesARM".unsafe_ptr()
@@ -9749,9 +10353,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         deferred_operation: DeferredOperationKHR,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        create_infos: DataGraphPipelineCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        pipelines: Pipeline,
+        p_create_infos: Ptr[DataGraphPipelineCreateInfoARM, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -9762,74 +10366,82 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             deferred_operation,
             pipeline_cache,
             create_info_count,
-            Ptr(to=create_infos),
+            p_create_infos,
             p_allocator,
-            Ptr(to=pipelines),
+            p_pipelines,
         )
 
     fn create_data_graph_pipeline_session_arm(
         self,
         device: Device,
         create_info: DataGraphPipelineSessionCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        session: DataGraphPipelineSessionARM,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut session: DataGraphPipelineSessionARM,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDataGraphPipelineSessionARM.html
         """
         return self._create_data_graph_pipeline_session_arm(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=session)
+            device,
+            Ptr(to=create_info).bitcast[DataGraphPipelineSessionCreateInfoARM](),
+            p_allocator,
+            Ptr(to=session).bitcast[DataGraphPipelineSessionARM](),
         )
 
     fn get_data_graph_pipeline_session_bind_point_requirements_arm(
         self,
         device: Device,
         info: DataGraphPipelineSessionBindPointRequirementsInfoARM,
-        bind_point_requirement_count: UInt32,
-        p_bind_point_requirements: Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutOrigin.external],
+        mut bind_point_requirement_count: UInt32,
+        p_bind_point_requirements: Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineSessionBindPointRequirementsARM.html
         """
         return self._get_data_graph_pipeline_session_bind_point_requirements_arm(
-            device, Ptr(to=info), Ptr(to=bind_point_requirement_count), p_bind_point_requirements
+            device,
+            Ptr(to=info).bitcast[DataGraphPipelineSessionBindPointRequirementsInfoARM](),
+            Ptr(to=bind_point_requirement_count).bitcast[UInt32](),
+            p_bind_point_requirements,
         )
 
     fn get_data_graph_pipeline_session_memory_requirements_arm(
         self,
         device: Device,
         info: DataGraphPipelineSessionMemoryRequirementsInfoARM,
-        memory_requirements: MemoryRequirements2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineSessionMemoryRequirementsARM.html
         """
         return self._get_data_graph_pipeline_session_memory_requirements_arm(
-            device, Ptr(to=info), Ptr(to=memory_requirements)
+            device,
+            Ptr(to=info).bitcast[DataGraphPipelineSessionMemoryRequirementsInfoARM](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn bind_data_graph_pipeline_session_memory_arm(
         self,
         device: Device,
         bind_info_count: UInt32,
-        bind_infos: BindDataGraphPipelineSessionMemoryInfoARM,
+        p_bind_infos: Ptr[BindDataGraphPipelineSessionMemoryInfoARM, ImmutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindDataGraphPipelineSessionMemoryARM.html
         """
         return self._bind_data_graph_pipeline_session_memory_arm(
-            device, bind_info_count, Ptr(to=bind_infos)
+            device, bind_info_count, p_bind_infos
         )
 
     fn destroy_data_graph_pipeline_session_arm(
         self,
         device: Device,
         session: DataGraphPipelineSessionARM,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -9841,7 +10453,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         session: DataGraphPipelineSessionARM,
-        p_info: Ptr[DataGraphPipelineDispatchInfoARM, MutOrigin.external],
+        p_info: Ptr[DataGraphPipelineDispatchInfoARM, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
@@ -9853,15 +10465,18 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         pipeline_info: DataGraphPipelineInfoARM,
-        properties_count: UInt32,
-        p_properties: Ptr[DataGraphPipelinePropertyARM, MutOrigin.external],
+        mut properties_count: UInt32,
+        p_properties: Ptr[DataGraphPipelinePropertyARM, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineAvailablePropertiesARM.html
         """
         return self._get_data_graph_pipeline_available_properties_arm(
-            device, Ptr(to=pipeline_info), Ptr(to=properties_count), p_properties
+            device,
+            Ptr(to=pipeline_info).bitcast[DataGraphPipelineInfoARM](),
+            Ptr(to=properties_count).bitcast[UInt32](),
+            p_properties,
         )
 
     fn get_data_graph_pipeline_properties_arm(
@@ -9869,22 +10484,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         pipeline_info: DataGraphPipelineInfoARM,
         properties_count: UInt32,
-        properties: DataGraphPipelinePropertyQueryResultARM,
+        p_properties: Ptr[DataGraphPipelinePropertyQueryResultARM, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelinePropertiesARM.html
         """
         return self._get_data_graph_pipeline_properties_arm(
-            device, Ptr(to=pipeline_info), properties_count, Ptr(to=properties)
+            device,
+            Ptr(to=pipeline_info).bitcast[DataGraphPipelineInfoARM](),
+            properties_count,
+            p_properties,
         )
 
     fn get_physical_device_queue_family_data_graph_properties_arm(
         self,
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
-        queue_family_data_graph_property_count: UInt32,
-        p_queue_family_data_graph_properties: Ptr[QueueFamilyDataGraphPropertiesARM, MutOrigin.external],
+        mut queue_family_data_graph_property_count: UInt32,
+        p_queue_family_data_graph_properties: Ptr[QueueFamilyDataGraphPropertiesARM, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -9893,7 +10511,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_physical_device_queue_family_data_graph_properties_arm(
             physical_device,
             queue_family_index,
-            Ptr(to=queue_family_data_graph_property_count),
+            Ptr(to=queue_family_data_graph_property_count).bitcast[UInt32](),
             p_queue_family_data_graph_properties,
         )
 
@@ -9901,7 +10519,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         queue_family_data_graph_processing_engine_info: PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM,
-        queue_family_data_graph_processing_engine_properties: QueueFamilyDataGraphProcessingEnginePropertiesARM,
+        mut queue_family_data_graph_processing_engine_properties: QueueFamilyDataGraphProcessingEnginePropertiesARM,
     ):
         """See official vulkan docs for details.
 
@@ -9909,21 +10527,21 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._get_physical_device_queue_family_data_graph_processing_engine_properties_arm(
             physical_device,
-            Ptr(to=queue_family_data_graph_processing_engine_info),
-            Ptr(to=queue_family_data_graph_processing_engine_properties),
+            Ptr(to=queue_family_data_graph_processing_engine_info).bitcast[PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM](),
+            Ptr(to=queue_family_data_graph_processing_engine_properties).bitcast[QueueFamilyDataGraphProcessingEnginePropertiesARM](),
         )
 
 
 struct Surface(Copyable):    var _vk_create_surface_ohos: fn(
         instance: Instance,
-        pCreateInfo: Ptr[SurfaceCreateInfoOHOS, MutOrigin.external],
-        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        pSurface: Ptr[SurfaceKHR, MutOrigin.external],
+        pCreateInfo: Ptr[SurfaceCreateInfoOHOS, ImmutAnyOrigin],
+        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
-    var get_instance_proc_addr = global_fns.handle().get_function[
-        fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
+    var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+        fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
     self._vk_create_surface_ohos = Ptr(to=get_instance_proc_addr(
         instance, "vkCreateSurfaceOHOS".unsafe_ptr()
@@ -9933,13 +10551,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: SurfaceCreateInfoOHOS,
-        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
-        surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSurfaceOHOS.html
         """
         return self._create_surface_ohos(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info).bitcast[SurfaceCreateInfoOHOS](),
+            p_allocator,
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )

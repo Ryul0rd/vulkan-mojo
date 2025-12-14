@@ -14,7 +14,7 @@ fn zero_init[T: AnyType](out value: T):
 
 
 @register_passable("trivial")
-struct Bool32(Boolable, EqualityComparable):
+struct Bool32(Boolable, Equatable):
     var _val: UInt32
 
     fn __init__(out self):
@@ -66,10 +66,10 @@ struct Version(Writable):
 
 @fieldwise_init
 struct ListResult[T: Copyable & Movable](Copyable, Movable):
-    var list: List[T]
+    var list: List[Self.T]
     var result: Result
 
-    fn steal_list(mut self) -> List[T]:
+    fn steal_list(mut self) -> List[Self.T]:
         var out = self.list^
-        self.list = List[T]()
+        self.list = List[Self.T]()
         return out^
