@@ -4006,15 +4006,15 @@ struct ScreenSurfaceCreateInfoQNX(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutOrigin.external]
     var flags: ScreenSurfaceCreateFlagsQNX
-    var context: Ptr[_screen_context, MutOrigin.external]
-    var window: Ptr[_screen_window, MutOrigin.external]
+    var context: screen_context_t
+    var window: screen_window_t
 
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutOrigin.external] = zero_init[Ptr[NoneType, ImmutOrigin.external]](),
         flags: ScreenSurfaceCreateFlagsQNX = zero_init[ScreenSurfaceCreateFlagsQNX](),
-        context: Ptr[_screen_context, MutOrigin.external] = zero_init[Ptr[_screen_context, MutOrigin.external]](),
-        window: Ptr[_screen_window, MutOrigin.external] = zero_init[Ptr[_screen_window, MutOrigin.external]](),
+        context: screen_context_t = zero_init[screen_context_t](),
+        window: screen_window_t = zero_init[screen_window_t](),
     ):
         self.s_type = StructureType.SCREEN_SURFACE_CREATE_INFO_QNX
         self.p_next = p_next
@@ -25211,12 +25211,12 @@ struct PhysicalDeviceShaderTileImagePropertiesEXT(Copyable):
 struct ImportScreenBufferInfoQNX(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var buffer: Ptr[_screen_buffer, MutOrigin.external]
+    var buffer: screen_buffer_t
 
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutOrigin.external] = zero_init[Ptr[NoneType, ImmutOrigin.external]](),
-        buffer: Ptr[_screen_buffer, MutOrigin.external] = zero_init[Ptr[_screen_buffer, MutOrigin.external]](),
+        buffer: screen_buffer_t = zero_init[screen_buffer_t](),
     ):
         self.s_type = StructureType.IMPORT_SCREEN_BUFFER_INFO_QNX
         self.p_next = p_next

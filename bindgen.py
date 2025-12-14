@@ -837,6 +837,20 @@ def parse_type_str(type: str) -> VkType:
         const_reverse.append(ptr_is_const)
     const = list(reversed(const_reverse))
 
+    # We special case these because they're opaque types and we have handle types for them
+    QNX_SCREEN_HANDLE_MAP = {
+        "_screen_context": "screen_context_t",
+        "_screen_window": "screen_window_t",
+        "_screen_buffer": "screen_buffer_t",
+    }
+    if ptr_level == 1 and name in QNX_SCREEN_HANDLE_MAP:
+        return VkType(
+            name = QNX_SCREEN_HANDLE_MAP[name],
+            ptr_level = 0,
+            const = [False],
+            array_dim = None,
+        )
+
     return VkType(name, ptr_level, const, array_dim)
 
 
@@ -1367,7 +1381,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
     # Extension Functions
     extension_parts_by_tag: Dict[str, List[str]] = {extension_tag: [] for extension_tag in parsed_commands.extension_commands.keys()}
     for parts in extension_parts_by_tag.values():
-        parts.append("from sys.ffi import CStringSlice, c_char\n")
+        parts.append("from sys.ffi import CStringSlice\n")
         parts.append("from vk.core_functions import GlobalFunctions\n")
     for extension_tag, extensions in parsed_commands.extension_commands.items():
         for extension in extensions:
@@ -1376,10 +1390,10 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
             extension_name = "".join(word.capitalize() for word in extension.name.split("_")[2:])
             extension_parts.append((
                 f"\n\n"
-                f"struct {extension_name}(Copyable):"
+                f"struct {extension_name}(Copyable):\n"
             ))
             for command in extension.commands:
-                mojo_command_name = pascal_to_snake(emit_mojo_type_name(command.name))
+                mojo_command_name = pascal_to_snake(emit_mojo_type_name(command.name)).removeprefix("vk_")
                 ret_type = emit_mojo_type(command.return_type)
                 sig_ret = f" -> {ret_type}" if ret_type != "NoneType" else ""
                 extension_parts.append(emit_fn_like(
@@ -1388,26 +1402,26 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                     f"){sig_ret}\n",
                     base_indent_level = 1,
                 ))
-            parts.append((
+            extension_parts.append((
                 f"\n"
-                f"fn __init__[T: GlobalFunctions](out self, global_fns: T, {extension.type}: {extension.type.capitalize()}):\n"
-                f"    var get_{extension.type}_proc_addr = global_fns.borrow_handle().get_function[\n"
-                f"        fn({extension.type}: {extension.type.capitalize()}, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction\n"
-                f'    ]("vkGet{extension.type.capitalize()}ProcAddr")\n'
+                f"    fn __init__[T: GlobalFunctions](out self, global_fns: T, {extension.type}: {extension.type.capitalize()}):\n"
+                f"        var get_{extension.type}_proc_addr = global_fns.borrow_handle().get_function[\n"
+                f"            fn({extension.type}: {extension.type.capitalize()}, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction\n"
+                f'        ]("vkGet{extension.type.capitalize()}ProcAddr")\n'
             ))
             for command in extension.commands:
-                mojo_command_name = pascal_to_snake(emit_mojo_type_name(command.name))
-                parts.append((
-                    f"    self._{mojo_command_name} = Ptr(to=get_{extension.type}_proc_addr(\n"
-                    f'        {extension.type}, "{command.name}".unsafe_ptr()\n'
-                    f"    )).bitcast[type_of(self._{mojo_command_name})]()[]\n"
+                mojo_command_name = pascal_to_snake(emit_mojo_type_name(command.name)).removeprefix("vk_")
+                extension_parts.append((
+                    f"        self._{mojo_command_name} = Ptr(to=get_{extension.type}_proc_addr(\n"
+                    f'            {extension.type}, "{command.name}".unsafe_ptr()\n'
+                    f"        )).bitcast[type_of(self._{mojo_command_name})]()[]\n"
                 ))
             for command in extension.commands:
-                parts.append(emit_generic_function_definition(command))
+                extension_parts.append(emit_generic_function_definition(command))
 
     extension_module_parts: List[str] = []
     for extension_tag in parsed_commands.extension_commands.keys():
-        extension_module_parts.append(f"import .{extension_tag.lower()}")
+        extension_module_parts.append(f"import .{extension_tag.lower()}\n")
     files["extensions/__init__.mojo"] = "".join(extension_module_parts)
     for extension_tag, extension_parts in extension_parts_by_tag.items():
         files[f"extensions/{extension_tag.lower()}.mojo"] = "".join(extension_parts)
@@ -1431,22 +1445,22 @@ def emit_generic_function_definition(command: VkCommand, version: Optional[VkVer
     wrapper_call_args: List[str] = []
     for arg in command.params:
         mojo_arg_name = pascal_to_snake(arg.name)
-        is_qnx_type = arg.type.ptr_level == 1 and arg.type.name in ("_screen_context", "_screen_window", "_screen_buffer")
+        # is_qnx_type = arg.type.ptr_level == 1 and arg.type.name in ("_screen_context", "_screen_window", "_screen_buffer")
         is_required_ptr_to_scalar = (
             not arg.optional
             and arg.type.ptr_level == 1
             and arg.length is None
             and arg.type.name != "char"
         )
-        if is_qnx_type and arg.type.const[-1]:
-            sig_arg_strs.append(f"{mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type)}")
-            ffi_call_args.append(mojo_arg_name.removeprefix('p_'))
-            wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
-        elif is_qnx_type and not arg.type.const[-1]:
-            sig_arg_strs.append(f"mut {mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type)}")
-            ffi_call_args.append(mojo_arg_name.removeprefix('p_'))
-            wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
-        elif is_required_ptr_to_scalar and arg.type.const[-1]:
+        # if is_qnx_type and arg.type.const[-1]:
+        #     sig_arg_strs.append(f"{mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type)}")
+        #     ffi_call_args.append(mojo_arg_name.removeprefix('p_'))
+        #     wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
+        # elif is_qnx_type and not arg.type.const[-1]:
+        #     sig_arg_strs.append(f"mut {mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type)}")
+        #     ffi_call_args.append(mojo_arg_name.removeprefix('p_'))
+        #     wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
+        if is_required_ptr_to_scalar and arg.type.const[-1]:
             sig_arg_strs.append(f"{mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type, strip_ptr=True)}")
             ffi_call_args.append(f"Ptr(to={mojo_arg_name.removeprefix('p_')}).bitcast[{emit_mojo_type(arg.type, strip_ptr=True)}]()")
             wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
