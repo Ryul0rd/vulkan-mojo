@@ -4,7 +4,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_destroy_surface_khr = Ptr(to=get_instance_proc_addr(        instance, "vkDestroySurfaceKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_surface_khr)]()[]    self._vk_get_physical_device_surface_support_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceSurfaceSupportKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_surface_support_khr)]()[]    self._vk_get_physical_device_surface_capabilities_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceSurfaceCapabilitiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_surface_capabilities_khr)]()[]    self._vk_get_physical_device_surface_formats_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceSurfaceFormatsKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_surface_formats_khr)]()[]    self._vk_get_physical_device_surface_present_modes_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceSurfacePresentModesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_surface_present_modes_khr)]()[]
+    self._vk_destroy_surface_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkDestroySurfaceKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_surface_khr)]()[]
+    self._vk_get_physical_device_surface_support_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceSurfaceSupportKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_surface_support_khr)]()[]
+    self._vk_get_physical_device_surface_capabilities_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceSurfaceCapabilitiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_surface_capabilities_khr)]()[]
+    self._vk_get_physical_device_surface_formats_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceSurfaceFormatsKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_surface_formats_khr)]()[]
+    self._vk_get_physical_device_surface_present_modes_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceSurfacePresentModesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_surface_present_modes_khr)]()[]
+
     fn destroy_surface_khr(
         self,
         instance: Instance,
@@ -80,7 +95,34 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_swapchain_khr = Ptr(to=get_device_proc_addr(        device, "vkCreateSwapchainKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_swapchain_khr)]()[]    self._vk_destroy_swapchain_khr = Ptr(to=get_device_proc_addr(        device, "vkDestroySwapchainKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_swapchain_khr)]()[]    self._vk_get_swapchain_images_khr = Ptr(to=get_device_proc_addr(        device, "vkGetSwapchainImagesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_swapchain_images_khr)]()[]    self._vk_acquire_next_image_khr = Ptr(to=get_device_proc_addr(        device, "vkAcquireNextImageKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_acquire_next_image_khr)]()[]    self._vk_queue_present_khr = Ptr(to=get_device_proc_addr(        device, "vkQueuePresentKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_queue_present_khr)]()[]    self._vk_get_device_group_present_capabilities_khr = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceGroupPresentCapabilitiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_group_present_capabilities_khr)]()[]    self._vk_get_device_group_surface_present_modes_khr = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceGroupSurfacePresentModesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_group_surface_present_modes_khr)]()[]    self._vk_get_physical_device_present_rectangles_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDevicePresentRectanglesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_present_rectangles_khr)]()[]    self._vk_acquire_next_image_2_khr = Ptr(to=get_device_proc_addr(        device, "vkAcquireNextImage2KHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_acquire_next_image_2_khr)]()[]
+    self._vk_create_swapchain_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCreateSwapchainKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_swapchain_khr)]()[]
+    self._vk_destroy_swapchain_khr = Ptr(to=get_device_proc_addr(
+        device, "vkDestroySwapchainKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_swapchain_khr)]()[]
+    self._vk_get_swapchain_images_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetSwapchainImagesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_swapchain_images_khr)]()[]
+    self._vk_acquire_next_image_khr = Ptr(to=get_device_proc_addr(
+        device, "vkAcquireNextImageKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_acquire_next_image_khr)]()[]
+    self._vk_queue_present_khr = Ptr(to=get_device_proc_addr(
+        device, "vkQueuePresentKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_queue_present_khr)]()[]
+    self._vk_get_device_group_present_capabilities_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceGroupPresentCapabilitiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_group_present_capabilities_khr)]()[]
+    self._vk_get_device_group_surface_present_modes_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceGroupSurfacePresentModesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_group_surface_present_modes_khr)]()[]
+    self._vk_get_physical_device_present_rectangles_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDevicePresentRectanglesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_present_rectangles_khr)]()[]
+    self._vk_acquire_next_image_2_khr = Ptr(to=get_device_proc_addr(
+        device, "vkAcquireNextImage2KHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_acquire_next_image_2_khr)]()[]
+
     fn create_swapchain_khr(
         self,
         device: Device,
@@ -195,7 +237,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_get_physical_device_display_properties_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceDisplayPropertiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_display_properties_khr)]()[]    self._vk_get_physical_device_display_plane_properties_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceDisplayPlanePropertiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_display_plane_properties_khr)]()[]    self._vk_get_display_plane_supported_displays_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetDisplayPlaneSupportedDisplaysKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_display_plane_supported_displays_khr)]()[]    self._vk_get_display_mode_properties_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetDisplayModePropertiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_display_mode_properties_khr)]()[]    self._vk_create_display_mode_khr = Ptr(to=get_instance_proc_addr(        instance, "vkCreateDisplayModeKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_display_mode_khr)]()[]    self._vk_get_display_plane_capabilities_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetDisplayPlaneCapabilitiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_display_plane_capabilities_khr)]()[]    self._vk_create_display_plane_surface_khr = Ptr(to=get_instance_proc_addr(        instance, "vkCreateDisplayPlaneSurfaceKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_display_plane_surface_khr)]()[]
+    self._vk_get_physical_device_display_properties_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceDisplayPropertiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_display_properties_khr)]()[]
+    self._vk_get_physical_device_display_plane_properties_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceDisplayPlanePropertiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_display_plane_properties_khr)]()[]
+    self._vk_get_display_plane_supported_displays_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetDisplayPlaneSupportedDisplaysKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_display_plane_supported_displays_khr)]()[]
+    self._vk_get_display_mode_properties_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetDisplayModePropertiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_display_mode_properties_khr)]()[]
+    self._vk_create_display_mode_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateDisplayModeKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_display_mode_khr)]()[]
+    self._vk_get_display_plane_capabilities_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetDisplayPlaneCapabilitiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_display_plane_capabilities_khr)]()[]
+    self._vk_create_display_plane_surface_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateDisplayPlaneSurfaceKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_display_plane_surface_khr)]()[]
+
     fn get_physical_device_display_properties_khr(
         self,
         physical_device: PhysicalDevice,
@@ -304,7 +367,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_shared_swapchains_khr = Ptr(to=get_device_proc_addr(        device, "vkCreateSharedSwapchainsKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_shared_swapchains_khr)]()[]
+    self._vk_create_shared_swapchains_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCreateSharedSwapchainsKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_shared_swapchains_khr)]()[]
+
     fn create_shared_swapchains_khr(
         self,
         device: Device,
@@ -325,7 +391,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_xlib_surface_khr = Ptr(to=get_instance_proc_addr(        instance, "vkCreateXlibSurfaceKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_xlib_surface_khr)]()[]    self._vk_get_physical_device_xlib_presentation_support_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceXlibPresentationSupportKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_xlib_presentation_support_khr)]()[]
+    self._vk_create_xlib_surface_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateXlibSurfaceKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_xlib_surface_khr)]()[]
+    self._vk_get_physical_device_xlib_presentation_support_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceXlibPresentationSupportKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_xlib_presentation_support_khr)]()[]
+
     fn create_xlib_surface_khr(
         self,
         instance: Instance,
@@ -360,7 +432,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_xcb_surface_khr = Ptr(to=get_instance_proc_addr(        instance, "vkCreateXcbSurfaceKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_xcb_surface_khr)]()[]    self._vk_get_physical_device_xcb_presentation_support_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceXcbPresentationSupportKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_xcb_presentation_support_khr)]()[]
+    self._vk_create_xcb_surface_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateXcbSurfaceKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_xcb_surface_khr)]()[]
+    self._vk_get_physical_device_xcb_presentation_support_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceXcbPresentationSupportKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_xcb_presentation_support_khr)]()[]
+
     fn create_xcb_surface_khr(
         self,
         instance: Instance,
@@ -395,7 +473,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_wayland_surface_khr = Ptr(to=get_instance_proc_addr(        instance, "vkCreateWaylandSurfaceKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_wayland_surface_khr)]()[]    self._vk_get_physical_device_wayland_presentation_support_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceWaylandPresentationSupportKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_wayland_presentation_support_khr)]()[]
+    self._vk_create_wayland_surface_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateWaylandSurfaceKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_wayland_surface_khr)]()[]
+    self._vk_get_physical_device_wayland_presentation_support_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceWaylandPresentationSupportKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_wayland_presentation_support_khr)]()[]
+
     fn create_wayland_surface_khr(
         self,
         instance: Instance,
@@ -426,7 +510,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_android_surface_khr = Ptr(to=get_instance_proc_addr(        instance, "vkCreateAndroidSurfaceKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_android_surface_khr)]()[]
+    self._vk_create_android_surface_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateAndroidSurfaceKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_android_surface_khr)]()[]
+
     fn create_android_surface_khr(
         self,
         instance: Instance,
@@ -446,7 +533,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_win_32_surface_khr = Ptr(to=get_instance_proc_addr(        instance, "vkCreateWin32SurfaceKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_win_32_surface_khr)]()[]    self._vk_get_physical_device_win_32_presentation_support_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceWin32PresentationSupportKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_win_32_presentation_support_khr)]()[]
+    self._vk_create_win_32_surface_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateWin32SurfaceKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_win_32_surface_khr)]()[]
+    self._vk_get_physical_device_win_32_presentation_support_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceWin32PresentationSupportKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_win_32_presentation_support_khr)]()[]
+
     fn create_win_32_surface_khr(
         self,
         instance: Instance,
@@ -477,7 +570,43 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_physical_device_video_capabilities_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceVideoCapabilitiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_video_capabilities_khr)]()[]    self._vk_get_physical_device_video_format_properties_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceVideoFormatPropertiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_video_format_properties_khr)]()[]    self._vk_create_video_session_khr = Ptr(to=get_device_proc_addr(        device, "vkCreateVideoSessionKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_video_session_khr)]()[]    self._vk_destroy_video_session_khr = Ptr(to=get_device_proc_addr(        device, "vkDestroyVideoSessionKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_video_session_khr)]()[]    self._vk_get_video_session_memory_requirements_khr = Ptr(to=get_device_proc_addr(        device, "vkGetVideoSessionMemoryRequirementsKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_video_session_memory_requirements_khr)]()[]    self._vk_bind_video_session_memory_khr = Ptr(to=get_device_proc_addr(        device, "vkBindVideoSessionMemoryKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_bind_video_session_memory_khr)]()[]    self._vk_create_video_session_parameters_khr = Ptr(to=get_device_proc_addr(        device, "vkCreateVideoSessionParametersKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_video_session_parameters_khr)]()[]    self._vk_update_video_session_parameters_khr = Ptr(to=get_device_proc_addr(        device, "vkUpdateVideoSessionParametersKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_update_video_session_parameters_khr)]()[]    self._vk_destroy_video_session_parameters_khr = Ptr(to=get_device_proc_addr(        device, "vkDestroyVideoSessionParametersKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_video_session_parameters_khr)]()[]    self._vk_cmd_begin_video_coding_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdBeginVideoCodingKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_begin_video_coding_khr)]()[]    self._vk_cmd_end_video_coding_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdEndVideoCodingKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_end_video_coding_khr)]()[]    self._vk_cmd_control_video_coding_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdControlVideoCodingKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_control_video_coding_khr)]()[]
+    self._vk_get_physical_device_video_capabilities_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceVideoCapabilitiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_video_capabilities_khr)]()[]
+    self._vk_get_physical_device_video_format_properties_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceVideoFormatPropertiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_video_format_properties_khr)]()[]
+    self._vk_create_video_session_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCreateVideoSessionKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_video_session_khr)]()[]
+    self._vk_destroy_video_session_khr = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyVideoSessionKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_video_session_khr)]()[]
+    self._vk_get_video_session_memory_requirements_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetVideoSessionMemoryRequirementsKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_video_session_memory_requirements_khr)]()[]
+    self._vk_bind_video_session_memory_khr = Ptr(to=get_device_proc_addr(
+        device, "vkBindVideoSessionMemoryKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_bind_video_session_memory_khr)]()[]
+    self._vk_create_video_session_parameters_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCreateVideoSessionParametersKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_video_session_parameters_khr)]()[]
+    self._vk_update_video_session_parameters_khr = Ptr(to=get_device_proc_addr(
+        device, "vkUpdateVideoSessionParametersKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_update_video_session_parameters_khr)]()[]
+    self._vk_destroy_video_session_parameters_khr = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyVideoSessionParametersKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_video_session_parameters_khr)]()[]
+    self._vk_cmd_begin_video_coding_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBeginVideoCodingKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_begin_video_coding_khr)]()[]
+    self._vk_cmd_end_video_coding_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdEndVideoCodingKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_end_video_coding_khr)]()[]
+    self._vk_cmd_control_video_coding_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdControlVideoCodingKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_control_video_coding_khr)]()[]
+
     fn get_physical_device_video_capabilities_khr(
         self,
         physical_device: PhysicalDevice,
@@ -641,7 +770,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_decode_video_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdDecodeVideoKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_decode_video_khr)]()[]
+    self._vk_cmd_decode_video_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDecodeVideoKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_decode_video_khr)]()[]
+
     fn cmd_decode_video_khr(self, command_buffer: CommandBuffer, decode_info: VideoDecodeInfoKHR):
         """See official vulkan docs for details.
 
@@ -653,7 +785,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_begin_rendering = Ptr(to=get_device_proc_addr(        device, "vkCmdBeginRendering".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_begin_rendering)]()[]    self._vk_cmd_end_rendering = Ptr(to=get_device_proc_addr(        device, "vkCmdEndRendering".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_end_rendering)]()[]
+    self._vk_cmd_begin_rendering = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBeginRendering".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_begin_rendering)]()[]
+    self._vk_cmd_end_rendering = Ptr(to=get_device_proc_addr(
+        device, "vkCmdEndRendering".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_end_rendering)]()[]
+
     fn cmd_begin_rendering(self, command_buffer: CommandBuffer, rendering_info: RenderingInfo):
         """See official vulkan docs for details.
 
@@ -672,7 +810,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_get_physical_device_features_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceFeatures2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_features_2)]()[]    self._vk_get_physical_device_properties_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceProperties2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_properties_2)]()[]    self._vk_get_physical_device_format_properties_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceFormatProperties2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_format_properties_2)]()[]    self._vk_get_physical_device_image_format_properties_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceImageFormatProperties2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_image_format_properties_2)]()[]    self._vk_get_physical_device_queue_family_properties_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceQueueFamilyProperties2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_queue_family_properties_2)]()[]    self._vk_get_physical_device_memory_properties_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceMemoryProperties2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_memory_properties_2)]()[]    self._vk_get_physical_device_sparse_image_format_properties_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceSparseImageFormatProperties2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_sparse_image_format_properties_2)]()[]
+    self._vk_get_physical_device_features_2 = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceFeatures2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_features_2)]()[]
+    self._vk_get_physical_device_properties_2 = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceProperties2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_properties_2)]()[]
+    self._vk_get_physical_device_format_properties_2 = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceFormatProperties2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_format_properties_2)]()[]
+    self._vk_get_physical_device_image_format_properties_2 = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceImageFormatProperties2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_image_format_properties_2)]()[]
+    self._vk_get_physical_device_queue_family_properties_2 = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceQueueFamilyProperties2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_queue_family_properties_2)]()[]
+    self._vk_get_physical_device_memory_properties_2 = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceMemoryProperties2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_memory_properties_2)]()[]
+    self._vk_get_physical_device_sparse_image_format_properties_2 = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceSparseImageFormatProperties2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_sparse_image_format_properties_2)]()[]
+
     fn get_physical_device_features_2(
         self, physical_device: PhysicalDevice, features: PhysicalDeviceFeatures2
     ):
@@ -760,7 +919,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_device_group_peer_memory_features = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceGroupPeerMemoryFeatures".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_group_peer_memory_features)]()[]    self._vk_cmd_set_device_mask = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDeviceMask".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_device_mask)]()[]    self._vk_cmd_dispatch_base = Ptr(to=get_device_proc_addr(        device, "vkCmdDispatchBase".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_dispatch_base)]()[]    self._vk_get_device_group_present_capabilities_khr = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceGroupPresentCapabilitiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_group_present_capabilities_khr)]()[]    self._vk_get_device_group_surface_present_modes_khr = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceGroupSurfacePresentModesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_group_surface_present_modes_khr)]()[]    self._vk_get_physical_device_present_rectangles_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDevicePresentRectanglesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_present_rectangles_khr)]()[]    self._vk_acquire_next_image_2_khr = Ptr(to=get_device_proc_addr(        device, "vkAcquireNextImage2KHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_acquire_next_image_2_khr)]()[]
+    self._vk_get_device_group_peer_memory_features = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceGroupPeerMemoryFeatures".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_group_peer_memory_features)]()[]
+    self._vk_cmd_set_device_mask = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDeviceMask".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_device_mask)]()[]
+    self._vk_cmd_dispatch_base = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDispatchBase".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_dispatch_base)]()[]
+    self._vk_get_device_group_present_capabilities_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceGroupPresentCapabilitiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_group_present_capabilities_khr)]()[]
+    self._vk_get_device_group_surface_present_modes_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceGroupSurfacePresentModesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_group_surface_present_modes_khr)]()[]
+    self._vk_get_physical_device_present_rectangles_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDevicePresentRectanglesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_present_rectangles_khr)]()[]
+    self._vk_acquire_next_image_2_khr = Ptr(to=get_device_proc_addr(
+        device, "vkAcquireNextImage2KHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_acquire_next_image_2_khr)]()[]
+
     fn get_device_group_peer_memory_features(
         self,
         device: Device,
@@ -860,7 +1040,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_trim_command_pool = Ptr(to=get_device_proc_addr(        device, "vkTrimCommandPool".unsafe_ptr()    )).bitcast[__type_of(self._vk_trim_command_pool)]()[]
+    self._vk_trim_command_pool = Ptr(to=get_device_proc_addr(
+        device, "vkTrimCommandPool".unsafe_ptr()
+    )).bitcast[type_of(self._vk_trim_command_pool)]()[]
+
     fn trim_command_pool(
         self, device: Device, command_pool: CommandPool, flags: CommandPoolTrimFlags
     ):
@@ -874,7 +1057,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_enumerate_physical_device_groups = Ptr(to=get_instance_proc_addr(        instance, "vkEnumeratePhysicalDeviceGroups".unsafe_ptr()    )).bitcast[__type_of(self._vk_enumerate_physical_device_groups)]()[]
+    self._vk_enumerate_physical_device_groups = Ptr(to=get_instance_proc_addr(
+        instance, "vkEnumeratePhysicalDeviceGroups".unsafe_ptr()
+    )).bitcast[type_of(self._vk_enumerate_physical_device_groups)]()[]
+
     fn enumerate_physical_device_groups(
         self,
         instance: Instance,
@@ -893,7 +1079,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_get_physical_device_external_buffer_properties = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceExternalBufferProperties".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_external_buffer_properties)]()[]
+    self._vk_get_physical_device_external_buffer_properties = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceExternalBufferProperties".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_external_buffer_properties)]()[]
+
     fn get_physical_device_external_buffer_properties(
         self,
         physical_device: PhysicalDevice,
@@ -912,7 +1101,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_memory_win_32_handle_khr = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryWin32HandleKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_win_32_handle_khr)]()[]    self._vk_get_memory_win_32_handle_properties_khr = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryWin32HandlePropertiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_win_32_handle_properties_khr)]()[]
+    self._vk_get_memory_win_32_handle_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetMemoryWin32HandleKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_memory_win_32_handle_khr)]()[]
+    self._vk_get_memory_win_32_handle_properties_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetMemoryWin32HandlePropertiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_memory_win_32_handle_properties_khr)]()[]
+
     fn get_memory_win_32_handle_khr(
         self, device: Device, get_win_32_handle_info: MemoryGetWin32HandleInfoKHR, handle: HANDLE
     ) -> Result:
@@ -943,7 +1138,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_memory_fd_khr = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryFdKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_fd_khr)]()[]    self._vk_get_memory_fd_properties_khr = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryFdPropertiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_fd_properties_khr)]()[]
+    self._vk_get_memory_fd_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetMemoryFdKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_memory_fd_khr)]()[]
+    self._vk_get_memory_fd_properties_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetMemoryFdPropertiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_memory_fd_properties_khr)]()[]
+
     fn get_memory_fd_khr(
         self, device: Device, get_fd_info: MemoryGetFdInfoKHR, fd: Int32
     ) -> Result:
@@ -972,7 +1173,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_get_physical_device_external_semaphore_properties = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceExternalSemaphoreProperties".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_external_semaphore_properties)]()[]
+    self._vk_get_physical_device_external_semaphore_properties = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceExternalSemaphoreProperties".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_external_semaphore_properties)]()[]
+
     fn get_physical_device_external_semaphore_properties(
         self,
         physical_device: PhysicalDevice,
@@ -991,7 +1195,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_import_semaphore_win_32_handle_khr = Ptr(to=get_device_proc_addr(        device, "vkImportSemaphoreWin32HandleKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_import_semaphore_win_32_handle_khr)]()[]    self._vk_get_semaphore_win_32_handle_khr = Ptr(to=get_device_proc_addr(        device, "vkGetSemaphoreWin32HandleKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_semaphore_win_32_handle_khr)]()[]
+    self._vk_import_semaphore_win_32_handle_khr = Ptr(to=get_device_proc_addr(
+        device, "vkImportSemaphoreWin32HandleKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_import_semaphore_win_32_handle_khr)]()[]
+    self._vk_get_semaphore_win_32_handle_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetSemaphoreWin32HandleKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_semaphore_win_32_handle_khr)]()[]
+
     fn import_semaphore_win_32_handle_khr(
         self, device: Device, import_semaphore_win_32_handle_info: ImportSemaphoreWin32HandleInfoKHR
     ) -> Result:
@@ -1018,7 +1228,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_import_semaphore_fd_khr = Ptr(to=get_device_proc_addr(        device, "vkImportSemaphoreFdKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_import_semaphore_fd_khr)]()[]    self._vk_get_semaphore_fd_khr = Ptr(to=get_device_proc_addr(        device, "vkGetSemaphoreFdKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_semaphore_fd_khr)]()[]
+    self._vk_import_semaphore_fd_khr = Ptr(to=get_device_proc_addr(
+        device, "vkImportSemaphoreFdKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_import_semaphore_fd_khr)]()[]
+    self._vk_get_semaphore_fd_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetSemaphoreFdKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_semaphore_fd_khr)]()[]
+
     fn import_semaphore_fd_khr(
         self, device: Device, import_semaphore_fd_info: ImportSemaphoreFdInfoKHR
     ) -> Result:
@@ -1041,7 +1257,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_push_descriptor_set = Ptr(to=get_device_proc_addr(        device, "vkCmdPushDescriptorSet".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_push_descriptor_set)]()[]    self._vk_cmd_push_descriptor_set_with_template = Ptr(to=get_device_proc_addr(        device, "vkCmdPushDescriptorSetWithTemplate".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_push_descriptor_set_with_template)]()[]
+    self._vk_cmd_push_descriptor_set = Ptr(to=get_device_proc_addr(
+        device, "vkCmdPushDescriptorSet".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_push_descriptor_set)]()[]
+    self._vk_cmd_push_descriptor_set_with_template = Ptr(to=get_device_proc_addr(
+        device, "vkCmdPushDescriptorSetWithTemplate".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_push_descriptor_set_with_template)]()[]
+
     fn cmd_push_descriptor_set(
         self,
         command_buffer: CommandBuffer,
@@ -1084,7 +1306,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_descriptor_update_template = Ptr(to=get_device_proc_addr(        device, "vkCreateDescriptorUpdateTemplate".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_descriptor_update_template)]()[]    self._vk_destroy_descriptor_update_template = Ptr(to=get_device_proc_addr(        device, "vkDestroyDescriptorUpdateTemplate".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_descriptor_update_template)]()[]    self._vk_update_descriptor_set_with_template = Ptr(to=get_device_proc_addr(        device, "vkUpdateDescriptorSetWithTemplate".unsafe_ptr()    )).bitcast[__type_of(self._vk_update_descriptor_set_with_template)]()[]    self._vk_cmd_push_descriptor_set_with_template = Ptr(to=get_device_proc_addr(        device, "vkCmdPushDescriptorSetWithTemplate".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_push_descriptor_set_with_template)]()[]
+    self._vk_create_descriptor_update_template = Ptr(to=get_device_proc_addr(
+        device, "vkCreateDescriptorUpdateTemplate".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_descriptor_update_template)]()[]
+    self._vk_destroy_descriptor_update_template = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyDescriptorUpdateTemplate".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_descriptor_update_template)]()[]
+    self._vk_update_descriptor_set_with_template = Ptr(to=get_device_proc_addr(
+        device, "vkUpdateDescriptorSetWithTemplate".unsafe_ptr()
+    )).bitcast[type_of(self._vk_update_descriptor_set_with_template)]()[]
+    self._vk_cmd_push_descriptor_set_with_template = Ptr(to=get_device_proc_addr(
+        device, "vkCmdPushDescriptorSetWithTemplate".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_push_descriptor_set_with_template)]()[]
+
     fn create_descriptor_update_template(
         self,
         device: Device,
@@ -1149,7 +1383,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_render_pass_2 = Ptr(to=get_device_proc_addr(        device, "vkCreateRenderPass2".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_render_pass_2)]()[]    self._vk_cmd_begin_render_pass_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdBeginRenderPass2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_begin_render_pass_2)]()[]    self._vk_cmd_next_subpass_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdNextSubpass2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_next_subpass_2)]()[]    self._vk_cmd_end_render_pass_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdEndRenderPass2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_end_render_pass_2)]()[]
+    self._vk_create_render_pass_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCreateRenderPass2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_render_pass_2)]()[]
+    self._vk_cmd_begin_render_pass_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBeginRenderPass2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_begin_render_pass_2)]()[]
+    self._vk_cmd_next_subpass_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdNextSubpass2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_next_subpass_2)]()[]
+    self._vk_cmd_end_render_pass_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdEndRenderPass2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_end_render_pass_2)]()[]
+
     fn create_render_pass_2(
         self,
         device: Device,
@@ -1206,7 +1452,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_swapchain_status_khr = Ptr(to=get_device_proc_addr(        device, "vkGetSwapchainStatusKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_swapchain_status_khr)]()[]
+    self._vk_get_swapchain_status_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetSwapchainStatusKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_swapchain_status_khr)]()[]
+
     fn get_swapchain_status_khr(self, device: Device, swapchain: SwapchainKHR) -> Result:
         """See official vulkan docs for details.
 
@@ -1218,7 +1467,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_get_physical_device_external_fence_properties = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceExternalFenceProperties".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_external_fence_properties)]()[]
+    self._vk_get_physical_device_external_fence_properties = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceExternalFenceProperties".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_external_fence_properties)]()[]
+
     fn get_physical_device_external_fence_properties(
         self,
         physical_device: PhysicalDevice,
@@ -1237,7 +1489,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_import_fence_win_32_handle_khr = Ptr(to=get_device_proc_addr(        device, "vkImportFenceWin32HandleKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_import_fence_win_32_handle_khr)]()[]    self._vk_get_fence_win_32_handle_khr = Ptr(to=get_device_proc_addr(        device, "vkGetFenceWin32HandleKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_fence_win_32_handle_khr)]()[]
+    self._vk_import_fence_win_32_handle_khr = Ptr(to=get_device_proc_addr(
+        device, "vkImportFenceWin32HandleKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_import_fence_win_32_handle_khr)]()[]
+    self._vk_get_fence_win_32_handle_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetFenceWin32HandleKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_fence_win_32_handle_khr)]()[]
+
     fn import_fence_win_32_handle_khr(
         self, device: Device, import_fence_win_32_handle_info: ImportFenceWin32HandleInfoKHR
     ) -> Result:
@@ -1264,7 +1522,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_import_fence_fd_khr = Ptr(to=get_device_proc_addr(        device, "vkImportFenceFdKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_import_fence_fd_khr)]()[]    self._vk_get_fence_fd_khr = Ptr(to=get_device_proc_addr(        device, "vkGetFenceFdKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_fence_fd_khr)]()[]
+    self._vk_import_fence_fd_khr = Ptr(to=get_device_proc_addr(
+        device, "vkImportFenceFdKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_import_fence_fd_khr)]()[]
+    self._vk_get_fence_fd_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetFenceFdKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_fence_fd_khr)]()[]
+
     fn import_fence_fd_khr(
         self, device: Device, import_fence_fd_info: ImportFenceFdInfoKHR
     ) -> Result:
@@ -1285,7 +1549,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_enumerate_physical_device_queue_family_performance_query_counters_khr = Ptr(to=get_device_proc_addr(        device, "vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_enumerate_physical_device_queue_family_performance_query_counters_khr)]()[]    self._vk_get_physical_device_queue_family_performance_query_passes_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_queue_family_performance_query_passes_khr)]()[]    self._vk_acquire_profiling_lock_khr = Ptr(to=get_device_proc_addr(        device, "vkAcquireProfilingLockKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_acquire_profiling_lock_khr)]()[]    self._vk_release_profiling_lock_khr = Ptr(to=get_device_proc_addr(        device, "vkReleaseProfilingLockKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_release_profiling_lock_khr)]()[]
+    self._vk_enumerate_physical_device_queue_family_performance_query_counters_khr = Ptr(to=get_device_proc_addr(
+        device, "vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_enumerate_physical_device_queue_family_performance_query_counters_khr)]()[]
+    self._vk_get_physical_device_queue_family_performance_query_passes_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_queue_family_performance_query_passes_khr)]()[]
+    self._vk_acquire_profiling_lock_khr = Ptr(to=get_device_proc_addr(
+        device, "vkAcquireProfilingLockKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_acquire_profiling_lock_khr)]()[]
+    self._vk_release_profiling_lock_khr = Ptr(to=get_device_proc_addr(
+        device, "vkReleaseProfilingLockKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_release_profiling_lock_khr)]()[]
+
     fn enumerate_physical_device_queue_family_performance_query_counters_khr(
         self,
         physical_device: PhysicalDevice,
@@ -1340,7 +1616,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_get_physical_device_surface_capabilities_2_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceSurfaceCapabilities2KHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_surface_capabilities_2_khr)]()[]    self._vk_get_physical_device_surface_formats_2_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceSurfaceFormats2KHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_surface_formats_2_khr)]()[]
+    self._vk_get_physical_device_surface_capabilities_2_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceSurfaceCapabilities2KHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_surface_capabilities_2_khr)]()[]
+    self._vk_get_physical_device_surface_formats_2_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceSurfaceFormats2KHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_surface_formats_2_khr)]()[]
+
     fn get_physical_device_surface_capabilities_2_khr(
         self,
         physical_device: PhysicalDevice,
@@ -1374,7 +1656,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_get_physical_device_display_properties_2_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceDisplayProperties2KHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_display_properties_2_khr)]()[]    self._vk_get_physical_device_display_plane_properties_2_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceDisplayPlaneProperties2KHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_display_plane_properties_2_khr)]()[]    self._vk_get_display_mode_properties_2_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetDisplayModeProperties2KHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_display_mode_properties_2_khr)]()[]    self._vk_get_display_plane_capabilities_2_khr = Ptr(to=get_instance_proc_addr(        instance, "vkGetDisplayPlaneCapabilities2KHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_display_plane_capabilities_2_khr)]()[]
+    self._vk_get_physical_device_display_properties_2_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceDisplayProperties2KHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_display_properties_2_khr)]()[]
+    self._vk_get_physical_device_display_plane_properties_2_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceDisplayPlaneProperties2KHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_display_plane_properties_2_khr)]()[]
+    self._vk_get_display_mode_properties_2_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetDisplayModeProperties2KHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_display_mode_properties_2_khr)]()[]
+    self._vk_get_display_plane_capabilities_2_khr = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetDisplayPlaneCapabilities2KHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_display_plane_capabilities_2_khr)]()[]
+
     fn get_physical_device_display_properties_2_khr(
         self,
         physical_device: PhysicalDevice,
@@ -1436,7 +1730,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_image_memory_requirements_2 = Ptr(to=get_device_proc_addr(        device, "vkGetImageMemoryRequirements2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_memory_requirements_2)]()[]    self._vk_get_buffer_memory_requirements_2 = Ptr(to=get_device_proc_addr(        device, "vkGetBufferMemoryRequirements2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_buffer_memory_requirements_2)]()[]    self._vk_get_image_sparse_memory_requirements_2 = Ptr(to=get_device_proc_addr(        device, "vkGetImageSparseMemoryRequirements2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_sparse_memory_requirements_2)]()[]
+    self._vk_get_image_memory_requirements_2 = Ptr(to=get_device_proc_addr(
+        device, "vkGetImageMemoryRequirements2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_image_memory_requirements_2)]()[]
+    self._vk_get_buffer_memory_requirements_2 = Ptr(to=get_device_proc_addr(
+        device, "vkGetBufferMemoryRequirements2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_buffer_memory_requirements_2)]()[]
+    self._vk_get_image_sparse_memory_requirements_2 = Ptr(to=get_device_proc_addr(
+        device, "vkGetImageSparseMemoryRequirements2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_image_sparse_memory_requirements_2)]()[]
+
     fn get_image_memory_requirements_2(
         self,
         device: Device,
@@ -1487,7 +1790,55 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_acceleration_structure_khr = Ptr(to=get_device_proc_addr(        device, "vkCreateAccelerationStructureKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_acceleration_structure_khr)]()[]    self._vk_destroy_acceleration_structure_khr = Ptr(to=get_device_proc_addr(        device, "vkDestroyAccelerationStructureKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_acceleration_structure_khr)]()[]    self._vk_cmd_build_acceleration_structures_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdBuildAccelerationStructuresKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_build_acceleration_structures_khr)]()[]    self._vk_cmd_build_acceleration_structures_indirect_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdBuildAccelerationStructuresIndirectKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_build_acceleration_structures_indirect_khr)]()[]    self._vk_build_acceleration_structures_khr = Ptr(to=get_device_proc_addr(        device, "vkBuildAccelerationStructuresKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_build_acceleration_structures_khr)]()[]    self._vk_copy_acceleration_structure_khr = Ptr(to=get_device_proc_addr(        device, "vkCopyAccelerationStructureKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_copy_acceleration_structure_khr)]()[]    self._vk_copy_acceleration_structure_to_memory_khr = Ptr(to=get_device_proc_addr(        device, "vkCopyAccelerationStructureToMemoryKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_copy_acceleration_structure_to_memory_khr)]()[]    self._vk_copy_memory_to_acceleration_structure_khr = Ptr(to=get_device_proc_addr(        device, "vkCopyMemoryToAccelerationStructureKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_copy_memory_to_acceleration_structure_khr)]()[]    self._vk_write_acceleration_structures_properties_khr = Ptr(to=get_device_proc_addr(        device, "vkWriteAccelerationStructuresPropertiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_write_acceleration_structures_properties_khr)]()[]    self._vk_cmd_copy_acceleration_structure_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyAccelerationStructureKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_acceleration_structure_khr)]()[]    self._vk_cmd_copy_acceleration_structure_to_memory_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyAccelerationStructureToMemoryKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_acceleration_structure_to_memory_khr)]()[]    self._vk_cmd_copy_memory_to_acceleration_structure_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyMemoryToAccelerationStructureKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_memory_to_acceleration_structure_khr)]()[]    self._vk_get_acceleration_structure_device_address_khr = Ptr(to=get_device_proc_addr(        device, "vkGetAccelerationStructureDeviceAddressKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_acceleration_structure_device_address_khr)]()[]    self._vk_cmd_write_acceleration_structures_properties_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdWriteAccelerationStructuresPropertiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_write_acceleration_structures_properties_khr)]()[]    self._vk_get_device_acceleration_structure_compatibility_khr = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceAccelerationStructureCompatibilityKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_acceleration_structure_compatibility_khr)]()[]    self._vk_get_acceleration_structure_build_sizes_khr = Ptr(to=get_device_proc_addr(        device, "vkGetAccelerationStructureBuildSizesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_acceleration_structure_build_sizes_khr)]()[]
+    self._vk_create_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCreateAccelerationStructureKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_acceleration_structure_khr)]()[]
+    self._vk_destroy_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyAccelerationStructureKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_acceleration_structure_khr)]()[]
+    self._vk_cmd_build_acceleration_structures_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBuildAccelerationStructuresKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_build_acceleration_structures_khr)]()[]
+    self._vk_cmd_build_acceleration_structures_indirect_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBuildAccelerationStructuresIndirectKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_build_acceleration_structures_indirect_khr)]()[]
+    self._vk_build_acceleration_structures_khr = Ptr(to=get_device_proc_addr(
+        device, "vkBuildAccelerationStructuresKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_build_acceleration_structures_khr)]()[]
+    self._vk_copy_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCopyAccelerationStructureKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_copy_acceleration_structure_khr)]()[]
+    self._vk_copy_acceleration_structure_to_memory_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCopyAccelerationStructureToMemoryKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_copy_acceleration_structure_to_memory_khr)]()[]
+    self._vk_copy_memory_to_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCopyMemoryToAccelerationStructureKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_copy_memory_to_acceleration_structure_khr)]()[]
+    self._vk_write_acceleration_structures_properties_khr = Ptr(to=get_device_proc_addr(
+        device, "vkWriteAccelerationStructuresPropertiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_write_acceleration_structures_properties_khr)]()[]
+    self._vk_cmd_copy_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyAccelerationStructureKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_acceleration_structure_khr)]()[]
+    self._vk_cmd_copy_acceleration_structure_to_memory_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyAccelerationStructureToMemoryKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_acceleration_structure_to_memory_khr)]()[]
+    self._vk_cmd_copy_memory_to_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyMemoryToAccelerationStructureKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_memory_to_acceleration_structure_khr)]()[]
+    self._vk_get_acceleration_structure_device_address_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetAccelerationStructureDeviceAddressKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_acceleration_structure_device_address_khr)]()[]
+    self._vk_cmd_write_acceleration_structures_properties_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdWriteAccelerationStructuresPropertiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_write_acceleration_structures_properties_khr)]()[]
+    self._vk_get_device_acceleration_structure_compatibility_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceAccelerationStructureCompatibilityKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_acceleration_structure_compatibility_khr)]()[]
+    self._vk_get_acceleration_structure_build_sizes_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetAccelerationStructureBuildSizesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_acceleration_structure_build_sizes_khr)]()[]
+
     fn create_acceleration_structure_khr(
         self,
         device: Device,
@@ -1726,7 +2077,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_trace_rays_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdTraceRaysKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_trace_rays_khr)]()[]    self._vk_create_ray_tracing_pipelines_khr = Ptr(to=get_device_proc_addr(        device, "vkCreateRayTracingPipelinesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_ray_tracing_pipelines_khr)]()[]    self._vk_get_ray_tracing_shader_group_handles_khr = Ptr(to=get_device_proc_addr(        device, "vkGetRayTracingShaderGroupHandlesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_ray_tracing_shader_group_handles_khr)]()[]    self._vk_get_ray_tracing_capture_replay_shader_group_handles_khr = Ptr(to=get_device_proc_addr(        device, "vkGetRayTracingCaptureReplayShaderGroupHandlesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_ray_tracing_capture_replay_shader_group_handles_khr)]()[]    self._vk_cmd_trace_rays_indirect_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdTraceRaysIndirectKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_trace_rays_indirect_khr)]()[]    self._vk_get_ray_tracing_shader_group_stack_size_khr = Ptr(to=get_device_proc_addr(        device, "vkGetRayTracingShaderGroupStackSizeKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_ray_tracing_shader_group_stack_size_khr)]()[]    self._vk_cmd_set_ray_tracing_pipeline_stack_size_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdSetRayTracingPipelineStackSizeKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_ray_tracing_pipeline_stack_size_khr)]()[]
+    self._vk_cmd_trace_rays_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdTraceRaysKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_trace_rays_khr)]()[]
+    self._vk_create_ray_tracing_pipelines_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCreateRayTracingPipelinesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_ray_tracing_pipelines_khr)]()[]
+    self._vk_get_ray_tracing_shader_group_handles_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetRayTracingShaderGroupHandlesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_ray_tracing_shader_group_handles_khr)]()[]
+    self._vk_get_ray_tracing_capture_replay_shader_group_handles_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetRayTracingCaptureReplayShaderGroupHandlesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_ray_tracing_capture_replay_shader_group_handles_khr)]()[]
+    self._vk_cmd_trace_rays_indirect_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdTraceRaysIndirectKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_trace_rays_indirect_khr)]()[]
+    self._vk_get_ray_tracing_shader_group_stack_size_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetRayTracingShaderGroupStackSizeKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_ray_tracing_shader_group_stack_size_khr)]()[]
+    self._vk_cmd_set_ray_tracing_pipeline_stack_size_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetRayTracingPipelineStackSizeKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_ray_tracing_pipeline_stack_size_khr)]()[]
+
     fn cmd_trace_rays_khr(
         self,
         command_buffer: CommandBuffer,
@@ -1859,7 +2231,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_sampler_ycbcr_conversion = Ptr(to=get_device_proc_addr(        device, "vkCreateSamplerYcbcrConversion".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_sampler_ycbcr_conversion)]()[]    self._vk_destroy_sampler_ycbcr_conversion = Ptr(to=get_device_proc_addr(        device, "vkDestroySamplerYcbcrConversion".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_sampler_ycbcr_conversion)]()[]
+    self._vk_create_sampler_ycbcr_conversion = Ptr(to=get_device_proc_addr(
+        device, "vkCreateSamplerYcbcrConversion".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_sampler_ycbcr_conversion)]()[]
+    self._vk_destroy_sampler_ycbcr_conversion = Ptr(to=get_device_proc_addr(
+        device, "vkDestroySamplerYcbcrConversion".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_sampler_ycbcr_conversion)]()[]
+
     fn create_sampler_ycbcr_conversion(
         self,
         device: Device,
@@ -1891,7 +2269,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_bind_buffer_memory_2 = Ptr(to=get_device_proc_addr(        device, "vkBindBufferMemory2".unsafe_ptr()    )).bitcast[__type_of(self._vk_bind_buffer_memory_2)]()[]    self._vk_bind_image_memory_2 = Ptr(to=get_device_proc_addr(        device, "vkBindImageMemory2".unsafe_ptr()    )).bitcast[__type_of(self._vk_bind_image_memory_2)]()[]
+    self._vk_bind_buffer_memory_2 = Ptr(to=get_device_proc_addr(
+        device, "vkBindBufferMemory2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_bind_buffer_memory_2)]()[]
+    self._vk_bind_image_memory_2 = Ptr(to=get_device_proc_addr(
+        device, "vkBindImageMemory2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_bind_image_memory_2)]()[]
+
     fn bind_buffer_memory_2(
         self, device: Device, bind_info_count: UInt32, bind_infos: BindBufferMemoryInfo
     ) -> Result:
@@ -1914,7 +2298,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_descriptor_set_layout_support = Ptr(to=get_device_proc_addr(        device, "vkGetDescriptorSetLayoutSupport".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_descriptor_set_layout_support)]()[]
+    self._vk_get_descriptor_set_layout_support = Ptr(to=get_device_proc_addr(
+        device, "vkGetDescriptorSetLayoutSupport".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_descriptor_set_layout_support)]()[]
+
     fn get_descriptor_set_layout_support(
         self,
         device: Device,
@@ -1933,7 +2320,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawIndirectCount".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_indirect_count)]()[]    self._vk_cmd_draw_indexed_indirect_count = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawIndexedIndirectCount".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_indexed_indirect_count)]()[]
+    self._vk_cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawIndirectCount".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_indirect_count)]()[]
+    self._vk_cmd_draw_indexed_indirect_count = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawIndexedIndirectCount".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_indexed_indirect_count)]()[]
+
     fn cmd_draw_indirect_count(
         self,
         command_buffer: CommandBuffer,
@@ -1986,7 +2379,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_semaphore_counter_value = Ptr(to=get_device_proc_addr(        device, "vkGetSemaphoreCounterValue".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_semaphore_counter_value)]()[]    self._vk_wait_semaphores = Ptr(to=get_device_proc_addr(        device, "vkWaitSemaphores".unsafe_ptr()    )).bitcast[__type_of(self._vk_wait_semaphores)]()[]    self._vk_signal_semaphore = Ptr(to=get_device_proc_addr(        device, "vkSignalSemaphore".unsafe_ptr()    )).bitcast[__type_of(self._vk_signal_semaphore)]()[]
+    self._vk_get_semaphore_counter_value = Ptr(to=get_device_proc_addr(
+        device, "vkGetSemaphoreCounterValue".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_semaphore_counter_value)]()[]
+    self._vk_wait_semaphores = Ptr(to=get_device_proc_addr(
+        device, "vkWaitSemaphores".unsafe_ptr()
+    )).bitcast[type_of(self._vk_wait_semaphores)]()[]
+    self._vk_signal_semaphore = Ptr(to=get_device_proc_addr(
+        device, "vkSignalSemaphore".unsafe_ptr()
+    )).bitcast[type_of(self._vk_signal_semaphore)]()[]
+
     fn get_semaphore_counter_value(
         self, device: Device, semaphore: Semaphore, value: UInt64
     ) -> Result:
@@ -2016,7 +2418,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_physical_device_fragment_shading_rates_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceFragmentShadingRatesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_fragment_shading_rates_khr)]()[]    self._vk_cmd_set_fragment_shading_rate_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdSetFragmentShadingRateKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_fragment_shading_rate_khr)]()[]
+    self._vk_get_physical_device_fragment_shading_rates_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceFragmentShadingRatesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_fragment_shading_rates_khr)]()[]
+    self._vk_cmd_set_fragment_shading_rate_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetFragmentShadingRateKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_fragment_shading_rate_khr)]()[]
+
     fn get_physical_device_fragment_shading_rates_khr(
         self,
         physical_device: PhysicalDevice,
@@ -2049,7 +2457,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_rendering_attachment_locations = Ptr(to=get_device_proc_addr(        device, "vkCmdSetRenderingAttachmentLocations".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_rendering_attachment_locations)]()[]    self._vk_cmd_set_rendering_input_attachment_indices = Ptr(to=get_device_proc_addr(        device, "vkCmdSetRenderingInputAttachmentIndices".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_rendering_input_attachment_indices)]()[]
+    self._vk_cmd_set_rendering_attachment_locations = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetRenderingAttachmentLocations".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_rendering_attachment_locations)]()[]
+    self._vk_cmd_set_rendering_input_attachment_indices = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetRenderingInputAttachmentIndices".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_rendering_input_attachment_indices)]()[]
+
     fn cmd_set_rendering_attachment_locations(
         self, command_buffer: CommandBuffer, location_info: RenderingAttachmentLocationInfo
     ):
@@ -2076,7 +2490,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_wait_for_present_khr = Ptr(to=get_device_proc_addr(        device, "vkWaitForPresentKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_wait_for_present_khr)]()[]
+    self._vk_wait_for_present_khr = Ptr(to=get_device_proc_addr(
+        device, "vkWaitForPresentKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_wait_for_present_khr)]()[]
+
     fn wait_for_present_khr(
         self, device: Device, swapchain: SwapchainKHR, present_id: UInt64, timeout: UInt64
     ) -> Result:
@@ -2090,7 +2507,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_buffer_device_address = Ptr(to=get_device_proc_addr(        device, "vkGetBufferDeviceAddress".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_buffer_device_address)]()[]    self._vk_get_buffer_opaque_capture_address = Ptr(to=get_device_proc_addr(        device, "vkGetBufferOpaqueCaptureAddress".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_buffer_opaque_capture_address)]()[]    self._vk_get_device_memory_opaque_capture_address = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceMemoryOpaqueCaptureAddress".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_memory_opaque_capture_address)]()[]
+    self._vk_get_buffer_device_address = Ptr(to=get_device_proc_addr(
+        device, "vkGetBufferDeviceAddress".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_buffer_device_address)]()[]
+    self._vk_get_buffer_opaque_capture_address = Ptr(to=get_device_proc_addr(
+        device, "vkGetBufferOpaqueCaptureAddress".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_buffer_opaque_capture_address)]()[]
+    self._vk_get_device_memory_opaque_capture_address = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceMemoryOpaqueCaptureAddress".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_memory_opaque_capture_address)]()[]
+
     fn get_buffer_device_address(
         self, device: Device, info: BufferDeviceAddressInfo
     ) -> DeviceAddress:
@@ -2122,7 +2548,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_deferred_operation_khr = Ptr(to=get_device_proc_addr(        device, "vkCreateDeferredOperationKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_deferred_operation_khr)]()[]    self._vk_destroy_deferred_operation_khr = Ptr(to=get_device_proc_addr(        device, "vkDestroyDeferredOperationKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_deferred_operation_khr)]()[]    self._vk_get_deferred_operation_max_concurrency_khr = Ptr(to=get_device_proc_addr(        device, "vkGetDeferredOperationMaxConcurrencyKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_deferred_operation_max_concurrency_khr)]()[]    self._vk_get_deferred_operation_result_khr = Ptr(to=get_device_proc_addr(        device, "vkGetDeferredOperationResultKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_deferred_operation_result_khr)]()[]    self._vk_deferred_operation_join_khr = Ptr(to=get_device_proc_addr(        device, "vkDeferredOperationJoinKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_deferred_operation_join_khr)]()[]
+    self._vk_create_deferred_operation_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCreateDeferredOperationKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_deferred_operation_khr)]()[]
+    self._vk_destroy_deferred_operation_khr = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyDeferredOperationKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_deferred_operation_khr)]()[]
+    self._vk_get_deferred_operation_max_concurrency_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeferredOperationMaxConcurrencyKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_deferred_operation_max_concurrency_khr)]()[]
+    self._vk_get_deferred_operation_result_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeferredOperationResultKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_deferred_operation_result_khr)]()[]
+    self._vk_deferred_operation_join_khr = Ptr(to=get_device_proc_addr(
+        device, "vkDeferredOperationJoinKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_deferred_operation_join_khr)]()[]
+
     fn create_deferred_operation_khr(
         self,
         device: Device,
@@ -2178,7 +2619,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_pipeline_executable_properties_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPipelineExecutablePropertiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_pipeline_executable_properties_khr)]()[]    self._vk_get_pipeline_executable_statistics_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPipelineExecutableStatisticsKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_pipeline_executable_statistics_khr)]()[]    self._vk_get_pipeline_executable_internal_representations_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPipelineExecutableInternalRepresentationsKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_pipeline_executable_internal_representations_khr)]()[]
+    self._vk_get_pipeline_executable_properties_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPipelineExecutablePropertiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_pipeline_executable_properties_khr)]()[]
+    self._vk_get_pipeline_executable_statistics_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPipelineExecutableStatisticsKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_pipeline_executable_statistics_khr)]()[]
+    self._vk_get_pipeline_executable_internal_representations_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPipelineExecutableInternalRepresentationsKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_pipeline_executable_internal_representations_khr)]()[]
+
     fn get_pipeline_executable_properties_khr(
         self,
         device: Device,
@@ -2231,7 +2681,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_map_memory_2 = Ptr(to=get_device_proc_addr(        device, "vkMapMemory2".unsafe_ptr()    )).bitcast[__type_of(self._vk_map_memory_2)]()[]    self._vk_unmap_memory_2 = Ptr(to=get_device_proc_addr(        device, "vkUnmapMemory2".unsafe_ptr()    )).bitcast[__type_of(self._vk_unmap_memory_2)]()[]
+    self._vk_map_memory_2 = Ptr(to=get_device_proc_addr(
+        device, "vkMapMemory2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_map_memory_2)]()[]
+    self._vk_unmap_memory_2 = Ptr(to=get_device_proc_addr(
+        device, "vkUnmapMemory2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_unmap_memory_2)]()[]
+
     fn map_memory_2(
         self,
         device: Device,
@@ -2255,7 +2711,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_physical_device_video_encode_quality_level_properties_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_video_encode_quality_level_properties_khr)]()[]    self._vk_get_encoded_video_session_parameters_khr = Ptr(to=get_device_proc_addr(        device, "vkGetEncodedVideoSessionParametersKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_encoded_video_session_parameters_khr)]()[]    self._vk_cmd_encode_video_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdEncodeVideoKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_encode_video_khr)]()[]
+    self._vk_get_physical_device_video_encode_quality_level_properties_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_video_encode_quality_level_properties_khr)]()[]
+    self._vk_get_encoded_video_session_parameters_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetEncodedVideoSessionParametersKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_encoded_video_session_parameters_khr)]()[]
+    self._vk_cmd_encode_video_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdEncodeVideoKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_encode_video_khr)]()[]
+
     fn get_physical_device_video_encode_quality_level_properties_khr(
         self,
         physical_device: PhysicalDevice,
@@ -2301,7 +2766,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_event_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdSetEvent2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_event_2)]()[]    self._vk_cmd_reset_event_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdResetEvent2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_reset_event_2)]()[]    self._vk_cmd_wait_events_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdWaitEvents2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_wait_events_2)]()[]    self._vk_cmd_pipeline_barrier_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdPipelineBarrier2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_pipeline_barrier_2)]()[]    self._vk_cmd_write_timestamp_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdWriteTimestamp2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_write_timestamp_2)]()[]    self._vk_queue_submit_2 = Ptr(to=get_device_proc_addr(        device, "vkQueueSubmit2".unsafe_ptr()    )).bitcast[__type_of(self._vk_queue_submit_2)]()[]
+    self._vk_cmd_set_event_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetEvent2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_event_2)]()[]
+    self._vk_cmd_reset_event_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdResetEvent2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_reset_event_2)]()[]
+    self._vk_cmd_wait_events_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdWaitEvents2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_wait_events_2)]()[]
+    self._vk_cmd_pipeline_barrier_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdPipelineBarrier2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_pipeline_barrier_2)]()[]
+    self._vk_cmd_write_timestamp_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdWriteTimestamp2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_write_timestamp_2)]()[]
+    self._vk_queue_submit_2 = Ptr(to=get_device_proc_addr(
+        device, "vkQueueSubmit2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_queue_submit_2)]()[]
+
     fn cmd_set_event_2(
         self, command_buffer: CommandBuffer, event: Event, dependency_info: DependencyInfo
     ):
@@ -2370,7 +2853,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_copy_buffer_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyBuffer2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_buffer_2)]()[]    self._vk_cmd_copy_image_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyImage2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_image_2)]()[]    self._vk_cmd_copy_buffer_to_image_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyBufferToImage2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_buffer_to_image_2)]()[]    self._vk_cmd_copy_image_to_buffer_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyImageToBuffer2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_image_to_buffer_2)]()[]    self._vk_cmd_blit_image_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdBlitImage2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_blit_image_2)]()[]    self._vk_cmd_resolve_image_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdResolveImage2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_resolve_image_2)]()[]
+    self._vk_cmd_copy_buffer_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyBuffer2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_buffer_2)]()[]
+    self._vk_cmd_copy_image_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyImage2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_image_2)]()[]
+    self._vk_cmd_copy_buffer_to_image_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyBufferToImage2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_buffer_to_image_2)]()[]
+    self._vk_cmd_copy_image_to_buffer_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyImageToBuffer2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_image_to_buffer_2)]()[]
+    self._vk_cmd_blit_image_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBlitImage2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_blit_image_2)]()[]
+    self._vk_cmd_resolve_image_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdResolveImage2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_resolve_image_2)]()[]
+
     fn cmd_copy_buffer_2(self, command_buffer: CommandBuffer, copy_buffer_info: CopyBufferInfo2):
         """See official vulkan docs for details.
 
@@ -2423,7 +2924,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_trace_rays_indirect_2_khr = Ptr(to=get_device_proc_addr(        device, "vkCmdTraceRaysIndirect2KHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_trace_rays_indirect_2_khr)]()[]
+    self._vk_cmd_trace_rays_indirect_2_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCmdTraceRaysIndirect2KHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_trace_rays_indirect_2_khr)]()[]
+
     fn cmd_trace_rays_indirect_2_khr(
         self, command_buffer: CommandBuffer, indirect_device_address: DeviceAddress
     ):
@@ -2437,7 +2941,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_device_buffer_memory_requirements = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceBufferMemoryRequirements".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_buffer_memory_requirements)]()[]    self._vk_get_device_image_memory_requirements = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceImageMemoryRequirements".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_image_memory_requirements)]()[]    self._vk_get_device_image_sparse_memory_requirements = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceImageSparseMemoryRequirements".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_image_sparse_memory_requirements)]()[]
+    self._vk_get_device_buffer_memory_requirements = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceBufferMemoryRequirements".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_buffer_memory_requirements)]()[]
+    self._vk_get_device_image_memory_requirements = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceImageMemoryRequirements".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_image_memory_requirements)]()[]
+    self._vk_get_device_image_sparse_memory_requirements = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceImageSparseMemoryRequirements".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_image_sparse_memory_requirements)]()[]
+
     fn get_device_buffer_memory_requirements(
         self,
         device: Device,
@@ -2488,7 +3001,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_bind_index_buffer_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdBindIndexBuffer2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_index_buffer_2)]()[]    self._vk_get_rendering_area_granularity = Ptr(to=get_device_proc_addr(        device, "vkGetRenderingAreaGranularity".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_rendering_area_granularity)]()[]    self._vk_get_device_image_subresource_layout = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceImageSubresourceLayout".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_image_subresource_layout)]()[]    self._vk_get_image_subresource_layout_2 = Ptr(to=get_device_proc_addr(        device, "vkGetImageSubresourceLayout2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_subresource_layout_2)]()[]
+    self._vk_cmd_bind_index_buffer_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBindIndexBuffer2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_bind_index_buffer_2)]()[]
+    self._vk_get_rendering_area_granularity = Ptr(to=get_device_proc_addr(
+        device, "vkGetRenderingAreaGranularity".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_rendering_area_granularity)]()[]
+    self._vk_get_device_image_subresource_layout = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceImageSubresourceLayout".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_image_subresource_layout)]()[]
+    self._vk_get_image_subresource_layout_2 = Ptr(to=get_device_proc_addr(
+        device, "vkGetImageSubresourceLayout2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_image_subresource_layout_2)]()[]
+
     fn cmd_bind_index_buffer_2(
         self,
         command_buffer: CommandBuffer,
@@ -2542,7 +3067,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_wait_for_present_2_khr = Ptr(to=get_device_proc_addr(        device, "vkWaitForPresent2KHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_wait_for_present_2_khr)]()[]
+    self._vk_wait_for_present_2_khr = Ptr(to=get_device_proc_addr(
+        device, "vkWaitForPresent2KHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_wait_for_present_2_khr)]()[]
+
     fn wait_for_present_2_khr(
         self, device: Device, swapchain: SwapchainKHR, present_wait_2_info: PresentWait2InfoKHR
     ) -> Result:
@@ -2556,7 +3084,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_pipeline_binaries_khr = Ptr(to=get_device_proc_addr(        device, "vkCreatePipelineBinariesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_pipeline_binaries_khr)]()[]    self._vk_destroy_pipeline_binary_khr = Ptr(to=get_device_proc_addr(        device, "vkDestroyPipelineBinaryKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_pipeline_binary_khr)]()[]    self._vk_get_pipeline_key_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPipelineKeyKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_pipeline_key_khr)]()[]    self._vk_get_pipeline_binary_data_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPipelineBinaryDataKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_pipeline_binary_data_khr)]()[]    self._vk_release_captured_pipeline_data_khr = Ptr(to=get_device_proc_addr(        device, "vkReleaseCapturedPipelineDataKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_release_captured_pipeline_data_khr)]()[]
+    self._vk_create_pipeline_binaries_khr = Ptr(to=get_device_proc_addr(
+        device, "vkCreatePipelineBinariesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_pipeline_binaries_khr)]()[]
+    self._vk_destroy_pipeline_binary_khr = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyPipelineBinaryKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_pipeline_binary_khr)]()[]
+    self._vk_get_pipeline_key_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPipelineKeyKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_pipeline_key_khr)]()[]
+    self._vk_get_pipeline_binary_data_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPipelineBinaryDataKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_pipeline_binary_data_khr)]()[]
+    self._vk_release_captured_pipeline_data_khr = Ptr(to=get_device_proc_addr(
+        device, "vkReleaseCapturedPipelineDataKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_release_captured_pipeline_data_khr)]()[]
+
     fn create_pipeline_binaries_khr(
         self,
         device: Device,
@@ -2632,7 +3175,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_release_swapchain_images_khr = Ptr(to=get_device_proc_addr(        device, "vkReleaseSwapchainImagesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_release_swapchain_images_khr)]()[]
+    self._vk_release_swapchain_images_khr = Ptr(to=get_device_proc_addr(
+        device, "vkReleaseSwapchainImagesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_release_swapchain_images_khr)]()[]
+
     fn release_swapchain_images_khr(
         self, device: Device, release_info: ReleaseSwapchainImagesInfoKHR
     ) -> Result:
@@ -2646,7 +3192,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_physical_device_cooperative_matrix_properties_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_cooperative_matrix_properties_khr)]()[]
+    self._vk_get_physical_device_cooperative_matrix_properties_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_cooperative_matrix_properties_khr)]()[]
+
     fn get_physical_device_cooperative_matrix_properties_khr(
         self,
         physical_device: PhysicalDevice,
@@ -2665,7 +3214,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_line_stipple = Ptr(to=get_device_proc_addr(        device, "vkCmdSetLineStipple".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_line_stipple)]()[]
+    self._vk_cmd_set_line_stipple = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetLineStipple".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_line_stipple)]()[]
+
     fn cmd_set_line_stipple(
         self,
         command_buffer: CommandBuffer,
@@ -2684,7 +3236,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_physical_device_calibrateable_time_domains_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceCalibrateableTimeDomainsKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_calibrateable_time_domains_khr)]()[]    self._vk_get_calibrated_timestamps_khr = Ptr(to=get_device_proc_addr(        device, "vkGetCalibratedTimestampsKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_calibrated_timestamps_khr)]()[]
+    self._vk_get_physical_device_calibrateable_time_domains_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceCalibrateableTimeDomainsKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_calibrateable_time_domains_khr)]()[]
+    self._vk_get_calibrated_timestamps_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetCalibratedTimestampsKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_calibrated_timestamps_khr)]()[]
+
     fn get_physical_device_calibrateable_time_domains_khr(
         self,
         physical_device: PhysicalDevice,
@@ -2723,7 +3281,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_bind_descriptor_sets_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdBindDescriptorSets2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_descriptor_sets_2)]()[]    self._vk_cmd_push_constants_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdPushConstants2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_push_constants_2)]()[]    self._vk_cmd_push_descriptor_set_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdPushDescriptorSet2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_push_descriptor_set_2)]()[]    self._vk_cmd_push_descriptor_set_with_template_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdPushDescriptorSetWithTemplate2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_push_descriptor_set_with_template_2)]()[]    self._vk_cmd_set_descriptor_buffer_offsets_2_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDescriptorBufferOffsets2EXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_descriptor_buffer_offsets_2_ext)]()[]    self._vk_cmd_bind_descriptor_buffer_embedded_samplers_2_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdBindDescriptorBufferEmbeddedSamplers2EXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_descriptor_buffer_embedded_samplers_2_ext)]()[]
+    self._vk_cmd_bind_descriptor_sets_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBindDescriptorSets2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_bind_descriptor_sets_2)]()[]
+    self._vk_cmd_push_constants_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdPushConstants2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_push_constants_2)]()[]
+    self._vk_cmd_push_descriptor_set_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdPushDescriptorSet2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_push_descriptor_set_2)]()[]
+    self._vk_cmd_push_descriptor_set_with_template_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdPushDescriptorSetWithTemplate2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_push_descriptor_set_with_template_2)]()[]
+    self._vk_cmd_set_descriptor_buffer_offsets_2_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDescriptorBufferOffsets2EXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_descriptor_buffer_offsets_2_ext)]()[]
+    self._vk_cmd_bind_descriptor_buffer_embedded_samplers_2_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBindDescriptorBufferEmbeddedSamplers2EXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_bind_descriptor_buffer_embedded_samplers_2_ext)]()[]
+
     fn cmd_bind_descriptor_sets_2(
         self, command_buffer: CommandBuffer, bind_descriptor_sets_info: BindDescriptorSetsInfo
     ):
@@ -2794,7 +3370,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_debug_report_callback_ext = Ptr(to=get_instance_proc_addr(        instance, "vkCreateDebugReportCallbackEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_debug_report_callback_ext)]()[]    self._vk_destroy_debug_report_callback_ext = Ptr(to=get_instance_proc_addr(        instance, "vkDestroyDebugReportCallbackEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_debug_report_callback_ext)]()[]    self._vk_debug_report_message_ext = Ptr(to=get_instance_proc_addr(        instance, "vkDebugReportMessageEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_debug_report_message_ext)]()[]
+    self._vk_create_debug_report_callback_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateDebugReportCallbackEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_debug_report_callback_ext)]()[]
+    self._vk_destroy_debug_report_callback_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkDestroyDebugReportCallbackEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_debug_report_callback_ext)]()[]
+    self._vk_debug_report_message_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkDebugReportMessageEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_debug_report_message_ext)]()[]
+
     fn create_debug_report_callback_ext(
         self,
         instance: Instance,
@@ -2852,7 +3437,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_debug_marker_set_object_tag_ext = Ptr(to=get_device_proc_addr(        device, "vkDebugMarkerSetObjectTagEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_debug_marker_set_object_tag_ext)]()[]    self._vk_debug_marker_set_object_name_ext = Ptr(to=get_device_proc_addr(        device, "vkDebugMarkerSetObjectNameEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_debug_marker_set_object_name_ext)]()[]    self._vk_cmd_debug_marker_begin_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdDebugMarkerBeginEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_debug_marker_begin_ext)]()[]    self._vk_cmd_debug_marker_end_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdDebugMarkerEndEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_debug_marker_end_ext)]()[]    self._vk_cmd_debug_marker_insert_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdDebugMarkerInsertEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_debug_marker_insert_ext)]()[]
+    self._vk_debug_marker_set_object_tag_ext = Ptr(to=get_device_proc_addr(
+        device, "vkDebugMarkerSetObjectTagEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_debug_marker_set_object_tag_ext)]()[]
+    self._vk_debug_marker_set_object_name_ext = Ptr(to=get_device_proc_addr(
+        device, "vkDebugMarkerSetObjectNameEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_debug_marker_set_object_name_ext)]()[]
+    self._vk_cmd_debug_marker_begin_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDebugMarkerBeginEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_debug_marker_begin_ext)]()[]
+    self._vk_cmd_debug_marker_end_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDebugMarkerEndEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_debug_marker_end_ext)]()[]
+    self._vk_cmd_debug_marker_insert_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDebugMarkerInsertEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_debug_marker_insert_ext)]()[]
+
     fn debug_marker_set_object_tag_ext(
         self, device: Device, tag_info: DebugMarkerObjectTagInfoEXT
     ) -> Result:
@@ -2900,7 +3500,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_bind_transform_feedback_buffers_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdBindTransformFeedbackBuffersEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_transform_feedback_buffers_ext)]()[]    self._vk_cmd_begin_transform_feedback_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdBeginTransformFeedbackEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_begin_transform_feedback_ext)]()[]    self._vk_cmd_end_transform_feedback_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdEndTransformFeedbackEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_end_transform_feedback_ext)]()[]    self._vk_cmd_begin_query_indexed_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdBeginQueryIndexedEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_begin_query_indexed_ext)]()[]    self._vk_cmd_end_query_indexed_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdEndQueryIndexedEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_end_query_indexed_ext)]()[]    self._vk_cmd_draw_indirect_byte_count_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawIndirectByteCountEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_indirect_byte_count_ext)]()[]
+    self._vk_cmd_bind_transform_feedback_buffers_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBindTransformFeedbackBuffersEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_bind_transform_feedback_buffers_ext)]()[]
+    self._vk_cmd_begin_transform_feedback_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBeginTransformFeedbackEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_begin_transform_feedback_ext)]()[]
+    self._vk_cmd_end_transform_feedback_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdEndTransformFeedbackEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_end_transform_feedback_ext)]()[]
+    self._vk_cmd_begin_query_indexed_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBeginQueryIndexedEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_begin_query_indexed_ext)]()[]
+    self._vk_cmd_end_query_indexed_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdEndQueryIndexedEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_end_query_indexed_ext)]()[]
+    self._vk_cmd_draw_indirect_byte_count_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawIndirectByteCountEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_indirect_byte_count_ext)]()[]
+
     fn cmd_bind_transform_feedback_buffers_ext(
         self,
         command_buffer: CommandBuffer,
@@ -3009,7 +3627,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_begin_conditional_rendering_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdBeginConditionalRenderingEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_begin_conditional_rendering_ext)]()[]    self._vk_cmd_end_conditional_rendering_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdEndConditionalRenderingEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_end_conditional_rendering_ext)]()[]
+    self._vk_cmd_begin_conditional_rendering_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBeginConditionalRenderingEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_begin_conditional_rendering_ext)]()[]
+    self._vk_cmd_end_conditional_rendering_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdEndConditionalRenderingEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_end_conditional_rendering_ext)]()[]
+
     fn cmd_begin_conditional_rendering_ext(
         self,
         command_buffer: CommandBuffer,
@@ -3034,7 +3658,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_release_display_ext = Ptr(to=get_instance_proc_addr(        instance, "vkReleaseDisplayEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_release_display_ext)]()[]
+    self._vk_release_display_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkReleaseDisplayEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_release_display_ext)]()[]
+
     fn release_display_ext(self, physical_device: PhysicalDevice, display: DisplayKHR) -> Result:
         """See official vulkan docs for details.
 
@@ -3046,7 +3673,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_acquire_xlib_display_ext = Ptr(to=get_instance_proc_addr(        instance, "vkAcquireXlibDisplayEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_acquire_xlib_display_ext)]()[]    self._vk_get_rand_r_output_display_ext = Ptr(to=get_instance_proc_addr(        instance, "vkGetRandROutputDisplayEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_rand_r_output_display_ext)]()[]
+    self._vk_acquire_xlib_display_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkAcquireXlibDisplayEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_acquire_xlib_display_ext)]()[]
+    self._vk_get_rand_r_output_display_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetRandROutputDisplayEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_rand_r_output_display_ext)]()[]
+
     fn acquire_xlib_display_ext(
         self, physical_device: PhysicalDevice, dpy: Display, display: DisplayKHR
     ) -> Result:
@@ -3075,7 +3708,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_get_physical_device_surface_capabilities_2_ext = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceSurfaceCapabilities2EXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_surface_capabilities_2_ext)]()[]
+    self._vk_get_physical_device_surface_capabilities_2_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceSurfaceCapabilities2EXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_surface_capabilities_2_ext)]()[]
+
     fn get_physical_device_surface_capabilities_2_ext(
         self,
         physical_device: PhysicalDevice,
@@ -3094,7 +3730,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_display_power_control_ext = Ptr(to=get_device_proc_addr(        device, "vkDisplayPowerControlEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_display_power_control_ext)]()[]    self._vk_register_device_event_ext = Ptr(to=get_device_proc_addr(        device, "vkRegisterDeviceEventEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_register_device_event_ext)]()[]    self._vk_register_display_event_ext = Ptr(to=get_device_proc_addr(        device, "vkRegisterDisplayEventEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_register_display_event_ext)]()[]    self._vk_get_swapchain_counter_ext = Ptr(to=get_device_proc_addr(        device, "vkGetSwapchainCounterEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_swapchain_counter_ext)]()[]
+    self._vk_display_power_control_ext = Ptr(to=get_device_proc_addr(
+        device, "vkDisplayPowerControlEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_display_power_control_ext)]()[]
+    self._vk_register_device_event_ext = Ptr(to=get_device_proc_addr(
+        device, "vkRegisterDeviceEventEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_register_device_event_ext)]()[]
+    self._vk_register_display_event_ext = Ptr(to=get_device_proc_addr(
+        device, "vkRegisterDisplayEventEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_register_display_event_ext)]()[]
+    self._vk_get_swapchain_counter_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetSwapchainCounterEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_swapchain_counter_ext)]()[]
+
     fn display_power_control_ext(
         self, device: Device, display: DisplayKHR, display_power_info: DisplayPowerInfoEXT
     ) -> Result:
@@ -3152,7 +3800,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_discard_rectangle_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDiscardRectangleEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_discard_rectangle_ext)]()[]    self._vk_cmd_set_discard_rectangle_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDiscardRectangleEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_discard_rectangle_enable_ext)]()[]    self._vk_cmd_set_discard_rectangle_mode_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDiscardRectangleModeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_discard_rectangle_mode_ext)]()[]
+    self._vk_cmd_set_discard_rectangle_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDiscardRectangleEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_discard_rectangle_ext)]()[]
+    self._vk_cmd_set_discard_rectangle_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDiscardRectangleEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_discard_rectangle_enable_ext)]()[]
+    self._vk_cmd_set_discard_rectangle_mode_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDiscardRectangleModeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_discard_rectangle_mode_ext)]()[]
+
     fn cmd_set_discard_rectangle_ext(
         self,
         command_buffer: CommandBuffer,
@@ -3193,7 +3850,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_set_hdr_metadata_ext = Ptr(to=get_device_proc_addr(        device, "vkSetHdrMetadataEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_set_hdr_metadata_ext)]()[]
+    self._vk_set_hdr_metadata_ext = Ptr(to=get_device_proc_addr(
+        device, "vkSetHdrMetadataEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_set_hdr_metadata_ext)]()[]
+
     fn set_hdr_metadata_ext(
         self,
         device: Device,
@@ -3213,7 +3873,40 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_set_debug_utils_object_name_ext = Ptr(to=get_instance_proc_addr(        instance, "vkSetDebugUtilsObjectNameEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_set_debug_utils_object_name_ext)]()[]    self._vk_set_debug_utils_object_tag_ext = Ptr(to=get_instance_proc_addr(        instance, "vkSetDebugUtilsObjectTagEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_set_debug_utils_object_tag_ext)]()[]    self._vk_queue_begin_debug_utils_label_ext = Ptr(to=get_instance_proc_addr(        instance, "vkQueueBeginDebugUtilsLabelEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_queue_begin_debug_utils_label_ext)]()[]    self._vk_queue_end_debug_utils_label_ext = Ptr(to=get_instance_proc_addr(        instance, "vkQueueEndDebugUtilsLabelEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_queue_end_debug_utils_label_ext)]()[]    self._vk_queue_insert_debug_utils_label_ext = Ptr(to=get_instance_proc_addr(        instance, "vkQueueInsertDebugUtilsLabelEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_queue_insert_debug_utils_label_ext)]()[]    self._vk_cmd_begin_debug_utils_label_ext = Ptr(to=get_instance_proc_addr(        instance, "vkCmdBeginDebugUtilsLabelEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_begin_debug_utils_label_ext)]()[]    self._vk_cmd_end_debug_utils_label_ext = Ptr(to=get_instance_proc_addr(        instance, "vkCmdEndDebugUtilsLabelEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_end_debug_utils_label_ext)]()[]    self._vk_cmd_insert_debug_utils_label_ext = Ptr(to=get_instance_proc_addr(        instance, "vkCmdInsertDebugUtilsLabelEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_insert_debug_utils_label_ext)]()[]    self._vk_create_debug_utils_messenger_ext = Ptr(to=get_instance_proc_addr(        instance, "vkCreateDebugUtilsMessengerEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_debug_utils_messenger_ext)]()[]    self._vk_destroy_debug_utils_messenger_ext = Ptr(to=get_instance_proc_addr(        instance, "vkDestroyDebugUtilsMessengerEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_debug_utils_messenger_ext)]()[]    self._vk_submit_debug_utils_message_ext = Ptr(to=get_instance_proc_addr(        instance, "vkSubmitDebugUtilsMessageEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_submit_debug_utils_message_ext)]()[]
+    self._vk_set_debug_utils_object_name_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkSetDebugUtilsObjectNameEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_set_debug_utils_object_name_ext)]()[]
+    self._vk_set_debug_utils_object_tag_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkSetDebugUtilsObjectTagEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_set_debug_utils_object_tag_ext)]()[]
+    self._vk_queue_begin_debug_utils_label_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkQueueBeginDebugUtilsLabelEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_queue_begin_debug_utils_label_ext)]()[]
+    self._vk_queue_end_debug_utils_label_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkQueueEndDebugUtilsLabelEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_queue_end_debug_utils_label_ext)]()[]
+    self._vk_queue_insert_debug_utils_label_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkQueueInsertDebugUtilsLabelEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_queue_insert_debug_utils_label_ext)]()[]
+    self._vk_cmd_begin_debug_utils_label_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkCmdBeginDebugUtilsLabelEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_begin_debug_utils_label_ext)]()[]
+    self._vk_cmd_end_debug_utils_label_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkCmdEndDebugUtilsLabelEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_end_debug_utils_label_ext)]()[]
+    self._vk_cmd_insert_debug_utils_label_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkCmdInsertDebugUtilsLabelEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_insert_debug_utils_label_ext)]()[]
+    self._vk_create_debug_utils_messenger_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateDebugUtilsMessengerEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_debug_utils_messenger_ext)]()[]
+    self._vk_destroy_debug_utils_messenger_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkDestroyDebugUtilsMessengerEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_debug_utils_messenger_ext)]()[]
+    self._vk_submit_debug_utils_message_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkSubmitDebugUtilsMessageEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_submit_debug_utils_message_ext)]()[]
+
     fn set_debug_utils_object_name_ext(
         self, device: Device, name_info: DebugUtilsObjectNameInfoEXT
     ) -> Result:
@@ -3324,7 +4017,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_sample_locations_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetSampleLocationsEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_sample_locations_ext)]()[]    self._vk_get_physical_device_multisample_properties_ext = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceMultisamplePropertiesEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_multisample_properties_ext)]()[]
+    self._vk_cmd_set_sample_locations_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetSampleLocationsEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_sample_locations_ext)]()[]
+    self._vk_get_physical_device_multisample_properties_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceMultisamplePropertiesEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_multisample_properties_ext)]()[]
+
     fn cmd_set_sample_locations_ext(
         self, command_buffer: CommandBuffer, sample_locations_info: SampleLocationsInfoEXT
     ):
@@ -3352,7 +4051,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_image_drm_format_modifier_properties_ext = Ptr(to=get_device_proc_addr(        device, "vkGetImageDrmFormatModifierPropertiesEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_drm_format_modifier_properties_ext)]()[]
+    self._vk_get_image_drm_format_modifier_properties_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetImageDrmFormatModifierPropertiesEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_image_drm_format_modifier_properties_ext)]()[]
+
     fn get_image_drm_format_modifier_properties_ext(
         self, device: Device, image: Image, properties: ImageDrmFormatModifierPropertiesEXT
     ) -> Result:
@@ -3368,7 +4070,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_validation_cache_ext = Ptr(to=get_device_proc_addr(        device, "vkCreateValidationCacheEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_validation_cache_ext)]()[]    self._vk_destroy_validation_cache_ext = Ptr(to=get_device_proc_addr(        device, "vkDestroyValidationCacheEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_validation_cache_ext)]()[]    self._vk_merge_validation_caches_ext = Ptr(to=get_device_proc_addr(        device, "vkMergeValidationCachesEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_merge_validation_caches_ext)]()[]    self._vk_get_validation_cache_data_ext = Ptr(to=get_device_proc_addr(        device, "vkGetValidationCacheDataEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_validation_cache_data_ext)]()[]
+    self._vk_create_validation_cache_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCreateValidationCacheEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_validation_cache_ext)]()[]
+    self._vk_destroy_validation_cache_ext = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyValidationCacheEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_validation_cache_ext)]()[]
+    self._vk_merge_validation_caches_ext = Ptr(to=get_device_proc_addr(
+        device, "vkMergeValidationCachesEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_merge_validation_caches_ext)]()[]
+    self._vk_get_validation_cache_data_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetValidationCacheDataEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_validation_cache_data_ext)]()[]
+
     fn create_validation_cache_ext(
         self,
         device: Device,
@@ -3430,7 +4144,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_memory_host_pointer_properties_ext = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryHostPointerPropertiesEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_host_pointer_properties_ext)]()[]
+    self._vk_get_memory_host_pointer_properties_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetMemoryHostPointerPropertiesEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_memory_host_pointer_properties_ext)]()[]
+
     fn get_memory_host_pointer_properties_ext(
         self,
         device: Device,
@@ -3450,7 +4167,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_physical_device_calibrateable_time_domains_khr = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceCalibrateableTimeDomainsKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_calibrateable_time_domains_khr)]()[]    self._vk_get_calibrated_timestamps_khr = Ptr(to=get_device_proc_addr(        device, "vkGetCalibratedTimestampsKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_calibrated_timestamps_khr)]()[]
+    self._vk_get_physical_device_calibrateable_time_domains_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceCalibrateableTimeDomainsKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_calibrateable_time_domains_khr)]()[]
+    self._vk_get_calibrated_timestamps_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetCalibratedTimestampsKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_calibrated_timestamps_khr)]()[]
+
     fn get_physical_device_calibrateable_time_domains_khr(
         self,
         physical_device: PhysicalDevice,
@@ -3489,7 +4212,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_metal_surface_ext = Ptr(to=get_instance_proc_addr(        instance, "vkCreateMetalSurfaceEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_metal_surface_ext)]()[]
+    self._vk_create_metal_surface_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateMetalSurfaceEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_metal_surface_ext)]()[]
+
     fn create_metal_surface_ext(
         self,
         instance: Instance,
@@ -3509,7 +4235,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_buffer_device_address = Ptr(to=get_device_proc_addr(        device, "vkGetBufferDeviceAddress".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_buffer_device_address)]()[]
+    self._vk_get_buffer_device_address = Ptr(to=get_device_proc_addr(
+        device, "vkGetBufferDeviceAddress".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_buffer_device_address)]()[]
+
     fn get_buffer_device_address(
         self, device: Device, info: BufferDeviceAddressInfo
     ) -> DeviceAddress:
@@ -3523,7 +4252,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_physical_device_tool_properties = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceToolProperties".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_tool_properties)]()[]
+    self._vk_get_physical_device_tool_properties = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceToolProperties".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_tool_properties)]()[]
+
     fn get_physical_device_tool_properties(
         self,
         physical_device: PhysicalDevice,
@@ -3542,7 +4274,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_physical_device_surface_present_modes_2_ext = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceSurfacePresentModes2EXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_surface_present_modes_2_ext)]()[]    self._vk_acquire_full_screen_exclusive_mode_ext = Ptr(to=get_device_proc_addr(        device, "vkAcquireFullScreenExclusiveModeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_acquire_full_screen_exclusive_mode_ext)]()[]    self._vk_release_full_screen_exclusive_mode_ext = Ptr(to=get_device_proc_addr(        device, "vkReleaseFullScreenExclusiveModeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_release_full_screen_exclusive_mode_ext)]()[]    self._vk_get_device_group_surface_present_modes_2_ext = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceGroupSurfacePresentModes2EXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_group_surface_present_modes_2_ext)]()[]
+    self._vk_get_physical_device_surface_present_modes_2_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceSurfacePresentModes2EXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_surface_present_modes_2_ext)]()[]
+    self._vk_acquire_full_screen_exclusive_mode_ext = Ptr(to=get_device_proc_addr(
+        device, "vkAcquireFullScreenExclusiveModeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_acquire_full_screen_exclusive_mode_ext)]()[]
+    self._vk_release_full_screen_exclusive_mode_ext = Ptr(to=get_device_proc_addr(
+        device, "vkReleaseFullScreenExclusiveModeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_release_full_screen_exclusive_mode_ext)]()[]
+    self._vk_get_device_group_surface_present_modes_2_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceGroupSurfacePresentModes2EXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_group_surface_present_modes_2_ext)]()[]
+
     fn get_physical_device_surface_present_modes_2_ext(
         self,
         physical_device: PhysicalDevice,
@@ -3594,7 +4338,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_headless_surface_ext = Ptr(to=get_instance_proc_addr(        instance, "vkCreateHeadlessSurfaceEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_headless_surface_ext)]()[]
+    self._vk_create_headless_surface_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateHeadlessSurfaceEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_headless_surface_ext)]()[]
+
     fn create_headless_surface_ext(
         self,
         instance: Instance,
@@ -3614,7 +4361,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_line_stipple = Ptr(to=get_device_proc_addr(        device, "vkCmdSetLineStipple".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_line_stipple)]()[]
+    self._vk_cmd_set_line_stipple = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetLineStipple".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_line_stipple)]()[]
+
     fn cmd_set_line_stipple(
         self,
         command_buffer: CommandBuffer,
@@ -3633,7 +4383,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_reset_query_pool = Ptr(to=get_device_proc_addr(        device, "vkResetQueryPool".unsafe_ptr()    )).bitcast[__type_of(self._vk_reset_query_pool)]()[]
+    self._vk_reset_query_pool = Ptr(to=get_device_proc_addr(
+        device, "vkResetQueryPool".unsafe_ptr()
+    )).bitcast[type_of(self._vk_reset_query_pool)]()[]
+
     fn reset_query_pool(
         self, device: Device, query_pool: QueryPool, first_query: UInt32, query_count: UInt32
     ):
@@ -3647,7 +4400,43 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_cull_mode = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCullMode".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_cull_mode)]()[]    self._vk_cmd_set_front_face = Ptr(to=get_device_proc_addr(        device, "vkCmdSetFrontFace".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_front_face)]()[]    self._vk_cmd_set_primitive_topology = Ptr(to=get_device_proc_addr(        device, "vkCmdSetPrimitiveTopology".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_primitive_topology)]()[]    self._vk_cmd_set_viewport_with_count = Ptr(to=get_device_proc_addr(        device, "vkCmdSetViewportWithCount".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_viewport_with_count)]()[]    self._vk_cmd_set_scissor_with_count = Ptr(to=get_device_proc_addr(        device, "vkCmdSetScissorWithCount".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_scissor_with_count)]()[]    self._vk_cmd_bind_vertex_buffers_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdBindVertexBuffers2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_vertex_buffers_2)]()[]    self._vk_cmd_set_depth_test_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthTestEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_test_enable)]()[]    self._vk_cmd_set_depth_write_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthWriteEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_write_enable)]()[]    self._vk_cmd_set_depth_compare_op = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthCompareOp".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_compare_op)]()[]    self._vk_cmd_set_depth_bounds_test_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthBoundsTestEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_bounds_test_enable)]()[]    self._vk_cmd_set_stencil_test_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetStencilTestEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_stencil_test_enable)]()[]    self._vk_cmd_set_stencil_op = Ptr(to=get_device_proc_addr(        device, "vkCmdSetStencilOp".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_stencil_op)]()[]
+    self._vk_cmd_set_cull_mode = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCullMode".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_cull_mode)]()[]
+    self._vk_cmd_set_front_face = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetFrontFace".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_front_face)]()[]
+    self._vk_cmd_set_primitive_topology = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetPrimitiveTopology".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_primitive_topology)]()[]
+    self._vk_cmd_set_viewport_with_count = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetViewportWithCount".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_viewport_with_count)]()[]
+    self._vk_cmd_set_scissor_with_count = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetScissorWithCount".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_scissor_with_count)]()[]
+    self._vk_cmd_bind_vertex_buffers_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBindVertexBuffers2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_bind_vertex_buffers_2)]()[]
+    self._vk_cmd_set_depth_test_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthTestEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_test_enable)]()[]
+    self._vk_cmd_set_depth_write_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthWriteEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_write_enable)]()[]
+    self._vk_cmd_set_depth_compare_op = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthCompareOp".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_compare_op)]()[]
+    self._vk_cmd_set_depth_bounds_test_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthBoundsTestEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_bounds_test_enable)]()[]
+    self._vk_cmd_set_stencil_test_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetStencilTestEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_stencil_test_enable)]()[]
+    self._vk_cmd_set_stencil_op = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetStencilOp".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_stencil_op)]()[]
+
     fn cmd_set_cull_mode(self, command_buffer: CommandBuffer, cull_mode: CullModeFlags):
         """See official vulkan docs for details.
 
@@ -3773,7 +4562,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_copy_memory_to_image = Ptr(to=get_device_proc_addr(        device, "vkCopyMemoryToImage".unsafe_ptr()    )).bitcast[__type_of(self._vk_copy_memory_to_image)]()[]    self._vk_copy_image_to_memory = Ptr(to=get_device_proc_addr(        device, "vkCopyImageToMemory".unsafe_ptr()    )).bitcast[__type_of(self._vk_copy_image_to_memory)]()[]    self._vk_copy_image_to_image = Ptr(to=get_device_proc_addr(        device, "vkCopyImageToImage".unsafe_ptr()    )).bitcast[__type_of(self._vk_copy_image_to_image)]()[]    self._vk_transition_image_layout = Ptr(to=get_device_proc_addr(        device, "vkTransitionImageLayout".unsafe_ptr()    )).bitcast[__type_of(self._vk_transition_image_layout)]()[]    self._vk_get_image_subresource_layout_2 = Ptr(to=get_device_proc_addr(        device, "vkGetImageSubresourceLayout2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_subresource_layout_2)]()[]
+    self._vk_copy_memory_to_image = Ptr(to=get_device_proc_addr(
+        device, "vkCopyMemoryToImage".unsafe_ptr()
+    )).bitcast[type_of(self._vk_copy_memory_to_image)]()[]
+    self._vk_copy_image_to_memory = Ptr(to=get_device_proc_addr(
+        device, "vkCopyImageToMemory".unsafe_ptr()
+    )).bitcast[type_of(self._vk_copy_image_to_memory)]()[]
+    self._vk_copy_image_to_image = Ptr(to=get_device_proc_addr(
+        device, "vkCopyImageToImage".unsafe_ptr()
+    )).bitcast[type_of(self._vk_copy_image_to_image)]()[]
+    self._vk_transition_image_layout = Ptr(to=get_device_proc_addr(
+        device, "vkTransitionImageLayout".unsafe_ptr()
+    )).bitcast[type_of(self._vk_transition_image_layout)]()[]
+    self._vk_get_image_subresource_layout_2 = Ptr(to=get_device_proc_addr(
+        device, "vkGetImageSubresourceLayout2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_image_subresource_layout_2)]()[]
+
     fn copy_memory_to_image(
         self, device: Device, copy_memory_to_image_info: CopyMemoryToImageInfo
     ) -> Result:
@@ -3829,7 +4633,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_release_swapchain_images_khr = Ptr(to=get_device_proc_addr(        device, "vkReleaseSwapchainImagesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_release_swapchain_images_khr)]()[]
+    self._vk_release_swapchain_images_khr = Ptr(to=get_device_proc_addr(
+        device, "vkReleaseSwapchainImagesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_release_swapchain_images_khr)]()[]
+
     fn release_swapchain_images_khr(
         self, device: Device, release_info: ReleaseSwapchainImagesInfoKHR
     ) -> Result:
@@ -3843,7 +4650,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_depth_bias_2_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthBias2EXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_bias_2_ext)]()[]
+    self._vk_cmd_set_depth_bias_2_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthBias2EXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_bias_2_ext)]()[]
+
     fn cmd_set_depth_bias_2_ext(
         self, command_buffer: CommandBuffer, depth_bias_info: DepthBiasInfoEXT
     ):
@@ -3857,7 +4667,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_acquire_drm_display_ext = Ptr(to=get_instance_proc_addr(        instance, "vkAcquireDrmDisplayEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_acquire_drm_display_ext)]()[]    self._vk_get_drm_display_ext = Ptr(to=get_instance_proc_addr(        instance, "vkGetDrmDisplayEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_drm_display_ext)]()[]
+    self._vk_acquire_drm_display_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkAcquireDrmDisplayEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_acquire_drm_display_ext)]()[]
+    self._vk_get_drm_display_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetDrmDisplayEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_drm_display_ext)]()[]
+
     fn acquire_drm_display_ext(
         self, physical_device: PhysicalDevice, drm_fd: Int32, display: DisplayKHR
     ) -> Result:
@@ -3884,7 +4700,19 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_private_data_slot = Ptr(to=get_device_proc_addr(        device, "vkCreatePrivateDataSlot".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_private_data_slot)]()[]    self._vk_destroy_private_data_slot = Ptr(to=get_device_proc_addr(        device, "vkDestroyPrivateDataSlot".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_private_data_slot)]()[]    self._vk_set_private_data = Ptr(to=get_device_proc_addr(        device, "vkSetPrivateData".unsafe_ptr()    )).bitcast[__type_of(self._vk_set_private_data)]()[]    self._vk_get_private_data = Ptr(to=get_device_proc_addr(        device, "vkGetPrivateData".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_private_data)]()[]
+    self._vk_create_private_data_slot = Ptr(to=get_device_proc_addr(
+        device, "vkCreatePrivateDataSlot".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_private_data_slot)]()[]
+    self._vk_destroy_private_data_slot = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyPrivateDataSlot".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_private_data_slot)]()[]
+    self._vk_set_private_data = Ptr(to=get_device_proc_addr(
+        device, "vkSetPrivateData".unsafe_ptr()
+    )).bitcast[type_of(self._vk_set_private_data)]()[]
+    self._vk_get_private_data = Ptr(to=get_device_proc_addr(
+        device, "vkGetPrivateData".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_private_data)]()[]
+
     fn create_private_data_slot(
         self,
         device: Device,
@@ -3946,7 +4774,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_export_metal_objects_ext = Ptr(to=get_device_proc_addr(        device, "vkExportMetalObjectsEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_export_metal_objects_ext)]()[]
+    self._vk_export_metal_objects_ext = Ptr(to=get_device_proc_addr(
+        device, "vkExportMetalObjectsEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_export_metal_objects_ext)]()[]
+
     fn export_metal_objects_ext(
         self, device: Device, metal_objects_info: ExportMetalObjectsInfoEXT
     ):
@@ -3960,7 +4791,40 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_descriptor_set_layout_size_ext = Ptr(to=get_device_proc_addr(        device, "vkGetDescriptorSetLayoutSizeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_descriptor_set_layout_size_ext)]()[]    self._vk_get_descriptor_set_layout_binding_offset_ext = Ptr(to=get_device_proc_addr(        device, "vkGetDescriptorSetLayoutBindingOffsetEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_descriptor_set_layout_binding_offset_ext)]()[]    self._vk_get_descriptor_ext = Ptr(to=get_device_proc_addr(        device, "vkGetDescriptorEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_descriptor_ext)]()[]    self._vk_cmd_bind_descriptor_buffers_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdBindDescriptorBuffersEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_descriptor_buffers_ext)]()[]    self._vk_cmd_set_descriptor_buffer_offsets_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDescriptorBufferOffsetsEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_descriptor_buffer_offsets_ext)]()[]    self._vk_cmd_bind_descriptor_buffer_embedded_samplers_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdBindDescriptorBufferEmbeddedSamplersEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_descriptor_buffer_embedded_samplers_ext)]()[]    self._vk_get_buffer_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(        device, "vkGetBufferOpaqueCaptureDescriptorDataEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_buffer_opaque_capture_descriptor_data_ext)]()[]    self._vk_get_image_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(        device, "vkGetImageOpaqueCaptureDescriptorDataEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_opaque_capture_descriptor_data_ext)]()[]    self._vk_get_image_view_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(        device, "vkGetImageViewOpaqueCaptureDescriptorDataEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_view_opaque_capture_descriptor_data_ext)]()[]    self._vk_get_sampler_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(        device, "vkGetSamplerOpaqueCaptureDescriptorDataEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_sampler_opaque_capture_descriptor_data_ext)]()[]    self._vk_get_acceleration_structure_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(        device, "vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_acceleration_structure_opaque_capture_descriptor_data_ext)]()[]
+    self._vk_get_descriptor_set_layout_size_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetDescriptorSetLayoutSizeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_descriptor_set_layout_size_ext)]()[]
+    self._vk_get_descriptor_set_layout_binding_offset_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetDescriptorSetLayoutBindingOffsetEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_descriptor_set_layout_binding_offset_ext)]()[]
+    self._vk_get_descriptor_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetDescriptorEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_descriptor_ext)]()[]
+    self._vk_cmd_bind_descriptor_buffers_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBindDescriptorBuffersEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_bind_descriptor_buffers_ext)]()[]
+    self._vk_cmd_set_descriptor_buffer_offsets_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDescriptorBufferOffsetsEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_descriptor_buffer_offsets_ext)]()[]
+    self._vk_cmd_bind_descriptor_buffer_embedded_samplers_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBindDescriptorBufferEmbeddedSamplersEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_bind_descriptor_buffer_embedded_samplers_ext)]()[]
+    self._vk_get_buffer_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetBufferOpaqueCaptureDescriptorDataEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_buffer_opaque_capture_descriptor_data_ext)]()[]
+    self._vk_get_image_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetImageOpaqueCaptureDescriptorDataEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_image_opaque_capture_descriptor_data_ext)]()[]
+    self._vk_get_image_view_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetImageViewOpaqueCaptureDescriptorDataEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_image_view_opaque_capture_descriptor_data_ext)]()[]
+    self._vk_get_sampler_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetSamplerOpaqueCaptureDescriptorDataEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_sampler_opaque_capture_descriptor_data_ext)]()[]
+    self._vk_get_acceleration_structure_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_acceleration_structure_opaque_capture_descriptor_data_ext)]()[]
+
     fn get_descriptor_set_layout_size_ext(
         self, device: Device, layout: DescriptorSetLayout, layout_size_in_bytes: DeviceSize
     ):
@@ -4113,7 +4977,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_draw_mesh_tasks_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawMeshTasksEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_mesh_tasks_ext)]()[]    self._vk_cmd_draw_mesh_tasks_indirect_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawMeshTasksIndirectEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_mesh_tasks_indirect_ext)]()[]    self._vk_cmd_draw_mesh_tasks_indirect_count_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawMeshTasksIndirectCountEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_mesh_tasks_indirect_count_ext)]()[]
+    self._vk_cmd_draw_mesh_tasks_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawMeshTasksEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_mesh_tasks_ext)]()[]
+    self._vk_cmd_draw_mesh_tasks_indirect_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawMeshTasksIndirectEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_mesh_tasks_indirect_ext)]()[]
+    self._vk_cmd_draw_mesh_tasks_indirect_count_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawMeshTasksIndirectCountEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_mesh_tasks_indirect_count_ext)]()[]
+
     fn cmd_draw_mesh_tasks_ext(
         self,
         command_buffer: CommandBuffer,
@@ -4173,7 +5046,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_image_subresource_layout_2 = Ptr(to=get_device_proc_addr(        device, "vkGetImageSubresourceLayout2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_subresource_layout_2)]()[]
+    self._vk_get_image_subresource_layout_2 = Ptr(to=get_device_proc_addr(
+        device, "vkGetImageSubresourceLayout2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_image_subresource_layout_2)]()[]
+
     fn get_image_subresource_layout_2(
         self,
         device: Device,
@@ -4193,7 +5069,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_device_fault_info_ext = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceFaultInfoEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_fault_info_ext)]()[]
+    self._vk_get_device_fault_info_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceFaultInfoEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_fault_info_ext)]()[]
+
     fn get_device_fault_info_ext(
         self,
         device: Device,
@@ -4210,7 +5089,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_direct_fb_surface_ext = Ptr(to=get_instance_proc_addr(        instance, "vkCreateDirectFBSurfaceEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_direct_fb_surface_ext)]()[]    self._vk_get_physical_device_direct_fb_presentation_support_ext = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceDirectFBPresentationSupportEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_direct_fb_presentation_support_ext)]()[]
+    self._vk_create_direct_fb_surface_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateDirectFBSurfaceEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_direct_fb_surface_ext)]()[]
+    self._vk_get_physical_device_direct_fb_presentation_support_ext = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceDirectFBPresentationSupportEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_direct_fb_presentation_support_ext)]()[]
+
     fn create_direct_fb_surface_ext(
         self,
         instance: Instance,
@@ -4241,7 +5126,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_vertex_input_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetVertexInputEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_vertex_input_ext)]()[]
+    self._vk_cmd_set_vertex_input_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetVertexInputEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_vertex_input_ext)]()[]
+
     fn cmd_set_vertex_input_ext(
         self,
         command_buffer: CommandBuffer,
@@ -4266,7 +5154,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_pipeline_properties_ext = Ptr(to=get_device_proc_addr(        device, "vkGetPipelinePropertiesEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_pipeline_properties_ext)]()[]
+    self._vk_get_pipeline_properties_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetPipelinePropertiesEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_pipeline_properties_ext)]()[]
+
     fn get_pipeline_properties_ext(
         self, device: Device, pipeline_info: PipelineInfoEXT, pipeline_properties: BaseOutStructure
     ) -> Result:
@@ -4282,7 +5173,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_patch_control_points_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetPatchControlPointsEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_patch_control_points_ext)]()[]    self._vk_cmd_set_rasterizer_discard_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetRasterizerDiscardEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_rasterizer_discard_enable)]()[]    self._vk_cmd_set_depth_bias_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthBiasEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_bias_enable)]()[]    self._vk_cmd_set_logic_op_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetLogicOpEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_logic_op_ext)]()[]    self._vk_cmd_set_primitive_restart_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetPrimitiveRestartEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_primitive_restart_enable)]()[]
+    self._vk_cmd_set_patch_control_points_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetPatchControlPointsEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_patch_control_points_ext)]()[]
+    self._vk_cmd_set_rasterizer_discard_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetRasterizerDiscardEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_rasterizer_discard_enable)]()[]
+    self._vk_cmd_set_depth_bias_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthBiasEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_bias_enable)]()[]
+    self._vk_cmd_set_logic_op_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetLogicOpEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_logic_op_ext)]()[]
+    self._vk_cmd_set_primitive_restart_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetPrimitiveRestartEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_primitive_restart_enable)]()[]
+
     fn cmd_set_patch_control_points_ext(
         self, command_buffer: CommandBuffer, patch_control_points: UInt32
     ):
@@ -4328,7 +5234,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_color_write_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetColorWriteEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_color_write_enable_ext)]()[]
+    self._vk_cmd_set_color_write_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetColorWriteEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_color_write_enable_ext)]()[]
+
     fn cmd_set_color_write_enable_ext(
         self, command_buffer: CommandBuffer, attachment_count: UInt32, color_write_enables: Bool32
     ):
@@ -4344,7 +5253,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_draw_multi_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawMultiEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_multi_ext)]()[]    self._vk_cmd_draw_multi_indexed_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawMultiIndexedEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_multi_indexed_ext)]()[]
+    self._vk_cmd_draw_multi_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawMultiEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_multi_ext)]()[]
+    self._vk_cmd_draw_multi_indexed_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawMultiIndexedEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_multi_indexed_ext)]()[]
+
     fn cmd_draw_multi_ext(
         self,
         command_buffer: CommandBuffer,
@@ -4390,7 +5305,49 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_micromap_ext = Ptr(to=get_device_proc_addr(        device, "vkCreateMicromapEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_micromap_ext)]()[]    self._vk_destroy_micromap_ext = Ptr(to=get_device_proc_addr(        device, "vkDestroyMicromapEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_micromap_ext)]()[]    self._vk_cmd_build_micromaps_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdBuildMicromapsEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_build_micromaps_ext)]()[]    self._vk_build_micromaps_ext = Ptr(to=get_device_proc_addr(        device, "vkBuildMicromapsEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_build_micromaps_ext)]()[]    self._vk_copy_micromap_ext = Ptr(to=get_device_proc_addr(        device, "vkCopyMicromapEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_copy_micromap_ext)]()[]    self._vk_copy_micromap_to_memory_ext = Ptr(to=get_device_proc_addr(        device, "vkCopyMicromapToMemoryEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_copy_micromap_to_memory_ext)]()[]    self._vk_copy_memory_to_micromap_ext = Ptr(to=get_device_proc_addr(        device, "vkCopyMemoryToMicromapEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_copy_memory_to_micromap_ext)]()[]    self._vk_write_micromaps_properties_ext = Ptr(to=get_device_proc_addr(        device, "vkWriteMicromapsPropertiesEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_write_micromaps_properties_ext)]()[]    self._vk_cmd_copy_micromap_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyMicromapEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_micromap_ext)]()[]    self._vk_cmd_copy_micromap_to_memory_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyMicromapToMemoryEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_micromap_to_memory_ext)]()[]    self._vk_cmd_copy_memory_to_micromap_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyMemoryToMicromapEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_memory_to_micromap_ext)]()[]    self._vk_cmd_write_micromaps_properties_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdWriteMicromapsPropertiesEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_write_micromaps_properties_ext)]()[]    self._vk_get_device_micromap_compatibility_ext = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceMicromapCompatibilityEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_micromap_compatibility_ext)]()[]    self._vk_get_micromap_build_sizes_ext = Ptr(to=get_device_proc_addr(        device, "vkGetMicromapBuildSizesEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_micromap_build_sizes_ext)]()[]
+    self._vk_create_micromap_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCreateMicromapEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_micromap_ext)]()[]
+    self._vk_destroy_micromap_ext = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyMicromapEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_micromap_ext)]()[]
+    self._vk_cmd_build_micromaps_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBuildMicromapsEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_build_micromaps_ext)]()[]
+    self._vk_build_micromaps_ext = Ptr(to=get_device_proc_addr(
+        device, "vkBuildMicromapsEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_build_micromaps_ext)]()[]
+    self._vk_copy_micromap_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCopyMicromapEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_copy_micromap_ext)]()[]
+    self._vk_copy_micromap_to_memory_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCopyMicromapToMemoryEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_copy_micromap_to_memory_ext)]()[]
+    self._vk_copy_memory_to_micromap_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCopyMemoryToMicromapEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_copy_memory_to_micromap_ext)]()[]
+    self._vk_write_micromaps_properties_ext = Ptr(to=get_device_proc_addr(
+        device, "vkWriteMicromapsPropertiesEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_write_micromaps_properties_ext)]()[]
+    self._vk_cmd_copy_micromap_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyMicromapEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_micromap_ext)]()[]
+    self._vk_cmd_copy_micromap_to_memory_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyMicromapToMemoryEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_micromap_to_memory_ext)]()[]
+    self._vk_cmd_copy_memory_to_micromap_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyMemoryToMicromapEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_memory_to_micromap_ext)]()[]
+    self._vk_cmd_write_micromaps_properties_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdWriteMicromapsPropertiesEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_write_micromaps_properties_ext)]()[]
+    self._vk_get_device_micromap_compatibility_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceMicromapCompatibilityEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_micromap_compatibility_ext)]()[]
+    self._vk_get_micromap_build_sizes_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetMicromapBuildSizesEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_micromap_build_sizes_ext)]()[]
+
     fn create_micromap_ext(
         self,
         device: Device,
@@ -4566,7 +5523,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_set_device_memory_priority_ext = Ptr(to=get_device_proc_addr(        device, "vkSetDeviceMemoryPriorityEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_set_device_memory_priority_ext)]()[]
+    self._vk_set_device_memory_priority_ext = Ptr(to=get_device_proc_addr(
+        device, "vkSetDeviceMemoryPriorityEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_set_device_memory_priority_ext)]()[]
+
     fn set_device_memory_priority_ext(
         self, device: Device, memory: DeviceMemory, priority: Float32
     ):
@@ -4580,7 +5540,100 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_depth_clamp_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthClampEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_clamp_enable_ext)]()[]    self._vk_cmd_set_polygon_mode_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetPolygonModeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_polygon_mode_ext)]()[]    self._vk_cmd_set_rasterization_samples_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetRasterizationSamplesEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_rasterization_samples_ext)]()[]    self._vk_cmd_set_sample_mask_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetSampleMaskEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_sample_mask_ext)]()[]    self._vk_cmd_set_alpha_to_coverage_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetAlphaToCoverageEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_alpha_to_coverage_enable_ext)]()[]    self._vk_cmd_set_alpha_to_one_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetAlphaToOneEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_alpha_to_one_enable_ext)]()[]    self._vk_cmd_set_logic_op_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetLogicOpEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_logic_op_enable_ext)]()[]    self._vk_cmd_set_color_blend_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetColorBlendEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_color_blend_enable_ext)]()[]    self._vk_cmd_set_color_blend_equation_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetColorBlendEquationEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_color_blend_equation_ext)]()[]    self._vk_cmd_set_color_write_mask_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetColorWriteMaskEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_color_write_mask_ext)]()[]    self._vk_cmd_set_tessellation_domain_origin_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetTessellationDomainOriginEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_tessellation_domain_origin_ext)]()[]    self._vk_cmd_set_rasterization_stream_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetRasterizationStreamEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_rasterization_stream_ext)]()[]    self._vk_cmd_set_conservative_rasterization_mode_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetConservativeRasterizationModeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_conservative_rasterization_mode_ext)]()[]    self._vk_cmd_set_extra_primitive_overestimation_size_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetExtraPrimitiveOverestimationSizeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_extra_primitive_overestimation_size_ext)]()[]    self._vk_cmd_set_depth_clip_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthClipEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_clip_enable_ext)]()[]    self._vk_cmd_set_sample_locations_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetSampleLocationsEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_sample_locations_enable_ext)]()[]    self._vk_cmd_set_color_blend_advanced_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetColorBlendAdvancedEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_color_blend_advanced_ext)]()[]    self._vk_cmd_set_provoking_vertex_mode_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetProvokingVertexModeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_provoking_vertex_mode_ext)]()[]    self._vk_cmd_set_line_rasterization_mode_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetLineRasterizationModeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_line_rasterization_mode_ext)]()[]    self._vk_cmd_set_line_stipple_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetLineStippleEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_line_stipple_enable_ext)]()[]    self._vk_cmd_set_depth_clip_negative_one_to_one_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthClipNegativeOneToOneEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_clip_negative_one_to_one_ext)]()[]    self._vk_cmd_set_viewport_w_scaling_enable_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetViewportWScalingEnableNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_viewport_w_scaling_enable_nv)]()[]    self._vk_cmd_set_viewport_swizzle_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetViewportSwizzleNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_viewport_swizzle_nv)]()[]    self._vk_cmd_set_coverage_to_color_enable_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCoverageToColorEnableNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_coverage_to_color_enable_nv)]()[]    self._vk_cmd_set_coverage_to_color_location_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCoverageToColorLocationNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_coverage_to_color_location_nv)]()[]    self._vk_cmd_set_coverage_modulation_mode_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCoverageModulationModeNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_coverage_modulation_mode_nv)]()[]    self._vk_cmd_set_coverage_modulation_table_enable_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCoverageModulationTableEnableNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_coverage_modulation_table_enable_nv)]()[]    self._vk_cmd_set_coverage_modulation_table_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCoverageModulationTableNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_coverage_modulation_table_nv)]()[]    self._vk_cmd_set_shading_rate_image_enable_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetShadingRateImageEnableNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_shading_rate_image_enable_nv)]()[]    self._vk_cmd_set_representative_fragment_test_enable_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetRepresentativeFragmentTestEnableNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_representative_fragment_test_enable_nv)]()[]    self._vk_cmd_set_coverage_reduction_mode_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCoverageReductionModeNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_coverage_reduction_mode_nv)]()[]
+    self._vk_cmd_set_depth_clamp_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthClampEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_clamp_enable_ext)]()[]
+    self._vk_cmd_set_polygon_mode_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetPolygonModeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_polygon_mode_ext)]()[]
+    self._vk_cmd_set_rasterization_samples_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetRasterizationSamplesEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_rasterization_samples_ext)]()[]
+    self._vk_cmd_set_sample_mask_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetSampleMaskEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_sample_mask_ext)]()[]
+    self._vk_cmd_set_alpha_to_coverage_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetAlphaToCoverageEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_alpha_to_coverage_enable_ext)]()[]
+    self._vk_cmd_set_alpha_to_one_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetAlphaToOneEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_alpha_to_one_enable_ext)]()[]
+    self._vk_cmd_set_logic_op_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetLogicOpEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_logic_op_enable_ext)]()[]
+    self._vk_cmd_set_color_blend_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetColorBlendEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_color_blend_enable_ext)]()[]
+    self._vk_cmd_set_color_blend_equation_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetColorBlendEquationEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_color_blend_equation_ext)]()[]
+    self._vk_cmd_set_color_write_mask_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetColorWriteMaskEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_color_write_mask_ext)]()[]
+    self._vk_cmd_set_tessellation_domain_origin_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetTessellationDomainOriginEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_tessellation_domain_origin_ext)]()[]
+    self._vk_cmd_set_rasterization_stream_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetRasterizationStreamEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_rasterization_stream_ext)]()[]
+    self._vk_cmd_set_conservative_rasterization_mode_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetConservativeRasterizationModeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_conservative_rasterization_mode_ext)]()[]
+    self._vk_cmd_set_extra_primitive_overestimation_size_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetExtraPrimitiveOverestimationSizeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_extra_primitive_overestimation_size_ext)]()[]
+    self._vk_cmd_set_depth_clip_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthClipEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_clip_enable_ext)]()[]
+    self._vk_cmd_set_sample_locations_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetSampleLocationsEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_sample_locations_enable_ext)]()[]
+    self._vk_cmd_set_color_blend_advanced_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetColorBlendAdvancedEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_color_blend_advanced_ext)]()[]
+    self._vk_cmd_set_provoking_vertex_mode_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetProvokingVertexModeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_provoking_vertex_mode_ext)]()[]
+    self._vk_cmd_set_line_rasterization_mode_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetLineRasterizationModeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_line_rasterization_mode_ext)]()[]
+    self._vk_cmd_set_line_stipple_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetLineStippleEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_line_stipple_enable_ext)]()[]
+    self._vk_cmd_set_depth_clip_negative_one_to_one_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthClipNegativeOneToOneEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_clip_negative_one_to_one_ext)]()[]
+    self._vk_cmd_set_viewport_w_scaling_enable_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetViewportWScalingEnableNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_viewport_w_scaling_enable_nv)]()[]
+    self._vk_cmd_set_viewport_swizzle_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetViewportSwizzleNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_viewport_swizzle_nv)]()[]
+    self._vk_cmd_set_coverage_to_color_enable_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCoverageToColorEnableNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_coverage_to_color_enable_nv)]()[]
+    self._vk_cmd_set_coverage_to_color_location_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCoverageToColorLocationNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_coverage_to_color_location_nv)]()[]
+    self._vk_cmd_set_coverage_modulation_mode_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCoverageModulationModeNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_coverage_modulation_mode_nv)]()[]
+    self._vk_cmd_set_coverage_modulation_table_enable_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCoverageModulationTableEnableNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_coverage_modulation_table_enable_nv)]()[]
+    self._vk_cmd_set_coverage_modulation_table_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCoverageModulationTableNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_coverage_modulation_table_nv)]()[]
+    self._vk_cmd_set_shading_rate_image_enable_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetShadingRateImageEnableNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_shading_rate_image_enable_nv)]()[]
+    self._vk_cmd_set_representative_fragment_test_enable_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetRepresentativeFragmentTestEnableNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_representative_fragment_test_enable_nv)]()[]
+    self._vk_cmd_set_coverage_reduction_mode_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCoverageReductionModeNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_coverage_reduction_mode_nv)]()[]
+
     fn cmd_set_depth_clamp_enable_ext(
         self, command_buffer: CommandBuffer, depth_clamp_enable: Bool32
     ):
@@ -4913,7 +5966,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_shader_module_identifier_ext = Ptr(to=get_device_proc_addr(        device, "vkGetShaderModuleIdentifierEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_shader_module_identifier_ext)]()[]    self._vk_get_shader_module_create_info_identifier_ext = Ptr(to=get_device_proc_addr(        device, "vkGetShaderModuleCreateInfoIdentifierEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_shader_module_create_info_identifier_ext)]()[]
+    self._vk_get_shader_module_identifier_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetShaderModuleIdentifierEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_shader_module_identifier_ext)]()[]
+    self._vk_get_shader_module_create_info_identifier_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetShaderModuleCreateInfoIdentifierEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_shader_module_create_info_identifier_ext)]()[]
+
     fn get_shader_module_identifier_ext(
         self, device: Device, shader_module: ShaderModule, identifier: ShaderModuleIdentifierEXT
     ):
@@ -4941,7 +6000,169 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_shaders_ext = Ptr(to=get_device_proc_addr(        device, "vkCreateShadersEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_shaders_ext)]()[]    self._vk_destroy_shader_ext = Ptr(to=get_device_proc_addr(        device, "vkDestroyShaderEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_shader_ext)]()[]    self._vk_get_shader_binary_data_ext = Ptr(to=get_device_proc_addr(        device, "vkGetShaderBinaryDataEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_shader_binary_data_ext)]()[]    self._vk_cmd_bind_shaders_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdBindShadersEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_shaders_ext)]()[]    self._vk_cmd_set_cull_mode = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCullMode".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_cull_mode)]()[]    self._vk_cmd_set_front_face = Ptr(to=get_device_proc_addr(        device, "vkCmdSetFrontFace".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_front_face)]()[]    self._vk_cmd_set_primitive_topology = Ptr(to=get_device_proc_addr(        device, "vkCmdSetPrimitiveTopology".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_primitive_topology)]()[]    self._vk_cmd_set_viewport_with_count = Ptr(to=get_device_proc_addr(        device, "vkCmdSetViewportWithCount".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_viewport_with_count)]()[]    self._vk_cmd_set_scissor_with_count = Ptr(to=get_device_proc_addr(        device, "vkCmdSetScissorWithCount".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_scissor_with_count)]()[]    self._vk_cmd_bind_vertex_buffers_2 = Ptr(to=get_device_proc_addr(        device, "vkCmdBindVertexBuffers2".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_vertex_buffers_2)]()[]    self._vk_cmd_set_depth_test_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthTestEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_test_enable)]()[]    self._vk_cmd_set_depth_write_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthWriteEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_write_enable)]()[]    self._vk_cmd_set_depth_compare_op = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthCompareOp".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_compare_op)]()[]    self._vk_cmd_set_depth_bounds_test_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthBoundsTestEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_bounds_test_enable)]()[]    self._vk_cmd_set_stencil_test_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetStencilTestEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_stencil_test_enable)]()[]    self._vk_cmd_set_stencil_op = Ptr(to=get_device_proc_addr(        device, "vkCmdSetStencilOp".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_stencil_op)]()[]    self._vk_cmd_set_vertex_input_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetVertexInputEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_vertex_input_ext)]()[]    self._vk_cmd_set_patch_control_points_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetPatchControlPointsEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_patch_control_points_ext)]()[]    self._vk_cmd_set_rasterizer_discard_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetRasterizerDiscardEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_rasterizer_discard_enable)]()[]    self._vk_cmd_set_depth_bias_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthBiasEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_bias_enable)]()[]    self._vk_cmd_set_logic_op_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetLogicOpEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_logic_op_ext)]()[]    self._vk_cmd_set_primitive_restart_enable = Ptr(to=get_device_proc_addr(        device, "vkCmdSetPrimitiveRestartEnable".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_primitive_restart_enable)]()[]    self._vk_cmd_set_tessellation_domain_origin_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetTessellationDomainOriginEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_tessellation_domain_origin_ext)]()[]    self._vk_cmd_set_depth_clamp_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthClampEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_clamp_enable_ext)]()[]    self._vk_cmd_set_polygon_mode_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetPolygonModeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_polygon_mode_ext)]()[]    self._vk_cmd_set_rasterization_samples_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetRasterizationSamplesEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_rasterization_samples_ext)]()[]    self._vk_cmd_set_sample_mask_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetSampleMaskEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_sample_mask_ext)]()[]    self._vk_cmd_set_alpha_to_coverage_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetAlphaToCoverageEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_alpha_to_coverage_enable_ext)]()[]    self._vk_cmd_set_alpha_to_one_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetAlphaToOneEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_alpha_to_one_enable_ext)]()[]    self._vk_cmd_set_logic_op_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetLogicOpEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_logic_op_enable_ext)]()[]    self._vk_cmd_set_color_blend_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetColorBlendEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_color_blend_enable_ext)]()[]    self._vk_cmd_set_color_blend_equation_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetColorBlendEquationEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_color_blend_equation_ext)]()[]    self._vk_cmd_set_color_write_mask_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetColorWriteMaskEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_color_write_mask_ext)]()[]    self._vk_cmd_set_rasterization_stream_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetRasterizationStreamEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_rasterization_stream_ext)]()[]    self._vk_cmd_set_conservative_rasterization_mode_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetConservativeRasterizationModeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_conservative_rasterization_mode_ext)]()[]    self._vk_cmd_set_extra_primitive_overestimation_size_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetExtraPrimitiveOverestimationSizeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_extra_primitive_overestimation_size_ext)]()[]    self._vk_cmd_set_depth_clip_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthClipEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_clip_enable_ext)]()[]    self._vk_cmd_set_sample_locations_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetSampleLocationsEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_sample_locations_enable_ext)]()[]    self._vk_cmd_set_color_blend_advanced_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetColorBlendAdvancedEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_color_blend_advanced_ext)]()[]    self._vk_cmd_set_provoking_vertex_mode_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetProvokingVertexModeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_provoking_vertex_mode_ext)]()[]    self._vk_cmd_set_line_rasterization_mode_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetLineRasterizationModeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_line_rasterization_mode_ext)]()[]    self._vk_cmd_set_line_stipple_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetLineStippleEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_line_stipple_enable_ext)]()[]    self._vk_cmd_set_depth_clip_negative_one_to_one_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthClipNegativeOneToOneEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_clip_negative_one_to_one_ext)]()[]    self._vk_cmd_set_viewport_w_scaling_enable_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetViewportWScalingEnableNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_viewport_w_scaling_enable_nv)]()[]    self._vk_cmd_set_viewport_swizzle_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetViewportSwizzleNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_viewport_swizzle_nv)]()[]    self._vk_cmd_set_coverage_to_color_enable_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCoverageToColorEnableNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_coverage_to_color_enable_nv)]()[]    self._vk_cmd_set_coverage_to_color_location_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCoverageToColorLocationNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_coverage_to_color_location_nv)]()[]    self._vk_cmd_set_coverage_modulation_mode_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCoverageModulationModeNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_coverage_modulation_mode_nv)]()[]    self._vk_cmd_set_coverage_modulation_table_enable_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCoverageModulationTableEnableNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_coverage_modulation_table_enable_nv)]()[]    self._vk_cmd_set_coverage_modulation_table_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCoverageModulationTableNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_coverage_modulation_table_nv)]()[]    self._vk_cmd_set_shading_rate_image_enable_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetShadingRateImageEnableNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_shading_rate_image_enable_nv)]()[]    self._vk_cmd_set_representative_fragment_test_enable_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetRepresentativeFragmentTestEnableNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_representative_fragment_test_enable_nv)]()[]    self._vk_cmd_set_coverage_reduction_mode_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCoverageReductionModeNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_coverage_reduction_mode_nv)]()[]    self._vk_cmd_set_depth_clamp_range_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthClampRangeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_clamp_range_ext)]()[]
+    self._vk_create_shaders_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCreateShadersEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_shaders_ext)]()[]
+    self._vk_destroy_shader_ext = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyShaderEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_shader_ext)]()[]
+    self._vk_get_shader_binary_data_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetShaderBinaryDataEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_shader_binary_data_ext)]()[]
+    self._vk_cmd_bind_shaders_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBindShadersEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_bind_shaders_ext)]()[]
+    self._vk_cmd_set_cull_mode = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCullMode".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_cull_mode)]()[]
+    self._vk_cmd_set_front_face = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetFrontFace".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_front_face)]()[]
+    self._vk_cmd_set_primitive_topology = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetPrimitiveTopology".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_primitive_topology)]()[]
+    self._vk_cmd_set_viewport_with_count = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetViewportWithCount".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_viewport_with_count)]()[]
+    self._vk_cmd_set_scissor_with_count = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetScissorWithCount".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_scissor_with_count)]()[]
+    self._vk_cmd_bind_vertex_buffers_2 = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBindVertexBuffers2".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_bind_vertex_buffers_2)]()[]
+    self._vk_cmd_set_depth_test_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthTestEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_test_enable)]()[]
+    self._vk_cmd_set_depth_write_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthWriteEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_write_enable)]()[]
+    self._vk_cmd_set_depth_compare_op = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthCompareOp".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_compare_op)]()[]
+    self._vk_cmd_set_depth_bounds_test_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthBoundsTestEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_bounds_test_enable)]()[]
+    self._vk_cmd_set_stencil_test_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetStencilTestEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_stencil_test_enable)]()[]
+    self._vk_cmd_set_stencil_op = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetStencilOp".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_stencil_op)]()[]
+    self._vk_cmd_set_vertex_input_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetVertexInputEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_vertex_input_ext)]()[]
+    self._vk_cmd_set_patch_control_points_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetPatchControlPointsEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_patch_control_points_ext)]()[]
+    self._vk_cmd_set_rasterizer_discard_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetRasterizerDiscardEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_rasterizer_discard_enable)]()[]
+    self._vk_cmd_set_depth_bias_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthBiasEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_bias_enable)]()[]
+    self._vk_cmd_set_logic_op_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetLogicOpEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_logic_op_ext)]()[]
+    self._vk_cmd_set_primitive_restart_enable = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetPrimitiveRestartEnable".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_primitive_restart_enable)]()[]
+    self._vk_cmd_set_tessellation_domain_origin_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetTessellationDomainOriginEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_tessellation_domain_origin_ext)]()[]
+    self._vk_cmd_set_depth_clamp_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthClampEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_clamp_enable_ext)]()[]
+    self._vk_cmd_set_polygon_mode_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetPolygonModeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_polygon_mode_ext)]()[]
+    self._vk_cmd_set_rasterization_samples_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetRasterizationSamplesEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_rasterization_samples_ext)]()[]
+    self._vk_cmd_set_sample_mask_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetSampleMaskEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_sample_mask_ext)]()[]
+    self._vk_cmd_set_alpha_to_coverage_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetAlphaToCoverageEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_alpha_to_coverage_enable_ext)]()[]
+    self._vk_cmd_set_alpha_to_one_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetAlphaToOneEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_alpha_to_one_enable_ext)]()[]
+    self._vk_cmd_set_logic_op_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetLogicOpEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_logic_op_enable_ext)]()[]
+    self._vk_cmd_set_color_blend_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetColorBlendEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_color_blend_enable_ext)]()[]
+    self._vk_cmd_set_color_blend_equation_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetColorBlendEquationEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_color_blend_equation_ext)]()[]
+    self._vk_cmd_set_color_write_mask_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetColorWriteMaskEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_color_write_mask_ext)]()[]
+    self._vk_cmd_set_rasterization_stream_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetRasterizationStreamEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_rasterization_stream_ext)]()[]
+    self._vk_cmd_set_conservative_rasterization_mode_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetConservativeRasterizationModeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_conservative_rasterization_mode_ext)]()[]
+    self._vk_cmd_set_extra_primitive_overestimation_size_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetExtraPrimitiveOverestimationSizeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_extra_primitive_overestimation_size_ext)]()[]
+    self._vk_cmd_set_depth_clip_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthClipEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_clip_enable_ext)]()[]
+    self._vk_cmd_set_sample_locations_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetSampleLocationsEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_sample_locations_enable_ext)]()[]
+    self._vk_cmd_set_color_blend_advanced_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetColorBlendAdvancedEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_color_blend_advanced_ext)]()[]
+    self._vk_cmd_set_provoking_vertex_mode_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetProvokingVertexModeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_provoking_vertex_mode_ext)]()[]
+    self._vk_cmd_set_line_rasterization_mode_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetLineRasterizationModeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_line_rasterization_mode_ext)]()[]
+    self._vk_cmd_set_line_stipple_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetLineStippleEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_line_stipple_enable_ext)]()[]
+    self._vk_cmd_set_depth_clip_negative_one_to_one_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthClipNegativeOneToOneEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_clip_negative_one_to_one_ext)]()[]
+    self._vk_cmd_set_viewport_w_scaling_enable_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetViewportWScalingEnableNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_viewport_w_scaling_enable_nv)]()[]
+    self._vk_cmd_set_viewport_swizzle_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetViewportSwizzleNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_viewport_swizzle_nv)]()[]
+    self._vk_cmd_set_coverage_to_color_enable_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCoverageToColorEnableNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_coverage_to_color_enable_nv)]()[]
+    self._vk_cmd_set_coverage_to_color_location_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCoverageToColorLocationNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_coverage_to_color_location_nv)]()[]
+    self._vk_cmd_set_coverage_modulation_mode_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCoverageModulationModeNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_coverage_modulation_mode_nv)]()[]
+    self._vk_cmd_set_coverage_modulation_table_enable_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCoverageModulationTableEnableNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_coverage_modulation_table_enable_nv)]()[]
+    self._vk_cmd_set_coverage_modulation_table_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCoverageModulationTableNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_coverage_modulation_table_nv)]()[]
+    self._vk_cmd_set_shading_rate_image_enable_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetShadingRateImageEnableNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_shading_rate_image_enable_nv)]()[]
+    self._vk_cmd_set_representative_fragment_test_enable_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetRepresentativeFragmentTestEnableNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_representative_fragment_test_enable_nv)]()[]
+    self._vk_cmd_set_coverage_reduction_mode_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCoverageReductionModeNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_coverage_reduction_mode_nv)]()[]
+    self._vk_cmd_set_depth_clamp_range_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthClampRangeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_clamp_range_ext)]()[]
+
     fn create_shaders_ext(
         self,
         device: Device,
@@ -5524,7 +6745,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_attachment_feedback_loop_enable_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetAttachmentFeedbackLoopEnableEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_attachment_feedback_loop_enable_ext)]()[]
+    self._vk_cmd_set_attachment_feedback_loop_enable_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetAttachmentFeedbackLoopEnableEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_attachment_feedback_loop_enable_ext)]()[]
+
     fn cmd_set_attachment_feedback_loop_enable_ext(
         self, command_buffer: CommandBuffer, aspect_mask: ImageAspectFlags
     ):
@@ -5538,7 +6762,34 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_generated_commands_memory_requirements_ext = Ptr(to=get_device_proc_addr(        device, "vkGetGeneratedCommandsMemoryRequirementsEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_generated_commands_memory_requirements_ext)]()[]    self._vk_cmd_preprocess_generated_commands_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdPreprocessGeneratedCommandsEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_preprocess_generated_commands_ext)]()[]    self._vk_cmd_execute_generated_commands_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdExecuteGeneratedCommandsEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_execute_generated_commands_ext)]()[]    self._vk_create_indirect_commands_layout_ext = Ptr(to=get_device_proc_addr(        device, "vkCreateIndirectCommandsLayoutEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_indirect_commands_layout_ext)]()[]    self._vk_destroy_indirect_commands_layout_ext = Ptr(to=get_device_proc_addr(        device, "vkDestroyIndirectCommandsLayoutEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_indirect_commands_layout_ext)]()[]    self._vk_create_indirect_execution_set_ext = Ptr(to=get_device_proc_addr(        device, "vkCreateIndirectExecutionSetEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_indirect_execution_set_ext)]()[]    self._vk_destroy_indirect_execution_set_ext = Ptr(to=get_device_proc_addr(        device, "vkDestroyIndirectExecutionSetEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_indirect_execution_set_ext)]()[]    self._vk_update_indirect_execution_set_pipeline_ext = Ptr(to=get_device_proc_addr(        device, "vkUpdateIndirectExecutionSetPipelineEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_update_indirect_execution_set_pipeline_ext)]()[]    self._vk_update_indirect_execution_set_shader_ext = Ptr(to=get_device_proc_addr(        device, "vkUpdateIndirectExecutionSetShaderEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_update_indirect_execution_set_shader_ext)]()[]
+    self._vk_get_generated_commands_memory_requirements_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetGeneratedCommandsMemoryRequirementsEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_generated_commands_memory_requirements_ext)]()[]
+    self._vk_cmd_preprocess_generated_commands_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdPreprocessGeneratedCommandsEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_preprocess_generated_commands_ext)]()[]
+    self._vk_cmd_execute_generated_commands_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdExecuteGeneratedCommandsEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_execute_generated_commands_ext)]()[]
+    self._vk_create_indirect_commands_layout_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCreateIndirectCommandsLayoutEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_indirect_commands_layout_ext)]()[]
+    self._vk_destroy_indirect_commands_layout_ext = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyIndirectCommandsLayoutEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_indirect_commands_layout_ext)]()[]
+    self._vk_create_indirect_execution_set_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCreateIndirectExecutionSetEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_indirect_execution_set_ext)]()[]
+    self._vk_destroy_indirect_execution_set_ext = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyIndirectExecutionSetEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_indirect_execution_set_ext)]()[]
+    self._vk_update_indirect_execution_set_pipeline_ext = Ptr(to=get_device_proc_addr(
+        device, "vkUpdateIndirectExecutionSetPipelineEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_update_indirect_execution_set_pipeline_ext)]()[]
+    self._vk_update_indirect_execution_set_shader_ext = Ptr(to=get_device_proc_addr(
+        device, "vkUpdateIndirectExecutionSetShaderEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_update_indirect_execution_set_shader_ext)]()[]
+
     fn get_generated_commands_memory_requirements_ext(
         self,
         device: Device,
@@ -5673,7 +6924,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_depth_clamp_range_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDepthClampRangeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_depth_clamp_range_ext)]()[]
+    self._vk_cmd_set_depth_clamp_range_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetDepthClampRangeEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_depth_clamp_range_ext)]()[]
+
     fn cmd_set_depth_clamp_range_ext(
         self,
         command_buffer: CommandBuffer,
@@ -5692,7 +6946,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_memory_metal_handle_ext = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryMetalHandleEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_metal_handle_ext)]()[]    self._vk_get_memory_metal_handle_properties_ext = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryMetalHandlePropertiesEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_metal_handle_properties_ext)]()[]
+    self._vk_get_memory_metal_handle_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetMemoryMetalHandleEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_memory_metal_handle_ext)]()[]
+    self._vk_get_memory_metal_handle_properties_ext = Ptr(to=get_device_proc_addr(
+        device, "vkGetMemoryMetalHandlePropertiesEXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_memory_metal_handle_properties_ext)]()[]
+
     fn get_memory_metal_handle_ext(
         self,
         device: Device,
@@ -5724,7 +6984,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_end_rendering_2_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdEndRendering2EXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_end_rendering_2_ext)]()[]
+    self._vk_cmd_end_rendering_2_ext = Ptr(to=get_device_proc_addr(
+        device, "vkCmdEndRendering2EXT".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_end_rendering_2_ext)]()[]
+
     fn cmd_end_rendering_2_ext(
         self,
         command_buffer: CommandBuffer,
@@ -5740,7 +7003,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_cu_module_nvx = Ptr(to=get_device_proc_addr(        device, "vkCreateCuModuleNVX".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_cu_module_nvx)]()[]    self._vk_create_cu_function_nvx = Ptr(to=get_device_proc_addr(        device, "vkCreateCuFunctionNVX".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_cu_function_nvx)]()[]    self._vk_destroy_cu_module_nvx = Ptr(to=get_device_proc_addr(        device, "vkDestroyCuModuleNVX".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_cu_module_nvx)]()[]    self._vk_destroy_cu_function_nvx = Ptr(to=get_device_proc_addr(        device, "vkDestroyCuFunctionNVX".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_cu_function_nvx)]()[]    self._vk_cmd_cu_launch_kernel_nvx = Ptr(to=get_device_proc_addr(        device, "vkCmdCuLaunchKernelNVX".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_cu_launch_kernel_nvx)]()[]
+    self._vk_create_cu_module_nvx = Ptr(to=get_device_proc_addr(
+        device, "vkCreateCuModuleNVX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_cu_module_nvx)]()[]
+    self._vk_create_cu_function_nvx = Ptr(to=get_device_proc_addr(
+        device, "vkCreateCuFunctionNVX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_cu_function_nvx)]()[]
+    self._vk_destroy_cu_module_nvx = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyCuModuleNVX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_cu_module_nvx)]()[]
+    self._vk_destroy_cu_function_nvx = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyCuFunctionNVX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_cu_function_nvx)]()[]
+    self._vk_cmd_cu_launch_kernel_nvx = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCuLaunchKernelNVX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_cu_launch_kernel_nvx)]()[]
+
     fn create_cu_module_nvx(
         self,
         device: Device,
@@ -5804,7 +7082,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_image_view_handle_nvx = Ptr(to=get_device_proc_addr(        device, "vkGetImageViewHandleNVX".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_view_handle_nvx)]()[]    self._vk_get_image_view_handle_64_nvx = Ptr(to=get_device_proc_addr(        device, "vkGetImageViewHandle64NVX".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_view_handle_64_nvx)]()[]    self._vk_get_image_view_address_nvx = Ptr(to=get_device_proc_addr(        device, "vkGetImageViewAddressNVX".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_view_address_nvx)]()[]
+    self._vk_get_image_view_handle_nvx = Ptr(to=get_device_proc_addr(
+        device, "vkGetImageViewHandleNVX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_image_view_handle_nvx)]()[]
+    self._vk_get_image_view_handle_64_nvx = Ptr(to=get_device_proc_addr(
+        device, "vkGetImageViewHandle64NVX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_image_view_handle_64_nvx)]()[]
+    self._vk_get_image_view_address_nvx = Ptr(to=get_device_proc_addr(
+        device, "vkGetImageViewAddressNVX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_image_view_address_nvx)]()[]
+
     fn get_image_view_handle_nvx(self, device: Device, info: ImageViewHandleInfoNVX) -> UInt32:
         """See official vulkan docs for details.
 
@@ -5832,7 +7119,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawIndirectCount".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_indirect_count)]()[]    self._vk_cmd_draw_indexed_indirect_count = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawIndexedIndirectCount".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_indexed_indirect_count)]()[]
+    self._vk_cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawIndirectCount".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_indirect_count)]()[]
+    self._vk_cmd_draw_indexed_indirect_count = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawIndexedIndirectCount".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_indexed_indirect_count)]()[]
+
     fn cmd_draw_indirect_count(
         self,
         command_buffer: CommandBuffer,
@@ -5885,7 +7178,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_shader_info_amd = Ptr(to=get_device_proc_addr(        device, "vkGetShaderInfoAMD".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_shader_info_amd)]()[]
+    self._vk_get_shader_info_amd = Ptr(to=get_device_proc_addr(
+        device, "vkGetShaderInfoAMD".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_shader_info_amd)]()[]
+
     fn get_shader_info_amd(
         self,
         device: Device,
@@ -5907,7 +7203,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_write_buffer_marker_amd = Ptr(to=get_device_proc_addr(        device, "vkCmdWriteBufferMarkerAMD".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_write_buffer_marker_amd)]()[]    self._vk_cmd_write_buffer_marker_2_amd = Ptr(to=get_device_proc_addr(        device, "vkCmdWriteBufferMarker2AMD".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_write_buffer_marker_2_amd)]()[]
+    self._vk_cmd_write_buffer_marker_amd = Ptr(to=get_device_proc_addr(
+        device, "vkCmdWriteBufferMarkerAMD".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_write_buffer_marker_amd)]()[]
+    self._vk_cmd_write_buffer_marker_2_amd = Ptr(to=get_device_proc_addr(
+        device, "vkCmdWriteBufferMarker2AMD".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_write_buffer_marker_2_amd)]()[]
+
     fn cmd_write_buffer_marker_amd(
         self,
         command_buffer: CommandBuffer,
@@ -5944,7 +7246,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_set_local_dimming_amd = Ptr(to=get_device_proc_addr(        device, "vkSetLocalDimmingAMD".unsafe_ptr()    )).bitcast[__type_of(self._vk_set_local_dimming_amd)]()[]
+    self._vk_set_local_dimming_amd = Ptr(to=get_device_proc_addr(
+        device, "vkSetLocalDimmingAMD".unsafe_ptr()
+    )).bitcast[type_of(self._vk_set_local_dimming_amd)]()[]
+
     fn set_local_dimming_amd(
         self, device: Device, swap_chain: SwapchainKHR, local_dimming_enable: Bool32
     ):
@@ -5958,7 +7263,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_anti_lag_update_amd = Ptr(to=get_device_proc_addr(        device, "vkAntiLagUpdateAMD".unsafe_ptr()    )).bitcast[__type_of(self._vk_anti_lag_update_amd)]()[]
+    self._vk_anti_lag_update_amd = Ptr(to=get_device_proc_addr(
+        device, "vkAntiLagUpdateAMD".unsafe_ptr()
+    )).bitcast[type_of(self._vk_anti_lag_update_amd)]()[]
+
     fn anti_lag_update_amd(self, device: Device, data: AntiLagDataAMD):
         """See official vulkan docs for details.
 
@@ -5970,7 +7278,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_stream_descriptor_surface_ggp = Ptr(to=get_instance_proc_addr(        instance, "vkCreateStreamDescriptorSurfaceGGP".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_stream_descriptor_surface_ggp)]()[]
+    self._vk_create_stream_descriptor_surface_ggp = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateStreamDescriptorSurfaceGGP".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_stream_descriptor_surface_ggp)]()[]
+
     fn create_stream_descriptor_surface_ggp(
         self,
         instance: Instance,
@@ -5990,7 +7301,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_get_physical_device_external_image_format_properties_nv = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceExternalImageFormatPropertiesNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_external_image_format_properties_nv)]()[]
+    self._vk_get_physical_device_external_image_format_properties_nv = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceExternalImageFormatPropertiesNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_external_image_format_properties_nv)]()[]
+
     fn get_physical_device_external_image_format_properties_nv(
         self,
         physical_device: PhysicalDevice,
@@ -6021,7 +7335,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_memory_win_32_handle_nv = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryWin32HandleNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_win_32_handle_nv)]()[]
+    self._vk_get_memory_win_32_handle_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetMemoryWin32HandleNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_memory_win_32_handle_nv)]()[]
+
     fn get_memory_win_32_handle_nv(
         self,
         device: Device,
@@ -6039,7 +7356,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_viewport_w_scaling_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetViewportWScalingNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_viewport_w_scaling_nv)]()[]
+    self._vk_cmd_set_viewport_w_scaling_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetViewportWScalingNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_viewport_w_scaling_nv)]()[]
+
     fn cmd_set_viewport_w_scaling_nv(
         self,
         command_buffer: CommandBuffer,
@@ -6059,7 +7379,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_bind_shading_rate_image_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdBindShadingRateImageNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_shading_rate_image_nv)]()[]    self._vk_cmd_set_viewport_shading_rate_palette_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetViewportShadingRatePaletteNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_viewport_shading_rate_palette_nv)]()[]    self._vk_cmd_set_coarse_sample_order_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCoarseSampleOrderNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_coarse_sample_order_nv)]()[]
+    self._vk_cmd_bind_shading_rate_image_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBindShadingRateImageNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_bind_shading_rate_image_nv)]()[]
+    self._vk_cmd_set_viewport_shading_rate_palette_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetViewportShadingRatePaletteNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_viewport_shading_rate_palette_nv)]()[]
+    self._vk_cmd_set_coarse_sample_order_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCoarseSampleOrderNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_coarse_sample_order_nv)]()[]
+
     fn cmd_bind_shading_rate_image_nv(
         self, command_buffer: CommandBuffer, image_view: ImageView, image_layout: ImageLayout
     ):
@@ -6106,7 +7435,43 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_acceleration_structure_nv = Ptr(to=get_device_proc_addr(        device, "vkCreateAccelerationStructureNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_acceleration_structure_nv)]()[]    self._vk_destroy_acceleration_structure_nv = Ptr(to=get_device_proc_addr(        device, "vkDestroyAccelerationStructureNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_acceleration_structure_nv)]()[]    self._vk_get_acceleration_structure_memory_requirements_nv = Ptr(to=get_device_proc_addr(        device, "vkGetAccelerationStructureMemoryRequirementsNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_acceleration_structure_memory_requirements_nv)]()[]    self._vk_bind_acceleration_structure_memory_nv = Ptr(to=get_device_proc_addr(        device, "vkBindAccelerationStructureMemoryNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_bind_acceleration_structure_memory_nv)]()[]    self._vk_cmd_build_acceleration_structure_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdBuildAccelerationStructureNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_build_acceleration_structure_nv)]()[]    self._vk_cmd_copy_acceleration_structure_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyAccelerationStructureNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_acceleration_structure_nv)]()[]    self._vk_cmd_trace_rays_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdTraceRaysNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_trace_rays_nv)]()[]    self._vk_create_ray_tracing_pipelines_nv = Ptr(to=get_device_proc_addr(        device, "vkCreateRayTracingPipelinesNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_ray_tracing_pipelines_nv)]()[]    self._vk_get_ray_tracing_shader_group_handles_khr = Ptr(to=get_device_proc_addr(        device, "vkGetRayTracingShaderGroupHandlesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_ray_tracing_shader_group_handles_khr)]()[]    self._vk_get_acceleration_structure_handle_nv = Ptr(to=get_device_proc_addr(        device, "vkGetAccelerationStructureHandleNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_acceleration_structure_handle_nv)]()[]    self._vk_cmd_write_acceleration_structures_properties_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdWriteAccelerationStructuresPropertiesNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_write_acceleration_structures_properties_nv)]()[]    self._vk_compile_deferred_nv = Ptr(to=get_device_proc_addr(        device, "vkCompileDeferredNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_compile_deferred_nv)]()[]
+    self._vk_create_acceleration_structure_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCreateAccelerationStructureNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_acceleration_structure_nv)]()[]
+    self._vk_destroy_acceleration_structure_nv = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyAccelerationStructureNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_acceleration_structure_nv)]()[]
+    self._vk_get_acceleration_structure_memory_requirements_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetAccelerationStructureMemoryRequirementsNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_acceleration_structure_memory_requirements_nv)]()[]
+    self._vk_bind_acceleration_structure_memory_nv = Ptr(to=get_device_proc_addr(
+        device, "vkBindAccelerationStructureMemoryNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_bind_acceleration_structure_memory_nv)]()[]
+    self._vk_cmd_build_acceleration_structure_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBuildAccelerationStructureNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_build_acceleration_structure_nv)]()[]
+    self._vk_cmd_copy_acceleration_structure_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyAccelerationStructureNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_acceleration_structure_nv)]()[]
+    self._vk_cmd_trace_rays_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdTraceRaysNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_trace_rays_nv)]()[]
+    self._vk_create_ray_tracing_pipelines_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCreateRayTracingPipelinesNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_ray_tracing_pipelines_nv)]()[]
+    self._vk_get_ray_tracing_shader_group_handles_khr = Ptr(to=get_device_proc_addr(
+        device, "vkGetRayTracingShaderGroupHandlesKHR".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_ray_tracing_shader_group_handles_khr)]()[]
+    self._vk_get_acceleration_structure_handle_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetAccelerationStructureHandleNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_acceleration_structure_handle_nv)]()[]
+    self._vk_cmd_write_acceleration_structures_properties_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdWriteAccelerationStructuresPropertiesNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_write_acceleration_structures_properties_nv)]()[]
+    self._vk_compile_deferred_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCompileDeferredNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_compile_deferred_nv)]()[]
+
     fn create_acceleration_structure_nv(
         self,
         device: Device,
@@ -6330,7 +7695,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_draw_mesh_tasks_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawMeshTasksNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_mesh_tasks_nv)]()[]    self._vk_cmd_draw_mesh_tasks_indirect_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawMeshTasksIndirectNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_mesh_tasks_indirect_nv)]()[]    self._vk_cmd_draw_mesh_tasks_indirect_count_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawMeshTasksIndirectCountNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_mesh_tasks_indirect_count_nv)]()[]
+    self._vk_cmd_draw_mesh_tasks_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawMeshTasksNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_mesh_tasks_nv)]()[]
+    self._vk_cmd_draw_mesh_tasks_indirect_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawMeshTasksIndirectNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_mesh_tasks_indirect_nv)]()[]
+    self._vk_cmd_draw_mesh_tasks_indirect_count_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawMeshTasksIndirectCountNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_mesh_tasks_indirect_count_nv)]()[]
+
     fn cmd_draw_mesh_tasks_nv(
         self, command_buffer: CommandBuffer, task_count: UInt32, first_task: UInt32
     ):
@@ -6384,7 +7758,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_exclusive_scissor_enable_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetExclusiveScissorEnableNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_exclusive_scissor_enable_nv)]()[]    self._vk_cmd_set_exclusive_scissor_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetExclusiveScissorNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_exclusive_scissor_nv)]()[]
+    self._vk_cmd_set_exclusive_scissor_enable_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetExclusiveScissorEnableNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_exclusive_scissor_enable_nv)]()[]
+    self._vk_cmd_set_exclusive_scissor_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetExclusiveScissorNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_exclusive_scissor_nv)]()[]
+
     fn cmd_set_exclusive_scissor_enable_nv(
         self,
         command_buffer: CommandBuffer,
@@ -6425,7 +7805,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_checkpoint_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetCheckpointNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_checkpoint_nv)]()[]    self._vk_get_queue_checkpoint_data_nv = Ptr(to=get_device_proc_addr(        device, "vkGetQueueCheckpointDataNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_queue_checkpoint_data_nv)]()[]    self._vk_get_queue_checkpoint_data_2_nv = Ptr(to=get_device_proc_addr(        device, "vkGetQueueCheckpointData2NV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_queue_checkpoint_data_2_nv)]()[]
+    self._vk_cmd_set_checkpoint_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetCheckpointNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_checkpoint_nv)]()[]
+    self._vk_get_queue_checkpoint_data_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetQueueCheckpointDataNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_queue_checkpoint_data_nv)]()[]
+    self._vk_get_queue_checkpoint_data_2_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetQueueCheckpointData2NV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_queue_checkpoint_data_2_nv)]()[]
+
     fn cmd_set_checkpoint_nv(self, command_buffer: CommandBuffer, checkpoint_marker: NoneType):
         """See official vulkan docs for details.
 
@@ -6465,7 +7854,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_physical_device_cooperative_matrix_properties_nv = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_cooperative_matrix_properties_nv)]()[]
+    self._vk_get_physical_device_cooperative_matrix_properties_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_cooperative_matrix_properties_nv)]()[]
+
     fn get_physical_device_cooperative_matrix_properties_nv(
         self,
         physical_device: PhysicalDevice,
@@ -6484,7 +7876,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_physical_device_supported_framebuffer_mixed_samples_combinations_nv = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_supported_framebuffer_mixed_samples_combinations_nv)]()[]
+    self._vk_get_physical_device_supported_framebuffer_mixed_samples_combinations_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_supported_framebuffer_mixed_samples_combinations_nv)]()[]
+
     fn get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
         self,
         physical_device: PhysicalDevice,
@@ -6503,7 +7898,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_generated_commands_memory_requirements_nv = Ptr(to=get_device_proc_addr(        device, "vkGetGeneratedCommandsMemoryRequirementsNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_generated_commands_memory_requirements_nv)]()[]    self._vk_cmd_preprocess_generated_commands_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdPreprocessGeneratedCommandsNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_preprocess_generated_commands_nv)]()[]    self._vk_cmd_execute_generated_commands_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdExecuteGeneratedCommandsNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_execute_generated_commands_nv)]()[]    self._vk_cmd_bind_pipeline_shader_group_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdBindPipelineShaderGroupNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_pipeline_shader_group_nv)]()[]    self._vk_create_indirect_commands_layout_nv = Ptr(to=get_device_proc_addr(        device, "vkCreateIndirectCommandsLayoutNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_indirect_commands_layout_nv)]()[]    self._vk_destroy_indirect_commands_layout_nv = Ptr(to=get_device_proc_addr(        device, "vkDestroyIndirectCommandsLayoutNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_indirect_commands_layout_nv)]()[]
+    self._vk_get_generated_commands_memory_requirements_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetGeneratedCommandsMemoryRequirementsNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_generated_commands_memory_requirements_nv)]()[]
+    self._vk_cmd_preprocess_generated_commands_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdPreprocessGeneratedCommandsNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_preprocess_generated_commands_nv)]()[]
+    self._vk_cmd_execute_generated_commands_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdExecuteGeneratedCommandsNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_execute_generated_commands_nv)]()[]
+    self._vk_cmd_bind_pipeline_shader_group_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBindPipelineShaderGroupNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_bind_pipeline_shader_group_nv)]()[]
+    self._vk_create_indirect_commands_layout_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCreateIndirectCommandsLayoutNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_indirect_commands_layout_nv)]()[]
+    self._vk_destroy_indirect_commands_layout_nv = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyIndirectCommandsLayoutNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_indirect_commands_layout_nv)]()[]
+
     fn get_generated_commands_memory_requirements_nv(
         self,
         device: Device,
@@ -6591,7 +8004,25 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_cuda_module_nv = Ptr(to=get_device_proc_addr(        device, "vkCreateCudaModuleNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_cuda_module_nv)]()[]    self._vk_get_cuda_module_cache_nv = Ptr(to=get_device_proc_addr(        device, "vkGetCudaModuleCacheNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_cuda_module_cache_nv)]()[]    self._vk_create_cuda_function_nv = Ptr(to=get_device_proc_addr(        device, "vkCreateCudaFunctionNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_cuda_function_nv)]()[]    self._vk_destroy_cuda_module_nv = Ptr(to=get_device_proc_addr(        device, "vkDestroyCudaModuleNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_cuda_module_nv)]()[]    self._vk_destroy_cuda_function_nv = Ptr(to=get_device_proc_addr(        device, "vkDestroyCudaFunctionNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_cuda_function_nv)]()[]    self._vk_cmd_cuda_launch_kernel_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdCudaLaunchKernelNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_cuda_launch_kernel_nv)]()[]
+    self._vk_create_cuda_module_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCreateCudaModuleNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_cuda_module_nv)]()[]
+    self._vk_get_cuda_module_cache_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetCudaModuleCacheNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_cuda_module_cache_nv)]()[]
+    self._vk_create_cuda_function_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCreateCudaFunctionNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_cuda_function_nv)]()[]
+    self._vk_destroy_cuda_module_nv = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyCudaModuleNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_cuda_module_nv)]()[]
+    self._vk_destroy_cuda_function_nv = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyCudaFunctionNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_cuda_function_nv)]()[]
+    self._vk_cmd_cuda_launch_kernel_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCudaLaunchKernelNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_cuda_launch_kernel_nv)]()[]
+
     fn create_cuda_module_nv(
         self,
         device: Device,
@@ -6672,7 +8103,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_set_fragment_shading_rate_enum_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdSetFragmentShadingRateEnumNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_fragment_shading_rate_enum_nv)]()[]
+    self._vk_cmd_set_fragment_shading_rate_enum_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetFragmentShadingRateEnumNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_fragment_shading_rate_enum_nv)]()[]
+
     fn cmd_set_fragment_shading_rate_enum_nv(
         self,
         command_buffer: CommandBuffer,
@@ -6691,7 +8125,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_acquire_winrt_display_nv = Ptr(to=get_device_proc_addr(        device, "vkAcquireWinrtDisplayNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_acquire_winrt_display_nv)]()[]    self._vk_get_winrt_display_nv = Ptr(to=get_device_proc_addr(        device, "vkGetWinrtDisplayNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_winrt_display_nv)]()[]
+    self._vk_acquire_winrt_display_nv = Ptr(to=get_device_proc_addr(
+        device, "vkAcquireWinrtDisplayNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_acquire_winrt_display_nv)]()[]
+    self._vk_get_winrt_display_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetWinrtDisplayNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_winrt_display_nv)]()[]
+
     fn acquire_winrt_display_nv(
         self, physical_device: PhysicalDevice, display: DisplayKHR
     ) -> Result:
@@ -6714,7 +8154,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_memory_remote_address_nv = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryRemoteAddressNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_remote_address_nv)]()[]
+    self._vk_get_memory_remote_address_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetMemoryRemoteAddressNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_memory_remote_address_nv)]()[]
+
     fn get_memory_remote_address_nv(
         self,
         device: Device,
@@ -6733,7 +8176,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_copy_memory_indirect_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyMemoryIndirectNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_memory_indirect_nv)]()[]    self._vk_cmd_copy_memory_to_image_indirect_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyMemoryToImageIndirectNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_memory_to_image_indirect_nv)]()[]
+    self._vk_cmd_copy_memory_indirect_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyMemoryIndirectNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_memory_indirect_nv)]()[]
+    self._vk_cmd_copy_memory_to_image_indirect_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyMemoryToImageIndirectNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_memory_to_image_indirect_nv)]()[]
+
     fn cmd_copy_memory_indirect_nv(
         self,
         command_buffer: CommandBuffer,
@@ -6777,7 +8226,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_decompress_memory_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdDecompressMemoryNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_decompress_memory_nv)]()[]    self._vk_cmd_decompress_memory_indirect_count_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdDecompressMemoryIndirectCountNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_decompress_memory_indirect_count_nv)]()[]
+    self._vk_cmd_decompress_memory_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDecompressMemoryNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_decompress_memory_nv)]()[]
+    self._vk_cmd_decompress_memory_indirect_count_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDecompressMemoryIndirectCountNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_decompress_memory_indirect_count_nv)]()[]
+
     fn cmd_decompress_memory_nv(
         self,
         command_buffer: CommandBuffer,
@@ -6811,7 +8266,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_pipeline_indirect_memory_requirements_nv = Ptr(to=get_device_proc_addr(        device, "vkGetPipelineIndirectMemoryRequirementsNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_pipeline_indirect_memory_requirements_nv)]()[]    self._vk_cmd_update_pipeline_indirect_buffer_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdUpdatePipelineIndirectBufferNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_update_pipeline_indirect_buffer_nv)]()[]    self._vk_get_pipeline_indirect_device_address_nv = Ptr(to=get_device_proc_addr(        device, "vkGetPipelineIndirectDeviceAddressNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_pipeline_indirect_device_address_nv)]()[]
+    self._vk_get_pipeline_indirect_memory_requirements_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetPipelineIndirectMemoryRequirementsNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_pipeline_indirect_memory_requirements_nv)]()[]
+    self._vk_cmd_update_pipeline_indirect_buffer_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdUpdatePipelineIndirectBufferNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_update_pipeline_indirect_buffer_nv)]()[]
+    self._vk_get_pipeline_indirect_device_address_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetPipelineIndirectDeviceAddressNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_pipeline_indirect_device_address_nv)]()[]
+
     fn get_pipeline_indirect_memory_requirements_nv(
         self,
         device: Device,
@@ -6853,7 +8317,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_physical_device_optical_flow_image_formats_nv = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceOpticalFlowImageFormatsNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_optical_flow_image_formats_nv)]()[]    self._vk_create_optical_flow_session_nv = Ptr(to=get_device_proc_addr(        device, "vkCreateOpticalFlowSessionNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_optical_flow_session_nv)]()[]    self._vk_destroy_optical_flow_session_nv = Ptr(to=get_device_proc_addr(        device, "vkDestroyOpticalFlowSessionNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_optical_flow_session_nv)]()[]    self._vk_bind_optical_flow_session_image_nv = Ptr(to=get_device_proc_addr(        device, "vkBindOpticalFlowSessionImageNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_bind_optical_flow_session_image_nv)]()[]    self._vk_cmd_optical_flow_execute_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdOpticalFlowExecuteNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_optical_flow_execute_nv)]()[]
+    self._vk_get_physical_device_optical_flow_image_formats_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceOpticalFlowImageFormatsNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_optical_flow_image_formats_nv)]()[]
+    self._vk_create_optical_flow_session_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCreateOpticalFlowSessionNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_optical_flow_session_nv)]()[]
+    self._vk_destroy_optical_flow_session_nv = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyOpticalFlowSessionNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_optical_flow_session_nv)]()[]
+    self._vk_bind_optical_flow_session_image_nv = Ptr(to=get_device_proc_addr(
+        device, "vkBindOpticalFlowSessionImageNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_bind_optical_flow_session_image_nv)]()[]
+    self._vk_cmd_optical_flow_execute_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdOpticalFlowExecuteNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_optical_flow_execute_nv)]()[]
+
     fn get_physical_device_optical_flow_image_formats_nv(
         self,
         physical_device: PhysicalDevice,
@@ -6931,7 +8410,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_physical_device_cooperative_vector_properties_nv = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceCooperativeVectorPropertiesNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_cooperative_vector_properties_nv)]()[]    self._vk_convert_cooperative_vector_matrix_nv = Ptr(to=get_device_proc_addr(        device, "vkConvertCooperativeVectorMatrixNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_convert_cooperative_vector_matrix_nv)]()[]    self._vk_cmd_convert_cooperative_vector_matrix_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdConvertCooperativeVectorMatrixNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_convert_cooperative_vector_matrix_nv)]()[]
+    self._vk_get_physical_device_cooperative_vector_properties_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceCooperativeVectorPropertiesNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_cooperative_vector_properties_nv)]()[]
+    self._vk_convert_cooperative_vector_matrix_nv = Ptr(to=get_device_proc_addr(
+        device, "vkConvertCooperativeVectorMatrixNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_convert_cooperative_vector_matrix_nv)]()[]
+    self._vk_cmd_convert_cooperative_vector_matrix_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdConvertCooperativeVectorMatrixNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_convert_cooperative_vector_matrix_nv)]()[]
+
     fn get_physical_device_cooperative_vector_properties_nv(
         self,
         physical_device: PhysicalDevice,
@@ -6973,7 +8461,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_set_latency_sleep_mode_nv = Ptr(to=get_device_proc_addr(        device, "vkSetLatencySleepModeNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_set_latency_sleep_mode_nv)]()[]    self._vk_latency_sleep_nv = Ptr(to=get_device_proc_addr(        device, "vkLatencySleepNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_latency_sleep_nv)]()[]    self._vk_set_latency_marker_nv = Ptr(to=get_device_proc_addr(        device, "vkSetLatencyMarkerNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_set_latency_marker_nv)]()[]    self._vk_get_latency_timings_nv = Ptr(to=get_device_proc_addr(        device, "vkGetLatencyTimingsNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_latency_timings_nv)]()[]    self._vk_queue_notify_out_of_band_nv = Ptr(to=get_device_proc_addr(        device, "vkQueueNotifyOutOfBandNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_queue_notify_out_of_band_nv)]()[]
+    self._vk_set_latency_sleep_mode_nv = Ptr(to=get_device_proc_addr(
+        device, "vkSetLatencySleepModeNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_set_latency_sleep_mode_nv)]()[]
+    self._vk_latency_sleep_nv = Ptr(to=get_device_proc_addr(
+        device, "vkLatencySleepNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_latency_sleep_nv)]()[]
+    self._vk_set_latency_marker_nv = Ptr(to=get_device_proc_addr(
+        device, "vkSetLatencyMarkerNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_set_latency_marker_nv)]()[]
+    self._vk_get_latency_timings_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetLatencyTimingsNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_latency_timings_nv)]()[]
+    self._vk_queue_notify_out_of_band_nv = Ptr(to=get_device_proc_addr(
+        device, "vkQueueNotifyOutOfBandNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_queue_notify_out_of_band_nv)]()[]
+
     fn set_latency_sleep_mode_nv(
         self, device: Device, swapchain: SwapchainKHR, sleep_mode_info: LatencySleepModeInfoNV
     ) -> Result:
@@ -7021,7 +8524,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_external_compute_queue_nv = Ptr(to=get_device_proc_addr(        device, "vkCreateExternalComputeQueueNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_external_compute_queue_nv)]()[]    self._vk_destroy_external_compute_queue_nv = Ptr(to=get_device_proc_addr(        device, "vkDestroyExternalComputeQueueNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_external_compute_queue_nv)]()[]    self._vk_get_external_compute_queue_data_nv = Ptr(to=get_device_proc_addr(        device, "vkGetExternalComputeQueueDataNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_external_compute_queue_data_nv)]()[]
+    self._vk_create_external_compute_queue_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCreateExternalComputeQueueNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_external_compute_queue_nv)]()[]
+    self._vk_destroy_external_compute_queue_nv = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyExternalComputeQueueNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_external_compute_queue_nv)]()[]
+    self._vk_get_external_compute_queue_data_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetExternalComputeQueueDataNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_external_compute_queue_data_nv)]()[]
+
     fn create_external_compute_queue_nv(
         self,
         device: Device,
@@ -7067,7 +8579,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_cluster_acceleration_structure_build_sizes_nv = Ptr(to=get_device_proc_addr(        device, "vkGetClusterAccelerationStructureBuildSizesNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_cluster_acceleration_structure_build_sizes_nv)]()[]    self._vk_cmd_build_cluster_acceleration_structure_indirect_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdBuildClusterAccelerationStructureIndirectNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_build_cluster_acceleration_structure_indirect_nv)]()[]
+    self._vk_get_cluster_acceleration_structure_build_sizes_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetClusterAccelerationStructureBuildSizesNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_cluster_acceleration_structure_build_sizes_nv)]()[]
+    self._vk_cmd_build_cluster_acceleration_structure_indirect_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBuildClusterAccelerationStructureIndirectNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_build_cluster_acceleration_structure_indirect_nv)]()[]
+
     fn get_cluster_acceleration_structure_build_sizes_nv(
         self,
         device: Device,
@@ -7099,7 +8617,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_partitioned_acceleration_structures_build_sizes_nv = Ptr(to=get_device_proc_addr(        device, "vkGetPartitionedAccelerationStructuresBuildSizesNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_partitioned_acceleration_structures_build_sizes_nv)]()[]    self._vk_cmd_build_partitioned_acceleration_structures_nv = Ptr(to=get_device_proc_addr(        device, "vkCmdBuildPartitionedAccelerationStructuresNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_build_partitioned_acceleration_structures_nv)]()[]
+    self._vk_get_partitioned_acceleration_structures_build_sizes_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetPartitionedAccelerationStructuresBuildSizesNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_partitioned_acceleration_structures_build_sizes_nv)]()[]
+    self._vk_cmd_build_partitioned_acceleration_structures_nv = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBuildPartitionedAccelerationStructuresNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_build_partitioned_acceleration_structures_nv)]()[]
+
     fn get_partitioned_acceleration_structures_build_sizes_nv(
         self,
         device: Device,
@@ -7129,7 +8653,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv)]()[]
+    self._vk_get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv)]()[]
+
     fn get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
         self,
         physical_device: PhysicalDevice,
@@ -7148,7 +8675,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_vi_surface_nn = Ptr(to=get_instance_proc_addr(        instance, "vkCreateViSurfaceNN".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_vi_surface_nn)]()[]
+    self._vk_create_vi_surface_nn = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateViSurfaceNN".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_vi_surface_nn)]()[]
+
     fn create_vi_surface_nn(
         self,
         instance: Instance,
@@ -7168,7 +8698,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_refresh_cycle_duration_google = Ptr(to=get_device_proc_addr(        device, "vkGetRefreshCycleDurationGOOGLE".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_refresh_cycle_duration_google)]()[]    self._vk_get_past_presentation_timing_google = Ptr(to=get_device_proc_addr(        device, "vkGetPastPresentationTimingGOOGLE".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_past_presentation_timing_google)]()[]
+    self._vk_get_refresh_cycle_duration_google = Ptr(to=get_device_proc_addr(
+        device, "vkGetRefreshCycleDurationGOOGLE".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_refresh_cycle_duration_google)]()[]
+    self._vk_get_past_presentation_timing_google = Ptr(to=get_device_proc_addr(
+        device, "vkGetPastPresentationTimingGOOGLE".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_past_presentation_timing_google)]()[]
+
     fn get_refresh_cycle_duration_google(
         self,
         device: Device,
@@ -7202,7 +8738,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_ios_surface_mvk = Ptr(to=get_instance_proc_addr(        instance, "vkCreateIOSSurfaceMVK".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_ios_surface_mvk)]()[]
+    self._vk_create_ios_surface_mvk = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateIOSSurfaceMVK".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_ios_surface_mvk)]()[]
+
     fn create_ios_surface_mvk(
         self,
         instance: Instance,
@@ -7222,7 +8761,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_mac_os_surface_mvk = Ptr(to=get_instance_proc_addr(        instance, "vkCreateMacOSSurfaceMVK".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_mac_os_surface_mvk)]()[]
+    self._vk_create_mac_os_surface_mvk = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateMacOSSurfaceMVK".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_mac_os_surface_mvk)]()[]
+
     fn create_mac_os_surface_mvk(
         self,
         instance: Instance,
@@ -7242,7 +8784,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_android_hardware_buffer_properties_android = Ptr(to=get_device_proc_addr(        device, "vkGetAndroidHardwareBufferPropertiesANDROID".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_android_hardware_buffer_properties_android)]()[]    self._vk_get_memory_android_hardware_buffer_android = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryAndroidHardwareBufferANDROID".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_android_hardware_buffer_android)]()[]
+    self._vk_get_android_hardware_buffer_properties_android = Ptr(to=get_device_proc_addr(
+        device, "vkGetAndroidHardwareBufferPropertiesANDROID".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_android_hardware_buffer_properties_android)]()[]
+    self._vk_get_memory_android_hardware_buffer_android = Ptr(to=get_device_proc_addr(
+        device, "vkGetMemoryAndroidHardwareBufferANDROID".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_memory_android_hardware_buffer_android)]()[]
+
     fn get_android_hardware_buffer_properties_android(
         self,
         device: Device,
@@ -7273,7 +8821,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_execution_graph_pipelines_amdx = Ptr(to=get_device_proc_addr(        device, "vkCreateExecutionGraphPipelinesAMDX".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_execution_graph_pipelines_amdx)]()[]    self._vk_get_execution_graph_pipeline_scratch_size_amdx = Ptr(to=get_device_proc_addr(        device, "vkGetExecutionGraphPipelineScratchSizeAMDX".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_execution_graph_pipeline_scratch_size_amdx)]()[]    self._vk_get_execution_graph_pipeline_node_index_amdx = Ptr(to=get_device_proc_addr(        device, "vkGetExecutionGraphPipelineNodeIndexAMDX".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_execution_graph_pipeline_node_index_amdx)]()[]    self._vk_cmd_initialize_graph_scratch_memory_amdx = Ptr(to=get_device_proc_addr(        device, "vkCmdInitializeGraphScratchMemoryAMDX".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_initialize_graph_scratch_memory_amdx)]()[]    self._vk_cmd_dispatch_graph_amdx = Ptr(to=get_device_proc_addr(        device, "vkCmdDispatchGraphAMDX".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_dispatch_graph_amdx)]()[]    self._vk_cmd_dispatch_graph_indirect_amdx = Ptr(to=get_device_proc_addr(        device, "vkCmdDispatchGraphIndirectAMDX".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_dispatch_graph_indirect_amdx)]()[]    self._vk_cmd_dispatch_graph_indirect_count_amdx = Ptr(to=get_device_proc_addr(        device, "vkCmdDispatchGraphIndirectCountAMDX".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_dispatch_graph_indirect_count_amdx)]()[]
+    self._vk_create_execution_graph_pipelines_amdx = Ptr(to=get_device_proc_addr(
+        device, "vkCreateExecutionGraphPipelinesAMDX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_execution_graph_pipelines_amdx)]()[]
+    self._vk_get_execution_graph_pipeline_scratch_size_amdx = Ptr(to=get_device_proc_addr(
+        device, "vkGetExecutionGraphPipelineScratchSizeAMDX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_execution_graph_pipeline_scratch_size_amdx)]()[]
+    self._vk_get_execution_graph_pipeline_node_index_amdx = Ptr(to=get_device_proc_addr(
+        device, "vkGetExecutionGraphPipelineNodeIndexAMDX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_execution_graph_pipeline_node_index_amdx)]()[]
+    self._vk_cmd_initialize_graph_scratch_memory_amdx = Ptr(to=get_device_proc_addr(
+        device, "vkCmdInitializeGraphScratchMemoryAMDX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_initialize_graph_scratch_memory_amdx)]()[]
+    self._vk_cmd_dispatch_graph_amdx = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDispatchGraphAMDX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_dispatch_graph_amdx)]()[]
+    self._vk_cmd_dispatch_graph_indirect_amdx = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDispatchGraphIndirectAMDX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_dispatch_graph_indirect_amdx)]()[]
+    self._vk_cmd_dispatch_graph_indirect_count_amdx = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDispatchGraphIndirectCountAMDX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_dispatch_graph_indirect_count_amdx)]()[]
+
     fn create_execution_graph_pipelines_amdx(
         self,
         device: Device,
@@ -7389,7 +8958,34 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_initialize_performance_api_intel = Ptr(to=get_device_proc_addr(        device, "vkInitializePerformanceApiINTEL".unsafe_ptr()    )).bitcast[__type_of(self._vk_initialize_performance_api_intel)]()[]    self._vk_uninitialize_performance_api_intel = Ptr(to=get_device_proc_addr(        device, "vkUninitializePerformanceApiINTEL".unsafe_ptr()    )).bitcast[__type_of(self._vk_uninitialize_performance_api_intel)]()[]    self._vk_cmd_set_performance_marker_intel = Ptr(to=get_device_proc_addr(        device, "vkCmdSetPerformanceMarkerINTEL".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_performance_marker_intel)]()[]    self._vk_cmd_set_performance_stream_marker_intel = Ptr(to=get_device_proc_addr(        device, "vkCmdSetPerformanceStreamMarkerINTEL".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_performance_stream_marker_intel)]()[]    self._vk_cmd_set_performance_override_intel = Ptr(to=get_device_proc_addr(        device, "vkCmdSetPerformanceOverrideINTEL".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_performance_override_intel)]()[]    self._vk_acquire_performance_configuration_intel = Ptr(to=get_device_proc_addr(        device, "vkAcquirePerformanceConfigurationINTEL".unsafe_ptr()    )).bitcast[__type_of(self._vk_acquire_performance_configuration_intel)]()[]    self._vk_release_performance_configuration_intel = Ptr(to=get_device_proc_addr(        device, "vkReleasePerformanceConfigurationINTEL".unsafe_ptr()    )).bitcast[__type_of(self._vk_release_performance_configuration_intel)]()[]    self._vk_queue_set_performance_configuration_intel = Ptr(to=get_device_proc_addr(        device, "vkQueueSetPerformanceConfigurationINTEL".unsafe_ptr()    )).bitcast[__type_of(self._vk_queue_set_performance_configuration_intel)]()[]    self._vk_get_performance_parameter_intel = Ptr(to=get_device_proc_addr(        device, "vkGetPerformanceParameterINTEL".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_performance_parameter_intel)]()[]
+    self._vk_initialize_performance_api_intel = Ptr(to=get_device_proc_addr(
+        device, "vkInitializePerformanceApiINTEL".unsafe_ptr()
+    )).bitcast[type_of(self._vk_initialize_performance_api_intel)]()[]
+    self._vk_uninitialize_performance_api_intel = Ptr(to=get_device_proc_addr(
+        device, "vkUninitializePerformanceApiINTEL".unsafe_ptr()
+    )).bitcast[type_of(self._vk_uninitialize_performance_api_intel)]()[]
+    self._vk_cmd_set_performance_marker_intel = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetPerformanceMarkerINTEL".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_performance_marker_intel)]()[]
+    self._vk_cmd_set_performance_stream_marker_intel = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetPerformanceStreamMarkerINTEL".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_performance_stream_marker_intel)]()[]
+    self._vk_cmd_set_performance_override_intel = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSetPerformanceOverrideINTEL".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_set_performance_override_intel)]()[]
+    self._vk_acquire_performance_configuration_intel = Ptr(to=get_device_proc_addr(
+        device, "vkAcquirePerformanceConfigurationINTEL".unsafe_ptr()
+    )).bitcast[type_of(self._vk_acquire_performance_configuration_intel)]()[]
+    self._vk_release_performance_configuration_intel = Ptr(to=get_device_proc_addr(
+        device, "vkReleasePerformanceConfigurationINTEL".unsafe_ptr()
+    )).bitcast[type_of(self._vk_release_performance_configuration_intel)]()[]
+    self._vk_queue_set_performance_configuration_intel = Ptr(to=get_device_proc_addr(
+        device, "vkQueueSetPerformanceConfigurationINTEL".unsafe_ptr()
+    )).bitcast[type_of(self._vk_queue_set_performance_configuration_intel)]()[]
+    self._vk_get_performance_parameter_intel = Ptr(to=get_device_proc_addr(
+        device, "vkGetPerformanceParameterINTEL".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_performance_parameter_intel)]()[]
+
     fn initialize_performance_api_intel(
         self, device: Device, initialize_info: InitializePerformanceApiInfoINTEL
     ) -> Result:
@@ -7478,7 +9074,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_image_pipe_surface_fuchsia = Ptr(to=get_instance_proc_addr(        instance, "vkCreateImagePipeSurfaceFUCHSIA".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_image_pipe_surface_fuchsia)]()[]
+    self._vk_create_image_pipe_surface_fuchsia = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateImagePipeSurfaceFUCHSIA".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_image_pipe_surface_fuchsia)]()[]
+
     fn create_image_pipe_surface_fuchsia(
         self,
         instance: Instance,
@@ -7498,7 +9097,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_memory_zircon_handle_fuchsia = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryZirconHandleFUCHSIA".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_zircon_handle_fuchsia)]()[]    self._vk_get_memory_zircon_handle_properties_fuchsia = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryZirconHandlePropertiesFUCHSIA".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_zircon_handle_properties_fuchsia)]()[]
+    self._vk_get_memory_zircon_handle_fuchsia = Ptr(to=get_device_proc_addr(
+        device, "vkGetMemoryZirconHandleFUCHSIA".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_memory_zircon_handle_fuchsia)]()[]
+    self._vk_get_memory_zircon_handle_properties_fuchsia = Ptr(to=get_device_proc_addr(
+        device, "vkGetMemoryZirconHandlePropertiesFUCHSIA".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_memory_zircon_handle_properties_fuchsia)]()[]
+
     fn get_memory_zircon_handle_fuchsia(
         self,
         device: Device,
@@ -7532,7 +9137,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_import_semaphore_zircon_handle_fuchsia = Ptr(to=get_device_proc_addr(        device, "vkImportSemaphoreZirconHandleFUCHSIA".unsafe_ptr()    )).bitcast[__type_of(self._vk_import_semaphore_zircon_handle_fuchsia)]()[]    self._vk_get_semaphore_zircon_handle_fuchsia = Ptr(to=get_device_proc_addr(        device, "vkGetSemaphoreZirconHandleFUCHSIA".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_semaphore_zircon_handle_fuchsia)]()[]
+    self._vk_import_semaphore_zircon_handle_fuchsia = Ptr(to=get_device_proc_addr(
+        device, "vkImportSemaphoreZirconHandleFUCHSIA".unsafe_ptr()
+    )).bitcast[type_of(self._vk_import_semaphore_zircon_handle_fuchsia)]()[]
+    self._vk_get_semaphore_zircon_handle_fuchsia = Ptr(to=get_device_proc_addr(
+        device, "vkGetSemaphoreZirconHandleFUCHSIA".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_semaphore_zircon_handle_fuchsia)]()[]
+
     fn import_semaphore_zircon_handle_fuchsia(
         self,
         device: Device,
@@ -7564,7 +9175,22 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_buffer_collection_fuchsia = Ptr(to=get_device_proc_addr(        device, "vkCreateBufferCollectionFUCHSIA".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_buffer_collection_fuchsia)]()[]    self._vk_set_buffer_collection_image_constraints_fuchsia = Ptr(to=get_device_proc_addr(        device, "vkSetBufferCollectionImageConstraintsFUCHSIA".unsafe_ptr()    )).bitcast[__type_of(self._vk_set_buffer_collection_image_constraints_fuchsia)]()[]    self._vk_set_buffer_collection_buffer_constraints_fuchsia = Ptr(to=get_device_proc_addr(        device, "vkSetBufferCollectionBufferConstraintsFUCHSIA".unsafe_ptr()    )).bitcast[__type_of(self._vk_set_buffer_collection_buffer_constraints_fuchsia)]()[]    self._vk_destroy_buffer_collection_fuchsia = Ptr(to=get_device_proc_addr(        device, "vkDestroyBufferCollectionFUCHSIA".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_buffer_collection_fuchsia)]()[]    self._vk_get_buffer_collection_properties_fuchsia = Ptr(to=get_device_proc_addr(        device, "vkGetBufferCollectionPropertiesFUCHSIA".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_buffer_collection_properties_fuchsia)]()[]
+    self._vk_create_buffer_collection_fuchsia = Ptr(to=get_device_proc_addr(
+        device, "vkCreateBufferCollectionFUCHSIA".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_buffer_collection_fuchsia)]()[]
+    self._vk_set_buffer_collection_image_constraints_fuchsia = Ptr(to=get_device_proc_addr(
+        device, "vkSetBufferCollectionImageConstraintsFUCHSIA".unsafe_ptr()
+    )).bitcast[type_of(self._vk_set_buffer_collection_image_constraints_fuchsia)]()[]
+    self._vk_set_buffer_collection_buffer_constraints_fuchsia = Ptr(to=get_device_proc_addr(
+        device, "vkSetBufferCollectionBufferConstraintsFUCHSIA".unsafe_ptr()
+    )).bitcast[type_of(self._vk_set_buffer_collection_buffer_constraints_fuchsia)]()[]
+    self._vk_destroy_buffer_collection_fuchsia = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyBufferCollectionFUCHSIA".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_buffer_collection_fuchsia)]()[]
+    self._vk_get_buffer_collection_properties_fuchsia = Ptr(to=get_device_proc_addr(
+        device, "vkGetBufferCollectionPropertiesFUCHSIA".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_buffer_collection_properties_fuchsia)]()[]
+
     fn create_buffer_collection_fuchsia(
         self,
         device: Device,
@@ -7638,7 +9264,16 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_dispatch_tile_qcom = Ptr(to=get_device_proc_addr(        device, "vkCmdDispatchTileQCOM".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_dispatch_tile_qcom)]()[]    self._vk_cmd_begin_per_tile_execution_qcom = Ptr(to=get_device_proc_addr(        device, "vkCmdBeginPerTileExecutionQCOM".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_begin_per_tile_execution_qcom)]()[]    self._vk_cmd_end_per_tile_execution_qcom = Ptr(to=get_device_proc_addr(        device, "vkCmdEndPerTileExecutionQCOM".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_end_per_tile_execution_qcom)]()[]
+    self._vk_cmd_dispatch_tile_qcom = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDispatchTileQCOM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_dispatch_tile_qcom)]()[]
+    self._vk_cmd_begin_per_tile_execution_qcom = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBeginPerTileExecutionQCOM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_begin_per_tile_execution_qcom)]()[]
+    self._vk_cmd_end_per_tile_execution_qcom = Ptr(to=get_device_proc_addr(
+        device, "vkCmdEndPerTileExecutionQCOM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_end_per_tile_execution_qcom)]()[]
+
     fn cmd_dispatch_tile_qcom(
         self, command_buffer: CommandBuffer, dispatch_tile_info: DispatchTileInfoQCOM
     ):
@@ -7670,7 +9305,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_framebuffer_tile_properties_qcom = Ptr(to=get_device_proc_addr(        device, "vkGetFramebufferTilePropertiesQCOM".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_framebuffer_tile_properties_qcom)]()[]    self._vk_get_dynamic_rendering_tile_properties_qcom = Ptr(to=get_device_proc_addr(        device, "vkGetDynamicRenderingTilePropertiesQCOM".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_dynamic_rendering_tile_properties_qcom)]()[]
+    self._vk_get_framebuffer_tile_properties_qcom = Ptr(to=get_device_proc_addr(
+        device, "vkGetFramebufferTilePropertiesQCOM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_framebuffer_tile_properties_qcom)]()[]
+    self._vk_get_dynamic_rendering_tile_properties_qcom = Ptr(to=get_device_proc_addr(
+        device, "vkGetDynamicRenderingTilePropertiesQCOM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_dynamic_rendering_tile_properties_qcom)]()[]
+
     fn get_framebuffer_tile_properties_qcom(
         self,
         device: Device,
@@ -7701,7 +9342,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_bind_tile_memory_qcom = Ptr(to=get_device_proc_addr(        device, "vkCmdBindTileMemoryQCOM".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_tile_memory_qcom)]()[]
+    self._vk_cmd_bind_tile_memory_qcom = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBindTileMemoryQCOM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_bind_tile_memory_qcom)]()[]
+
     fn cmd_bind_tile_memory_qcom(
         self,
         command_buffer: CommandBuffer,
@@ -7717,7 +9361,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_device_subpass_shading_max_workgroup_size_huawei = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceSubpassShadingMaxWorkgroupSizeHUAWEI".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_subpass_shading_max_workgroup_size_huawei)]()[]    self._vk_cmd_subpass_shading_huawei = Ptr(to=get_device_proc_addr(        device, "vkCmdSubpassShadingHUAWEI".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_subpass_shading_huawei)]()[]
+    self._vk_get_device_subpass_shading_max_workgroup_size_huawei = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceSubpassShadingMaxWorkgroupSizeHUAWEI".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_subpass_shading_max_workgroup_size_huawei)]()[]
+    self._vk_cmd_subpass_shading_huawei = Ptr(to=get_device_proc_addr(
+        device, "vkCmdSubpassShadingHUAWEI".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_subpass_shading_huawei)]()[]
+
     fn get_device_subpass_shading_max_workgroup_size_huawei(
         self, device: Device, renderpass: RenderPass, max_workgroup_size: Extent2D
     ) -> Result:
@@ -7740,7 +9390,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_bind_invocation_mask_huawei = Ptr(to=get_device_proc_addr(        device, "vkCmdBindInvocationMaskHUAWEI".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_invocation_mask_huawei)]()[]
+    self._vk_cmd_bind_invocation_mask_huawei = Ptr(to=get_device_proc_addr(
+        device, "vkCmdBindInvocationMaskHUAWEI".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_bind_invocation_mask_huawei)]()[]
+
     fn cmd_bind_invocation_mask_huawei(
         self, command_buffer: CommandBuffer, image_view: ImageView, image_layout: ImageLayout
     ):
@@ -7754,7 +9407,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_cmd_draw_cluster_huawei = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawClusterHUAWEI".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_cluster_huawei)]()[]    self._vk_cmd_draw_cluster_indirect_huawei = Ptr(to=get_device_proc_addr(        device, "vkCmdDrawClusterIndirectHUAWEI".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_draw_cluster_indirect_huawei)]()[]
+    self._vk_cmd_draw_cluster_huawei = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawClusterHUAWEI".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_cluster_huawei)]()[]
+    self._vk_cmd_draw_cluster_indirect_huawei = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDrawClusterIndirectHUAWEI".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_draw_cluster_indirect_huawei)]()[]
+
     fn cmd_draw_cluster_huawei(
         self,
         command_buffer: CommandBuffer,
@@ -7783,7 +9442,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_screen_surface_qnx = Ptr(to=get_instance_proc_addr(        instance, "vkCreateScreenSurfaceQNX".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_screen_surface_qnx)]()[]    self._vk_get_physical_device_screen_presentation_support_qnx = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceScreenPresentationSupportQNX".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_screen_presentation_support_qnx)]()[]
+    self._vk_create_screen_surface_qnx = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateScreenSurfaceQNX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_screen_surface_qnx)]()[]
+    self._vk_get_physical_device_screen_presentation_support_qnx = Ptr(to=get_instance_proc_addr(
+        instance, "vkGetPhysicalDeviceScreenPresentationSupportQNX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_screen_presentation_support_qnx)]()[]
+
     fn create_screen_surface_qnx(
         self,
         instance: Instance,
@@ -7817,7 +9482,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_screen_buffer_properties_qnx = Ptr(to=get_device_proc_addr(        device, "vkGetScreenBufferPropertiesQNX".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_screen_buffer_properties_qnx)]()[]
+    self._vk_get_screen_buffer_properties_qnx = Ptr(to=get_device_proc_addr(
+        device, "vkGetScreenBufferPropertiesQNX".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_screen_buffer_properties_qnx)]()[]
+
     fn get_screen_buffer_properties_qnx(
         self,
         device: Device,
@@ -7834,7 +9502,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_get_descriptor_set_layout_host_mapping_info_valve = Ptr(to=get_device_proc_addr(        device, "vkGetDescriptorSetLayoutHostMappingInfoVALVE".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_descriptor_set_layout_host_mapping_info_valve)]()[]    self._vk_get_descriptor_set_host_mapping_valve = Ptr(to=get_device_proc_addr(        device, "vkGetDescriptorSetHostMappingVALVE".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_descriptor_set_host_mapping_valve)]()[]
+    self._vk_get_descriptor_set_layout_host_mapping_info_valve = Ptr(to=get_device_proc_addr(
+        device, "vkGetDescriptorSetLayoutHostMappingInfoVALVE".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_descriptor_set_layout_host_mapping_info_valve)]()[]
+    self._vk_get_descriptor_set_host_mapping_valve = Ptr(to=get_device_proc_addr(
+        device, "vkGetDescriptorSetHostMappingVALVE".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_descriptor_set_host_mapping_valve)]()[]
+
     fn get_descriptor_set_layout_host_mapping_info_valve(
         self,
         device: Device,
@@ -7865,7 +9539,40 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_tensor_arm = Ptr(to=get_device_proc_addr(        device, "vkCreateTensorARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_tensor_arm)]()[]    self._vk_destroy_tensor_arm = Ptr(to=get_device_proc_addr(        device, "vkDestroyTensorARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_tensor_arm)]()[]    self._vk_create_tensor_view_arm = Ptr(to=get_device_proc_addr(        device, "vkCreateTensorViewARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_tensor_view_arm)]()[]    self._vk_destroy_tensor_view_arm = Ptr(to=get_device_proc_addr(        device, "vkDestroyTensorViewARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_tensor_view_arm)]()[]    self._vk_get_tensor_memory_requirements_arm = Ptr(to=get_device_proc_addr(        device, "vkGetTensorMemoryRequirementsARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_tensor_memory_requirements_arm)]()[]    self._vk_bind_tensor_memory_arm = Ptr(to=get_device_proc_addr(        device, "vkBindTensorMemoryARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_bind_tensor_memory_arm)]()[]    self._vk_get_device_tensor_memory_requirements_arm = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceTensorMemoryRequirementsARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_tensor_memory_requirements_arm)]()[]    self._vk_cmd_copy_tensor_arm = Ptr(to=get_device_proc_addr(        device, "vkCmdCopyTensorARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_copy_tensor_arm)]()[]    self._vk_get_physical_device_external_tensor_properties_arm = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceExternalTensorPropertiesARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_external_tensor_properties_arm)]()[]    self._vk_get_tensor_opaque_capture_descriptor_data_arm = Ptr(to=get_device_proc_addr(        device, "vkGetTensorOpaqueCaptureDescriptorDataARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_tensor_opaque_capture_descriptor_data_arm)]()[]    self._vk_get_tensor_view_opaque_capture_descriptor_data_arm = Ptr(to=get_device_proc_addr(        device, "vkGetTensorViewOpaqueCaptureDescriptorDataARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_tensor_view_opaque_capture_descriptor_data_arm)]()[]
+    self._vk_create_tensor_arm = Ptr(to=get_device_proc_addr(
+        device, "vkCreateTensorARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_tensor_arm)]()[]
+    self._vk_destroy_tensor_arm = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyTensorARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_tensor_arm)]()[]
+    self._vk_create_tensor_view_arm = Ptr(to=get_device_proc_addr(
+        device, "vkCreateTensorViewARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_tensor_view_arm)]()[]
+    self._vk_destroy_tensor_view_arm = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyTensorViewARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_tensor_view_arm)]()[]
+    self._vk_get_tensor_memory_requirements_arm = Ptr(to=get_device_proc_addr(
+        device, "vkGetTensorMemoryRequirementsARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_tensor_memory_requirements_arm)]()[]
+    self._vk_bind_tensor_memory_arm = Ptr(to=get_device_proc_addr(
+        device, "vkBindTensorMemoryARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_bind_tensor_memory_arm)]()[]
+    self._vk_get_device_tensor_memory_requirements_arm = Ptr(to=get_device_proc_addr(
+        device, "vkGetDeviceTensorMemoryRequirementsARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_device_tensor_memory_requirements_arm)]()[]
+    self._vk_cmd_copy_tensor_arm = Ptr(to=get_device_proc_addr(
+        device, "vkCmdCopyTensorARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_copy_tensor_arm)]()[]
+    self._vk_get_physical_device_external_tensor_properties_arm = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceExternalTensorPropertiesARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_external_tensor_properties_arm)]()[]
+    self._vk_get_tensor_opaque_capture_descriptor_data_arm = Ptr(to=get_device_proc_addr(
+        device, "vkGetTensorOpaqueCaptureDescriptorDataARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_tensor_opaque_capture_descriptor_data_arm)]()[]
+    self._vk_get_tensor_view_opaque_capture_descriptor_data_arm = Ptr(to=get_device_proc_addr(
+        device, "vkGetTensorViewOpaqueCaptureDescriptorDataARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_tensor_view_opaque_capture_descriptor_data_arm)]()[]
+
     fn create_tensor_arm(
         self,
         device: Device,
@@ -8002,7 +9709,40 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetDeviceProcAddr")
-    self._vk_create_data_graph_pipelines_arm = Ptr(to=get_device_proc_addr(        device, "vkCreateDataGraphPipelinesARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_data_graph_pipelines_arm)]()[]    self._vk_create_data_graph_pipeline_session_arm = Ptr(to=get_device_proc_addr(        device, "vkCreateDataGraphPipelineSessionARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_data_graph_pipeline_session_arm)]()[]    self._vk_get_data_graph_pipeline_session_bind_point_requirements_arm = Ptr(to=get_device_proc_addr(        device, "vkGetDataGraphPipelineSessionBindPointRequirementsARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_data_graph_pipeline_session_bind_point_requirements_arm)]()[]    self._vk_get_data_graph_pipeline_session_memory_requirements_arm = Ptr(to=get_device_proc_addr(        device, "vkGetDataGraphPipelineSessionMemoryRequirementsARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_data_graph_pipeline_session_memory_requirements_arm)]()[]    self._vk_bind_data_graph_pipeline_session_memory_arm = Ptr(to=get_device_proc_addr(        device, "vkBindDataGraphPipelineSessionMemoryARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_bind_data_graph_pipeline_session_memory_arm)]()[]    self._vk_destroy_data_graph_pipeline_session_arm = Ptr(to=get_device_proc_addr(        device, "vkDestroyDataGraphPipelineSessionARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_destroy_data_graph_pipeline_session_arm)]()[]    self._vk_cmd_dispatch_data_graph_arm = Ptr(to=get_device_proc_addr(        device, "vkCmdDispatchDataGraphARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_dispatch_data_graph_arm)]()[]    self._vk_get_data_graph_pipeline_available_properties_arm = Ptr(to=get_device_proc_addr(        device, "vkGetDataGraphPipelineAvailablePropertiesARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_data_graph_pipeline_available_properties_arm)]()[]    self._vk_get_data_graph_pipeline_properties_arm = Ptr(to=get_device_proc_addr(        device, "vkGetDataGraphPipelinePropertiesARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_data_graph_pipeline_properties_arm)]()[]    self._vk_get_physical_device_queue_family_data_graph_properties_arm = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceQueueFamilyDataGraphPropertiesARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_queue_family_data_graph_properties_arm)]()[]    self._vk_get_physical_device_queue_family_data_graph_processing_engine_properties_arm = Ptr(to=get_device_proc_addr(        device, "vkGetPhysicalDeviceQueueFamilyDataGraphProcessingEnginePropertiesARM".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_queue_family_data_graph_processing_engine_properties_arm)]()[]
+    self._vk_create_data_graph_pipelines_arm = Ptr(to=get_device_proc_addr(
+        device, "vkCreateDataGraphPipelinesARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_data_graph_pipelines_arm)]()[]
+    self._vk_create_data_graph_pipeline_session_arm = Ptr(to=get_device_proc_addr(
+        device, "vkCreateDataGraphPipelineSessionARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_data_graph_pipeline_session_arm)]()[]
+    self._vk_get_data_graph_pipeline_session_bind_point_requirements_arm = Ptr(to=get_device_proc_addr(
+        device, "vkGetDataGraphPipelineSessionBindPointRequirementsARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_data_graph_pipeline_session_bind_point_requirements_arm)]()[]
+    self._vk_get_data_graph_pipeline_session_memory_requirements_arm = Ptr(to=get_device_proc_addr(
+        device, "vkGetDataGraphPipelineSessionMemoryRequirementsARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_data_graph_pipeline_session_memory_requirements_arm)]()[]
+    self._vk_bind_data_graph_pipeline_session_memory_arm = Ptr(to=get_device_proc_addr(
+        device, "vkBindDataGraphPipelineSessionMemoryARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_bind_data_graph_pipeline_session_memory_arm)]()[]
+    self._vk_destroy_data_graph_pipeline_session_arm = Ptr(to=get_device_proc_addr(
+        device, "vkDestroyDataGraphPipelineSessionARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_destroy_data_graph_pipeline_session_arm)]()[]
+    self._vk_cmd_dispatch_data_graph_arm = Ptr(to=get_device_proc_addr(
+        device, "vkCmdDispatchDataGraphARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_cmd_dispatch_data_graph_arm)]()[]
+    self._vk_get_data_graph_pipeline_available_properties_arm = Ptr(to=get_device_proc_addr(
+        device, "vkGetDataGraphPipelineAvailablePropertiesARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_data_graph_pipeline_available_properties_arm)]()[]
+    self._vk_get_data_graph_pipeline_properties_arm = Ptr(to=get_device_proc_addr(
+        device, "vkGetDataGraphPipelinePropertiesARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_data_graph_pipeline_properties_arm)]()[]
+    self._vk_get_physical_device_queue_family_data_graph_properties_arm = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceQueueFamilyDataGraphPropertiesARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_queue_family_data_graph_properties_arm)]()[]
+    self._vk_get_physical_device_queue_family_data_graph_processing_engine_properties_arm = Ptr(to=get_device_proc_addr(
+        device, "vkGetPhysicalDeviceQueueFamilyDataGraphProcessingEnginePropertiesARM".unsafe_ptr()
+    )).bitcast[type_of(self._vk_get_physical_device_queue_family_data_graph_processing_engine_properties_arm)]()[]
+
     fn create_data_graph_pipelines_arm(
         self,
         device: Device,
@@ -8185,7 +9925,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
     ]("vkGetInstanceProcAddr")
-    self._vk_create_surface_ohos = Ptr(to=get_instance_proc_addr(        instance, "vkCreateSurfaceOHOS".unsafe_ptr()    )).bitcast[__type_of(self._vk_create_surface_ohos)]()[]
+    self._vk_create_surface_ohos = Ptr(to=get_instance_proc_addr(
+        instance, "vkCreateSurfaceOHOS".unsafe_ptr()
+    )).bitcast[type_of(self._vk_create_surface_ohos)]()[]
+
     fn create_surface_ohos(
         self,
         instance: Instance,

@@ -1247,7 +1247,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
     # Core Functions
     parts: List[str] = []
     parts.append((
-        "from sys import OwnedDLHandle, RTLD\n"
+        "from sys.ffi import OwnedDLHandle, _DLHandle, RTLD\n"
         "from .fn_types import *\n"
         "from .handles import *\n"
         "from .structs import *\n"
@@ -1256,7 +1256,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
         "comptime Ptr = UnsafePointer\n"
         "\n\n"
         "trait GlobalFunctions:\n"
-        "    fn handle(self) -> ref [self] OwnedDLHandle:\n"
+        "    fn borrow_handle(self) -> _DLHandle:\n"
         "        ...\n"
     ))
     for command_level, core_versions in parsed_commands.core_commands.items():
@@ -1302,8 +1302,8 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
             if command_level == "global":
                 parts.append((
                     "\n"
-                    "    fn handle(self) -> ref [self] OwnedDLHandle:\n"
-                    "        return self._handle\n"
+                    "    fn borrow_handle(self) -> _DLHandle:\n"
+                    "        return self._handle.borrow()\n"
                 ))
             for versioned_command in versioned_commands:
                 parts.append(emit_generic_function_definition(versioned_command.command, versioned_command.version))
@@ -1350,7 +1350,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 parts.append((
                     f"        self.{mojo_command_name} = Ptr(to=get_{get_proc_level}_proc_addr(\n"
                     f'            {handle_arg}, "{new_command.command.name}".unsafe_ptr()\n'
-                    f"        )).bitcast[__type_of(self.{mojo_command_name})]()[]\n"
+                    f"        )).bitcast[type_of(self.{mojo_command_name})]()[]\n"
                 ))
     files["core_functions.mojo"] = "".join(parts)
 
@@ -1387,9 +1387,9 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
             for command in extension.commands:
                 mojo_command_name = pascal_to_snake(emit_mojo_type_name(command.name))
                 parts.append((
-                    f"    self._{mojo_command_name} = Ptr(to=get_{extension.type}_proc_addr("
-                    f'        {extension.type}, "{command.name}".unsafe_ptr()'
-                    f"    )).bitcast[__type_of(self._{mojo_command_name})]()[]"
+                    f"    self._{mojo_command_name} = Ptr(to=get_{extension.type}_proc_addr(\n"
+                    f'        {extension.type}, "{command.name}".unsafe_ptr()\n'
+                    f"    )).bitcast[type_of(self._{mojo_command_name})]()[]\n"
                 ))
             for command in extension.commands:
                 parts.append(emit_generic_function_definition(command))
