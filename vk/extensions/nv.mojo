@@ -25,7 +25,7 @@ struct ClipSpaceWScaling(Copyable):    var _vk_cmd_set_viewport_w_scaling_nv: fn
         commandBuffer: CommandBuffer,
         firstViewport: UInt32,
         viewportCount: UInt32,
-        pViewportWScalings: Ptr[ViewportWScalingNV, ImmutOrigin.external],
+        pViewportWScalings: Ptr[ViewportWScalingNV, MutOrigin.external],
     )
 
 
@@ -36,40 +36,40 @@ struct ShadingRateImage(Copyable):    var _vk_cmd_bind_shading_rate_image_nv: fn
         commandBuffer: CommandBuffer,
         firstViewport: UInt32,
         viewportCount: UInt32,
-        pShadingRatePalettes: Ptr[ShadingRatePaletteNV, ImmutOrigin.external],
+        pShadingRatePalettes: Ptr[ShadingRatePaletteNV, MutOrigin.external],
     )
     var _vk_cmd_set_coarse_sample_order_nv: fn(
         commandBuffer: CommandBuffer,
         sampleOrderType: CoarseSampleOrderTypeNV,
         customSampleOrderCount: UInt32,
-        pCustomSampleOrders: Ptr[CoarseSampleOrderCustomNV, ImmutOrigin.external],
+        pCustomSampleOrders: Ptr[CoarseSampleOrderCustomNV, MutOrigin.external],
     )
 
 
 struct RayTracing(Copyable):    var _vk_create_acceleration_structure_nv: fn(
         device: Device,
-        pCreateInfo: Ptr[AccelerationStructureCreateInfoNV, ImmutOrigin.external],
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pCreateInfo: Ptr[AccelerationStructureCreateInfoNV, MutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
         pAccelerationStructure: Ptr[AccelerationStructureNV, MutOrigin.external],
     ) -> Result
     var _vk_destroy_acceleration_structure_nv: fn(
         device: Device,
         accelerationStructure: AccelerationStructureNV,
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
     )
     var _vk_get_acceleration_structure_memory_requirements_nv: fn(
         device: Device,
-        pInfo: Ptr[AccelerationStructureMemoryRequirementsInfoNV, ImmutOrigin.external],
+        pInfo: Ptr[AccelerationStructureMemoryRequirementsInfoNV, MutOrigin.external],
         pMemoryRequirements: Ptr[MemoryRequirements2KHR, MutOrigin.external],
     )
     var _vk_bind_acceleration_structure_memory_nv: fn(
         device: Device,
         bindInfoCount: UInt32,
-        pBindInfos: Ptr[BindAccelerationStructureMemoryInfoNV, ImmutOrigin.external],
+        pBindInfos: Ptr[BindAccelerationStructureMemoryInfoNV, MutOrigin.external],
     ) -> Result
     var _vk_cmd_build_acceleration_structure_nv: fn(
         commandBuffer: CommandBuffer,
-        pInfo: Ptr[AccelerationStructureInfoNV, ImmutOrigin.external],
+        pInfo: Ptr[AccelerationStructureInfoNV, MutOrigin.external],
         instanceData: Buffer,
         instanceOffset: DeviceSize,
         update: Bool32,
@@ -105,8 +105,8 @@ struct RayTracing(Copyable):    var _vk_create_acceleration_structure_nv: fn(
         device: Device,
         pipelineCache: PipelineCache,
         createInfoCount: UInt32,
-        pCreateInfos: Ptr[RayTracingPipelineCreateInfoNV, ImmutOrigin.external],
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pCreateInfos: Ptr[RayTracingPipelineCreateInfoNV, MutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
         pPipelines: Ptr[Pipeline, MutOrigin.external],
     ) -> Result
     var _vk_get_ray_tracing_shader_group_handles_khr: fn(
@@ -126,7 +126,7 @@ struct RayTracing(Copyable):    var _vk_create_acceleration_structure_nv: fn(
     var _vk_cmd_write_acceleration_structures_properties_nv: fn(
         commandBuffer: CommandBuffer,
         accelerationStructureCount: UInt32,
-        pAccelerationStructures: Ptr[AccelerationStructureNV, ImmutOrigin.external],
+        pAccelerationStructures: Ptr[AccelerationStructureNV, MutOrigin.external],
         queryType: QueryType,
         queryPool: QueryPool,
         firstQuery: UInt32,
@@ -159,18 +159,18 @@ struct ScissorExclusive(Copyable):    var _vk_cmd_set_exclusive_scissor_enable_n
         commandBuffer: CommandBuffer,
         firstExclusiveScissor: UInt32,
         exclusiveScissorCount: UInt32,
-        pExclusiveScissorEnables: Ptr[Bool32, ImmutOrigin.external],
+        pExclusiveScissorEnables: Ptr[Bool32, MutOrigin.external],
     )
     var _vk_cmd_set_exclusive_scissor_nv: fn(
         commandBuffer: CommandBuffer,
         firstExclusiveScissor: UInt32,
         exclusiveScissorCount: UInt32,
-        pExclusiveScissors: Ptr[Rect2D, ImmutOrigin.external],
+        pExclusiveScissors: Ptr[Rect2D, MutOrigin.external],
     )
 
 
 struct DeviceDiagnosticCheckpoints(Copyable):    var _vk_cmd_set_checkpoint_nv: fn(
-        commandBuffer: CommandBuffer, pCheckpointMarker: Ptr[NoneType, ImmutOrigin.external]
+        commandBuffer: CommandBuffer, pCheckpointMarker: Ptr[NoneType, MutOrigin.external]
     )
     var _vk_get_queue_checkpoint_data_nv: fn(
         queue: Queue,
@@ -200,17 +200,17 @@ struct CoverageReductionMode(Copyable):    var _vk_get_physical_device_supported
 
 struct DeviceGeneratedCommands(Copyable):    var _vk_get_generated_commands_memory_requirements_nv: fn(
         device: Device,
-        pInfo: Ptr[GeneratedCommandsMemoryRequirementsInfoNV, ImmutOrigin.external],
+        pInfo: Ptr[GeneratedCommandsMemoryRequirementsInfoNV, MutOrigin.external],
         pMemoryRequirements: Ptr[MemoryRequirements2, MutOrigin.external],
     )
     var _vk_cmd_preprocess_generated_commands_nv: fn(
         commandBuffer: CommandBuffer,
-        pGeneratedCommandsInfo: Ptr[GeneratedCommandsInfoNV, ImmutOrigin.external],
+        pGeneratedCommandsInfo: Ptr[GeneratedCommandsInfoNV, MutOrigin.external],
     )
     var _vk_cmd_execute_generated_commands_nv: fn(
         commandBuffer: CommandBuffer,
         isPreprocessed: Bool32,
-        pGeneratedCommandsInfo: Ptr[GeneratedCommandsInfoNV, ImmutOrigin.external],
+        pGeneratedCommandsInfo: Ptr[GeneratedCommandsInfoNV, MutOrigin.external],
     )
     var _vk_cmd_bind_pipeline_shader_group_nv: fn(
         commandBuffer: CommandBuffer,
@@ -220,21 +220,21 @@ struct DeviceGeneratedCommands(Copyable):    var _vk_get_generated_commands_memo
     )
     var _vk_create_indirect_commands_layout_nv: fn(
         device: Device,
-        pCreateInfo: Ptr[IndirectCommandsLayoutCreateInfoNV, ImmutOrigin.external],
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pCreateInfo: Ptr[IndirectCommandsLayoutCreateInfoNV, MutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
         pIndirectCommandsLayout: Ptr[IndirectCommandsLayoutNV, MutOrigin.external],
     ) -> Result
     var _vk_destroy_indirect_commands_layout_nv: fn(
         device: Device,
         indirectCommandsLayout: IndirectCommandsLayoutNV,
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
     )
 
 
 struct CudaKernelLaunch(Copyable):    var _vk_create_cuda_module_nv: fn(
         device: Device,
-        pCreateInfo: Ptr[CudaModuleCreateInfoNV, ImmutOrigin.external],
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pCreateInfo: Ptr[CudaModuleCreateInfoNV, MutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
         pModule: Ptr[CudaModuleNV, MutOrigin.external],
     ) -> Result
     var _vk_get_cuda_module_cache_nv: fn(
@@ -245,22 +245,22 @@ struct CudaKernelLaunch(Copyable):    var _vk_create_cuda_module_nv: fn(
     ) -> Result
     var _vk_create_cuda_function_nv: fn(
         device: Device,
-        pCreateInfo: Ptr[CudaFunctionCreateInfoNV, ImmutOrigin.external],
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pCreateInfo: Ptr[CudaFunctionCreateInfoNV, MutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
         pFunction: Ptr[CudaFunctionNV, MutOrigin.external],
     ) -> Result
     var _vk_destroy_cuda_module_nv: fn(
         device: Device,
         module: CudaModuleNV,
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
     )
     var _vk_destroy_cuda_function_nv: fn(
         device: Device,
         function: CudaFunctionNV,
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
     )
     var _vk_cmd_cuda_launch_kernel_nv: fn(
-        commandBuffer: CommandBuffer, pLaunchInfo: Ptr[CudaLaunchInfoNV, ImmutOrigin.external]
+        commandBuffer: CommandBuffer, pLaunchInfo: Ptr[CudaLaunchInfoNV, MutOrigin.external]
     )
 
 
@@ -283,7 +283,7 @@ struct AcquireWinrtDisplay(Copyable):    var _vk_acquire_winrt_display_nv: fn(
 
 struct ExternalMemoryRdma(Copyable):    var _vk_get_memory_remote_address_nv: fn(
         device: Device,
-        pMemoryGetRemoteAddressInfo: Ptr[MemoryGetRemoteAddressInfoNV, ImmutOrigin.external],
+        pMemoryGetRemoteAddressInfo: Ptr[MemoryGetRemoteAddressInfoNV, MutOrigin.external],
         pAddress: Ptr[RemoteAddressNV, MutOrigin.external],
     ) -> Result
 
@@ -301,14 +301,14 @@ struct CopyMemoryIndirect(Copyable):    var _vk_cmd_copy_memory_indirect_nv: fn(
         stride: UInt32,
         dstImage: Image,
         dstImageLayout: ImageLayout,
-        pImageSubresources: Ptr[ImageSubresourceLayers, ImmutOrigin.external],
+        pImageSubresources: Ptr[ImageSubresourceLayers, MutOrigin.external],
     )
 
 
 struct MemoryDecompression(Copyable):    var _vk_cmd_decompress_memory_nv: fn(
         commandBuffer: CommandBuffer,
         decompressRegionCount: UInt32,
-        pDecompressMemoryRegions: Ptr[DecompressMemoryRegionNV, ImmutOrigin.external],
+        pDecompressMemoryRegions: Ptr[DecompressMemoryRegionNV, MutOrigin.external],
     )
     var _vk_cmd_decompress_memory_indirect_count_nv: fn(
         commandBuffer: CommandBuffer,
@@ -320,33 +320,33 @@ struct MemoryDecompression(Copyable):    var _vk_cmd_decompress_memory_nv: fn(
 
 struct DeviceGeneratedCommandsCompute(Copyable):    var _vk_get_pipeline_indirect_memory_requirements_nv: fn(
         device: Device,
-        pCreateInfo: Ptr[ComputePipelineCreateInfo, ImmutOrigin.external],
+        pCreateInfo: Ptr[ComputePipelineCreateInfo, MutOrigin.external],
         pMemoryRequirements: Ptr[MemoryRequirements2, MutOrigin.external],
     )
     var _vk_cmd_update_pipeline_indirect_buffer_nv: fn(
         commandBuffer: CommandBuffer, pipelineBindPoint: PipelineBindPoint, pipeline: Pipeline
     )
     var _vk_get_pipeline_indirect_device_address_nv: fn(
-        device: Device, pInfo: Ptr[PipelineIndirectDeviceAddressInfoNV, ImmutOrigin.external]
+        device: Device, pInfo: Ptr[PipelineIndirectDeviceAddressInfoNV, MutOrigin.external]
     ) -> DeviceAddress
 
 
 struct OpticalFlow(Copyable):    var _vk_get_physical_device_optical_flow_image_formats_nv: fn(
         physicalDevice: PhysicalDevice,
-        pOpticalFlowImageFormatInfo: Ptr[OpticalFlowImageFormatInfoNV, ImmutOrigin.external],
+        pOpticalFlowImageFormatInfo: Ptr[OpticalFlowImageFormatInfoNV, MutOrigin.external],
         pFormatCount: Ptr[UInt32, MutOrigin.external],
         pImageFormatProperties: Ptr[OpticalFlowImageFormatPropertiesNV, MutOrigin.external],
     ) -> Result
     var _vk_create_optical_flow_session_nv: fn(
         device: Device,
-        pCreateInfo: Ptr[OpticalFlowSessionCreateInfoNV, ImmutOrigin.external],
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pCreateInfo: Ptr[OpticalFlowSessionCreateInfoNV, MutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
         pSession: Ptr[OpticalFlowSessionNV, MutOrigin.external],
     ) -> Result
     var _vk_destroy_optical_flow_session_nv: fn(
         device: Device,
         session: OpticalFlowSessionNV,
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
     )
     var _vk_bind_optical_flow_session_image_nv: fn(
         device: Device,
@@ -358,7 +358,7 @@ struct OpticalFlow(Copyable):    var _vk_get_physical_device_optical_flow_image_
     var _vk_cmd_optical_flow_execute_nv: fn(
         commandBuffer: CommandBuffer,
         session: OpticalFlowSessionNV,
-        pExecuteInfo: Ptr[OpticalFlowExecuteInfoNV, ImmutOrigin.external],
+        pExecuteInfo: Ptr[OpticalFlowExecuteInfoNV, MutOrigin.external],
     )
 
 
@@ -368,29 +368,29 @@ struct CooperativeVector(Copyable):    var _vk_get_physical_device_cooperative_v
         pProperties: Ptr[CooperativeVectorPropertiesNV, MutOrigin.external],
     ) -> Result
     var _vk_convert_cooperative_vector_matrix_nv: fn(
-        device: Device, pInfo: Ptr[ConvertCooperativeVectorMatrixInfoNV, ImmutOrigin.external]
+        device: Device, pInfo: Ptr[ConvertCooperativeVectorMatrixInfoNV, MutOrigin.external]
     ) -> Result
     var _vk_cmd_convert_cooperative_vector_matrix_nv: fn(
         commandBuffer: CommandBuffer,
         infoCount: UInt32,
-        pInfos: Ptr[ConvertCooperativeVectorMatrixInfoNV, ImmutOrigin.external],
+        pInfos: Ptr[ConvertCooperativeVectorMatrixInfoNV, MutOrigin.external],
     )
 
 
 struct LowLatency2(Copyable):    var _vk_set_latency_sleep_mode_nv: fn(
         device: Device,
         swapchain: SwapchainKHR,
-        pSleepModeInfo: Ptr[LatencySleepModeInfoNV, ImmutOrigin.external],
+        pSleepModeInfo: Ptr[LatencySleepModeInfoNV, MutOrigin.external],
     ) -> Result
     var _vk_latency_sleep_nv: fn(
         device: Device,
         swapchain: SwapchainKHR,
-        pSleepInfo: Ptr[LatencySleepInfoNV, ImmutOrigin.external],
+        pSleepInfo: Ptr[LatencySleepInfoNV, MutOrigin.external],
     ) -> Result
     var _vk_set_latency_marker_nv: fn(
         device: Device,
         swapchain: SwapchainKHR,
-        pLatencyMarkerInfo: Ptr[SetLatencyMarkerInfoNV, ImmutOrigin.external],
+        pLatencyMarkerInfo: Ptr[SetLatencyMarkerInfoNV, MutOrigin.external],
     )
     var _vk_get_latency_timings_nv: fn(
         device: Device,
@@ -398,20 +398,20 @@ struct LowLatency2(Copyable):    var _vk_set_latency_sleep_mode_nv: fn(
         pLatencyMarkerInfo: Ptr[GetLatencyMarkerInfoNV, MutOrigin.external],
     )
     var _vk_queue_notify_out_of_band_nv: fn(
-        queue: Queue, pQueueTypeInfo: Ptr[OutOfBandQueueTypeInfoNV, ImmutOrigin.external]
+        queue: Queue, pQueueTypeInfo: Ptr[OutOfBandQueueTypeInfoNV, MutOrigin.external]
     )
 
 
 struct ExternalComputeQueue(Copyable):    var _vk_create_external_compute_queue_nv: fn(
         device: Device,
-        pCreateInfo: Ptr[ExternalComputeQueueCreateInfoNV, ImmutOrigin.external],
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pCreateInfo: Ptr[ExternalComputeQueueCreateInfoNV, MutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
         pExternalQueue: Ptr[ExternalComputeQueueNV, MutOrigin.external],
     ) -> Result
     var _vk_destroy_external_compute_queue_nv: fn(
         device: Device,
         externalQueue: ExternalComputeQueueNV,
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
     )
     var _vk_get_external_compute_queue_data_nv: fn(
         externalQueue: ExternalComputeQueueNV,
@@ -422,23 +422,23 @@ struct ExternalComputeQueue(Copyable):    var _vk_create_external_compute_queue_
 
 struct ClusterAccelerationStructure(Copyable):    var _vk_get_cluster_acceleration_structure_build_sizes_nv: fn(
         device: Device,
-        pInfo: Ptr[ClusterAccelerationStructureInputInfoNV, ImmutOrigin.external],
+        pInfo: Ptr[ClusterAccelerationStructureInputInfoNV, MutOrigin.external],
         pSizeInfo: Ptr[AccelerationStructureBuildSizesInfoKHR, MutOrigin.external],
     )
     var _vk_cmd_build_cluster_acceleration_structure_indirect_nv: fn(
         commandBuffer: CommandBuffer,
-        pCommandInfos: Ptr[ClusterAccelerationStructureCommandsInfoNV, ImmutOrigin.external],
+        pCommandInfos: Ptr[ClusterAccelerationStructureCommandsInfoNV, MutOrigin.external],
     )
 
 
 struct PartitionedAccelerationStructure(Copyable):    var _vk_get_partitioned_acceleration_structures_build_sizes_nv: fn(
         device: Device,
-        pInfo: Ptr[PartitionedAccelerationStructureInstancesInputNV, ImmutOrigin.external],
+        pInfo: Ptr[PartitionedAccelerationStructureInstancesInputNV, MutOrigin.external],
         pSizeInfo: Ptr[AccelerationStructureBuildSizesInfoKHR, MutOrigin.external],
     )
     var _vk_cmd_build_partitioned_acceleration_structures_nv: fn(
         commandBuffer: CommandBuffer,
-        pBuildInfo: Ptr[BuildPartitionedAccelerationStructureInfoNV, ImmutOrigin.external],
+        pBuildInfo: Ptr[BuildPartitionedAccelerationStructureInfoNV, MutOrigin.external],
     )
 
 

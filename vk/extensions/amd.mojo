@@ -52,6 +52,4 @@ struct DisplayNativeHdr(Copyable):    var _vk_set_local_dimming_amd: fn(
     )
 
 
-struct AntiLag(Copyable):    var _vk_anti_lag_update_amd: fn(
-        device: Device, pData: Ptr[AntiLagDataAMD, ImmutOrigin.external]
-    )
+struct AntiLag(Copyable):    var _vk_anti_lag_update_amd: fn(device: Device, pData: Ptr[AntiLagDataAMD, MutOrigin.external])

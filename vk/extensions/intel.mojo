@@ -2,25 +2,24 @@ from vk.core_functions import GlobalFunctions
 
 
 struct PerformanceQuery(Copyable):    var _vk_initialize_performance_api_intel: fn(
-        device: Device,
-        pInitializeInfo: Ptr[InitializePerformanceApiInfoINTEL, ImmutOrigin.external],
+        device: Device, pInitializeInfo: Ptr[InitializePerformanceApiInfoINTEL, MutOrigin.external]
     ) -> Result
     var _vk_uninitialize_performance_api_intel: fn(device: Device)
     var _vk_cmd_set_performance_marker_intel: fn(
         commandBuffer: CommandBuffer,
-        pMarkerInfo: Ptr[PerformanceMarkerInfoINTEL, ImmutOrigin.external],
+        pMarkerInfo: Ptr[PerformanceMarkerInfoINTEL, MutOrigin.external],
     ) -> Result
     var _vk_cmd_set_performance_stream_marker_intel: fn(
         commandBuffer: CommandBuffer,
-        pMarkerInfo: Ptr[PerformanceStreamMarkerInfoINTEL, ImmutOrigin.external],
+        pMarkerInfo: Ptr[PerformanceStreamMarkerInfoINTEL, MutOrigin.external],
     ) -> Result
     var _vk_cmd_set_performance_override_intel: fn(
         commandBuffer: CommandBuffer,
-        pOverrideInfo: Ptr[PerformanceOverrideInfoINTEL, ImmutOrigin.external],
+        pOverrideInfo: Ptr[PerformanceOverrideInfoINTEL, MutOrigin.external],
     ) -> Result
     var _vk_acquire_performance_configuration_intel: fn(
         device: Device,
-        pAcquireInfo: Ptr[PerformanceConfigurationAcquireInfoINTEL, ImmutOrigin.external],
+        pAcquireInfo: Ptr[PerformanceConfigurationAcquireInfoINTEL, MutOrigin.external],
         pConfiguration: Ptr[PerformanceConfigurationINTEL, MutOrigin.external],
     ) -> Result
     var _vk_release_performance_configuration_intel: fn(

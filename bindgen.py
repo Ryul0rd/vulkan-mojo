@@ -1,11 +1,12 @@
 from __future__ import annotations
 from typing import Dict, List, Optional, TypeVar, Literal, Any, Type, Iterable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from collections import defaultdict
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 import os
 import re
+from copy import deepcopy
 
 
 def main():
@@ -41,10 +42,41 @@ VkLevel = Literal["global", "instance", "device"]
 
 @dataclass
 class VkType:
-    # This can be flat because we never have multidim arrays and constness only affects innermost type
+    """
+    A parsed Vulkan C type as it appears in `vk.xml` (minus the parameter/member name).
+
+    This is a small “shape” model used by the generator to reason about pointer depth,
+    const-qualification, and simple 1D array suffixes.
+
+    Attributes:
+        name:
+            The underlying (non-pointer, non-array) type token, e.g. `"VkDevice"`,
+            `"void"`, `"uint32_t"`.
+
+        ptr_level:
+            Number of `*` indirections. For example:
+              - `VkDevice`            -> 0
+              - `VkDevice*`           -> 1
+              - `const void* const*`  -> 2
+
+        const:
+            Const-qualification per indirection layer, ordered **outermost → innermost**.
+            Its length should be `ptr_level + 1`.
+
+            - `const[-1]` is the constness of the innermost pointee / base type.
+            - `const[-2]` is the constness of the pointer to that pointee.
+            - …and so on outward.
+
+            This ordering is intended to line up with Vulkan’s comma-separated `optional=`
+            conventions (outer pointer first, then pointee/array elements).
+
+        array_dim:
+            If the type is a fixed-size C array, the bracket contents (Vulkan only uses
+            1D arrays), e.g. `"VK_UUID_SIZE"` for `char[VK_UUID_SIZE]`. Otherwise `None`.
+    """
     name: str
     ptr_level: int = 0
-    const: bool = False
+    const: List[bool] = field(default_factory=lambda: [False])
     array_dim: Optional[str] = None
 
 
@@ -792,12 +824,18 @@ def parse_type_str(type: str) -> VkType:
         array_dim = m.group(1).strip()
         type = type[:m.start()].rstrip()
 
-    type = type.replace("*", " * ")
-    tokens = [t for t in type.split() if t]
-    ptr_level = tokens.count("*")
-    prestar_tokens = tokens if ptr_level == 0 else tokens[:-ptr_level]
-    const = "const" in prestar_tokens
-    name = prestar_tokens[-1]
+    tokens = type.replace("*", " * ").split()
+    star_indices = [i for i, t in enumerate(tokens) if t == "*"]
+    ptr_level = len(star_indices)
+    base_tokens = tokens if ptr_level == 0 else tokens[:star_indices[0]]
+    base_const = "const" in base_tokens
+    name = [t for t in base_tokens if t != "const"][-1]
+
+    const_reverse: List[bool] = [base_const]
+    for star_idx in star_indices:
+        ptr_is_const = star_idx + 1 < len(tokens) and tokens[star_idx + 1] == "const"
+        const_reverse.append(ptr_is_const)
+    const = list(reversed(const_reverse))
 
     return VkType(name, ptr_level, const, array_dim)
 
@@ -1047,7 +1085,7 @@ def emit_fn_types(files: Dict[str, str], fn_types: List[VkFnType]):
         parts.append("\n\n")
         parts.append(emit_fn_like(
             f"comptime {fn_type.name} = fn(",
-            [f"{emit_mojo_type(arg.type)}" for arg in fn_type.params],
+            [f"{pascal_to_snake(arg.name)}: {emit_mojo_type(arg.type)}" for arg in fn_type.params],
             f"){return_part}",
         ))
     files["fn_types.mojo"] = "".join(parts)
@@ -1056,6 +1094,7 @@ def emit_fn_types(files: Dict[str, str], fn_types: List[VkFnType]):
 def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
     parts: List[str] = []
     parts.append((
+        "from sys.ffi import CStringSlice, c_char\n"
         "from .constants import *\n"
         "from .basetypes import *\n"
         "from .external_types import *\n"
@@ -1077,26 +1116,68 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
             continue
         # name and members
         struct_name = emit_mojo_type_name(struct.name)
-        parts.append((
-            f"\n\n"
-            f"struct {struct_name}(ImplicitlyCopyable):\n"
-        ))
+        cstring_origin_by_member: Dict[str, str] = {}
+        for member in struct.members:
+            emitted = emit_mojo_type(member.type)
+            if "CStringSlice[" not in emitted:
+                continue
+            origin_param = member.name + "O"
+            cstring_origin_by_member[member.name] = origin_param
+        if len(cstring_origin_by_member) == 0:
+            parts.append((
+                f"\n\n"
+                f"struct {struct_name}(Copyable):\n"
+            ))
+        else:
+            origin_params: List[str] = []
+            for member in struct.members:
+                if member.name in cstring_origin_by_member:
+                    param_name = cstring_origin_by_member[member.name]
+                    origin_params.append(f"{param_name}: ImmutOrigin = ImmutAnyOrigin")
+            parts.append("\n\n")
+            parts.append(emit_fn_like(
+                f"struct {struct_name}[",
+                origin_params,
+                f"](Copyable):\n",
+            ))
         if len(struct.members) == 0:
             parts.append("    pass\n")
+            continue
+
+        fields: List[str] = []
+        init_args: List[str] = ["out self"]
+        init_lines: List[str] = []
+        string_helpers: List[str] = []
         for member in struct.members:
             member_name = pascal_to_snake(member.name)
             is_version = member_name.endswith("version") and emit_mojo_type(member.type) == "UInt32"
-            member_type = "Version" if is_version else emit_mojo_type(member.type)
-            parts.append(f"    var {member_name}: {member_type}\n")
-        # init method
-        init_args = ["out self"]
-        for member in struct.members:
-            if member.type.name == "VkStructureType" and member.value is not None:
-                continue
-            member_name = pascal_to_snake(member.name)
-            is_version = member_name.endswith("version") and emit_mojo_type(member.type) == "UInt32"
-            member_type = "Version" if is_version else emit_mojo_type(member.type)
-            init_args.append(f"{member_name}: {member_type} = zero_init[{member_type}]()")
+            if is_version:
+                member_type = "Version"
+            elif member.name in cstring_origin_by_member:
+                member_type = emit_mojo_type(member.type)
+                origin = cstring_origin_by_member[member.name]
+                member_type = member_type.replace("CStringSlice[ImmutOrigin.external]", f"CStringSlice[Self.{origin}]")
+            else:
+                member_type = emit_mojo_type(member.type)
+            is_stype = member.type.name == "VkStructureType" and member.value is not None
+            is_array_string = member.type.array_dim is not None and member.type.name == "char"
+
+            fields.append(f"    var {member_name}: {member_type}\n")
+            if not is_stype:
+                init_args.append(f"{member_name}: {member_type} = zero_init[{member_type}]()")
+            if is_stype:
+                stype = assert_type(str, member.value).removeprefix('VK_STRUCTURE_TYPE_')
+                init_lines.append(f"        self.s_type = StructureType.{stype}\n")
+            else:
+                member_name = pascal_to_snake(member.name)
+                init_lines.append(f"        self.{member_name} = {member_name}\n")
+            if is_array_string:
+                string_helpers.append((
+                    f"\n"
+                    f"    fn {member_name}_slice(self) -> CStringSlice[origin_of(self.{member_name})]:\n"
+                    f"        return CStringSlice[origin_of(self.{member_name})](unsafe_from_ptr = self.{member_name}.unsafe_ptr())\n"
+                ))
+        parts.extend(fields)
         parts.append("\n")
         parts.append(emit_fn_like(
             "fn __init__(",
@@ -1104,23 +1185,9 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
             "):\n",
             base_indent_level = 1,
         ))
-        for member in struct.members:
-            if member.type.name == "VkStructureType" and member.value is not None:
-                stype = assert_type(str, member.value).removeprefix('VK_STRUCTURE_TYPE_')
-                parts.append(f"        self.s_type = StructureType.{stype}\n")
-            else:
-                member_name = pascal_to_snake(member.name)
-                parts.append(f"        self.{member_name} = {member_name}\n")
-        # string helpers
-        for member in struct.members:
-            if not is_string(member.type):
-                continue
-            member_name = pascal_to_snake(member.name)
-            parts.append((
-                f"\n"
-                f"    fn {member_name}_slice(self) -> CStringSlice[origin_of(self.{member_name})]:\n"
-                f"        return CStringSlice[origin_of(self.{member_name})](unsafe_from_ptr = self.{member_name}.unsafe_ptr())\n"
-            ))
+        parts.extend(init_lines)
+        parts.extend(string_helpers)
+
     files["structs.mojo"] = "".join(parts)
 
 
@@ -1543,23 +1610,24 @@ def emit_mojo_type(type: VkType, strip_ptr: bool=False, use_any_origin: bool=Fal
     MUT_ORIGIN = "MutAnyOrigin" if use_any_origin else "MutOrigin.external"
     IMMUT_ORIGIN = "ImmutAnyOrigin" if use_any_origin else "ImmutOrigin.external"
 
-    mojo_type = emit_mojo_type_name(type.name)
-    pointers_remaining = type.ptr_level-1 if strip_ptr else type.ptr_level
-    if pointers_remaining >= 1:
-        mojo_type = f"Ptr[{mojo_type}, {IMMUT_ORIGIN if type.const else MUT_ORIGIN}]"
-        pointers_remaining -= 1
-    for _ in range(pointers_remaining):
-        mojo_type = f"Ptr[{mojo_type}, {MUT_ORIGIN}]"
-    if type.array_dim is not None:
-        mojo_type = f"InlineArray[{mojo_type}, Int({type.array_dim})]"
+    _type = deepcopy(type)
+    if strip_ptr:
+        _type.ptr_level -= 1
+        _type.const.pop(0)
+    is_string = _type.ptr_level >= 1 and _type.const[-1] and _type.name == "char"
+    if is_string:
+        _type.ptr_level -= 1
+        _type.const.pop()
+
+    mojo_type = emit_mojo_type_name(_type.name)
+    if is_string:
+        mojo_type = f"CStringSlice[{IMMUT_ORIGIN}]"
+    for i in range(_type.ptr_level):
+        mojo_type = f"Ptr[{mojo_type}, {IMMUT_ORIGIN if _type.const[-i] else MUT_ORIGIN}]"
+    if _type.array_dim is not None:
+        mojo_type = f"InlineArray[{mojo_type}, Int({_type.array_dim.removeprefix('VK_')})]"
 
     return mojo_type
-
-
-def is_string(type: VkType) -> bool:
-    is_array_string = type.array_dim is not None and type.name == "char"
-    is_char_ptr = type.ptr_level >= 1 and type.name == "char"
-    return is_array_string or is_char_ptr
 
 
 def emit_fn_like(
@@ -1631,7 +1699,8 @@ def pascal_to_snake(name: str) -> str:
         XMLHttp  -> xml_http
         Access3  -> access_3
         AV1Thing -> av1_thing
-        3DAtlas  -> 3_d_atlas
+        3DAtlas  -> 3d_atlas
+        maxImageDimension1D -> max_image_dimension_1d
     """
     # Acronym -> word, e.g. "XMLHttp" -> "XML_Http"
     s = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1_\2', name)
@@ -1639,8 +1708,13 @@ def pascal_to_snake(name: str) -> str:
     s = re.sub(r'([a-z])([A-Z])', r'\1_\2', s)
     # lower -> digit only (do NOT split upper -> digit), e.g. "Access3" -> "Access_3", "AV1" stays "AV1"
     s = re.sub(r'([a-z])(\d)', r'\1_\2', s)
-    # digit -> letter, e.g. "AV1Thing" -> "AV1_Thing", "3D" -> "3_D"
-    s = re.sub(r'(\d)([A-Za-z])', r'\1_\2', s)
+    # digit -> letter, e.g. "AV1Thing" -> "AV1_Thing"
+    # Special-case dimension suffixes like "1D"/"2D"/"3D" so they stay together.
+    s = re.sub(
+        r'(\d)([A-Za-z])',
+        lambda m: f"{m.group(1)}{m.group(2)}" if m.group(2) in ('D', 'd') else f"{m.group(1)}_{m.group(2)}",
+        s,
+    )
     return s.lower()
 
 

@@ -3,8 +3,8 @@ from vk.core_functions import GlobalFunctions
 
 struct ScreenSurface(Copyable):    var _vk_create_screen_surface_qnx: fn(
         instance: Instance,
-        pCreateInfo: Ptr[ScreenSurfaceCreateInfoQNX, ImmutOrigin.external],
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pCreateInfo: Ptr[ScreenSurfaceCreateInfoQNX, MutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
         pSurface: Ptr[SurfaceKHR, MutOrigin.external],
     ) -> Result
     var _vk_get_physical_device_screen_presentation_support_qnx: fn(
@@ -16,6 +16,6 @@ struct ScreenSurface(Copyable):    var _vk_create_screen_surface_qnx: fn(
 
 struct ExternalMemoryScreenBuffer(Copyable):    var _vk_get_screen_buffer_properties_qnx: fn(
         device: Device,
-        buffer: Ptr[_screen_buffer, ImmutOrigin.external],
+        buffer: Ptr[_screen_buffer, MutOrigin.external],
         pProperties: Ptr[ScreenBufferPropertiesQNX, MutOrigin.external],
     ) -> Result

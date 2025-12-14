@@ -9,7 +9,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         surface: SurfaceKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -22,7 +22,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
         surface: SurfaceKHR,
-        mut supported: Bool32,
+        supported: Bool32,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -36,7 +36,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
-        mut surface_capabilities: SurfaceCapabilitiesKHR,
+        surface_capabilities: SurfaceCapabilitiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -50,7 +50,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
-        mut surface_format_count: UInt32,
+        surface_format_count: UInt32,
         p_surface_formats: Ptr[SurfaceFormatKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -61,33 +61,11 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, surface, Ptr(to=surface_format_count), p_surface_formats
         )
 
-    fn get_physical_device_surface_formats_khr(
-        self, physical_device: PhysicalDevice, surface: SurfaceKHR
-    ) -> ListResult[SurfaceFormatKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceFormatsKHR.html
-        """
-        var list = List[SurfaceFormatKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_surface_formats_khr(
-                physical_device, surface, count, Ptr[SurfaceFormatKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_surface_formats_khr(
-                physical_device, surface, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_physical_device_surface_present_modes_khr(
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
-        mut present_mode_count: UInt32,
+        present_mode_count: UInt32,
         p_present_modes: Ptr[PresentModeKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -98,28 +76,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, surface, Ptr(to=present_mode_count), p_present_modes
         )
 
-    fn get_physical_device_surface_present_modes_khr(
-        self, physical_device: PhysicalDevice, surface: SurfaceKHR
-    ) -> ListResult[PresentModeKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfacePresentModesKHR.html
-        """
-        var list = List[PresentModeKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_surface_present_modes_khr(
-                physical_device, surface, count, Ptr[PresentModeKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_surface_present_modes_khr(
-                physical_device, surface, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
@@ -129,8 +85,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: SwapchainCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut swapchain: SwapchainKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        swapchain: SwapchainKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -144,7 +100,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         swapchain: SwapchainKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -156,7 +112,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         swapchain: SwapchainKHR,
-        mut swapchain_image_count: UInt32,
+        swapchain_image_count: UInt32,
         p_swapchain_images: Ptr[Image, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -167,26 +123,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             device, swapchain, Ptr(to=swapchain_image_count), p_swapchain_images
         )
 
-    fn get_swapchain_images_khr(
-        self, device: Device, swapchain: SwapchainKHR
-    ) -> ListResult[Image]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSwapchainImagesKHR.html
-        """
-        var list = List[Image]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_swapchain_images_khr(
-                device, swapchain, count, Ptr[Image, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_swapchain_images_khr(device, swapchain, count, list.unsafe_ptr())
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn acquire_next_image_khr(
         self,
         device: Device,
@@ -194,7 +130,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         timeout: UInt64,
         semaphore: Semaphore,
         fence: Fence,
-        mut image_index: UInt32,
+        image_index: UInt32,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -212,9 +148,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._queue_present_khr(queue, Ptr(to=present_info))
 
     fn get_device_group_present_capabilities_khr(
-        self,
-        device: Device,
-        mut device_group_present_capabilities: DeviceGroupPresentCapabilitiesKHR,
+        self, device: Device, device_group_present_capabilities: DeviceGroupPresentCapabilitiesKHR
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -225,7 +159,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_device_group_surface_present_modes_khr(
-        self, device: Device, surface: SurfaceKHR, mut modes: DeviceGroupPresentModeFlagsKHR
+        self, device: Device, surface: SurfaceKHR, modes: DeviceGroupPresentModeFlagsKHR
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -237,7 +171,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
-        mut rect_count: UInt32,
+        rect_count: UInt32,
         p_rects: Ptr[Rect2D, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -248,30 +182,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, surface, Ptr(to=rect_count), p_rects
         )
 
-    fn get_physical_device_present_rectangles_khr(
-        self, physical_device: PhysicalDevice, surface: SurfaceKHR
-    ) -> ListResult[Rect2D]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDevicePresentRectanglesKHR.html
-        """
-        var list = List[Rect2D]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_present_rectangles_khr(
-                physical_device, surface, count, Ptr[Rect2D, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_present_rectangles_khr(
-                physical_device, surface, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn acquire_next_image_2_khr(
-        self, device: Device, acquire_info: AcquireNextImageInfoKHR, mut image_index: UInt32
+        self, device: Device, acquire_info: AcquireNextImageInfoKHR, image_index: UInt32
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -287,7 +199,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     fn get_physical_device_display_properties_khr(
         self,
         physical_device: PhysicalDevice,
-        mut property_count: UInt32,
+        property_count: UInt32,
         p_properties: Ptr[DisplayPropertiesKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -298,32 +210,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, Ptr(to=property_count), p_properties
         )
 
-    fn get_physical_device_display_properties_khr(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[DisplayPropertiesKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPropertiesKHR.html
-        """
-        var list = List[DisplayPropertiesKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_display_properties_khr(
-                physical_device, count, Ptr[DisplayPropertiesKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_display_properties_khr(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_physical_device_display_plane_properties_khr(
         self,
         physical_device: PhysicalDevice,
-        mut property_count: UInt32,
+        property_count: UInt32,
         p_properties: Ptr[DisplayPlanePropertiesKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -334,33 +224,11 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, Ptr(to=property_count), p_properties
         )
 
-    fn get_physical_device_display_plane_properties_khr(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[DisplayPlanePropertiesKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPlanePropertiesKHR.html
-        """
-        var list = List[DisplayPlanePropertiesKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_display_plane_properties_khr(
-                physical_device, count, Ptr[DisplayPlanePropertiesKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_display_plane_properties_khr(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_display_plane_supported_displays_khr(
         self,
         physical_device: PhysicalDevice,
         plane_index: UInt32,
-        mut display_count: UInt32,
+        display_count: UInt32,
         p_displays: Ptr[DisplayKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -371,33 +239,11 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, plane_index, Ptr(to=display_count), p_displays
         )
 
-    fn get_display_plane_supported_displays_khr(
-        self, physical_device: PhysicalDevice, plane_index: UInt32
-    ) -> ListResult[DisplayKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayPlaneSupportedDisplaysKHR.html
-        """
-        var list = List[DisplayKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_display_plane_supported_displays_khr(
-                physical_device, plane_index, count, Ptr[DisplayKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_display_plane_supported_displays_khr(
-                physical_device, plane_index, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_display_mode_properties_khr(
         self,
         physical_device: PhysicalDevice,
         display: DisplayKHR,
-        mut property_count: UInt32,
+        property_count: UInt32,
         p_properties: Ptr[DisplayModePropertiesKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -408,35 +254,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, display, Ptr(to=property_count), p_properties
         )
 
-    fn get_display_mode_properties_khr(
-        self, physical_device: PhysicalDevice, display: DisplayKHR
-    ) -> ListResult[DisplayModePropertiesKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayModePropertiesKHR.html
-        """
-        var list = List[DisplayModePropertiesKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_display_mode_properties_khr(
-                physical_device, display, count, Ptr[DisplayModePropertiesKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_display_mode_properties_khr(
-                physical_device, display, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn create_display_mode_khr(
         self,
         physical_device: PhysicalDevice,
         display: DisplayKHR,
         create_info: DisplayModeCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut mode: DisplayModeKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        mode: DisplayModeKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -451,7 +275,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         physical_device: PhysicalDevice,
         mode: DisplayModeKHR,
         plane_index: UInt32,
-        mut capabilities: DisplayPlaneCapabilitiesKHR,
+        capabilities: DisplayPlaneCapabilitiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -465,8 +289,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: DisplaySurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -486,8 +310,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         swapchain_count: UInt32,
         create_infos: SwapchainCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut swapchains: SwapchainKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        swapchains: SwapchainKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -506,8 +330,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: XlibSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -521,7 +345,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
-        mut dpy: Display,
+        dpy: Display,
         visual_id: VisualID,
     ) -> Bool32:
         """See official vulkan docs for details.
@@ -541,8 +365,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: XcbSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -556,7 +380,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
-        mut connection: xcb_connection_t,
+        connection: xcb_connection_t,
         visual_id: xcb_visualid_t,
     ) -> Bool32:
         """See official vulkan docs for details.
@@ -576,8 +400,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: WaylandSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -588,7 +412,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         )
 
     fn get_physical_device_wayland_presentation_support_khr(
-        self, physical_device: PhysicalDevice, queue_family_index: UInt32, mut display: wl_display
+        self, physical_device: PhysicalDevice, queue_family_index: UInt32, display: wl_display
     ) -> Bool32:
         """See official vulkan docs for details.
 
@@ -607,8 +431,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: AndroidSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -627,8 +451,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: Win32SurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -658,7 +482,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         video_profile: VideoProfileInfoKHR,
-        mut capabilities: VideoCapabilitiesKHR,
+        capabilities: VideoCapabilitiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -672,7 +496,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         video_format_info: PhysicalDeviceVideoFormatInfoKHR,
-        mut video_format_property_count: UInt32,
+        video_format_property_count: UInt32,
         p_video_format_properties: Ptr[VideoFormatPropertiesKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -686,37 +510,12 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_video_format_properties,
         )
 
-    fn get_physical_device_video_format_properties_khr(
-        self, physical_device: PhysicalDevice, video_format_info: PhysicalDeviceVideoFormatInfoKHR
-    ) -> ListResult[VideoFormatPropertiesKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceVideoFormatPropertiesKHR.html
-        """
-        var list = List[VideoFormatPropertiesKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_video_format_properties_khr(
-                physical_device,
-                video_format_info,
-                count,
-                Ptr[VideoFormatPropertiesKHR, MutAnyOrigin](),
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_video_format_properties_khr(
-                physical_device, video_format_info, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn create_video_session_khr(
         self,
         device: Device,
         create_info: VideoSessionCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut video_session: VideoSessionKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        video_session: VideoSessionKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -730,7 +529,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         video_session: VideoSessionKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -742,7 +541,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         video_session: VideoSessionKHR,
-        mut memory_requirements_count: UInt32,
+        memory_requirements_count: UInt32,
         p_memory_requirements: Ptr[VideoSessionMemoryRequirementsKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -752,28 +551,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_video_session_memory_requirements_khr(
             device, video_session, Ptr(to=memory_requirements_count), p_memory_requirements
         )
-
-    fn get_video_session_memory_requirements_khr(
-        self, device: Device, video_session: VideoSessionKHR
-    ) -> ListResult[VideoSessionMemoryRequirementsKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetVideoSessionMemoryRequirementsKHR.html
-        """
-        var list = List[VideoSessionMemoryRequirementsKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_video_session_memory_requirements_khr(
-                device, video_session, count, Ptr[VideoSessionMemoryRequirementsKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_video_session_memory_requirements_khr(
-                device, video_session, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
     fn bind_video_session_memory_khr(
         self,
@@ -794,8 +571,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: VideoSessionParametersCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut video_session_parameters: VideoSessionParametersKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        video_session_parameters: VideoSessionParametersKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -823,7 +600,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         video_session_parameters: VideoSessionParametersKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -897,7 +674,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     ]("vkGetInstanceProcAddr")
     self._vk_get_physical_device_features_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceFeatures2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_features_2)]()[]    self._vk_get_physical_device_properties_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceProperties2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_properties_2)]()[]    self._vk_get_physical_device_format_properties_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceFormatProperties2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_format_properties_2)]()[]    self._vk_get_physical_device_image_format_properties_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceImageFormatProperties2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_image_format_properties_2)]()[]    self._vk_get_physical_device_queue_family_properties_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceQueueFamilyProperties2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_queue_family_properties_2)]()[]    self._vk_get_physical_device_memory_properties_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceMemoryProperties2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_memory_properties_2)]()[]    self._vk_get_physical_device_sparse_image_format_properties_2 = Ptr(to=get_instance_proc_addr(        instance, "vkGetPhysicalDeviceSparseImageFormatProperties2".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_physical_device_sparse_image_format_properties_2)]()[]
     fn get_physical_device_features_2(
-        self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures2
+        self, physical_device: PhysicalDevice, features: PhysicalDeviceFeatures2
     ):
         """See official vulkan docs for details.
 
@@ -906,7 +683,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         return self._get_physical_device_features_2(physical_device, Ptr(to=features))
 
     fn get_physical_device_properties_2(
-        self, physical_device: PhysicalDevice, mut properties: PhysicalDeviceProperties2
+        self, physical_device: PhysicalDevice, properties: PhysicalDeviceProperties2
     ):
         """See official vulkan docs for details.
 
@@ -915,10 +692,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         return self._get_physical_device_properties_2(physical_device, Ptr(to=properties))
 
     fn get_physical_device_format_properties_2(
-        self,
-        physical_device: PhysicalDevice,
-        format: Format,
-        mut format_properties: FormatProperties2,
+        self, physical_device: PhysicalDevice, format: Format, format_properties: FormatProperties2
     ):
         """See official vulkan docs for details.
 
@@ -932,7 +706,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         image_format_info: PhysicalDeviceImageFormatInfo2,
-        mut image_format_properties: ImageFormatProperties2,
+        image_format_properties: ImageFormatProperties2,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -945,7 +719,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     fn get_physical_device_queue_family_properties_2(
         self,
         physical_device: PhysicalDevice,
-        mut queue_family_property_count: UInt32,
+        queue_family_property_count: UInt32,
         p_queue_family_properties: Ptr[QueueFamilyProperties2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
@@ -956,30 +730,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
         )
 
-    fn get_physical_device_queue_family_properties_2(
-        self, physical_device: PhysicalDevice
-    ) -> List[QueueFamilyProperties2]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
-        """
-        var list = List[QueueFamilyProperties2]()
-        var count: UInt32 = 0
-        self.get_physical_device_queue_family_properties_2(
-            physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
-        )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_queue_family_properties_2(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return list^
-
     fn get_physical_device_memory_properties_2(
-        self,
-        physical_device: PhysicalDevice,
-        mut memory_properties: PhysicalDeviceMemoryProperties2,
+        self, physical_device: PhysicalDevice, memory_properties: PhysicalDeviceMemoryProperties2
     ):
         """See official vulkan docs for details.
 
@@ -993,7 +745,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
-        mut property_count: UInt32,
+        property_count: UInt32,
         p_properties: Ptr[SparseImageFormatProperties2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
@@ -1003,26 +755,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         return self._get_physical_device_sparse_image_format_properties_2(
             physical_device, Ptr(to=format_info), Ptr(to=property_count), p_properties
         )
-
-    fn get_physical_device_sparse_image_format_properties_2(
-        self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
-    ) -> List[SparseImageFormatProperties2]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
-        """
-        var list = List[SparseImageFormatProperties2]()
-        var count: UInt32 = 0
-        self.get_physical_device_sparse_image_format_properties_2(
-            physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
-        )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_sparse_image_format_properties_2(
-                physical_device, format_info, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return list^
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
@@ -1035,7 +767,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         heap_index: UInt32,
         local_device_index: UInt32,
         remote_device_index: UInt32,
-        mut peer_memory_features: PeerMemoryFeatureFlags,
+        peer_memory_features: PeerMemoryFeatureFlags,
     ):
         """See official vulkan docs for details.
 
@@ -1081,9 +813,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_device_group_present_capabilities_khr(
-        self,
-        device: Device,
-        mut device_group_present_capabilities: DeviceGroupPresentCapabilitiesKHR,
+        self, device: Device, device_group_present_capabilities: DeviceGroupPresentCapabilitiesKHR
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1094,7 +824,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_device_group_surface_present_modes_khr(
-        self, device: Device, surface: SurfaceKHR, mut modes: DeviceGroupPresentModeFlagsKHR
+        self, device: Device, surface: SurfaceKHR, modes: DeviceGroupPresentModeFlagsKHR
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1106,7 +836,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
-        mut rect_count: UInt32,
+        rect_count: UInt32,
         p_rects: Ptr[Rect2D, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -1117,30 +847,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, surface, Ptr(to=rect_count), p_rects
         )
 
-    fn get_physical_device_present_rectangles_khr(
-        self, physical_device: PhysicalDevice, surface: SurfaceKHR
-    ) -> ListResult[Rect2D]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDevicePresentRectanglesKHR.html
-        """
-        var list = List[Rect2D]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_present_rectangles_khr(
-                physical_device, surface, count, Ptr[Rect2D, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_present_rectangles_khr(
-                physical_device, surface, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn acquire_next_image_2_khr(
-        self, device: Device, acquire_info: AcquireNextImageInfoKHR, mut image_index: UInt32
+        self, device: Device, acquire_info: AcquireNextImageInfoKHR, image_index: UInt32
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1170,7 +878,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     fn enumerate_physical_device_groups(
         self,
         instance: Instance,
-        mut physical_device_group_count: UInt32,
+        physical_device_group_count: UInt32,
         p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -1181,26 +889,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             instance, Ptr(to=physical_device_group_count), p_physical_device_group_properties
         )
 
-    fn enumerate_physical_device_groups(
-        self, instance: Instance
-    ) -> ListResult[PhysicalDeviceGroupProperties]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
-        """
-        var list = List[PhysicalDeviceGroupProperties]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.enumerate_physical_device_groups(
-                instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
-        list._len = Int(count)
-        return ListResult(list^, result)
-
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
@@ -1210,7 +898,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         external_buffer_info: PhysicalDeviceExternalBufferInfo,
-        mut external_buffer_properties: ExternalBufferProperties,
+        external_buffer_properties: ExternalBufferProperties,
     ):
         """See official vulkan docs for details.
 
@@ -1226,10 +914,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     ]("vkGetDeviceProcAddr")
     self._vk_get_memory_win_32_handle_khr = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryWin32HandleKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_win_32_handle_khr)]()[]    self._vk_get_memory_win_32_handle_properties_khr = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryWin32HandlePropertiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_win_32_handle_properties_khr)]()[]
     fn get_memory_win_32_handle_khr(
-        self,
-        device: Device,
-        get_win_32_handle_info: MemoryGetWin32HandleInfoKHR,
-        mut handle: HANDLE,
+        self, device: Device, get_win_32_handle_info: MemoryGetWin32HandleInfoKHR, handle: HANDLE
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1244,7 +929,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
         handle: HANDLE,
-        mut memory_win_32_handle_properties: MemoryWin32HandlePropertiesKHR,
+        memory_win_32_handle_properties: MemoryWin32HandlePropertiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1260,7 +945,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     ]("vkGetDeviceProcAddr")
     self._vk_get_memory_fd_khr = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryFdKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_fd_khr)]()[]    self._vk_get_memory_fd_properties_khr = Ptr(to=get_device_proc_addr(        device, "vkGetMemoryFdPropertiesKHR".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_memory_fd_properties_khr)]()[]
     fn get_memory_fd_khr(
-        self, device: Device, get_fd_info: MemoryGetFdInfoKHR, mut fd: Int32
+        self, device: Device, get_fd_info: MemoryGetFdInfoKHR, fd: Int32
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1273,7 +958,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
         fd: Int32,
-        mut memory_fd_properties: MemoryFdPropertiesKHR,
+        memory_fd_properties: MemoryFdPropertiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1292,7 +977,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         external_semaphore_info: PhysicalDeviceExternalSemaphoreInfo,
-        mut external_semaphore_properties: ExternalSemaphoreProperties,
+        external_semaphore_properties: ExternalSemaphoreProperties,
     ):
         """See official vulkan docs for details.
 
@@ -1319,10 +1004,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_semaphore_win_32_handle_khr(
-        self,
-        device: Device,
-        get_win_32_handle_info: SemaphoreGetWin32HandleInfoKHR,
-        mut handle: HANDLE,
+        self, device: Device, get_win_32_handle_info: SemaphoreGetWin32HandleInfoKHR, handle: HANDLE
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1347,7 +1029,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._import_semaphore_fd_khr(device, Ptr(to=import_semaphore_fd_info))
 
     fn get_semaphore_fd_khr(
-        self, device: Device, get_fd_info: SemaphoreGetFdInfoKHR, mut fd: Int32
+        self, device: Device, get_fd_info: SemaphoreGetFdInfoKHR, fd: Int32
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1407,8 +1089,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut descriptor_update_template: DescriptorUpdateTemplate,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1422,7 +1104,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -1472,8 +1154,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: RenderPassCreateInfo2,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut render_pass: RenderPass,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1541,7 +1223,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         external_fence_info: PhysicalDeviceExternalFenceInfo,
-        mut external_fence_properties: ExternalFenceProperties,
+        external_fence_properties: ExternalFenceProperties,
     ):
         """See official vulkan docs for details.
 
@@ -1568,7 +1250,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_fence_win_32_handle_khr(
-        self, device: Device, get_win_32_handle_info: FenceGetWin32HandleInfoKHR, mut handle: HANDLE
+        self, device: Device, get_win_32_handle_info: FenceGetWin32HandleInfoKHR, handle: HANDLE
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1592,9 +1274,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._import_fence_fd_khr(device, Ptr(to=import_fence_fd_info))
 
-    fn get_fence_fd_khr(
-        self, device: Device, get_fd_info: FenceGetFdInfoKHR, mut fd: Int32
-    ) -> Result:
+    fn get_fence_fd_khr(self, device: Device, get_fd_info: FenceGetFdInfoKHR, fd: Int32) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceFdKHR.html
@@ -1610,7 +1290,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
-        mut counter_count: UInt32,
+        counter_count: UInt32,
         p_counters: Ptr[PerformanceCounterKHR, MutOrigin.external],
         p_counter_descriptions: Ptr[PerformanceCounterDescriptionKHR, MutOrigin.external],
     ) -> Result:
@@ -1630,7 +1310,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         performance_query_create_info: QueryPoolPerformanceCreateInfoKHR,
-        mut num_passes: UInt32,
+        num_passes: UInt32,
     ):
         """See official vulkan docs for details.
 
@@ -1665,7 +1345,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         surface_info: PhysicalDeviceSurfaceInfo2KHR,
-        mut surface_capabilities: SurfaceCapabilities2KHR,
+        surface_capabilities: SurfaceCapabilities2KHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1679,7 +1359,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         surface_info: PhysicalDeviceSurfaceInfo2KHR,
-        mut surface_format_count: UInt32,
+        surface_format_count: UInt32,
         p_surface_formats: Ptr[SurfaceFormat2KHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -1690,28 +1370,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, Ptr(to=surface_info), Ptr(to=surface_format_count), p_surface_formats
         )
 
-    fn get_physical_device_surface_formats_2_khr(
-        self, physical_device: PhysicalDevice, surface_info: PhysicalDeviceSurfaceInfo2KHR
-    ) -> ListResult[SurfaceFormat2KHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceFormats2KHR.html
-        """
-        var list = List[SurfaceFormat2KHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_surface_formats_2_khr(
-                physical_device, surface_info, count, Ptr[SurfaceFormat2KHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_surface_formats_2_khr(
-                physical_device, surface_info, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
@@ -1720,7 +1378,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     fn get_physical_device_display_properties_2_khr(
         self,
         physical_device: PhysicalDevice,
-        mut property_count: UInt32,
+        property_count: UInt32,
         p_properties: Ptr[DisplayProperties2KHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -1731,32 +1389,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, Ptr(to=property_count), p_properties
         )
 
-    fn get_physical_device_display_properties_2_khr(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[DisplayProperties2KHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayProperties2KHR.html
-        """
-        var list = List[DisplayProperties2KHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_display_properties_2_khr(
-                physical_device, count, Ptr[DisplayProperties2KHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_display_properties_2_khr(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_physical_device_display_plane_properties_2_khr(
         self,
         physical_device: PhysicalDevice,
-        mut property_count: UInt32,
+        property_count: UInt32,
         p_properties: Ptr[DisplayPlaneProperties2KHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -1767,33 +1403,11 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, Ptr(to=property_count), p_properties
         )
 
-    fn get_physical_device_display_plane_properties_2_khr(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[DisplayPlaneProperties2KHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPlaneProperties2KHR.html
-        """
-        var list = List[DisplayPlaneProperties2KHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_display_plane_properties_2_khr(
-                physical_device, count, Ptr[DisplayPlaneProperties2KHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_display_plane_properties_2_khr(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_display_mode_properties_2_khr(
         self,
         physical_device: PhysicalDevice,
         display: DisplayKHR,
-        mut property_count: UInt32,
+        property_count: UInt32,
         p_properties: Ptr[DisplayModeProperties2KHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -1804,33 +1418,11 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, display, Ptr(to=property_count), p_properties
         )
 
-    fn get_display_mode_properties_2_khr(
-        self, physical_device: PhysicalDevice, display: DisplayKHR
-    ) -> ListResult[DisplayModeProperties2KHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayModeProperties2KHR.html
-        """
-        var list = List[DisplayModeProperties2KHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_display_mode_properties_2_khr(
-                physical_device, display, count, Ptr[DisplayModeProperties2KHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_display_mode_properties_2_khr(
-                physical_device, display, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_display_plane_capabilities_2_khr(
         self,
         physical_device: PhysicalDevice,
         display_plane_info: DisplayPlaneInfo2KHR,
-        mut capabilities: DisplayPlaneCapabilities2KHR,
+        capabilities: DisplayPlaneCapabilities2KHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1849,7 +1441,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: ImageMemoryRequirementsInfo2,
-        mut memory_requirements: MemoryRequirements2,
+        memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
@@ -1863,7 +1455,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: BufferMemoryRequirementsInfo2,
-        mut memory_requirements: MemoryRequirements2,
+        memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
@@ -1877,7 +1469,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
-        mut sparse_memory_requirement_count: UInt32,
+        sparse_memory_requirement_count: UInt32,
         p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
@@ -1891,24 +1483,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_sparse_memory_requirements,
         )
 
-    fn get_image_sparse_memory_requirements_2(
-        self, device: Device, info: ImageSparseMemoryRequirementsInfo2
-    ) -> List[SparseImageMemoryRequirements2]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
-        """
-        var list = List[SparseImageMemoryRequirements2]()
-        var count: UInt32 = 0
-        self.get_image_sparse_memory_requirements_2(
-            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
-        )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
-        list._len = Int(count)
-        return list^
-
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
@@ -1918,8 +1492,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: AccelerationStructureCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut acceleration_structure: AccelerationStructureKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        acceleration_structure: AccelerationStructureKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -1933,7 +1507,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         acceleration_structure: AccelerationStructureKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -1948,7 +1522,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         command_buffer: CommandBuffer,
         info_count: UInt32,
         infos: AccelerationStructureBuildGeometryInfoKHR,
-        pp_build_range_infos: Ptr[Ptr[*, ImmutOrigin.external], MutOrigin.external],
+        pp_build_range_infos: Ptr[Ptr[AccelerationStructureBuildRangeInfoKHR, MutOrigin.external], ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -1965,7 +1539,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         infos: AccelerationStructureBuildGeometryInfoKHR,
         indirect_device_addresses: DeviceAddress,
         indirect_strides: UInt32,
-        pp_max_primitive_counts: Ptr[Ptr[*, ImmutOrigin.external], MutOrigin.external],
+        pp_max_primitive_counts: Ptr[Ptr[UInt32, MutOrigin.external], ImmutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -1986,7 +1560,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         deferred_operation: DeferredOperationKHR,
         info_count: UInt32,
         infos: AccelerationStructureBuildGeometryInfoKHR,
-        pp_build_range_infos: Ptr[Ptr[*, ImmutOrigin.external], MutOrigin.external],
+        pp_build_range_infos: Ptr[Ptr[AccelerationStructureBuildRangeInfoKHR, MutOrigin.external], ImmutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -2043,7 +1617,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         acceleration_structures: AccelerationStructureKHR,
         query_type: QueryType,
         data_size: UInt,
-        mut data: NoneType,
+        data: NoneType,
         stride: UInt,
     ) -> Result:
         """See official vulkan docs for details.
@@ -2122,7 +1696,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         version_info: AccelerationStructureVersionInfoKHR,
-        mut compatibility: AccelerationStructureCompatibilityKHR,
+        compatibility: AccelerationStructureCompatibilityKHR,
     ):
         """See official vulkan docs for details.
 
@@ -2137,8 +1711,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         build_type: AccelerationStructureBuildTypeKHR,
         build_info: AccelerationStructureBuildGeometryInfoKHR,
-        p_max_primitive_counts: Ptr[UInt32, ImmutOrigin.external],
-        mut size_info: AccelerationStructureBuildSizesInfoKHR,
+        p_max_primitive_counts: Ptr[UInt32, MutOrigin.external],
+        size_info: AccelerationStructureBuildSizesInfoKHR,
     ):
         """See official vulkan docs for details.
 
@@ -2186,8 +1760,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
         create_infos: RayTracingPipelineCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut pipelines: Pipeline,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -2210,7 +1784,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         first_group: UInt32,
         group_count: UInt32,
         data_size: UInt,
-        mut data: NoneType,
+        data: NoneType,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -2227,7 +1801,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         first_group: UInt32,
         group_count: UInt32,
         data_size: UInt,
-        mut data: NoneType,
+        data: NoneType,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -2290,8 +1864,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut ycbcr_conversion: SamplerYcbcrConversion,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -2305,7 +1879,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -2345,7 +1919,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
-        mut support: DescriptorSetLayoutSupport,
+        support: DescriptorSetLayoutSupport,
     ):
         """See official vulkan docs for details.
 
@@ -2414,7 +1988,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     ]("vkGetDeviceProcAddr")
     self._vk_get_semaphore_counter_value = Ptr(to=get_device_proc_addr(        device, "vkGetSemaphoreCounterValue".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_semaphore_counter_value)]()[]    self._vk_wait_semaphores = Ptr(to=get_device_proc_addr(        device, "vkWaitSemaphores".unsafe_ptr()    )).bitcast[__type_of(self._vk_wait_semaphores)]()[]    self._vk_signal_semaphore = Ptr(to=get_device_proc_addr(        device, "vkSignalSemaphore".unsafe_ptr()    )).bitcast[__type_of(self._vk_signal_semaphore)]()[]
     fn get_semaphore_counter_value(
-        self, device: Device, semaphore: Semaphore, mut value: UInt64
+        self, device: Device, semaphore: Semaphore, value: UInt64
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -2446,7 +2020,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_fragment_shading_rates_khr(
         self,
         physical_device: PhysicalDevice,
-        mut fragment_shading_rate_count: UInt32,
+        fragment_shading_rate_count: UInt32,
         p_fragment_shading_rates: Ptr[PhysicalDeviceFragmentShadingRateKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -2456,28 +2030,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_physical_device_fragment_shading_rates_khr(
             physical_device, Ptr(to=fragment_shading_rate_count), p_fragment_shading_rates
         )
-
-    fn get_physical_device_fragment_shading_rates_khr(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[PhysicalDeviceFragmentShadingRateKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFragmentShadingRatesKHR.html
-        """
-        var list = List[PhysicalDeviceFragmentShadingRateKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_fragment_shading_rates_khr(
-                physical_device, count, Ptr[PhysicalDeviceFragmentShadingRateKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_fragment_shading_rates_khr(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
     fn cmd_set_fragment_shading_rate_khr(
         self,
@@ -2574,8 +2126,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn create_deferred_operation_khr(
         self,
         device: Device,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut deferred_operation: DeferredOperationKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        deferred_operation: DeferredOperationKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -2587,7 +2139,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         operation: DeferredOperationKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -2631,7 +2183,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         pipeline_info: PipelineInfoKHR,
-        mut executable_count: UInt32,
+        executable_count: UInt32,
         p_properties: Ptr[PipelineExecutablePropertiesKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -2642,33 +2194,11 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             device, Ptr(to=pipeline_info), Ptr(to=executable_count), p_properties
         )
 
-    fn get_pipeline_executable_properties_khr(
-        self, device: Device, pipeline_info: PipelineInfoKHR
-    ) -> ListResult[PipelineExecutablePropertiesKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutablePropertiesKHR.html
-        """
-        var list = List[PipelineExecutablePropertiesKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_pipeline_executable_properties_khr(
-                device, pipeline_info, count, Ptr[PipelineExecutablePropertiesKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_pipeline_executable_properties_khr(
-                device, pipeline_info, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_pipeline_executable_statistics_khr(
         self,
         device: Device,
         executable_info: PipelineExecutableInfoKHR,
-        mut statistic_count: UInt32,
+        statistic_count: UInt32,
         p_statistics: Ptr[PipelineExecutableStatisticKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -2679,33 +2209,11 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             device, Ptr(to=executable_info), Ptr(to=statistic_count), p_statistics
         )
 
-    fn get_pipeline_executable_statistics_khr(
-        self, device: Device, executable_info: PipelineExecutableInfoKHR
-    ) -> ListResult[PipelineExecutableStatisticKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutableStatisticsKHR.html
-        """
-        var list = List[PipelineExecutableStatisticKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_pipeline_executable_statistics_khr(
-                device, executable_info, count, Ptr[PipelineExecutableStatisticKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_pipeline_executable_statistics_khr(
-                device, executable_info, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_pipeline_executable_internal_representations_khr(
         self,
         device: Device,
         executable_info: PipelineExecutableInfoKHR,
-        mut internal_representation_count: UInt32,
+        internal_representation_count: UInt32,
         p_internal_representations: Ptr[PipelineExecutableInternalRepresentationKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -2718,31 +2226,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             Ptr(to=internal_representation_count),
             p_internal_representations,
         )
-
-    fn get_pipeline_executable_internal_representations_khr(
-        self, device: Device, executable_info: PipelineExecutableInfoKHR
-    ) -> ListResult[PipelineExecutableInternalRepresentationKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutableInternalRepresentationsKHR.html
-        """
-        var list = List[PipelineExecutableInternalRepresentationKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_pipeline_executable_internal_representations_khr(
-                device,
-                executable_info,
-                count,
-                Ptr[PipelineExecutableInternalRepresentationKHR, MutAnyOrigin](),
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_pipeline_executable_internal_representations_khr(
-                device, executable_info, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
@@ -2777,7 +2260,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         quality_level_info: PhysicalDeviceVideoEncodeQualityLevelInfoKHR,
-        mut quality_level_properties: VideoEncodeQualityLevelPropertiesKHR,
+        quality_level_properties: VideoEncodeQualityLevelPropertiesKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -2792,7 +2275,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         video_session_parameters_info: VideoEncodeSessionParametersGetInfoKHR,
         p_feedback_info: Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutOrigin.external],
-        mut data_size: UInt,
+        data_size: UInt,
         p_data: Ptr[NoneType, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -2806,39 +2289,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             Ptr(to=data_size),
             p_data,
         )
-
-    fn get_encoded_video_session_parameters_khr(
-        self,
-        device: Device,
-        video_session_parameters_info: VideoEncodeSessionParametersGetInfoKHR,
-        p_feedback_info: Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutOrigin.external],
-    ) -> ListResult[UInt8]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetEncodedVideoSessionParametersKHR.html
-        """
-        var list = List[UInt8]()
-        var count: UInt = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_encoded_video_session_parameters_khr(
-                device,
-                video_session_parameters_info,
-                p_feedback_info,
-                count,
-                Ptr[NoneType, MutAnyOrigin](),
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_encoded_video_session_parameters_khr(
-                device,
-                video_session_parameters_info,
-                p_feedback_info,
-                count,
-                list.unsafe_ptr().bitcast[NoneType](),
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
     fn cmd_encode_video_khr(self, command_buffer: CommandBuffer, encode_info: VideoEncodeInfoKHR):
         """See official vulkan docs for details.
@@ -2992,7 +2442,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: DeviceBufferMemoryRequirements,
-        mut memory_requirements: MemoryRequirements2,
+        memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
@@ -3006,7 +2456,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: DeviceImageMemoryRequirements,
-        mut memory_requirements: MemoryRequirements2,
+        memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
@@ -3020,7 +2470,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: DeviceImageMemoryRequirements,
-        mut sparse_memory_requirement_count: UInt32,
+        sparse_memory_requirement_count: UInt32,
         p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutOrigin.external],
     ):
         """See official vulkan docs for details.
@@ -3033,26 +2483,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             Ptr(to=sparse_memory_requirement_count),
             p_sparse_memory_requirements,
         )
-
-    fn get_device_image_sparse_memory_requirements(
-        self, device: Device, info: DeviceImageMemoryRequirements
-    ) -> List[SparseImageMemoryRequirements2]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSparseMemoryRequirements.html
-        """
-        var list = List[SparseImageMemoryRequirements2]()
-        var count: UInt32 = 0
-        self.get_device_image_sparse_memory_requirements(
-            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
-        )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_device_image_sparse_memory_requirements(
-                device, info, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return list^
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
@@ -3074,7 +2504,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._cmd_bind_index_buffer_2(command_buffer, buffer, offset, size, index_type)
 
     fn get_rendering_area_granularity(
-        self, device: Device, rendering_area_info: RenderingAreaInfo, mut granularity: Extent2D
+        self, device: Device, rendering_area_info: RenderingAreaInfo, granularity: Extent2D
     ):
         """See official vulkan docs for details.
 
@@ -3085,7 +2515,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_device_image_subresource_layout(
-        self, device: Device, info: DeviceImageSubresourceInfo, mut layout: SubresourceLayout2
+        self, device: Device, info: DeviceImageSubresourceInfo, layout: SubresourceLayout2
     ):
         """See official vulkan docs for details.
 
@@ -3098,7 +2528,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         image: Image,
         subresource: ImageSubresource2,
-        mut layout: SubresourceLayout2,
+        layout: SubresourceLayout2,
     ):
         """See official vulkan docs for details.
 
@@ -3131,8 +2561,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: PipelineBinaryCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut binaries: PipelineBinaryHandlesInfoKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        binaries: PipelineBinaryHandlesInfoKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3146,7 +2576,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         pipeline_binary: PipelineBinaryKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -3157,8 +2587,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_pipeline_key_khr(
         self,
         device: Device,
-        p_pipeline_create_info: Ptr[PipelineCreateInfoKHR, ImmutOrigin.external],
-        mut pipeline_key: PipelineBinaryKeyKHR,
+        p_pipeline_create_info: Ptr[PipelineCreateInfoKHR, MutOrigin.external],
+        pipeline_key: PipelineBinaryKeyKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3170,8 +2600,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: PipelineBinaryDataInfoKHR,
-        mut pipeline_binary_key: PipelineBinaryKeyKHR,
-        mut pipeline_binary_data_size: UInt,
+        pipeline_binary_key: PipelineBinaryKeyKHR,
+        pipeline_binary_data_size: UInt,
         p_pipeline_binary_data: Ptr[NoneType, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -3186,36 +2616,11 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_pipeline_binary_data,
         )
 
-    fn get_pipeline_binary_data_khr(
-        self,
-        device: Device,
-        info: PipelineBinaryDataInfoKHR,
-        mut pipeline_binary_key: PipelineBinaryKeyKHR,
-    ) -> ListResult[UInt8]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineBinaryDataKHR.html
-        """
-        var list = List[UInt8]()
-        var count: UInt = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_pipeline_binary_data_khr(
-                device, info, pipeline_binary_key, count, Ptr[NoneType, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_pipeline_binary_data_khr(
-                device, info, pipeline_binary_key, count, list.unsafe_ptr().bitcast[NoneType]()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn release_captured_pipeline_data_khr(
         self,
         device: Device,
         info: ReleaseCapturedPipelineDataInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3245,7 +2650,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_cooperative_matrix_properties_khr(
         self,
         physical_device: PhysicalDevice,
-        mut property_count: UInt32,
+        property_count: UInt32,
         p_properties: Ptr[CooperativeMatrixPropertiesKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -3255,28 +2660,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_physical_device_cooperative_matrix_properties_khr(
             physical_device, Ptr(to=property_count), p_properties
         )
-
-    fn get_physical_device_cooperative_matrix_properties_khr(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[CooperativeMatrixPropertiesKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR.html
-        """
-        var list = List[CooperativeMatrixPropertiesKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_cooperative_matrix_properties_khr(
-                physical_device, count, Ptr[CooperativeMatrixPropertiesKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_cooperative_matrix_properties_khr(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
@@ -3305,7 +2688,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_calibrateable_time_domains_khr(
         self,
         physical_device: PhysicalDevice,
-        mut time_domain_count: UInt32,
+        time_domain_count: UInt32,
         p_time_domains: Ptr[TimeDomainKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -3316,35 +2699,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, Ptr(to=time_domain_count), p_time_domains
         )
 
-    fn get_physical_device_calibrateable_time_domains_khr(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[TimeDomainKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCalibrateableTimeDomainsKHR.html
-        """
-        var list = List[TimeDomainKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_calibrateable_time_domains_khr(
-                physical_device, count, Ptr[TimeDomainKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_calibrateable_time_domains_khr(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_calibrated_timestamps_khr(
         self,
         device: Device,
         timestamp_count: UInt32,
         timestamp_infos: CalibratedTimestampInfoKHR,
-        mut timestamps: UInt64,
-        mut max_deviation: UInt64,
+        timestamps: UInt64,
+        max_deviation: UInt64,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3438,8 +2799,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: DebugReportCallbackCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut callback: DebugReportCallbackEXT,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        callback: DebugReportCallbackEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3453,7 +2814,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         callback: DebugReportCallbackEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -3547,7 +2908,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         binding_count: UInt32,
         buffers: Buffer,
         offsets: DeviceSize,
-        p_sizes: Ptr[DeviceSize, ImmutOrigin.external],
+        p_sizes: Ptr[DeviceSize, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -3563,7 +2924,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         first_counter_buffer: UInt32,
         counter_buffer_count: UInt32,
         counter_buffers: Buffer,
-        p_counter_buffer_offsets: Ptr[DeviceSize, ImmutOrigin.external],
+        p_counter_buffer_offsets: Ptr[DeviceSize, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -3583,7 +2944,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         first_counter_buffer: UInt32,
         counter_buffer_count: UInt32,
         counter_buffers: Buffer,
-        p_counter_buffer_offsets: Ptr[DeviceSize, ImmutOrigin.external],
+        p_counter_buffer_offsets: Ptr[DeviceSize, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -3687,7 +3048,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     ]("vkGetInstanceProcAddr")
     self._vk_acquire_xlib_display_ext = Ptr(to=get_instance_proc_addr(        instance, "vkAcquireXlibDisplayEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_acquire_xlib_display_ext)]()[]    self._vk_get_rand_r_output_display_ext = Ptr(to=get_instance_proc_addr(        instance, "vkGetRandROutputDisplayEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_rand_r_output_display_ext)]()[]
     fn acquire_xlib_display_ext(
-        self, physical_device: PhysicalDevice, mut dpy: Display, display: DisplayKHR
+        self, physical_device: PhysicalDevice, dpy: Display, display: DisplayKHR
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3698,9 +3059,9 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     fn get_rand_r_output_display_ext(
         self,
         physical_device: PhysicalDevice,
-        mut dpy: Display,
+        dpy: Display,
         rr_output: RROutput,
-        mut display: DisplayKHR,
+        display: DisplayKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3719,7 +3080,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
-        mut surface_capabilities: SurfaceCapabilities2EXT,
+        surface_capabilities: SurfaceCapabilities2EXT,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3747,8 +3108,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         device_event_info: DeviceEventInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3763,8 +3124,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         display: DisplayKHR,
         display_event_info: DisplayEventInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3779,7 +3140,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         swapchain: SwapchainKHR,
         counter: SurfaceCounterFlagBitsEXT,
-        mut counter_value: UInt64,
+        counter_value: UInt64,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3921,8 +3282,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: DebugUtilsMessengerCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut messenger: DebugUtilsMessengerEXT,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        messenger: DebugUtilsMessengerEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -3936,7 +3297,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         messenger: DebugUtilsMessengerEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -3977,7 +3338,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         samples: SampleCountFlagBits,
-        mut multisample_properties: MultisamplePropertiesEXT,
+        multisample_properties: MultisamplePropertiesEXT,
     ):
         """See official vulkan docs for details.
 
@@ -3993,7 +3354,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     ]("vkGetDeviceProcAddr")
     self._vk_get_image_drm_format_modifier_properties_ext = Ptr(to=get_device_proc_addr(        device, "vkGetImageDrmFormatModifierPropertiesEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_drm_format_modifier_properties_ext)]()[]
     fn get_image_drm_format_modifier_properties_ext(
-        self, device: Device, image: Image, mut properties: ImageDrmFormatModifierPropertiesEXT
+        self, device: Device, image: Image, properties: ImageDrmFormatModifierPropertiesEXT
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4012,8 +3373,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: ValidationCacheCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut validation_cache: ValidationCacheEXT,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        validation_cache: ValidationCacheEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4027,7 +3388,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         validation_cache: ValidationCacheEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -4054,7 +3415,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         validation_cache: ValidationCacheEXT,
-        mut data_size: UInt,
+        data_size: UInt,
         p_data: Ptr[NoneType, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -4064,28 +3425,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_validation_cache_data_ext(
             device, validation_cache, Ptr(to=data_size), p_data
         )
-
-    fn get_validation_cache_data_ext(
-        self, device: Device, validation_cache: ValidationCacheEXT
-    ) -> ListResult[UInt8]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetValidationCacheDataEXT.html
-        """
-        var list = List[UInt8]()
-        var count: UInt = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_validation_cache_data_ext(
-                device, validation_cache, count, Ptr[NoneType, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_validation_cache_data_ext(
-                device, validation_cache, count, list.unsafe_ptr().bitcast[NoneType]()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
@@ -4097,7 +3436,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
         host_pointer: NoneType,
-        mut memory_host_pointer_properties: MemoryHostPointerPropertiesEXT,
+        memory_host_pointer_properties: MemoryHostPointerPropertiesEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4115,7 +3454,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_calibrateable_time_domains_khr(
         self,
         physical_device: PhysicalDevice,
-        mut time_domain_count: UInt32,
+        time_domain_count: UInt32,
         p_time_domains: Ptr[TimeDomainKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -4126,35 +3465,13 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, Ptr(to=time_domain_count), p_time_domains
         )
 
-    fn get_physical_device_calibrateable_time_domains_khr(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[TimeDomainKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCalibrateableTimeDomainsKHR.html
-        """
-        var list = List[TimeDomainKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_calibrateable_time_domains_khr(
-                physical_device, count, Ptr[TimeDomainKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_calibrateable_time_domains_khr(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_calibrated_timestamps_khr(
         self,
         device: Device,
         timestamp_count: UInt32,
         timestamp_infos: CalibratedTimestampInfoKHR,
-        mut timestamps: UInt64,
-        mut max_deviation: UInt64,
+        timestamps: UInt64,
+        max_deviation: UInt64,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4177,8 +3494,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: MetalSurfaceCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4210,7 +3527,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_tool_properties(
         self,
         physical_device: PhysicalDevice,
-        mut tool_count: UInt32,
+        tool_count: UInt32,
         p_tool_properties: Ptr[PhysicalDeviceToolProperties, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -4221,28 +3538,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, Ptr(to=tool_count), p_tool_properties
         )
 
-    fn get_physical_device_tool_properties(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[PhysicalDeviceToolProperties]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
-        """
-        var list = List[PhysicalDeviceToolProperties]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_tool_properties(
-                physical_device, count, Ptr[PhysicalDeviceToolProperties, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_tool_properties(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
@@ -4252,7 +3547,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         surface_info: PhysicalDeviceSurfaceInfo2KHR,
-        mut present_mode_count: UInt32,
+        present_mode_count: UInt32,
         p_present_modes: Ptr[PresentModeKHR, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -4262,28 +3557,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_physical_device_surface_present_modes_2_ext(
             physical_device, Ptr(to=surface_info), Ptr(to=present_mode_count), p_present_modes
         )
-
-    fn get_physical_device_surface_present_modes_2_ext(
-        self, physical_device: PhysicalDevice, surface_info: PhysicalDeviceSurfaceInfo2KHR
-    ) -> ListResult[PresentModeKHR]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfacePresentModes2EXT.html
-        """
-        var list = List[PresentModeKHR]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_surface_present_modes_2_ext(
-                physical_device, surface_info, count, Ptr[PresentModeKHR, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_surface_present_modes_2_ext(
-                physical_device, surface_info, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
     fn acquire_full_screen_exclusive_mode_ext(
         self, device: Device, swapchain: SwapchainKHR
@@ -4307,7 +3580,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         surface_info: PhysicalDeviceSurfaceInfo2KHR,
-        mut modes: DeviceGroupPresentModeFlagsKHR,
+        modes: DeviceGroupPresentModeFlagsKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4326,8 +3599,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: HeadlessSurfaceCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4423,8 +3696,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         binding_count: UInt32,
         buffers: Buffer,
         offsets: DeviceSize,
-        p_sizes: Ptr[DeviceSize, ImmutOrigin.external],
-        p_strides: Ptr[DeviceSize, ImmutOrigin.external],
+        p_sizes: Ptr[DeviceSize, MutOrigin.external],
+        p_strides: Ptr[DeviceSize, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -4542,7 +3815,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         image: Image,
         subresource: ImageSubresource2,
-        mut layout: SubresourceLayout2,
+        layout: SubresourceLayout2,
     ):
         """See official vulkan docs for details.
 
@@ -4599,7 +3872,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         physical_device: PhysicalDevice,
         drm_fd: Int32,
         connector_id: UInt32,
-        mut display: DisplayKHR,
+        display: DisplayKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4616,8 +3889,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: PrivateDataSlotCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut private_data_slot: PrivateDataSlot,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        private_data_slot: PrivateDataSlot,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4631,7 +3904,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         private_data_slot: PrivateDataSlot,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -4659,7 +3932,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         object_type: ObjectType,
         object_handle: UInt64,
         private_data_slot: PrivateDataSlot,
-        mut data: UInt64,
+        data: UInt64,
     ):
         """See official vulkan docs for details.
 
@@ -4675,7 +3948,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     ]("vkGetDeviceProcAddr")
     self._vk_export_metal_objects_ext = Ptr(to=get_device_proc_addr(        device, "vkExportMetalObjectsEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_export_metal_objects_ext)]()[]
     fn export_metal_objects_ext(
-        self, device: Device, mut metal_objects_info: ExportMetalObjectsInfoEXT
+        self, device: Device, metal_objects_info: ExportMetalObjectsInfoEXT
     ):
         """See official vulkan docs for details.
 
@@ -4689,7 +3962,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     ]("vkGetDeviceProcAddr")
     self._vk_get_descriptor_set_layout_size_ext = Ptr(to=get_device_proc_addr(        device, "vkGetDescriptorSetLayoutSizeEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_descriptor_set_layout_size_ext)]()[]    self._vk_get_descriptor_set_layout_binding_offset_ext = Ptr(to=get_device_proc_addr(        device, "vkGetDescriptorSetLayoutBindingOffsetEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_descriptor_set_layout_binding_offset_ext)]()[]    self._vk_get_descriptor_ext = Ptr(to=get_device_proc_addr(        device, "vkGetDescriptorEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_descriptor_ext)]()[]    self._vk_cmd_bind_descriptor_buffers_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdBindDescriptorBuffersEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_descriptor_buffers_ext)]()[]    self._vk_cmd_set_descriptor_buffer_offsets_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdSetDescriptorBufferOffsetsEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_set_descriptor_buffer_offsets_ext)]()[]    self._vk_cmd_bind_descriptor_buffer_embedded_samplers_ext = Ptr(to=get_device_proc_addr(        device, "vkCmdBindDescriptorBufferEmbeddedSamplersEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_bind_descriptor_buffer_embedded_samplers_ext)]()[]    self._vk_get_buffer_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(        device, "vkGetBufferOpaqueCaptureDescriptorDataEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_buffer_opaque_capture_descriptor_data_ext)]()[]    self._vk_get_image_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(        device, "vkGetImageOpaqueCaptureDescriptorDataEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_opaque_capture_descriptor_data_ext)]()[]    self._vk_get_image_view_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(        device, "vkGetImageViewOpaqueCaptureDescriptorDataEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_image_view_opaque_capture_descriptor_data_ext)]()[]    self._vk_get_sampler_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(        device, "vkGetSamplerOpaqueCaptureDescriptorDataEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_sampler_opaque_capture_descriptor_data_ext)]()[]    self._vk_get_acceleration_structure_opaque_capture_descriptor_data_ext = Ptr(to=get_device_proc_addr(        device, "vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_acceleration_structure_opaque_capture_descriptor_data_ext)]()[]
     fn get_descriptor_set_layout_size_ext(
-        self, device: Device, layout: DescriptorSetLayout, mut layout_size_in_bytes: DeviceSize
+        self, device: Device, layout: DescriptorSetLayout, layout_size_in_bytes: DeviceSize
     ):
         """See official vulkan docs for details.
 
@@ -4700,7 +3973,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_descriptor_set_layout_binding_offset_ext(
-        self, device: Device, layout: DescriptorSetLayout, binding: UInt32, mut offset: DeviceSize
+        self, device: Device, layout: DescriptorSetLayout, binding: UInt32, offset: DeviceSize
     ):
         """See official vulkan docs for details.
 
@@ -4715,7 +3988,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         descriptor_info: DescriptorGetInfoEXT,
         data_size: UInt,
-        mut descriptor: NoneType,
+        descriptor: NoneType,
     ):
         """See official vulkan docs for details.
 
@@ -4779,7 +4052,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_buffer_opaque_capture_descriptor_data_ext(
-        self, device: Device, info: BufferCaptureDescriptorDataInfoEXT, mut data: NoneType
+        self, device: Device, info: BufferCaptureDescriptorDataInfoEXT, data: NoneType
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4790,7 +4063,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_image_opaque_capture_descriptor_data_ext(
-        self, device: Device, info: ImageCaptureDescriptorDataInfoEXT, mut data: NoneType
+        self, device: Device, info: ImageCaptureDescriptorDataInfoEXT, data: NoneType
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4801,7 +4074,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_image_view_opaque_capture_descriptor_data_ext(
-        self, device: Device, info: ImageViewCaptureDescriptorDataInfoEXT, mut data: NoneType
+        self, device: Device, info: ImageViewCaptureDescriptorDataInfoEXT, data: NoneType
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4812,7 +4085,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_sampler_opaque_capture_descriptor_data_ext(
-        self, device: Device, info: SamplerCaptureDescriptorDataInfoEXT, mut data: NoneType
+        self, device: Device, info: SamplerCaptureDescriptorDataInfoEXT, data: NoneType
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4826,7 +4099,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: AccelerationStructureCaptureDescriptorDataInfoEXT,
-        mut data: NoneType,
+        data: NoneType,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4906,7 +4179,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         image: Image,
         subresource: ImageSubresource2,
-        mut layout: SubresourceLayout2,
+        layout: SubresourceLayout2,
     ):
         """See official vulkan docs for details.
 
@@ -4924,7 +4197,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_device_fault_info_ext(
         self,
         device: Device,
-        mut fault_counts: DeviceFaultCountsEXT,
+        fault_counts: DeviceFaultCountsEXT,
         p_fault_info: Ptr[DeviceFaultInfoEXT, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -4942,8 +4215,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: DirectFBSurfaceCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -4954,7 +4227,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         )
 
     fn get_physical_device_direct_fb_presentation_support_ext(
-        self, physical_device: PhysicalDevice, queue_family_index: UInt32, mut dfb: IDirectFB
+        self, physical_device: PhysicalDevice, queue_family_index: UInt32, dfb: IDirectFB
     ) -> Bool32:
         """See official vulkan docs for details.
 
@@ -4995,10 +4268,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     ]("vkGetDeviceProcAddr")
     self._vk_get_pipeline_properties_ext = Ptr(to=get_device_proc_addr(        device, "vkGetPipelinePropertiesEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_pipeline_properties_ext)]()[]
     fn get_pipeline_properties_ext(
-        self,
-        device: Device,
-        pipeline_info: PipelineInfoEXT,
-        mut pipeline_properties: BaseOutStructure,
+        self, device: Device, pipeline_info: PipelineInfoEXT, pipeline_properties: BaseOutStructure
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -5100,7 +4370,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         instance_count: UInt32,
         first_instance: UInt32,
         stride: UInt32,
-        p_vertex_offset: Ptr[Int32, ImmutOrigin.external],
+        p_vertex_offset: Ptr[Int32, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -5125,8 +4395,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: MicromapCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut micromap: MicromapEXT,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        micromap: MicromapEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -5140,7 +4410,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         micromap: MicromapEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -5210,7 +4480,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         micromaps: MicromapEXT,
         query_type: QueryType,
         data_size: UInt,
-        mut data: NoneType,
+        data: NoneType,
         stride: UInt,
     ) -> Result:
         """See official vulkan docs for details.
@@ -5267,7 +4537,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         version_info: MicromapVersionInfoEXT,
-        mut compatibility: AccelerationStructureCompatibilityKHR,
+        compatibility: AccelerationStructureCompatibilityKHR,
     ):
         """See official vulkan docs for details.
 
@@ -5282,7 +4552,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         build_type: AccelerationStructureBuildTypeKHR,
         build_info: MicromapBuildInfoEXT,
-        mut size_info: MicromapBuildSizesInfoEXT,
+        size_info: MicromapBuildSizesInfoEXT,
     ):
         """See official vulkan docs for details.
 
@@ -5645,7 +4915,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     ]("vkGetDeviceProcAddr")
     self._vk_get_shader_module_identifier_ext = Ptr(to=get_device_proc_addr(        device, "vkGetShaderModuleIdentifierEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_shader_module_identifier_ext)]()[]    self._vk_get_shader_module_create_info_identifier_ext = Ptr(to=get_device_proc_addr(        device, "vkGetShaderModuleCreateInfoIdentifierEXT".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_shader_module_create_info_identifier_ext)]()[]
     fn get_shader_module_identifier_ext(
-        self, device: Device, shader_module: ShaderModule, mut identifier: ShaderModuleIdentifierEXT
+        self, device: Device, shader_module: ShaderModule, identifier: ShaderModuleIdentifierEXT
     ):
         """See official vulkan docs for details.
 
@@ -5657,7 +4927,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
-        mut identifier: ShaderModuleIdentifierEXT,
+        identifier: ShaderModuleIdentifierEXT,
     ):
         """See official vulkan docs for details.
 
@@ -5677,8 +4947,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         create_info_count: UInt32,
         create_infos: ShaderCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut shaders: ShaderEXT,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        shaders: ShaderEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -5692,7 +4962,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         shader: ShaderEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -5704,7 +4974,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         shader: ShaderEXT,
-        mut data_size: UInt,
+        data_size: UInt,
         p_data: Ptr[NoneType, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -5713,32 +4983,12 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._get_shader_binary_data_ext(device, shader, Ptr(to=data_size), p_data)
 
-    fn get_shader_binary_data_ext(self, device: Device, shader: ShaderEXT) -> ListResult[UInt8]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderBinaryDataEXT.html
-        """
-        var list = List[UInt8]()
-        var count: UInt = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_shader_binary_data_ext(
-                device, shader, count, Ptr[NoneType, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_shader_binary_data_ext(
-                device, shader, count, list.unsafe_ptr().bitcast[NoneType]()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn cmd_bind_shaders_ext(
         self,
         command_buffer: CommandBuffer,
         stage_count: UInt32,
         stages: ShaderStageFlagBits,
-        p_shaders: Ptr[ShaderEXT, ImmutOrigin.external],
+        p_shaders: Ptr[ShaderEXT, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -5794,8 +5044,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         binding_count: UInt32,
         buffers: Buffer,
         offsets: DeviceSize,
-        p_sizes: Ptr[DeviceSize, ImmutOrigin.external],
-        p_strides: Ptr[DeviceSize, ImmutOrigin.external],
+        p_sizes: Ptr[DeviceSize, MutOrigin.external],
+        p_strides: Ptr[DeviceSize, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -6260,7 +5510,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         depth_clamp_mode: DepthClampModeEXT,
-        p_depth_clamp_range: Ptr[DepthClampRangeEXT, ImmutOrigin.external],
+        p_depth_clamp_range: Ptr[DepthClampRangeEXT, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -6293,7 +5543,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: GeneratedCommandsMemoryRequirementsInfoEXT,
-        mut memory_requirements: MemoryRequirements2,
+        memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
@@ -6335,8 +5585,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: IndirectCommandsLayoutCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut indirect_commands_layout: IndirectCommandsLayoutEXT,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        indirect_commands_layout: IndirectCommandsLayoutEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -6350,7 +5600,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         indirect_commands_layout: IndirectCommandsLayoutEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -6364,8 +5614,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: IndirectExecutionSetCreateInfoEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut indirect_execution_set: IndirectExecutionSetEXT,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        indirect_execution_set: IndirectExecutionSetEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -6379,7 +5629,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         indirect_execution_set: IndirectExecutionSetEXT,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -6428,7 +5678,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         depth_clamp_mode: DepthClampModeEXT,
-        p_depth_clamp_range: Ptr[DepthClampRangeEXT, ImmutOrigin.external],
+        p_depth_clamp_range: Ptr[DepthClampRangeEXT, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -6460,7 +5710,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
         handle: NoneType,
-        mut memory_metal_handle_properties: MemoryMetalHandlePropertiesEXT,
+        memory_metal_handle_properties: MemoryMetalHandlePropertiesEXT,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -6478,7 +5728,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn cmd_end_rendering_2_ext(
         self,
         command_buffer: CommandBuffer,
-        p_rendering_end_info: Ptr[RenderingEndInfoEXT, ImmutOrigin.external],
+        p_rendering_end_info: Ptr[RenderingEndInfoEXT, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -6495,8 +5745,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: CuModuleCreateInfoNVX,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut module: CuModuleNVX,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        module: CuModuleNVX,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -6508,8 +5758,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: CuFunctionCreateInfoNVX,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut function: CuFunctionNVX,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        function: CuFunctionNVX,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -6523,7 +5773,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         module: CuModuleNVX,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -6535,7 +5785,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         function: CuFunctionNVX,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -6570,7 +5820,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_image_view_handle_64_nvx(device, Ptr(to=info))
 
     fn get_image_view_address_nvx(
-        self, device: Device, image_view: ImageView, mut properties: ImageViewAddressPropertiesNVX
+        self, device: Device, image_view: ImageView, properties: ImageViewAddressPropertiesNVX
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -6642,7 +5892,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         pipeline: Pipeline,
         shader_stage: ShaderStageFlagBits,
         info_type: ShaderInfoTypeAMD,
-        mut info_size: UInt,
+        info_size: UInt,
         p_info: Ptr[NoneType, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -6652,37 +5902,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_shader_info_amd(
             device, pipeline, shader_stage, info_type, Ptr(to=info_size), p_info
         )
-
-    fn get_shader_info_amd(
-        self,
-        device: Device,
-        pipeline: Pipeline,
-        shader_stage: ShaderStageFlagBits,
-        info_type: ShaderInfoTypeAMD,
-    ) -> ListResult[UInt8]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderInfoAMD.html
-        """
-        var list = List[UInt8]()
-        var count: UInt = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_shader_info_amd(
-                device, pipeline, shader_stage, info_type, count, Ptr[NoneType, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_shader_info_amd(
-                device,
-                pipeline,
-                shader_stage,
-                info_type,
-                count,
-                list.unsafe_ptr().bitcast[NoneType](),
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
@@ -6756,8 +5975,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: StreamDescriptorSurfaceCreateInfoGGP,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -6781,7 +6000,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         usage: ImageUsageFlags,
         flags: ImageCreateFlags,
         external_handle_type: ExternalMemoryHandleTypeFlagsNV,
-        mut external_image_format_properties: ExternalImageFormatPropertiesNV,
+        external_image_format_properties: ExternalImageFormatPropertiesNV,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -6808,7 +6027,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         memory: DeviceMemory,
         handle_type: ExternalMemoryHandleTypeFlagsNV,
-        mut handle: HANDLE,
+        handle: HANDLE,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -6892,8 +6111,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: AccelerationStructureCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut acceleration_structure: AccelerationStructureNV,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        acceleration_structure: AccelerationStructureNV,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -6907,7 +6126,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         acceleration_structure: AccelerationStructureNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -6919,7 +6138,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: AccelerationStructureMemoryRequirementsInfoNV,
-        mut memory_requirements: MemoryRequirements2KHR,
+        memory_requirements: MemoryRequirements2KHR,
     ):
         """See official vulkan docs for details.
 
@@ -7030,8 +6249,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
         create_infos: RayTracingPipelineCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut pipelines: Pipeline,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -7053,7 +6272,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         first_group: UInt32,
         group_count: UInt32,
         data_size: UInt,
-        mut data: NoneType,
+        data: NoneType,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -7068,7 +6287,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         acceleration_structure: AccelerationStructureNV,
         data_size: UInt,
-        mut data: NoneType,
+        data: NoneType,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -7217,7 +6436,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_queue_checkpoint_data_nv(
         self,
         queue: Queue,
-        mut checkpoint_data_count: UInt32,
+        checkpoint_data_count: UInt32,
         p_checkpoint_data: Ptr[CheckpointDataNV, MutOrigin.external],
     ):
         """See official vulkan docs for details.
@@ -7228,24 +6447,10 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             queue, Ptr(to=checkpoint_data_count), p_checkpoint_data
         )
 
-    fn get_queue_checkpoint_data_nv(self, queue: Queue) -> List[CheckpointDataNV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointDataNV.html
-        """
-        var list = List[CheckpointDataNV]()
-        var count: UInt32 = 0
-        self.get_queue_checkpoint_data_nv(queue, count, Ptr[CheckpointDataNV, MutAnyOrigin]())
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_queue_checkpoint_data_nv(queue, count, list.unsafe_ptr())
-        list._len = Int(count)
-        return list^
-
     fn get_queue_checkpoint_data_2_nv(
         self,
         queue: Queue,
-        mut checkpoint_data_count: UInt32,
+        checkpoint_data_count: UInt32,
         p_checkpoint_data: Ptr[CheckpointData2NV, MutOrigin.external],
     ):
         """See official vulkan docs for details.
@@ -7256,20 +6461,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             queue, Ptr(to=checkpoint_data_count), p_checkpoint_data
         )
 
-    fn get_queue_checkpoint_data_2_nv(self, queue: Queue) -> List[CheckpointData2NV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointData2NV.html
-        """
-        var list = List[CheckpointData2NV]()
-        var count: UInt32 = 0
-        self.get_queue_checkpoint_data_2_nv(queue, count, Ptr[CheckpointData2NV, MutAnyOrigin]())
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_queue_checkpoint_data_2_nv(queue, count, list.unsafe_ptr())
-        list._len = Int(count)
-        return list^
-
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
@@ -7278,7 +6469,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_cooperative_matrix_properties_nv(
         self,
         physical_device: PhysicalDevice,
-        mut property_count: UInt32,
+        property_count: UInt32,
         p_properties: Ptr[CooperativeMatrixPropertiesNV, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -7289,28 +6480,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, Ptr(to=property_count), p_properties
         )
 
-    fn get_physical_device_cooperative_matrix_properties_nv(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[CooperativeMatrixPropertiesNV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixPropertiesNV.html
-        """
-        var list = List[CooperativeMatrixPropertiesNV]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_cooperative_matrix_properties_nv(
-                physical_device, count, Ptr[CooperativeMatrixPropertiesNV, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_cooperative_matrix_properties_nv(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
@@ -7319,7 +6488,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
         self,
         physical_device: PhysicalDevice,
-        mut combination_count: UInt32,
+        combination_count: UInt32,
         p_combinations: Ptr[FramebufferMixedSamplesCombinationNV, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -7330,28 +6499,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, Ptr(to=combination_count), p_combinations
         )
 
-    fn get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[FramebufferMixedSamplesCombinationNV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV.html
-        """
-        var list = List[FramebufferMixedSamplesCombinationNV]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
-                physical_device, count, Ptr[FramebufferMixedSamplesCombinationNV, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
@@ -7361,7 +6508,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: GeneratedCommandsMemoryRequirementsInfoNV,
-        mut memory_requirements: MemoryRequirements2,
+        memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
@@ -7415,8 +6562,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: IndirectCommandsLayoutCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut indirect_commands_layout: IndirectCommandsLayoutNV,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        indirect_commands_layout: IndirectCommandsLayoutNV,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -7430,7 +6577,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         indirect_commands_layout: IndirectCommandsLayoutNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -7449,8 +6596,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: CudaModuleCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut module: CudaModuleNV,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        module: CudaModuleNV,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -7464,7 +6611,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         module: CudaModuleNV,
-        mut cache_size: UInt,
+        cache_size: UInt,
         p_cache_data: Ptr[NoneType, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -7473,32 +6620,12 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         """
         return self._get_cuda_module_cache_nv(device, module, Ptr(to=cache_size), p_cache_data)
 
-    fn get_cuda_module_cache_nv(self, device: Device, module: CudaModuleNV) -> ListResult[UInt8]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetCudaModuleCacheNV.html
-        """
-        var list = List[UInt8]()
-        var count: UInt = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_cuda_module_cache_nv(
-                device, module, count, Ptr[NoneType, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_cuda_module_cache_nv(
-                device, module, count, list.unsafe_ptr().bitcast[NoneType]()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn create_cuda_function_nv(
         self,
         device: Device,
         create_info: CudaFunctionCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut function: CudaFunctionNV,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        function: CudaFunctionNV,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -7512,7 +6639,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         module: CudaModuleNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -7524,7 +6651,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         function: CudaFunctionNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -7575,7 +6702,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._acquire_winrt_display_nv(physical_device, display)
 
     fn get_winrt_display_nv(
-        self, physical_device: PhysicalDevice, device_relative_id: UInt32, mut display: DisplayKHR
+        self, physical_device: PhysicalDevice, device_relative_id: UInt32, display: DisplayKHR
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -7592,7 +6719,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         memory_get_remote_address_info: MemoryGetRemoteAddressInfoNV,
-        mut address: RemoteAddressNV,
+        address: RemoteAddressNV,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -7689,7 +6816,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: ComputePipelineCreateInfo,
-        mut memory_requirements: MemoryRequirements2,
+        memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
@@ -7731,7 +6858,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         optical_flow_image_format_info: OpticalFlowImageFormatInfoNV,
-        mut format_count: UInt32,
+        format_count: UInt32,
         p_image_format_properties: Ptr[OpticalFlowImageFormatPropertiesNV, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -7745,39 +6872,12 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_image_format_properties,
         )
 
-    fn get_physical_device_optical_flow_image_formats_nv(
-        self,
-        physical_device: PhysicalDevice,
-        optical_flow_image_format_info: OpticalFlowImageFormatInfoNV,
-    ) -> ListResult[OpticalFlowImageFormatPropertiesNV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceOpticalFlowImageFormatsNV.html
-        """
-        var list = List[OpticalFlowImageFormatPropertiesNV]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_optical_flow_image_formats_nv(
-                physical_device,
-                optical_flow_image_format_info,
-                count,
-                Ptr[OpticalFlowImageFormatPropertiesNV, MutAnyOrigin](),
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_optical_flow_image_formats_nv(
-                physical_device, optical_flow_image_format_info, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn create_optical_flow_session_nv(
         self,
         device: Device,
         create_info: OpticalFlowSessionCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut session: OpticalFlowSessionNV,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        session: OpticalFlowSessionNV,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -7791,7 +6891,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         session: OpticalFlowSessionNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -7835,7 +6935,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_cooperative_vector_properties_nv(
         self,
         physical_device: PhysicalDevice,
-        mut property_count: UInt32,
+        property_count: UInt32,
         p_properties: Ptr[CooperativeVectorPropertiesNV, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -7845,28 +6945,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_physical_device_cooperative_vector_properties_nv(
             physical_device, Ptr(to=property_count), p_properties
         )
-
-    fn get_physical_device_cooperative_vector_properties_nv(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[CooperativeVectorPropertiesNV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeVectorPropertiesNV.html
-        """
-        var list = List[CooperativeVectorPropertiesNV]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_cooperative_vector_properties_nv(
-                physical_device, count, Ptr[CooperativeVectorPropertiesNV, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_cooperative_vector_properties_nv(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
     fn convert_cooperative_vector_matrix_nv(
         self, device: Device, info: ConvertCooperativeVectorMatrixInfoNV
@@ -7924,10 +7002,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._set_latency_marker_nv(device, swapchain, Ptr(to=latency_marker_info))
 
     fn get_latency_timings_nv(
-        self,
-        device: Device,
-        swapchain: SwapchainKHR,
-        mut latency_marker_info: GetLatencyMarkerInfoNV,
+        self, device: Device, swapchain: SwapchainKHR, latency_marker_info: GetLatencyMarkerInfoNV
     ):
         """See official vulkan docs for details.
 
@@ -7951,8 +7026,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: ExternalComputeQueueCreateInfoNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut external_queue: ExternalComputeQueueNV,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        external_queue: ExternalComputeQueueNV,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -7966,7 +7041,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         external_queue: ExternalComputeQueueNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -7977,8 +7052,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_external_compute_queue_data_nv(
         self,
         external_queue: ExternalComputeQueueNV,
-        mut params: ExternalComputeQueueDataParamsNV,
-        mut data: NoneType,
+        params: ExternalComputeQueueDataParamsNV,
+        data: NoneType,
     ):
         """See official vulkan docs for details.
 
@@ -7997,7 +7072,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: ClusterAccelerationStructureInputInfoNV,
-        mut size_info: AccelerationStructureBuildSizesInfoKHR,
+        size_info: AccelerationStructureBuildSizesInfoKHR,
     ):
         """See official vulkan docs for details.
 
@@ -8029,7 +7104,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: PartitionedAccelerationStructureInstancesInputNV,
-        mut size_info: AccelerationStructureBuildSizesInfoKHR,
+        size_info: AccelerationStructureBuildSizesInfoKHR,
     ):
         """See official vulkan docs for details.
 
@@ -8058,7 +7133,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
         self,
         physical_device: PhysicalDevice,
-        mut property_count: UInt32,
+        property_count: UInt32,
         p_properties: Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -8069,30 +7144,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, Ptr(to=property_count), p_properties
         )
 
-    fn get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[CooperativeMatrixFlexibleDimensionsPropertiesNV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV.html
-        """
-        var list = List[CooperativeMatrixFlexibleDimensionsPropertiesNV]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
-                physical_device,
-                count,
-                Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutAnyOrigin](),
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
@@ -8102,8 +7153,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: ViSurfaceCreateInfoNN,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8122,7 +7173,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         swapchain: SwapchainKHR,
-        mut display_timing_properties: RefreshCycleDurationGOOGLE,
+        display_timing_properties: RefreshCycleDurationGOOGLE,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8136,7 +7187,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         swapchain: SwapchainKHR,
-        mut presentation_timing_count: UInt32,
+        presentation_timing_count: UInt32,
         p_presentation_timings: Ptr[PastPresentationTimingGOOGLE, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -8147,28 +7198,6 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             device, swapchain, Ptr(to=presentation_timing_count), p_presentation_timings
         )
 
-    fn get_past_presentation_timing_google(
-        self, device: Device, swapchain: SwapchainKHR
-    ) -> ListResult[PastPresentationTimingGOOGLE]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPastPresentationTimingGOOGLE.html
-        """
-        var list = List[PastPresentationTimingGOOGLE]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_past_presentation_timing_google(
-                device, swapchain, count, Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_past_presentation_timing_google(
-                device, swapchain, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8]) -> PFN_vkVoidFunction
@@ -8178,8 +7207,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: IOSSurfaceCreateInfoMVK,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8198,8 +7227,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: MacOSSurfaceCreateInfoMVK,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8218,7 +7247,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         buffer: AHardwareBuffer,
-        mut properties: AndroidHardwareBufferPropertiesANDROID,
+        properties: AndroidHardwareBufferPropertiesANDROID,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8251,8 +7280,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
         create_infos: ExecutionGraphPipelineCreateInfoAMDX,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut pipelines: Pipeline,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8271,7 +7300,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         execution_graph: Pipeline,
-        mut size_info: ExecutionGraphPipelineScratchSizeAMDX,
+        size_info: ExecutionGraphPipelineScratchSizeAMDX,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8286,7 +7315,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         execution_graph: Pipeline,
         node_info: PipelineShaderStageNodeCreateInfoAMDX,
-        mut node_index: UInt32,
+        node_index: UInt32,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8408,7 +7437,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         acquire_info: PerformanceConfigurationAcquireInfoINTEL,
-        mut configuration: PerformanceConfigurationINTEL,
+        configuration: PerformanceConfigurationINTEL,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8437,10 +7466,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._queue_set_performance_configuration_intel(queue, configuration)
 
     fn get_performance_parameter_intel(
-        self,
-        device: Device,
-        parameter: PerformanceParameterTypeINTEL,
-        mut value: PerformanceValueINTEL,
+        self, device: Device, parameter: PerformanceParameterTypeINTEL, value: PerformanceValueINTEL
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8457,8 +7483,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: ImagePipeSurfaceCreateInfoFUCHSIA,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8477,7 +7503,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         get_zircon_handle_info: MemoryGetZirconHandleInfoFUCHSIA,
-        mut zircon_handle: zx_handle_t,
+        zircon_handle: zx_handle_t,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8492,7 +7518,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
         zircon_handle: zx_handle_t,
-        mut memory_zircon_handle_properties: MemoryZirconHandlePropertiesFUCHSIA,
+        memory_zircon_handle_properties: MemoryZirconHandlePropertiesFUCHSIA,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8524,7 +7550,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         get_zircon_handle_info: SemaphoreGetZirconHandleInfoFUCHSIA,
-        mut zircon_handle: zx_handle_t,
+        zircon_handle: zx_handle_t,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8543,8 +7569,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: BufferCollectionCreateInfoFUCHSIA,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut collection: BufferCollectionFUCHSIA,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        collection: BufferCollectionFUCHSIA,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8586,7 +7612,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         collection: BufferCollectionFUCHSIA,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -8598,7 +7624,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         collection: BufferCollectionFUCHSIA,
-        mut properties: BufferCollectionPropertiesFUCHSIA,
+        properties: BufferCollectionPropertiesFUCHSIA,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8649,7 +7675,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         framebuffer: Framebuffer,
-        mut properties_count: UInt32,
+        properties_count: UInt32,
         p_properties: Ptr[TilePropertiesQCOM, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -8660,30 +7686,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             device, framebuffer, Ptr(to=properties_count), p_properties
         )
 
-    fn get_framebuffer_tile_properties_qcom(
-        self, device: Device, framebuffer: Framebuffer
-    ) -> ListResult[TilePropertiesQCOM]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFramebufferTilePropertiesQCOM.html
-        """
-        var list = List[TilePropertiesQCOM]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_framebuffer_tile_properties_qcom(
-                device, framebuffer, count, Ptr[TilePropertiesQCOM, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_framebuffer_tile_properties_qcom(
-                device, framebuffer, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_dynamic_rendering_tile_properties_qcom(
-        self, device: Device, rendering_info: RenderingInfo, mut properties: TilePropertiesQCOM
+        self, device: Device, rendering_info: RenderingInfo, properties: TilePropertiesQCOM
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8701,7 +7705,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn cmd_bind_tile_memory_qcom(
         self,
         command_buffer: CommandBuffer,
-        p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, ImmutOrigin.external],
+        p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -8715,7 +7719,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     ]("vkGetDeviceProcAddr")
     self._vk_get_device_subpass_shading_max_workgroup_size_huawei = Ptr(to=get_device_proc_addr(        device, "vkGetDeviceSubpassShadingMaxWorkgroupSizeHUAWEI".unsafe_ptr()    )).bitcast[__type_of(self._vk_get_device_subpass_shading_max_workgroup_size_huawei)]()[]    self._vk_cmd_subpass_shading_huawei = Ptr(to=get_device_proc_addr(        device, "vkCmdSubpassShadingHUAWEI".unsafe_ptr()    )).bitcast[__type_of(self._vk_cmd_subpass_shading_huawei)]()[]
     fn get_device_subpass_shading_max_workgroup_size_huawei(
-        self, device: Device, renderpass: RenderPass, mut max_workgroup_size: Extent2D
+        self, device: Device, renderpass: RenderPass, max_workgroup_size: Extent2D
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8784,8 +7788,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: ScreenSurfaceCreateInfoQNX,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8799,7 +7803,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
-        mut window: Ptr[_screen_window, MutOrigin.external],
+        window: Ptr[_screen_window, MutOrigin.external],
     ) -> Bool32:
         """See official vulkan docs for details.
 
@@ -8817,8 +7821,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     fn get_screen_buffer_properties_qnx(
         self,
         device: Device,
-        buffer: Ptr[_screen_buffer, ImmutOrigin.external],
-        mut properties: ScreenBufferPropertiesQNX,
+        buffer: Ptr[_screen_buffer, MutOrigin.external],
+        properties: ScreenBufferPropertiesQNX,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8835,7 +7839,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         binding_reference: DescriptorSetBindingReferenceVALVE,
-        mut host_mapping: DescriptorSetLayoutHostMappingInfoVALVE,
+        host_mapping: DescriptorSetLayoutHostMappingInfoVALVE,
     ):
         """See official vulkan docs for details.
 
@@ -8866,8 +7870,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: TensorCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut tensor: TensorARM,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        tensor: TensorARM,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8879,7 +7883,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         tensor: TensorARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -8891,8 +7895,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: TensorViewCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut view: TensorViewARM,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        view: TensorViewARM,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8904,7 +7908,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         tensor_view: TensorViewARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -8916,7 +7920,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: TensorMemoryRequirementsInfoARM,
-        mut memory_requirements: MemoryRequirements2,
+        memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
@@ -8939,7 +7943,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: DeviceTensorMemoryRequirementsARM,
-        mut memory_requirements: MemoryRequirements2,
+        memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
@@ -8962,7 +7966,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         external_tensor_info: PhysicalDeviceExternalTensorInfoARM,
-        mut external_tensor_properties: ExternalTensorPropertiesARM,
+        external_tensor_properties: ExternalTensorPropertiesARM,
     ):
         """See official vulkan docs for details.
 
@@ -8973,7 +7977,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_tensor_opaque_capture_descriptor_data_arm(
-        self, device: Device, info: TensorCaptureDescriptorDataInfoARM, mut data: NoneType
+        self, device: Device, info: TensorCaptureDescriptorDataInfoARM, data: NoneType
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -8984,7 +7988,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         )
 
     fn get_tensor_view_opaque_capture_descriptor_data_arm(
-        self, device: Device, info: TensorViewCaptureDescriptorDataInfoARM, mut data: NoneType
+        self, device: Device, info: TensorViewCaptureDescriptorDataInfoARM, data: NoneType
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -9006,8 +8010,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
         create_infos: DataGraphPipelineCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut pipelines: Pipeline,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        pipelines: Pipeline,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -9027,8 +8031,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         create_info: DataGraphPipelineSessionCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut session: DataGraphPipelineSessionARM,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        session: DataGraphPipelineSessionARM,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -9042,7 +8046,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         info: DataGraphPipelineSessionBindPointRequirementsInfoARM,
-        mut bind_point_requirement_count: UInt32,
+        bind_point_requirement_count: UInt32,
         p_bind_point_requirements: Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -9053,36 +8057,11 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             device, Ptr(to=info), Ptr(to=bind_point_requirement_count), p_bind_point_requirements
         )
 
-    fn get_data_graph_pipeline_session_bind_point_requirements_arm(
-        self, device: Device, info: DataGraphPipelineSessionBindPointRequirementsInfoARM
-    ) -> ListResult[DataGraphPipelineSessionBindPointRequirementARM]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineSessionBindPointRequirementsARM.html
-        """
-        var list = List[DataGraphPipelineSessionBindPointRequirementARM]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_data_graph_pipeline_session_bind_point_requirements_arm(
-                device,
-                info,
-                count,
-                Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutAnyOrigin](),
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_data_graph_pipeline_session_bind_point_requirements_arm(
-                device, info, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_data_graph_pipeline_session_memory_requirements_arm(
         self,
         device: Device,
         info: DataGraphPipelineSessionMemoryRequirementsInfoARM,
-        mut memory_requirements: MemoryRequirements2,
+        memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
 
@@ -9110,7 +8089,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         session: DataGraphPipelineSessionARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -9122,7 +8101,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         command_buffer: CommandBuffer,
         session: DataGraphPipelineSessionARM,
-        p_info: Ptr[DataGraphPipelineDispatchInfoARM, ImmutOrigin.external],
+        p_info: Ptr[DataGraphPipelineDispatchInfoARM, MutOrigin.external],
     ):
         """See official vulkan docs for details.
 
@@ -9134,7 +8113,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         device: Device,
         pipeline_info: DataGraphPipelineInfoARM,
-        mut properties_count: UInt32,
+        properties_count: UInt32,
         p_properties: Ptr[DataGraphPipelinePropertyARM, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -9145,34 +8124,12 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             device, Ptr(to=pipeline_info), Ptr(to=properties_count), p_properties
         )
 
-    fn get_data_graph_pipeline_available_properties_arm(
-        self, device: Device, pipeline_info: DataGraphPipelineInfoARM
-    ) -> ListResult[DataGraphPipelinePropertyARM]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineAvailablePropertiesARM.html
-        """
-        var list = List[DataGraphPipelinePropertyARM]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_data_graph_pipeline_available_properties_arm(
-                device, pipeline_info, count, Ptr[DataGraphPipelinePropertyARM, MutAnyOrigin]()
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_data_graph_pipeline_available_properties_arm(
-                device, pipeline_info, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_data_graph_pipeline_properties_arm(
         self,
         device: Device,
         pipeline_info: DataGraphPipelineInfoARM,
         properties_count: UInt32,
-        mut properties: DataGraphPipelinePropertyQueryResultARM,
+        properties: DataGraphPipelinePropertyQueryResultARM,
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -9186,7 +8143,7 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         self,
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
-        mut queue_family_data_graph_property_count: UInt32,
+        queue_family_data_graph_property_count: UInt32,
         p_queue_family_data_graph_properties: Ptr[QueueFamilyDataGraphPropertiesARM, MutOrigin.external],
     ) -> Result:
         """See official vulkan docs for details.
@@ -9200,36 +8157,11 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_queue_family_data_graph_properties,
         )
 
-    fn get_physical_device_queue_family_data_graph_properties_arm(
-        self, physical_device: PhysicalDevice, queue_family_index: UInt32
-    ) -> ListResult[QueueFamilyDataGraphPropertiesARM]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyDataGraphPropertiesARM.html
-        """
-        var list = List[QueueFamilyDataGraphPropertiesARM]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_queue_family_data_graph_properties_arm(
-                physical_device,
-                queue_family_index,
-                count,
-                Ptr[QueueFamilyDataGraphPropertiesARM, MutAnyOrigin](),
-            )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
-            result = self.get_physical_device_queue_family_data_graph_properties_arm(
-                physical_device, queue_family_index, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
-
     fn get_physical_device_queue_family_data_graph_processing_engine_properties_arm(
         self,
         physical_device: PhysicalDevice,
         queue_family_data_graph_processing_engine_info: PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM,
-        mut queue_family_data_graph_processing_engine_properties: QueueFamilyDataGraphProcessingEnginePropertiesARM,
+        queue_family_data_graph_processing_engine_properties: QueueFamilyDataGraphProcessingEnginePropertiesARM,
     ):
         """See official vulkan docs for details.
 
@@ -9244,8 +8176,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
 
 struct Surface(Copyable):    var _vk_create_surface_ohos: fn(
         instance: Instance,
-        pCreateInfo: Ptr[SurfaceCreateInfoOHOS, ImmutOrigin.external],
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pCreateInfo: Ptr[SurfaceCreateInfoOHOS, MutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
         pSurface: Ptr[SurfaceKHR, MutOrigin.external],
     ) -> Result
 
@@ -9258,8 +8190,8 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         self,
         instance: Instance,
         create_info: SurfaceCreateInfoOHOS,
-        p_allocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
-        mut surface: SurfaceKHR,
+        p_allocator: Ptr[AllocationCallbacks, MutOrigin.external],
+        surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
 

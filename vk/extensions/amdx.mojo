@@ -5,8 +5,8 @@ struct ShaderEnqueue(Copyable):    var _vk_create_execution_graph_pipelines_amdx
         device: Device,
         pipelineCache: PipelineCache,
         createInfoCount: UInt32,
-        pCreateInfos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutOrigin.external],
-        pAllocator: Ptr[AllocationCallbacks, ImmutOrigin.external],
+        pCreateInfos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, MutOrigin.external],
+        pAllocator: Ptr[AllocationCallbacks, MutOrigin.external],
         pPipelines: Ptr[Pipeline, MutOrigin.external],
     ) -> Result
     var _vk_get_execution_graph_pipeline_scratch_size_amdx: fn(
@@ -17,7 +17,7 @@ struct ShaderEnqueue(Copyable):    var _vk_create_execution_graph_pipelines_amdx
     var _vk_get_execution_graph_pipeline_node_index_amdx: fn(
         device: Device,
         executionGraph: Pipeline,
-        pNodeInfo: Ptr[PipelineShaderStageNodeCreateInfoAMDX, ImmutOrigin.external],
+        pNodeInfo: Ptr[PipelineShaderStageNodeCreateInfoAMDX, MutOrigin.external],
         pNodeIndex: Ptr[UInt32, MutOrigin.external],
     ) -> Result
     var _vk_cmd_initialize_graph_scratch_memory_amdx: fn(
@@ -30,13 +30,13 @@ struct ShaderEnqueue(Copyable):    var _vk_create_execution_graph_pipelines_amdx
         commandBuffer: CommandBuffer,
         scratch: DeviceAddress,
         scratchSize: DeviceSize,
-        pCountInfo: Ptr[DispatchGraphCountInfoAMDX, ImmutOrigin.external],
+        pCountInfo: Ptr[DispatchGraphCountInfoAMDX, MutOrigin.external],
     )
     var _vk_cmd_dispatch_graph_indirect_amdx: fn(
         commandBuffer: CommandBuffer,
         scratch: DeviceAddress,
         scratchSize: DeviceSize,
-        pCountInfo: Ptr[DispatchGraphCountInfoAMDX, ImmutOrigin.external],
+        pCountInfo: Ptr[DispatchGraphCountInfoAMDX, MutOrigin.external],
     )
     var _vk_cmd_dispatch_graph_indirect_count_amdx: fn(
         commandBuffer: CommandBuffer,
