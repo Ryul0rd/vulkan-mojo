@@ -1,4 +1,6 @@
 vk.mojopkg
+test.mojo
+
 # pixi environments
 .pixi/*
 !.pixi/config.toml
