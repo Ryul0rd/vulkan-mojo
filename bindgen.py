@@ -1501,7 +1501,6 @@ def emit_generic_function_definition(command: VkCommand, version: Optional[VkVer
             and data_arg.optional
             and data_arg.length == count_arg.name
         )
-    follows_2_call_pattern = False # TODO: REMOVE
     if not follows_2_call_pattern:
         return "".join(parts)
     

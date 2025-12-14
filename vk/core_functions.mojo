@@ -63,6 +63,28 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
             p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn enumerate_instance_extension_properties(
+        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    ) -> ListResult[ExtensionProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
+        """
+        var list = List[ExtensionProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn enumerate_instance_layer_properties(
         self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
     ) -> Result:
@@ -73,6 +95,24 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         return self._v1_0.enumerate_instance_layer_properties(
             Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
+        """
+        var list = List[LayerProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_instance_layer_properties(
+                count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 
 struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
@@ -127,6 +167,28 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
             p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn enumerate_instance_extension_properties(
+        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    ) -> ListResult[ExtensionProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
+        """
+        var list = List[ExtensionProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn enumerate_instance_layer_properties(
         self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
     ) -> Result:
@@ -137,6 +199,24 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         return self._v1_0.enumerate_instance_layer_properties(
             Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
+        """
+        var list = List[LayerProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_instance_layer_properties(
+                count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn enumerate_instance_version(self, mut version: Version) -> Result:
         """See official vulkan docs for details.
@@ -198,6 +278,28 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
             p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn enumerate_instance_extension_properties(
+        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    ) -> ListResult[ExtensionProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
+        """
+        var list = List[ExtensionProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn enumerate_instance_layer_properties(
         self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
     ) -> Result:
@@ -208,6 +310,24 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         return self._v1_0.enumerate_instance_layer_properties(
             Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
+        """
+        var list = List[LayerProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_instance_layer_properties(
+                count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn enumerate_instance_version(self, mut version: Version) -> Result:
         """See official vulkan docs for details.
@@ -269,6 +389,28 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
             p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn enumerate_instance_extension_properties(
+        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    ) -> ListResult[ExtensionProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
+        """
+        var list = List[ExtensionProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn enumerate_instance_layer_properties(
         self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
     ) -> Result:
@@ -279,6 +421,24 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         return self._v1_0.enumerate_instance_layer_properties(
             Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
+        """
+        var list = List[LayerProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_instance_layer_properties(
+                count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn enumerate_instance_version(self, mut version: Version) -> Result:
         """See official vulkan docs for details.
@@ -340,6 +500,28 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
             p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn enumerate_instance_extension_properties(
+        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    ) -> ListResult[ExtensionProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
+        """
+        var list = List[ExtensionProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_extension_properties(
+                p_layer_name, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn enumerate_instance_layer_properties(
         self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
     ) -> Result:
@@ -350,6 +532,24 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         return self._v1_0.enumerate_instance_layer_properties(
             Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
+        """
+        var list = List[LayerProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_instance_layer_properties(
+                count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn enumerate_instance_version(self, mut version: Version) -> Result:
         """See official vulkan docs for details.
@@ -436,6 +636,24 @@ struct InstanceFunctionsV1_0(Movable):
             instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
         )
 
+    fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
+        """
+        var list = List[PhysicalDevice]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_physical_devices(
+                instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_physical_device_features(
         self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures
     ):
@@ -512,6 +730,26 @@ struct InstanceFunctionsV1_0(Movable):
             p_queue_family_properties,
         )
 
+    fn get_physical_device_queue_family_properties(
+        self, physical_device: PhysicalDevice
+    ) -> List[QueueFamilyProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
+        """
+        var list = List[QueueFamilyProperties]()
+        var count: UInt32 = 0
+        self.get_physical_device_queue_family_properties(
+            physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_queue_family_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn get_physical_device_memory_properties(
         self, physical_device: PhysicalDevice, mut memory_properties: PhysicalDeviceMemoryProperties
     ):
@@ -565,6 +803,28 @@ struct InstanceFunctionsV1_0(Movable):
             physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn enumerate_device_extension_properties(
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    ) -> ListResult[ExtensionProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
+        """
+        var list = List[ExtensionProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn enumerate_device_layer_properties(
         self,
         physical_device: PhysicalDevice,
@@ -578,6 +838,28 @@ struct InstanceFunctionsV1_0(Movable):
         return self._v1_0.enumerate_device_layer_properties(
             physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn enumerate_device_layer_properties(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[LayerProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
+        """
+        var list = List[LayerProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_sparse_image_format_properties(
         self,
@@ -604,6 +886,39 @@ struct InstanceFunctionsV1_0(Movable):
             Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
+
+    fn get_physical_device_sparse_image_format_properties(
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        type: ImageType,
+        samples: SampleCountFlagBits,
+        usage: ImageUsageFlags,
+        tiling: ImageTiling,
+    ) -> List[SparseImageFormatProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
+        """
+        var list = List[SparseImageFormatProperties]()
+        var count: UInt32 = 0
+        self.get_physical_device_sparse_image_format_properties(
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            count,
+            Ptr[SparseImageFormatProperties, MutAnyOrigin](),
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_sparse_image_format_properties(
+                physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
 
 
 struct InstanceFunctionsV1_1(Movable):
@@ -637,6 +952,24 @@ struct InstanceFunctionsV1_1(Movable):
             instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
         )
 
+    fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
+        """
+        var list = List[PhysicalDevice]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_physical_devices(
+                instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_physical_device_features(
         self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures
     ):
@@ -713,6 +1046,26 @@ struct InstanceFunctionsV1_1(Movable):
             p_queue_family_properties,
         )
 
+    fn get_physical_device_queue_family_properties(
+        self, physical_device: PhysicalDevice
+    ) -> List[QueueFamilyProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
+        """
+        var list = List[QueueFamilyProperties]()
+        var count: UInt32 = 0
+        self.get_physical_device_queue_family_properties(
+            physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_queue_family_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn get_physical_device_memory_properties(
         self, physical_device: PhysicalDevice, mut memory_properties: PhysicalDeviceMemoryProperties
     ):
@@ -766,6 +1119,28 @@ struct InstanceFunctionsV1_1(Movable):
             physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn enumerate_device_extension_properties(
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    ) -> ListResult[ExtensionProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
+        """
+        var list = List[ExtensionProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn enumerate_device_layer_properties(
         self,
         physical_device: PhysicalDevice,
@@ -779,6 +1154,28 @@ struct InstanceFunctionsV1_1(Movable):
         return self._v1_0.enumerate_device_layer_properties(
             physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn enumerate_device_layer_properties(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[LayerProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
+        """
+        var list = List[LayerProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_sparse_image_format_properties(
         self,
@@ -806,6 +1203,39 @@ struct InstanceFunctionsV1_1(Movable):
             p_properties,
         )
 
+    fn get_physical_device_sparse_image_format_properties(
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        type: ImageType,
+        samples: SampleCountFlagBits,
+        usage: ImageUsageFlags,
+        tiling: ImageTiling,
+    ) -> List[SparseImageFormatProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
+        """
+        var list = List[SparseImageFormatProperties]()
+        var count: UInt32 = 0
+        self.get_physical_device_sparse_image_format_properties(
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            count,
+            Ptr[SparseImageFormatProperties, MutAnyOrigin](),
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_sparse_image_format_properties(
+                physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn enumerate_physical_device_groups(
         self,
         instance: Instance,
@@ -821,6 +1251,26 @@ struct InstanceFunctionsV1_1(Movable):
             Ptr(to=physical_device_group_count).bitcast[UInt32](),
             p_physical_device_group_properties,
         )
+
+    fn enumerate_physical_device_groups(
+        self, instance: Instance
+    ) -> ListResult[PhysicalDeviceGroupProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
+        """
+        var list = List[PhysicalDeviceGroupProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_physical_device_groups(
+                instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_features_2(
         self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures2
@@ -890,6 +1340,26 @@ struct InstanceFunctionsV1_1(Movable):
             p_queue_family_properties,
         )
 
+    fn get_physical_device_queue_family_properties_2(
+        self, physical_device: PhysicalDevice
+    ) -> List[QueueFamilyProperties2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
+        """
+        var list = List[QueueFamilyProperties2]()
+        var count: UInt32 = 0
+        self.get_physical_device_queue_family_properties_2(
+            physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_queue_family_properties_2(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn get_physical_device_memory_properties_2(
         self,
         physical_device: PhysicalDevice,
@@ -920,6 +1390,26 @@ struct InstanceFunctionsV1_1(Movable):
             Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
+
+    fn get_physical_device_sparse_image_format_properties_2(
+        self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
+    ) -> List[SparseImageFormatProperties2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
+        """
+        var list = List[SparseImageFormatProperties2]()
+        var count: UInt32 = 0
+        self.get_physical_device_sparse_image_format_properties_2(
+            physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_sparse_image_format_properties_2(
+                physical_device, format_info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
 
     fn get_physical_device_external_buffer_properties(
         self,
@@ -1001,6 +1491,24 @@ struct InstanceFunctionsV1_2(Movable):
             instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
         )
 
+    fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
+        """
+        var list = List[PhysicalDevice]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_physical_devices(
+                instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_physical_device_features(
         self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures
     ):
@@ -1077,6 +1585,26 @@ struct InstanceFunctionsV1_2(Movable):
             p_queue_family_properties,
         )
 
+    fn get_physical_device_queue_family_properties(
+        self, physical_device: PhysicalDevice
+    ) -> List[QueueFamilyProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
+        """
+        var list = List[QueueFamilyProperties]()
+        var count: UInt32 = 0
+        self.get_physical_device_queue_family_properties(
+            physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_queue_family_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn get_physical_device_memory_properties(
         self, physical_device: PhysicalDevice, mut memory_properties: PhysicalDeviceMemoryProperties
     ):
@@ -1130,6 +1658,28 @@ struct InstanceFunctionsV1_2(Movable):
             physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn enumerate_device_extension_properties(
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    ) -> ListResult[ExtensionProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
+        """
+        var list = List[ExtensionProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn enumerate_device_layer_properties(
         self,
         physical_device: PhysicalDevice,
@@ -1143,6 +1693,28 @@ struct InstanceFunctionsV1_2(Movable):
         return self._v1_0.enumerate_device_layer_properties(
             physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn enumerate_device_layer_properties(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[LayerProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
+        """
+        var list = List[LayerProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_sparse_image_format_properties(
         self,
@@ -1170,6 +1742,39 @@ struct InstanceFunctionsV1_2(Movable):
             p_properties,
         )
 
+    fn get_physical_device_sparse_image_format_properties(
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        type: ImageType,
+        samples: SampleCountFlagBits,
+        usage: ImageUsageFlags,
+        tiling: ImageTiling,
+    ) -> List[SparseImageFormatProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
+        """
+        var list = List[SparseImageFormatProperties]()
+        var count: UInt32 = 0
+        self.get_physical_device_sparse_image_format_properties(
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            count,
+            Ptr[SparseImageFormatProperties, MutAnyOrigin](),
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_sparse_image_format_properties(
+                physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn enumerate_physical_device_groups(
         self,
         instance: Instance,
@@ -1185,6 +1790,26 @@ struct InstanceFunctionsV1_2(Movable):
             Ptr(to=physical_device_group_count).bitcast[UInt32](),
             p_physical_device_group_properties,
         )
+
+    fn enumerate_physical_device_groups(
+        self, instance: Instance
+    ) -> ListResult[PhysicalDeviceGroupProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
+        """
+        var list = List[PhysicalDeviceGroupProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_physical_device_groups(
+                instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_features_2(
         self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures2
@@ -1254,6 +1879,26 @@ struct InstanceFunctionsV1_2(Movable):
             p_queue_family_properties,
         )
 
+    fn get_physical_device_queue_family_properties_2(
+        self, physical_device: PhysicalDevice
+    ) -> List[QueueFamilyProperties2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
+        """
+        var list = List[QueueFamilyProperties2]()
+        var count: UInt32 = 0
+        self.get_physical_device_queue_family_properties_2(
+            physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_queue_family_properties_2(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn get_physical_device_memory_properties_2(
         self,
         physical_device: PhysicalDevice,
@@ -1284,6 +1929,26 @@ struct InstanceFunctionsV1_2(Movable):
             Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
+
+    fn get_physical_device_sparse_image_format_properties_2(
+        self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
+    ) -> List[SparseImageFormatProperties2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
+        """
+        var list = List[SparseImageFormatProperties2]()
+        var count: UInt32 = 0
+        self.get_physical_device_sparse_image_format_properties_2(
+            physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_sparse_image_format_properties_2(
+                physical_device, format_info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
 
     fn get_physical_device_external_buffer_properties(
         self,
@@ -1367,6 +2032,24 @@ struct InstanceFunctionsV1_3(Movable):
             instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
         )
 
+    fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
+        """
+        var list = List[PhysicalDevice]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_physical_devices(
+                instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_physical_device_features(
         self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures
     ):
@@ -1443,6 +2126,26 @@ struct InstanceFunctionsV1_3(Movable):
             p_queue_family_properties,
         )
 
+    fn get_physical_device_queue_family_properties(
+        self, physical_device: PhysicalDevice
+    ) -> List[QueueFamilyProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
+        """
+        var list = List[QueueFamilyProperties]()
+        var count: UInt32 = 0
+        self.get_physical_device_queue_family_properties(
+            physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_queue_family_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn get_physical_device_memory_properties(
         self, physical_device: PhysicalDevice, mut memory_properties: PhysicalDeviceMemoryProperties
     ):
@@ -1496,6 +2199,28 @@ struct InstanceFunctionsV1_3(Movable):
             physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn enumerate_device_extension_properties(
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    ) -> ListResult[ExtensionProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
+        """
+        var list = List[ExtensionProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn enumerate_device_layer_properties(
         self,
         physical_device: PhysicalDevice,
@@ -1509,6 +2234,28 @@ struct InstanceFunctionsV1_3(Movable):
         return self._v1_0.enumerate_device_layer_properties(
             physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn enumerate_device_layer_properties(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[LayerProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
+        """
+        var list = List[LayerProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_sparse_image_format_properties(
         self,
@@ -1536,6 +2283,39 @@ struct InstanceFunctionsV1_3(Movable):
             p_properties,
         )
 
+    fn get_physical_device_sparse_image_format_properties(
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        type: ImageType,
+        samples: SampleCountFlagBits,
+        usage: ImageUsageFlags,
+        tiling: ImageTiling,
+    ) -> List[SparseImageFormatProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
+        """
+        var list = List[SparseImageFormatProperties]()
+        var count: UInt32 = 0
+        self.get_physical_device_sparse_image_format_properties(
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            count,
+            Ptr[SparseImageFormatProperties, MutAnyOrigin](),
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_sparse_image_format_properties(
+                physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn enumerate_physical_device_groups(
         self,
         instance: Instance,
@@ -1551,6 +2331,26 @@ struct InstanceFunctionsV1_3(Movable):
             Ptr(to=physical_device_group_count).bitcast[UInt32](),
             p_physical_device_group_properties,
         )
+
+    fn enumerate_physical_device_groups(
+        self, instance: Instance
+    ) -> ListResult[PhysicalDeviceGroupProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
+        """
+        var list = List[PhysicalDeviceGroupProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_physical_device_groups(
+                instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_features_2(
         self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures2
@@ -1620,6 +2420,26 @@ struct InstanceFunctionsV1_3(Movable):
             p_queue_family_properties,
         )
 
+    fn get_physical_device_queue_family_properties_2(
+        self, physical_device: PhysicalDevice
+    ) -> List[QueueFamilyProperties2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
+        """
+        var list = List[QueueFamilyProperties2]()
+        var count: UInt32 = 0
+        self.get_physical_device_queue_family_properties_2(
+            physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_queue_family_properties_2(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn get_physical_device_memory_properties_2(
         self,
         physical_device: PhysicalDevice,
@@ -1650,6 +2470,26 @@ struct InstanceFunctionsV1_3(Movable):
             Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
+
+    fn get_physical_device_sparse_image_format_properties_2(
+        self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
+    ) -> List[SparseImageFormatProperties2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
+        """
+        var list = List[SparseImageFormatProperties2]()
+        var count: UInt32 = 0
+        self.get_physical_device_sparse_image_format_properties_2(
+            physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_sparse_image_format_properties_2(
+                physical_device, format_info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
 
     fn get_physical_device_external_buffer_properties(
         self,
@@ -1712,6 +2552,28 @@ struct InstanceFunctionsV1_3(Movable):
         return self._v1_3.get_physical_device_tool_properties(
             physical_device, Ptr(to=tool_count).bitcast[UInt32](), p_tool_properties
         )
+
+    fn get_physical_device_tool_properties(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[PhysicalDeviceToolProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
+        """
+        var list = List[PhysicalDeviceToolProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_tool_properties(
+                physical_device, count, Ptr[PhysicalDeviceToolProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_tool_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 
 struct InstanceFunctionsV1_4(Movable):
@@ -1747,6 +2609,24 @@ struct InstanceFunctionsV1_4(Movable):
             instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
         )
 
+    fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
+        """
+        var list = List[PhysicalDevice]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_physical_devices(
+                instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_physical_device_features(
         self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures
     ):
@@ -1823,6 +2703,26 @@ struct InstanceFunctionsV1_4(Movable):
             p_queue_family_properties,
         )
 
+    fn get_physical_device_queue_family_properties(
+        self, physical_device: PhysicalDevice
+    ) -> List[QueueFamilyProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
+        """
+        var list = List[QueueFamilyProperties]()
+        var count: UInt32 = 0
+        self.get_physical_device_queue_family_properties(
+            physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_queue_family_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn get_physical_device_memory_properties(
         self, physical_device: PhysicalDevice, mut memory_properties: PhysicalDeviceMemoryProperties
     ):
@@ -1876,6 +2776,28 @@ struct InstanceFunctionsV1_4(Movable):
             physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn enumerate_device_extension_properties(
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    ) -> ListResult[ExtensionProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
+        """
+        var list = List[ExtensionProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_extension_properties(
+                physical_device, p_layer_name, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn enumerate_device_layer_properties(
         self,
         physical_device: PhysicalDevice,
@@ -1889,6 +2811,28 @@ struct InstanceFunctionsV1_4(Movable):
         return self._v1_0.enumerate_device_layer_properties(
             physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn enumerate_device_layer_properties(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[LayerProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
+        """
+        var list = List[LayerProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_device_layer_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_sparse_image_format_properties(
         self,
@@ -1916,6 +2860,39 @@ struct InstanceFunctionsV1_4(Movable):
             p_properties,
         )
 
+    fn get_physical_device_sparse_image_format_properties(
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        type: ImageType,
+        samples: SampleCountFlagBits,
+        usage: ImageUsageFlags,
+        tiling: ImageTiling,
+    ) -> List[SparseImageFormatProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
+        """
+        var list = List[SparseImageFormatProperties]()
+        var count: UInt32 = 0
+        self.get_physical_device_sparse_image_format_properties(
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            count,
+            Ptr[SparseImageFormatProperties, MutAnyOrigin](),
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_sparse_image_format_properties(
+                physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn enumerate_physical_device_groups(
         self,
         instance: Instance,
@@ -1931,6 +2908,26 @@ struct InstanceFunctionsV1_4(Movable):
             Ptr(to=physical_device_group_count).bitcast[UInt32](),
             p_physical_device_group_properties,
         )
+
+    fn enumerate_physical_device_groups(
+        self, instance: Instance
+    ) -> ListResult[PhysicalDeviceGroupProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
+        """
+        var list = List[PhysicalDeviceGroupProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_physical_device_groups(
+                instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_features_2(
         self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures2
@@ -2000,6 +2997,26 @@ struct InstanceFunctionsV1_4(Movable):
             p_queue_family_properties,
         )
 
+    fn get_physical_device_queue_family_properties_2(
+        self, physical_device: PhysicalDevice
+    ) -> List[QueueFamilyProperties2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
+        """
+        var list = List[QueueFamilyProperties2]()
+        var count: UInt32 = 0
+        self.get_physical_device_queue_family_properties_2(
+            physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_queue_family_properties_2(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn get_physical_device_memory_properties_2(
         self,
         physical_device: PhysicalDevice,
@@ -2030,6 +3047,26 @@ struct InstanceFunctionsV1_4(Movable):
             Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
+
+    fn get_physical_device_sparse_image_format_properties_2(
+        self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
+    ) -> List[SparseImageFormatProperties2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
+        """
+        var list = List[SparseImageFormatProperties2]()
+        var count: UInt32 = 0
+        self.get_physical_device_sparse_image_format_properties_2(
+            physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_sparse_image_format_properties_2(
+                physical_device, format_info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
 
     fn get_physical_device_external_buffer_properties(
         self,
@@ -2092,6 +3129,28 @@ struct InstanceFunctionsV1_4(Movable):
         return self._v1_3.get_physical_device_tool_properties(
             physical_device, Ptr(to=tool_count).bitcast[UInt32](), p_tool_properties
         )
+
+    fn get_physical_device_tool_properties(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[PhysicalDeviceToolProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
+        """
+        var list = List[PhysicalDeviceToolProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_tool_properties(
+                physical_device, count, Ptr[PhysicalDeviceToolProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_tool_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 
 struct InstanceFunctionAdditionsV1_0(Copyable, Movable):
@@ -2514,6 +3573,24 @@ struct DeviceFunctionsV1_0(Movable):
             p_sparse_memory_requirements,
         )
 
+    fn get_image_sparse_memory_requirements(
+        self, device: Device, image: Image
+    ) -> List[SparseImageMemoryRequirements]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
+        """
+        var list = List[SparseImageMemoryRequirements]()
+        var count: UInt32 = 0
+        self.get_image_sparse_memory_requirements(
+            device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
+
     fn queue_bind_sparse(
         self,
         queue: Queue,
@@ -2917,6 +3994,28 @@ struct DeviceFunctionsV1_0(Movable):
         return self._v1_0.get_pipeline_cache_data(
             device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
         )
+
+    fn get_pipeline_cache_data(
+        self, device: Device, pipeline_cache: PipelineCache
+    ) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
+        """
+        var list = List[UInt8]()
+        var count: UInt = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn merge_pipeline_caches(
         self,
@@ -4196,6 +5295,24 @@ struct DeviceFunctionsV1_1(Movable):
             p_sparse_memory_requirements,
         )
 
+    fn get_image_sparse_memory_requirements(
+        self, device: Device, image: Image
+    ) -> List[SparseImageMemoryRequirements]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
+        """
+        var list = List[SparseImageMemoryRequirements]()
+        var count: UInt32 = 0
+        self.get_image_sparse_memory_requirements(
+            device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
+
     fn queue_bind_sparse(
         self,
         queue: Queue,
@@ -4599,6 +5716,28 @@ struct DeviceFunctionsV1_1(Movable):
         return self._v1_0.get_pipeline_cache_data(
             device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
         )
+
+    fn get_pipeline_cache_data(
+        self, device: Device, pipeline_cache: PipelineCache
+    ) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
+        """
+        var list = List[UInt8]()
+        var count: UInt = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn merge_pipeline_caches(
         self,
@@ -5801,6 +6940,24 @@ struct DeviceFunctionsV1_1(Movable):
             Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
+
+    fn get_image_sparse_memory_requirements_2(
+        self, device: Device, info: ImageSparseMemoryRequirementsInfo2
+    ) -> List[SparseImageMemoryRequirements2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
+        """
+        var list = List[SparseImageMemoryRequirements2]()
+        var count: UInt32 = 0
+        self.get_image_sparse_memory_requirements_2(
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
 
     fn trim_command_pool(
         self, device: Device, command_pool: CommandPool, flags: CommandPoolTrimFlags
@@ -6116,6 +7273,24 @@ struct DeviceFunctionsV1_2(Movable):
             p_sparse_memory_requirements,
         )
 
+    fn get_image_sparse_memory_requirements(
+        self, device: Device, image: Image
+    ) -> List[SparseImageMemoryRequirements]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
+        """
+        var list = List[SparseImageMemoryRequirements]()
+        var count: UInt32 = 0
+        self.get_image_sparse_memory_requirements(
+            device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
+
     fn queue_bind_sparse(
         self,
         queue: Queue,
@@ -6519,6 +7694,28 @@ struct DeviceFunctionsV1_2(Movable):
         return self._v1_0.get_pipeline_cache_data(
             device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
         )
+
+    fn get_pipeline_cache_data(
+        self, device: Device, pipeline_cache: PipelineCache
+    ) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
+        """
+        var list = List[UInt8]()
+        var count: UInt = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn merge_pipeline_caches(
         self,
@@ -7721,6 +8918,24 @@ struct DeviceFunctionsV1_2(Movable):
             Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
+
+    fn get_image_sparse_memory_requirements_2(
+        self, device: Device, info: ImageSparseMemoryRequirementsInfo2
+    ) -> List[SparseImageMemoryRequirements2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
+        """
+        var list = List[SparseImageMemoryRequirements2]()
+        var count: UInt32 = 0
+        self.get_image_sparse_memory_requirements_2(
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
 
     fn trim_command_pool(
         self, device: Device, command_pool: CommandPool, flags: CommandPoolTrimFlags
@@ -8220,6 +9435,24 @@ struct DeviceFunctionsV1_3(Movable):
             p_sparse_memory_requirements,
         )
 
+    fn get_image_sparse_memory_requirements(
+        self, device: Device, image: Image
+    ) -> List[SparseImageMemoryRequirements]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
+        """
+        var list = List[SparseImageMemoryRequirements]()
+        var count: UInt32 = 0
+        self.get_image_sparse_memory_requirements(
+            device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
+
     fn queue_bind_sparse(
         self,
         queue: Queue,
@@ -8623,6 +9856,28 @@ struct DeviceFunctionsV1_3(Movable):
         return self._v1_0.get_pipeline_cache_data(
             device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
         )
+
+    fn get_pipeline_cache_data(
+        self, device: Device, pipeline_cache: PipelineCache
+    ) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
+        """
+        var list = List[UInt8]()
+        var count: UInt = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn merge_pipeline_caches(
         self,
@@ -9826,6 +11081,24 @@ struct DeviceFunctionsV1_3(Movable):
             p_sparse_memory_requirements,
         )
 
+    fn get_image_sparse_memory_requirements_2(
+        self, device: Device, info: ImageSparseMemoryRequirementsInfo2
+    ) -> List[SparseImageMemoryRequirements2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
+        """
+        var list = List[SparseImageMemoryRequirements2]()
+        var count: UInt32 = 0
+        self.get_image_sparse_memory_requirements_2(
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
+
     fn trim_command_pool(
         self, device: Device, command_pool: CommandPool, flags: CommandPoolTrimFlags
     ):
@@ -10530,6 +11803,26 @@ struct DeviceFunctionsV1_3(Movable):
             Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
+
+    fn get_device_image_sparse_memory_requirements(
+        self, device: Device, info: DeviceImageMemoryRequirements
+    ) -> List[SparseImageMemoryRequirements2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSparseMemoryRequirements.html
+        """
+        var list = List[SparseImageMemoryRequirements2]()
+        var count: UInt32 = 0
+        self.get_device_image_sparse_memory_requirements(
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_device_image_sparse_memory_requirements(
+                device, info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
 
 
 struct DeviceFunctionsV1_4(Movable):
@@ -10738,6 +12031,24 @@ struct DeviceFunctionsV1_4(Movable):
             p_sparse_memory_requirements,
         )
 
+    fn get_image_sparse_memory_requirements(
+        self, device: Device, image: Image
+    ) -> List[SparseImageMemoryRequirements]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
+        """
+        var list = List[SparseImageMemoryRequirements]()
+        var count: UInt32 = 0
+        self.get_image_sparse_memory_requirements(
+            device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
+
     fn queue_bind_sparse(
         self,
         queue: Queue,
@@ -11141,6 +12452,28 @@ struct DeviceFunctionsV1_4(Movable):
         return self._v1_0.get_pipeline_cache_data(
             device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
         )
+
+    fn get_pipeline_cache_data(
+        self, device: Device, pipeline_cache: PipelineCache
+    ) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
+        """
+        var list = List[UInt8]()
+        var count: UInt = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_cache_data(
+                device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn merge_pipeline_caches(
         self,
@@ -12344,6 +13677,24 @@ struct DeviceFunctionsV1_4(Movable):
             p_sparse_memory_requirements,
         )
 
+    fn get_image_sparse_memory_requirements_2(
+        self, device: Device, info: ImageSparseMemoryRequirementsInfo2
+    ) -> List[SparseImageMemoryRequirements2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
+        """
+        var list = List[SparseImageMemoryRequirements2]()
+        var count: UInt32 = 0
+        self.get_image_sparse_memory_requirements_2(
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
+
     fn trim_command_pool(
         self, device: Device, command_pool: CommandPool, flags: CommandPoolTrimFlags
     ):
@@ -13048,6 +14399,26 @@ struct DeviceFunctionsV1_4(Movable):
             Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
+
+    fn get_device_image_sparse_memory_requirements(
+        self, device: Device, info: DeviceImageMemoryRequirements
+    ) -> List[SparseImageMemoryRequirements2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSparseMemoryRequirements.html
+        """
+        var list = List[SparseImageMemoryRequirements2]()
+        var count: UInt32 = 0
+        self.get_device_image_sparse_memory_requirements(
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_device_image_sparse_memory_requirements(
+                device, info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
 
     fn cmd_set_line_stipple(
         self,

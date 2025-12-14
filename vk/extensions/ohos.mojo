@@ -80,6 +80,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             p_surface_formats,
         )
 
+    fn get_physical_device_surface_formats_khr(
+        self, physical_device: PhysicalDevice, surface: SurfaceKHR
+    ) -> ListResult[SurfaceFormatKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceFormatsKHR.html
+        """
+        var list = List[SurfaceFormatKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_surface_formats_khr(
+                physical_device, surface, count, Ptr[SurfaceFormatKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_surface_formats_khr(
+                physical_device, surface, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_physical_device_surface_present_modes_khr(
         self,
         physical_device: PhysicalDevice,
@@ -94,6 +116,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         return self._get_physical_device_surface_present_modes_khr(
             physical_device, surface, Ptr(to=present_mode_count).bitcast[UInt32](), p_present_modes
         )
+
+    fn get_physical_device_surface_present_modes_khr(
+        self, physical_device: PhysicalDevice, surface: SurfaceKHR
+    ) -> ListResult[PresentModeKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfacePresentModesKHR.html
+        """
+        var list = List[PresentModeKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_surface_present_modes_khr(
+                physical_device, surface, count, Ptr[PresentModeKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_surface_present_modes_khr(
+                physical_device, surface, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.borrow_handle().get_function[
@@ -172,6 +216,26 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             device, swapchain, Ptr(to=swapchain_image_count).bitcast[UInt32](), p_swapchain_images
         )
 
+    fn get_swapchain_images_khr(
+        self, device: Device, swapchain: SwapchainKHR
+    ) -> ListResult[Image]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSwapchainImagesKHR.html
+        """
+        var list = List[Image]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_swapchain_images_khr(
+                device, swapchain, count, Ptr[Image, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_swapchain_images_khr(device, swapchain, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn acquire_next_image_khr(
         self,
         device: Device,
@@ -236,6 +300,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, surface, Ptr(to=rect_count).bitcast[UInt32](), p_rects
         )
 
+    fn get_physical_device_present_rectangles_khr(
+        self, physical_device: PhysicalDevice, surface: SurfaceKHR
+    ) -> ListResult[Rect2D]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDevicePresentRectanglesKHR.html
+        """
+        var list = List[Rect2D]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_present_rectangles_khr(
+                physical_device, surface, count, Ptr[Rect2D, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_present_rectangles_khr(
+                physical_device, surface, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn acquire_next_image_2_khr(
         self, device: Device, acquire_info: AcquireNextImageInfoKHR, mut image_index: UInt32
     ) -> Result:
@@ -289,6 +375,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn get_physical_device_display_properties_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[DisplayPropertiesKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPropertiesKHR.html
+        """
+        var list = List[DisplayPropertiesKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_display_properties_khr(
+                physical_device, count, Ptr[DisplayPropertiesKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_display_properties_khr(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_physical_device_display_plane_properties_khr(
         self,
         physical_device: PhysicalDevice,
@@ -302,6 +410,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         return self._get_physical_device_display_plane_properties_khr(
             physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn get_physical_device_display_plane_properties_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[DisplayPlanePropertiesKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPlanePropertiesKHR.html
+        """
+        var list = List[DisplayPlanePropertiesKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_display_plane_properties_khr(
+                physical_device, count, Ptr[DisplayPlanePropertiesKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_display_plane_properties_khr(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_display_plane_supported_displays_khr(
         self,
@@ -318,6 +448,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, plane_index, Ptr(to=display_count).bitcast[UInt32](), p_displays
         )
 
+    fn get_display_plane_supported_displays_khr(
+        self, physical_device: PhysicalDevice, plane_index: UInt32
+    ) -> ListResult[DisplayKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayPlaneSupportedDisplaysKHR.html
+        """
+        var list = List[DisplayKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_display_plane_supported_displays_khr(
+                physical_device, plane_index, count, Ptr[DisplayKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_display_plane_supported_displays_khr(
+                physical_device, plane_index, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_display_mode_properties_khr(
         self,
         physical_device: PhysicalDevice,
@@ -332,6 +484,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         return self._get_display_mode_properties_khr(
             physical_device, display, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn get_display_mode_properties_khr(
+        self, physical_device: PhysicalDevice, display: DisplayKHR
+    ) -> ListResult[DisplayModePropertiesKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayModePropertiesKHR.html
+        """
+        var list = List[DisplayModePropertiesKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_display_mode_properties_khr(
+                physical_device, display, count, Ptr[DisplayModePropertiesKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_display_mode_properties_khr(
+                physical_device, display, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn create_display_mode_khr(
         self,
@@ -685,6 +859,31 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_video_format_properties,
         )
 
+    fn get_physical_device_video_format_properties_khr(
+        self, physical_device: PhysicalDevice, video_format_info: PhysicalDeviceVideoFormatInfoKHR
+    ) -> ListResult[VideoFormatPropertiesKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceVideoFormatPropertiesKHR.html
+        """
+        var list = List[VideoFormatPropertiesKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_video_format_properties_khr(
+                physical_device,
+                video_format_info,
+                count,
+                Ptr[VideoFormatPropertiesKHR, MutAnyOrigin](),
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_video_format_properties_khr(
+                physical_device, video_format_info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn create_video_session_khr(
         self,
         device: Device,
@@ -732,6 +931,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             Ptr(to=memory_requirements_count).bitcast[UInt32](),
             p_memory_requirements,
         )
+
+    fn get_video_session_memory_requirements_khr(
+        self, device: Device, video_session: VideoSessionKHR
+    ) -> ListResult[VideoSessionMemoryRequirementsKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetVideoSessionMemoryRequirementsKHR.html
+        """
+        var list = List[VideoSessionMemoryRequirementsKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_video_session_memory_requirements_khr(
+                device, video_session, count, Ptr[VideoSessionMemoryRequirementsKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_video_session_memory_requirements_khr(
+                device, video_session, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn bind_video_session_memory_khr(
         self,
@@ -967,6 +1188,26 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             p_queue_family_properties,
         )
 
+    fn get_physical_device_queue_family_properties_2(
+        self, physical_device: PhysicalDevice
+    ) -> List[QueueFamilyProperties2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
+        """
+        var list = List[QueueFamilyProperties2]()
+        var count: UInt32 = 0
+        self.get_physical_device_queue_family_properties_2(
+            physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_queue_family_properties_2(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
     fn get_physical_device_memory_properties_2(
         self,
         physical_device: PhysicalDevice,
@@ -997,6 +1238,26 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
+
+    fn get_physical_device_sparse_image_format_properties_2(
+        self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
+    ) -> List[SparseImageFormatProperties2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
+        """
+        var list = List[SparseImageFormatProperties2]()
+        var count: UInt32 = 0
+        self.get_physical_device_sparse_image_format_properties_2(
+            physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_physical_device_sparse_image_format_properties_2(
+                physical_device, format_info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.borrow_handle().get_function[
@@ -1115,6 +1376,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, surface, Ptr(to=rect_count).bitcast[UInt32](), p_rects
         )
 
+    fn get_physical_device_present_rectangles_khr(
+        self, physical_device: PhysicalDevice, surface: SurfaceKHR
+    ) -> ListResult[Rect2D]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDevicePresentRectanglesKHR.html
+        """
+        var list = List[Rect2D]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_present_rectangles_khr(
+                physical_device, surface, count, Ptr[Rect2D, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_present_rectangles_khr(
+                physical_device, surface, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn acquire_next_image_2_khr(
         self, device: Device, acquire_info: AcquireNextImageInfoKHR, mut image_index: UInt32
     ) -> Result:
@@ -1168,6 +1451,26 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             Ptr(to=physical_device_group_count).bitcast[UInt32](),
             p_physical_device_group_properties,
         )
+
+    fn enumerate_physical_device_groups(
+        self, instance: Instance
+    ) -> ListResult[PhysicalDeviceGroupProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
+        """
+        var list = List[PhysicalDeviceGroupProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.enumerate_physical_device_groups(
+                instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.borrow_handle().get_function[
@@ -1811,6 +2114,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             p_surface_formats,
         )
 
+    fn get_physical_device_surface_formats_2_khr(
+        self, physical_device: PhysicalDevice, surface_info: PhysicalDeviceSurfaceInfo2KHR
+    ) -> ListResult[SurfaceFormat2KHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceFormats2KHR.html
+        """
+        var list = List[SurfaceFormat2KHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_surface_formats_2_khr(
+                physical_device, surface_info, count, Ptr[SurfaceFormat2KHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_surface_formats_2_khr(
+                physical_device, surface_info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.borrow_handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
@@ -1842,6 +2167,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
             physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn get_physical_device_display_properties_2_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[DisplayProperties2KHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayProperties2KHR.html
+        """
+        var list = List[DisplayProperties2KHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_display_properties_2_khr(
+                physical_device, count, Ptr[DisplayProperties2KHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_display_properties_2_khr(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_physical_device_display_plane_properties_2_khr(
         self,
         physical_device: PhysicalDevice,
@@ -1855,6 +2202,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         return self._get_physical_device_display_plane_properties_2_khr(
             physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn get_physical_device_display_plane_properties_2_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[DisplayPlaneProperties2KHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPlaneProperties2KHR.html
+        """
+        var list = List[DisplayPlaneProperties2KHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_display_plane_properties_2_khr(
+                physical_device, count, Ptr[DisplayPlaneProperties2KHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_display_plane_properties_2_khr(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_display_mode_properties_2_khr(
         self,
@@ -1870,6 +2239,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
         return self._get_display_mode_properties_2_khr(
             physical_device, display, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn get_display_mode_properties_2_khr(
+        self, physical_device: PhysicalDevice, display: DisplayKHR
+    ) -> ListResult[DisplayModeProperties2KHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayModeProperties2KHR.html
+        """
+        var list = List[DisplayModeProperties2KHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_display_mode_properties_2_khr(
+                physical_device, display, count, Ptr[DisplayModeProperties2KHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_display_mode_properties_2_khr(
+                physical_device, display, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_display_plane_capabilities_2_khr(
         self,
@@ -1950,6 +2341,24 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
+
+    fn get_image_sparse_memory_requirements_2(
+        self, device: Device, info: ImageSparseMemoryRequirementsInfo2
+    ) -> List[SparseImageMemoryRequirements2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
+        """
+        var list = List[SparseImageMemoryRequirements2]()
+        var count: UInt32 = 0
+        self.get_image_sparse_memory_requirements_2(
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.borrow_handle().get_function[
@@ -2644,6 +3053,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_fragment_shading_rates,
         )
 
+    fn get_physical_device_fragment_shading_rates_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[PhysicalDeviceFragmentShadingRateKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFragmentShadingRatesKHR.html
+        """
+        var list = List[PhysicalDeviceFragmentShadingRateKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_fragment_shading_rates_khr(
+                physical_device, count, Ptr[PhysicalDeviceFragmentShadingRateKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_fragment_shading_rates_khr(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn cmd_set_fragment_shading_rate_khr(
         self,
         command_buffer: CommandBuffer,
@@ -2863,6 +3294,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_properties,
         )
 
+    fn get_pipeline_executable_properties_khr(
+        self, device: Device, pipeline_info: PipelineInfoKHR
+    ) -> ListResult[PipelineExecutablePropertiesKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutablePropertiesKHR.html
+        """
+        var list = List[PipelineExecutablePropertiesKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_pipeline_executable_properties_khr(
+                device, pipeline_info, count, Ptr[PipelineExecutablePropertiesKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_executable_properties_khr(
+                device, pipeline_info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_pipeline_executable_statistics_khr(
         self,
         device: Device,
@@ -2881,6 +3334,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_statistics,
         )
 
+    fn get_pipeline_executable_statistics_khr(
+        self, device: Device, executable_info: PipelineExecutableInfoKHR
+    ) -> ListResult[PipelineExecutableStatisticKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutableStatisticsKHR.html
+        """
+        var list = List[PipelineExecutableStatisticKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_pipeline_executable_statistics_khr(
+                device, executable_info, count, Ptr[PipelineExecutableStatisticKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_executable_statistics_khr(
+                device, executable_info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_pipeline_executable_internal_representations_khr(
         self,
         device: Device,
@@ -2898,6 +3373,31 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             Ptr(to=internal_representation_count).bitcast[UInt32](),
             p_internal_representations,
         )
+
+    fn get_pipeline_executable_internal_representations_khr(
+        self, device: Device, executable_info: PipelineExecutableInfoKHR
+    ) -> ListResult[PipelineExecutableInternalRepresentationKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutableInternalRepresentationsKHR.html
+        """
+        var list = List[PipelineExecutableInternalRepresentationKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_pipeline_executable_internal_representations_khr(
+                device,
+                executable_info,
+                count,
+                Ptr[PipelineExecutableInternalRepresentationKHR, MutAnyOrigin](),
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_executable_internal_representations_khr(
+                device, executable_info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.borrow_handle().get_function[
@@ -2980,6 +3480,39 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             Ptr(to=data_size).bitcast[UInt](),
             p_data,
         )
+
+    fn get_encoded_video_session_parameters_khr(
+        self,
+        device: Device,
+        video_session_parameters_info: VideoEncodeSessionParametersGetInfoKHR,
+        p_feedback_info: Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutAnyOrigin],
+    ) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetEncodedVideoSessionParametersKHR.html
+        """
+        var list = List[UInt8]()
+        var count: UInt = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_encoded_video_session_parameters_khr(
+                device,
+                video_session_parameters_info,
+                p_feedback_info,
+                count,
+                Ptr[NoneType, MutAnyOrigin](),
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_encoded_video_session_parameters_khr(
+                device,
+                video_session_parameters_info,
+                p_feedback_info,
+                count,
+                list.unsafe_ptr().bitcast[NoneType](),
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn cmd_encode_video_khr(self, command_buffer: CommandBuffer, encode_info: VideoEncodeInfoKHR):
         """See official vulkan docs for details.
@@ -3247,6 +3780,26 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_sparse_memory_requirements,
         )
 
+    fn get_device_image_sparse_memory_requirements(
+        self, device: Device, info: DeviceImageMemoryRequirements
+    ) -> List[SparseImageMemoryRequirements2]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSparseMemoryRequirements.html
+        """
+        var list = List[SparseImageMemoryRequirements2]()
+        var count: UInt32 = 0
+        self.get_device_image_sparse_memory_requirements(
+            device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
+        )
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_device_image_sparse_memory_requirements(
+                device, info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return list^
+
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.borrow_handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
@@ -3425,6 +3978,31 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_pipeline_binary_data,
         )
 
+    fn get_pipeline_binary_data_khr(
+        self,
+        device: Device,
+        info: PipelineBinaryDataInfoKHR,
+        mut pipeline_binary_key: PipelineBinaryKeyKHR,
+    ) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineBinaryDataKHR.html
+        """
+        var list = List[UInt8]()
+        var count: UInt = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_pipeline_binary_data_khr(
+                device, info, pipeline_binary_key, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_pipeline_binary_data_khr(
+                device, info, pipeline_binary_key, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn release_captured_pipeline_data_khr(
         self,
         device: Device,
@@ -3480,6 +4058,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn get_physical_device_cooperative_matrix_properties_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[CooperativeMatrixPropertiesKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR.html
+        """
+        var list = List[CooperativeMatrixPropertiesKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_cooperative_matrix_properties_khr(
+                physical_device, count, Ptr[CooperativeMatrixPropertiesKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_cooperative_matrix_properties_khr(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.borrow_handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
@@ -3526,6 +4126,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_physical_device_calibrateable_time_domains_khr(
             physical_device, Ptr(to=time_domain_count).bitcast[UInt32](), p_time_domains
         )
+
+    fn get_physical_device_calibrateable_time_domains_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[TimeDomainKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCalibrateableTimeDomainsKHR.html
+        """
+        var list = List[TimeDomainKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_calibrateable_time_domains_khr(
+                physical_device, count, Ptr[TimeDomainKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_calibrateable_time_domains_khr(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_calibrated_timestamps_khr(
         self,
@@ -4460,6 +5082,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             device, validation_cache, Ptr(to=data_size).bitcast[UInt](), p_data
         )
 
+    fn get_validation_cache_data_ext(
+        self, device: Device, validation_cache: ValidationCacheEXT
+    ) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetValidationCacheDataEXT.html
+        """
+        var list = List[UInt8]()
+        var count: UInt = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_validation_cache_data_ext(
+                device, validation_cache, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_validation_cache_data_ext(
+                device, validation_cache, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.borrow_handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
@@ -4510,6 +5154,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_physical_device_calibrateable_time_domains_khr(
             physical_device, Ptr(to=time_domain_count).bitcast[UInt32](), p_time_domains
         )
+
+    fn get_physical_device_calibrateable_time_domains_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[TimeDomainKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCalibrateableTimeDomainsKHR.html
+        """
+        var list = List[TimeDomainKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_calibrateable_time_domains_khr(
+                physical_device, count, Ptr[TimeDomainKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_calibrateable_time_domains_khr(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_calibrated_timestamps_khr(
         self,
@@ -4598,6 +5264,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, Ptr(to=tool_count).bitcast[UInt32](), p_tool_properties
         )
 
+    fn get_physical_device_tool_properties(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[PhysicalDeviceToolProperties]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
+        """
+        var list = List[PhysicalDeviceToolProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_tool_properties(
+                physical_device, count, Ptr[PhysicalDeviceToolProperties, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_tool_properties(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.borrow_handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
@@ -4632,6 +5320,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             Ptr(to=present_mode_count).bitcast[UInt32](),
             p_present_modes,
         )
+
+    fn get_physical_device_surface_present_modes_2_ext(
+        self, physical_device: PhysicalDevice, surface_info: PhysicalDeviceSurfaceInfo2KHR
+    ) -> ListResult[PresentModeKHR]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfacePresentModes2EXT.html
+        """
+        var list = List[PresentModeKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_surface_present_modes_2_ext(
+                physical_device, surface_info, count, Ptr[PresentModeKHR, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_surface_present_modes_2_ext(
+                physical_device, surface_info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn acquire_full_screen_exclusive_mode_ext(
         self, device: Device, swapchain: SwapchainKHR
@@ -6619,6 +7329,26 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             device, shader, Ptr(to=data_size).bitcast[UInt](), p_data
         )
 
+    fn get_shader_binary_data_ext(self, device: Device, shader: ShaderEXT) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderBinaryDataEXT.html
+        """
+        var list = List[UInt8]()
+        var count: UInt = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_shader_binary_data_ext(
+                device, shader, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_shader_binary_data_ext(
+                device, shader, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn cmd_bind_shaders_ext(
         self,
         command_buffer: CommandBuffer,
@@ -7650,6 +8380,37 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             device, pipeline, shader_stage, info_type, Ptr(to=info_size).bitcast[UInt](), p_info
         )
 
+    fn get_shader_info_amd(
+        self,
+        device: Device,
+        pipeline: Pipeline,
+        shader_stage: ShaderStageFlagBits,
+        info_type: ShaderInfoTypeAMD,
+    ) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderInfoAMD.html
+        """
+        var list = List[UInt8]()
+        var count: UInt = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_shader_info_amd(
+                device, pipeline, shader_stage, info_type, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_shader_info_amd(
+                device,
+                pipeline,
+                shader_stage,
+                info_type,
+                count,
+                list.unsafe_ptr().bitcast[NoneType](),
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.borrow_handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
@@ -8286,6 +9047,20 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             queue, Ptr(to=checkpoint_data_count).bitcast[UInt32](), p_checkpoint_data
         )
 
+    fn get_queue_checkpoint_data_nv(self, queue: Queue) -> List[CheckpointDataNV]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointDataNV.html
+        """
+        var list = List[CheckpointDataNV]()
+        var count: UInt32 = 0
+        self.get_queue_checkpoint_data_nv(queue, count, Ptr[CheckpointDataNV, MutAnyOrigin]())
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_queue_checkpoint_data_nv(queue, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
+
     fn get_queue_checkpoint_data_2_nv(
         self,
         queue: Queue,
@@ -8299,6 +9074,20 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_queue_checkpoint_data_2_nv(
             queue, Ptr(to=checkpoint_data_count).bitcast[UInt32](), p_checkpoint_data
         )
+
+    fn get_queue_checkpoint_data_2_nv(self, queue: Queue) -> List[CheckpointData2NV]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointData2NV.html
+        """
+        var list = List[CheckpointData2NV]()
+        var count: UInt32 = 0
+        self.get_queue_checkpoint_data_2_nv(queue, count, Ptr[CheckpointData2NV, MutAnyOrigin]())
+        if count > 0:
+            list.reserve(Int(count))
+            self.get_queue_checkpoint_data_2_nv(queue, count, list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.borrow_handle().get_function[
@@ -8322,6 +9111,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn get_physical_device_cooperative_matrix_properties_nv(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[CooperativeMatrixPropertiesNV]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixPropertiesNV.html
+        """
+        var list = List[CooperativeMatrixPropertiesNV]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_cooperative_matrix_properties_nv(
+                physical_device, count, Ptr[CooperativeMatrixPropertiesNV, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_cooperative_matrix_properties_nv(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.borrow_handle().get_function[
         fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
@@ -8343,6 +9154,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
             physical_device, Ptr(to=combination_count).bitcast[UInt32](), p_combinations
         )
+
+    fn get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[FramebufferMixedSamplesCombinationNV]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV.html
+        """
+        var list = List[FramebufferMixedSamplesCombinationNV]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
+                physical_device, count, Ptr[FramebufferMixedSamplesCombinationNV, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
     var get_device_proc_addr = global_fns.borrow_handle().get_function[
@@ -8512,6 +9345,26 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_cuda_module_cache_nv(
             device, module, Ptr(to=cache_size).bitcast[UInt](), p_cache_data
         )
+
+    fn get_cuda_module_cache_nv(self, device: Device, module: CudaModuleNV) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetCudaModuleCacheNV.html
+        """
+        var list = List[UInt8]()
+        var count: UInt = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_cuda_module_cache_nv(
+                device, module, count, Ptr[NoneType, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_cuda_module_cache_nv(
+                device, module, count, list.unsafe_ptr().bitcast[NoneType]()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn create_cuda_function_nv(
         self,
@@ -8826,6 +9679,33 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_image_format_properties,
         )
 
+    fn get_physical_device_optical_flow_image_formats_nv(
+        self,
+        physical_device: PhysicalDevice,
+        optical_flow_image_format_info: OpticalFlowImageFormatInfoNV,
+    ) -> ListResult[OpticalFlowImageFormatPropertiesNV]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceOpticalFlowImageFormatsNV.html
+        """
+        var list = List[OpticalFlowImageFormatPropertiesNV]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_optical_flow_image_formats_nv(
+                physical_device,
+                optical_flow_image_format_info,
+                count,
+                Ptr[OpticalFlowImageFormatPropertiesNV, MutAnyOrigin](),
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_optical_flow_image_formats_nv(
+                physical_device, optical_flow_image_format_info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn create_optical_flow_session_nv(
         self,
         device: Device,
@@ -8913,6 +9793,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
         return self._get_physical_device_cooperative_vector_properties_nv(
             physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
+
+    fn get_physical_device_cooperative_vector_properties_nv(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[CooperativeVectorPropertiesNV]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeVectorPropertiesNV.html
+        """
+        var list = List[CooperativeVectorPropertiesNV]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_cooperative_vector_properties_nv(
+                physical_device, count, Ptr[CooperativeVectorPropertiesNV, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_cooperative_vector_properties_nv(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn convert_cooperative_vector_matrix_nv(
         self, device: Device, info: ConvertCooperativeVectorMatrixInfoNV
@@ -9175,6 +10077,30 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
+    fn get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[CooperativeMatrixFlexibleDimensionsPropertiesNV]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV.html
+        """
+        var list = List[CooperativeMatrixFlexibleDimensionsPropertiesNV]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
+                physical_device,
+                count,
+                Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutAnyOrigin](),
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
+                physical_device, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.borrow_handle().get_function[
         fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
@@ -9245,6 +10171,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             Ptr(to=presentation_timing_count).bitcast[UInt32](),
             p_presentation_timings,
         )
+
+    fn get_past_presentation_timing_google(
+        self, device: Device, swapchain: SwapchainKHR
+    ) -> ListResult[PastPresentationTimingGOOGLE]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPastPresentationTimingGOOGLE.html
+        """
+        var list = List[PastPresentationTimingGOOGLE]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_past_presentation_timing_google(
+                device, swapchain, count, Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_past_presentation_timing_google(
+                device, swapchain, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
     var get_instance_proc_addr = global_fns.borrow_handle().get_function[
@@ -9894,6 +10842,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             device, framebuffer, Ptr(to=properties_count).bitcast[UInt32](), p_properties
         )
 
+    fn get_framebuffer_tile_properties_qcom(
+        self, device: Device, framebuffer: Framebuffer
+    ) -> ListResult[TilePropertiesQCOM]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFramebufferTilePropertiesQCOM.html
+        """
+        var list = List[TilePropertiesQCOM]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_framebuffer_tile_properties_qcom(
+                device, framebuffer, count, Ptr[TilePropertiesQCOM, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_framebuffer_tile_properties_qcom(
+                device, framebuffer, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_dynamic_rendering_tile_properties_qcom(
         self, device: Device, rendering_info: RenderingInfo, mut properties: TilePropertiesQCOM
     ) -> Result:
@@ -10407,6 +11377,31 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_bind_point_requirements,
         )
 
+    fn get_data_graph_pipeline_session_bind_point_requirements_arm(
+        self, device: Device, info: DataGraphPipelineSessionBindPointRequirementsInfoARM
+    ) -> ListResult[DataGraphPipelineSessionBindPointRequirementARM]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineSessionBindPointRequirementsARM.html
+        """
+        var list = List[DataGraphPipelineSessionBindPointRequirementARM]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_data_graph_pipeline_session_bind_point_requirements_arm(
+                device,
+                info,
+                count,
+                Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutAnyOrigin](),
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_data_graph_pipeline_session_bind_point_requirements_arm(
+                device, info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_data_graph_pipeline_session_memory_requirements_arm(
         self,
         device: Device,
@@ -10479,6 +11474,28 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             p_properties,
         )
 
+    fn get_data_graph_pipeline_available_properties_arm(
+        self, device: Device, pipeline_info: DataGraphPipelineInfoARM
+    ) -> ListResult[DataGraphPipelinePropertyARM]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineAvailablePropertiesARM.html
+        """
+        var list = List[DataGraphPipelinePropertyARM]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_data_graph_pipeline_available_properties_arm(
+                device, pipeline_info, count, Ptr[DataGraphPipelinePropertyARM, MutAnyOrigin]()
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_data_graph_pipeline_available_properties_arm(
+                device, pipeline_info, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
+
     fn get_data_graph_pipeline_properties_arm(
         self,
         device: Device,
@@ -10514,6 +11531,31 @@ fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
             Ptr(to=queue_family_data_graph_property_count).bitcast[UInt32](),
             p_queue_family_data_graph_properties,
         )
+
+    fn get_physical_device_queue_family_data_graph_properties_arm(
+        self, physical_device: PhysicalDevice, queue_family_index: UInt32
+    ) -> ListResult[QueueFamilyDataGraphPropertiesARM]:
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyDataGraphPropertiesARM.html
+        """
+        var list = List[QueueFamilyDataGraphPropertiesARM]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self.get_physical_device_queue_family_data_graph_properties_arm(
+                physical_device,
+                queue_family_index,
+                count,
+                Ptr[QueueFamilyDataGraphPropertiesARM, MutAnyOrigin](),
+            )
+        if result == Result.SUCCESS and count > 0:
+            list.reserve(Int(count))
+            result = self.get_physical_device_queue_family_data_graph_properties_arm(
+                physical_device, queue_family_index, count, list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_queue_family_data_graph_processing_engine_properties_arm(
         self,
