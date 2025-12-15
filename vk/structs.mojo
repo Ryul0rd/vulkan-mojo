@@ -4788,19 +4788,36 @@ struct RayTracingPipelineClusterAccelerationStructureCreateInfoNV(Copyable):
 
 
 struct ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV(Copyable):
-    var geometry_index: uint32_t:24
-    var reserved: uint32_t:5
-    var geometry_flags: uint32_t:3
+    var _packed0: UInt32
 
     fn __init__(
         out self,
-        geometry_index: uint32_t:24 = zero_init[uint32_t:24](),
-        reserved: uint32_t:5 = zero_init[uint32_t:5](),
-        geometry_flags: uint32_t:3 = zero_init[uint32_t:3](),
+        geometry_index: UInt32 = zero_init[UInt32](),
+        reserved: UInt32 = zero_init[UInt32](),
+        geometry_flags: UInt32 = zero_init[UInt32](),
     ):
-        self.geometry_index = geometry_index
-        self.reserved = reserved
-        self.geometry_flags = geometry_flags
+        self._packed0 = 0
+        self.set_geometry_index(geometry_index)
+        self.set_reserved(reserved)
+        self.set_geometry_flags(geometry_flags)
+
+    fn get_geometry_index(self) -> UInt32:
+        return get_packed_value[width=24, offset=0](self._packed0)
+
+    fn set_geometry_index(mut self, new_value: UInt32):
+        set_packed_value[width=24, offset=0](self._packed0, new_value)
+
+    fn get_reserved(self) -> UInt32:
+        return get_packed_value[width=5, offset=24](self._packed0)
+
+    fn set_reserved(mut self, new_value: UInt32):
+        set_packed_value[width=5, offset=24](self._packed0, new_value)
+
+    fn get_geometry_flags(self) -> UInt32:
+        return get_packed_value[width=3, offset=29](self._packed0)
+
+    fn set_geometry_flags(mut self, new_value: UInt32):
+        set_packed_value[width=3, offset=29](self._packed0, new_value)
 
 
 struct ClusterAccelerationStructureMoveObjectsInfoNV(Copyable):
@@ -4836,11 +4853,7 @@ struct ClusterAccelerationStructureGetTemplateIndicesInfoNV(Copyable):
 struct ClusterAccelerationStructureBuildTriangleClusterInfoNV(Copyable):
     var cluster_id: UInt32
     var cluster_flags: ClusterAccelerationStructureClusterFlagsNV
-    var triangle_count: uint32_t:9
-    var vertex_count: uint32_t:9
-    var position_truncate_bit_count: uint32_t:6
-    var index_type: uint32_t:4
-    var opacity_micromap_index_type: uint32_t:4
+    var _packed0: UInt32
     var base_geometry_index_and_geometry_flags: ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV
     var index_buffer_stride: UInt16
     var vertex_buffer_stride: UInt16
@@ -4856,11 +4869,11 @@ struct ClusterAccelerationStructureBuildTriangleClusterInfoNV(Copyable):
         out self,
         cluster_id: UInt32 = zero_init[UInt32](),
         cluster_flags: ClusterAccelerationStructureClusterFlagsNV = zero_init[ClusterAccelerationStructureClusterFlagsNV](),
-        triangle_count: uint32_t:9 = zero_init[uint32_t:9](),
-        vertex_count: uint32_t:9 = zero_init[uint32_t:9](),
-        position_truncate_bit_count: uint32_t:6 = zero_init[uint32_t:6](),
-        index_type: uint32_t:4 = zero_init[uint32_t:4](),
-        opacity_micromap_index_type: uint32_t:4 = zero_init[uint32_t:4](),
+        triangle_count: UInt32 = zero_init[UInt32](),
+        vertex_count: UInt32 = zero_init[UInt32](),
+        position_truncate_bit_count: UInt32 = zero_init[UInt32](),
+        index_type: UInt32 = zero_init[UInt32](),
+        opacity_micromap_index_type: UInt32 = zero_init[UInt32](),
         var base_geometry_index_and_geometry_flags: ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV = zero_init[ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV](),
         index_buffer_stride: UInt16 = zero_init[UInt16](),
         vertex_buffer_stride: UInt16 = zero_init[UInt16](),
@@ -4874,11 +4887,12 @@ struct ClusterAccelerationStructureBuildTriangleClusterInfoNV(Copyable):
     ):
         self.cluster_id = cluster_id
         self.cluster_flags = cluster_flags
-        self.triangle_count = triangle_count
-        self.vertex_count = vertex_count
-        self.position_truncate_bit_count = position_truncate_bit_count
-        self.index_type = index_type
-        self.opacity_micromap_index_type = opacity_micromap_index_type
+        self._packed0 = 0
+        self.set_triangle_count(triangle_count)
+        self.set_vertex_count(vertex_count)
+        self.set_position_truncate_bit_count(position_truncate_bit_count)
+        self.set_index_type(index_type)
+        self.set_opacity_micromap_index_type(opacity_micromap_index_type)
         self.base_geometry_index_and_geometry_flags = base_geometry_index_and_geometry_flags^
         self.index_buffer_stride = index_buffer_stride
         self.vertex_buffer_stride = vertex_buffer_stride
@@ -4890,15 +4904,41 @@ struct ClusterAccelerationStructureBuildTriangleClusterInfoNV(Copyable):
         self.opacity_micromap_array = opacity_micromap_array
         self.opacity_micromap_index_buffer = opacity_micromap_index_buffer
 
+    fn get_triangle_count(self) -> UInt32:
+        return get_packed_value[width=9, offset=0](self._packed0)
+
+    fn set_triangle_count(mut self, new_value: UInt32):
+        set_packed_value[width=9, offset=0](self._packed0, new_value)
+
+    fn get_vertex_count(self) -> UInt32:
+        return get_packed_value[width=9, offset=9](self._packed0)
+
+    fn set_vertex_count(mut self, new_value: UInt32):
+        set_packed_value[width=9, offset=9](self._packed0, new_value)
+
+    fn get_position_truncate_bit_count(self) -> UInt32:
+        return get_packed_value[width=6, offset=18](self._packed0)
+
+    fn set_position_truncate_bit_count(mut self, new_value: UInt32):
+        set_packed_value[width=6, offset=18](self._packed0, new_value)
+
+    fn get_index_type(self) -> UInt32:
+        return get_packed_value[width=4, offset=24](self._packed0)
+
+    fn set_index_type(mut self, new_value: UInt32):
+        set_packed_value[width=4, offset=24](self._packed0, new_value)
+
+    fn get_opacity_micromap_index_type(self) -> UInt32:
+        return get_packed_value[width=4, offset=28](self._packed0)
+
+    fn set_opacity_micromap_index_type(mut self, new_value: UInt32):
+        set_packed_value[width=4, offset=28](self._packed0, new_value)
+
 
 struct ClusterAccelerationStructureBuildTriangleClusterTemplateInfoNV(Copyable):
     var cluster_id: UInt32
     var cluster_flags: ClusterAccelerationStructureClusterFlagsNV
-    var triangle_count: uint32_t:9
-    var vertex_count: uint32_t:9
-    var position_truncate_bit_count: uint32_t:6
-    var index_type: uint32_t:4
-    var opacity_micromap_index_type: uint32_t:4
+    var _packed0: UInt32
     var base_geometry_index_and_geometry_flags: ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV
     var index_buffer_stride: UInt16
     var vertex_buffer_stride: UInt16
@@ -4915,11 +4955,11 @@ struct ClusterAccelerationStructureBuildTriangleClusterTemplateInfoNV(Copyable):
         out self,
         cluster_id: UInt32 = zero_init[UInt32](),
         cluster_flags: ClusterAccelerationStructureClusterFlagsNV = zero_init[ClusterAccelerationStructureClusterFlagsNV](),
-        triangle_count: uint32_t:9 = zero_init[uint32_t:9](),
-        vertex_count: uint32_t:9 = zero_init[uint32_t:9](),
-        position_truncate_bit_count: uint32_t:6 = zero_init[uint32_t:6](),
-        index_type: uint32_t:4 = zero_init[uint32_t:4](),
-        opacity_micromap_index_type: uint32_t:4 = zero_init[uint32_t:4](),
+        triangle_count: UInt32 = zero_init[UInt32](),
+        vertex_count: UInt32 = zero_init[UInt32](),
+        position_truncate_bit_count: UInt32 = zero_init[UInt32](),
+        index_type: UInt32 = zero_init[UInt32](),
+        opacity_micromap_index_type: UInt32 = zero_init[UInt32](),
         var base_geometry_index_and_geometry_flags: ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV = zero_init[ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV](),
         index_buffer_stride: UInt16 = zero_init[UInt16](),
         vertex_buffer_stride: UInt16 = zero_init[UInt16](),
@@ -4934,11 +4974,12 @@ struct ClusterAccelerationStructureBuildTriangleClusterTemplateInfoNV(Copyable):
     ):
         self.cluster_id = cluster_id
         self.cluster_flags = cluster_flags
-        self.triangle_count = triangle_count
-        self.vertex_count = vertex_count
-        self.position_truncate_bit_count = position_truncate_bit_count
-        self.index_type = index_type
-        self.opacity_micromap_index_type = opacity_micromap_index_type
+        self._packed0 = 0
+        self.set_triangle_count(triangle_count)
+        self.set_vertex_count(vertex_count)
+        self.set_position_truncate_bit_count(position_truncate_bit_count)
+        self.set_index_type(index_type)
+        self.set_opacity_micromap_index_type(opacity_micromap_index_type)
         self.base_geometry_index_and_geometry_flags = base_geometry_index_and_geometry_flags^
         self.index_buffer_stride = index_buffer_stride
         self.vertex_buffer_stride = vertex_buffer_stride
@@ -4951,27 +4992,69 @@ struct ClusterAccelerationStructureBuildTriangleClusterTemplateInfoNV(Copyable):
         self.opacity_micromap_index_buffer = opacity_micromap_index_buffer
         self.instantiation_bounding_box_limit = instantiation_bounding_box_limit
 
+    fn get_triangle_count(self) -> UInt32:
+        return get_packed_value[width=9, offset=0](self._packed0)
+
+    fn set_triangle_count(mut self, new_value: UInt32):
+        set_packed_value[width=9, offset=0](self._packed0, new_value)
+
+    fn get_vertex_count(self) -> UInt32:
+        return get_packed_value[width=9, offset=9](self._packed0)
+
+    fn set_vertex_count(mut self, new_value: UInt32):
+        set_packed_value[width=9, offset=9](self._packed0, new_value)
+
+    fn get_position_truncate_bit_count(self) -> UInt32:
+        return get_packed_value[width=6, offset=18](self._packed0)
+
+    fn set_position_truncate_bit_count(mut self, new_value: UInt32):
+        set_packed_value[width=6, offset=18](self._packed0, new_value)
+
+    fn get_index_type(self) -> UInt32:
+        return get_packed_value[width=4, offset=24](self._packed0)
+
+    fn set_index_type(mut self, new_value: UInt32):
+        set_packed_value[width=4, offset=24](self._packed0, new_value)
+
+    fn get_opacity_micromap_index_type(self) -> UInt32:
+        return get_packed_value[width=4, offset=28](self._packed0)
+
+    fn set_opacity_micromap_index_type(mut self, new_value: UInt32):
+        set_packed_value[width=4, offset=28](self._packed0, new_value)
+
 
 struct ClusterAccelerationStructureInstantiateClusterInfoNV(Copyable):
     var cluster_id_offset: UInt32
-    var geometry_index_offset: uint32_t:24
-    var reserved: uint32_t:8
+    var _packed0: UInt32
     var cluster_template_address: DeviceAddress
     var vertex_buffer: StridedDeviceAddressNV
 
     fn __init__(
         out self,
         cluster_id_offset: UInt32 = zero_init[UInt32](),
-        geometry_index_offset: uint32_t:24 = zero_init[uint32_t:24](),
-        reserved: uint32_t:8 = zero_init[uint32_t:8](),
+        geometry_index_offset: UInt32 = zero_init[UInt32](),
+        reserved: UInt32 = zero_init[UInt32](),
         cluster_template_address: DeviceAddress = zero_init[DeviceAddress](),
         var vertex_buffer: StridedDeviceAddressNV = zero_init[StridedDeviceAddressNV](),
     ):
         self.cluster_id_offset = cluster_id_offset
-        self.geometry_index_offset = geometry_index_offset
-        self.reserved = reserved
+        self._packed0 = 0
+        self.set_geometry_index_offset(geometry_index_offset)
+        self.set_reserved(reserved)
         self.cluster_template_address = cluster_template_address
         self.vertex_buffer = vertex_buffer^
+
+    fn get_geometry_index_offset(self) -> UInt32:
+        return get_packed_value[width=24, offset=0](self._packed0)
+
+    fn set_geometry_index_offset(mut self, new_value: UInt32):
+        set_packed_value[width=24, offset=0](self._packed0, new_value)
+
+    fn get_reserved(self) -> UInt32:
+        return get_packed_value[width=8, offset=24](self._packed0)
+
+    fn set_reserved(mut self, new_value: UInt32):
+        set_packed_value[width=8, offset=24](self._packed0, new_value)
 
 
 struct ClusterAccelerationStructureClustersBottomLevelInputNV(Copyable):
@@ -15338,27 +15421,51 @@ struct TransformMatrixKHR(Copyable):
 
 struct AccelerationStructureInstanceKHR(Copyable):
     var transform: TransformMatrixKHR
-    var instance_custom_index: uint32_t:24
-    var mask: uint32_t:8
-    var instance_shader_binding_table_record_offset: uint32_t:24
-    var flags: GeometryInstanceFlagsKHR:8
+    var _packed0: UInt32
+    var _packed1: UInt32
     var acceleration_structure_reference: UInt64
 
     fn __init__(
         out self,
         var transform: TransformMatrixKHR = zero_init[TransformMatrixKHR](),
-        instance_custom_index: uint32_t:24 = zero_init[uint32_t:24](),
-        mask: uint32_t:8 = zero_init[uint32_t:8](),
-        instance_shader_binding_table_record_offset: uint32_t:24 = zero_init[uint32_t:24](),
-        flags: GeometryInstanceFlagsKHR:8 = zero_init[GeometryInstanceFlagsKHR:8](),
+        instance_custom_index: UInt32 = zero_init[UInt32](),
+        mask: UInt32 = zero_init[UInt32](),
+        instance_shader_binding_table_record_offset: UInt32 = zero_init[UInt32](),
+        flags: GeometryInstanceFlagsKHR = zero_init[GeometryInstanceFlagsKHR](),
         acceleration_structure_reference: UInt64 = zero_init[UInt64](),
     ):
         self.transform = transform^
-        self.instance_custom_index = instance_custom_index
-        self.mask = mask
-        self.instance_shader_binding_table_record_offset = instance_shader_binding_table_record_offset
-        self.flags = flags
+        self._packed0 = 0
+        self.set_instance_custom_index(instance_custom_index)
+        self.set_mask(mask)
+        self._packed1 = 0
+        self.set_instance_shader_binding_table_record_offset(instance_shader_binding_table_record_offset)
+        self.set_flags(flags)
         self.acceleration_structure_reference = acceleration_structure_reference
+
+    fn get_instance_custom_index(self) -> UInt32:
+        return get_packed_value[width=24, offset=0](self._packed0)
+
+    fn set_instance_custom_index(mut self, new_value: UInt32):
+        set_packed_value[width=24, offset=0](self._packed0, new_value)
+
+    fn get_mask(self) -> UInt32:
+        return get_packed_value[width=8, offset=24](self._packed0)
+
+    fn set_mask(mut self, new_value: UInt32):
+        set_packed_value[width=8, offset=24](self._packed0, new_value)
+
+    fn get_instance_shader_binding_table_record_offset(self) -> UInt32:
+        return get_packed_value[width=24, offset=0](self._packed1)
+
+    fn set_instance_shader_binding_table_record_offset(mut self, new_value: UInt32):
+        set_packed_value[width=24, offset=0](self._packed1, new_value)
+
+    fn get_flags(self) -> GeometryInstanceFlagsKHR:
+        return GeometryInstanceFlagsKHR(value = get_packed_value[width=8, offset=24](self._packed1))
+
+    fn set_flags(mut self, new_value: GeometryInstanceFlagsKHR):
+        set_packed_value[width=8, offset=24](self._packed1, new_value.value())
 
 
 struct AccelerationStructureDeviceAddressInfoKHR(Copyable):
@@ -21947,57 +22054,105 @@ struct SRTDataNV(Copyable):
 struct AccelerationStructureSRTMotionInstanceNV(Copyable):
     var transform_t0: SRTDataNV
     var transform_t1: SRTDataNV
-    var instance_custom_index: uint32_t:24
-    var mask: uint32_t:8
-    var instance_shader_binding_table_record_offset: uint32_t:24
-    var flags: GeometryInstanceFlagsKHR:8
+    var _packed0: UInt32
+    var _packed1: UInt32
     var acceleration_structure_reference: UInt64
 
     fn __init__(
         out self,
         var transform_t0: SRTDataNV = zero_init[SRTDataNV](),
         var transform_t1: SRTDataNV = zero_init[SRTDataNV](),
-        instance_custom_index: uint32_t:24 = zero_init[uint32_t:24](),
-        mask: uint32_t:8 = zero_init[uint32_t:8](),
-        instance_shader_binding_table_record_offset: uint32_t:24 = zero_init[uint32_t:24](),
-        flags: GeometryInstanceFlagsKHR:8 = zero_init[GeometryInstanceFlagsKHR:8](),
+        instance_custom_index: UInt32 = zero_init[UInt32](),
+        mask: UInt32 = zero_init[UInt32](),
+        instance_shader_binding_table_record_offset: UInt32 = zero_init[UInt32](),
+        flags: GeometryInstanceFlagsKHR = zero_init[GeometryInstanceFlagsKHR](),
         acceleration_structure_reference: UInt64 = zero_init[UInt64](),
     ):
         self.transform_t0 = transform_t0^
         self.transform_t1 = transform_t1^
-        self.instance_custom_index = instance_custom_index
-        self.mask = mask
-        self.instance_shader_binding_table_record_offset = instance_shader_binding_table_record_offset
-        self.flags = flags
+        self._packed0 = 0
+        self.set_instance_custom_index(instance_custom_index)
+        self.set_mask(mask)
+        self._packed1 = 0
+        self.set_instance_shader_binding_table_record_offset(instance_shader_binding_table_record_offset)
+        self.set_flags(flags)
         self.acceleration_structure_reference = acceleration_structure_reference
+
+    fn get_instance_custom_index(self) -> UInt32:
+        return get_packed_value[width=24, offset=0](self._packed0)
+
+    fn set_instance_custom_index(mut self, new_value: UInt32):
+        set_packed_value[width=24, offset=0](self._packed0, new_value)
+
+    fn get_mask(self) -> UInt32:
+        return get_packed_value[width=8, offset=24](self._packed0)
+
+    fn set_mask(mut self, new_value: UInt32):
+        set_packed_value[width=8, offset=24](self._packed0, new_value)
+
+    fn get_instance_shader_binding_table_record_offset(self) -> UInt32:
+        return get_packed_value[width=24, offset=0](self._packed1)
+
+    fn set_instance_shader_binding_table_record_offset(mut self, new_value: UInt32):
+        set_packed_value[width=24, offset=0](self._packed1, new_value)
+
+    fn get_flags(self) -> GeometryInstanceFlagsKHR:
+        return GeometryInstanceFlagsKHR(value = get_packed_value[width=8, offset=24](self._packed1))
+
+    fn set_flags(mut self, new_value: GeometryInstanceFlagsKHR):
+        set_packed_value[width=8, offset=24](self._packed1, new_value.value())
 
 
 struct AccelerationStructureMatrixMotionInstanceNV(Copyable):
     var transform_t0: TransformMatrixKHR
     var transform_t1: TransformMatrixKHR
-    var instance_custom_index: uint32_t:24
-    var mask: uint32_t:8
-    var instance_shader_binding_table_record_offset: uint32_t:24
-    var flags: GeometryInstanceFlagsKHR:8
+    var _packed0: UInt32
+    var _packed1: UInt32
     var acceleration_structure_reference: UInt64
 
     fn __init__(
         out self,
         var transform_t0: TransformMatrixKHR = zero_init[TransformMatrixKHR](),
         var transform_t1: TransformMatrixKHR = zero_init[TransformMatrixKHR](),
-        instance_custom_index: uint32_t:24 = zero_init[uint32_t:24](),
-        mask: uint32_t:8 = zero_init[uint32_t:8](),
-        instance_shader_binding_table_record_offset: uint32_t:24 = zero_init[uint32_t:24](),
-        flags: GeometryInstanceFlagsKHR:8 = zero_init[GeometryInstanceFlagsKHR:8](),
+        instance_custom_index: UInt32 = zero_init[UInt32](),
+        mask: UInt32 = zero_init[UInt32](),
+        instance_shader_binding_table_record_offset: UInt32 = zero_init[UInt32](),
+        flags: GeometryInstanceFlagsKHR = zero_init[GeometryInstanceFlagsKHR](),
         acceleration_structure_reference: UInt64 = zero_init[UInt64](),
     ):
         self.transform_t0 = transform_t0^
         self.transform_t1 = transform_t1^
-        self.instance_custom_index = instance_custom_index
-        self.mask = mask
-        self.instance_shader_binding_table_record_offset = instance_shader_binding_table_record_offset
-        self.flags = flags
+        self._packed0 = 0
+        self.set_instance_custom_index(instance_custom_index)
+        self.set_mask(mask)
+        self._packed1 = 0
+        self.set_instance_shader_binding_table_record_offset(instance_shader_binding_table_record_offset)
+        self.set_flags(flags)
         self.acceleration_structure_reference = acceleration_structure_reference
+
+    fn get_instance_custom_index(self) -> UInt32:
+        return get_packed_value[width=24, offset=0](self._packed0)
+
+    fn set_instance_custom_index(mut self, new_value: UInt32):
+        set_packed_value[width=24, offset=0](self._packed0, new_value)
+
+    fn get_mask(self) -> UInt32:
+        return get_packed_value[width=8, offset=24](self._packed0)
+
+    fn set_mask(mut self, new_value: UInt32):
+        set_packed_value[width=8, offset=24](self._packed0, new_value)
+
+    fn get_instance_shader_binding_table_record_offset(self) -> UInt32:
+        return get_packed_value[width=24, offset=0](self._packed1)
+
+    fn set_instance_shader_binding_table_record_offset(mut self, new_value: UInt32):
+        set_packed_value[width=24, offset=0](self._packed1, new_value)
+
+    fn get_flags(self) -> GeometryInstanceFlagsKHR:
+        return GeometryInstanceFlagsKHR(value = get_packed_value[width=8, offset=24](self._packed1))
+
+    fn set_flags(mut self, new_value: GeometryInstanceFlagsKHR):
+        set_packed_value[width=8, offset=24](self._packed1, new_value.value())
 
 
 struct AccelerationStructureMotionInstanceNV(Copyable):

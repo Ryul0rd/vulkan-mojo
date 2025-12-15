@@ -170,6 +170,14 @@ class VkStructMember:
     name: str
     type: VkType
     value: Optional[str]
+    bit_width: Optional[int] = None
+
+
+@dataclass
+class VkStructMemberPackingInfo:
+    group_index: int
+    width: int
+    offset: int
 
 
 @dataclass
@@ -637,7 +645,13 @@ def parse_structs(registry: Element) -> List[VkStruct | VkTypeAlias]:
             member_name = assert_type(str, name_el.text)
             member_type = parse_type(member_el)
             member_value = member_el.get("values")
-            struct_members.append(VkStructMember(member_name, member_type, member_value))
+            bit_width: Optional[int] = None
+            if member_type.ptr_level == 0 and len(member_type.array_dims) == 0:
+                m = re.match(r"^(?P<base>\w+)\s*:\s*(?P<bits>\d+)$", member_type.name)
+                if m is not None:
+                    member_type.name = m.group("base")
+                    bit_width = int(m.group("bits"))
+            struct_members.append(VkStructMember(member_name, member_type, member_value, bit_width))
         structs.append(VkStruct(struct_name, struct_members))
 
     return struct_aliases + structs
@@ -1168,10 +1182,29 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
             parts.append("    pass\n")
             continue
 
+        packing_info_by_member: Dict[str, VkStructMemberPackingInfo] = {}
+        group_index = -1
+        offset = 0
+        in_pack = False
+        for member in struct.members:
+            if member.bit_width is None:
+                in_pack = False
+                offset = 0
+                continue
+            width = member.bit_width
+            if not in_pack or offset + width > 32:
+                group_index += 1
+                offset = 0
+                in_pack = True
+            packing_info_by_member[member.name] = VkStructMemberPackingInfo(group_index, width, offset)
+            offset += width
+
         fields: List[str] = []
         init_args: List[str] = ["out self"]
         init_lines: List[str] = []
-        string_helpers: List[str] = []
+        helper_methods: List[str] = []
+        last_emitted_group_index: Optional[int] = None
+        initted_group_indices: set[int] = set()
         for member in struct.members:
             member_name = pascal_to_snake(member.name)
             is_version = member_name.endswith("version") and emit_mojo_type(member.type) == "UInt32"
@@ -1183,6 +1216,7 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
                 member_type = member_type.replace("CStringSlice[ImmutOrigin.external]", f"CStringSlice[Self.{origin}]")
             else:
                 member_type = emit_mojo_type(member.type)
+            # packed_member_types[member.name] = member_type
             is_stype = member.type.name == "VkStructureType" and member.value is not None
             is_array_string = len(member.type.array_dims) > 0 and member.type.name == "char"
             field_type_explicitly_copyable = (
@@ -1192,23 +1226,56 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
                 and member.type.name in struct_c_names
             )
 
-            fields.append(f"    var {member_name}: {member_type}\n")
-            if not is_stype:
-                var_prefix = "var " if field_type_explicitly_copyable else ""
-                init_args.append(f"{var_prefix}{member_name}: {member_type} = zero_init[{member_type}]()")
-            if is_stype:
-                stype = assert_type(str, member.value).removeprefix('VK_STRUCTURE_TYPE_')
-                init_lines.append(f"        self.s_type = StructureType.{stype}\n")
+            if member.bit_width is None:
+                fields.append(f"    var {member_name}: {member_type}\n")
+                if not is_stype:
+                    var_prefix = "var " if field_type_explicitly_copyable else ""
+                    init_args.append(f"{var_prefix}{member_name}: {member_type} = zero_init[{member_type}]()")
+                if is_stype:
+                    stype = assert_type(str, member.value).removeprefix('VK_STRUCTURE_TYPE_')
+                    init_lines.append(f"        self.s_type = StructureType.{stype}\n")
+                else:
+                    member_name = pascal_to_snake(member.name)
+                    transfer = "^" if field_type_explicitly_copyable else ""
+                    init_lines.append(f"        self.{member_name} = {member_name}{transfer}\n")
+                if is_array_string:
+                    helper_methods.append((
+                        f"\n"
+                        f"    fn {member_name}_slice(self) -> CStringSlice[origin_of(self.{member_name})]:\n"
+                        f"        return CStringSlice[origin_of(self.{member_name})](unsafe_from_ptr = self.{member_name}.unsafe_ptr())\n"
+                    ))
             else:
-                member_name = pascal_to_snake(member.name)
-                transfer = "^" if field_type_explicitly_copyable else ""
-                init_lines.append(f"        self.{member_name} = {member_name}{transfer}\n")
-            if is_array_string:
-                string_helpers.append((
-                    f"\n"
-                    f"    fn {member_name}_slice(self) -> CStringSlice[origin_of(self.{member_name})]:\n"
-                    f"        return CStringSlice[origin_of(self.{member_name})](unsafe_from_ptr = self.{member_name}.unsafe_ptr())\n"
-                ))
+                packing_info = packing_info_by_member[member.name]
+                group_index = packing_info.group_index
+                width = packing_info.width
+                offset = packing_info.offset
+                if last_emitted_group_index != group_index:
+                    fields.append(f"    var _packed{group_index}: UInt32\n")
+                    last_emitted_group_index = group_index
+                init_args.append(f"{member_name}: {member_type} = zero_init[{member_type}]()")
+                if packing_info.group_index not in initted_group_indices:
+                    init_lines.append(f"        self._packed{group_index} = 0\n")
+                    initted_group_indices.add(group_index)
+                init_lines.append(f"        self.set_{member_name}({member_name})\n")
+                if member_type == "UInt32":
+                    helper_methods.append((
+                        f"\n"
+                        f"    fn get_{member_name}(self) -> {member_type}:\n"
+                        f"        return get_packed_value[width={width}, offset={offset}](self._packed{group_index})\n"
+                        f"\n"
+                        f"    fn set_{member_name}(mut self, new_value: {member_type}):\n"
+                        f"        set_packed_value[width={width}, offset={offset}](self._packed{group_index}, new_value)\n"
+                    ))
+                else:
+                    helper_methods.append((
+                        f"\n"
+                        f"    fn get_{member_name}(self) -> {member_type}:\n"
+                        f"        return {member_type}(value = get_packed_value[width={width}, offset={offset}](self._packed{group_index}))\n"
+                        f"\n"
+                        f"    fn set_{member_name}(mut self, new_value: {member_type}):\n"
+                        f"        set_packed_value[width={width}, offset={offset}](self._packed{group_index}, new_value.value())\n"
+                    ))
+
         parts.extend(fields)
         parts.append("\n")
         parts.append(emit_fn_like(
@@ -1218,7 +1285,7 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
             base_indent_level = 1,
         ))
         parts.extend(init_lines)
-        parts.extend(string_helpers)
+        parts.extend(helper_methods)
 
     files["structs.mojo"] = "".join(parts)
 
