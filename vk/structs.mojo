@@ -1746,7 +1746,7 @@ struct ComputePipelineCreateInfo(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutOrigin.external] = zero_init[Ptr[NoneType, ImmutOrigin.external]](),
         flags: PipelineCreateFlags = zero_init[PipelineCreateFlags](),
-        var stage: PipelineShaderStageCreateInfo = zero_init[PipelineShaderStageCreateInfo](),
+        var stage: PipelineShaderStageCreateInfo[ImmutAnyOrigin] = zero_init[PipelineShaderStageCreateInfo](),
         layout: PipelineLayout = zero_init[PipelineLayout](),
         base_pipeline_handle: Pipeline = zero_init[Pipeline](),
         base_pipeline_index: Int32 = zero_init[Int32](),
@@ -4888,11 +4888,6 @@ struct ClusterAccelerationStructureBuildTriangleClusterInfoNV(Copyable):
         self.cluster_id = cluster_id
         self.cluster_flags = cluster_flags
         self._packed0 = 0
-        self.set_triangle_count(triangle_count)
-        self.set_vertex_count(vertex_count)
-        self.set_position_truncate_bit_count(position_truncate_bit_count)
-        self.set_index_type(index_type)
-        self.set_opacity_micromap_index_type(opacity_micromap_index_type)
         self.base_geometry_index_and_geometry_flags = base_geometry_index_and_geometry_flags^
         self.index_buffer_stride = index_buffer_stride
         self.vertex_buffer_stride = vertex_buffer_stride
@@ -4903,6 +4898,11 @@ struct ClusterAccelerationStructureBuildTriangleClusterInfoNV(Copyable):
         self.geometry_index_and_flags_buffer = geometry_index_and_flags_buffer
         self.opacity_micromap_array = opacity_micromap_array
         self.opacity_micromap_index_buffer = opacity_micromap_index_buffer
+        self.set_triangle_count(triangle_count)
+        self.set_vertex_count(vertex_count)
+        self.set_position_truncate_bit_count(position_truncate_bit_count)
+        self.set_index_type(index_type)
+        self.set_opacity_micromap_index_type(opacity_micromap_index_type)
 
     fn get_triangle_count(self) -> UInt32:
         return get_packed_value[width=9, offset=0](self._packed0)
@@ -4975,11 +4975,6 @@ struct ClusterAccelerationStructureBuildTriangleClusterTemplateInfoNV(Copyable):
         self.cluster_id = cluster_id
         self.cluster_flags = cluster_flags
         self._packed0 = 0
-        self.set_triangle_count(triangle_count)
-        self.set_vertex_count(vertex_count)
-        self.set_position_truncate_bit_count(position_truncate_bit_count)
-        self.set_index_type(index_type)
-        self.set_opacity_micromap_index_type(opacity_micromap_index_type)
         self.base_geometry_index_and_geometry_flags = base_geometry_index_and_geometry_flags^
         self.index_buffer_stride = index_buffer_stride
         self.vertex_buffer_stride = vertex_buffer_stride
@@ -4991,6 +4986,11 @@ struct ClusterAccelerationStructureBuildTriangleClusterTemplateInfoNV(Copyable):
         self.opacity_micromap_array = opacity_micromap_array
         self.opacity_micromap_index_buffer = opacity_micromap_index_buffer
         self.instantiation_bounding_box_limit = instantiation_bounding_box_limit
+        self.set_triangle_count(triangle_count)
+        self.set_vertex_count(vertex_count)
+        self.set_position_truncate_bit_count(position_truncate_bit_count)
+        self.set_index_type(index_type)
+        self.set_opacity_micromap_index_type(opacity_micromap_index_type)
 
     fn get_triangle_count(self) -> UInt32:
         return get_packed_value[width=9, offset=0](self._packed0)
@@ -5039,10 +5039,10 @@ struct ClusterAccelerationStructureInstantiateClusterInfoNV(Copyable):
     ):
         self.cluster_id_offset = cluster_id_offset
         self._packed0 = 0
-        self.set_geometry_index_offset(geometry_index_offset)
-        self.set_reserved(reserved)
         self.cluster_template_address = cluster_template_address
         self.vertex_buffer = vertex_buffer^
+        self.set_geometry_index_offset(geometry_index_offset)
+        self.set_reserved(reserved)
 
     fn get_geometry_index_offset(self) -> UInt32:
         return get_packed_value[width=24, offset=0](self._packed0)
@@ -7913,7 +7913,7 @@ struct DisplayProperties2KHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutOrigin.external] = zero_init[Ptr[NoneType, MutOrigin.external]](),
-        var display_properties: DisplayPropertiesKHR = zero_init[DisplayPropertiesKHR](),
+        var display_properties: DisplayPropertiesKHR[ImmutAnyOrigin] = zero_init[DisplayPropertiesKHR](),
     ):
         self.s_type = StructureType.DISPLAY_PROPERTIES_2_KHR
         self.p_next = p_next
@@ -15436,12 +15436,12 @@ struct AccelerationStructureInstanceKHR(Copyable):
     ):
         self.transform = transform^
         self._packed0 = 0
+        self._packed1 = 0
+        self.acceleration_structure_reference = acceleration_structure_reference
         self.set_instance_custom_index(instance_custom_index)
         self.set_mask(mask)
-        self._packed1 = 0
         self.set_instance_shader_binding_table_record_offset(instance_shader_binding_table_record_offset)
         self.set_flags(flags)
-        self.acceleration_structure_reference = acceleration_structure_reference
 
     fn get_instance_custom_index(self) -> UInt32:
         return get_packed_value[width=24, offset=0](self._packed0)
@@ -22071,12 +22071,12 @@ struct AccelerationStructureSRTMotionInstanceNV(Copyable):
         self.transform_t0 = transform_t0^
         self.transform_t1 = transform_t1^
         self._packed0 = 0
+        self._packed1 = 0
+        self.acceleration_structure_reference = acceleration_structure_reference
         self.set_instance_custom_index(instance_custom_index)
         self.set_mask(mask)
-        self._packed1 = 0
         self.set_instance_shader_binding_table_record_offset(instance_shader_binding_table_record_offset)
         self.set_flags(flags)
-        self.acceleration_structure_reference = acceleration_structure_reference
 
     fn get_instance_custom_index(self) -> UInt32:
         return get_packed_value[width=24, offset=0](self._packed0)
@@ -22123,12 +22123,12 @@ struct AccelerationStructureMatrixMotionInstanceNV(Copyable):
         self.transform_t0 = transform_t0^
         self.transform_t1 = transform_t1^
         self._packed0 = 0
+        self._packed1 = 0
+        self.acceleration_structure_reference = acceleration_structure_reference
         self.set_instance_custom_index(instance_custom_index)
         self.set_mask(mask)
-        self._packed1 = 0
         self.set_instance_shader_binding_table_record_offset(instance_shader_binding_table_record_offset)
         self.set_flags(flags)
-        self.acceleration_structure_reference = acceleration_structure_reference
 
     fn get_instance_custom_index(self) -> UInt32:
         return get_packed_value[width=24, offset=0](self._packed0)

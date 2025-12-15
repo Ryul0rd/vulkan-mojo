@@ -1126,10 +1126,16 @@ def emit_fn_types(files: Dict[str, str], fn_types: List[VkFnType]):
 
 
 def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
-    struct_c_names: set[str] = set()
-    for s in structs:
-        if isinstance(s, VkStruct):
-            struct_c_names.add(s.name)
+    struct_names: set[str] = set()
+    origin_param_count_by_struct_name: Dict[str, int] = {}
+    for struct in structs:
+        if not isinstance(struct, VkStruct):
+            continue
+        struct_names.add(struct.name)
+        origin_param_count = sum("CStringSlice[" in emit_mojo_type(member.type) for member in struct.members)
+        if origin_param_count > 0:
+            origin_param_count_by_struct_name[struct.name] = origin_param_count
+
 
     parts: List[str] = []
     parts.append((
@@ -1202,6 +1208,7 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
         fields: List[str] = []
         init_args: List[str] = ["out self"]
         init_lines: List[str] = []
+        packed_init_lines: List[str] = []
         helper_methods: List[str] = []
         last_emitted_group_index: Optional[int] = None
         initted_group_indices: set[int] = set()
@@ -1216,21 +1223,29 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
                 member_type = member_type.replace("CStringSlice[ImmutOrigin.external]", f"CStringSlice[Self.{origin}]")
             else:
                 member_type = emit_mojo_type(member.type)
-            # packed_member_types[member.name] = member_type
             is_stype = member.type.name == "VkStructureType" and member.value is not None
             is_array_string = len(member.type.array_dims) > 0 and member.type.name == "char"
             field_type_explicitly_copyable = (
                 not is_version
                 and member.type.ptr_level == 0
                 and len(member.type.array_dims) == 0
-                and member.type.name in struct_c_names
+                and member.type.name in struct_names
             )
+
+            # Handle init origins when structs with origins are in other structs
+            init_member_type = member_type
+            zero_init_type = member_type
+            if member.type.ptr_level == 0 and member.type.name in origin_param_count_by_struct_name:
+                origin_count = origin_param_count_by_struct_name[member.type.name]
+                base_struct = emit_mojo_type_name(member.type.name)
+                init_member_type = f"{base_struct}[{', '.join(['ImmutAnyOrigin'] * origin_count)}]"
+                zero_init_type = base_struct
 
             if member.bit_width is None:
                 fields.append(f"    var {member_name}: {member_type}\n")
                 if not is_stype:
                     var_prefix = "var " if field_type_explicitly_copyable else ""
-                    init_args.append(f"{var_prefix}{member_name}: {member_type} = zero_init[{member_type}]()")
+                    init_args.append(f"{var_prefix}{member_name}: {init_member_type} = zero_init[{zero_init_type}]()")
                 if is_stype:
                     stype = assert_type(str, member.value).removeprefix('VK_STRUCTURE_TYPE_')
                     init_lines.append(f"        self.s_type = StructureType.{stype}\n")
@@ -1256,7 +1271,7 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
                 if packing_info.group_index not in initted_group_indices:
                     init_lines.append(f"        self._packed{group_index} = 0\n")
                     initted_group_indices.add(group_index)
-                init_lines.append(f"        self.set_{member_name}({member_name})\n")
+                packed_init_lines.append(f"        self.set_{member_name}({member_name})\n")
                 if member_type == "UInt32":
                     helper_methods.append((
                         f"\n"
@@ -1285,6 +1300,7 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
             base_indent_level = 1,
         ))
         parts.extend(init_lines)
+        parts.extend(packed_init_lines)
         parts.extend(helper_methods)
 
     files["structs.mojo"] = "".join(parts)
