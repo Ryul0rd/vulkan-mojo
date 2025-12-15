@@ -6,35 +6,35 @@ struct Display:
 
 @register_passable("trivial")
 struct VisualID:
-    var _raw: UInt32
+    var _value: UInt32
 
-    fn __init__(out self, *, raw: UInt32):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
 
     fn raw(self) -> UInt32:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct Window:
-    var _raw: UInt32
+    var _value: UInt32
 
-    fn __init__(out self, *, raw: UInt32):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
 
     fn raw(self) -> UInt32:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct RROutput:
-    var _raw: UInt32
+    var _value: UInt32
 
-    fn __init__(out self, *, raw: UInt32):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
 
     fn raw(self) -> UInt32:
-        return self._raw
+        return self._value
 
 
 struct wl_display:
@@ -47,46 +47,46 @@ struct wl_surface:
 
 @register_passable("trivial")
 struct HINSTANCE:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct HWND:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct HMONITOR:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct HANDLE:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 struct SECURITY_ATTRIBUTES:
@@ -95,24 +95,24 @@ struct SECURITY_ATTRIBUTES:
 
 @register_passable("trivial")
 struct DWORD:
-    var _raw: UInt32
+    var _value: UInt32
 
-    fn __init__(out self, *, raw: UInt32):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
 
     fn raw(self) -> UInt32:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct LPCWSTR:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 struct xcb_connection_t:
@@ -121,24 +121,24 @@ struct xcb_connection_t:
 
 @register_passable("trivial")
 struct xcb_visualid_t:
-    var _raw: UInt32
+    var _value: UInt32
 
-    fn __init__(out self, *, raw: UInt32):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
 
     fn raw(self) -> UInt32:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct xcb_window_t:
-    var _raw: UInt32
+    var _value: UInt32
 
-    fn __init__(out self, *, raw: UInt32):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
 
     fn raw(self) -> UInt32:
-        return self._raw
+        return self._value
 
 
 struct IDirectFB:
@@ -151,13 +151,13 @@ struct IDirectFBSurface:
 
 @register_passable("trivial")
 struct zx_handle_t:
-    var _raw: UInt32
+    var _value: UInt32
 
-    fn __init__(out self, *, raw: UInt32):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
 
     fn raw(self) -> UInt32:
-        return self._raw
+        return self._value
 
 
 struct OHNativeWindow:
@@ -166,79 +166,79 @@ struct OHNativeWindow:
 
 @register_passable("trivial")
 struct GgpStreamDescriptor:
-    var _raw: UInt32
+    var _value: UInt32
 
-    fn __init__(out self, *, raw: UInt32):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
 
     fn raw(self) -> UInt32:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct GgpFrameToken:
-    var _raw: UInt32
+    var _value: UInt32
 
-    fn __init__(out self, *, raw: UInt32):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
 
     fn raw(self) -> UInt32:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct screen_context_t:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct screen_window_t:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct screen_buffer_t:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct NvSciSyncAttrList:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct NvSciSyncObj:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 struct NvSciSyncFence:
@@ -247,24 +247,24 @@ struct NvSciSyncFence:
 
 @register_passable("trivial")
 struct NvSciBufAttrList:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct NvSciBufObj:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 struct ANativeWindow:
@@ -281,68 +281,68 @@ struct CAMetalLayer:
 
 @register_passable("trivial")
 struct MTLDevice_id:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct MTLCommandQueue_id:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct MTLBuffer_id:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct MTLTexture_id:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct MTLSharedEvent_id:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct IOSurfaceRef:
-    var _raw: UInt
+    var _value: UInt
 
-    fn __init__(out self, *, raw: UInt):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt):
+        self._value = value
 
     fn raw(self) -> UInt:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")

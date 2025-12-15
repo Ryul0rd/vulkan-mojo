@@ -1,4 +1,5 @@
 from memory import memset_zero, memcpy
+from os import abort
 
 
 comptime Ptr = UnsafePointer
@@ -11,6 +12,27 @@ fn uninitialized[T: AnyType](out value: T):
 fn zero_init[T: AnyType](out value: T):
     value = uninitialized[T]()
     memset_zero(Ptr(to=value), 1)
+
+
+fn get_packed_value[size: UInt32, offset: UInt32](packed_values: UInt32) -> UInt32:
+    constrained[size > 0]()
+    constrained[size <= 32]()
+    constrained[offset < 32]()
+    constrained[size + offset <= 32]()
+    comptime mask: UInt32 = ((1 << (size + offset)) - 1) - ((1 << offset) - 1)
+    return (packed_values & mask) >> offset
+
+
+fn set_packed_value[size: UInt32, offset: UInt32](mut packed_values: UInt32, new_value: UInt32):
+    constrained[size > 0]()
+    constrained[size <= 32]()
+    constrained[offset < 32]()
+    constrained[size + offset <= 32]()
+    comptime mask: UInt32 = ((1 << (size + offset)) - 1) - ((1 << offset) - 1)
+    comptime max_value: UInt32 = (1 << size) - 1
+    if new_value > max_value:
+        abort("Value too large to pack. Max value is " + String(max_value) + " but got value " + String(new_value))
+    packed_values = packed_values & ~mask | (new_value << offset)
 
 
 @register_passable("trivial")

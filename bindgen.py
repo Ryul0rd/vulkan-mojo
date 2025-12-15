@@ -900,13 +900,13 @@ def emit_wrapper_type(wrapper_type: VkWrapperType) -> str:
     return (
         f'@register_passable("trivial")\n'
         f"struct {mojo_name}:\n"
-        f"    var _raw: {mojo_type}\n"
+        f"    var _value: {mojo_type}\n"
         f"\n"
-        f"    fn __init__(out self, *, raw: {mojo_type}):\n"
-        f"        self._raw = raw\n"
+        f"    fn __init__(out self, *, value: {mojo_type}):\n"
+        f"        self._value = value\n"
         f"\n"
         f"    fn raw(self) -> {mojo_type}:\n"
-        f"        return self._raw\n"
+        f"        return self._value\n"
     )
 
 
@@ -998,60 +998,60 @@ def emit_flags(files: Dict[str, str], flags: List[VkFlags | VkTypeAlias]):
             f"\n\n"
             f'@register_passable("trivial")\n'
             f"struct {flags_name}(Equatable):\n"
-            f"    var _raw: UInt{flag.width}\n"
+            f"    var _value: UInt{flag.width}\n"
             f"\n"
             f"    @implicit\n"
             f"    fn __init__(out self, *bits: {flag_bits_name}):\n"
-            f"        self._raw = 0\n"
+            f"        self._value = 0\n"
             f"        for bit in bits:\n"
-            f"            self._raw |= bit.raw()\n"
+            f"            self._value |= bit.value()\n"
             f"\n"
-            f"    fn __init__(out self, *, raw: UInt{flag.width}):\n"
-            f"        self._raw = raw\n"
+            f"    fn __init__(out self, *, value: UInt{flag.width}):\n"
+            f"        self._value = value\n"
             f"\n"
-            f"    fn raw(self) -> UInt{flag.width}:\n"
-            f"        return self._raw\n"
+            f"    fn value(self) -> UInt{flag.width}:\n"
+            f"        return self._value\n"
             f"\n"
             f"    fn __eq__(self, other: Self) -> Bool:\n"
-            f"        return self._raw == other._raw\n"
+            f"        return self._value == other._value\n"
             f"\n"
             f"    fn __or__(self, bit: {flag_bits_name}) -> Self:\n"
-            f"        return Self(raw = self.raw() | bit.raw())\n"
+            f"        return Self(value = self.value() | bit.value())\n"
             f"\n"
             f"    fn __ror__(self, bit: {flag_bits_name}) -> Self:\n"
-            f"        return Self(raw = self.raw() | bit.raw())\n"
+            f"        return Self(value = self.value() | bit.value())\n"
             f"\n"
             f"    fn __contains__(self, bit: {flag_bits_name}) -> Bool:\n"
-            f"        return Bool(self.raw() & bit.raw())\n"
+            f"        return Bool(self.value() & bit.value())\n"
         ))
         if len(flag.flag_bits.values) > 0 or len(flag.flag_bits.bits) > 0:
             parts.append("\n")
         prefix = pascal_to_snake(strip_extension_suffix(flag.flags_name) + "_").replace("_flags", "").upper()
         for value in flag.flag_bits.values:
             value_name = value.name.removeprefix(prefix)
-            parts.append(f"    comptime {value_name} = {flag_bits_name}(raw = {value.value})\n")
+            parts.append(f"    comptime {value_name} = {flag_bits_name}(value = {value.value})\n")
         for bit in flag.flag_bits.bits:
             bit_name = bit.name.removeprefix(prefix).removesuffix("_BIT").replace("_BIT_", "_")
             if bit_name[0].isdigit():
                 bit_name = f"N_{bit_name}"
-            parts.append(f"    comptime {bit_name} = {flag_bits_name}(raw = 1 << {bit.bitpos})\n")
+            parts.append(f"    comptime {bit_name} = {flag_bits_name}(value = 1 << {bit.bitpos})\n")
         parts.append((
             "\n\n"
             f'@register_passable("trivial")\n'
             f"struct {flag_bits_name}(Equatable):\n"
-            f"    var _raw: UInt{flag.width}\n"
+            f"    var _value: UInt{flag.width}\n"
             f"\n"
-            f"    fn __init__(out self, *, raw: UInt{flag.width}):\n"
-            f"        self._raw = raw\n"
+            f"    fn __init__(out self, *, value: UInt{flag.width}):\n"
+            f"        self._value = value\n"
             f"\n"
-            f"    fn raw(self) -> UInt{flag.width}:\n"
-            f"        return self._raw\n"
+            f"    fn value(self) -> UInt{flag.width}:\n"
+            f"        return self._value\n"
             f"\n"
             f"    fn __eq__(self, other: Self) -> Bool:\n"
-            f"        return self._raw == other._raw\n"
+            f"        return self._value == other._value\n"
             f"\n"
             f"    fn __or__(self, bit: Self) -> {flags_name}:\n"
-            f"        return {flags_name}(raw = self.raw() | bit.raw())\n"
+            f"        return {flags_name}(value = self.value() | bit.value())\n"
         ))
     files["flags.mojo"] = "".join(parts)
 
@@ -1069,20 +1069,20 @@ def emit_handles(files: Dict[str, str], handles: List[VkHandle]):
             f"\n\n"
             f'@register_passable("trivial")\n'
             f"struct {handle_name}(Equatable, Writable):\n"
-            f"    var _raw: {handle_type}\n"
-            f"    comptime NULL = Self(raw = 0)\n"
+            f"    var _value: {handle_type}\n"
+            f"    comptime NULL = Self(value = 0)\n"
             f"\n"
-            f"    fn __init__(out self, *, raw: {handle_type}):\n"
-            f"        self._raw = raw\n"
+            f"    fn __init__(out self, *, value: {handle_type}):\n"
+            f"        self._value = value\n"
             f"\n"
-            f"    fn raw(self) -> {handle_type}:\n"
-            f"        return self._raw\n"
+            f"    fn value(self) -> {handle_type}:\n"
+            f"        return self._value\n"
             f"\n"
             f"    fn __eq__(self, other: Self) -> Bool:\n"
-            f"        return self._raw == other._raw\n"
+            f"        return self._value == other._value\n"
             f"\n"
             f"    fn __str__(self) -> String:\n"
-            f"        return hex(self._raw)\n"
+            f"        return hex(self._value)\n"
             f"\n"
             f"    fn write_to(self, mut writer: Some[Writer]):\n"
             f"        writer.write(String(self))\n"

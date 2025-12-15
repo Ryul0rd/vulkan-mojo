@@ -2,43 +2,43 @@
 
 @register_passable("trivial")
 struct SampleMask:
-    var _raw: UInt32
+    var _value: UInt32
 
-    fn __init__(out self, *, raw: UInt32):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
 
     fn raw(self) -> UInt32:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct DeviceSize:
-    var _raw: UInt64
+    var _value: UInt64
 
-    fn __init__(out self, *, raw: UInt64):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt64):
+        self._value = value
 
     fn raw(self) -> UInt64:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct DeviceAddress:
-    var _raw: UInt64
+    var _value: UInt64
 
-    fn __init__(out self, *, raw: UInt64):
-        self._raw = raw
+    fn __init__(out self, *, value: UInt64):
+        self._value = value
 
     fn raw(self) -> UInt64:
-        return self._raw
+        return self._value
 
 
 @register_passable("trivial")
 struct RemoteAddressNV:
-    var _raw: Ptr[NoneType, MutOrigin.external]
+    var _value: Ptr[NoneType, MutOrigin.external]
 
-    fn __init__(out self, *, raw: Ptr[NoneType, MutOrigin.external]):
-        self._raw = raw
+    fn __init__(out self, *, value: Ptr[NoneType, MutOrigin.external]):
+        self._value = value
 
     fn raw(self) -> Ptr[NoneType, MutOrigin.external]:
-        return self._raw
+        return self._value
