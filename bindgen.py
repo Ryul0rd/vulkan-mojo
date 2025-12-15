@@ -46,7 +46,7 @@ class VkType:
     A parsed Vulkan C type as it appears in `vk.xml` (minus the parameter/member name).
 
     This is a small “shape” model used by the generator to reason about pointer depth,
-    const-qualification, and simple 1D array suffixes.
+    const-qualification, and fixed-size array suffixes.
 
     Attributes:
         name:
@@ -70,14 +70,17 @@ class VkType:
             This ordering is intended to line up with Vulkan’s comma-separated `optional=`
             conventions (outer pointer first, then pointee/array elements).
 
-        array_dim:
-            If the type is a fixed-size C array, the bracket contents (Vulkan only uses
-            1D arrays), e.g. `"VK_UUID_SIZE"` for `char[VK_UUID_SIZE]`. Otherwise `None`.
+        array_dims:
+            If the type is a fixed-size C array, the bracket contents for each dimension,
+            ordered **outermost → innermost**. For example:
+              - `char[VK_UUID_SIZE]` -> `["VK_UUID_SIZE"]`
+              - `float[3][4]`       -> `["3", "4"]`
+            Otherwise this is an empty list.
     """
     name: str
     ptr_level: int = 0
     const: List[bool] = field(default_factory=lambda: [False])
-    array_dim: Optional[str] = None
+    array_dims: List[str] = field(default_factory=list) # type: ignore[reportUnknownVariableType]
 
 
 @dataclass
@@ -818,11 +821,14 @@ def parse_type(parent_el: Element) -> VkType:
     
 
 def parse_type_str(type: str) -> VkType:
-    array_dim: Optional[str] = None
-    m = re.search(r"\[\s*([^\]]+?)\s*\]\s*$", type)
-    if m is not None:
-        array_dim = m.group(1).strip()
+    array_dims_reverse: List[str] = []
+    while True:
+        m = re.search(r"\[\s*([^\]]+?)\s*\]\s*$", type)
+        if m is None:
+            break
+        array_dims_reverse.append(m.group(1).strip())
         type = type[:m.start()].rstrip()
+    array_dims = list(reversed(array_dims_reverse))
 
     tokens = type.replace("*", " * ").split()
     star_indices = [i for i, t in enumerate(tokens) if t == "*"]
@@ -848,10 +854,10 @@ def parse_type_str(type: str) -> VkType:
             name = QNX_SCREEN_HANDLE_MAP[name],
             ptr_level = 0,
             const = [False],
-            array_dim = None,
+            array_dims = [],
         )
 
-    return VkType(name, ptr_level, const, array_dim)
+    return VkType(name, ptr_level, const, array_dims)
 
 
 # ----------------
@@ -1106,6 +1112,11 @@ def emit_fn_types(files: Dict[str, str], fn_types: List[VkFnType]):
 
 
 def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
+    struct_c_names: set[str] = set()
+    for s in structs:
+        if isinstance(s, VkStruct):
+            struct_c_names.add(s.name)
+
     parts: List[str] = []
     parts.append((
         "from sys.ffi import CStringSlice, c_char\n"
@@ -1128,7 +1139,6 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
     for struct in structs:
         if not isinstance(struct, VkStruct):
             continue
-        # name and members
         struct_name = emit_mojo_type_name(struct.name)
         cstring_origin_by_member: Dict[str, str] = {}
         for member in struct.members:
@@ -1174,17 +1184,25 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
             else:
                 member_type = emit_mojo_type(member.type)
             is_stype = member.type.name == "VkStructureType" and member.value is not None
-            is_array_string = member.type.array_dim is not None and member.type.name == "char"
+            is_array_string = len(member.type.array_dims) > 0 and member.type.name == "char"
+            field_type_explicitly_copyable = (
+                not is_version
+                and member.type.ptr_level == 0
+                and len(member.type.array_dims) == 0
+                and member.type.name in struct_c_names
+            )
 
             fields.append(f"    var {member_name}: {member_type}\n")
             if not is_stype:
-                init_args.append(f"{member_name}: {member_type} = zero_init[{member_type}]()")
+                var_prefix = "var " if field_type_explicitly_copyable else ""
+                init_args.append(f"{var_prefix}{member_name}: {member_type} = zero_init[{member_type}]()")
             if is_stype:
                 stype = assert_type(str, member.value).removeprefix('VK_STRUCTURE_TYPE_')
                 init_lines.append(f"        self.s_type = StructureType.{stype}\n")
             else:
                 member_name = pascal_to_snake(member.name)
-                init_lines.append(f"        self.{member_name} = {member_name}\n")
+                transfer = "^" if field_type_explicitly_copyable else ""
+                init_lines.append(f"        self.{member_name} = {member_name}{transfer}\n")
             if is_array_string:
                 string_helpers.append((
                     f"\n"
@@ -1445,27 +1463,15 @@ def emit_generic_function_definition(command: VkCommand, version: Optional[VkVer
     wrapper_call_args: List[str] = []
     for arg in command.params:
         mojo_arg_name = pascal_to_snake(arg.name)
-        # is_qnx_type = arg.type.ptr_level == 1 and arg.type.name in ("_screen_context", "_screen_window", "_screen_buffer")
         is_required_ptr_to_scalar = (
             not arg.optional
             and arg.type.ptr_level == 1
             and arg.length is None
             and arg.type.name != "char"
         )
-        # if is_qnx_type and arg.type.const[-1]:
-        #     sig_arg_strs.append(f"{mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type)}")
-        #     ffi_call_args.append(mojo_arg_name.removeprefix('p_'))
-        #     wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
-        # elif is_qnx_type and not arg.type.const[-1]:
-        #     sig_arg_strs.append(f"mut {mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type)}")
-        #     ffi_call_args.append(mojo_arg_name.removeprefix('p_'))
-        #     wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
-        if is_required_ptr_to_scalar and arg.type.const[-1]:
-            sig_arg_strs.append(f"{mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type, strip_ptr=True)}")
-            ffi_call_args.append(f"Ptr(to={mojo_arg_name.removeprefix('p_')}).bitcast[{emit_mojo_type(arg.type, strip_ptr=True)}]()")
-            wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
-        elif is_required_ptr_to_scalar and not arg.type.const[-1]:
-            sig_arg_strs.append(f"mut {mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type, strip_ptr=True)}")
+        if is_required_ptr_to_scalar:
+            mut_prefix = "" if arg.type.const[-1] else "mut "
+            sig_arg_strs.append(f"{mut_prefix}{mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type, strip_ptr=True)}")
             ffi_call_args.append(f"Ptr(to={mojo_arg_name.removeprefix('p_')}).bitcast[{emit_mojo_type(arg.type, strip_ptr=True)}]()")
             wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
         else:
@@ -1654,8 +1660,9 @@ def emit_mojo_type(type: VkType, strip_ptr: bool=False, use_any_origin: bool=Fal
         mojo_type = f"CStringSlice[{IMMUT_ORIGIN}]"
     for i in range(1, _type.ptr_level+1):
         mojo_type = f"Ptr[{mojo_type}, {IMMUT_ORIGIN if _type.const[-i] else MUT_ORIGIN}]"
-    if _type.array_dim is not None:
-        mojo_type = f"InlineArray[{mojo_type}, Int({_type.array_dim.removeprefix('VK_')})]"
+    if len(_type.array_dims) > 0:
+        for dim in reversed(_type.array_dims):
+            mojo_type = f"InlineArray[{mojo_type}, Int({dim.removeprefix('VK_')})]"
 
     return mojo_type
 
