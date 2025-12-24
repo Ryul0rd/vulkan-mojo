@@ -1127,15 +1127,10 @@ def emit_fn_types(files: Dict[str, str], fn_types: List[VkFnType]):
 
 def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
     struct_names: set[str] = set()
-    origin_param_count_by_struct_name: Dict[str, int] = {}
     for struct in structs:
         if not isinstance(struct, VkStruct):
             continue
         struct_names.add(struct.name)
-        origin_param_count = sum("CStringSlice[" in emit_mojo_type(member.type) for member in struct.members)
-        if origin_param_count > 0:
-            origin_param_count_by_struct_name[struct.name] = origin_param_count
-
 
     parts: List[str] = []
     parts.append((
@@ -1162,28 +1157,19 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
         struct_name = emit_mojo_type_name(struct.name)
         cstring_origin_by_member: Dict[str, str] = {}
         for member in struct.members:
-            emitted = emit_mojo_type(member.type)
-            if "CStringSlice[" not in emitted:
-                continue
-            origin_param = member.name + "O"
-            cstring_origin_by_member[member.name] = origin_param
-        if len(cstring_origin_by_member) == 0:
-            parts.append((
-                f"\n\n"
-                f"struct {struct_name}(Copyable):\n"
-            ))
-        else:
-            origin_params: List[str] = []
-            for member in struct.members:
-                if member.name in cstring_origin_by_member:
-                    param_name = cstring_origin_by_member[member.name]
-                    origin_params.append(f"{param_name}: ImmutOrigin = ImmutAnyOrigin")
-            parts.append("\n\n")
-            parts.append(emit_fn_like(
-                f"struct {struct_name}[",
-                origin_params,
-                f"](Copyable):\n",
-            ))
+            member_name = pascal_to_snake(member.name)
+            is_const_char_ptr = (
+                member.type.name == "char"
+                and member.type.ptr_level == 1
+                and len(member.type.array_dims) == 0
+                and member.type.const[-1]
+            )
+            if is_const_char_ptr:
+                cstring_origin_by_member[member_name] = f"{member_name}_origin"
+        parts.append((
+            f"\n\n"
+            f"struct {struct_name}(Copyable):\n"
+        ))
         if len(struct.members) == 0:
             parts.append("    pass\n")
             continue
@@ -1217,12 +1203,8 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
             is_version = member_name.endswith("version") and emit_mojo_type(member.type) == "UInt32"
             if is_version:
                 member_type = "Version"
-            elif member.name in cstring_origin_by_member:
-                member_type = emit_mojo_type(member.type)
-                origin = cstring_origin_by_member[member.name]
-                member_type = member_type.replace("CStringSlice[ImmutOrigin.external]", f"CStringSlice[Self.{origin}]")
             else:
-                member_type = emit_mojo_type(member.type)
+                member_type = emit_mojo_type(member.type, use_any_origin=True, use_c_string_slice=False)
             is_stype = member.type.name == "VkStructureType" and member.value is not None
             is_array_string = len(member.type.array_dims) > 0 and member.type.name == "char"
             field_type_explicitly_copyable = (
@@ -1232,26 +1214,25 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
                 and member.type.name in struct_names
             )
 
-            # Handle init origins when structs with origins are in other structs
-            init_member_type = member_type
-            zero_init_type = member_type
-            if member.type.ptr_level == 0 and member.type.name in origin_param_count_by_struct_name:
-                origin_count = origin_param_count_by_struct_name[member.type.name]
-                base_struct = emit_mojo_type_name(member.type.name)
-                init_member_type = f"{base_struct}[{', '.join(['ImmutAnyOrigin'] * origin_count)}]"
-                zero_init_type = base_struct
-
             if member.bit_width is None:
+                is_const_char_ptr = (
+                    member.type.name == "char"
+                    and member.type.ptr_level == 1
+                    and len(member.type.array_dims) == 0
+                    and member.type.const[-1]
+                )
                 fields.append(f"    var {member_name}: {member_type}\n")
-                if not is_stype:
-                    var_prefix = "var " if field_type_explicitly_copyable else ""
-                    init_args.append(f"{var_prefix}{member_name}: {init_member_type} = zero_init[{zero_init_type}]()")
                 if is_stype:
                     stype = assert_type(str, member.value).removeprefix('VK_STRUCTURE_TYPE_')
                     init_lines.append(f"        self.s_type = StructureType.{stype}\n")
+                elif is_const_char_ptr:
+                    origin_param = cstring_origin_by_member[member_name]
+                    init_args.append(f"{member_name}: CStringSlice[{origin_param}] = zero_init[CStringSlice[{origin_param}]]()")
+                    init_lines.append(f"        self.{member_name} = {member_name}.unsafe_ptr()\n")
                 else:
-                    member_name = pascal_to_snake(member.name)
+                    var_prefix = "var " if field_type_explicitly_copyable else ""
                     transfer = "^" if field_type_explicitly_copyable else ""
+                    init_args.append(f"{var_prefix}{member_name}: {member_type} = zero_init[{member_type}]()")
                     init_lines.append(f"        self.{member_name} = {member_name}{transfer}\n")
                 if is_array_string:
                     helper_methods.append((
@@ -1293,12 +1274,21 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
 
         parts.extend(fields)
         parts.append("\n")
-        parts.append(emit_fn_like(
-            "fn __init__(",
-            init_args,
-            "):\n",
-            base_indent_level = 1,
-        ))
+        if len(cstring_origin_by_member) == 0:
+            parts.append(emit_fn_like(
+                "fn __init__(",
+                init_args,
+                "):\n",
+                base_indent_level = 1,
+            ))
+        else:
+            parts.append("    fn __init__[\n")
+            for origin in cstring_origin_by_member.values():
+                parts.append(f"        {origin}: ImmutOrigin = ImmutAnyOrigin,\n")
+            parts.append("    ](\n")
+            for  arg in init_args:
+                parts.append(f"        {arg},\n")
+            parts.append("    ):\n")
         parts.extend(init_lines)
         parts.extend(packed_init_lines)
         parts.extend(helper_methods)
@@ -1449,7 +1439,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 parts.append(emit_fn_like(
                     f"var {mojo_command_name}: fn(",
                     [
-                        f"{arg.name}: {emit_mojo_type(arg.type, use_any_origin=True, use_cstring_slice=False)}" 
+                        f"{arg.name}: {emit_mojo_type(arg.type, use_any_origin=True, use_c_string_slice=False)}" 
                         for arg in new_command.command.params
                     ],
                     f"){sig_ret}\n",
@@ -1503,7 +1493,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 extension_parts.append(emit_fn_like(
                     f"var _{mojo_command_name}: fn(",
                     [
-                        f"{arg.name}: {emit_mojo_type(arg.type, use_any_origin=True, use_cstring_slice=False)}"
+                        f"{arg.name}: {emit_mojo_type(arg.type, use_any_origin=True, use_c_string_slice=False)}"
                         for arg in command.params
                     ],
                     f"){sig_ret}\n",
@@ -1740,7 +1730,7 @@ def emit_mojo_type(
     type: VkType, 
     strip_ptr: bool = False,
     use_any_origin: bool = False, 
-    use_cstring_slice: bool = True,
+    use_c_string_slice: bool = True,
     no_cstringslice_origin: bool = False,
 ) -> str:
     MUT_ORIGIN = "MutAnyOrigin" if use_any_origin else "MutOrigin.external"
@@ -1751,12 +1741,12 @@ def emit_mojo_type(
         _type.ptr_level -= 1
         _type.const.pop(0)
     is_string = _type.ptr_level >= 1 and _type.const[-1] and _type.name == "char"
-    if is_string and use_cstring_slice:
+    if is_string and use_c_string_slice:
         _type.ptr_level -= 1
         _type.const.pop()
 
     mojo_type = emit_mojo_type_name(_type.name)
-    if is_string and use_cstring_slice:
+    if is_string and use_c_string_slice:
         mojo_type = "CStringSlice" if no_cstringslice_origin else f"CStringSlice[{IMMUT_ORIGIN}]"
     for i in range(1, _type.ptr_level+1):
         mojo_type = f"Ptr[{mojo_type}, {IMMUT_ORIGIN if _type.const[-i] else MUT_ORIGIN}]"
