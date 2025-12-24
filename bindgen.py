@@ -67,7 +67,7 @@ class VkType:
             - `const[-2]` is the constness of the pointer to that pointee.
             - …and so on outward.
 
-            This ordering is intended to line up with Vulkan’s comma-separated `optional=`
+            This ordering is intended to line up with Vulkan's comma-separated `optional=`
             conventions (outer pointer first, then pointee/array elements).
 
         array_dims:
@@ -1431,7 +1431,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                     "        return self._handle.borrow()\n"
                 ))
             for versioned_command in versioned_commands:
-                parts.append(emit_generic_function_definition(versioned_command.command, versioned_command.version))
+                parts.append(emit_command_wrapper(versioned_command.command, versioned_command.version))
 
         # per-version {level}FunctionAdditions
         for core_version, versioned_commands in core_versions.items():
@@ -1448,7 +1448,10 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 sig_ret = f" -> {ret_type}" if ret_type != "NoneType" else ""
                 parts.append(emit_fn_like(
                     f"var {mojo_command_name}: fn(",
-                    [f"{arg.name}: {emit_mojo_type(arg.type, use_any_origin=True)}" for arg in new_command.command.params],
+                    [
+                        f"{arg.name}: {emit_mojo_type(arg.type, use_any_origin=True, use_cstring_slice=False)}" 
+                        for arg in new_command.command.params
+                    ],
                     f"){sig_ret}\n",
                     base_indent_level = 1,
                 ))
@@ -1482,7 +1485,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
     # Extension Functions
     extension_parts_by_tag: Dict[str, List[str]] = {extension_tag: [] for extension_tag in parsed_commands.extension_commands.keys()}
     for parts in extension_parts_by_tag.values():
-        parts.append("from sys.ffi import CStringSlice\n")
+        parts.append("from sys.ffi import CStringSlice, c_char\n")
         parts.append("from vk.core_functions import GlobalFunctions\n")
     for extension_tag, extensions in parsed_commands.extension_commands.items():
         for extension in extensions:
@@ -1499,7 +1502,10 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 sig_ret = f" -> {ret_type}" if ret_type != "NoneType" else ""
                 extension_parts.append(emit_fn_like(
                     f"var _{mojo_command_name}: fn(",
-                    [f"{arg.name}: {emit_mojo_type(arg.type, use_any_origin=True)}" for arg in command.params],
+                    [
+                        f"{arg.name}: {emit_mojo_type(arg.type, use_any_origin=True, use_cstring_slice=False)}"
+                        for arg in command.params
+                    ],
                     f"){sig_ret}\n",
                     base_indent_level = 1,
                 ))
@@ -1518,7 +1524,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                     f"        )).bitcast[type_of(self._{mojo_command_name})]()[]\n"
                 ))
             for command in extension.commands:
-                extension_parts.append(emit_generic_function_definition(command))
+                extension_parts.append(emit_command_wrapper(command))
 
     extension_module_parts: List[str] = []
     for extension_tag in parsed_commands.extension_commands.keys():
@@ -1528,7 +1534,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
         files[f"extensions/{extension_tag.lower()}.mojo"] = "".join(extension_parts)
 
 
-def emit_generic_function_definition(command: VkCommand, version: Optional[VkVersion]=None) -> str:
+def emit_command_wrapper(command: VkCommand, version: Optional[VkVersion]=None) -> str:
     # we special case this because it's the only command that deals with the Version type directly
     if command.name == "vkEnumerateInstanceVersion":
         return (
@@ -1558,8 +1564,13 @@ def emit_generic_function_definition(command: VkCommand, version: Optional[VkVer
             ffi_call_args.append(f"Ptr(to={mojo_arg_name.removeprefix('p_')}).bitcast[{emit_mojo_type(arg.type, strip_ptr=True)}]()")
             wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
         else:
-            sig_arg_strs.append(f"{mojo_arg_name}: {emit_mojo_type(arg.type, use_any_origin=True)}")
-            ffi_call_args.append(mojo_arg_name)
+            is_string = (
+                arg.type.ptr_level == 1
+                and arg.type.const[-1]
+                and arg.type.name == "char"
+            )
+            sig_arg_strs.append(f"{mojo_arg_name}: {emit_mojo_type(arg.type, use_any_origin=True, no_cstringslice_origin=True)}")
+            ffi_call_args.append(f"{mojo_arg_name}.unsafe_ptr()" if is_string else mojo_arg_name)
             wrapper_call_args.append(mojo_arg_name)
 
     # function for wrapping raw c function
@@ -1725,7 +1736,13 @@ def emit_mojo_type_name(old_name: str) -> str:
     return old_name.removeprefix("Vk")
 
 
-def emit_mojo_type(type: VkType, strip_ptr: bool=False, use_any_origin: bool=False) -> str:
+def emit_mojo_type(
+    type: VkType, 
+    strip_ptr: bool = False,
+    use_any_origin: bool = False, 
+    use_cstring_slice: bool = True,
+    no_cstringslice_origin: bool = False,
+) -> str:
     MUT_ORIGIN = "MutAnyOrigin" if use_any_origin else "MutOrigin.external"
     IMMUT_ORIGIN = "ImmutAnyOrigin" if use_any_origin else "ImmutOrigin.external"
 
@@ -1734,13 +1751,13 @@ def emit_mojo_type(type: VkType, strip_ptr: bool=False, use_any_origin: bool=Fal
         _type.ptr_level -= 1
         _type.const.pop(0)
     is_string = _type.ptr_level >= 1 and _type.const[-1] and _type.name == "char"
-    if is_string:
+    if is_string and use_cstring_slice:
         _type.ptr_level -= 1
         _type.const.pop()
 
     mojo_type = emit_mojo_type_name(_type.name)
-    if is_string:
-        mojo_type = f"CStringSlice[{IMMUT_ORIGIN}]"
+    if is_string and use_cstring_slice:
+        mojo_type = "CStringSlice" if no_cstringslice_origin else f"CStringSlice[{IMMUT_ORIGIN}]"
     for i in range(1, _type.ptr_level+1):
         mojo_type = f"Ptr[{mojo_type}, {IMMUT_ORIGIN if _type.const[-i] else MUT_ORIGIN}]"
     if len(_type.array_dims) > 0:

@@ -1,4 +1,4 @@
-from sys.ffi import CStringSlice
+from sys.ffi import CStringSlice, c_char
 from vk.core_functions import GlobalFunctions
 
 

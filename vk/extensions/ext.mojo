@@ -1,4 +1,4 @@
-from sys.ffi import CStringSlice
+from sys.ffi import CStringSlice, c_char
 from vk.core_functions import GlobalFunctions
 
 
@@ -21,8 +21,8 @@ struct DebugReport(Copyable):
         object: UInt64,
         location: UInt,
         messageCode: Int32,
-        pLayerPrefix: CStringSlice[ImmutAnyOrigin],
-        pMessage: CStringSlice[ImmutAnyOrigin],
+        pLayerPrefix: Ptr[c_char, ImmutAnyOrigin],
+        pMessage: Ptr[c_char, ImmutAnyOrigin],
     )
 
     fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
@@ -77,15 +77,22 @@ struct DebugReport(Copyable):
         object: UInt64,
         location: UInt,
         message_code: Int32,
-        p_layer_prefix: CStringSlice[ImmutAnyOrigin],
-        p_message: CStringSlice[ImmutAnyOrigin],
+        p_layer_prefix: CStringSlice,
+        p_message: CStringSlice,
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDebugReportMessageEXT.html
         """
         return self._debug_report_message_ext(
-            instance, flags, object_type, object, location, message_code, p_layer_prefix, p_message
+            instance,
+            flags,
+            object_type,
+            object,
+            location,
+            message_code,
+            p_layer_prefix.unsafe_ptr(),
+            p_message.unsafe_ptr(),
         )
 
 
