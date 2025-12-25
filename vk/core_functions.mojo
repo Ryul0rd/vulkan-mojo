@@ -47,7 +47,9 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name.unsafe_ptr())
+        return self._v1_0.get_instance_proc_addr(
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
     fn enumerate_instance_extension_properties(
         self,
@@ -60,7 +62,9 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            p_layer_name.unsafe_ptr(), Ptr(to=property_count).bitcast[UInt32](), p_properties
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count).bitcast[UInt32](),
+            p_properties,
         )
 
     fn enumerate_instance_extension_properties(
@@ -151,7 +155,9 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name.unsafe_ptr())
+        return self._v1_0.get_instance_proc_addr(
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
     fn enumerate_instance_extension_properties(
         self,
@@ -164,7 +170,9 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            p_layer_name.unsafe_ptr(), Ptr(to=property_count).bitcast[UInt32](), p_properties
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count).bitcast[UInt32](),
+            p_properties,
         )
 
     fn enumerate_instance_extension_properties(
@@ -262,7 +270,9 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name.unsafe_ptr())
+        return self._v1_0.get_instance_proc_addr(
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
     fn enumerate_instance_extension_properties(
         self,
@@ -275,7 +285,9 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            p_layer_name.unsafe_ptr(), Ptr(to=property_count).bitcast[UInt32](), p_properties
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count).bitcast[UInt32](),
+            p_properties,
         )
 
     fn enumerate_instance_extension_properties(
@@ -373,7 +385,9 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name.unsafe_ptr())
+        return self._v1_0.get_instance_proc_addr(
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
     fn enumerate_instance_extension_properties(
         self,
@@ -386,7 +400,9 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            p_layer_name.unsafe_ptr(), Ptr(to=property_count).bitcast[UInt32](), p_properties
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count).bitcast[UInt32](),
+            p_properties,
         )
 
     fn enumerate_instance_extension_properties(
@@ -484,7 +500,9 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name.unsafe_ptr())
+        return self._v1_0.get_instance_proc_addr(
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
     fn enumerate_instance_extension_properties(
         self,
@@ -497,7 +515,9 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            p_layer_name.unsafe_ptr(), Ptr(to=property_count).bitcast[UInt32](), p_properties
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count).bitcast[UInt32](),
+            p_properties,
         )
 
     fn enumerate_instance_extension_properties(
@@ -566,10 +586,10 @@ struct GlobalFunctionAdditionsV1_0(Copyable, Movable):
         pInstance: Ptr[Instance, MutAnyOrigin],
     ) -> Result
     var get_instance_proc_addr: fn(
-        instance: Instance, pName: Ptr[c_char, ImmutAnyOrigin]
+        instance: Instance, pName: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction
     var enumerate_instance_extension_properties: fn(
-        pLayerName: Ptr[c_char, ImmutAnyOrigin],
+        pLayerName: CStringSlice[ImmutAnyOrigin],
         pPropertyCount: Ptr[UInt32, MutAnyOrigin],
         pProperties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result
@@ -766,7 +786,9 @@ struct InstanceFunctionsV1_0(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name.unsafe_ptr())
+        return self._v1_0.get_device_proc_addr(
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
     fn create_device(
         self,
@@ -799,7 +821,7 @@ struct InstanceFunctionsV1_0(Movable):
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device,
-            p_layer_name.unsafe_ptr(),
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
@@ -1083,7 +1105,9 @@ struct InstanceFunctionsV1_1(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name.unsafe_ptr())
+        return self._v1_0.get_device_proc_addr(
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
     fn create_device(
         self,
@@ -1116,7 +1140,7 @@ struct InstanceFunctionsV1_1(Movable):
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device,
-            p_layer_name.unsafe_ptr(),
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
@@ -1623,7 +1647,9 @@ struct InstanceFunctionsV1_2(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name.unsafe_ptr())
+        return self._v1_0.get_device_proc_addr(
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
     fn create_device(
         self,
@@ -1656,7 +1682,7 @@ struct InstanceFunctionsV1_2(Movable):
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device,
-            p_layer_name.unsafe_ptr(),
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
@@ -2165,7 +2191,9 @@ struct InstanceFunctionsV1_3(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name.unsafe_ptr())
+        return self._v1_0.get_device_proc_addr(
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
     fn create_device(
         self,
@@ -2198,7 +2226,7 @@ struct InstanceFunctionsV1_3(Movable):
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device,
-            p_layer_name.unsafe_ptr(),
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
@@ -2743,7 +2771,9 @@ struct InstanceFunctionsV1_4(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name.unsafe_ptr())
+        return self._v1_0.get_device_proc_addr(
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
     fn create_device(
         self,
@@ -2776,7 +2806,7 @@ struct InstanceFunctionsV1_4(Movable):
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device,
-            p_layer_name.unsafe_ptr(),
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
@@ -3197,7 +3227,7 @@ struct InstanceFunctionAdditionsV1_0(Copyable, Movable):
         pMemoryProperties: Ptr[PhysicalDeviceMemoryProperties, MutAnyOrigin],
     )
     var get_device_proc_addr: fn(
-        device: Device, pName: Ptr[c_char, ImmutAnyOrigin]
+        device: Device, pName: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction
     var create_device: fn(
         physicalDevice: PhysicalDevice,
@@ -3207,7 +3237,7 @@ struct InstanceFunctionAdditionsV1_0(Copyable, Movable):
     ) -> Result
     var enumerate_device_extension_properties: fn(
         physicalDevice: PhysicalDevice,
-        pLayerName: Ptr[c_char, ImmutAnyOrigin],
+        pLayerName: CStringSlice[ImmutAnyOrigin],
         pPropertyCount: Ptr[UInt32, MutAnyOrigin],
         pProperties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result

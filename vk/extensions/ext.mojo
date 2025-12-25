@@ -21,8 +21,8 @@ struct DebugReport(Copyable):
         object: UInt64,
         location: UInt,
         messageCode: Int32,
-        pLayerPrefix: Ptr[c_char, ImmutAnyOrigin],
-        pMessage: Ptr[c_char, ImmutAnyOrigin],
+        pLayerPrefix: CStringSlice[ImmutAnyOrigin],
+        pMessage: CStringSlice[ImmutAnyOrigin],
     )
 
     fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
@@ -91,8 +91,8 @@ struct DebugReport(Copyable):
             object,
             location,
             message_code,
-            p_layer_prefix.unsafe_ptr(),
-            p_message.unsafe_ptr(),
+            Ptr(to=p_layer_prefix).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=p_message).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
         )
 
 

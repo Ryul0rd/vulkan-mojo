@@ -505,9 +505,9 @@ struct LayerProperties(Copyable):
 struct ApplicationInfo(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
-    var p_application_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_application_name: CStringSlice[ImmutAnyOrigin]
     var application_version: Version
-    var p_engine_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_engine_name: CStringSlice[ImmutAnyOrigin]
     var engine_version: Version
     var api_version: Version
 
@@ -525,9 +525,9 @@ struct ApplicationInfo(Copyable):
     ):
         self.s_type = StructureType.APPLICATION_INFO
         self.p_next = p_next
-        self.p_application_name = p_application_name.unsafe_ptr()
+        self.p_application_name = Ptr(to=p_application_name).bitcast[type_of(self.p_application_name)]()[]
         self.application_version = application_version
-        self.p_engine_name = p_engine_name.unsafe_ptr()
+        self.p_engine_name = Ptr(to=p_engine_name).bitcast[type_of(self.p_engine_name)]()[]
         self.engine_version = engine_version
         self.api_version = api_version
 
@@ -588,21 +588,24 @@ struct DeviceCreateInfo(Copyable):
     var queue_create_info_count: UInt32
     var p_queue_create_infos: Ptr[DeviceQueueCreateInfo, ImmutAnyOrigin]
     var enabled_layer_count: UInt32
-    var pp_enabled_layer_names: Ptr[Ptr[c_char, ImmutAnyOrigin], ImmutAnyOrigin]
+    var pp_enabled_layer_names: Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin]
     var enabled_extension_count: UInt32
-    var pp_enabled_extension_names: Ptr[Ptr[c_char, ImmutAnyOrigin], ImmutAnyOrigin]
+    var pp_enabled_extension_names: Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin]
     var p_enabled_features: Ptr[PhysicalDeviceFeatures, ImmutAnyOrigin]
 
-    fn __init__(
+    fn __init__[
+        pp_enabled_layer_names_origin: ImmutOrigin = ImmutAnyOrigin,
+        pp_enabled_extension_names_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         flags: DeviceCreateFlags = zero_init[DeviceCreateFlags](),
         queue_create_info_count: UInt32 = zero_init[UInt32](),
         p_queue_create_infos: Ptr[DeviceQueueCreateInfo, ImmutAnyOrigin] = zero_init[Ptr[DeviceQueueCreateInfo, ImmutAnyOrigin]](),
         enabled_layer_count: UInt32 = zero_init[UInt32](),
-        pp_enabled_layer_names: Ptr[Ptr[c_char, ImmutAnyOrigin], ImmutAnyOrigin] = zero_init[Ptr[Ptr[c_char, ImmutAnyOrigin], ImmutAnyOrigin]](),
+        pp_enabled_layer_names: Ptr[CStringSlice[pp_enabled_layer_names_origin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[pp_enabled_layer_names_origin], ImmutAnyOrigin]](),
         enabled_extension_count: UInt32 = zero_init[UInt32](),
-        pp_enabled_extension_names: Ptr[Ptr[c_char, ImmutAnyOrigin], ImmutAnyOrigin] = zero_init[Ptr[Ptr[c_char, ImmutAnyOrigin], ImmutAnyOrigin]](),
+        pp_enabled_extension_names: Ptr[CStringSlice[pp_enabled_extension_names_origin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[pp_enabled_extension_names_origin], ImmutAnyOrigin]](),
         p_enabled_features: Ptr[PhysicalDeviceFeatures, ImmutAnyOrigin] = zero_init[Ptr[PhysicalDeviceFeatures, ImmutAnyOrigin]](),
     ):
         self.s_type = StructureType.DEVICE_CREATE_INFO
@@ -611,9 +614,9 @@ struct DeviceCreateInfo(Copyable):
         self.queue_create_info_count = queue_create_info_count
         self.p_queue_create_infos = p_queue_create_infos
         self.enabled_layer_count = enabled_layer_count
-        self.pp_enabled_layer_names = pp_enabled_layer_names
+        self.pp_enabled_layer_names = Ptr(to=pp_enabled_layer_names).bitcast[type_of(self.pp_enabled_layer_names)]()[]
         self.enabled_extension_count = enabled_extension_count
-        self.pp_enabled_extension_names = pp_enabled_extension_names
+        self.pp_enabled_extension_names = Ptr(to=pp_enabled_extension_names).bitcast[type_of(self.pp_enabled_extension_names)]()[]
         self.p_enabled_features = p_enabled_features
 
 
@@ -623,28 +626,31 @@ struct InstanceCreateInfo(Copyable):
     var flags: InstanceCreateFlags
     var p_application_info: Ptr[ApplicationInfo, ImmutAnyOrigin]
     var enabled_layer_count: UInt32
-    var pp_enabled_layer_names: Ptr[Ptr[c_char, ImmutAnyOrigin], ImmutAnyOrigin]
+    var pp_enabled_layer_names: Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin]
     var enabled_extension_count: UInt32
-    var pp_enabled_extension_names: Ptr[Ptr[c_char, ImmutAnyOrigin], ImmutAnyOrigin]
+    var pp_enabled_extension_names: Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin]
 
-    fn __init__(
+    fn __init__[
+        pp_enabled_layer_names_origin: ImmutOrigin = ImmutAnyOrigin,
+        pp_enabled_extension_names_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         flags: InstanceCreateFlags = zero_init[InstanceCreateFlags](),
         p_application_info: Ptr[ApplicationInfo, ImmutAnyOrigin] = zero_init[Ptr[ApplicationInfo, ImmutAnyOrigin]](),
         enabled_layer_count: UInt32 = zero_init[UInt32](),
-        pp_enabled_layer_names: Ptr[Ptr[c_char, ImmutAnyOrigin], ImmutAnyOrigin] = zero_init[Ptr[Ptr[c_char, ImmutAnyOrigin], ImmutAnyOrigin]](),
+        pp_enabled_layer_names: Ptr[CStringSlice[pp_enabled_layer_names_origin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[pp_enabled_layer_names_origin], ImmutAnyOrigin]](),
         enabled_extension_count: UInt32 = zero_init[UInt32](),
-        pp_enabled_extension_names: Ptr[Ptr[c_char, ImmutAnyOrigin], ImmutAnyOrigin] = zero_init[Ptr[Ptr[c_char, ImmutAnyOrigin], ImmutAnyOrigin]](),
+        pp_enabled_extension_names: Ptr[CStringSlice[pp_enabled_extension_names_origin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[pp_enabled_extension_names_origin], ImmutAnyOrigin]](),
     ):
         self.s_type = StructureType.INSTANCE_CREATE_INFO
         self.p_next = p_next
         self.flags = flags
         self.p_application_info = p_application_info
         self.enabled_layer_count = enabled_layer_count
-        self.pp_enabled_layer_names = pp_enabled_layer_names
+        self.pp_enabled_layer_names = Ptr(to=pp_enabled_layer_names).bitcast[type_of(self.pp_enabled_layer_names)]()[]
         self.enabled_extension_count = enabled_extension_count
-        self.pp_enabled_extension_names = pp_enabled_extension_names
+        self.pp_enabled_extension_names = Ptr(to=pp_enabled_extension_names).bitcast[type_of(self.pp_enabled_extension_names)]()[]
 
 
 struct QueueFamilyProperties(Copyable):
@@ -1707,7 +1713,7 @@ struct PipelineShaderStageCreateInfo(Copyable):
     var flags: PipelineShaderStageCreateFlags
     var stage: ShaderStageFlagBits
     var module: ShaderModule
-    var p_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_name: CStringSlice[ImmutAnyOrigin]
     var p_specialization_info: Ptr[SpecializationInfo, ImmutAnyOrigin]
 
     fn __init__[
@@ -1726,7 +1732,7 @@ struct PipelineShaderStageCreateInfo(Copyable):
         self.flags = flags
         self.stage = stage
         self.module = module
-        self.p_name = p_name.unsafe_ptr()
+        self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
         self.p_specialization_info = p_specialization_info
 
 
@@ -3597,7 +3603,7 @@ struct SubmitInfo(Copyable):
 
 struct DisplayPropertiesKHR(Copyable):
     var display: DisplayKHR
-    var display_name: Ptr[c_char, ImmutAnyOrigin]
+    var display_name: CStringSlice[ImmutAnyOrigin]
     var physical_dimensions: Extent2D
     var physical_resolution: Extent2D
     var supported_transforms: SurfaceTransformFlagsKHR
@@ -3617,7 +3623,7 @@ struct DisplayPropertiesKHR(Copyable):
         persistent_content: Bool32 = zero_init[Bool32](),
     ):
         self.display = display
-        self.display_name = display_name.unsafe_ptr()
+        self.display_name = Ptr(to=display_name).bitcast[type_of(self.display_name)]()[]
         self.physical_dimensions = physical_dimensions^
         self.physical_resolution = physical_resolution^
         self.supported_transforms = supported_transforms
@@ -4208,8 +4214,8 @@ struct LayerSettingsCreateInfoEXT(Copyable):
 
 
 struct LayerSettingEXT(Copyable):
-    var p_layer_name: Ptr[c_char, ImmutAnyOrigin]
-    var p_setting_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_layer_name: CStringSlice[ImmutAnyOrigin]
+    var p_setting_name: CStringSlice[ImmutAnyOrigin]
     var type: LayerSettingTypeEXT
     var value_count: UInt32
     var p_values: Ptr[NoneType, ImmutAnyOrigin]
@@ -4225,8 +4231,8 @@ struct LayerSettingEXT(Copyable):
         value_count: UInt32 = zero_init[UInt32](),
         p_values: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
     ):
-        self.p_layer_name = p_layer_name.unsafe_ptr()
-        self.p_setting_name = p_setting_name.unsafe_ptr()
+        self.p_layer_name = Ptr(to=p_layer_name).bitcast[type_of(self.p_layer_name)]()[]
+        self.p_setting_name = Ptr(to=p_setting_name).bitcast[type_of(self.p_setting_name)]()[]
         self.type = type
         self.value_count = value_count
         self.p_values = p_values
@@ -4276,7 +4282,7 @@ struct DebugMarkerObjectNameInfoEXT(Copyable):
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
     var object_type: DebugReportObjectTypeEXT
     var object: UInt64
-    var p_object_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_object_name: CStringSlice[ImmutAnyOrigin]
 
     fn __init__[
         p_object_name_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -4291,7 +4297,7 @@ struct DebugMarkerObjectNameInfoEXT(Copyable):
         self.p_next = p_next
         self.object_type = object_type
         self.object = object
-        self.p_object_name = p_object_name.unsafe_ptr()
+        self.p_object_name = Ptr(to=p_object_name).bitcast[type_of(self.p_object_name)]()[]
 
 
 struct DebugMarkerObjectTagInfoEXT(Copyable):
@@ -4324,7 +4330,7 @@ struct DebugMarkerObjectTagInfoEXT(Copyable):
 struct DebugMarkerMarkerInfoEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
-    var p_marker_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_marker_name: CStringSlice[ImmutAnyOrigin]
     var color: InlineArray[Float32, Int(4)]
 
     fn __init__[
@@ -4337,7 +4343,7 @@ struct DebugMarkerMarkerInfoEXT(Copyable):
     ):
         self.s_type = StructureType.DEBUG_MARKER_MARKER_INFO_EXT
         self.p_next = p_next
-        self.p_marker_name = p_marker_name.unsafe_ptr()
+        self.p_marker_name = Ptr(to=p_marker_name).bitcast[type_of(self.p_marker_name)]()[]
         self.color = color
 
 
@@ -9563,7 +9569,7 @@ struct DebugUtilsObjectNameInfoEXT(Copyable):
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
     var object_type: ObjectType
     var object_handle: UInt64
-    var p_object_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_object_name: CStringSlice[ImmutAnyOrigin]
 
     fn __init__[
         p_object_name_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -9578,7 +9584,7 @@ struct DebugUtilsObjectNameInfoEXT(Copyable):
         self.p_next = p_next
         self.object_type = object_type
         self.object_handle = object_handle
-        self.p_object_name = p_object_name.unsafe_ptr()
+        self.p_object_name = Ptr(to=p_object_name).bitcast[type_of(self.p_object_name)]()[]
 
 
 struct DebugUtilsObjectTagInfoEXT(Copyable):
@@ -9611,7 +9617,7 @@ struct DebugUtilsObjectTagInfoEXT(Copyable):
 struct DebugUtilsLabelEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
-    var p_label_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_label_name: CStringSlice[ImmutAnyOrigin]
     var color: InlineArray[Float32, Int(4)]
 
     fn __init__[
@@ -9624,7 +9630,7 @@ struct DebugUtilsLabelEXT(Copyable):
     ):
         self.s_type = StructureType.DEBUG_UTILS_LABEL_EXT
         self.p_next = p_next
-        self.p_label_name = p_label_name.unsafe_ptr()
+        self.p_label_name = Ptr(to=p_label_name).bitcast[type_of(self.p_label_name)]()[]
         self.color = color
 
 
@@ -9659,9 +9665,9 @@ struct DebugUtilsMessengerCallbackDataEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
     var flags: DebugUtilsMessengerCallbackDataFlagsEXT
-    var p_message_id_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_message_id_name: CStringSlice[ImmutAnyOrigin]
     var message_id_number: Int32
-    var p_message: Ptr[c_char, ImmutAnyOrigin]
+    var p_message: CStringSlice[ImmutAnyOrigin]
     var queue_label_count: UInt32
     var p_queue_labels: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]
     var cmd_buf_label_count: UInt32
@@ -9689,9 +9695,9 @@ struct DebugUtilsMessengerCallbackDataEXT(Copyable):
         self.s_type = StructureType.DEBUG_UTILS_MESSENGER_CALLBACK_DATA_EXT
         self.p_next = p_next
         self.flags = flags
-        self.p_message_id_name = p_message_id_name.unsafe_ptr()
+        self.p_message_id_name = Ptr(to=p_message_id_name).bitcast[type_of(self.p_message_id_name)]()[]
         self.message_id_number = message_id_number
-        self.p_message = p_message.unsafe_ptr()
+        self.p_message = Ptr(to=p_message).bitcast[type_of(self.p_message)]()[]
         self.queue_label_count = queue_label_count
         self.p_queue_labels = p_queue_labels
         self.cmd_buf_label_count = cmd_buf_label_count
@@ -21365,7 +21371,7 @@ struct CuFunctionCreateInfoNVX(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
     var module: CuModuleNVX
-    var p_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_name: CStringSlice[ImmutAnyOrigin]
 
     fn __init__[
         p_name_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -21378,7 +21384,7 @@ struct CuFunctionCreateInfoNVX(Copyable):
         self.s_type = StructureType.CU_FUNCTION_CREATE_INFO_NVX
         self.p_next = p_next
         self.module = module
-        self.p_name = p_name.unsafe_ptr()
+        self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
 
 
 struct CuLaunchInfoNVX(Copyable):
@@ -22451,7 +22457,7 @@ struct CudaFunctionCreateInfoNV(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
     var module: CudaModuleNV
-    var p_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_name: CStringSlice[ImmutAnyOrigin]
 
     fn __init__[
         p_name_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -22464,7 +22470,7 @@ struct CudaFunctionCreateInfoNV(Copyable):
         self.s_type = StructureType.CUDA_FUNCTION_CREATE_INFO_NV
         self.p_next = p_next
         self.module = module
-        self.p_name = p_name.unsafe_ptr()
+        self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
 
 
 struct CudaLaunchInfoNV(Copyable):
@@ -25294,7 +25300,7 @@ struct ShaderCreateInfoEXT(Copyable):
     var code_type: ShaderCodeTypeEXT
     var code_size: UInt
     var p_code: Ptr[NoneType, ImmutAnyOrigin]
-    var p_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_name: CStringSlice[ImmutAnyOrigin]
     var set_layout_count: UInt32
     var p_set_layouts: Ptr[DescriptorSetLayout, ImmutAnyOrigin]
     var push_constant_range_count: UInt32
@@ -25327,7 +25333,7 @@ struct ShaderCreateInfoEXT(Copyable):
         self.code_type = code_type
         self.code_size = code_size
         self.p_code = p_code
-        self.p_name = p_name.unsafe_ptr()
+        self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
         self.set_layout_count = set_layout_count
         self.p_set_layouts = p_set_layouts
         self.push_constant_range_count = push_constant_range_count
@@ -25638,7 +25644,7 @@ struct ExecutionGraphPipelineCreateInfoAMDX(Copyable):
 struct PipelineShaderStageNodeCreateInfoAMDX(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
-    var p_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_name: CStringSlice[ImmutAnyOrigin]
     var index: UInt32
 
     fn __init__[
@@ -25651,7 +25657,7 @@ struct PipelineShaderStageNodeCreateInfoAMDX(Copyable):
     ):
         self.s_type = StructureType.PIPELINE_SHADER_STAGE_NODE_CREATE_INFO_AMDX
         self.p_next = p_next
-        self.p_name = p_name.unsafe_ptr()
+        self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
         self.index = index
 
 
@@ -28202,7 +28208,7 @@ struct DataGraphPipelineResourceInfoARM(Copyable):
 struct DataGraphPipelineCompilerControlCreateInfoARM(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
-    var p_vendor_options: Ptr[c_char, ImmutAnyOrigin]
+    var p_vendor_options: CStringSlice[ImmutAnyOrigin]
 
     fn __init__[
         p_vendor_options_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -28213,7 +28219,7 @@ struct DataGraphPipelineCompilerControlCreateInfoARM(Copyable):
     ):
         self.s_type = StructureType.DATA_GRAPH_PIPELINE_COMPILER_CONTROL_CREATE_INFO_ARM
         self.p_next = p_next
-        self.p_vendor_options = p_vendor_options.unsafe_ptr()
+        self.p_vendor_options = Ptr(to=p_vendor_options).bitcast[type_of(self.p_vendor_options)]()[]
 
 
 struct DataGraphPipelineCreateInfoARM(Copyable):
@@ -28244,7 +28250,7 @@ struct DataGraphPipelineShaderModuleCreateInfoARM(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
     var module: ShaderModule
-    var p_name: Ptr[c_char, ImmutAnyOrigin]
+    var p_name: CStringSlice[ImmutAnyOrigin]
     var p_specialization_info: Ptr[SpecializationInfo, ImmutAnyOrigin]
     var constant_count: UInt32
     var p_constants: Ptr[DataGraphPipelineConstantARM, ImmutAnyOrigin]
@@ -28263,7 +28269,7 @@ struct DataGraphPipelineShaderModuleCreateInfoARM(Copyable):
         self.s_type = StructureType.DATA_GRAPH_PIPELINE_SHADER_MODULE_CREATE_INFO_ARM
         self.p_next = p_next
         self.module = module
-        self.p_name = p_name.unsafe_ptr()
+        self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
         self.p_specialization_info = p_specialization_info
         self.constant_count = constant_count
         self.p_constants = p_constants
