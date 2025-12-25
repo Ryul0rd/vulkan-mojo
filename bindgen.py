@@ -700,7 +700,6 @@ def parse_commands(registry: Element) -> VkParsedCommands:
                 raise ValueError("Unexpected optional value")
             # We only care about outermost optional
             optional = raw_optional.startswith("true")
-            length = param_el.get("len")
             args.append(VkCommandParam(param_name, param_type, length, optional))
         commands_by_name[name] = VkCommand(name, return_type, args)
 
@@ -910,7 +909,7 @@ def emit_wrapper_type(wrapper_type: VkWrapperType) -> str:
             f"struct {mojo_name}:\n"
             f"    pass\n"
         )
-    mojo_type = emit_mojo_type(wrapper_type.underlying_type)
+    mojo_type = emit_mojo_type(wrapper_type.underlying_type, use_external_origin=True)
     return (
         f'@register_passable("trivial")\n'
         f"struct {mojo_name}:\n"
@@ -1204,7 +1203,7 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
             if is_version:
                 member_type = "Version"
             else:
-                member_type = emit_mojo_type(member.type, use_any_origin=True)
+                member_type = emit_mojo_type(member.type)
             is_stype = member.type.name == "VkStructureType" and member.value is not None
             is_array_string = len(member.type.array_dims) > 0 and member.type.name == "char"
             field_type_explicitly_copyable = (
@@ -1227,7 +1226,7 @@ def emit_structs(files: Dict[str, str], structs: List[VkStruct | VkTypeAlias]):
                     init_lines.append(f"        self.s_type = StructureType.{stype}\n")
                 elif is_const_char_ptr:
                     origin_param = cstring_origin_by_member[member_name]
-                    string_member_type = emit_mojo_type(member.type, use_any_origin=True, string_origin=origin_param)
+                    string_member_type = emit_mojo_type(member.type, string_origin=origin_param)
                     init_args.append(f"{member_name}: {string_member_type} = zero_init[{string_member_type}]()")
                     init_lines.append(f"        self.{member_name} = Ptr(to={member_name}).bitcast[type_of(self.{member_name})]()[]\n")
                 else:
@@ -1440,7 +1439,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 parts.append(emit_fn_like(
                     f"var {mojo_command_name}: fn(",
                     [
-                        f"{arg.name}: {emit_mojo_type(arg.type, use_any_origin=True)}" 
+                        f"{arg.name}: {emit_mojo_type(arg.type)}" 
                         for arg in new_command.command.params
                     ],
                     f"){sig_ret}\n",
@@ -1494,7 +1493,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 extension_parts.append(emit_fn_like(
                     f"var _{mojo_command_name}: fn(",
                     [
-                        f"{arg.name}: {emit_mojo_type(arg.type, use_any_origin=True)}"
+                        f"{arg.name}: {emit_mojo_type(arg.type)}"
                         for arg in command.params
                     ],
                     f"){sig_ret}\n",
@@ -1560,7 +1559,7 @@ def emit_command_wrapper(command: VkCommand, version: Optional[VkVersion]=None) 
                 and arg.type.const[-1]
                 and arg.type.name == "char"
             )
-            sig_arg_strs.append(f"{mojo_arg_name}: {emit_mojo_type(arg.type, use_any_origin=True, no_cstringslice_origin=True)}")
+            sig_arg_strs.append(f"{mojo_arg_name}: {emit_mojo_type(arg.type, no_cstringslice_origin=True)}")
             ffi_call_args.append(f"Ptr(to={mojo_arg_name}).bitcast[CStringSlice[ImmutAnyOrigin]]()[]" if is_string else mojo_arg_name)
             wrapper_call_args.append(mojo_arg_name)
 
@@ -1730,25 +1729,24 @@ def emit_mojo_type_name(old_name: str) -> str:
 def emit_mojo_type(
     type: VkType, 
     strip_ptr: bool = False,
-    use_any_origin: bool = False, 
-    use_c_string_slice: bool = True,
+    use_external_origin: bool = False, 
     no_cstringslice_origin: bool = False,
     string_origin: Optional[str] = None,
 ) -> str:
-    MUT_ORIGIN = "MutAnyOrigin" if use_any_origin else "MutOrigin.external"
-    IMMUT_ORIGIN = "ImmutAnyOrigin" if use_any_origin else "ImmutOrigin.external"
+    MUT_ORIGIN = "MutOrigin.external" if use_external_origin else "MutAnyOrigin"
+    IMMUT_ORIGIN = "ImmutOrigin.external" if use_external_origin else "ImmutAnyOrigin"
 
     _type = deepcopy(type)
     if strip_ptr:
         _type.ptr_level -= 1
         _type.const.pop(0)
     is_string = _type.ptr_level >= 1 and _type.const[-1] and _type.name == "char"
-    if is_string and use_c_string_slice:
+    if is_string:
         _type.ptr_level -= 1
         _type.const.pop()
 
     mojo_type = emit_mojo_type_name(_type.name)
-    if is_string and use_c_string_slice:
+    if is_string:
         if no_cstringslice_origin:
             mojo_type = "CStringSlice"
         elif string_origin is None:
