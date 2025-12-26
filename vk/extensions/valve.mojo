@@ -14,16 +14,20 @@ struct DescriptorSetHostMapping(Copyable):
         ppData: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_descriptor_set_layout_host_mapping_info_valve = Ptr(to=get_device_proc_addr(
             device, "vkGetDescriptorSetLayoutHostMappingInfoVALVE".unsafe_ptr()
         )).bitcast[type_of(self._get_descriptor_set_layout_host_mapping_info_valve)]()[]
+        if not Ptr(to=self._get_descriptor_set_layout_host_mapping_info_valve).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDescriptorSetLayoutHostMappingInfoVALVE."
         self._get_descriptor_set_host_mapping_valve = Ptr(to=get_device_proc_addr(
             device, "vkGetDescriptorSetHostMappingVALVE".unsafe_ptr()
         )).bitcast[type_of(self._get_descriptor_set_host_mapping_valve)]()[]
+        if not Ptr(to=self._get_descriptor_set_host_mapping_valve).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDescriptorSetHostMappingVALVE."
 
     fn get_descriptor_set_layout_host_mapping_info_valve(
         self,

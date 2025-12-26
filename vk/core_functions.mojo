@@ -604,15 +604,23 @@ struct GlobalFunctionAdditionsV1_0(Copyable, Movable):
         self.create_instance = Ptr(to=get_instance_proc_addr(
             Instance.NULL, "vkCreateInstance".unsafe_ptr()
         )).bitcast[type_of(self.create_instance)]()[]
+        if not Ptr(to=self.create_instance).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateInstance."
         self.get_instance_proc_addr = Ptr(to=get_instance_proc_addr(
             Instance.NULL, "vkGetInstanceProcAddr".unsafe_ptr()
         )).bitcast[type_of(self.get_instance_proc_addr)]()[]
+        if not Ptr(to=self.get_instance_proc_addr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetInstanceProcAddr."
         self.enumerate_instance_extension_properties = Ptr(to=get_instance_proc_addr(
             Instance.NULL, "vkEnumerateInstanceExtensionProperties".unsafe_ptr()
         )).bitcast[type_of(self.enumerate_instance_extension_properties)]()[]
+        if not Ptr(to=self.enumerate_instance_extension_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkEnumerateInstanceExtensionProperties."
         self.enumerate_instance_layer_properties = Ptr(to=get_instance_proc_addr(
             Instance.NULL, "vkEnumerateInstanceLayerProperties".unsafe_ptr()
         )).bitcast[type_of(self.enumerate_instance_layer_properties)]()[]
+        if not Ptr(to=self.enumerate_instance_layer_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkEnumerateInstanceLayerProperties."
 
 
 struct GlobalFunctionAdditionsV1_1(Copyable, Movable):
@@ -625,6 +633,8 @@ struct GlobalFunctionAdditionsV1_1(Copyable, Movable):
         self.enumerate_instance_version = Ptr(to=get_instance_proc_addr(
             Instance.NULL, "vkEnumerateInstanceVersion".unsafe_ptr()
         )).bitcast[type_of(self.enumerate_instance_version)]()[]
+        if not Ptr(to=self.enumerate_instance_version).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkEnumerateInstanceVersion."
 
 
 struct InstanceFunctionsV1_0(Movable):
@@ -3264,42 +3274,68 @@ struct InstanceFunctionAdditionsV1_0(Copyable, Movable):
         self.destroy_instance = Ptr(to=get_instance_proc_addr(
             instance, "vkDestroyInstance".unsafe_ptr()
         )).bitcast[type_of(self.destroy_instance)]()[]
+        if not Ptr(to=self.destroy_instance).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyInstance."
         self.enumerate_physical_devices = Ptr(to=get_instance_proc_addr(
             instance, "vkEnumeratePhysicalDevices".unsafe_ptr()
         )).bitcast[type_of(self.enumerate_physical_devices)]()[]
+        if not Ptr(to=self.enumerate_physical_devices).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkEnumeratePhysicalDevices."
         self.get_physical_device_features = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceFeatures".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_features)]()[]
+        if not Ptr(to=self.get_physical_device_features).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceFeatures."
         self.get_physical_device_format_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceFormatProperties".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_format_properties)]()[]
+        if not Ptr(to=self.get_physical_device_format_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceFormatProperties."
         self.get_physical_device_image_format_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceImageFormatProperties".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_image_format_properties)]()[]
+        if not Ptr(to=self.get_physical_device_image_format_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceImageFormatProperties."
         self.get_physical_device_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceProperties".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_properties)]()[]
+        if not Ptr(to=self.get_physical_device_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceProperties."
         self.get_physical_device_queue_family_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceQueueFamilyProperties".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_queue_family_properties)]()[]
+        if not Ptr(to=self.get_physical_device_queue_family_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceQueueFamilyProperties."
         self.get_physical_device_memory_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceMemoryProperties".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_memory_properties)]()[]
+        if not Ptr(to=self.get_physical_device_memory_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceMemoryProperties."
         self.get_device_proc_addr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetDeviceProcAddr".unsafe_ptr()
         )).bitcast[type_of(self.get_device_proc_addr)]()[]
+        if not Ptr(to=self.get_device_proc_addr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceProcAddr."
         self.create_device = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateDevice".unsafe_ptr()
         )).bitcast[type_of(self.create_device)]()[]
+        if not Ptr(to=self.create_device).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateDevice."
         self.enumerate_device_extension_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkEnumerateDeviceExtensionProperties".unsafe_ptr()
         )).bitcast[type_of(self.enumerate_device_extension_properties)]()[]
+        if not Ptr(to=self.enumerate_device_extension_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkEnumerateDeviceExtensionProperties."
         self.enumerate_device_layer_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkEnumerateDeviceLayerProperties".unsafe_ptr()
         )).bitcast[type_of(self.enumerate_device_layer_properties)]()[]
+        if not Ptr(to=self.enumerate_device_layer_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkEnumerateDeviceLayerProperties."
         self.get_physical_device_sparse_image_format_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceSparseImageFormatProperties".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_sparse_image_format_properties)]()[]
+        if not Ptr(to=self.get_physical_device_sparse_image_format_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceSparseImageFormatProperties."
 
 
 struct InstanceFunctionAdditionsV1_1(Copyable, Movable):
@@ -3362,36 +3398,58 @@ struct InstanceFunctionAdditionsV1_1(Copyable, Movable):
         self.enumerate_physical_device_groups = Ptr(to=get_instance_proc_addr(
             instance, "vkEnumeratePhysicalDeviceGroups".unsafe_ptr()
         )).bitcast[type_of(self.enumerate_physical_device_groups)]()[]
+        if not Ptr(to=self.enumerate_physical_device_groups).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkEnumeratePhysicalDeviceGroups."
         self.get_physical_device_features_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceFeatures2".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_features_2)]()[]
+        if not Ptr(to=self.get_physical_device_features_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceFeatures2."
         self.get_physical_device_properties_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceProperties2".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_properties_2)]()[]
+        if not Ptr(to=self.get_physical_device_properties_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceProperties2."
         self.get_physical_device_format_properties_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceFormatProperties2".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_format_properties_2)]()[]
+        if not Ptr(to=self.get_physical_device_format_properties_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceFormatProperties2."
         self.get_physical_device_image_format_properties_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceImageFormatProperties2".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_image_format_properties_2)]()[]
+        if not Ptr(to=self.get_physical_device_image_format_properties_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceImageFormatProperties2."
         self.get_physical_device_queue_family_properties_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceQueueFamilyProperties2".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_queue_family_properties_2)]()[]
+        if not Ptr(to=self.get_physical_device_queue_family_properties_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceQueueFamilyProperties2."
         self.get_physical_device_memory_properties_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceMemoryProperties2".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_memory_properties_2)]()[]
+        if not Ptr(to=self.get_physical_device_memory_properties_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceMemoryProperties2."
         self.get_physical_device_sparse_image_format_properties_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceSparseImageFormatProperties2".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_sparse_image_format_properties_2)]()[]
+        if not Ptr(to=self.get_physical_device_sparse_image_format_properties_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceSparseImageFormatProperties2."
         self.get_physical_device_external_buffer_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceExternalBufferProperties".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_external_buffer_properties)]()[]
+        if not Ptr(to=self.get_physical_device_external_buffer_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceExternalBufferProperties."
         self.get_physical_device_external_fence_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceExternalFenceProperties".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_external_fence_properties)]()[]
+        if not Ptr(to=self.get_physical_device_external_fence_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceExternalFenceProperties."
         self.get_physical_device_external_semaphore_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceExternalSemaphoreProperties".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_external_semaphore_properties)]()[]
+        if not Ptr(to=self.get_physical_device_external_semaphore_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceExternalSemaphoreProperties."
 
 
 struct InstanceFunctionAdditionsV1_3(Copyable, Movable):
@@ -3408,6 +3466,8 @@ struct InstanceFunctionAdditionsV1_3(Copyable, Movable):
         self.get_physical_device_tool_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceToolProperties".unsafe_ptr()
         )).bitcast[type_of(self.get_physical_device_tool_properties)]()[]
+        if not Ptr(to=self.get_physical_device_tool_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceToolProperties."
 
 
 struct DeviceFunctionsV1_0(Movable):
@@ -15311,363 +15371,603 @@ struct DeviceFunctionAdditionsV1_0(Copyable, Movable):
         self.destroy_device = Ptr(to=get_device_proc_addr(
             device, "vkDestroyDevice".unsafe_ptr()
         )).bitcast[type_of(self.destroy_device)]()[]
+        if not Ptr(to=self.destroy_device).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyDevice."
         self.get_device_queue = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceQueue".unsafe_ptr()
         )).bitcast[type_of(self.get_device_queue)]()[]
+        if not Ptr(to=self.get_device_queue).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceQueue."
         self.queue_submit = Ptr(to=get_device_proc_addr(
             device, "vkQueueSubmit".unsafe_ptr()
         )).bitcast[type_of(self.queue_submit)]()[]
+        if not Ptr(to=self.queue_submit).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkQueueSubmit."
         self.queue_wait_idle = Ptr(to=get_device_proc_addr(
             device, "vkQueueWaitIdle".unsafe_ptr()
         )).bitcast[type_of(self.queue_wait_idle)]()[]
+        if not Ptr(to=self.queue_wait_idle).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkQueueWaitIdle."
         self.device_wait_idle = Ptr(to=get_device_proc_addr(
             device, "vkDeviceWaitIdle".unsafe_ptr()
         )).bitcast[type_of(self.device_wait_idle)]()[]
+        if not Ptr(to=self.device_wait_idle).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDeviceWaitIdle."
         self.allocate_memory = Ptr(to=get_device_proc_addr(
             device, "vkAllocateMemory".unsafe_ptr()
         )).bitcast[type_of(self.allocate_memory)]()[]
+        if not Ptr(to=self.allocate_memory).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkAllocateMemory."
         self.free_memory = Ptr(to=get_device_proc_addr(
             device, "vkFreeMemory".unsafe_ptr()
         )).bitcast[type_of(self.free_memory)]()[]
+        if not Ptr(to=self.free_memory).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkFreeMemory."
         self.map_memory = Ptr(to=get_device_proc_addr(
             device, "vkMapMemory".unsafe_ptr()
         )).bitcast[type_of(self.map_memory)]()[]
+        if not Ptr(to=self.map_memory).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkMapMemory."
         self.unmap_memory = Ptr(to=get_device_proc_addr(
             device, "vkUnmapMemory".unsafe_ptr()
         )).bitcast[type_of(self.unmap_memory)]()[]
+        if not Ptr(to=self.unmap_memory).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkUnmapMemory."
         self.flush_mapped_memory_ranges = Ptr(to=get_device_proc_addr(
             device, "vkFlushMappedMemoryRanges".unsafe_ptr()
         )).bitcast[type_of(self.flush_mapped_memory_ranges)]()[]
+        if not Ptr(to=self.flush_mapped_memory_ranges).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkFlushMappedMemoryRanges."
         self.invalidate_mapped_memory_ranges = Ptr(to=get_device_proc_addr(
             device, "vkInvalidateMappedMemoryRanges".unsafe_ptr()
         )).bitcast[type_of(self.invalidate_mapped_memory_ranges)]()[]
+        if not Ptr(to=self.invalidate_mapped_memory_ranges).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkInvalidateMappedMemoryRanges."
         self.get_device_memory_commitment = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceMemoryCommitment".unsafe_ptr()
         )).bitcast[type_of(self.get_device_memory_commitment)]()[]
+        if not Ptr(to=self.get_device_memory_commitment).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceMemoryCommitment."
         self.bind_buffer_memory = Ptr(to=get_device_proc_addr(
             device, "vkBindBufferMemory".unsafe_ptr()
         )).bitcast[type_of(self.bind_buffer_memory)]()[]
+        if not Ptr(to=self.bind_buffer_memory).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkBindBufferMemory."
         self.bind_image_memory = Ptr(to=get_device_proc_addr(
             device, "vkBindImageMemory".unsafe_ptr()
         )).bitcast[type_of(self.bind_image_memory)]()[]
+        if not Ptr(to=self.bind_image_memory).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkBindImageMemory."
         self.get_buffer_memory_requirements = Ptr(to=get_device_proc_addr(
             device, "vkGetBufferMemoryRequirements".unsafe_ptr()
         )).bitcast[type_of(self.get_buffer_memory_requirements)]()[]
+        if not Ptr(to=self.get_buffer_memory_requirements).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetBufferMemoryRequirements."
         self.get_image_memory_requirements = Ptr(to=get_device_proc_addr(
             device, "vkGetImageMemoryRequirements".unsafe_ptr()
         )).bitcast[type_of(self.get_image_memory_requirements)]()[]
+        if not Ptr(to=self.get_image_memory_requirements).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetImageMemoryRequirements."
         self.get_image_sparse_memory_requirements = Ptr(to=get_device_proc_addr(
             device, "vkGetImageSparseMemoryRequirements".unsafe_ptr()
         )).bitcast[type_of(self.get_image_sparse_memory_requirements)]()[]
+        if not Ptr(to=self.get_image_sparse_memory_requirements).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetImageSparseMemoryRequirements."
         self.queue_bind_sparse = Ptr(to=get_device_proc_addr(
             device, "vkQueueBindSparse".unsafe_ptr()
         )).bitcast[type_of(self.queue_bind_sparse)]()[]
+        if not Ptr(to=self.queue_bind_sparse).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkQueueBindSparse."
         self.create_fence = Ptr(to=get_device_proc_addr(
             device, "vkCreateFence".unsafe_ptr()
         )).bitcast[type_of(self.create_fence)]()[]
+        if not Ptr(to=self.create_fence).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateFence."
         self.destroy_fence = Ptr(to=get_device_proc_addr(
             device, "vkDestroyFence".unsafe_ptr()
         )).bitcast[type_of(self.destroy_fence)]()[]
+        if not Ptr(to=self.destroy_fence).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyFence."
         self.reset_fences = Ptr(to=get_device_proc_addr(
             device, "vkResetFences".unsafe_ptr()
         )).bitcast[type_of(self.reset_fences)]()[]
+        if not Ptr(to=self.reset_fences).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkResetFences."
         self.get_fence_status = Ptr(to=get_device_proc_addr(
             device, "vkGetFenceStatus".unsafe_ptr()
         )).bitcast[type_of(self.get_fence_status)]()[]
+        if not Ptr(to=self.get_fence_status).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetFenceStatus."
         self.wait_for_fences = Ptr(to=get_device_proc_addr(
             device, "vkWaitForFences".unsafe_ptr()
         )).bitcast[type_of(self.wait_for_fences)]()[]
+        if not Ptr(to=self.wait_for_fences).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkWaitForFences."
         self.create_semaphore = Ptr(to=get_device_proc_addr(
             device, "vkCreateSemaphore".unsafe_ptr()
         )).bitcast[type_of(self.create_semaphore)]()[]
+        if not Ptr(to=self.create_semaphore).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateSemaphore."
         self.destroy_semaphore = Ptr(to=get_device_proc_addr(
             device, "vkDestroySemaphore".unsafe_ptr()
         )).bitcast[type_of(self.destroy_semaphore)]()[]
+        if not Ptr(to=self.destroy_semaphore).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroySemaphore."
         self.create_event = Ptr(to=get_device_proc_addr(
             device, "vkCreateEvent".unsafe_ptr()
         )).bitcast[type_of(self.create_event)]()[]
+        if not Ptr(to=self.create_event).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateEvent."
         self.destroy_event = Ptr(to=get_device_proc_addr(
             device, "vkDestroyEvent".unsafe_ptr()
         )).bitcast[type_of(self.destroy_event)]()[]
+        if not Ptr(to=self.destroy_event).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyEvent."
         self.get_event_status = Ptr(to=get_device_proc_addr(
             device, "vkGetEventStatus".unsafe_ptr()
         )).bitcast[type_of(self.get_event_status)]()[]
+        if not Ptr(to=self.get_event_status).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetEventStatus."
         self.set_event = Ptr(to=get_device_proc_addr(
             device, "vkSetEvent".unsafe_ptr()
         )).bitcast[type_of(self.set_event)]()[]
+        if not Ptr(to=self.set_event).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkSetEvent."
         self.reset_event = Ptr(to=get_device_proc_addr(
             device, "vkResetEvent".unsafe_ptr()
         )).bitcast[type_of(self.reset_event)]()[]
+        if not Ptr(to=self.reset_event).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkResetEvent."
         self.create_query_pool = Ptr(to=get_device_proc_addr(
             device, "vkCreateQueryPool".unsafe_ptr()
         )).bitcast[type_of(self.create_query_pool)]()[]
+        if not Ptr(to=self.create_query_pool).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateQueryPool."
         self.destroy_query_pool = Ptr(to=get_device_proc_addr(
             device, "vkDestroyQueryPool".unsafe_ptr()
         )).bitcast[type_of(self.destroy_query_pool)]()[]
+        if not Ptr(to=self.destroy_query_pool).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyQueryPool."
         self.get_query_pool_results = Ptr(to=get_device_proc_addr(
             device, "vkGetQueryPoolResults".unsafe_ptr()
         )).bitcast[type_of(self.get_query_pool_results)]()[]
+        if not Ptr(to=self.get_query_pool_results).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetQueryPoolResults."
         self.create_buffer = Ptr(to=get_device_proc_addr(
             device, "vkCreateBuffer".unsafe_ptr()
         )).bitcast[type_of(self.create_buffer)]()[]
+        if not Ptr(to=self.create_buffer).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateBuffer."
         self.destroy_buffer = Ptr(to=get_device_proc_addr(
             device, "vkDestroyBuffer".unsafe_ptr()
         )).bitcast[type_of(self.destroy_buffer)]()[]
+        if not Ptr(to=self.destroy_buffer).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyBuffer."
         self.create_buffer_view = Ptr(to=get_device_proc_addr(
             device, "vkCreateBufferView".unsafe_ptr()
         )).bitcast[type_of(self.create_buffer_view)]()[]
+        if not Ptr(to=self.create_buffer_view).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateBufferView."
         self.destroy_buffer_view = Ptr(to=get_device_proc_addr(
             device, "vkDestroyBufferView".unsafe_ptr()
         )).bitcast[type_of(self.destroy_buffer_view)]()[]
+        if not Ptr(to=self.destroy_buffer_view).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyBufferView."
         self.create_image = Ptr(to=get_device_proc_addr(
             device, "vkCreateImage".unsafe_ptr()
         )).bitcast[type_of(self.create_image)]()[]
+        if not Ptr(to=self.create_image).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateImage."
         self.destroy_image = Ptr(to=get_device_proc_addr(
             device, "vkDestroyImage".unsafe_ptr()
         )).bitcast[type_of(self.destroy_image)]()[]
+        if not Ptr(to=self.destroy_image).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyImage."
         self.get_image_subresource_layout = Ptr(to=get_device_proc_addr(
             device, "vkGetImageSubresourceLayout".unsafe_ptr()
         )).bitcast[type_of(self.get_image_subresource_layout)]()[]
+        if not Ptr(to=self.get_image_subresource_layout).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetImageSubresourceLayout."
         self.create_image_view = Ptr(to=get_device_proc_addr(
             device, "vkCreateImageView".unsafe_ptr()
         )).bitcast[type_of(self.create_image_view)]()[]
+        if not Ptr(to=self.create_image_view).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateImageView."
         self.destroy_image_view = Ptr(to=get_device_proc_addr(
             device, "vkDestroyImageView".unsafe_ptr()
         )).bitcast[type_of(self.destroy_image_view)]()[]
+        if not Ptr(to=self.destroy_image_view).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyImageView."
         self.create_shader_module = Ptr(to=get_device_proc_addr(
             device, "vkCreateShaderModule".unsafe_ptr()
         )).bitcast[type_of(self.create_shader_module)]()[]
+        if not Ptr(to=self.create_shader_module).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateShaderModule."
         self.destroy_shader_module = Ptr(to=get_device_proc_addr(
             device, "vkDestroyShaderModule".unsafe_ptr()
         )).bitcast[type_of(self.destroy_shader_module)]()[]
+        if not Ptr(to=self.destroy_shader_module).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyShaderModule."
         self.create_pipeline_cache = Ptr(to=get_device_proc_addr(
             device, "vkCreatePipelineCache".unsafe_ptr()
         )).bitcast[type_of(self.create_pipeline_cache)]()[]
+        if not Ptr(to=self.create_pipeline_cache).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreatePipelineCache."
         self.destroy_pipeline_cache = Ptr(to=get_device_proc_addr(
             device, "vkDestroyPipelineCache".unsafe_ptr()
         )).bitcast[type_of(self.destroy_pipeline_cache)]()[]
+        if not Ptr(to=self.destroy_pipeline_cache).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyPipelineCache."
         self.get_pipeline_cache_data = Ptr(to=get_device_proc_addr(
             device, "vkGetPipelineCacheData".unsafe_ptr()
         )).bitcast[type_of(self.get_pipeline_cache_data)]()[]
+        if not Ptr(to=self.get_pipeline_cache_data).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPipelineCacheData."
         self.merge_pipeline_caches = Ptr(to=get_device_proc_addr(
             device, "vkMergePipelineCaches".unsafe_ptr()
         )).bitcast[type_of(self.merge_pipeline_caches)]()[]
+        if not Ptr(to=self.merge_pipeline_caches).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkMergePipelineCaches."
         self.create_graphics_pipelines = Ptr(to=get_device_proc_addr(
             device, "vkCreateGraphicsPipelines".unsafe_ptr()
         )).bitcast[type_of(self.create_graphics_pipelines)]()[]
+        if not Ptr(to=self.create_graphics_pipelines).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateGraphicsPipelines."
         self.create_compute_pipelines = Ptr(to=get_device_proc_addr(
             device, "vkCreateComputePipelines".unsafe_ptr()
         )).bitcast[type_of(self.create_compute_pipelines)]()[]
+        if not Ptr(to=self.create_compute_pipelines).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateComputePipelines."
         self.destroy_pipeline = Ptr(to=get_device_proc_addr(
             device, "vkDestroyPipeline".unsafe_ptr()
         )).bitcast[type_of(self.destroy_pipeline)]()[]
+        if not Ptr(to=self.destroy_pipeline).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyPipeline."
         self.create_pipeline_layout = Ptr(to=get_device_proc_addr(
             device, "vkCreatePipelineLayout".unsafe_ptr()
         )).bitcast[type_of(self.create_pipeline_layout)]()[]
+        if not Ptr(to=self.create_pipeline_layout).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreatePipelineLayout."
         self.destroy_pipeline_layout = Ptr(to=get_device_proc_addr(
             device, "vkDestroyPipelineLayout".unsafe_ptr()
         )).bitcast[type_of(self.destroy_pipeline_layout)]()[]
+        if not Ptr(to=self.destroy_pipeline_layout).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyPipelineLayout."
         self.create_sampler = Ptr(to=get_device_proc_addr(
             device, "vkCreateSampler".unsafe_ptr()
         )).bitcast[type_of(self.create_sampler)]()[]
+        if not Ptr(to=self.create_sampler).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateSampler."
         self.destroy_sampler = Ptr(to=get_device_proc_addr(
             device, "vkDestroySampler".unsafe_ptr()
         )).bitcast[type_of(self.destroy_sampler)]()[]
+        if not Ptr(to=self.destroy_sampler).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroySampler."
         self.create_descriptor_set_layout = Ptr(to=get_device_proc_addr(
             device, "vkCreateDescriptorSetLayout".unsafe_ptr()
         )).bitcast[type_of(self.create_descriptor_set_layout)]()[]
+        if not Ptr(to=self.create_descriptor_set_layout).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateDescriptorSetLayout."
         self.destroy_descriptor_set_layout = Ptr(to=get_device_proc_addr(
             device, "vkDestroyDescriptorSetLayout".unsafe_ptr()
         )).bitcast[type_of(self.destroy_descriptor_set_layout)]()[]
+        if not Ptr(to=self.destroy_descriptor_set_layout).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyDescriptorSetLayout."
         self.create_descriptor_pool = Ptr(to=get_device_proc_addr(
             device, "vkCreateDescriptorPool".unsafe_ptr()
         )).bitcast[type_of(self.create_descriptor_pool)]()[]
+        if not Ptr(to=self.create_descriptor_pool).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateDescriptorPool."
         self.destroy_descriptor_pool = Ptr(to=get_device_proc_addr(
             device, "vkDestroyDescriptorPool".unsafe_ptr()
         )).bitcast[type_of(self.destroy_descriptor_pool)]()[]
+        if not Ptr(to=self.destroy_descriptor_pool).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyDescriptorPool."
         self.reset_descriptor_pool = Ptr(to=get_device_proc_addr(
             device, "vkResetDescriptorPool".unsafe_ptr()
         )).bitcast[type_of(self.reset_descriptor_pool)]()[]
+        if not Ptr(to=self.reset_descriptor_pool).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkResetDescriptorPool."
         self.allocate_descriptor_sets = Ptr(to=get_device_proc_addr(
             device, "vkAllocateDescriptorSets".unsafe_ptr()
         )).bitcast[type_of(self.allocate_descriptor_sets)]()[]
+        if not Ptr(to=self.allocate_descriptor_sets).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkAllocateDescriptorSets."
         self.free_descriptor_sets = Ptr(to=get_device_proc_addr(
             device, "vkFreeDescriptorSets".unsafe_ptr()
         )).bitcast[type_of(self.free_descriptor_sets)]()[]
+        if not Ptr(to=self.free_descriptor_sets).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkFreeDescriptorSets."
         self.update_descriptor_sets = Ptr(to=get_device_proc_addr(
             device, "vkUpdateDescriptorSets".unsafe_ptr()
         )).bitcast[type_of(self.update_descriptor_sets)]()[]
+        if not Ptr(to=self.update_descriptor_sets).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkUpdateDescriptorSets."
         self.create_framebuffer = Ptr(to=get_device_proc_addr(
             device, "vkCreateFramebuffer".unsafe_ptr()
         )).bitcast[type_of(self.create_framebuffer)]()[]
+        if not Ptr(to=self.create_framebuffer).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateFramebuffer."
         self.destroy_framebuffer = Ptr(to=get_device_proc_addr(
             device, "vkDestroyFramebuffer".unsafe_ptr()
         )).bitcast[type_of(self.destroy_framebuffer)]()[]
+        if not Ptr(to=self.destroy_framebuffer).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyFramebuffer."
         self.create_render_pass = Ptr(to=get_device_proc_addr(
             device, "vkCreateRenderPass".unsafe_ptr()
         )).bitcast[type_of(self.create_render_pass)]()[]
+        if not Ptr(to=self.create_render_pass).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateRenderPass."
         self.destroy_render_pass = Ptr(to=get_device_proc_addr(
             device, "vkDestroyRenderPass".unsafe_ptr()
         )).bitcast[type_of(self.destroy_render_pass)]()[]
+        if not Ptr(to=self.destroy_render_pass).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyRenderPass."
         self.get_render_area_granularity = Ptr(to=get_device_proc_addr(
             device, "vkGetRenderAreaGranularity".unsafe_ptr()
         )).bitcast[type_of(self.get_render_area_granularity)]()[]
+        if not Ptr(to=self.get_render_area_granularity).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetRenderAreaGranularity."
         self.create_command_pool = Ptr(to=get_device_proc_addr(
             device, "vkCreateCommandPool".unsafe_ptr()
         )).bitcast[type_of(self.create_command_pool)]()[]
+        if not Ptr(to=self.create_command_pool).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateCommandPool."
         self.destroy_command_pool = Ptr(to=get_device_proc_addr(
             device, "vkDestroyCommandPool".unsafe_ptr()
         )).bitcast[type_of(self.destroy_command_pool)]()[]
+        if not Ptr(to=self.destroy_command_pool).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyCommandPool."
         self.reset_command_pool = Ptr(to=get_device_proc_addr(
             device, "vkResetCommandPool".unsafe_ptr()
         )).bitcast[type_of(self.reset_command_pool)]()[]
+        if not Ptr(to=self.reset_command_pool).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkResetCommandPool."
         self.allocate_command_buffers = Ptr(to=get_device_proc_addr(
             device, "vkAllocateCommandBuffers".unsafe_ptr()
         )).bitcast[type_of(self.allocate_command_buffers)]()[]
+        if not Ptr(to=self.allocate_command_buffers).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkAllocateCommandBuffers."
         self.free_command_buffers = Ptr(to=get_device_proc_addr(
             device, "vkFreeCommandBuffers".unsafe_ptr()
         )).bitcast[type_of(self.free_command_buffers)]()[]
+        if not Ptr(to=self.free_command_buffers).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkFreeCommandBuffers."
         self.begin_command_buffer = Ptr(to=get_device_proc_addr(
             device, "vkBeginCommandBuffer".unsafe_ptr()
         )).bitcast[type_of(self.begin_command_buffer)]()[]
+        if not Ptr(to=self.begin_command_buffer).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkBeginCommandBuffer."
         self.end_command_buffer = Ptr(to=get_device_proc_addr(
             device, "vkEndCommandBuffer".unsafe_ptr()
         )).bitcast[type_of(self.end_command_buffer)]()[]
+        if not Ptr(to=self.end_command_buffer).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkEndCommandBuffer."
         self.reset_command_buffer = Ptr(to=get_device_proc_addr(
             device, "vkResetCommandBuffer".unsafe_ptr()
         )).bitcast[type_of(self.reset_command_buffer)]()[]
+        if not Ptr(to=self.reset_command_buffer).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkResetCommandBuffer."
         self.cmd_bind_pipeline = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindPipeline".unsafe_ptr()
         )).bitcast[type_of(self.cmd_bind_pipeline)]()[]
+        if not Ptr(to=self.cmd_bind_pipeline).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBindPipeline."
         self.cmd_set_viewport = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetViewport".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_viewport)]()[]
+        if not Ptr(to=self.cmd_set_viewport).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetViewport."
         self.cmd_set_scissor = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetScissor".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_scissor)]()[]
+        if not Ptr(to=self.cmd_set_scissor).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetScissor."
         self.cmd_set_line_width = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetLineWidth".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_line_width)]()[]
+        if not Ptr(to=self.cmd_set_line_width).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetLineWidth."
         self.cmd_set_depth_bias = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDepthBias".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_depth_bias)]()[]
+        if not Ptr(to=self.cmd_set_depth_bias).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetDepthBias."
         self.cmd_set_blend_constants = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetBlendConstants".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_blend_constants)]()[]
+        if not Ptr(to=self.cmd_set_blend_constants).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetBlendConstants."
         self.cmd_set_depth_bounds = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDepthBounds".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_depth_bounds)]()[]
+        if not Ptr(to=self.cmd_set_depth_bounds).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetDepthBounds."
         self.cmd_set_stencil_compare_mask = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetStencilCompareMask".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_stencil_compare_mask)]()[]
+        if not Ptr(to=self.cmd_set_stencil_compare_mask).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetStencilCompareMask."
         self.cmd_set_stencil_write_mask = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetStencilWriteMask".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_stencil_write_mask)]()[]
+        if not Ptr(to=self.cmd_set_stencil_write_mask).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetStencilWriteMask."
         self.cmd_set_stencil_reference = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetStencilReference".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_stencil_reference)]()[]
+        if not Ptr(to=self.cmd_set_stencil_reference).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetStencilReference."
         self.cmd_bind_descriptor_sets = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindDescriptorSets".unsafe_ptr()
         )).bitcast[type_of(self.cmd_bind_descriptor_sets)]()[]
+        if not Ptr(to=self.cmd_bind_descriptor_sets).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBindDescriptorSets."
         self.cmd_bind_index_buffer = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindIndexBuffer".unsafe_ptr()
         )).bitcast[type_of(self.cmd_bind_index_buffer)]()[]
+        if not Ptr(to=self.cmd_bind_index_buffer).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBindIndexBuffer."
         self.cmd_bind_vertex_buffers = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindVertexBuffers".unsafe_ptr()
         )).bitcast[type_of(self.cmd_bind_vertex_buffers)]()[]
+        if not Ptr(to=self.cmd_bind_vertex_buffers).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBindVertexBuffers."
         self.cmd_draw = Ptr(to=get_device_proc_addr(
             device, "vkCmdDraw".unsafe_ptr()
         )).bitcast[type_of(self.cmd_draw)]()[]
+        if not Ptr(to=self.cmd_draw).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDraw."
         self.cmd_draw_indexed = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawIndexed".unsafe_ptr()
         )).bitcast[type_of(self.cmd_draw_indexed)]()[]
+        if not Ptr(to=self.cmd_draw_indexed).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDrawIndexed."
         self.cmd_draw_indirect = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawIndirect".unsafe_ptr()
         )).bitcast[type_of(self.cmd_draw_indirect)]()[]
+        if not Ptr(to=self.cmd_draw_indirect).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDrawIndirect."
         self.cmd_draw_indexed_indirect = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawIndexedIndirect".unsafe_ptr()
         )).bitcast[type_of(self.cmd_draw_indexed_indirect)]()[]
+        if not Ptr(to=self.cmd_draw_indexed_indirect).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDrawIndexedIndirect."
         self.cmd_dispatch = Ptr(to=get_device_proc_addr(
             device, "vkCmdDispatch".unsafe_ptr()
         )).bitcast[type_of(self.cmd_dispatch)]()[]
+        if not Ptr(to=self.cmd_dispatch).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDispatch."
         self.cmd_dispatch_indirect = Ptr(to=get_device_proc_addr(
             device, "vkCmdDispatchIndirect".unsafe_ptr()
         )).bitcast[type_of(self.cmd_dispatch_indirect)]()[]
+        if not Ptr(to=self.cmd_dispatch_indirect).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDispatchIndirect."
         self.cmd_copy_buffer = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyBuffer".unsafe_ptr()
         )).bitcast[type_of(self.cmd_copy_buffer)]()[]
+        if not Ptr(to=self.cmd_copy_buffer).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyBuffer."
         self.cmd_copy_image = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyImage".unsafe_ptr()
         )).bitcast[type_of(self.cmd_copy_image)]()[]
+        if not Ptr(to=self.cmd_copy_image).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyImage."
         self.cmd_blit_image = Ptr(to=get_device_proc_addr(
             device, "vkCmdBlitImage".unsafe_ptr()
         )).bitcast[type_of(self.cmd_blit_image)]()[]
+        if not Ptr(to=self.cmd_blit_image).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBlitImage."
         self.cmd_copy_buffer_to_image = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyBufferToImage".unsafe_ptr()
         )).bitcast[type_of(self.cmd_copy_buffer_to_image)]()[]
+        if not Ptr(to=self.cmd_copy_buffer_to_image).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyBufferToImage."
         self.cmd_copy_image_to_buffer = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyImageToBuffer".unsafe_ptr()
         )).bitcast[type_of(self.cmd_copy_image_to_buffer)]()[]
+        if not Ptr(to=self.cmd_copy_image_to_buffer).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyImageToBuffer."
         self.cmd_update_buffer = Ptr(to=get_device_proc_addr(
             device, "vkCmdUpdateBuffer".unsafe_ptr()
         )).bitcast[type_of(self.cmd_update_buffer)]()[]
+        if not Ptr(to=self.cmd_update_buffer).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdUpdateBuffer."
         self.cmd_fill_buffer = Ptr(to=get_device_proc_addr(
             device, "vkCmdFillBuffer".unsafe_ptr()
         )).bitcast[type_of(self.cmd_fill_buffer)]()[]
+        if not Ptr(to=self.cmd_fill_buffer).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdFillBuffer."
         self.cmd_clear_color_image = Ptr(to=get_device_proc_addr(
             device, "vkCmdClearColorImage".unsafe_ptr()
         )).bitcast[type_of(self.cmd_clear_color_image)]()[]
+        if not Ptr(to=self.cmd_clear_color_image).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdClearColorImage."
         self.cmd_clear_depth_stencil_image = Ptr(to=get_device_proc_addr(
             device, "vkCmdClearDepthStencilImage".unsafe_ptr()
         )).bitcast[type_of(self.cmd_clear_depth_stencil_image)]()[]
+        if not Ptr(to=self.cmd_clear_depth_stencil_image).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdClearDepthStencilImage."
         self.cmd_clear_attachments = Ptr(to=get_device_proc_addr(
             device, "vkCmdClearAttachments".unsafe_ptr()
         )).bitcast[type_of(self.cmd_clear_attachments)]()[]
+        if not Ptr(to=self.cmd_clear_attachments).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdClearAttachments."
         self.cmd_resolve_image = Ptr(to=get_device_proc_addr(
             device, "vkCmdResolveImage".unsafe_ptr()
         )).bitcast[type_of(self.cmd_resolve_image)]()[]
+        if not Ptr(to=self.cmd_resolve_image).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdResolveImage."
         self.cmd_set_event = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetEvent".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_event)]()[]
+        if not Ptr(to=self.cmd_set_event).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetEvent."
         self.cmd_reset_event = Ptr(to=get_device_proc_addr(
             device, "vkCmdResetEvent".unsafe_ptr()
         )).bitcast[type_of(self.cmd_reset_event)]()[]
+        if not Ptr(to=self.cmd_reset_event).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdResetEvent."
         self.cmd_wait_events = Ptr(to=get_device_proc_addr(
             device, "vkCmdWaitEvents".unsafe_ptr()
         )).bitcast[type_of(self.cmd_wait_events)]()[]
+        if not Ptr(to=self.cmd_wait_events).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdWaitEvents."
         self.cmd_pipeline_barrier = Ptr(to=get_device_proc_addr(
             device, "vkCmdPipelineBarrier".unsafe_ptr()
         )).bitcast[type_of(self.cmd_pipeline_barrier)]()[]
+        if not Ptr(to=self.cmd_pipeline_barrier).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPipelineBarrier."
         self.cmd_begin_query = Ptr(to=get_device_proc_addr(
             device, "vkCmdBeginQuery".unsafe_ptr()
         )).bitcast[type_of(self.cmd_begin_query)]()[]
+        if not Ptr(to=self.cmd_begin_query).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBeginQuery."
         self.cmd_end_query = Ptr(to=get_device_proc_addr(
             device, "vkCmdEndQuery".unsafe_ptr()
         )).bitcast[type_of(self.cmd_end_query)]()[]
+        if not Ptr(to=self.cmd_end_query).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdEndQuery."
         self.cmd_reset_query_pool = Ptr(to=get_device_proc_addr(
             device, "vkCmdResetQueryPool".unsafe_ptr()
         )).bitcast[type_of(self.cmd_reset_query_pool)]()[]
+        if not Ptr(to=self.cmd_reset_query_pool).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdResetQueryPool."
         self.cmd_write_timestamp = Ptr(to=get_device_proc_addr(
             device, "vkCmdWriteTimestamp".unsafe_ptr()
         )).bitcast[type_of(self.cmd_write_timestamp)]()[]
+        if not Ptr(to=self.cmd_write_timestamp).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdWriteTimestamp."
         self.cmd_copy_query_pool_results = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyQueryPoolResults".unsafe_ptr()
         )).bitcast[type_of(self.cmd_copy_query_pool_results)]()[]
+        if not Ptr(to=self.cmd_copy_query_pool_results).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyQueryPoolResults."
         self.cmd_push_constants = Ptr(to=get_device_proc_addr(
             device, "vkCmdPushConstants".unsafe_ptr()
         )).bitcast[type_of(self.cmd_push_constants)]()[]
+        if not Ptr(to=self.cmd_push_constants).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPushConstants."
         self.cmd_begin_render_pass = Ptr(to=get_device_proc_addr(
             device, "vkCmdBeginRenderPass".unsafe_ptr()
         )).bitcast[type_of(self.cmd_begin_render_pass)]()[]
+        if not Ptr(to=self.cmd_begin_render_pass).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBeginRenderPass."
         self.cmd_next_subpass = Ptr(to=get_device_proc_addr(
             device, "vkCmdNextSubpass".unsafe_ptr()
         )).bitcast[type_of(self.cmd_next_subpass)]()[]
+        if not Ptr(to=self.cmd_next_subpass).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdNextSubpass."
         self.cmd_end_render_pass = Ptr(to=get_device_proc_addr(
             device, "vkCmdEndRenderPass".unsafe_ptr()
         )).bitcast[type_of(self.cmd_end_render_pass)]()[]
+        if not Ptr(to=self.cmd_end_render_pass).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdEndRenderPass."
         self.cmd_execute_commands = Ptr(to=get_device_proc_addr(
             device, "vkCmdExecuteCommands".unsafe_ptr()
         )).bitcast[type_of(self.cmd_execute_commands)]()[]
+        if not Ptr(to=self.cmd_execute_commands).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdExecuteCommands."
 
 
 struct DeviceFunctionAdditionsV1_1(Copyable, Movable):
@@ -15759,51 +16059,83 @@ struct DeviceFunctionAdditionsV1_1(Copyable, Movable):
         self.bind_buffer_memory_2 = Ptr(to=get_device_proc_addr(
             device, "vkBindBufferMemory2".unsafe_ptr()
         )).bitcast[type_of(self.bind_buffer_memory_2)]()[]
+        if not Ptr(to=self.bind_buffer_memory_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkBindBufferMemory2."
         self.bind_image_memory_2 = Ptr(to=get_device_proc_addr(
             device, "vkBindImageMemory2".unsafe_ptr()
         )).bitcast[type_of(self.bind_image_memory_2)]()[]
+        if not Ptr(to=self.bind_image_memory_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkBindImageMemory2."
         self.get_device_group_peer_memory_features = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceGroupPeerMemoryFeatures".unsafe_ptr()
         )).bitcast[type_of(self.get_device_group_peer_memory_features)]()[]
+        if not Ptr(to=self.get_device_group_peer_memory_features).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceGroupPeerMemoryFeatures."
         self.cmd_set_device_mask = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDeviceMask".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_device_mask)]()[]
+        if not Ptr(to=self.cmd_set_device_mask).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetDeviceMask."
         self.cmd_dispatch_base = Ptr(to=get_device_proc_addr(
             device, "vkCmdDispatchBase".unsafe_ptr()
         )).bitcast[type_of(self.cmd_dispatch_base)]()[]
+        if not Ptr(to=self.cmd_dispatch_base).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDispatchBase."
         self.get_image_memory_requirements_2 = Ptr(to=get_device_proc_addr(
             device, "vkGetImageMemoryRequirements2".unsafe_ptr()
         )).bitcast[type_of(self.get_image_memory_requirements_2)]()[]
+        if not Ptr(to=self.get_image_memory_requirements_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetImageMemoryRequirements2."
         self.get_buffer_memory_requirements_2 = Ptr(to=get_device_proc_addr(
             device, "vkGetBufferMemoryRequirements2".unsafe_ptr()
         )).bitcast[type_of(self.get_buffer_memory_requirements_2)]()[]
+        if not Ptr(to=self.get_buffer_memory_requirements_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetBufferMemoryRequirements2."
         self.get_image_sparse_memory_requirements_2 = Ptr(to=get_device_proc_addr(
             device, "vkGetImageSparseMemoryRequirements2".unsafe_ptr()
         )).bitcast[type_of(self.get_image_sparse_memory_requirements_2)]()[]
+        if not Ptr(to=self.get_image_sparse_memory_requirements_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetImageSparseMemoryRequirements2."
         self.trim_command_pool = Ptr(to=get_device_proc_addr(
             device, "vkTrimCommandPool".unsafe_ptr()
         )).bitcast[type_of(self.trim_command_pool)]()[]
+        if not Ptr(to=self.trim_command_pool).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkTrimCommandPool."
         self.get_device_queue_2 = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceQueue2".unsafe_ptr()
         )).bitcast[type_of(self.get_device_queue_2)]()[]
+        if not Ptr(to=self.get_device_queue_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceQueue2."
         self.create_sampler_ycbcr_conversion = Ptr(to=get_device_proc_addr(
             device, "vkCreateSamplerYcbcrConversion".unsafe_ptr()
         )).bitcast[type_of(self.create_sampler_ycbcr_conversion)]()[]
+        if not Ptr(to=self.create_sampler_ycbcr_conversion).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateSamplerYcbcrConversion."
         self.destroy_sampler_ycbcr_conversion = Ptr(to=get_device_proc_addr(
             device, "vkDestroySamplerYcbcrConversion".unsafe_ptr()
         )).bitcast[type_of(self.destroy_sampler_ycbcr_conversion)]()[]
+        if not Ptr(to=self.destroy_sampler_ycbcr_conversion).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroySamplerYcbcrConversion."
         self.create_descriptor_update_template = Ptr(to=get_device_proc_addr(
             device, "vkCreateDescriptorUpdateTemplate".unsafe_ptr()
         )).bitcast[type_of(self.create_descriptor_update_template)]()[]
+        if not Ptr(to=self.create_descriptor_update_template).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateDescriptorUpdateTemplate."
         self.destroy_descriptor_update_template = Ptr(to=get_device_proc_addr(
             device, "vkDestroyDescriptorUpdateTemplate".unsafe_ptr()
         )).bitcast[type_of(self.destroy_descriptor_update_template)]()[]
+        if not Ptr(to=self.destroy_descriptor_update_template).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyDescriptorUpdateTemplate."
         self.update_descriptor_set_with_template = Ptr(to=get_device_proc_addr(
             device, "vkUpdateDescriptorSetWithTemplate".unsafe_ptr()
         )).bitcast[type_of(self.update_descriptor_set_with_template)]()[]
+        if not Ptr(to=self.update_descriptor_set_with_template).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkUpdateDescriptorSetWithTemplate."
         self.get_descriptor_set_layout_support = Ptr(to=get_device_proc_addr(
             device, "vkGetDescriptorSetLayoutSupport".unsafe_ptr()
         )).bitcast[type_of(self.get_descriptor_set_layout_support)]()[]
+        if not Ptr(to=self.get_descriptor_set_layout_support).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDescriptorSetLayoutSupport."
 
 
 struct DeviceFunctionAdditionsV1_2(Copyable, Movable):
@@ -15873,42 +16205,68 @@ struct DeviceFunctionAdditionsV1_2(Copyable, Movable):
         self.cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawIndirectCount".unsafe_ptr()
         )).bitcast[type_of(self.cmd_draw_indirect_count)]()[]
+        if not Ptr(to=self.cmd_draw_indirect_count).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDrawIndirectCount."
         self.cmd_draw_indexed_indirect_count = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawIndexedIndirectCount".unsafe_ptr()
         )).bitcast[type_of(self.cmd_draw_indexed_indirect_count)]()[]
+        if not Ptr(to=self.cmd_draw_indexed_indirect_count).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDrawIndexedIndirectCount."
         self.create_render_pass_2 = Ptr(to=get_device_proc_addr(
             device, "vkCreateRenderPass2".unsafe_ptr()
         )).bitcast[type_of(self.create_render_pass_2)]()[]
+        if not Ptr(to=self.create_render_pass_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateRenderPass2."
         self.cmd_begin_render_pass_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdBeginRenderPass2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_begin_render_pass_2)]()[]
+        if not Ptr(to=self.cmd_begin_render_pass_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBeginRenderPass2."
         self.cmd_next_subpass_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdNextSubpass2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_next_subpass_2)]()[]
+        if not Ptr(to=self.cmd_next_subpass_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdNextSubpass2."
         self.cmd_end_render_pass_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdEndRenderPass2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_end_render_pass_2)]()[]
+        if not Ptr(to=self.cmd_end_render_pass_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdEndRenderPass2."
         self.reset_query_pool = Ptr(to=get_device_proc_addr(
             device, "vkResetQueryPool".unsafe_ptr()
         )).bitcast[type_of(self.reset_query_pool)]()[]
+        if not Ptr(to=self.reset_query_pool).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkResetQueryPool."
         self.get_semaphore_counter_value = Ptr(to=get_device_proc_addr(
             device, "vkGetSemaphoreCounterValue".unsafe_ptr()
         )).bitcast[type_of(self.get_semaphore_counter_value)]()[]
+        if not Ptr(to=self.get_semaphore_counter_value).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetSemaphoreCounterValue."
         self.wait_semaphores = Ptr(to=get_device_proc_addr(
             device, "vkWaitSemaphores".unsafe_ptr()
         )).bitcast[type_of(self.wait_semaphores)]()[]
+        if not Ptr(to=self.wait_semaphores).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkWaitSemaphores."
         self.signal_semaphore = Ptr(to=get_device_proc_addr(
             device, "vkSignalSemaphore".unsafe_ptr()
         )).bitcast[type_of(self.signal_semaphore)]()[]
+        if not Ptr(to=self.signal_semaphore).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkSignalSemaphore."
         self.get_buffer_device_address = Ptr(to=get_device_proc_addr(
             device, "vkGetBufferDeviceAddress".unsafe_ptr()
         )).bitcast[type_of(self.get_buffer_device_address)]()[]
+        if not Ptr(to=self.get_buffer_device_address).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetBufferDeviceAddress."
         self.get_buffer_opaque_capture_address = Ptr(to=get_device_proc_addr(
             device, "vkGetBufferOpaqueCaptureAddress".unsafe_ptr()
         )).bitcast[type_of(self.get_buffer_opaque_capture_address)]()[]
+        if not Ptr(to=self.get_buffer_opaque_capture_address).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetBufferOpaqueCaptureAddress."
         self.get_device_memory_opaque_capture_address = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceMemoryOpaqueCaptureAddress".unsafe_ptr()
         )).bitcast[type_of(self.get_device_memory_opaque_capture_address)]()[]
+        if not Ptr(to=self.get_device_memory_opaque_capture_address).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceMemoryOpaqueCaptureAddress."
 
 
 struct DeviceFunctionAdditionsV1_3(Copyable, Movable):
@@ -16055,111 +16413,183 @@ struct DeviceFunctionAdditionsV1_3(Copyable, Movable):
         self.create_private_data_slot = Ptr(to=get_device_proc_addr(
             device, "vkCreatePrivateDataSlot".unsafe_ptr()
         )).bitcast[type_of(self.create_private_data_slot)]()[]
+        if not Ptr(to=self.create_private_data_slot).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreatePrivateDataSlot."
         self.destroy_private_data_slot = Ptr(to=get_device_proc_addr(
             device, "vkDestroyPrivateDataSlot".unsafe_ptr()
         )).bitcast[type_of(self.destroy_private_data_slot)]()[]
+        if not Ptr(to=self.destroy_private_data_slot).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyPrivateDataSlot."
         self.set_private_data = Ptr(to=get_device_proc_addr(
             device, "vkSetPrivateData".unsafe_ptr()
         )).bitcast[type_of(self.set_private_data)]()[]
+        if not Ptr(to=self.set_private_data).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkSetPrivateData."
         self.get_private_data = Ptr(to=get_device_proc_addr(
             device, "vkGetPrivateData".unsafe_ptr()
         )).bitcast[type_of(self.get_private_data)]()[]
+        if not Ptr(to=self.get_private_data).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPrivateData."
         self.cmd_set_event_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetEvent2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_event_2)]()[]
+        if not Ptr(to=self.cmd_set_event_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetEvent2."
         self.cmd_reset_event_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdResetEvent2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_reset_event_2)]()[]
+        if not Ptr(to=self.cmd_reset_event_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdResetEvent2."
         self.cmd_wait_events_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdWaitEvents2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_wait_events_2)]()[]
+        if not Ptr(to=self.cmd_wait_events_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdWaitEvents2."
         self.cmd_pipeline_barrier_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdPipelineBarrier2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_pipeline_barrier_2)]()[]
+        if not Ptr(to=self.cmd_pipeline_barrier_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPipelineBarrier2."
         self.cmd_write_timestamp_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdWriteTimestamp2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_write_timestamp_2)]()[]
+        if not Ptr(to=self.cmd_write_timestamp_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdWriteTimestamp2."
         self.queue_submit_2 = Ptr(to=get_device_proc_addr(
             device, "vkQueueSubmit2".unsafe_ptr()
         )).bitcast[type_of(self.queue_submit_2)]()[]
+        if not Ptr(to=self.queue_submit_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkQueueSubmit2."
         self.cmd_copy_buffer_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyBuffer2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_copy_buffer_2)]()[]
+        if not Ptr(to=self.cmd_copy_buffer_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyBuffer2."
         self.cmd_copy_image_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyImage2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_copy_image_2)]()[]
+        if not Ptr(to=self.cmd_copy_image_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyImage2."
         self.cmd_copy_buffer_to_image_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyBufferToImage2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_copy_buffer_to_image_2)]()[]
+        if not Ptr(to=self.cmd_copy_buffer_to_image_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyBufferToImage2."
         self.cmd_copy_image_to_buffer_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyImageToBuffer2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_copy_image_to_buffer_2)]()[]
+        if not Ptr(to=self.cmd_copy_image_to_buffer_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyImageToBuffer2."
         self.cmd_blit_image_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdBlitImage2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_blit_image_2)]()[]
+        if not Ptr(to=self.cmd_blit_image_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBlitImage2."
         self.cmd_resolve_image_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdResolveImage2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_resolve_image_2)]()[]
+        if not Ptr(to=self.cmd_resolve_image_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdResolveImage2."
         self.cmd_begin_rendering = Ptr(to=get_device_proc_addr(
             device, "vkCmdBeginRendering".unsafe_ptr()
         )).bitcast[type_of(self.cmd_begin_rendering)]()[]
+        if not Ptr(to=self.cmd_begin_rendering).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBeginRendering."
         self.cmd_end_rendering = Ptr(to=get_device_proc_addr(
             device, "vkCmdEndRendering".unsafe_ptr()
         )).bitcast[type_of(self.cmd_end_rendering)]()[]
+        if not Ptr(to=self.cmd_end_rendering).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdEndRendering."
         self.cmd_set_cull_mode = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetCullMode".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_cull_mode)]()[]
+        if not Ptr(to=self.cmd_set_cull_mode).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetCullMode."
         self.cmd_set_front_face = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetFrontFace".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_front_face)]()[]
+        if not Ptr(to=self.cmd_set_front_face).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetFrontFace."
         self.cmd_set_primitive_topology = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetPrimitiveTopology".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_primitive_topology)]()[]
+        if not Ptr(to=self.cmd_set_primitive_topology).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetPrimitiveTopology."
         self.cmd_set_viewport_with_count = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetViewportWithCount".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_viewport_with_count)]()[]
+        if not Ptr(to=self.cmd_set_viewport_with_count).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetViewportWithCount."
         self.cmd_set_scissor_with_count = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetScissorWithCount".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_scissor_with_count)]()[]
+        if not Ptr(to=self.cmd_set_scissor_with_count).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetScissorWithCount."
         self.cmd_bind_vertex_buffers_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindVertexBuffers2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_bind_vertex_buffers_2)]()[]
+        if not Ptr(to=self.cmd_bind_vertex_buffers_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBindVertexBuffers2."
         self.cmd_set_depth_test_enable = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDepthTestEnable".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_depth_test_enable)]()[]
+        if not Ptr(to=self.cmd_set_depth_test_enable).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetDepthTestEnable."
         self.cmd_set_depth_write_enable = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDepthWriteEnable".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_depth_write_enable)]()[]
+        if not Ptr(to=self.cmd_set_depth_write_enable).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetDepthWriteEnable."
         self.cmd_set_depth_compare_op = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDepthCompareOp".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_depth_compare_op)]()[]
+        if not Ptr(to=self.cmd_set_depth_compare_op).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetDepthCompareOp."
         self.cmd_set_depth_bounds_test_enable = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDepthBoundsTestEnable".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_depth_bounds_test_enable)]()[]
+        if not Ptr(to=self.cmd_set_depth_bounds_test_enable).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetDepthBoundsTestEnable."
         self.cmd_set_stencil_test_enable = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetStencilTestEnable".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_stencil_test_enable)]()[]
+        if not Ptr(to=self.cmd_set_stencil_test_enable).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetStencilTestEnable."
         self.cmd_set_stencil_op = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetStencilOp".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_stencil_op)]()[]
+        if not Ptr(to=self.cmd_set_stencil_op).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetStencilOp."
         self.cmd_set_rasterizer_discard_enable = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetRasterizerDiscardEnable".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_rasterizer_discard_enable)]()[]
+        if not Ptr(to=self.cmd_set_rasterizer_discard_enable).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetRasterizerDiscardEnable."
         self.cmd_set_depth_bias_enable = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDepthBiasEnable".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_depth_bias_enable)]()[]
+        if not Ptr(to=self.cmd_set_depth_bias_enable).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetDepthBiasEnable."
         self.cmd_set_primitive_restart_enable = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetPrimitiveRestartEnable".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_primitive_restart_enable)]()[]
+        if not Ptr(to=self.cmd_set_primitive_restart_enable).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetPrimitiveRestartEnable."
         self.get_device_buffer_memory_requirements = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceBufferMemoryRequirements".unsafe_ptr()
         )).bitcast[type_of(self.get_device_buffer_memory_requirements)]()[]
+        if not Ptr(to=self.get_device_buffer_memory_requirements).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceBufferMemoryRequirements."
         self.get_device_image_memory_requirements = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceImageMemoryRequirements".unsafe_ptr()
         )).bitcast[type_of(self.get_device_image_memory_requirements)]()[]
+        if not Ptr(to=self.get_device_image_memory_requirements).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceImageMemoryRequirements."
         self.get_device_image_sparse_memory_requirements = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceImageSparseMemoryRequirements".unsafe_ptr()
         )).bitcast[type_of(self.get_device_image_sparse_memory_requirements)]()[]
+        if not Ptr(to=self.get_device_image_sparse_memory_requirements).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceImageSparseMemoryRequirements."
 
 
 struct DeviceFunctionAdditionsV1_4(Copyable, Movable):
@@ -16257,57 +16687,95 @@ struct DeviceFunctionAdditionsV1_4(Copyable, Movable):
         self.cmd_set_line_stipple = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetLineStipple".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_line_stipple)]()[]
+        if not Ptr(to=self.cmd_set_line_stipple).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetLineStipple."
         self.map_memory_2 = Ptr(to=get_device_proc_addr(
             device, "vkMapMemory2".unsafe_ptr()
         )).bitcast[type_of(self.map_memory_2)]()[]
+        if not Ptr(to=self.map_memory_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkMapMemory2."
         self.unmap_memory_2 = Ptr(to=get_device_proc_addr(
             device, "vkUnmapMemory2".unsafe_ptr()
         )).bitcast[type_of(self.unmap_memory_2)]()[]
+        if not Ptr(to=self.unmap_memory_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkUnmapMemory2."
         self.cmd_bind_index_buffer_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindIndexBuffer2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_bind_index_buffer_2)]()[]
+        if not Ptr(to=self.cmd_bind_index_buffer_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBindIndexBuffer2."
         self.get_rendering_area_granularity = Ptr(to=get_device_proc_addr(
             device, "vkGetRenderingAreaGranularity".unsafe_ptr()
         )).bitcast[type_of(self.get_rendering_area_granularity)]()[]
+        if not Ptr(to=self.get_rendering_area_granularity).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetRenderingAreaGranularity."
         self.get_device_image_subresource_layout = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceImageSubresourceLayout".unsafe_ptr()
         )).bitcast[type_of(self.get_device_image_subresource_layout)]()[]
+        if not Ptr(to=self.get_device_image_subresource_layout).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceImageSubresourceLayout."
         self.get_image_subresource_layout_2 = Ptr(to=get_device_proc_addr(
             device, "vkGetImageSubresourceLayout2".unsafe_ptr()
         )).bitcast[type_of(self.get_image_subresource_layout_2)]()[]
+        if not Ptr(to=self.get_image_subresource_layout_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetImageSubresourceLayout2."
         self.cmd_push_descriptor_set = Ptr(to=get_device_proc_addr(
             device, "vkCmdPushDescriptorSet".unsafe_ptr()
         )).bitcast[type_of(self.cmd_push_descriptor_set)]()[]
+        if not Ptr(to=self.cmd_push_descriptor_set).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPushDescriptorSet."
         self.cmd_push_descriptor_set_with_template = Ptr(to=get_device_proc_addr(
             device, "vkCmdPushDescriptorSetWithTemplate".unsafe_ptr()
         )).bitcast[type_of(self.cmd_push_descriptor_set_with_template)]()[]
+        if not Ptr(to=self.cmd_push_descriptor_set_with_template).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPushDescriptorSetWithTemplate."
         self.cmd_set_rendering_attachment_locations = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetRenderingAttachmentLocations".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_rendering_attachment_locations)]()[]
+        if not Ptr(to=self.cmd_set_rendering_attachment_locations).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetRenderingAttachmentLocations."
         self.cmd_set_rendering_input_attachment_indices = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetRenderingInputAttachmentIndices".unsafe_ptr()
         )).bitcast[type_of(self.cmd_set_rendering_input_attachment_indices)]()[]
+        if not Ptr(to=self.cmd_set_rendering_input_attachment_indices).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetRenderingInputAttachmentIndices."
         self.cmd_bind_descriptor_sets_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindDescriptorSets2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_bind_descriptor_sets_2)]()[]
+        if not Ptr(to=self.cmd_bind_descriptor_sets_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBindDescriptorSets2."
         self.cmd_push_constants_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdPushConstants2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_push_constants_2)]()[]
+        if not Ptr(to=self.cmd_push_constants_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPushConstants2."
         self.cmd_push_descriptor_set_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdPushDescriptorSet2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_push_descriptor_set_2)]()[]
+        if not Ptr(to=self.cmd_push_descriptor_set_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPushDescriptorSet2."
         self.cmd_push_descriptor_set_with_template_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdPushDescriptorSetWithTemplate2".unsafe_ptr()
         )).bitcast[type_of(self.cmd_push_descriptor_set_with_template_2)]()[]
+        if not Ptr(to=self.cmd_push_descriptor_set_with_template_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPushDescriptorSetWithTemplate2."
         self.copy_memory_to_image = Ptr(to=get_device_proc_addr(
             device, "vkCopyMemoryToImage".unsafe_ptr()
         )).bitcast[type_of(self.copy_memory_to_image)]()[]
+        if not Ptr(to=self.copy_memory_to_image).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCopyMemoryToImage."
         self.copy_image_to_memory = Ptr(to=get_device_proc_addr(
             device, "vkCopyImageToMemory".unsafe_ptr()
         )).bitcast[type_of(self.copy_image_to_memory)]()[]
+        if not Ptr(to=self.copy_image_to_memory).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCopyImageToMemory."
         self.copy_image_to_image = Ptr(to=get_device_proc_addr(
             device, "vkCopyImageToImage".unsafe_ptr()
         )).bitcast[type_of(self.copy_image_to_image)]()[]
+        if not Ptr(to=self.copy_image_to_image).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCopyImageToImage."
         self.transition_image_layout = Ptr(to=get_device_proc_addr(
             device, "vkTransitionImageLayout".unsafe_ptr()
         )).bitcast[type_of(self.transition_image_layout)]()[]
+        if not Ptr(to=self.transition_image_layout).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkTransitionImageLayout."

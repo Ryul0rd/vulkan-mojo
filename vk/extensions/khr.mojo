@@ -32,25 +32,35 @@ struct Surface(Copyable):
         pPresentModes: Ptr[PresentModeKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._destroy_surface_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkDestroySurfaceKHR".unsafe_ptr()
         )).bitcast[type_of(self._destroy_surface_khr)]()[]
+        if not Ptr(to=self._destroy_surface_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroySurfaceKHR."
         self._get_physical_device_surface_support_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceSurfaceSupportKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_surface_support_khr)]()[]
+        if not Ptr(to=self._get_physical_device_surface_support_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceSurfaceSupportKHR."
         self._get_physical_device_surface_capabilities_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceSurfaceCapabilitiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_surface_capabilities_khr)]()[]
+        if not Ptr(to=self._get_physical_device_surface_capabilities_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceSurfaceCapabilitiesKHR."
         self._get_physical_device_surface_formats_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceSurfaceFormatsKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_surface_formats_khr)]()[]
+        if not Ptr(to=self._get_physical_device_surface_formats_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceSurfaceFormatsKHR."
         self._get_physical_device_surface_present_modes_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceSurfacePresentModesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_surface_present_modes_khr)]()[]
+        if not Ptr(to=self._get_physical_device_surface_present_modes_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceSurfacePresentModesKHR."
 
     fn destroy_surface_khr(
         self,
@@ -221,37 +231,55 @@ struct Swapchain(Copyable):
         pImageIndex: Ptr[UInt32, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_swapchain_khr = Ptr(to=get_device_proc_addr(
             device, "vkCreateSwapchainKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_swapchain_khr)]()[]
+        if not Ptr(to=self._create_swapchain_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateSwapchainKHR."
         self._destroy_swapchain_khr = Ptr(to=get_device_proc_addr(
             device, "vkDestroySwapchainKHR".unsafe_ptr()
         )).bitcast[type_of(self._destroy_swapchain_khr)]()[]
+        if not Ptr(to=self._destroy_swapchain_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroySwapchainKHR."
         self._get_swapchain_images_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetSwapchainImagesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_swapchain_images_khr)]()[]
+        if not Ptr(to=self._get_swapchain_images_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetSwapchainImagesKHR."
         self._acquire_next_image_khr = Ptr(to=get_device_proc_addr(
             device, "vkAcquireNextImageKHR".unsafe_ptr()
         )).bitcast[type_of(self._acquire_next_image_khr)]()[]
+        if not Ptr(to=self._acquire_next_image_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkAcquireNextImageKHR."
         self._queue_present_khr = Ptr(to=get_device_proc_addr(
             device, "vkQueuePresentKHR".unsafe_ptr()
         )).bitcast[type_of(self._queue_present_khr)]()[]
+        if not Ptr(to=self._queue_present_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkQueuePresentKHR."
         self._get_device_group_present_capabilities_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceGroupPresentCapabilitiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_device_group_present_capabilities_khr)]()[]
+        if not Ptr(to=self._get_device_group_present_capabilities_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceGroupPresentCapabilitiesKHR."
         self._get_device_group_surface_present_modes_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceGroupSurfacePresentModesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_device_group_surface_present_modes_khr)]()[]
+        if not Ptr(to=self._get_device_group_surface_present_modes_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceGroupSurfacePresentModesKHR."
         self._get_physical_device_present_rectangles_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDevicePresentRectanglesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_present_rectangles_khr)]()[]
+        if not Ptr(to=self._get_physical_device_present_rectangles_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDevicePresentRectanglesKHR."
         self._acquire_next_image_2_khr = Ptr(to=get_device_proc_addr(
             device, "vkAcquireNextImage2KHR".unsafe_ptr()
         )).bitcast[type_of(self._acquire_next_image_2_khr)]()[]
+        if not Ptr(to=self._acquire_next_image_2_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkAcquireNextImage2KHR."
 
     fn create_swapchain_khr(
         self,
@@ -461,31 +489,45 @@ struct Display(Copyable):
         pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_display_properties_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceDisplayPropertiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_display_properties_khr)]()[]
+        if not Ptr(to=self._get_physical_device_display_properties_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceDisplayPropertiesKHR."
         self._get_physical_device_display_plane_properties_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceDisplayPlanePropertiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_display_plane_properties_khr)]()[]
+        if not Ptr(to=self._get_physical_device_display_plane_properties_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceDisplayPlanePropertiesKHR."
         self._get_display_plane_supported_displays_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetDisplayPlaneSupportedDisplaysKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_display_plane_supported_displays_khr)]()[]
+        if not Ptr(to=self._get_display_plane_supported_displays_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDisplayPlaneSupportedDisplaysKHR."
         self._get_display_mode_properties_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetDisplayModePropertiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_display_mode_properties_khr)]()[]
+        if not Ptr(to=self._get_display_mode_properties_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDisplayModePropertiesKHR."
         self._create_display_mode_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateDisplayModeKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_display_mode_khr)]()[]
+        if not Ptr(to=self._create_display_mode_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateDisplayModeKHR."
         self._get_display_plane_capabilities_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetDisplayPlaneCapabilitiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_display_plane_capabilities_khr)]()[]
+        if not Ptr(to=self._get_display_plane_capabilities_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDisplayPlaneCapabilitiesKHR."
         self._create_display_plane_surface_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateDisplayPlaneSurfaceKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_display_plane_surface_khr)]()[]
+        if not Ptr(to=self._create_display_plane_surface_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateDisplayPlaneSurfaceKHR."
 
     fn get_physical_device_display_properties_khr(
         self,
@@ -699,13 +741,15 @@ struct DisplaySwapchain(Copyable):
         pSwapchains: Ptr[SwapchainKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_shared_swapchains_khr = Ptr(to=get_device_proc_addr(
             device, "vkCreateSharedSwapchainsKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_shared_swapchains_khr)]()[]
+        if not Ptr(to=self._create_shared_swapchains_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateSharedSwapchainsKHR."
 
     fn create_shared_swapchains_khr(
         self,
@@ -738,16 +782,20 @@ struct XlibSurface(Copyable):
         visualID: VisualID,
     ) -> Bool32
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_xlib_surface_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateXlibSurfaceKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_xlib_surface_khr)]()[]
+        if not Ptr(to=self._create_xlib_surface_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateXlibSurfaceKHR."
         self._get_physical_device_xlib_presentation_support_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceXlibPresentationSupportKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_xlib_presentation_support_khr)]()[]
+        if not Ptr(to=self._get_physical_device_xlib_presentation_support_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceXlibPresentationSupportKHR."
 
     fn create_xlib_surface_khr(
         self,
@@ -797,16 +845,20 @@ struct XcbSurface(Copyable):
         visual_id: xcb_visualid_t,
     ) -> Bool32
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_xcb_surface_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateXcbSurfaceKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_xcb_surface_khr)]()[]
+        if not Ptr(to=self._create_xcb_surface_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateXcbSurfaceKHR."
         self._get_physical_device_xcb_presentation_support_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceXcbPresentationSupportKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_xcb_presentation_support_khr)]()[]
+        if not Ptr(to=self._get_physical_device_xcb_presentation_support_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceXcbPresentationSupportKHR."
 
     fn create_xcb_surface_khr(
         self,
@@ -858,16 +910,20 @@ struct WaylandSurface(Copyable):
         display: Ptr[wl_display, MutAnyOrigin],
     ) -> Bool32
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_wayland_surface_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateWaylandSurfaceKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_wayland_surface_khr)]()[]
+        if not Ptr(to=self._create_wayland_surface_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateWaylandSurfaceKHR."
         self._get_physical_device_wayland_presentation_support_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceWaylandPresentationSupportKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_wayland_presentation_support_khr)]()[]
+        if not Ptr(to=self._get_physical_device_wayland_presentation_support_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceWaylandPresentationSupportKHR."
 
     fn create_wayland_surface_khr(
         self,
@@ -907,13 +963,15 @@ struct AndroidSurface(Copyable):
         pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_android_surface_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateAndroidSurfaceKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_android_surface_khr)]()[]
+        if not Ptr(to=self._create_android_surface_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateAndroidSurfaceKHR."
 
     fn create_android_surface_khr(
         self,
@@ -945,16 +1003,20 @@ struct Win32Surface(Copyable):
         physicalDevice: PhysicalDevice, queueFamilyIndex: UInt32
     ) -> Bool32
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_win_32_surface_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateWin32SurfaceKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_win_32_surface_khr)]()[]
+        if not Ptr(to=self._create_win_32_surface_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateWin32SurfaceKHR."
         self._get_physical_device_win_32_presentation_support_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceWin32PresentationSupportKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_win_32_presentation_support_khr)]()[]
+        if not Ptr(to=self._get_physical_device_win_32_presentation_support_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceWin32PresentationSupportKHR."
 
     fn create_win_32_surface_khr(
         self,
@@ -1048,46 +1110,70 @@ struct VideoQueue(Copyable):
         pCodingControlInfo: Ptr[VideoCodingControlInfoKHR, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_video_capabilities_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceVideoCapabilitiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_video_capabilities_khr)]()[]
+        if not Ptr(to=self._get_physical_device_video_capabilities_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceVideoCapabilitiesKHR."
         self._get_physical_device_video_format_properties_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceVideoFormatPropertiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_video_format_properties_khr)]()[]
+        if not Ptr(to=self._get_physical_device_video_format_properties_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceVideoFormatPropertiesKHR."
         self._create_video_session_khr = Ptr(to=get_device_proc_addr(
             device, "vkCreateVideoSessionKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_video_session_khr)]()[]
+        if not Ptr(to=self._create_video_session_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateVideoSessionKHR."
         self._destroy_video_session_khr = Ptr(to=get_device_proc_addr(
             device, "vkDestroyVideoSessionKHR".unsafe_ptr()
         )).bitcast[type_of(self._destroy_video_session_khr)]()[]
+        if not Ptr(to=self._destroy_video_session_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyVideoSessionKHR."
         self._get_video_session_memory_requirements_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetVideoSessionMemoryRequirementsKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_video_session_memory_requirements_khr)]()[]
+        if not Ptr(to=self._get_video_session_memory_requirements_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetVideoSessionMemoryRequirementsKHR."
         self._bind_video_session_memory_khr = Ptr(to=get_device_proc_addr(
             device, "vkBindVideoSessionMemoryKHR".unsafe_ptr()
         )).bitcast[type_of(self._bind_video_session_memory_khr)]()[]
+        if not Ptr(to=self._bind_video_session_memory_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkBindVideoSessionMemoryKHR."
         self._create_video_session_parameters_khr = Ptr(to=get_device_proc_addr(
             device, "vkCreateVideoSessionParametersKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_video_session_parameters_khr)]()[]
+        if not Ptr(to=self._create_video_session_parameters_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateVideoSessionParametersKHR."
         self._update_video_session_parameters_khr = Ptr(to=get_device_proc_addr(
             device, "vkUpdateVideoSessionParametersKHR".unsafe_ptr()
         )).bitcast[type_of(self._update_video_session_parameters_khr)]()[]
+        if not Ptr(to=self._update_video_session_parameters_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkUpdateVideoSessionParametersKHR."
         self._destroy_video_session_parameters_khr = Ptr(to=get_device_proc_addr(
             device, "vkDestroyVideoSessionParametersKHR".unsafe_ptr()
         )).bitcast[type_of(self._destroy_video_session_parameters_khr)]()[]
+        if not Ptr(to=self._destroy_video_session_parameters_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyVideoSessionParametersKHR."
         self._cmd_begin_video_coding_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdBeginVideoCodingKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_begin_video_coding_khr)]()[]
+        if not Ptr(to=self._cmd_begin_video_coding_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBeginVideoCodingKHR."
         self._cmd_end_video_coding_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdEndVideoCodingKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_end_video_coding_khr)]()[]
+        if not Ptr(to=self._cmd_end_video_coding_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdEndVideoCodingKHR."
         self._cmd_control_video_coding_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdControlVideoCodingKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_control_video_coding_khr)]()[]
+        if not Ptr(to=self._cmd_control_video_coding_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdControlVideoCodingKHR."
 
     fn get_physical_device_video_capabilities_khr(
         self,
@@ -1320,13 +1406,15 @@ struct VideoDecodeQueue(Copyable):
         commandBuffer: CommandBuffer, pDecodeInfo: Ptr[VideoDecodeInfoKHR, ImmutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_decode_video_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdDecodeVideoKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_decode_video_khr)]()[]
+        if not Ptr(to=self._cmd_decode_video_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDecodeVideoKHR."
 
     fn cmd_decode_video_khr(self, command_buffer: CommandBuffer, decode_info: VideoDecodeInfoKHR):
         """See official vulkan docs for details.
@@ -1344,16 +1432,20 @@ struct DynamicRendering(Copyable):
     )
     var _cmd_end_rendering: fn(commandBuffer: CommandBuffer)
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_begin_rendering = Ptr(to=get_device_proc_addr(
             device, "vkCmdBeginRendering".unsafe_ptr()
         )).bitcast[type_of(self._cmd_begin_rendering)]()[]
+        if not Ptr(to=self._cmd_begin_rendering).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBeginRendering."
         self._cmd_end_rendering = Ptr(to=get_device_proc_addr(
             device, "vkCmdEndRendering".unsafe_ptr()
         )).bitcast[type_of(self._cmd_end_rendering)]()[]
+        if not Ptr(to=self._cmd_end_rendering).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdEndRendering."
 
     fn cmd_begin_rendering(self, command_buffer: CommandBuffer, rendering_info: RenderingInfo):
         """See official vulkan docs for details.
@@ -1405,31 +1497,45 @@ struct GetPhysicalDeviceProperties2(Copyable):
         pProperties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_features_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceFeatures2".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_features_2)]()[]
+        if not Ptr(to=self._get_physical_device_features_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceFeatures2."
         self._get_physical_device_properties_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceProperties2".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_properties_2)]()[]
+        if not Ptr(to=self._get_physical_device_properties_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceProperties2."
         self._get_physical_device_format_properties_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceFormatProperties2".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_format_properties_2)]()[]
+        if not Ptr(to=self._get_physical_device_format_properties_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceFormatProperties2."
         self._get_physical_device_image_format_properties_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceImageFormatProperties2".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_image_format_properties_2)]()[]
+        if not Ptr(to=self._get_physical_device_image_format_properties_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceImageFormatProperties2."
         self._get_physical_device_queue_family_properties_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceQueueFamilyProperties2".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_queue_family_properties_2)]()[]
+        if not Ptr(to=self._get_physical_device_queue_family_properties_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceQueueFamilyProperties2."
         self._get_physical_device_memory_properties_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceMemoryProperties2".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_memory_properties_2)]()[]
+        if not Ptr(to=self._get_physical_device_memory_properties_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceMemoryProperties2."
         self._get_physical_device_sparse_image_format_properties_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceSparseImageFormatProperties2".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_sparse_image_format_properties_2)]()[]
+        if not Ptr(to=self._get_physical_device_sparse_image_format_properties_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceSparseImageFormatProperties2."
 
     fn get_physical_device_features_2(
         self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures2
@@ -1610,31 +1716,45 @@ struct DeviceGroup(Copyable):
         pImageIndex: Ptr[UInt32, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_device_group_peer_memory_features = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceGroupPeerMemoryFeatures".unsafe_ptr()
         )).bitcast[type_of(self._get_device_group_peer_memory_features)]()[]
+        if not Ptr(to=self._get_device_group_peer_memory_features).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceGroupPeerMemoryFeatures."
         self._cmd_set_device_mask = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDeviceMask".unsafe_ptr()
         )).bitcast[type_of(self._cmd_set_device_mask)]()[]
+        if not Ptr(to=self._cmd_set_device_mask).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetDeviceMask."
         self._cmd_dispatch_base = Ptr(to=get_device_proc_addr(
             device, "vkCmdDispatchBase".unsafe_ptr()
         )).bitcast[type_of(self._cmd_dispatch_base)]()[]
+        if not Ptr(to=self._cmd_dispatch_base).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDispatchBase."
         self._get_device_group_present_capabilities_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceGroupPresentCapabilitiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_device_group_present_capabilities_khr)]()[]
+        if not Ptr(to=self._get_device_group_present_capabilities_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceGroupPresentCapabilitiesKHR."
         self._get_device_group_surface_present_modes_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceGroupSurfacePresentModesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_device_group_surface_present_modes_khr)]()[]
+        if not Ptr(to=self._get_device_group_surface_present_modes_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceGroupSurfacePresentModesKHR."
         self._get_physical_device_present_rectangles_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDevicePresentRectanglesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_present_rectangles_khr)]()[]
+        if not Ptr(to=self._get_physical_device_present_rectangles_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDevicePresentRectanglesKHR."
         self._acquire_next_image_2_khr = Ptr(to=get_device_proc_addr(
             device, "vkAcquireNextImage2KHR".unsafe_ptr()
         )).bitcast[type_of(self._acquire_next_image_2_khr)]()[]
+        if not Ptr(to=self._acquire_next_image_2_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkAcquireNextImage2KHR."
 
     fn get_device_group_peer_memory_features(
         self,
@@ -1768,13 +1888,15 @@ struct Maintenance1(Copyable):
         device: Device, commandPool: CommandPool, flags: CommandPoolTrimFlags
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._trim_command_pool = Ptr(to=get_device_proc_addr(
             device, "vkTrimCommandPool".unsafe_ptr()
         )).bitcast[type_of(self._trim_command_pool)]()[]
+        if not Ptr(to=self._trim_command_pool).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkTrimCommandPool."
 
     fn trim_command_pool(
         self, device: Device, command_pool: CommandPool, flags: CommandPoolTrimFlags
@@ -1793,13 +1915,15 @@ struct DeviceGroupCreation(Copyable):
         pPhysicalDeviceGroupProperties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._enumerate_physical_device_groups = Ptr(to=get_instance_proc_addr(
             instance, "vkEnumeratePhysicalDeviceGroups".unsafe_ptr()
         )).bitcast[type_of(self._enumerate_physical_device_groups)]()[]
+        if not Ptr(to=self._enumerate_physical_device_groups).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkEnumeratePhysicalDeviceGroups."
 
     fn enumerate_physical_device_groups(
         self,
@@ -1845,13 +1969,15 @@ struct ExternalMemoryCapabilities(Copyable):
         pExternalBufferProperties: Ptr[ExternalBufferProperties, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_external_buffer_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceExternalBufferProperties".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_external_buffer_properties)]()[]
+        if not Ptr(to=self._get_physical_device_external_buffer_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceExternalBufferProperties."
 
     fn get_physical_device_external_buffer_properties(
         self,
@@ -1883,16 +2009,20 @@ struct ExternalMemoryWin32(Copyable):
         pMemoryWin32HandleProperties: Ptr[MemoryWin32HandlePropertiesKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_win_32_handle_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetMemoryWin32HandleKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_memory_win_32_handle_khr)]()[]
+        if not Ptr(to=self._get_memory_win_32_handle_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetMemoryWin32HandleKHR."
         self._get_memory_win_32_handle_properties_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetMemoryWin32HandlePropertiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_memory_win_32_handle_properties_khr)]()[]
+        if not Ptr(to=self._get_memory_win_32_handle_properties_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetMemoryWin32HandlePropertiesKHR."
 
     fn get_memory_win_32_handle_khr(
         self,
@@ -1942,16 +2072,20 @@ struct ExternalMemoryFd(Copyable):
         pMemoryFdProperties: Ptr[MemoryFdPropertiesKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_fd_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetMemoryFdKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_memory_fd_khr)]()[]
+        if not Ptr(to=self._get_memory_fd_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetMemoryFdKHR."
         self._get_memory_fd_properties_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetMemoryFdPropertiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_memory_fd_properties_khr)]()[]
+        if not Ptr(to=self._get_memory_fd_properties_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetMemoryFdPropertiesKHR."
 
     fn get_memory_fd_khr(
         self, device: Device, get_fd_info: MemoryGetFdInfoKHR, mut fd: Int32
@@ -1987,13 +2121,15 @@ struct ExternalSemaphoreCapabilities(Copyable):
         pExternalSemaphoreProperties: Ptr[ExternalSemaphoreProperties, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_external_semaphore_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceExternalSemaphoreProperties".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_external_semaphore_properties)]()[]
+        if not Ptr(to=self._get_physical_device_external_semaphore_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceExternalSemaphoreProperties."
 
     fn get_physical_device_external_semaphore_properties(
         self,
@@ -2023,16 +2159,20 @@ struct ExternalSemaphoreWin32(Copyable):
         pHandle: Ptr[HANDLE, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._import_semaphore_win_32_handle_khr = Ptr(to=get_device_proc_addr(
             device, "vkImportSemaphoreWin32HandleKHR".unsafe_ptr()
         )).bitcast[type_of(self._import_semaphore_win_32_handle_khr)]()[]
+        if not Ptr(to=self._import_semaphore_win_32_handle_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkImportSemaphoreWin32HandleKHR."
         self._get_semaphore_win_32_handle_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetSemaphoreWin32HandleKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_semaphore_win_32_handle_khr)]()[]
+        if not Ptr(to=self._get_semaphore_win_32_handle_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetSemaphoreWin32HandleKHR."
 
     fn import_semaphore_win_32_handle_khr(
         self, device: Device, import_semaphore_win_32_handle_info: ImportSemaphoreWin32HandleInfoKHR
@@ -2073,16 +2213,20 @@ struct ExternalSemaphoreFd(Copyable):
         pFd: Ptr[Int32, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._import_semaphore_fd_khr = Ptr(to=get_device_proc_addr(
             device, "vkImportSemaphoreFdKHR".unsafe_ptr()
         )).bitcast[type_of(self._import_semaphore_fd_khr)]()[]
+        if not Ptr(to=self._import_semaphore_fd_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkImportSemaphoreFdKHR."
         self._get_semaphore_fd_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetSemaphoreFdKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_semaphore_fd_khr)]()[]
+        if not Ptr(to=self._get_semaphore_fd_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetSemaphoreFdKHR."
 
     fn import_semaphore_fd_khr(
         self, device: Device, import_semaphore_fd_info: ImportSemaphoreFdInfoKHR
@@ -2126,16 +2270,20 @@ struct PushDescriptor(Copyable):
         pData: Ptr[NoneType, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_push_descriptor_set = Ptr(to=get_device_proc_addr(
             device, "vkCmdPushDescriptorSet".unsafe_ptr()
         )).bitcast[type_of(self._cmd_push_descriptor_set)]()[]
+        if not Ptr(to=self._cmd_push_descriptor_set).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPushDescriptorSet."
         self._cmd_push_descriptor_set_with_template = Ptr(to=get_device_proc_addr(
             device, "vkCmdPushDescriptorSetWithTemplate".unsafe_ptr()
         )).bitcast[type_of(self._cmd_push_descriptor_set_with_template)]()[]
+        if not Ptr(to=self._cmd_push_descriptor_set_with_template).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPushDescriptorSetWithTemplate."
 
     fn cmd_push_descriptor_set(
         self,
@@ -2206,22 +2354,30 @@ struct DescriptorUpdateTemplate(Copyable):
         pData: Ptr[NoneType, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_descriptor_update_template = Ptr(to=get_device_proc_addr(
             device, "vkCreateDescriptorUpdateTemplate".unsafe_ptr()
         )).bitcast[type_of(self._create_descriptor_update_template)]()[]
+        if not Ptr(to=self._create_descriptor_update_template).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateDescriptorUpdateTemplate."
         self._destroy_descriptor_update_template = Ptr(to=get_device_proc_addr(
             device, "vkDestroyDescriptorUpdateTemplate".unsafe_ptr()
         )).bitcast[type_of(self._destroy_descriptor_update_template)]()[]
+        if not Ptr(to=self._destroy_descriptor_update_template).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyDescriptorUpdateTemplate."
         self._update_descriptor_set_with_template = Ptr(to=get_device_proc_addr(
             device, "vkUpdateDescriptorSetWithTemplate".unsafe_ptr()
         )).bitcast[type_of(self._update_descriptor_set_with_template)]()[]
+        if not Ptr(to=self._update_descriptor_set_with_template).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkUpdateDescriptorSetWithTemplate."
         self._cmd_push_descriptor_set_with_template = Ptr(to=get_device_proc_addr(
             device, "vkCmdPushDescriptorSetWithTemplate".unsafe_ptr()
         )).bitcast[type_of(self._cmd_push_descriptor_set_with_template)]()[]
+        if not Ptr(to=self._cmd_push_descriptor_set_with_template).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPushDescriptorSetWithTemplate."
 
     fn create_descriptor_update_template(
         self,
@@ -2312,22 +2468,30 @@ struct CreateRenderpass2(Copyable):
         commandBuffer: CommandBuffer, pSubpassEndInfo: Ptr[SubpassEndInfo, ImmutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_render_pass_2 = Ptr(to=get_device_proc_addr(
             device, "vkCreateRenderPass2".unsafe_ptr()
         )).bitcast[type_of(self._create_render_pass_2)]()[]
+        if not Ptr(to=self._create_render_pass_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateRenderPass2."
         self._cmd_begin_render_pass_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdBeginRenderPass2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_begin_render_pass_2)]()[]
+        if not Ptr(to=self._cmd_begin_render_pass_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBeginRenderPass2."
         self._cmd_next_subpass_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdNextSubpass2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_next_subpass_2)]()[]
+        if not Ptr(to=self._cmd_next_subpass_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdNextSubpass2."
         self._cmd_end_render_pass_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdEndRenderPass2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_end_render_pass_2)]()[]
+        if not Ptr(to=self._cmd_end_render_pass_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdEndRenderPass2."
 
     fn create_render_pass_2(
         self,
@@ -2394,13 +2558,15 @@ struct CreateRenderpass2(Copyable):
 struct SharedPresentableImage(Copyable):
     var _get_swapchain_status_khr: fn(device: Device, swapchain: SwapchainKHR) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_swapchain_status_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetSwapchainStatusKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_swapchain_status_khr)]()[]
+        if not Ptr(to=self._get_swapchain_status_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetSwapchainStatusKHR."
 
     fn get_swapchain_status_khr(self, device: Device, swapchain: SwapchainKHR) -> Result:
         """See official vulkan docs for details.
@@ -2417,13 +2583,15 @@ struct ExternalFenceCapabilities(Copyable):
         pExternalFenceProperties: Ptr[ExternalFenceProperties, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_external_fence_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceExternalFenceProperties".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_external_fence_properties)]()[]
+        if not Ptr(to=self._get_physical_device_external_fence_properties).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceExternalFenceProperties."
 
     fn get_physical_device_external_fence_properties(
         self,
@@ -2453,16 +2621,20 @@ struct ExternalFenceWin32(Copyable):
         pHandle: Ptr[HANDLE, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._import_fence_win_32_handle_khr = Ptr(to=get_device_proc_addr(
             device, "vkImportFenceWin32HandleKHR".unsafe_ptr()
         )).bitcast[type_of(self._import_fence_win_32_handle_khr)]()[]
+        if not Ptr(to=self._import_fence_win_32_handle_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkImportFenceWin32HandleKHR."
         self._get_fence_win_32_handle_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetFenceWin32HandleKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_fence_win_32_handle_khr)]()[]
+        if not Ptr(to=self._get_fence_win_32_handle_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetFenceWin32HandleKHR."
 
     fn import_fence_win_32_handle_khr(
         self, device: Device, import_fence_win_32_handle_info: ImportFenceWin32HandleInfoKHR
@@ -2499,16 +2671,20 @@ struct ExternalFenceFd(Copyable):
         pFd: Ptr[Int32, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._import_fence_fd_khr = Ptr(to=get_device_proc_addr(
             device, "vkImportFenceFdKHR".unsafe_ptr()
         )).bitcast[type_of(self._import_fence_fd_khr)]()[]
+        if not Ptr(to=self._import_fence_fd_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkImportFenceFdKHR."
         self._get_fence_fd_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetFenceFdKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_fence_fd_khr)]()[]
+        if not Ptr(to=self._get_fence_fd_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetFenceFdKHR."
 
     fn import_fence_fd_khr(
         self, device: Device, import_fence_fd_info: ImportFenceFdInfoKHR
@@ -2551,22 +2727,30 @@ struct PerformanceQuery(Copyable):
     ) -> Result
     var _release_profiling_lock_khr: fn(device: Device)
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._enumerate_physical_device_queue_family_performance_query_counters_khr = Ptr(to=get_device_proc_addr(
             device, "vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR".unsafe_ptr()
         )).bitcast[type_of(self._enumerate_physical_device_queue_family_performance_query_counters_khr)]()[]
+        if not Ptr(to=self._enumerate_physical_device_queue_family_performance_query_counters_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR."
         self._get_physical_device_queue_family_performance_query_passes_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_queue_family_performance_query_passes_khr)]()[]
+        if not Ptr(to=self._get_physical_device_queue_family_performance_query_passes_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR."
         self._acquire_profiling_lock_khr = Ptr(to=get_device_proc_addr(
             device, "vkAcquireProfilingLockKHR".unsafe_ptr()
         )).bitcast[type_of(self._acquire_profiling_lock_khr)]()[]
+        if not Ptr(to=self._acquire_profiling_lock_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkAcquireProfilingLockKHR."
         self._release_profiling_lock_khr = Ptr(to=get_device_proc_addr(
             device, "vkReleaseProfilingLockKHR".unsafe_ptr()
         )).bitcast[type_of(self._release_profiling_lock_khr)]()[]
+        if not Ptr(to=self._release_profiling_lock_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkReleaseProfilingLockKHR."
 
     fn enumerate_physical_device_queue_family_performance_query_counters_khr(
         self,
@@ -2636,16 +2820,20 @@ struct GetSurfaceCapabilities2(Copyable):
         pSurfaceFormats: Ptr[SurfaceFormat2KHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_surface_capabilities_2_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceSurfaceCapabilities2KHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_surface_capabilities_2_khr)]()[]
+        if not Ptr(to=self._get_physical_device_surface_capabilities_2_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceSurfaceCapabilities2KHR."
         self._get_physical_device_surface_formats_2_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceSurfaceFormats2KHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_surface_formats_2_khr)]()[]
+        if not Ptr(to=self._get_physical_device_surface_formats_2_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceSurfaceFormats2KHR."
 
     fn get_physical_device_surface_capabilities_2_khr(
         self,
@@ -2727,22 +2915,30 @@ struct GetDisplayProperties2(Copyable):
         pCapabilities: Ptr[DisplayPlaneCapabilities2KHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_display_properties_2_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceDisplayProperties2KHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_display_properties_2_khr)]()[]
+        if not Ptr(to=self._get_physical_device_display_properties_2_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceDisplayProperties2KHR."
         self._get_physical_device_display_plane_properties_2_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceDisplayPlaneProperties2KHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_display_plane_properties_2_khr)]()[]
+        if not Ptr(to=self._get_physical_device_display_plane_properties_2_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceDisplayPlaneProperties2KHR."
         self._get_display_mode_properties_2_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetDisplayModeProperties2KHR".unsafe_ptr()
         )).bitcast[type_of(self._get_display_mode_properties_2_khr)]()[]
+        if not Ptr(to=self._get_display_mode_properties_2_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDisplayModeProperties2KHR."
         self._get_display_plane_capabilities_2_khr = Ptr(to=get_instance_proc_addr(
             instance, "vkGetDisplayPlaneCapabilities2KHR".unsafe_ptr()
         )).bitcast[type_of(self._get_display_plane_capabilities_2_khr)]()[]
+        if not Ptr(to=self._get_display_plane_capabilities_2_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDisplayPlaneCapabilities2KHR."
 
     fn get_physical_device_display_properties_2_khr(
         self,
@@ -2888,19 +3084,25 @@ struct GetMemoryRequirements2(Copyable):
         pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_image_memory_requirements_2 = Ptr(to=get_device_proc_addr(
             device, "vkGetImageMemoryRequirements2".unsafe_ptr()
         )).bitcast[type_of(self._get_image_memory_requirements_2)]()[]
+        if not Ptr(to=self._get_image_memory_requirements_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetImageMemoryRequirements2."
         self._get_buffer_memory_requirements_2 = Ptr(to=get_device_proc_addr(
             device, "vkGetBufferMemoryRequirements2".unsafe_ptr()
         )).bitcast[type_of(self._get_buffer_memory_requirements_2)]()[]
+        if not Ptr(to=self._get_buffer_memory_requirements_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetBufferMemoryRequirements2."
         self._get_image_sparse_memory_requirements_2 = Ptr(to=get_device_proc_addr(
             device, "vkGetImageSparseMemoryRequirements2".unsafe_ptr()
         )).bitcast[type_of(self._get_image_sparse_memory_requirements_2)]()[]
+        if not Ptr(to=self._get_image_sparse_memory_requirements_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetImageSparseMemoryRequirements2."
 
     fn get_image_memory_requirements_2(
         self,
@@ -3063,58 +3265,90 @@ struct AccelerationStructure(Copyable):
         pSizeInfo: Ptr[AccelerationStructureBuildSizesInfoKHR, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
             device, "vkCreateAccelerationStructureKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_acceleration_structure_khr)]()[]
+        if not Ptr(to=self._create_acceleration_structure_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateAccelerationStructureKHR."
         self._destroy_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
             device, "vkDestroyAccelerationStructureKHR".unsafe_ptr()
         )).bitcast[type_of(self._destroy_acceleration_structure_khr)]()[]
+        if not Ptr(to=self._destroy_acceleration_structure_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyAccelerationStructureKHR."
         self._cmd_build_acceleration_structures_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdBuildAccelerationStructuresKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_build_acceleration_structures_khr)]()[]
+        if not Ptr(to=self._cmd_build_acceleration_structures_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBuildAccelerationStructuresKHR."
         self._cmd_build_acceleration_structures_indirect_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdBuildAccelerationStructuresIndirectKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_build_acceleration_structures_indirect_khr)]()[]
+        if not Ptr(to=self._cmd_build_acceleration_structures_indirect_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBuildAccelerationStructuresIndirectKHR."
         self._build_acceleration_structures_khr = Ptr(to=get_device_proc_addr(
             device, "vkBuildAccelerationStructuresKHR".unsafe_ptr()
         )).bitcast[type_of(self._build_acceleration_structures_khr)]()[]
+        if not Ptr(to=self._build_acceleration_structures_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkBuildAccelerationStructuresKHR."
         self._copy_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
             device, "vkCopyAccelerationStructureKHR".unsafe_ptr()
         )).bitcast[type_of(self._copy_acceleration_structure_khr)]()[]
+        if not Ptr(to=self._copy_acceleration_structure_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCopyAccelerationStructureKHR."
         self._copy_acceleration_structure_to_memory_khr = Ptr(to=get_device_proc_addr(
             device, "vkCopyAccelerationStructureToMemoryKHR".unsafe_ptr()
         )).bitcast[type_of(self._copy_acceleration_structure_to_memory_khr)]()[]
+        if not Ptr(to=self._copy_acceleration_structure_to_memory_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCopyAccelerationStructureToMemoryKHR."
         self._copy_memory_to_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
             device, "vkCopyMemoryToAccelerationStructureKHR".unsafe_ptr()
         )).bitcast[type_of(self._copy_memory_to_acceleration_structure_khr)]()[]
+        if not Ptr(to=self._copy_memory_to_acceleration_structure_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCopyMemoryToAccelerationStructureKHR."
         self._write_acceleration_structures_properties_khr = Ptr(to=get_device_proc_addr(
             device, "vkWriteAccelerationStructuresPropertiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._write_acceleration_structures_properties_khr)]()[]
+        if not Ptr(to=self._write_acceleration_structures_properties_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkWriteAccelerationStructuresPropertiesKHR."
         self._cmd_copy_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyAccelerationStructureKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_copy_acceleration_structure_khr)]()[]
+        if not Ptr(to=self._cmd_copy_acceleration_structure_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyAccelerationStructureKHR."
         self._cmd_copy_acceleration_structure_to_memory_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyAccelerationStructureToMemoryKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_copy_acceleration_structure_to_memory_khr)]()[]
+        if not Ptr(to=self._cmd_copy_acceleration_structure_to_memory_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyAccelerationStructureToMemoryKHR."
         self._cmd_copy_memory_to_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyMemoryToAccelerationStructureKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_copy_memory_to_acceleration_structure_khr)]()[]
+        if not Ptr(to=self._cmd_copy_memory_to_acceleration_structure_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyMemoryToAccelerationStructureKHR."
         self._get_acceleration_structure_device_address_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetAccelerationStructureDeviceAddressKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_acceleration_structure_device_address_khr)]()[]
+        if not Ptr(to=self._get_acceleration_structure_device_address_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetAccelerationStructureDeviceAddressKHR."
         self._cmd_write_acceleration_structures_properties_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdWriteAccelerationStructuresPropertiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_write_acceleration_structures_properties_khr)]()[]
+        if not Ptr(to=self._cmd_write_acceleration_structures_properties_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdWriteAccelerationStructuresPropertiesKHR."
         self._get_device_acceleration_structure_compatibility_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceAccelerationStructureCompatibilityKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_device_acceleration_structure_compatibility_khr)]()[]
+        if not Ptr(to=self._get_device_acceleration_structure_compatibility_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceAccelerationStructureCompatibilityKHR."
         self._get_acceleration_structure_build_sizes_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetAccelerationStructureBuildSizesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_acceleration_structure_build_sizes_khr)]()[]
+        if not Ptr(to=self._get_acceleration_structure_build_sizes_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetAccelerationStructureBuildSizesKHR."
 
     fn create_acceleration_structure_khr(
         self,
@@ -3425,31 +3659,45 @@ struct RayTracingPipeline(Copyable):
         commandBuffer: CommandBuffer, pipelineStackSize: UInt32
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_trace_rays_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdTraceRaysKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_trace_rays_khr)]()[]
+        if not Ptr(to=self._cmd_trace_rays_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdTraceRaysKHR."
         self._create_ray_tracing_pipelines_khr = Ptr(to=get_device_proc_addr(
             device, "vkCreateRayTracingPipelinesKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_ray_tracing_pipelines_khr)]()[]
+        if not Ptr(to=self._create_ray_tracing_pipelines_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateRayTracingPipelinesKHR."
         self._get_ray_tracing_shader_group_handles_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetRayTracingShaderGroupHandlesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_ray_tracing_shader_group_handles_khr)]()[]
+        if not Ptr(to=self._get_ray_tracing_shader_group_handles_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetRayTracingShaderGroupHandlesKHR."
         self._get_ray_tracing_capture_replay_shader_group_handles_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetRayTracingCaptureReplayShaderGroupHandlesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_ray_tracing_capture_replay_shader_group_handles_khr)]()[]
+        if not Ptr(to=self._get_ray_tracing_capture_replay_shader_group_handles_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetRayTracingCaptureReplayShaderGroupHandlesKHR."
         self._cmd_trace_rays_indirect_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdTraceRaysIndirectKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_trace_rays_indirect_khr)]()[]
+        if not Ptr(to=self._cmd_trace_rays_indirect_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdTraceRaysIndirectKHR."
         self._get_ray_tracing_shader_group_stack_size_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetRayTracingShaderGroupStackSizeKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_ray_tracing_shader_group_stack_size_khr)]()[]
+        if not Ptr(to=self._get_ray_tracing_shader_group_stack_size_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetRayTracingShaderGroupStackSizeKHR."
         self._cmd_set_ray_tracing_pipeline_stack_size_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetRayTracingPipelineStackSizeKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_set_ray_tracing_pipeline_stack_size_khr)]()[]
+        if not Ptr(to=self._cmd_set_ray_tracing_pipeline_stack_size_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetRayTracingPipelineStackSizeKHR."
 
     fn cmd_trace_rays_khr(
         self,
@@ -3593,16 +3841,20 @@ struct SamplerYcbcrConversion(Copyable):
         pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_sampler_ycbcr_conversion = Ptr(to=get_device_proc_addr(
             device, "vkCreateSamplerYcbcrConversion".unsafe_ptr()
         )).bitcast[type_of(self._create_sampler_ycbcr_conversion)]()[]
+        if not Ptr(to=self._create_sampler_ycbcr_conversion).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateSamplerYcbcrConversion."
         self._destroy_sampler_ycbcr_conversion = Ptr(to=get_device_proc_addr(
             device, "vkDestroySamplerYcbcrConversion".unsafe_ptr()
         )).bitcast[type_of(self._destroy_sampler_ycbcr_conversion)]()[]
+        if not Ptr(to=self._destroy_sampler_ycbcr_conversion).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroySamplerYcbcrConversion."
 
     fn create_sampler_ycbcr_conversion(
         self,
@@ -3643,16 +3895,20 @@ struct BindMemory2(Copyable):
         device: Device, bindInfoCount: UInt32, pBindInfos: Ptr[BindImageMemoryInfo, ImmutAnyOrigin]
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._bind_buffer_memory_2 = Ptr(to=get_device_proc_addr(
             device, "vkBindBufferMemory2".unsafe_ptr()
         )).bitcast[type_of(self._bind_buffer_memory_2)]()[]
+        if not Ptr(to=self._bind_buffer_memory_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkBindBufferMemory2."
         self._bind_image_memory_2 = Ptr(to=get_device_proc_addr(
             device, "vkBindImageMemory2".unsafe_ptr()
         )).bitcast[type_of(self._bind_image_memory_2)]()[]
+        if not Ptr(to=self._bind_image_memory_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkBindImageMemory2."
 
     fn bind_buffer_memory_2(
         self,
@@ -3686,13 +3942,15 @@ struct Maintenance3(Copyable):
         pSupport: Ptr[DescriptorSetLayoutSupport, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_descriptor_set_layout_support = Ptr(to=get_device_proc_addr(
             device, "vkGetDescriptorSetLayoutSupport".unsafe_ptr()
         )).bitcast[type_of(self._get_descriptor_set_layout_support)]()[]
+        if not Ptr(to=self._get_descriptor_set_layout_support).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDescriptorSetLayoutSupport."
 
     fn get_descriptor_set_layout_support(
         self,
@@ -3731,16 +3989,20 @@ struct DrawIndirectCount(Copyable):
         stride: UInt32,
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawIndirectCount".unsafe_ptr()
         )).bitcast[type_of(self._cmd_draw_indirect_count)]()[]
+        if not Ptr(to=self._cmd_draw_indirect_count).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDrawIndirectCount."
         self._cmd_draw_indexed_indirect_count = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawIndexedIndirectCount".unsafe_ptr()
         )).bitcast[type_of(self._cmd_draw_indexed_indirect_count)]()[]
+        if not Ptr(to=self._cmd_draw_indexed_indirect_count).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDrawIndexedIndirectCount."
 
     fn cmd_draw_indirect_count(
         self,
@@ -3802,19 +4064,25 @@ struct TimelineSemaphore(Copyable):
         device: Device, pSignalInfo: Ptr[SemaphoreSignalInfo, ImmutAnyOrigin]
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_semaphore_counter_value = Ptr(to=get_device_proc_addr(
             device, "vkGetSemaphoreCounterValue".unsafe_ptr()
         )).bitcast[type_of(self._get_semaphore_counter_value)]()[]
+        if not Ptr(to=self._get_semaphore_counter_value).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetSemaphoreCounterValue."
         self._wait_semaphores = Ptr(to=get_device_proc_addr(
             device, "vkWaitSemaphores".unsafe_ptr()
         )).bitcast[type_of(self._wait_semaphores)]()[]
+        if not Ptr(to=self._wait_semaphores).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkWaitSemaphores."
         self._signal_semaphore = Ptr(to=get_device_proc_addr(
             device, "vkSignalSemaphore".unsafe_ptr()
         )).bitcast[type_of(self._signal_semaphore)]()[]
+        if not Ptr(to=self._signal_semaphore).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkSignalSemaphore."
 
     fn get_semaphore_counter_value(
         self, device: Device, semaphore: Semaphore, mut value: UInt64
@@ -3858,16 +4126,20 @@ struct FragmentShadingRate(Copyable):
         combinerOps: InlineArray[FragmentShadingRateCombinerOpKHR, Int(2)],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_fragment_shading_rates_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceFragmentShadingRatesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_fragment_shading_rates_khr)]()[]
+        if not Ptr(to=self._get_physical_device_fragment_shading_rates_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceFragmentShadingRatesKHR."
         self._cmd_set_fragment_shading_rate_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetFragmentShadingRateKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_set_fragment_shading_rate_khr)]()[]
+        if not Ptr(to=self._cmd_set_fragment_shading_rate_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetFragmentShadingRateKHR."
 
     fn get_physical_device_fragment_shading_rates_khr(
         self,
@@ -3932,16 +4204,20 @@ struct DynamicRenderingLocalRead(Copyable):
         pInputAttachmentIndexInfo: Ptr[RenderingInputAttachmentIndexInfo, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_rendering_attachment_locations = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetRenderingAttachmentLocations".unsafe_ptr()
         )).bitcast[type_of(self._cmd_set_rendering_attachment_locations)]()[]
+        if not Ptr(to=self._cmd_set_rendering_attachment_locations).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetRenderingAttachmentLocations."
         self._cmd_set_rendering_input_attachment_indices = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetRenderingInputAttachmentIndices".unsafe_ptr()
         )).bitcast[type_of(self._cmd_set_rendering_input_attachment_indices)]()[]
+        if not Ptr(to=self._cmd_set_rendering_input_attachment_indices).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetRenderingInputAttachmentIndices."
 
     fn cmd_set_rendering_attachment_locations(
         self, command_buffer: CommandBuffer, location_info: RenderingAttachmentLocationInfo
@@ -3974,13 +4250,15 @@ struct PresentWait(Copyable):
         device: Device, swapchain: SwapchainKHR, presentId: UInt64, timeout: UInt64
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._wait_for_present_khr = Ptr(to=get_device_proc_addr(
             device, "vkWaitForPresentKHR".unsafe_ptr()
         )).bitcast[type_of(self._wait_for_present_khr)]()[]
+        if not Ptr(to=self._wait_for_present_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkWaitForPresentKHR."
 
     fn wait_for_present_khr(
         self, device: Device, swapchain: SwapchainKHR, present_id: UInt64, timeout: UInt64
@@ -4003,19 +4281,25 @@ struct BufferDeviceAddress(Copyable):
         device: Device, pInfo: Ptr[DeviceMemoryOpaqueCaptureAddressInfo, ImmutAnyOrigin]
     ) -> UInt64
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_buffer_device_address = Ptr(to=get_device_proc_addr(
             device, "vkGetBufferDeviceAddress".unsafe_ptr()
         )).bitcast[type_of(self._get_buffer_device_address)]()[]
+        if not Ptr(to=self._get_buffer_device_address).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetBufferDeviceAddress."
         self._get_buffer_opaque_capture_address = Ptr(to=get_device_proc_addr(
             device, "vkGetBufferOpaqueCaptureAddress".unsafe_ptr()
         )).bitcast[type_of(self._get_buffer_opaque_capture_address)]()[]
+        if not Ptr(to=self._get_buffer_opaque_capture_address).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetBufferOpaqueCaptureAddress."
         self._get_device_memory_opaque_capture_address = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceMemoryOpaqueCaptureAddress".unsafe_ptr()
         )).bitcast[type_of(self._get_device_memory_opaque_capture_address)]()[]
+        if not Ptr(to=self._get_device_memory_opaque_capture_address).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceMemoryOpaqueCaptureAddress."
 
     fn get_buffer_device_address(
         self, device: Device, info: BufferDeviceAddressInfo
@@ -4070,25 +4354,35 @@ struct DeferredHostOperations(Copyable):
     ) -> Result
     var _deferred_operation_join_khr: fn(device: Device, operation: DeferredOperationKHR) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_deferred_operation_khr = Ptr(to=get_device_proc_addr(
             device, "vkCreateDeferredOperationKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_deferred_operation_khr)]()[]
+        if not Ptr(to=self._create_deferred_operation_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateDeferredOperationKHR."
         self._destroy_deferred_operation_khr = Ptr(to=get_device_proc_addr(
             device, "vkDestroyDeferredOperationKHR".unsafe_ptr()
         )).bitcast[type_of(self._destroy_deferred_operation_khr)]()[]
+        if not Ptr(to=self._destroy_deferred_operation_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyDeferredOperationKHR."
         self._get_deferred_operation_max_concurrency_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetDeferredOperationMaxConcurrencyKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_deferred_operation_max_concurrency_khr)]()[]
+        if not Ptr(to=self._get_deferred_operation_max_concurrency_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeferredOperationMaxConcurrencyKHR."
         self._get_deferred_operation_result_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetDeferredOperationResultKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_deferred_operation_result_khr)]()[]
+        if not Ptr(to=self._get_deferred_operation_result_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeferredOperationResultKHR."
         self._deferred_operation_join_khr = Ptr(to=get_device_proc_addr(
             device, "vkDeferredOperationJoinKHR".unsafe_ptr()
         )).bitcast[type_of(self._deferred_operation_join_khr)]()[]
+        if not Ptr(to=self._deferred_operation_join_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDeferredOperationJoinKHR."
 
     fn create_deferred_operation_khr(
         self,
@@ -4164,19 +4458,25 @@ struct PipelineExecutableProperties(Copyable):
         pInternalRepresentations: Ptr[PipelineExecutableInternalRepresentationKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_pipeline_executable_properties_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPipelineExecutablePropertiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_pipeline_executable_properties_khr)]()[]
+        if not Ptr(to=self._get_pipeline_executable_properties_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPipelineExecutablePropertiesKHR."
         self._get_pipeline_executable_statistics_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPipelineExecutableStatisticsKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_pipeline_executable_statistics_khr)]()[]
+        if not Ptr(to=self._get_pipeline_executable_statistics_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPipelineExecutableStatisticsKHR."
         self._get_pipeline_executable_internal_representations_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPipelineExecutableInternalRepresentationsKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_pipeline_executable_internal_representations_khr)]()[]
+        if not Ptr(to=self._get_pipeline_executable_internal_representations_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPipelineExecutableInternalRepresentationsKHR."
 
     fn get_pipeline_executable_properties_khr(
         self,
@@ -4312,16 +4612,20 @@ struct MapMemory2(Copyable):
         device: Device, pMemoryUnmapInfo: Ptr[MemoryUnmapInfo, ImmutAnyOrigin]
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._map_memory_2 = Ptr(to=get_device_proc_addr(
             device, "vkMapMemory2".unsafe_ptr()
         )).bitcast[type_of(self._map_memory_2)]()[]
+        if not Ptr(to=self._map_memory_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkMapMemory2."
         self._unmap_memory_2 = Ptr(to=get_device_proc_addr(
             device, "vkUnmapMemory2".unsafe_ptr()
         )).bitcast[type_of(self._unmap_memory_2)]()[]
+        if not Ptr(to=self._unmap_memory_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkUnmapMemory2."
 
     fn map_memory_2(
         self,
@@ -4362,19 +4666,25 @@ struct VideoEncodeQueue(Copyable):
         commandBuffer: CommandBuffer, pEncodeInfo: Ptr[VideoEncodeInfoKHR, ImmutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_video_encode_quality_level_properties_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_video_encode_quality_level_properties_khr)]()[]
+        if not Ptr(to=self._get_physical_device_video_encode_quality_level_properties_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR."
         self._get_encoded_video_session_parameters_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetEncodedVideoSessionParametersKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_encoded_video_session_parameters_khr)]()[]
+        if not Ptr(to=self._get_encoded_video_session_parameters_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetEncodedVideoSessionParametersKHR."
         self._cmd_encode_video_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdEncodeVideoKHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_encode_video_khr)]()[]
+        if not Ptr(to=self._cmd_encode_video_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdEncodeVideoKHR."
 
     fn get_physical_device_video_encode_quality_level_properties_khr(
         self,
@@ -4483,28 +4793,40 @@ struct Synchronization2(Copyable):
         queue: Queue, submitCount: UInt32, pSubmits: Ptr[SubmitInfo2, ImmutAnyOrigin], fence: Fence
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_event_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetEvent2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_set_event_2)]()[]
+        if not Ptr(to=self._cmd_set_event_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetEvent2."
         self._cmd_reset_event_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdResetEvent2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_reset_event_2)]()[]
+        if not Ptr(to=self._cmd_reset_event_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdResetEvent2."
         self._cmd_wait_events_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdWaitEvents2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_wait_events_2)]()[]
+        if not Ptr(to=self._cmd_wait_events_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdWaitEvents2."
         self._cmd_pipeline_barrier_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdPipelineBarrier2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_pipeline_barrier_2)]()[]
+        if not Ptr(to=self._cmd_pipeline_barrier_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPipelineBarrier2."
         self._cmd_write_timestamp_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdWriteTimestamp2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_write_timestamp_2)]()[]
+        if not Ptr(to=self._cmd_write_timestamp_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdWriteTimestamp2."
         self._queue_submit_2 = Ptr(to=get_device_proc_addr(
             device, "vkQueueSubmit2".unsafe_ptr()
         )).bitcast[type_of(self._queue_submit_2)]()[]
+        if not Ptr(to=self._queue_submit_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkQueueSubmit2."
 
     fn cmd_set_event_2(
         self, command_buffer: CommandBuffer, event: Event, dependency_info: DependencyInfo
@@ -4599,28 +4921,40 @@ struct CopyCommands2(Copyable):
         commandBuffer: CommandBuffer, pResolveImageInfo: Ptr[ResolveImageInfo2, ImmutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_copy_buffer_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyBuffer2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_copy_buffer_2)]()[]
+        if not Ptr(to=self._cmd_copy_buffer_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyBuffer2."
         self._cmd_copy_image_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyImage2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_copy_image_2)]()[]
+        if not Ptr(to=self._cmd_copy_image_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyImage2."
         self._cmd_copy_buffer_to_image_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyBufferToImage2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_copy_buffer_to_image_2)]()[]
+        if not Ptr(to=self._cmd_copy_buffer_to_image_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyBufferToImage2."
         self._cmd_copy_image_to_buffer_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyImageToBuffer2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_copy_image_to_buffer_2)]()[]
+        if not Ptr(to=self._cmd_copy_image_to_buffer_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyImageToBuffer2."
         self._cmd_blit_image_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdBlitImage2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_blit_image_2)]()[]
+        if not Ptr(to=self._cmd_blit_image_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBlitImage2."
         self._cmd_resolve_image_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdResolveImage2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_resolve_image_2)]()[]
+        if not Ptr(to=self._cmd_resolve_image_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdResolveImage2."
 
     fn cmd_copy_buffer_2(self, command_buffer: CommandBuffer, copy_buffer_info: CopyBufferInfo2):
         """See official vulkan docs for details.
@@ -4688,13 +5022,15 @@ struct RayTracingMaintenance1(Copyable):
         commandBuffer: CommandBuffer, indirectDeviceAddress: DeviceAddress
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_trace_rays_indirect_2_khr = Ptr(to=get_device_proc_addr(
             device, "vkCmdTraceRaysIndirect2KHR".unsafe_ptr()
         )).bitcast[type_of(self._cmd_trace_rays_indirect_2_khr)]()[]
+        if not Ptr(to=self._cmd_trace_rays_indirect_2_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdTraceRaysIndirect2KHR."
 
     fn cmd_trace_rays_indirect_2_khr(
         self, command_buffer: CommandBuffer, indirect_device_address: DeviceAddress
@@ -4724,19 +5060,25 @@ struct Maintenance4(Copyable):
         pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_device_buffer_memory_requirements = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceBufferMemoryRequirements".unsafe_ptr()
         )).bitcast[type_of(self._get_device_buffer_memory_requirements)]()[]
+        if not Ptr(to=self._get_device_buffer_memory_requirements).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceBufferMemoryRequirements."
         self._get_device_image_memory_requirements = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceImageMemoryRequirements".unsafe_ptr()
         )).bitcast[type_of(self._get_device_image_memory_requirements)]()[]
+        if not Ptr(to=self._get_device_image_memory_requirements).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceImageMemoryRequirements."
         self._get_device_image_sparse_memory_requirements = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceImageSparseMemoryRequirements".unsafe_ptr()
         )).bitcast[type_of(self._get_device_image_sparse_memory_requirements)]()[]
+        if not Ptr(to=self._get_device_image_sparse_memory_requirements).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceImageSparseMemoryRequirements."
 
     fn get_device_buffer_memory_requirements(
         self,
@@ -4834,22 +5176,30 @@ struct Maintenance5(Copyable):
         pLayout: Ptr[SubresourceLayout2, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_bind_index_buffer_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindIndexBuffer2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_bind_index_buffer_2)]()[]
+        if not Ptr(to=self._cmd_bind_index_buffer_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBindIndexBuffer2."
         self._get_rendering_area_granularity = Ptr(to=get_device_proc_addr(
             device, "vkGetRenderingAreaGranularity".unsafe_ptr()
         )).bitcast[type_of(self._get_rendering_area_granularity)]()[]
+        if not Ptr(to=self._get_rendering_area_granularity).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetRenderingAreaGranularity."
         self._get_device_image_subresource_layout = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceImageSubresourceLayout".unsafe_ptr()
         )).bitcast[type_of(self._get_device_image_subresource_layout)]()[]
+        if not Ptr(to=self._get_device_image_subresource_layout).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceImageSubresourceLayout."
         self._get_image_subresource_layout_2 = Ptr(to=get_device_proc_addr(
             device, "vkGetImageSubresourceLayout2".unsafe_ptr()
         )).bitcast[type_of(self._get_image_subresource_layout_2)]()[]
+        if not Ptr(to=self._get_image_subresource_layout_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetImageSubresourceLayout2."
 
     fn cmd_bind_index_buffer_2(
         self,
@@ -4917,13 +5267,15 @@ struct PresentWait2(Copyable):
         pPresentWait2Info: Ptr[PresentWait2InfoKHR, ImmutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._wait_for_present_2_khr = Ptr(to=get_device_proc_addr(
             device, "vkWaitForPresent2KHR".unsafe_ptr()
         )).bitcast[type_of(self._wait_for_present_2_khr)]()[]
+        if not Ptr(to=self._wait_for_present_2_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkWaitForPresent2KHR."
 
     fn wait_for_present_2_khr(
         self, device: Device, swapchain: SwapchainKHR, present_wait_2_info: PresentWait2InfoKHR
@@ -4967,25 +5319,35 @@ struct PipelineBinary(Copyable):
         pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_pipeline_binaries_khr = Ptr(to=get_device_proc_addr(
             device, "vkCreatePipelineBinariesKHR".unsafe_ptr()
         )).bitcast[type_of(self._create_pipeline_binaries_khr)]()[]
+        if not Ptr(to=self._create_pipeline_binaries_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreatePipelineBinariesKHR."
         self._destroy_pipeline_binary_khr = Ptr(to=get_device_proc_addr(
             device, "vkDestroyPipelineBinaryKHR".unsafe_ptr()
         )).bitcast[type_of(self._destroy_pipeline_binary_khr)]()[]
+        if not Ptr(to=self._destroy_pipeline_binary_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyPipelineBinaryKHR."
         self._get_pipeline_key_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPipelineKeyKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_pipeline_key_khr)]()[]
+        if not Ptr(to=self._get_pipeline_key_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPipelineKeyKHR."
         self._get_pipeline_binary_data_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPipelineBinaryDataKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_pipeline_binary_data_khr)]()[]
+        if not Ptr(to=self._get_pipeline_binary_data_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPipelineBinaryDataKHR."
         self._release_captured_pipeline_data_khr = Ptr(to=get_device_proc_addr(
             device, "vkReleaseCapturedPipelineDataKHR".unsafe_ptr()
         )).bitcast[type_of(self._release_captured_pipeline_data_khr)]()[]
+        if not Ptr(to=self._release_captured_pipeline_data_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkReleaseCapturedPipelineDataKHR."
 
     fn create_pipeline_binaries_khr(
         self,
@@ -5096,13 +5458,15 @@ struct SwapchainMaintenance1(Copyable):
         device: Device, pReleaseInfo: Ptr[ReleaseSwapchainImagesInfoKHR, ImmutAnyOrigin]
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._release_swapchain_images_khr = Ptr(to=get_device_proc_addr(
             device, "vkReleaseSwapchainImagesKHR".unsafe_ptr()
         )).bitcast[type_of(self._release_swapchain_images_khr)]()[]
+        if not Ptr(to=self._release_swapchain_images_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkReleaseSwapchainImagesKHR."
 
     fn release_swapchain_images_khr(
         self, device: Device, release_info: ReleaseSwapchainImagesInfoKHR
@@ -5123,13 +5487,15 @@ struct CooperativeMatrix(Copyable):
         pProperties: Ptr[CooperativeMatrixPropertiesKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_cooperative_matrix_properties_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_cooperative_matrix_properties_khr)]()[]
+        if not Ptr(to=self._get_physical_device_cooperative_matrix_properties_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR."
 
     fn get_physical_device_cooperative_matrix_properties_khr(
         self,
@@ -5173,13 +5539,15 @@ struct LineRasterization(Copyable):
         commandBuffer: CommandBuffer, lineStippleFactor: UInt32, lineStipplePattern: UInt16
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_line_stipple = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetLineStipple".unsafe_ptr()
         )).bitcast[type_of(self._cmd_set_line_stipple)]()[]
+        if not Ptr(to=self._cmd_set_line_stipple).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetLineStipple."
 
     fn cmd_set_line_stipple(
         self,
@@ -5210,16 +5578,20 @@ struct CalibratedTimestamps(Copyable):
         pMaxDeviation: Ptr[UInt64, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_calibrateable_time_domains_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceCalibrateableTimeDomainsKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_calibrateable_time_domains_khr)]()[]
+        if not Ptr(to=self._get_physical_device_calibrateable_time_domains_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceCalibrateableTimeDomainsKHR."
         self._get_calibrated_timestamps_khr = Ptr(to=get_device_proc_addr(
             device, "vkGetCalibratedTimestampsKHR".unsafe_ptr()
         )).bitcast[type_of(self._get_calibrated_timestamps_khr)]()[]
+        if not Ptr(to=self._get_calibrated_timestamps_khr).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetCalibratedTimestampsKHR."
 
     fn get_physical_device_calibrateable_time_domains_khr(
         self,
@@ -5303,28 +5675,40 @@ struct Maintenance6(Copyable):
         pBindDescriptorBufferEmbeddedSamplersInfo: Ptr[BindDescriptorBufferEmbeddedSamplersInfoEXT, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_bind_descriptor_sets_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindDescriptorSets2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_bind_descriptor_sets_2)]()[]
+        if not Ptr(to=self._cmd_bind_descriptor_sets_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBindDescriptorSets2."
         self._cmd_push_constants_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdPushConstants2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_push_constants_2)]()[]
+        if not Ptr(to=self._cmd_push_constants_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPushConstants2."
         self._cmd_push_descriptor_set_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdPushDescriptorSet2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_push_descriptor_set_2)]()[]
+        if not Ptr(to=self._cmd_push_descriptor_set_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPushDescriptorSet2."
         self._cmd_push_descriptor_set_with_template_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdPushDescriptorSetWithTemplate2".unsafe_ptr()
         )).bitcast[type_of(self._cmd_push_descriptor_set_with_template_2)]()[]
+        if not Ptr(to=self._cmd_push_descriptor_set_with_template_2).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdPushDescriptorSetWithTemplate2."
         self._cmd_set_descriptor_buffer_offsets_2_ext = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDescriptorBufferOffsets2EXT".unsafe_ptr()
         )).bitcast[type_of(self._cmd_set_descriptor_buffer_offsets_2_ext)]()[]
+        if not Ptr(to=self._cmd_set_descriptor_buffer_offsets_2_ext).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdSetDescriptorBufferOffsets2EXT."
         self._cmd_bind_descriptor_buffer_embedded_samplers_2_ext = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindDescriptorBufferEmbeddedSamplers2EXT".unsafe_ptr()
         )).bitcast[type_of(self._cmd_bind_descriptor_buffer_embedded_samplers_2_ext)]()[]
+        if not Ptr(to=self._cmd_bind_descriptor_buffer_embedded_samplers_2_ext).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdBindDescriptorBufferEmbeddedSamplers2EXT."
 
     fn cmd_bind_descriptor_sets_2(
         self, command_buffer: CommandBuffer, bind_descriptor_sets_info: BindDescriptorSetsInfo

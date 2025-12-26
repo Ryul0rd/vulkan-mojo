@@ -10,13 +10,15 @@ struct IosSurface(Copyable):
         pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_ios_surface_mvk = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateIOSSurfaceMVK".unsafe_ptr()
         )).bitcast[type_of(self._create_ios_surface_mvk)]()[]
+        if not Ptr(to=self._create_ios_surface_mvk).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateIOSSurfaceMVK."
 
     fn create_ios_surface_mvk(
         self,
@@ -45,13 +47,15 @@ struct MacosSurface(Copyable):
         pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_mac_os_surface_mvk = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateMacOSSurfaceMVK".unsafe_ptr()
         )).bitcast[type_of(self._create_mac_os_surface_mvk)]()[]
+        if not Ptr(to=self._create_mac_os_surface_mvk).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateMacOSSurfaceMVK."
 
     fn create_mac_os_surface_mvk(
         self,

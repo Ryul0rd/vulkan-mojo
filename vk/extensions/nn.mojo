@@ -10,13 +10,15 @@ struct ViSurface(Copyable):
         pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
         var get_instance_proc_addr = global_fns.borrow_handle().get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_vi_surface_nn = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateViSurfaceNN".unsafe_ptr()
         )).bitcast[type_of(self._create_vi_surface_nn)]()[]
+        if not Ptr(to=self._create_vi_surface_nn).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateViSurfaceNN."
 
     fn create_vi_surface_nn(
         self,

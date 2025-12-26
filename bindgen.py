@@ -1469,6 +1469,8 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                     f"        self.{mojo_command_name} = Ptr(to=get_{get_proc_level}_proc_addr(\n"
                     f'            {handle_arg}, "{new_command.command.name}".unsafe_ptr()\n'
                     f"        )).bitcast[type_of(self.{mojo_command_name})]()[]\n"
+                    f"        if not Ptr(to=self.{mojo_command_name}).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:\n"
+                    f'            raise "Could not load {new_command.command.name}."\n'
                 ))
     files["core_functions.mojo"] = "".join(parts)
 
@@ -1501,7 +1503,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 ))
             extension_parts.append((
                 f"\n"
-                f"    fn __init__[T: GlobalFunctions](out self, global_fns: T, {extension.type}: {extension.type.capitalize()}):\n"
+                f"    fn __init__[T: GlobalFunctions](out self, global_fns: T, {extension.type}: {extension.type.capitalize()}) raises:\n"
                 f"        var get_{extension.type}_proc_addr = global_fns.borrow_handle().get_function[\n"
                 f"            fn({extension.type}: {extension.type.capitalize()}, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction\n"
                 f'        ]("vkGet{extension.type.capitalize()}ProcAddr")\n'
@@ -1512,6 +1514,8 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                     f"        self._{mojo_command_name} = Ptr(to=get_{extension.type}_proc_addr(\n"
                     f'            {extension.type}, "{command.name}".unsafe_ptr()\n'
                     f"        )).bitcast[type_of(self._{mojo_command_name})]()[]\n"
+                    f"        if not Ptr(to=self._{mojo_command_name}).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:\n"
+                    f'            raise "Could not load {command.name}."\n'
                 ))
             for command in extension.commands:
                 extension_parts.append(emit_command_wrapper(command))

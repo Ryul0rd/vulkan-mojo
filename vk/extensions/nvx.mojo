@@ -27,25 +27,35 @@ struct BinaryImport(Copyable):
         commandBuffer: CommandBuffer, pLaunchInfo: Ptr[CuLaunchInfoNVX, ImmutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_cu_module_nvx = Ptr(to=get_device_proc_addr(
             device, "vkCreateCuModuleNVX".unsafe_ptr()
         )).bitcast[type_of(self._create_cu_module_nvx)]()[]
+        if not Ptr(to=self._create_cu_module_nvx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateCuModuleNVX."
         self._create_cu_function_nvx = Ptr(to=get_device_proc_addr(
             device, "vkCreateCuFunctionNVX".unsafe_ptr()
         )).bitcast[type_of(self._create_cu_function_nvx)]()[]
+        if not Ptr(to=self._create_cu_function_nvx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateCuFunctionNVX."
         self._destroy_cu_module_nvx = Ptr(to=get_device_proc_addr(
             device, "vkDestroyCuModuleNVX".unsafe_ptr()
         )).bitcast[type_of(self._destroy_cu_module_nvx)]()[]
+        if not Ptr(to=self._destroy_cu_module_nvx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyCuModuleNVX."
         self._destroy_cu_function_nvx = Ptr(to=get_device_proc_addr(
             device, "vkDestroyCuFunctionNVX".unsafe_ptr()
         )).bitcast[type_of(self._destroy_cu_function_nvx)]()[]
+        if not Ptr(to=self._destroy_cu_function_nvx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyCuFunctionNVX."
         self._cmd_cu_launch_kernel_nvx = Ptr(to=get_device_proc_addr(
             device, "vkCmdCuLaunchKernelNVX".unsafe_ptr()
         )).bitcast[type_of(self._cmd_cu_launch_kernel_nvx)]()[]
+        if not Ptr(to=self._cmd_cu_launch_kernel_nvx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCuLaunchKernelNVX."
 
     fn create_cu_module_nvx(
         self,
@@ -130,19 +140,25 @@ struct ImageViewHandle(Copyable):
         pProperties: Ptr[ImageViewAddressPropertiesNVX, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_image_view_handle_nvx = Ptr(to=get_device_proc_addr(
             device, "vkGetImageViewHandleNVX".unsafe_ptr()
         )).bitcast[type_of(self._get_image_view_handle_nvx)]()[]
+        if not Ptr(to=self._get_image_view_handle_nvx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetImageViewHandleNVX."
         self._get_image_view_handle_64_nvx = Ptr(to=get_device_proc_addr(
             device, "vkGetImageViewHandle64NVX".unsafe_ptr()
         )).bitcast[type_of(self._get_image_view_handle_64_nvx)]()[]
+        if not Ptr(to=self._get_image_view_handle_64_nvx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetImageViewHandle64NVX."
         self._get_image_view_address_nvx = Ptr(to=get_device_proc_addr(
             device, "vkGetImageViewAddressNVX".unsafe_ptr()
         )).bitcast[type_of(self._get_image_view_address_nvx)]()[]
+        if not Ptr(to=self._get_image_view_address_nvx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetImageViewAddressNVX."
 
     fn get_image_view_handle_nvx(self, device: Device, info: ImageViewHandleInfoNVX) -> UInt32:
         """See official vulkan docs for details.

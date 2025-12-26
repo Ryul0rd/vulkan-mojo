@@ -14,16 +14,20 @@ struct ExternalMemoryAndroidHardwareBuffer(Copyable):
         pBuffer: Ptr[Ptr[AHardwareBuffer, MutAnyOrigin], MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_android_hardware_buffer_properties_android = Ptr(to=get_device_proc_addr(
             device, "vkGetAndroidHardwareBufferPropertiesANDROID".unsafe_ptr()
         )).bitcast[type_of(self._get_android_hardware_buffer_properties_android)]()[]
+        if not Ptr(to=self._get_android_hardware_buffer_properties_android).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetAndroidHardwareBufferPropertiesANDROID."
         self._get_memory_android_hardware_buffer_android = Ptr(to=get_device_proc_addr(
             device, "vkGetMemoryAndroidHardwareBufferANDROID".unsafe_ptr()
         )).bitcast[type_of(self._get_memory_android_hardware_buffer_android)]()[]
+        if not Ptr(to=self._get_memory_android_hardware_buffer_android).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetMemoryAndroidHardwareBufferANDROID."
 
     fn get_android_hardware_buffer_properties_android(
         self,

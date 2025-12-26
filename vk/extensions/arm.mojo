@@ -57,43 +57,65 @@ struct Tensors(Copyable):
         pData: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_tensor_arm = Ptr(to=get_device_proc_addr(
             device, "vkCreateTensorARM".unsafe_ptr()
         )).bitcast[type_of(self._create_tensor_arm)]()[]
+        if not Ptr(to=self._create_tensor_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateTensorARM."
         self._destroy_tensor_arm = Ptr(to=get_device_proc_addr(
             device, "vkDestroyTensorARM".unsafe_ptr()
         )).bitcast[type_of(self._destroy_tensor_arm)]()[]
+        if not Ptr(to=self._destroy_tensor_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyTensorARM."
         self._create_tensor_view_arm = Ptr(to=get_device_proc_addr(
             device, "vkCreateTensorViewARM".unsafe_ptr()
         )).bitcast[type_of(self._create_tensor_view_arm)]()[]
+        if not Ptr(to=self._create_tensor_view_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateTensorViewARM."
         self._destroy_tensor_view_arm = Ptr(to=get_device_proc_addr(
             device, "vkDestroyTensorViewARM".unsafe_ptr()
         )).bitcast[type_of(self._destroy_tensor_view_arm)]()[]
+        if not Ptr(to=self._destroy_tensor_view_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyTensorViewARM."
         self._get_tensor_memory_requirements_arm = Ptr(to=get_device_proc_addr(
             device, "vkGetTensorMemoryRequirementsARM".unsafe_ptr()
         )).bitcast[type_of(self._get_tensor_memory_requirements_arm)]()[]
+        if not Ptr(to=self._get_tensor_memory_requirements_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetTensorMemoryRequirementsARM."
         self._bind_tensor_memory_arm = Ptr(to=get_device_proc_addr(
             device, "vkBindTensorMemoryARM".unsafe_ptr()
         )).bitcast[type_of(self._bind_tensor_memory_arm)]()[]
+        if not Ptr(to=self._bind_tensor_memory_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkBindTensorMemoryARM."
         self._get_device_tensor_memory_requirements_arm = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceTensorMemoryRequirementsARM".unsafe_ptr()
         )).bitcast[type_of(self._get_device_tensor_memory_requirements_arm)]()[]
+        if not Ptr(to=self._get_device_tensor_memory_requirements_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDeviceTensorMemoryRequirementsARM."
         self._cmd_copy_tensor_arm = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyTensorARM".unsafe_ptr()
         )).bitcast[type_of(self._cmd_copy_tensor_arm)]()[]
+        if not Ptr(to=self._cmd_copy_tensor_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdCopyTensorARM."
         self._get_physical_device_external_tensor_properties_arm = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceExternalTensorPropertiesARM".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_external_tensor_properties_arm)]()[]
+        if not Ptr(to=self._get_physical_device_external_tensor_properties_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceExternalTensorPropertiesARM."
         self._get_tensor_opaque_capture_descriptor_data_arm = Ptr(to=get_device_proc_addr(
             device, "vkGetTensorOpaqueCaptureDescriptorDataARM".unsafe_ptr()
         )).bitcast[type_of(self._get_tensor_opaque_capture_descriptor_data_arm)]()[]
+        if not Ptr(to=self._get_tensor_opaque_capture_descriptor_data_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetTensorOpaqueCaptureDescriptorDataARM."
         self._get_tensor_view_opaque_capture_descriptor_data_arm = Ptr(to=get_device_proc_addr(
             device, "vkGetTensorViewOpaqueCaptureDescriptorDataARM".unsafe_ptr()
         )).bitcast[type_of(self._get_tensor_view_opaque_capture_descriptor_data_arm)]()[]
+        if not Ptr(to=self._get_tensor_view_opaque_capture_descriptor_data_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetTensorViewOpaqueCaptureDescriptorDataARM."
 
     fn create_tensor_arm(
         self,
@@ -319,43 +341,65 @@ struct DataGraph(Copyable):
         pQueueFamilyDataGraphProcessingEngineProperties: Ptr[QueueFamilyDataGraphProcessingEnginePropertiesARM, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device):
+    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
         var get_device_proc_addr = global_fns.borrow_handle().get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_data_graph_pipelines_arm = Ptr(to=get_device_proc_addr(
             device, "vkCreateDataGraphPipelinesARM".unsafe_ptr()
         )).bitcast[type_of(self._create_data_graph_pipelines_arm)]()[]
+        if not Ptr(to=self._create_data_graph_pipelines_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateDataGraphPipelinesARM."
         self._create_data_graph_pipeline_session_arm = Ptr(to=get_device_proc_addr(
             device, "vkCreateDataGraphPipelineSessionARM".unsafe_ptr()
         )).bitcast[type_of(self._create_data_graph_pipeline_session_arm)]()[]
+        if not Ptr(to=self._create_data_graph_pipeline_session_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCreateDataGraphPipelineSessionARM."
         self._get_data_graph_pipeline_session_bind_point_requirements_arm = Ptr(to=get_device_proc_addr(
             device, "vkGetDataGraphPipelineSessionBindPointRequirementsARM".unsafe_ptr()
         )).bitcast[type_of(self._get_data_graph_pipeline_session_bind_point_requirements_arm)]()[]
+        if not Ptr(to=self._get_data_graph_pipeline_session_bind_point_requirements_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDataGraphPipelineSessionBindPointRequirementsARM."
         self._get_data_graph_pipeline_session_memory_requirements_arm = Ptr(to=get_device_proc_addr(
             device, "vkGetDataGraphPipelineSessionMemoryRequirementsARM".unsafe_ptr()
         )).bitcast[type_of(self._get_data_graph_pipeline_session_memory_requirements_arm)]()[]
+        if not Ptr(to=self._get_data_graph_pipeline_session_memory_requirements_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDataGraphPipelineSessionMemoryRequirementsARM."
         self._bind_data_graph_pipeline_session_memory_arm = Ptr(to=get_device_proc_addr(
             device, "vkBindDataGraphPipelineSessionMemoryARM".unsafe_ptr()
         )).bitcast[type_of(self._bind_data_graph_pipeline_session_memory_arm)]()[]
+        if not Ptr(to=self._bind_data_graph_pipeline_session_memory_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkBindDataGraphPipelineSessionMemoryARM."
         self._destroy_data_graph_pipeline_session_arm = Ptr(to=get_device_proc_addr(
             device, "vkDestroyDataGraphPipelineSessionARM".unsafe_ptr()
         )).bitcast[type_of(self._destroy_data_graph_pipeline_session_arm)]()[]
+        if not Ptr(to=self._destroy_data_graph_pipeline_session_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyDataGraphPipelineSessionARM."
         self._cmd_dispatch_data_graph_arm = Ptr(to=get_device_proc_addr(
             device, "vkCmdDispatchDataGraphARM".unsafe_ptr()
         )).bitcast[type_of(self._cmd_dispatch_data_graph_arm)]()[]
+        if not Ptr(to=self._cmd_dispatch_data_graph_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkCmdDispatchDataGraphARM."
         self._get_data_graph_pipeline_available_properties_arm = Ptr(to=get_device_proc_addr(
             device, "vkGetDataGraphPipelineAvailablePropertiesARM".unsafe_ptr()
         )).bitcast[type_of(self._get_data_graph_pipeline_available_properties_arm)]()[]
+        if not Ptr(to=self._get_data_graph_pipeline_available_properties_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDataGraphPipelineAvailablePropertiesARM."
         self._get_data_graph_pipeline_properties_arm = Ptr(to=get_device_proc_addr(
             device, "vkGetDataGraphPipelinePropertiesARM".unsafe_ptr()
         )).bitcast[type_of(self._get_data_graph_pipeline_properties_arm)]()[]
+        if not Ptr(to=self._get_data_graph_pipeline_properties_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetDataGraphPipelinePropertiesARM."
         self._get_physical_device_queue_family_data_graph_properties_arm = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceQueueFamilyDataGraphPropertiesARM".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_queue_family_data_graph_properties_arm)]()[]
+        if not Ptr(to=self._get_physical_device_queue_family_data_graph_properties_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceQueueFamilyDataGraphPropertiesARM."
         self._get_physical_device_queue_family_data_graph_processing_engine_properties_arm = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceQueueFamilyDataGraphProcessingEnginePropertiesARM".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_queue_family_data_graph_processing_engine_properties_arm)]()[]
+        if not Ptr(to=self._get_physical_device_queue_family_data_graph_processing_engine_properties_arm).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkGetPhysicalDeviceQueueFamilyDataGraphProcessingEnginePropertiesARM."
 
     fn create_data_graph_pipelines_arm(
         self,
