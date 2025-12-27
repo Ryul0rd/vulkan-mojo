@@ -755,6 +755,10 @@ def parse_commands(registry: Element) -> VkParsedCommands:
                 core_commands["device"][version].append(versioned_command)
             else:
                 core_commands["global"][version].append(versioned_command)
+            if command.name == "vkDestroyInstance":
+                core_commands["global"][version].append(versioned_command)
+            if command.name == "vkDestroyDevice":
+                core_commands["instance"][version].append(versioned_command)
 
     # Organize extension commands by extension
     extension_commands: Dict[str, List[VkExtensionCommands]] = defaultdict(list)

@@ -40,6 +40,15 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
             Ptr(to=instance).bitcast[Instance](),
         )
 
+    fn destroy_instance(
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    ):
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
+        """
+        return self._v1_0.destroy_instance(instance, p_allocator)
+
     fn get_instance_proc_addr(
         self, instance: Instance, p_name: CStringSlice
     ) -> PFN_vkVoidFunction:
@@ -147,6 +156,15 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
             p_allocator,
             Ptr(to=instance).bitcast[Instance](),
         )
+
+    fn destroy_instance(
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    ):
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
+        """
+        return self._v1_0.destroy_instance(instance, p_allocator)
 
     fn get_instance_proc_addr(
         self, instance: Instance, p_name: CStringSlice
@@ -263,6 +281,15 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
             Ptr(to=instance).bitcast[Instance](),
         )
 
+    fn destroy_instance(
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    ):
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
+        """
+        return self._v1_0.destroy_instance(instance, p_allocator)
+
     fn get_instance_proc_addr(
         self, instance: Instance, p_name: CStringSlice
     ) -> PFN_vkVoidFunction:
@@ -377,6 +404,15 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
             p_allocator,
             Ptr(to=instance).bitcast[Instance](),
         )
+
+    fn destroy_instance(
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    ):
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
+        """
+        return self._v1_0.destroy_instance(instance, p_allocator)
 
     fn get_instance_proc_addr(
         self, instance: Instance, p_name: CStringSlice
@@ -493,6 +529,15 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
             Ptr(to=instance).bitcast[Instance](),
         )
 
+    fn destroy_instance(
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    ):
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
+        """
+        return self._v1_0.destroy_instance(instance, p_allocator)
+
     fn get_instance_proc_addr(
         self, instance: Instance, p_name: CStringSlice
     ) -> PFN_vkVoidFunction:
@@ -585,6 +630,9 @@ struct GlobalFunctionAdditionsV1_0(Copyable, Movable):
         pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         pInstance: Ptr[Instance, MutAnyOrigin],
     ) -> Result
+    var destroy_instance: fn(
+        instance: Instance, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    )
     var get_instance_proc_addr: fn(
         instance: Instance, pName: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction
@@ -606,6 +654,11 @@ struct GlobalFunctionAdditionsV1_0(Copyable, Movable):
         )).bitcast[type_of(self.create_instance)]()[]
         if not Ptr(to=self.create_instance).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
             raise "Could not load vkCreateInstance."
+        self.destroy_instance = Ptr(to=get_instance_proc_addr(
+            Instance.NULL, "vkDestroyInstance".unsafe_ptr()
+        )).bitcast[type_of(self.destroy_instance)]()[]
+        if not Ptr(to=self.destroy_instance).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyInstance."
         self.get_instance_proc_addr = Ptr(to=get_instance_proc_addr(
             Instance.NULL, "vkGetInstanceProcAddr".unsafe_ptr()
         )).bitcast[type_of(self.get_instance_proc_addr)]()[]
@@ -817,6 +870,13 @@ struct InstanceFunctionsV1_0(Movable):
             p_allocator,
             Ptr(to=device).bitcast[Device](),
         )
+
+    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
+        """
+        return self._v1_0.destroy_device(device, p_allocator)
 
     fn enumerate_device_extension_properties(
         self,
@@ -1136,6 +1196,13 @@ struct InstanceFunctionsV1_1(Movable):
             p_allocator,
             Ptr(to=device).bitcast[Device](),
         )
+
+    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
+        """
+        return self._v1_0.destroy_device(device, p_allocator)
 
     fn enumerate_device_extension_properties(
         self,
@@ -1678,6 +1745,13 @@ struct InstanceFunctionsV1_2(Movable):
             p_allocator,
             Ptr(to=device).bitcast[Device](),
         )
+
+    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
+        """
+        return self._v1_0.destroy_device(device, p_allocator)
 
     fn enumerate_device_extension_properties(
         self,
@@ -2222,6 +2296,13 @@ struct InstanceFunctionsV1_3(Movable):
             p_allocator,
             Ptr(to=device).bitcast[Device](),
         )
+
+    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
+        """
+        return self._v1_0.destroy_device(device, p_allocator)
 
     fn enumerate_device_extension_properties(
         self,
@@ -2803,6 +2884,13 @@ struct InstanceFunctionsV1_4(Movable):
             Ptr(to=device).bitcast[Device](),
         )
 
+    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
+        """See official vulkan docs for details.
+
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
+        """
+        return self._v1_0.destroy_device(device, p_allocator)
+
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
@@ -3245,6 +3333,7 @@ struct InstanceFunctionAdditionsV1_0(Copyable, Movable):
         pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         pDevice: Ptr[Device, MutAnyOrigin],
     ) -> Result
+    var destroy_device: fn(device: Device, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin])
     var enumerate_device_extension_properties: fn(
         physicalDevice: PhysicalDevice,
         pLayerName: CStringSlice[ImmutAnyOrigin],
@@ -3321,6 +3410,11 @@ struct InstanceFunctionAdditionsV1_0(Copyable, Movable):
         )).bitcast[type_of(self.create_device)]()[]
         if not Ptr(to=self.create_device).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
             raise "Could not load vkCreateDevice."
+        self.destroy_device = Ptr(to=get_instance_proc_addr(
+            instance, "vkDestroyDevice".unsafe_ptr()
+        )).bitcast[type_of(self.destroy_device)]()[]
+        if not Ptr(to=self.destroy_device).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
+            raise "Could not load vkDestroyDevice."
         self.enumerate_device_extension_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkEnumerateDeviceExtensionProperties".unsafe_ptr()
         )).bitcast[type_of(self.enumerate_device_extension_properties)]()[]
