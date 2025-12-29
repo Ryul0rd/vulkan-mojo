@@ -755,10 +755,6 @@ def parse_commands(registry: Element) -> VkParsedCommands:
                 core_commands["device"][version].append(versioned_command)
             else:
                 core_commands["global"][version].append(versioned_command)
-            if command.name == "vkDestroyInstance":
-                core_commands["global"][version].append(versioned_command)
-            if command.name == "vkDestroyDevice":
-                core_commands["instance"][version].append(versioned_command)
 
     # Organize extension commands by extension
     extension_commands: Dict[str, List[VkExtensionCommands]] = defaultdict(list)
@@ -963,6 +959,10 @@ def emit_enum(enum: VkEnum) -> str:
         parts.append((
             "    fn is_error(self) -> Bool:\n"
             "        return self.raw() < 0\n"
+            "\n"
+            "    fn raise_on_error(self) raises:\n"
+            "        if self.is_error():\n"
+            '            raise String(self)\n'
             "\n"
             "    fn __str__(self) -> String:\n"
             "        return String.write(self)\n"
@@ -1423,6 +1423,23 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                     "\n"
                     "    fn borrow_handle(self) -> _DLHandle:\n"
                     "        return self._handle.borrow()\n"
+                ))
+                parts.append((
+                    "\n"
+                    "    fn destroy_instance(self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):\n"
+                    "        var _destroy_instance = Ptr(to=self.get_instance_proc_addr(\n"
+                    '            instance, "vkDestroyInstance".as_c_string_slice()\n'
+                    "        )).bitcast[fn(Instance, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]\n"
+                    "        _destroy_instance(instance, p_allocator)\n"
+                ))
+            if command_level == "instance":
+                parts.append((
+                    "\n"
+                    "    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):\n"
+                    "        var _destroy_device = Ptr(to=self.get_device_proc_addr(\n"
+                    '            device, "vkDestroyInstance".as_c_string_slice()\n'
+                    "        )).bitcast[fn(Device, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]\n"
+                    "        _destroy_device(device, p_allocator)\n"
                 ))
             for versioned_command in versioned_commands:
                 parts.append(emit_command_wrapper(versioned_command.command, versioned_command.version))

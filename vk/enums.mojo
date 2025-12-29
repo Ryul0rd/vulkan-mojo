@@ -2255,6 +2255,10 @@ struct Result(Equatable, Writable):
     fn is_error(self) -> Bool:
         return self.raw() < 0
 
+    fn raise_on_error(self) raises:
+        if self.is_error():
+            raise String(self)
+
     fn __str__(self) -> String:
         return String.write(self)
 
