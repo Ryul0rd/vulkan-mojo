@@ -20,18 +20,12 @@ struct TileShading(Copyable):
         self._cmd_dispatch_tile_qcom = Ptr(to=get_device_proc_addr(
             device, "vkCmdDispatchTileQCOM".unsafe_ptr()
         )).bitcast[type_of(self._cmd_dispatch_tile_qcom)]()[]
-        if not Ptr(to=self._cmd_dispatch_tile_qcom).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdDispatchTileQCOM."
         self._cmd_begin_per_tile_execution_qcom = Ptr(to=get_device_proc_addr(
             device, "vkCmdBeginPerTileExecutionQCOM".unsafe_ptr()
         )).bitcast[type_of(self._cmd_begin_per_tile_execution_qcom)]()[]
-        if not Ptr(to=self._cmd_begin_per_tile_execution_qcom).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdBeginPerTileExecutionQCOM."
         self._cmd_end_per_tile_execution_qcom = Ptr(to=get_device_proc_addr(
             device, "vkCmdEndPerTileExecutionQCOM".unsafe_ptr()
         )).bitcast[type_of(self._cmd_end_per_tile_execution_qcom)]()[]
-        if not Ptr(to=self._cmd_end_per_tile_execution_qcom).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdEndPerTileExecutionQCOM."
 
     fn cmd_dispatch_tile_qcom(
         self, command_buffer: CommandBuffer, dispatch_tile_info: DispatchTileInfoQCOM
@@ -87,13 +81,9 @@ struct TileProperties(Copyable):
         self._get_framebuffer_tile_properties_qcom = Ptr(to=get_device_proc_addr(
             device, "vkGetFramebufferTilePropertiesQCOM".unsafe_ptr()
         )).bitcast[type_of(self._get_framebuffer_tile_properties_qcom)]()[]
-        if not Ptr(to=self._get_framebuffer_tile_properties_qcom).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetFramebufferTilePropertiesQCOM."
         self._get_dynamic_rendering_tile_properties_qcom = Ptr(to=get_device_proc_addr(
             device, "vkGetDynamicRenderingTilePropertiesQCOM".unsafe_ptr()
         )).bitcast[type_of(self._get_dynamic_rendering_tile_properties_qcom)]()[]
-        if not Ptr(to=self._get_dynamic_rendering_tile_properties_qcom).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetDynamicRenderingTilePropertiesQCOM."
 
     fn get_framebuffer_tile_properties_qcom(
         self,
@@ -159,8 +149,6 @@ struct TileMemoryHeap(Copyable):
         self._cmd_bind_tile_memory_qcom = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindTileMemoryQCOM".unsafe_ptr()
         )).bitcast[type_of(self._cmd_bind_tile_memory_qcom)]()[]
-        if not Ptr(to=self._cmd_bind_tile_memory_qcom).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdBindTileMemoryQCOM."
 
     fn cmd_bind_tile_memory_qcom(
         self,

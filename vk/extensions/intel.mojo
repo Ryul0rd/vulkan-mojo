@@ -42,48 +42,30 @@ struct PerformanceQuery(Copyable):
         self._initialize_performance_api_intel = Ptr(to=get_device_proc_addr(
             device, "vkInitializePerformanceApiINTEL".unsafe_ptr()
         )).bitcast[type_of(self._initialize_performance_api_intel)]()[]
-        if not Ptr(to=self._initialize_performance_api_intel).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkInitializePerformanceApiINTEL."
         self._uninitialize_performance_api_intel = Ptr(to=get_device_proc_addr(
             device, "vkUninitializePerformanceApiINTEL".unsafe_ptr()
         )).bitcast[type_of(self._uninitialize_performance_api_intel)]()[]
-        if not Ptr(to=self._uninitialize_performance_api_intel).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkUninitializePerformanceApiINTEL."
         self._cmd_set_performance_marker_intel = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetPerformanceMarkerINTEL".unsafe_ptr()
         )).bitcast[type_of(self._cmd_set_performance_marker_intel)]()[]
-        if not Ptr(to=self._cmd_set_performance_marker_intel).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdSetPerformanceMarkerINTEL."
         self._cmd_set_performance_stream_marker_intel = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetPerformanceStreamMarkerINTEL".unsafe_ptr()
         )).bitcast[type_of(self._cmd_set_performance_stream_marker_intel)]()[]
-        if not Ptr(to=self._cmd_set_performance_stream_marker_intel).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdSetPerformanceStreamMarkerINTEL."
         self._cmd_set_performance_override_intel = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetPerformanceOverrideINTEL".unsafe_ptr()
         )).bitcast[type_of(self._cmd_set_performance_override_intel)]()[]
-        if not Ptr(to=self._cmd_set_performance_override_intel).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdSetPerformanceOverrideINTEL."
         self._acquire_performance_configuration_intel = Ptr(to=get_device_proc_addr(
             device, "vkAcquirePerformanceConfigurationINTEL".unsafe_ptr()
         )).bitcast[type_of(self._acquire_performance_configuration_intel)]()[]
-        if not Ptr(to=self._acquire_performance_configuration_intel).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkAcquirePerformanceConfigurationINTEL."
         self._release_performance_configuration_intel = Ptr(to=get_device_proc_addr(
             device, "vkReleasePerformanceConfigurationINTEL".unsafe_ptr()
         )).bitcast[type_of(self._release_performance_configuration_intel)]()[]
-        if not Ptr(to=self._release_performance_configuration_intel).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkReleasePerformanceConfigurationINTEL."
         self._queue_set_performance_configuration_intel = Ptr(to=get_device_proc_addr(
             device, "vkQueueSetPerformanceConfigurationINTEL".unsafe_ptr()
         )).bitcast[type_of(self._queue_set_performance_configuration_intel)]()[]
-        if not Ptr(to=self._queue_set_performance_configuration_intel).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkQueueSetPerformanceConfigurationINTEL."
         self._get_performance_parameter_intel = Ptr(to=get_device_proc_addr(
             device, "vkGetPerformanceParameterINTEL".unsafe_ptr()
         )).bitcast[type_of(self._get_performance_parameter_intel)]()[]
-        if not Ptr(to=self._get_performance_parameter_intel).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetPerformanceParameterINTEL."
 
     fn initialize_performance_api_intel(
         self, device: Device, initialize_info: InitializePerformanceApiInfoINTEL

@@ -17,8 +17,6 @@ struct StreamDescriptorSurface(Copyable):
         self._create_stream_descriptor_surface_ggp = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateStreamDescriptorSurfaceGGP".unsafe_ptr()
         )).bitcast[type_of(self._create_stream_descriptor_surface_ggp)]()[]
-        if not Ptr(to=self._create_stream_descriptor_surface_ggp).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCreateStreamDescriptorSurfaceGGP."
 
     fn create_stream_descriptor_surface_ggp(
         self,

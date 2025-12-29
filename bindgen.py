@@ -1407,7 +1407,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                         f"global_functions: GlobalFunctionsV{core_version.major}_{core_version.minor}",
                         f"{command_level}: {command_level.capitalize()}",
                     ],
-                    f") raises:\n",
+                    f"):\n",
                     base_indent_level = 1,
                 ))
             for addition_version in addition_versions:
@@ -1423,23 +1423,6 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                     "\n"
                     "    fn borrow_handle(self) -> _DLHandle:\n"
                     "        return self._handle.borrow()\n"
-                ))
-                parts.append((
-                    "\n"
-                    "    fn destroy_instance(self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):\n"
-                    "        var _destroy_instance = Ptr(to=self.get_instance_proc_addr(\n"
-                    '            instance, "vkDestroyInstance".as_c_string_slice()\n'
-                    "        )).bitcast[fn(Instance, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]\n"
-                    "        _destroy_instance(instance, p_allocator)\n"
-                ))
-            if command_level == "instance":
-                parts.append((
-                    "\n"
-                    "    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):\n"
-                    "        var _destroy_device = Ptr(to=self.get_device_proc_addr(\n"
-                    '            device, "vkDestroyInstance".as_c_string_slice()\n'
-                    "        )).bitcast[fn(Device, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]\n"
-                    "        _destroy_device(device, p_allocator)\n"
                 ))
             for versioned_command in versioned_commands:
                 parts.append(emit_command_wrapper(versioned_command.command, versioned_command.version))
@@ -1468,10 +1451,10 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 ))
             parts.append("\n")
             if command_level == "global":
-                parts.append("    fn __init__(out self, handle: _DLHandle) raises:\n")
+                parts.append("    fn __init__(out self, handle: _DLHandle):\n")
             else:
                 parts.append(
-                    f"    fn __init__(out self, {command_level}: {command_level.capitalize()}, handle: _DLHandle) raises:\n"
+                    f"    fn __init__(out self, {command_level}: {command_level.capitalize()}, handle: _DLHandle):\n"
                 )
             get_proc_level = "instance" if command_level == "global" else command_level
             if len(versioned_commands) == 0:
@@ -1490,8 +1473,6 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                     f"        self.{mojo_command_name} = Ptr(to=get_{get_proc_level}_proc_addr(\n"
                     f'            {handle_arg}, "{new_command.command.name}".unsafe_ptr()\n'
                     f"        )).bitcast[type_of(self.{mojo_command_name})]()[]\n"
-                    f"        if not Ptr(to=self.{mojo_command_name}).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:\n"
-                    f'            raise "Could not load {new_command.command.name}."\n'
                 ))
     files["core_functions.mojo"] = "".join(parts)
 
@@ -1535,8 +1516,6 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                     f"        self._{mojo_command_name} = Ptr(to=get_{extension.type}_proc_addr(\n"
                     f'            {extension.type}, "{command.name}".unsafe_ptr()\n'
                     f"        )).bitcast[type_of(self._{mojo_command_name})]()[]\n"
-                    f"        if not Ptr(to=self._{mojo_command_name}).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:\n"
-                    f'            raise "Could not load {command.name}."\n'
                 ))
             for command in extension.commands:
                 extension_parts.append(emit_command_wrapper(command))

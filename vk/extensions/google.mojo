@@ -22,13 +22,9 @@ struct DisplayTiming(Copyable):
         self._get_refresh_cycle_duration_google = Ptr(to=get_device_proc_addr(
             device, "vkGetRefreshCycleDurationGOOGLE".unsafe_ptr()
         )).bitcast[type_of(self._get_refresh_cycle_duration_google)]()[]
-        if not Ptr(to=self._get_refresh_cycle_duration_google).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetRefreshCycleDurationGOOGLE."
         self._get_past_presentation_timing_google = Ptr(to=get_device_proc_addr(
             device, "vkGetPastPresentationTimingGOOGLE".unsafe_ptr()
         )).bitcast[type_of(self._get_past_presentation_timing_google)]()[]
-        if not Ptr(to=self._get_past_presentation_timing_google).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetPastPresentationTimingGOOGLE."
 
     fn get_refresh_cycle_duration_google(
         self,

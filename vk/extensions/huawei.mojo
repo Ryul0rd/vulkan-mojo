@@ -15,13 +15,9 @@ struct SubpassShading(Copyable):
         self._get_device_subpass_shading_max_workgroup_size_huawei = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceSubpassShadingMaxWorkgroupSizeHUAWEI".unsafe_ptr()
         )).bitcast[type_of(self._get_device_subpass_shading_max_workgroup_size_huawei)]()[]
-        if not Ptr(to=self._get_device_subpass_shading_max_workgroup_size_huawei).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetDeviceSubpassShadingMaxWorkgroupSizeHUAWEI."
         self._cmd_subpass_shading_huawei = Ptr(to=get_device_proc_addr(
             device, "vkCmdSubpassShadingHUAWEI".unsafe_ptr()
         )).bitcast[type_of(self._cmd_subpass_shading_huawei)]()[]
-        if not Ptr(to=self._cmd_subpass_shading_huawei).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdSubpassShadingHUAWEI."
 
     fn get_device_subpass_shading_max_workgroup_size_huawei(
         self,
@@ -57,8 +53,6 @@ struct InvocationMask(Copyable):
         self._cmd_bind_invocation_mask_huawei = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindInvocationMaskHUAWEI".unsafe_ptr()
         )).bitcast[type_of(self._cmd_bind_invocation_mask_huawei)]()[]
-        if not Ptr(to=self._cmd_bind_invocation_mask_huawei).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdBindInvocationMaskHUAWEI."
 
     fn cmd_bind_invocation_mask_huawei(
         self, command_buffer: CommandBuffer, image_view: ImageView, image_layout: ImageLayout
@@ -85,13 +79,9 @@ struct ClusterCullingShader(Copyable):
         self._cmd_draw_cluster_huawei = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawClusterHUAWEI".unsafe_ptr()
         )).bitcast[type_of(self._cmd_draw_cluster_huawei)]()[]
-        if not Ptr(to=self._cmd_draw_cluster_huawei).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdDrawClusterHUAWEI."
         self._cmd_draw_cluster_indirect_huawei = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawClusterIndirectHUAWEI".unsafe_ptr()
         )).bitcast[type_of(self._cmd_draw_cluster_indirect_huawei)]()[]
-        if not Ptr(to=self._cmd_draw_cluster_indirect_huawei).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdDrawClusterIndirectHUAWEI."
 
     fn cmd_draw_cluster_huawei(
         self,

@@ -20,13 +20,9 @@ struct ScreenSurface(Copyable):
         self._create_screen_surface_qnx = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateScreenSurfaceQNX".unsafe_ptr()
         )).bitcast[type_of(self._create_screen_surface_qnx)]()[]
-        if not Ptr(to=self._create_screen_surface_qnx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCreateScreenSurfaceQNX."
         self._get_physical_device_screen_presentation_support_qnx = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceScreenPresentationSupportQNX".unsafe_ptr()
         )).bitcast[type_of(self._get_physical_device_screen_presentation_support_qnx)]()[]
-        if not Ptr(to=self._get_physical_device_screen_presentation_support_qnx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetPhysicalDeviceScreenPresentationSupportQNX."
 
     fn create_screen_surface_qnx(
         self,
@@ -72,8 +68,6 @@ struct ExternalMemoryScreenBuffer(Copyable):
         self._get_screen_buffer_properties_qnx = Ptr(to=get_device_proc_addr(
             device, "vkGetScreenBufferPropertiesQNX".unsafe_ptr()
         )).bitcast[type_of(self._get_screen_buffer_properties_qnx)]()[]
-        if not Ptr(to=self._get_screen_buffer_properties_qnx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetScreenBufferPropertiesQNX."
 
     fn get_screen_buffer_properties_qnx(
         self, device: Device, buffer: screen_buffer_t, mut properties: ScreenBufferPropertiesQNX

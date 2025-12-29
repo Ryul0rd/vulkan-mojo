@@ -17,8 +17,6 @@ struct Surface(Copyable):
         self._create_surface_ohos = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateSurfaceOHOS".unsafe_ptr()
         )).bitcast[type_of(self._create_surface_ohos)]()[]
-        if not Ptr(to=self._create_surface_ohos).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCreateSurfaceOHOS."
 
     fn create_surface_ohos(
         self,

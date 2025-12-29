@@ -17,8 +17,6 @@ struct IosSurface(Copyable):
         self._create_ios_surface_mvk = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateIOSSurfaceMVK".unsafe_ptr()
         )).bitcast[type_of(self._create_ios_surface_mvk)]()[]
-        if not Ptr(to=self._create_ios_surface_mvk).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCreateIOSSurfaceMVK."
 
     fn create_ios_surface_mvk(
         self,
@@ -54,8 +52,6 @@ struct MacosSurface(Copyable):
         self._create_mac_os_surface_mvk = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateMacOSSurfaceMVK".unsafe_ptr()
         )).bitcast[type_of(self._create_mac_os_surface_mvk)]()[]
-        if not Ptr(to=self._create_mac_os_surface_mvk).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCreateMacOSSurfaceMVK."
 
     fn create_mac_os_surface_mvk(
         self,

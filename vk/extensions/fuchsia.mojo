@@ -17,8 +17,6 @@ struct ImagepipeSurface(Copyable):
         self._create_image_pipe_surface_fuchsia = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateImagePipeSurfaceFUCHSIA".unsafe_ptr()
         )).bitcast[type_of(self._create_image_pipe_surface_fuchsia)]()[]
-        if not Ptr(to=self._create_image_pipe_surface_fuchsia).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCreateImagePipeSurfaceFUCHSIA."
 
     fn create_image_pipe_surface_fuchsia(
         self,
@@ -59,13 +57,9 @@ struct ExternalMemory(Copyable):
         self._get_memory_zircon_handle_fuchsia = Ptr(to=get_device_proc_addr(
             device, "vkGetMemoryZirconHandleFUCHSIA".unsafe_ptr()
         )).bitcast[type_of(self._get_memory_zircon_handle_fuchsia)]()[]
-        if not Ptr(to=self._get_memory_zircon_handle_fuchsia).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetMemoryZirconHandleFUCHSIA."
         self._get_memory_zircon_handle_properties_fuchsia = Ptr(to=get_device_proc_addr(
             device, "vkGetMemoryZirconHandlePropertiesFUCHSIA".unsafe_ptr()
         )).bitcast[type_of(self._get_memory_zircon_handle_properties_fuchsia)]()[]
-        if not Ptr(to=self._get_memory_zircon_handle_properties_fuchsia).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetMemoryZirconHandlePropertiesFUCHSIA."
 
     fn get_memory_zircon_handle_fuchsia(
         self,
@@ -120,13 +114,9 @@ struct ExternalSemaphore(Copyable):
         self._import_semaphore_zircon_handle_fuchsia = Ptr(to=get_device_proc_addr(
             device, "vkImportSemaphoreZirconHandleFUCHSIA".unsafe_ptr()
         )).bitcast[type_of(self._import_semaphore_zircon_handle_fuchsia)]()[]
-        if not Ptr(to=self._import_semaphore_zircon_handle_fuchsia).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkImportSemaphoreZirconHandleFUCHSIA."
         self._get_semaphore_zircon_handle_fuchsia = Ptr(to=get_device_proc_addr(
             device, "vkGetSemaphoreZirconHandleFUCHSIA".unsafe_ptr()
         )).bitcast[type_of(self._get_semaphore_zircon_handle_fuchsia)]()[]
-        if not Ptr(to=self._get_semaphore_zircon_handle_fuchsia).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetSemaphoreZirconHandleFUCHSIA."
 
     fn import_semaphore_zircon_handle_fuchsia(
         self,
@@ -194,28 +184,18 @@ struct BufferCollection(Copyable):
         self._create_buffer_collection_fuchsia = Ptr(to=get_device_proc_addr(
             device, "vkCreateBufferCollectionFUCHSIA".unsafe_ptr()
         )).bitcast[type_of(self._create_buffer_collection_fuchsia)]()[]
-        if not Ptr(to=self._create_buffer_collection_fuchsia).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCreateBufferCollectionFUCHSIA."
         self._set_buffer_collection_image_constraints_fuchsia = Ptr(to=get_device_proc_addr(
             device, "vkSetBufferCollectionImageConstraintsFUCHSIA".unsafe_ptr()
         )).bitcast[type_of(self._set_buffer_collection_image_constraints_fuchsia)]()[]
-        if not Ptr(to=self._set_buffer_collection_image_constraints_fuchsia).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkSetBufferCollectionImageConstraintsFUCHSIA."
         self._set_buffer_collection_buffer_constraints_fuchsia = Ptr(to=get_device_proc_addr(
             device, "vkSetBufferCollectionBufferConstraintsFUCHSIA".unsafe_ptr()
         )).bitcast[type_of(self._set_buffer_collection_buffer_constraints_fuchsia)]()[]
-        if not Ptr(to=self._set_buffer_collection_buffer_constraints_fuchsia).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkSetBufferCollectionBufferConstraintsFUCHSIA."
         self._destroy_buffer_collection_fuchsia = Ptr(to=get_device_proc_addr(
             device, "vkDestroyBufferCollectionFUCHSIA".unsafe_ptr()
         )).bitcast[type_of(self._destroy_buffer_collection_fuchsia)]()[]
-        if not Ptr(to=self._destroy_buffer_collection_fuchsia).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkDestroyBufferCollectionFUCHSIA."
         self._get_buffer_collection_properties_fuchsia = Ptr(to=get_device_proc_addr(
             device, "vkGetBufferCollectionPropertiesFUCHSIA".unsafe_ptr()
         )).bitcast[type_of(self._get_buffer_collection_properties_fuchsia)]()[]
-        if not Ptr(to=self._get_buffer_collection_properties_fuchsia).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetBufferCollectionPropertiesFUCHSIA."
 
     fn create_buffer_collection_fuchsia(
         self,

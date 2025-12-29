@@ -21,13 +21,9 @@ struct ExternalMemoryAndroidHardwareBuffer(Copyable):
         self._get_android_hardware_buffer_properties_android = Ptr(to=get_device_proc_addr(
             device, "vkGetAndroidHardwareBufferPropertiesANDROID".unsafe_ptr()
         )).bitcast[type_of(self._get_android_hardware_buffer_properties_android)]()[]
-        if not Ptr(to=self._get_android_hardware_buffer_properties_android).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetAndroidHardwareBufferPropertiesANDROID."
         self._get_memory_android_hardware_buffer_android = Ptr(to=get_device_proc_addr(
             device, "vkGetMemoryAndroidHardwareBufferANDROID".unsafe_ptr()
         )).bitcast[type_of(self._get_memory_android_hardware_buffer_android)]()[]
-        if not Ptr(to=self._get_memory_android_hardware_buffer_android).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetMemoryAndroidHardwareBufferANDROID."
 
     fn get_android_hardware_buffer_properties_android(
         self,

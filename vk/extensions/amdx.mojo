@@ -54,38 +54,24 @@ struct ShaderEnqueue(Copyable):
         self._create_execution_graph_pipelines_amdx = Ptr(to=get_device_proc_addr(
             device, "vkCreateExecutionGraphPipelinesAMDX".unsafe_ptr()
         )).bitcast[type_of(self._create_execution_graph_pipelines_amdx)]()[]
-        if not Ptr(to=self._create_execution_graph_pipelines_amdx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCreateExecutionGraphPipelinesAMDX."
         self._get_execution_graph_pipeline_scratch_size_amdx = Ptr(to=get_device_proc_addr(
             device, "vkGetExecutionGraphPipelineScratchSizeAMDX".unsafe_ptr()
         )).bitcast[type_of(self._get_execution_graph_pipeline_scratch_size_amdx)]()[]
-        if not Ptr(to=self._get_execution_graph_pipeline_scratch_size_amdx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetExecutionGraphPipelineScratchSizeAMDX."
         self._get_execution_graph_pipeline_node_index_amdx = Ptr(to=get_device_proc_addr(
             device, "vkGetExecutionGraphPipelineNodeIndexAMDX".unsafe_ptr()
         )).bitcast[type_of(self._get_execution_graph_pipeline_node_index_amdx)]()[]
-        if not Ptr(to=self._get_execution_graph_pipeline_node_index_amdx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetExecutionGraphPipelineNodeIndexAMDX."
         self._cmd_initialize_graph_scratch_memory_amdx = Ptr(to=get_device_proc_addr(
             device, "vkCmdInitializeGraphScratchMemoryAMDX".unsafe_ptr()
         )).bitcast[type_of(self._cmd_initialize_graph_scratch_memory_amdx)]()[]
-        if not Ptr(to=self._cmd_initialize_graph_scratch_memory_amdx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdInitializeGraphScratchMemoryAMDX."
         self._cmd_dispatch_graph_amdx = Ptr(to=get_device_proc_addr(
             device, "vkCmdDispatchGraphAMDX".unsafe_ptr()
         )).bitcast[type_of(self._cmd_dispatch_graph_amdx)]()[]
-        if not Ptr(to=self._cmd_dispatch_graph_amdx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdDispatchGraphAMDX."
         self._cmd_dispatch_graph_indirect_amdx = Ptr(to=get_device_proc_addr(
             device, "vkCmdDispatchGraphIndirectAMDX".unsafe_ptr()
         )).bitcast[type_of(self._cmd_dispatch_graph_indirect_amdx)]()[]
-        if not Ptr(to=self._cmd_dispatch_graph_indirect_amdx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdDispatchGraphIndirectAMDX."
         self._cmd_dispatch_graph_indirect_count_amdx = Ptr(to=get_device_proc_addr(
             device, "vkCmdDispatchGraphIndirectCountAMDX".unsafe_ptr()
         )).bitcast[type_of(self._cmd_dispatch_graph_indirect_count_amdx)]()[]
-        if not Ptr(to=self._cmd_dispatch_graph_indirect_count_amdx).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdDispatchGraphIndirectCountAMDX."
 
     fn create_execution_graph_pipelines_amdx(
         self,

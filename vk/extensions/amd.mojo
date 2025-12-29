@@ -29,13 +29,9 @@ struct DrawIndirectCount(Copyable):
         self._cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawIndirectCount".unsafe_ptr()
         )).bitcast[type_of(self._cmd_draw_indirect_count)]()[]
-        if not Ptr(to=self._cmd_draw_indirect_count).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdDrawIndirectCount."
         self._cmd_draw_indexed_indirect_count = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawIndexedIndirectCount".unsafe_ptr()
         )).bitcast[type_of(self._cmd_draw_indexed_indirect_count)]()[]
-        if not Ptr(to=self._cmd_draw_indexed_indirect_count).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdDrawIndexedIndirectCount."
 
     fn cmd_draw_indirect_count(
         self,
@@ -103,8 +99,6 @@ struct ShaderInfo(Copyable):
         self._get_shader_info_amd = Ptr(to=get_device_proc_addr(
             device, "vkGetShaderInfoAMD".unsafe_ptr()
         )).bitcast[type_of(self._get_shader_info_amd)]()[]
-        if not Ptr(to=self._get_shader_info_amd).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkGetShaderInfoAMD."
 
     fn get_shader_info_amd(
         self,
@@ -178,13 +172,9 @@ struct BufferMarker(Copyable):
         self._cmd_write_buffer_marker_amd = Ptr(to=get_device_proc_addr(
             device, "vkCmdWriteBufferMarkerAMD".unsafe_ptr()
         )).bitcast[type_of(self._cmd_write_buffer_marker_amd)]()[]
-        if not Ptr(to=self._cmd_write_buffer_marker_amd).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdWriteBufferMarkerAMD."
         self._cmd_write_buffer_marker_2_amd = Ptr(to=get_device_proc_addr(
             device, "vkCmdWriteBufferMarker2AMD".unsafe_ptr()
         )).bitcast[type_of(self._cmd_write_buffer_marker_2_amd)]()[]
-        if not Ptr(to=self._cmd_write_buffer_marker_2_amd).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCmdWriteBufferMarker2AMD."
 
     fn cmd_write_buffer_marker_amd(
         self,
@@ -231,8 +221,6 @@ struct DisplayNativeHdr(Copyable):
         self._set_local_dimming_amd = Ptr(to=get_device_proc_addr(
             device, "vkSetLocalDimmingAMD".unsafe_ptr()
         )).bitcast[type_of(self._set_local_dimming_amd)]()[]
-        if not Ptr(to=self._set_local_dimming_amd).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkSetLocalDimmingAMD."
 
     fn set_local_dimming_amd(
         self, device: Device, swap_chain: SwapchainKHR, local_dimming_enable: Bool32
@@ -254,8 +242,6 @@ struct AntiLag(Copyable):
         self._anti_lag_update_amd = Ptr(to=get_device_proc_addr(
             device, "vkAntiLagUpdateAMD".unsafe_ptr()
         )).bitcast[type_of(self._anti_lag_update_amd)]()[]
-        if not Ptr(to=self._anti_lag_update_amd).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkAntiLagUpdateAMD."
 
     fn anti_lag_update_amd(self, device: Device, data: AntiLagDataAMD):
         """See official vulkan docs for details.

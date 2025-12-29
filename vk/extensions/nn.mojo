@@ -17,8 +17,6 @@ struct ViSurface(Copyable):
         self._create_vi_surface_nn = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateViSurfaceNN".unsafe_ptr()
         )).bitcast[type_of(self._create_vi_surface_nn)]()[]
-        if not Ptr(to=self._create_vi_surface_nn).bitcast[Ptr[NoneType, MutOrigin.external]]()[]:
-            raise "Could not load vkCreateViSurfaceNN."
 
     fn create_vi_surface_nn(
         self,
