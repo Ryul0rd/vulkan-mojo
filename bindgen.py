@@ -106,6 +106,7 @@ class VkEnum:
 class VkEnumValue:
     name: str
     value: int
+    comment: Optional[str] = None
 
 
 @dataclass
@@ -481,7 +482,8 @@ def parse_enums(registry: Element) -> List[VkEnum | VkTypeAlias]:
                 continue
             value_name = enum_el.attrib["name"]
             value = int(enum_el.attrib["value"], 0)
-            enum_values.append(VkEnumValue(value_name, value))
+            comment = enum_el.get("comment")
+            enum_values.append(VkEnumValue(value_name, value, comment))
         enums.append(VkEnum(name, enum_values))
     
     enums_by_name = {enum.name: enum for enum in enums}
@@ -507,7 +509,8 @@ def parse_enums(registry: Element) -> List[VkEnum | VkTypeAlias]:
                 continue
             if any(v.name == name and v.value == value for v in enum_to_extend.values):
                 continue
-            enum_to_extend.values.append(VkEnumValue(name, value))
+            comment = require_el.get("comment")
+            enum_to_extend.values.append(VkEnumValue(name, value, comment))
     for extension_el in registry.findall("extensions/extension"):
         extension_number = int(assert_type(str, extension_el.get("number")))
         for require_el in extension_el.findall("require/enum"):
@@ -530,7 +533,8 @@ def parse_enums(registry: Element) -> List[VkEnum | VkTypeAlias]:
             enum_to_extend = enums_by_name[extends]
             if any(v.name == name and v.value == value for v in enum_to_extend.values):
                 continue
-            enum_to_extend.values.append(VkEnumValue(name, value))
+            comment = require_el.get("comment")
+            enum_to_extend.values.append(VkEnumValue(name, value, comment))
 
     return enum_aliases + enums
 
@@ -942,23 +946,32 @@ def emit_enum(enum: VkEnum) -> str:
         parts.append("struct Result(Equatable, Writable):\n")
     else:
         parts.append(f"struct {enum_name}(Equatable):\n")
+    parts.append("    var _value: Int32\n")
+    if enum.name == "VkResult":
+        parts.append((
+            "\n"
+            "    comptime _descriptions: Dict[Int32, StaticString] = {\n"
+        ))
+        for value in enum.values:
+            description_part = "" if value.comment is None else f" - {value.comment}"
+            parts.append(f'        {value.value}: "{value.name} ({value.value}){description_part}",\n')
+        parts.append("    }\n")
     parts.append((
-        "    var _raw: Int32\n"
         "\n"
-        "    fn __init__(out self, *, raw: Int32):\n"
-        "        self._raw = raw\n"
+        "    fn __init__(out self, *, value: Int32):\n"
+        "        self._value = value\n"
         "\n"
-        "    fn raw(self) -> Int32:\n"
-        "        return self._raw\n"
+        "    fn value(self) -> Int32:\n"
+        "        return self._value\n"
         "\n"
         "    fn __eq__(self, other: Self) -> Bool:\n"
-        "        return self._raw == other._raw\n"
+        "        return self._value == other._value\n"
         "\n"
     ))
     if enum.name == "VkResult":
         parts.append((
             "    fn is_error(self) -> Bool:\n"
-            "        return self.raw() < 0\n"
+            "        return self.value() < 0\n"
             "\n"
             "    fn raise_on_error(self) raises:\n"
             "        if self.is_error():\n"
@@ -968,7 +981,11 @@ def emit_enum(enum: VkEnum) -> str:
             "        return String.write(self)\n"
             "\n"
             "    fn write_to[W: Writer](self, mut writer: W):\n"
-            "        writer.write(self.raw())\n"
+            "        var description = materialize[Self._descriptions]().get(self.value())\n"
+            "        if description:\n"
+            "            writer.write(description.value())\n"
+            "        else:\n"
+            '            writer.write("Unknown Vulkan error code (", self.value(), ")")\n'
             "\n"
         ))
     for value in enum.values:
@@ -979,7 +996,7 @@ def emit_enum(enum: VkEnum) -> str:
             value_name = value.name.removeprefix(prefix)
         if value_name[0].isdigit():
             value_name = f"N_{value_name}"
-        parts.append(f"    comptime {value_name} = {enum_name}(raw = {value.value})\n")
+        parts.append(f"    comptime {value_name} = {enum_name}(value = {value.value})\n")
     return "".join(parts)
 
 

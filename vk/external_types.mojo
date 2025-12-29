@@ -347,57 +347,57 @@ struct IOSurfaceRef:
 
 @register_passable("trivial")
 struct StdVideoH264ProfileIdc(Equatable):
-    var _raw: Int32
+    var _value: Int32
 
-    fn __init__(out self, *, raw: Int32):
-        self._raw = raw
+    fn __init__(out self, *, value: Int32):
+        self._value = value
 
-    fn raw(self) -> Int32:
-        return self._raw
+    fn value(self) -> Int32:
+        return self._value
 
     fn __eq__(self, other: Self) -> Bool:
-        return self._raw == other._raw
+        return self._value == other._value
 
-    comptime BASELINE = StdVideoH264ProfileIdc(raw = 66)
-    comptime MAIN = StdVideoH264ProfileIdc(raw = 77)
-    comptime HIGH = StdVideoH264ProfileIdc(raw = 100)
-    comptime HIGH_444_PREDICTIVE = StdVideoH264ProfileIdc(raw = 244)
-    comptime INVALID = StdVideoH264ProfileIdc(raw = 2147483647)
+    comptime BASELINE = StdVideoH264ProfileIdc(value = 66)
+    comptime MAIN = StdVideoH264ProfileIdc(value = 77)
+    comptime HIGH = StdVideoH264ProfileIdc(value = 100)
+    comptime HIGH_444_PREDICTIVE = StdVideoH264ProfileIdc(value = 244)
+    comptime INVALID = StdVideoH264ProfileIdc(value = 2147483647)
 
 
 @register_passable("trivial")
 struct StdVideoH264LevelIdc(Equatable):
-    var _raw: Int32
+    var _value: Int32
 
-    fn __init__(out self, *, raw: Int32):
-        self._raw = raw
+    fn __init__(out self, *, value: Int32):
+        self._value = value
 
-    fn raw(self) -> Int32:
-        return self._raw
+    fn value(self) -> Int32:
+        return self._value
 
     fn __eq__(self, other: Self) -> Bool:
-        return self._raw == other._raw
+        return self._value == other._value
 
-    comptime LEVEL_1_0 = StdVideoH264LevelIdc(raw = 0)
-    comptime LEVEL_1_1 = StdVideoH264LevelIdc(raw = 1)
-    comptime LEVEL_1_2 = StdVideoH264LevelIdc(raw = 2)
-    comptime LEVEL_1_3 = StdVideoH264LevelIdc(raw = 3)
-    comptime LEVEL_2_0 = StdVideoH264LevelIdc(raw = 4)
-    comptime LEVEL_2_1 = StdVideoH264LevelIdc(raw = 5)
-    comptime LEVEL_2_2 = StdVideoH264LevelIdc(raw = 6)
-    comptime LEVEL_3_0 = StdVideoH264LevelIdc(raw = 7)
-    comptime LEVEL_3_1 = StdVideoH264LevelIdc(raw = 8)
-    comptime LEVEL_3_2 = StdVideoH264LevelIdc(raw = 9)
-    comptime LEVEL_4_0 = StdVideoH264LevelIdc(raw = 10)
-    comptime LEVEL_4_1 = StdVideoH264LevelIdc(raw = 11)
-    comptime LEVEL_4_2 = StdVideoH264LevelIdc(raw = 12)
-    comptime LEVEL_5_0 = StdVideoH264LevelIdc(raw = 13)
-    comptime LEVEL_5_1 = StdVideoH264LevelIdc(raw = 14)
-    comptime LEVEL_5_2 = StdVideoH264LevelIdc(raw = 15)
-    comptime LEVEL_6_0 = StdVideoH264LevelIdc(raw = 16)
-    comptime LEVEL_6_1 = StdVideoH264LevelIdc(raw = 17)
-    comptime LEVEL_6_2 = StdVideoH264LevelIdc(raw = 18)
-    comptime INVALID = StdVideoH264LevelIdc(raw = 2147483647)
+    comptime LEVEL_1_0 = StdVideoH264LevelIdc(value = 0)
+    comptime LEVEL_1_1 = StdVideoH264LevelIdc(value = 1)
+    comptime LEVEL_1_2 = StdVideoH264LevelIdc(value = 2)
+    comptime LEVEL_1_3 = StdVideoH264LevelIdc(value = 3)
+    comptime LEVEL_2_0 = StdVideoH264LevelIdc(value = 4)
+    comptime LEVEL_2_1 = StdVideoH264LevelIdc(value = 5)
+    comptime LEVEL_2_2 = StdVideoH264LevelIdc(value = 6)
+    comptime LEVEL_3_0 = StdVideoH264LevelIdc(value = 7)
+    comptime LEVEL_3_1 = StdVideoH264LevelIdc(value = 8)
+    comptime LEVEL_3_2 = StdVideoH264LevelIdc(value = 9)
+    comptime LEVEL_4_0 = StdVideoH264LevelIdc(value = 10)
+    comptime LEVEL_4_1 = StdVideoH264LevelIdc(value = 11)
+    comptime LEVEL_4_2 = StdVideoH264LevelIdc(value = 12)
+    comptime LEVEL_5_0 = StdVideoH264LevelIdc(value = 13)
+    comptime LEVEL_5_1 = StdVideoH264LevelIdc(value = 14)
+    comptime LEVEL_5_2 = StdVideoH264LevelIdc(value = 15)
+    comptime LEVEL_6_0 = StdVideoH264LevelIdc(value = 16)
+    comptime LEVEL_6_1 = StdVideoH264LevelIdc(value = 17)
+    comptime LEVEL_6_2 = StdVideoH264LevelIdc(value = 18)
+    comptime INVALID = StdVideoH264LevelIdc(value = 2147483647)
 
 
 struct StdVideoH264SequenceParameterSet:
@@ -430,52 +430,52 @@ struct StdVideoDecodeH264ReferenceInfo:
 
 @register_passable("trivial")
 struct StdVideoH265ProfileIdc(Equatable):
-    var _raw: Int32
+    var _value: Int32
 
-    fn __init__(out self, *, raw: Int32):
-        self._raw = raw
+    fn __init__(out self, *, value: Int32):
+        self._value = value
 
-    fn raw(self) -> Int32:
-        return self._raw
+    fn value(self) -> Int32:
+        return self._value
 
     fn __eq__(self, other: Self) -> Bool:
-        return self._raw == other._raw
+        return self._value == other._value
 
-    comptime MAIN = StdVideoH265ProfileIdc(raw = 1)
-    comptime MAIN_10 = StdVideoH265ProfileIdc(raw = 2)
-    comptime MAIN_STILL_PICTURE = StdVideoH265ProfileIdc(raw = 3)
-    comptime FORMAT_RANGE_EXTENSIONS = StdVideoH265ProfileIdc(raw = 4)
-    comptime SCC_EXTENSIONS = StdVideoH265ProfileIdc(raw = 9)
-    comptime INVALID = StdVideoH265ProfileIdc(raw = 2147483647)
+    comptime MAIN = StdVideoH265ProfileIdc(value = 1)
+    comptime MAIN_10 = StdVideoH265ProfileIdc(value = 2)
+    comptime MAIN_STILL_PICTURE = StdVideoH265ProfileIdc(value = 3)
+    comptime FORMAT_RANGE_EXTENSIONS = StdVideoH265ProfileIdc(value = 4)
+    comptime SCC_EXTENSIONS = StdVideoH265ProfileIdc(value = 9)
+    comptime INVALID = StdVideoH265ProfileIdc(value = 2147483647)
 
 
 @register_passable("trivial")
 struct StdVideoH265LevelIdc(Equatable):
-    var _raw: Int32
+    var _value: Int32
 
-    fn __init__(out self, *, raw: Int32):
-        self._raw = raw
+    fn __init__(out self, *, value: Int32):
+        self._value = value
 
-    fn raw(self) -> Int32:
-        return self._raw
+    fn value(self) -> Int32:
+        return self._value
 
     fn __eq__(self, other: Self) -> Bool:
-        return self._raw == other._raw
+        return self._value == other._value
 
-    comptime LEVEL_1_0 = StdVideoH265LevelIdc(raw = 0)
-    comptime LEVEL_2_0 = StdVideoH265LevelIdc(raw = 1)
-    comptime LEVEL_2_1 = StdVideoH265LevelIdc(raw = 2)
-    comptime LEVEL_3_0 = StdVideoH265LevelIdc(raw = 3)
-    comptime LEVEL_3_1 = StdVideoH265LevelIdc(raw = 4)
-    comptime LEVEL_4_0 = StdVideoH265LevelIdc(raw = 5)
-    comptime LEVEL_4_1 = StdVideoH265LevelIdc(raw = 6)
-    comptime LEVEL_5_0 = StdVideoH265LevelIdc(raw = 7)
-    comptime LEVEL_5_1 = StdVideoH265LevelIdc(raw = 8)
-    comptime LEVEL_5_2 = StdVideoH265LevelIdc(raw = 9)
-    comptime LEVEL_6_0 = StdVideoH265LevelIdc(raw = 10)
-    comptime LEVEL_6_1 = StdVideoH265LevelIdc(raw = 11)
-    comptime LEVEL_6_2 = StdVideoH265LevelIdc(raw = 12)
-    comptime INVALID = StdVideoH265LevelIdc(raw = 2147483647)
+    comptime LEVEL_1_0 = StdVideoH265LevelIdc(value = 0)
+    comptime LEVEL_2_0 = StdVideoH265LevelIdc(value = 1)
+    comptime LEVEL_2_1 = StdVideoH265LevelIdc(value = 2)
+    comptime LEVEL_3_0 = StdVideoH265LevelIdc(value = 3)
+    comptime LEVEL_3_1 = StdVideoH265LevelIdc(value = 4)
+    comptime LEVEL_4_0 = StdVideoH265LevelIdc(value = 5)
+    comptime LEVEL_4_1 = StdVideoH265LevelIdc(value = 6)
+    comptime LEVEL_5_0 = StdVideoH265LevelIdc(value = 7)
+    comptime LEVEL_5_1 = StdVideoH265LevelIdc(value = 8)
+    comptime LEVEL_5_2 = StdVideoH265LevelIdc(value = 9)
+    comptime LEVEL_6_0 = StdVideoH265LevelIdc(value = 10)
+    comptime LEVEL_6_1 = StdVideoH265LevelIdc(value = 11)
+    comptime LEVEL_6_2 = StdVideoH265LevelIdc(value = 12)
+    comptime INVALID = StdVideoH265LevelIdc(value = 2147483647)
 
 
 struct StdVideoH265VideoParameterSet:
@@ -512,61 +512,61 @@ struct StdVideoDecodeH265ReferenceInfo:
 
 @register_passable("trivial")
 struct StdVideoAV1Profile(Equatable):
-    var _raw: Int32
+    var _value: Int32
 
-    fn __init__(out self, *, raw: Int32):
-        self._raw = raw
+    fn __init__(out self, *, value: Int32):
+        self._value = value
 
-    fn raw(self) -> Int32:
-        return self._raw
+    fn value(self) -> Int32:
+        return self._value
 
     fn __eq__(self, other: Self) -> Bool:
-        return self._raw == other._raw
+        return self._value == other._value
 
-    comptime MAIN = StdVideoAV1Profile(raw = 0)
-    comptime HIGH = StdVideoAV1Profile(raw = 1)
-    comptime PROFESSIONAL = StdVideoAV1Profile(raw = 2)
-    comptime INVALID = StdVideoAV1Profile(raw = 2147483647)
+    comptime MAIN = StdVideoAV1Profile(value = 0)
+    comptime HIGH = StdVideoAV1Profile(value = 1)
+    comptime PROFESSIONAL = StdVideoAV1Profile(value = 2)
+    comptime INVALID = StdVideoAV1Profile(value = 2147483647)
 
 
 @register_passable("trivial")
 struct StdVideoAV1Level(Equatable):
-    var _raw: Int32
+    var _value: Int32
 
-    fn __init__(out self, *, raw: Int32):
-        self._raw = raw
+    fn __init__(out self, *, value: Int32):
+        self._value = value
 
-    fn raw(self) -> Int32:
-        return self._raw
+    fn value(self) -> Int32:
+        return self._value
 
     fn __eq__(self, other: Self) -> Bool:
-        return self._raw == other._raw
+        return self._value == other._value
 
-    comptime LEVEL_2_0 = StdVideoAV1Level(raw = 0)
-    comptime LEVEL_2_1 = StdVideoAV1Level(raw = 1)
-    comptime LEVEL_2_2 = StdVideoAV1Level(raw = 2)
-    comptime LEVEL_2_3 = StdVideoAV1Level(raw = 3)
-    comptime LEVEL_3_0 = StdVideoAV1Level(raw = 4)
-    comptime LEVEL_3_1 = StdVideoAV1Level(raw = 5)
-    comptime LEVEL_3_2 = StdVideoAV1Level(raw = 6)
-    comptime LEVEL_3_3 = StdVideoAV1Level(raw = 7)
-    comptime LEVEL_4_0 = StdVideoAV1Level(raw = 8)
-    comptime LEVEL_4_1 = StdVideoAV1Level(raw = 9)
-    comptime LEVEL_4_2 = StdVideoAV1Level(raw = 10)
-    comptime LEVEL_4_3 = StdVideoAV1Level(raw = 11)
-    comptime LEVEL_5_0 = StdVideoAV1Level(raw = 12)
-    comptime LEVEL_5_1 = StdVideoAV1Level(raw = 13)
-    comptime LEVEL_5_2 = StdVideoAV1Level(raw = 14)
-    comptime LEVEL_5_3 = StdVideoAV1Level(raw = 15)
-    comptime LEVEL_6_0 = StdVideoAV1Level(raw = 16)
-    comptime LEVEL_6_1 = StdVideoAV1Level(raw = 17)
-    comptime LEVEL_6_2 = StdVideoAV1Level(raw = 18)
-    comptime LEVEL_6_3 = StdVideoAV1Level(raw = 19)
-    comptime LEVEL_7_0 = StdVideoAV1Level(raw = 20)
-    comptime LEVEL_7_1 = StdVideoAV1Level(raw = 21)
-    comptime LEVEL_7_2 = StdVideoAV1Level(raw = 22)
-    comptime LEVEL_7_3 = StdVideoAV1Level(raw = 23)
-    comptime INVALID = StdVideoAV1Level(raw = 2147483647)
+    comptime LEVEL_2_0 = StdVideoAV1Level(value = 0)
+    comptime LEVEL_2_1 = StdVideoAV1Level(value = 1)
+    comptime LEVEL_2_2 = StdVideoAV1Level(value = 2)
+    comptime LEVEL_2_3 = StdVideoAV1Level(value = 3)
+    comptime LEVEL_3_0 = StdVideoAV1Level(value = 4)
+    comptime LEVEL_3_1 = StdVideoAV1Level(value = 5)
+    comptime LEVEL_3_2 = StdVideoAV1Level(value = 6)
+    comptime LEVEL_3_3 = StdVideoAV1Level(value = 7)
+    comptime LEVEL_4_0 = StdVideoAV1Level(value = 8)
+    comptime LEVEL_4_1 = StdVideoAV1Level(value = 9)
+    comptime LEVEL_4_2 = StdVideoAV1Level(value = 10)
+    comptime LEVEL_4_3 = StdVideoAV1Level(value = 11)
+    comptime LEVEL_5_0 = StdVideoAV1Level(value = 12)
+    comptime LEVEL_5_1 = StdVideoAV1Level(value = 13)
+    comptime LEVEL_5_2 = StdVideoAV1Level(value = 14)
+    comptime LEVEL_5_3 = StdVideoAV1Level(value = 15)
+    comptime LEVEL_6_0 = StdVideoAV1Level(value = 16)
+    comptime LEVEL_6_1 = StdVideoAV1Level(value = 17)
+    comptime LEVEL_6_2 = StdVideoAV1Level(value = 18)
+    comptime LEVEL_6_3 = StdVideoAV1Level(value = 19)
+    comptime LEVEL_7_0 = StdVideoAV1Level(value = 20)
+    comptime LEVEL_7_1 = StdVideoAV1Level(value = 21)
+    comptime LEVEL_7_2 = StdVideoAV1Level(value = 22)
+    comptime LEVEL_7_3 = StdVideoAV1Level(value = 23)
+    comptime INVALID = StdVideoAV1Level(value = 2147483647)
 
 
 struct StdVideoAV1SequenceHeader:
@@ -639,52 +639,52 @@ struct StdVideoDecodeAV1ReferenceInfo:
 
 @register_passable("trivial")
 struct StdVideoVP9Profile(Equatable):
-    var _raw: Int32
+    var _value: Int32
 
-    fn __init__(out self, *, raw: Int32):
-        self._raw = raw
+    fn __init__(out self, *, value: Int32):
+        self._value = value
 
-    fn raw(self) -> Int32:
-        return self._raw
+    fn value(self) -> Int32:
+        return self._value
 
     fn __eq__(self, other: Self) -> Bool:
-        return self._raw == other._raw
+        return self._value == other._value
 
-    comptime PROFILE_0 = StdVideoVP9Profile(raw = 0)
-    comptime PROFILE_1 = StdVideoVP9Profile(raw = 1)
-    comptime PROFILE_2 = StdVideoVP9Profile(raw = 2)
-    comptime PROFILE_3 = StdVideoVP9Profile(raw = 3)
-    comptime INVALID = StdVideoVP9Profile(raw = 2147483647)
+    comptime PROFILE_0 = StdVideoVP9Profile(value = 0)
+    comptime PROFILE_1 = StdVideoVP9Profile(value = 1)
+    comptime PROFILE_2 = StdVideoVP9Profile(value = 2)
+    comptime PROFILE_3 = StdVideoVP9Profile(value = 3)
+    comptime INVALID = StdVideoVP9Profile(value = 2147483647)
 
 
 @register_passable("trivial")
 struct StdVideoVP9Level(Equatable):
-    var _raw: Int32
+    var _value: Int32
 
-    fn __init__(out self, *, raw: Int32):
-        self._raw = raw
+    fn __init__(out self, *, value: Int32):
+        self._value = value
 
-    fn raw(self) -> Int32:
-        return self._raw
+    fn value(self) -> Int32:
+        return self._value
 
     fn __eq__(self, other: Self) -> Bool:
-        return self._raw == other._raw
+        return self._value == other._value
 
-    comptime LEVEL_1_0 = StdVideoVP9Level(raw = 0)
-    comptime LEVEL_1_1 = StdVideoVP9Level(raw = 1)
-    comptime LEVEL_2_0 = StdVideoVP9Level(raw = 2)
-    comptime LEVEL_2_1 = StdVideoVP9Level(raw = 3)
-    comptime LEVEL_3_0 = StdVideoVP9Level(raw = 4)
-    comptime LEVEL_3_1 = StdVideoVP9Level(raw = 5)
-    comptime LEVEL_4_0 = StdVideoVP9Level(raw = 6)
-    comptime LEVEL_4_1 = StdVideoVP9Level(raw = 7)
-    comptime LEVEL_5_0 = StdVideoVP9Level(raw = 8)
-    comptime LEVEL_5_1 = StdVideoVP9Level(raw = 9)
-    comptime LEVEL_5_2 = StdVideoVP9Level(raw = 10)
-    comptime LEVEL_6_0 = StdVideoVP9Level(raw = 11)
-    comptime LEVEL_6_1 = StdVideoVP9Level(raw = 12)
-    comptime LEVEL_6_2 = StdVideoVP9Level(raw = 13)
-    comptime INVALID = StdVideoVP9Level(raw = 2147483647)
+    comptime LEVEL_1_0 = StdVideoVP9Level(value = 0)
+    comptime LEVEL_1_1 = StdVideoVP9Level(value = 1)
+    comptime LEVEL_2_0 = StdVideoVP9Level(value = 2)
+    comptime LEVEL_2_1 = StdVideoVP9Level(value = 3)
+    comptime LEVEL_3_0 = StdVideoVP9Level(value = 4)
+    comptime LEVEL_3_1 = StdVideoVP9Level(value = 5)
+    comptime LEVEL_4_0 = StdVideoVP9Level(value = 6)
+    comptime LEVEL_4_1 = StdVideoVP9Level(value = 7)
+    comptime LEVEL_5_0 = StdVideoVP9Level(value = 8)
+    comptime LEVEL_5_1 = StdVideoVP9Level(value = 9)
+    comptime LEVEL_5_2 = StdVideoVP9Level(value = 10)
+    comptime LEVEL_6_0 = StdVideoVP9Level(value = 11)
+    comptime LEVEL_6_1 = StdVideoVP9Level(value = 12)
+    comptime LEVEL_6_2 = StdVideoVP9Level(value = 13)
+    comptime INVALID = StdVideoVP9Level(value = 2147483647)
 
 
 struct StdVideoDecodeVP9PictureInfo:
