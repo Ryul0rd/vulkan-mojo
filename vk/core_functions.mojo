@@ -24,12 +24,6 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
     fn borrow_handle(self) -> _DLHandle:
         return self._handle.borrow()
 
-    fn destroy_instance(self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
-        var _destroy_instance = Ptr(to=self.get_instance_proc_addr(
-            instance, "vkDestroyInstance".as_c_string_slice()
-        )).bitcast[fn(Instance, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]
-        _destroy_instance(instance, p_allocator)
-
     fn create_instance(
         self,
         create_info: InstanceCreateInfo,
@@ -137,12 +131,6 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
 
     fn borrow_handle(self) -> _DLHandle:
         return self._handle.borrow()
-
-    fn destroy_instance(self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
-        var _destroy_instance = Ptr(to=self.get_instance_proc_addr(
-            instance, "vkDestroyInstance".as_c_string_slice()
-        )).bitcast[fn(Instance, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]
-        _destroy_instance(instance, p_allocator)
 
     fn create_instance(
         self,
@@ -259,12 +247,6 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
     fn borrow_handle(self) -> _DLHandle:
         return self._handle.borrow()
 
-    fn destroy_instance(self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
-        var _destroy_instance = Ptr(to=self.get_instance_proc_addr(
-            instance, "vkDestroyInstance".as_c_string_slice()
-        )).bitcast[fn(Instance, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]
-        _destroy_instance(instance, p_allocator)
-
     fn create_instance(
         self,
         create_info: InstanceCreateInfo,
@@ -380,12 +362,6 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
     fn borrow_handle(self) -> _DLHandle:
         return self._handle.borrow()
 
-    fn destroy_instance(self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
-        var _destroy_instance = Ptr(to=self.get_instance_proc_addr(
-            instance, "vkDestroyInstance".as_c_string_slice()
-        )).bitcast[fn(Instance, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]
-        _destroy_instance(instance, p_allocator)
-
     fn create_instance(
         self,
         create_info: InstanceCreateInfo,
@@ -500,12 +476,6 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
 
     fn borrow_handle(self) -> _DLHandle:
         return self._handle.borrow()
-
-    fn destroy_instance(self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
-        var _destroy_instance = Ptr(to=self.get_instance_proc_addr(
-            instance, "vkDestroyInstance".as_c_string_slice()
-        )).bitcast[fn(Instance, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]
-        _destroy_instance(instance, p_allocator)
 
     fn create_instance(
         self,
@@ -662,12 +632,6 @@ struct InstanceFunctionsV1_0(Movable):
 
     fn __init__(out self, global_functions: GlobalFunctionsV1_0, instance: Instance):
         self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.borrow_handle())
-
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
-        var _destroy_device = Ptr(to=self.get_device_proc_addr(
-            device, "vkDestroyInstance".as_c_string_slice()
-        )).bitcast[fn(Device, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]
-        _destroy_device(device, p_allocator)
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -987,12 +951,6 @@ struct InstanceFunctionsV1_1(Movable):
     fn __init__(out self, global_functions: GlobalFunctionsV1_1, instance: Instance):
         self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.borrow_handle())
         self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.borrow_handle())
-
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
-        var _destroy_device = Ptr(to=self.get_device_proc_addr(
-            device, "vkDestroyInstance".as_c_string_slice()
-        )).bitcast[fn(Device, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]
-        _destroy_device(device, p_allocator)
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -1535,12 +1493,6 @@ struct InstanceFunctionsV1_2(Movable):
     fn __init__(out self, global_functions: GlobalFunctionsV1_2, instance: Instance):
         self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.borrow_handle())
         self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.borrow_handle())
-
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
-        var _destroy_device = Ptr(to=self.get_device_proc_addr(
-            device, "vkDestroyInstance".as_c_string_slice()
-        )).bitcast[fn(Device, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]
-        _destroy_device(device, p_allocator)
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -2085,12 +2037,6 @@ struct InstanceFunctionsV1_3(Movable):
         self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.borrow_handle())
         self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.borrow_handle())
         self._v1_3 = InstanceFunctionAdditionsV1_3(instance, global_functions.borrow_handle())
-
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
-        var _destroy_device = Ptr(to=self.get_device_proc_addr(
-            device, "vkDestroyInstance".as_c_string_slice()
-        )).bitcast[fn(Device, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]
-        _destroy_device(device, p_allocator)
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -2671,12 +2617,6 @@ struct InstanceFunctionsV1_4(Movable):
         self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.borrow_handle())
         self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.borrow_handle())
         self._v1_3 = InstanceFunctionAdditionsV1_3(instance, global_functions.borrow_handle())
-
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
-        var _destroy_device = Ptr(to=self.get_device_proc_addr(
-            device, "vkDestroyInstance".as_c_string_slice()
-        )).bitcast[fn(Device, Ptr[AllocationCallbacks, ImmutAnyOrigin])]()[]
-        _destroy_device(device, p_allocator)
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
