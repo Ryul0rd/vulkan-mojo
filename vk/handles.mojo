@@ -14,6 +14,9 @@ struct Instance(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -34,6 +37,9 @@ struct PhysicalDevice(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -56,6 +62,9 @@ struct Device(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -76,6 +85,9 @@ struct Queue(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -98,6 +110,9 @@ struct CommandBuffer(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -118,6 +133,9 @@ struct DeviceMemory(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -140,6 +158,9 @@ struct CommandPool(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -160,6 +181,9 @@ struct Buffer(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -182,6 +206,9 @@ struct BufferView(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -202,6 +229,9 @@ struct Image(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -224,6 +254,9 @@ struct ImageView(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -244,6 +277,9 @@ struct ShaderModule(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -266,6 +302,9 @@ struct Pipeline(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -286,6 +325,9 @@ struct PipelineLayout(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -308,6 +350,9 @@ struct Sampler(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -328,6 +373,9 @@ struct DescriptorSet(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -350,6 +398,9 @@ struct DescriptorSetLayout(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -370,6 +421,9 @@ struct DescriptorPool(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -392,6 +446,9 @@ struct Fence(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -412,6 +469,9 @@ struct Semaphore(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -434,6 +494,9 @@ struct Event(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -454,6 +517,9 @@ struct QueryPool(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -476,6 +542,9 @@ struct Framebuffer(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -496,6 +565,9 @@ struct RenderPass(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -518,6 +590,9 @@ struct PipelineCache(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -538,6 +613,9 @@ struct PipelineBinaryKHR(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -560,6 +638,9 @@ struct IndirectCommandsLayoutNV(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -580,6 +661,9 @@ struct IndirectCommandsLayoutEXT(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -602,6 +686,9 @@ struct IndirectExecutionSetEXT(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -622,6 +709,9 @@ struct DescriptorUpdateTemplate(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -644,6 +734,9 @@ struct SamplerYcbcrConversion(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -664,6 +757,9 @@ struct ValidationCacheEXT(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -686,6 +782,9 @@ struct AccelerationStructureKHR(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -706,6 +805,9 @@ struct AccelerationStructureNV(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -728,6 +830,9 @@ struct PerformanceConfigurationINTEL(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -748,6 +853,9 @@ struct BufferCollectionFUCHSIA(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -770,6 +878,9 @@ struct DeferredOperationKHR(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -790,6 +901,9 @@ struct PrivateDataSlot(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -812,6 +926,9 @@ struct CuModuleNVX(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -832,6 +949,9 @@ struct CuFunctionNVX(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -854,6 +974,9 @@ struct OpticalFlowSessionNV(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -874,6 +997,9 @@ struct MicromapEXT(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -896,6 +1022,9 @@ struct ShaderEXT(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -916,6 +1045,9 @@ struct TensorARM(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -938,6 +1070,9 @@ struct TensorViewARM(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -958,6 +1093,9 @@ struct DataGraphPipelineSessionARM(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -980,6 +1118,9 @@ struct DisplayKHR(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -1000,6 +1141,9 @@ struct DisplayModeKHR(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -1022,6 +1166,9 @@ struct SurfaceKHR(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -1042,6 +1189,9 @@ struct SwapchainKHR(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -1064,6 +1214,9 @@ struct DebugReportCallbackEXT(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -1084,6 +1237,9 @@ struct DebugUtilsMessengerEXT(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -1106,6 +1262,9 @@ struct VideoSessionKHR(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -1126,6 +1285,9 @@ struct VideoSessionParametersKHR(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -1148,6 +1310,9 @@ struct SemaphoreSciSyncPoolNV(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -1168,6 +1333,9 @@ struct CudaModuleNV(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
@@ -1190,6 +1358,9 @@ struct CudaFunctionNV(Equatable, Writable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
+    fn __bool__(self) -> Bool:
+        return self._value != 0
+
     fn __str__(self) -> String:
         return hex(self._value)
 
@@ -1210,6 +1381,9 @@ struct ExternalComputeQueueNV(Equatable, Writable):
 
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
+
+    fn __bool__(self) -> Bool:
+        return self._value != 0
 
     fn __str__(self) -> String:
         return hex(self._value)
