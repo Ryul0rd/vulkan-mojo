@@ -48,14 +48,23 @@ struct FramebufferCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: FramebufferCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: FramebufferCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: FramebufferCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: FramebufferCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: FramebufferCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: FramebufferCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: FramebufferCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -94,14 +103,23 @@ struct QueryPoolCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: QueryPoolCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: QueryPoolCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: QueryPoolCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: QueryPoolCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: QueryPoolCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: QueryPoolCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: QueryPoolCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -140,14 +158,23 @@ struct RenderPassCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: RenderPassCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: RenderPassCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: RenderPassCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: RenderPassCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: RenderPassCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: RenderPassCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: RenderPassCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -186,14 +213,23 @@ struct SamplerCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SamplerCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SamplerCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SamplerCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SamplerCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SamplerCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SamplerCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SamplerCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -232,14 +268,23 @@ struct PipelineLayoutCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineLayoutCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineLayoutCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineLayoutCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineLayoutCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineLayoutCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineLayoutCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineLayoutCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -278,14 +323,23 @@ struct PipelineCacheCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineCacheCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineCacheCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineCacheCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineCacheCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineCacheCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineCacheCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCacheCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -324,14 +378,23 @@ struct PipelineDepthStencilStateCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineDepthStencilStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineDepthStencilStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineDepthStencilStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineDepthStencilStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineDepthStencilStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineDepthStencilStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineDepthStencilStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -370,14 +433,23 @@ struct PipelineDynamicStateCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineDynamicStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineDynamicStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineDynamicStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineDynamicStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineDynamicStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineDynamicStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineDynamicStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -416,14 +488,23 @@ struct PipelineColorBlendStateCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineColorBlendStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineColorBlendStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineColorBlendStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineColorBlendStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineColorBlendStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineColorBlendStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineColorBlendStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -462,14 +543,23 @@ struct PipelineMultisampleStateCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineMultisampleStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineMultisampleStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineMultisampleStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineMultisampleStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineMultisampleStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineMultisampleStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineMultisampleStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -508,14 +598,23 @@ struct PipelineRasterizationStateCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineRasterizationStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineRasterizationStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineRasterizationStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineRasterizationStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineRasterizationStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineRasterizationStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineRasterizationStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -554,14 +653,23 @@ struct PipelineViewportStateCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineViewportStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineViewportStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineViewportStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineViewportStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineViewportStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineViewportStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineViewportStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -600,14 +708,23 @@ struct PipelineTessellationStateCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineTessellationStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineTessellationStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineTessellationStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineTessellationStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineTessellationStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineTessellationStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineTessellationStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -646,14 +763,23 @@ struct PipelineInputAssemblyStateCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineInputAssemblyStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineInputAssemblyStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineInputAssemblyStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineInputAssemblyStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineInputAssemblyStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineInputAssemblyStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineInputAssemblyStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -692,14 +818,23 @@ struct PipelineVertexInputStateCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineVertexInputStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineVertexInputStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineVertexInputStateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineVertexInputStateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineVertexInputStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineVertexInputStateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineVertexInputStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -738,14 +873,23 @@ struct PipelineShaderStageCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineShaderStageCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineShaderStageCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineShaderStageCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineShaderStageCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineShaderStageCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineShaderStageCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineShaderStageCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -784,14 +928,23 @@ struct DescriptorSetLayoutCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DescriptorSetLayoutCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DescriptorSetLayoutCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DescriptorSetLayoutCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DescriptorSetLayoutCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DescriptorSetLayoutCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DescriptorSetLayoutCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DescriptorSetLayoutCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -830,14 +983,23 @@ struct BufferViewCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: BufferViewCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: BufferViewCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: BufferViewCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: BufferViewCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: BufferViewCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: BufferViewCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: BufferViewCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -876,14 +1038,23 @@ struct InstanceCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: InstanceCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: InstanceCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: InstanceCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: InstanceCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: InstanceCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: InstanceCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: InstanceCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -922,14 +1093,23 @@ struct DeviceCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DeviceCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DeviceCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DeviceCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DeviceCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DeviceCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DeviceCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DeviceCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -968,14 +1148,23 @@ struct DeviceQueueCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DeviceQueueCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DeviceQueueCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DeviceQueueCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DeviceQueueCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DeviceQueueCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DeviceQueueCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DeviceQueueCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1014,14 +1203,23 @@ struct QueueFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: QueueFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: QueueFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: QueueFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: QueueFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: QueueFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: QueueFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: QueueFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1065,14 +1263,23 @@ struct MemoryPropertyFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: MemoryPropertyFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: MemoryPropertyFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: MemoryPropertyFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: MemoryPropertyFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: MemoryPropertyFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: MemoryPropertyFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MemoryPropertyFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1117,14 +1324,23 @@ struct MemoryHeapFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: MemoryHeapFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: MemoryHeapFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: MemoryHeapFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: MemoryHeapFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: MemoryHeapFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: MemoryHeapFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MemoryHeapFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1165,14 +1381,23 @@ struct AccessFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: AccessFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: AccessFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: AccessFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: AccessFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: AccessFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: AccessFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AccessFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1229,14 +1454,23 @@ struct BufferUsageFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: BufferUsageFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: BufferUsageFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: BufferUsageFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: BufferUsageFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: BufferUsageFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: BufferUsageFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: BufferUsageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1285,14 +1519,23 @@ struct BufferCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: BufferCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: BufferCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: BufferCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: BufferCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: BufferCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: BufferCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: BufferCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1335,14 +1578,23 @@ struct ShaderStageFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ShaderStageFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ShaderStageFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ShaderStageFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ShaderStageFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ShaderStageFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ShaderStageFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ShaderStageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1390,14 +1642,23 @@ struct ImageUsageFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ImageUsageFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ImageUsageFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ImageUsageFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ImageUsageFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ImageUsageFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ImageUsageFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageUsageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1445,14 +1706,23 @@ struct ImageCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ImageCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ImageCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ImageCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ImageCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ImageCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ImageCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1497,14 +1767,23 @@ struct ImageViewCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ImageViewCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ImageViewCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ImageViewCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ImageViewCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ImageViewCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ImageViewCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageViewCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1543,14 +1822,23 @@ struct PipelineCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1593,14 +1881,23 @@ struct ColorComponentFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ColorComponentFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ColorComponentFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ColorComponentFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ColorComponentFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ColorComponentFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ColorComponentFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ColorComponentFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1644,14 +1941,23 @@ struct FenceCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: FenceCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: FenceCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: FenceCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: FenceCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: FenceCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: FenceCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: FenceCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1692,14 +1998,23 @@ struct SemaphoreCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SemaphoreCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SemaphoreCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SemaphoreCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SemaphoreCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SemaphoreCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SemaphoreCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SemaphoreCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1738,14 +2053,23 @@ struct FormatFeatureFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: FormatFeatureFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: FormatFeatureFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: FormatFeatureFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: FormatFeatureFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: FormatFeatureFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: FormatFeatureFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: FormatFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1798,14 +2122,23 @@ struct QueryControlFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: QueryControlFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: QueryControlFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: QueryControlFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: QueryControlFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: QueryControlFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: QueryControlFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: QueryControlFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1846,14 +2179,23 @@ struct QueryResultFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: QueryResultFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: QueryResultFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: QueryResultFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: QueryResultFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: QueryResultFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: QueryResultFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: QueryResultFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1897,14 +2239,23 @@ struct ShaderModuleCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ShaderModuleCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ShaderModuleCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ShaderModuleCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ShaderModuleCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ShaderModuleCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ShaderModuleCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ShaderModuleCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1943,14 +2294,23 @@ struct EventCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: EventCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: EventCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: EventCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: EventCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: EventCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: EventCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: EventCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -1989,14 +2349,23 @@ struct CommandPoolCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: CommandPoolCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: CommandPoolCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: CommandPoolCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: CommandPoolCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: CommandPoolCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: CommandPoolCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CommandPoolCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2038,14 +2407,23 @@ struct CommandPoolResetFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: CommandPoolResetFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: CommandPoolResetFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: CommandPoolResetFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: CommandPoolResetFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: CommandPoolResetFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: CommandPoolResetFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CommandPoolResetFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2086,14 +2464,23 @@ struct CommandBufferResetFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: CommandBufferResetFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: CommandBufferResetFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: CommandBufferResetFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: CommandBufferResetFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: CommandBufferResetFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: CommandBufferResetFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CommandBufferResetFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2134,14 +2521,23 @@ struct CommandBufferUsageFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: CommandBufferUsageFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: CommandBufferUsageFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: CommandBufferUsageFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: CommandBufferUsageFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: CommandBufferUsageFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: CommandBufferUsageFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CommandBufferUsageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2184,14 +2580,23 @@ struct QueryPipelineStatisticFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: QueryPipelineStatisticFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: QueryPipelineStatisticFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: QueryPipelineStatisticFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: QueryPipelineStatisticFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: QueryPipelineStatisticFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: QueryPipelineStatisticFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: QueryPipelineStatisticFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2242,14 +2647,23 @@ struct MemoryMapFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: MemoryMapFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: MemoryMapFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: MemoryMapFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: MemoryMapFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: MemoryMapFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: MemoryMapFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MemoryMapFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2288,14 +2702,23 @@ struct MemoryUnmapFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: MemoryUnmapFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: MemoryUnmapFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: MemoryUnmapFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: MemoryUnmapFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: MemoryUnmapFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: MemoryUnmapFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MemoryUnmapFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2334,14 +2757,23 @@ struct ImageAspectFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ImageAspectFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ImageAspectFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ImageAspectFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ImageAspectFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ImageAspectFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ImageAspectFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageAspectFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2385,14 +2817,23 @@ struct SparseMemoryBindFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SparseMemoryBindFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SparseMemoryBindFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SparseMemoryBindFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SparseMemoryBindFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SparseMemoryBindFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SparseMemoryBindFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SparseMemoryBindFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2433,14 +2874,23 @@ struct SparseImageFormatFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SparseImageFormatFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SparseImageFormatFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SparseImageFormatFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SparseImageFormatFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SparseImageFormatFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SparseImageFormatFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SparseImageFormatFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2483,14 +2933,23 @@ struct SubpassDescriptionFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SubpassDescriptionFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SubpassDescriptionFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SubpassDescriptionFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SubpassDescriptionFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SubpassDescriptionFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SubpassDescriptionFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SubpassDescriptionFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2529,14 +2988,23 @@ struct PipelineStageFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineStageFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineStageFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineStageFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineStageFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineStageFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineStageFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineStageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2593,14 +3061,23 @@ struct SampleCountFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SampleCountFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SampleCountFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SampleCountFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SampleCountFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SampleCountFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SampleCountFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SampleCountFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2647,14 +3124,23 @@ struct AttachmentDescriptionFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: AttachmentDescriptionFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: AttachmentDescriptionFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: AttachmentDescriptionFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: AttachmentDescriptionFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: AttachmentDescriptionFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: AttachmentDescriptionFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AttachmentDescriptionFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2695,14 +3181,23 @@ struct StencilFaceFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: StencilFaceFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: StencilFaceFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: StencilFaceFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: StencilFaceFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: StencilFaceFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: StencilFaceFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: StencilFaceFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2745,14 +3240,23 @@ struct CullModeFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: CullModeFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: CullModeFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: CullModeFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: CullModeFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: CullModeFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: CullModeFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CullModeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2796,14 +3300,23 @@ struct DescriptorPoolCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DescriptorPoolCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DescriptorPoolCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DescriptorPoolCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DescriptorPoolCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DescriptorPoolCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DescriptorPoolCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DescriptorPoolCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2844,14 +3357,23 @@ struct DescriptorPoolResetFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DescriptorPoolResetFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DescriptorPoolResetFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DescriptorPoolResetFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DescriptorPoolResetFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DescriptorPoolResetFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DescriptorPoolResetFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DescriptorPoolResetFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2890,14 +3412,23 @@ struct DependencyFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DependencyFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DependencyFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DependencyFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DependencyFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DependencyFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DependencyFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DependencyFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2938,14 +3469,23 @@ struct SubgroupFeatureFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SubgroupFeatureFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SubgroupFeatureFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SubgroupFeatureFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SubgroupFeatureFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SubgroupFeatureFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SubgroupFeatureFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SubgroupFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -2993,14 +3533,23 @@ struct IndirectCommandsLayoutUsageFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: IndirectCommandsLayoutUsageFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: IndirectCommandsLayoutUsageFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: IndirectCommandsLayoutUsageFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: IndirectCommandsLayoutUsageFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: IndirectCommandsLayoutUsageFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: IndirectCommandsLayoutUsageFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: IndirectCommandsLayoutUsageFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3043,14 +3592,23 @@ struct IndirectStateFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: IndirectStateFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: IndirectStateFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: IndirectStateFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: IndirectStateFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: IndirectStateFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: IndirectStateFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: IndirectStateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3091,14 +3649,23 @@ struct GeometryFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: GeometryFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: GeometryFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: GeometryFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: GeometryFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: GeometryFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: GeometryFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: GeometryFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3140,14 +3707,23 @@ struct GeometryInstanceFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: GeometryInstanceFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: GeometryInstanceFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: GeometryInstanceFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: GeometryInstanceFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: GeometryInstanceFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: GeometryInstanceFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: GeometryInstanceFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3191,14 +3767,23 @@ struct ClusterAccelerationStructureGeometryFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ClusterAccelerationStructureGeometryFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ClusterAccelerationStructureGeometryFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ClusterAccelerationStructureGeometryFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ClusterAccelerationStructureGeometryFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ClusterAccelerationStructureGeometryFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ClusterAccelerationStructureGeometryFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ClusterAccelerationStructureGeometryFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3241,14 +3826,23 @@ struct ClusterAccelerationStructureClusterFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ClusterAccelerationStructureClusterFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ClusterAccelerationStructureClusterFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ClusterAccelerationStructureClusterFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ClusterAccelerationStructureClusterFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ClusterAccelerationStructureClusterFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ClusterAccelerationStructureClusterFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ClusterAccelerationStructureClusterFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3289,14 +3883,23 @@ struct ClusterAccelerationStructureAddressResolutionFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3343,14 +3946,23 @@ struct BuildAccelerationStructureFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: BuildAccelerationStructureFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: BuildAccelerationStructureFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: BuildAccelerationStructureFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: BuildAccelerationStructureFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: BuildAccelerationStructureFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: BuildAccelerationStructureFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: BuildAccelerationStructureFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3395,14 +4007,23 @@ struct PrivateDataSlotCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PrivateDataSlotCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PrivateDataSlotCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PrivateDataSlotCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PrivateDataSlotCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PrivateDataSlotCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PrivateDataSlotCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PrivateDataSlotCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3441,14 +4062,23 @@ struct AccelerationStructureCreateFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: AccelerationStructureCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: AccelerationStructureCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: AccelerationStructureCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: AccelerationStructureCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: AccelerationStructureCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: AccelerationStructureCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AccelerationStructureCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3489,14 +4119,23 @@ struct DescriptorUpdateTemplateCreateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DescriptorUpdateTemplateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DescriptorUpdateTemplateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DescriptorUpdateTemplateCreateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DescriptorUpdateTemplateCreateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DescriptorUpdateTemplateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DescriptorUpdateTemplateCreateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DescriptorUpdateTemplateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3535,14 +4174,23 @@ struct PipelineCreationFeedbackFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineCreationFeedbackFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineCreationFeedbackFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineCreationFeedbackFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineCreationFeedbackFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineCreationFeedbackFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineCreationFeedbackFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCreationFeedbackFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3585,14 +4233,23 @@ struct PerformanceCounterDescriptionFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PerformanceCounterDescriptionFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PerformanceCounterDescriptionFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PerformanceCounterDescriptionFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PerformanceCounterDescriptionFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PerformanceCounterDescriptionFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PerformanceCounterDescriptionFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PerformanceCounterDescriptionFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3634,14 +4291,23 @@ struct AcquireProfilingLockFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: AcquireProfilingLockFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: AcquireProfilingLockFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: AcquireProfilingLockFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: AcquireProfilingLockFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: AcquireProfilingLockFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: AcquireProfilingLockFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AcquireProfilingLockFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3680,14 +4346,23 @@ struct SemaphoreWaitFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SemaphoreWaitFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SemaphoreWaitFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SemaphoreWaitFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SemaphoreWaitFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SemaphoreWaitFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SemaphoreWaitFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SemaphoreWaitFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3728,14 +4403,23 @@ struct PipelineCompilerControlFlagsAMD(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineCompilerControlFlagBitsAMD) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineCompilerControlFlagBitsAMD) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineCompilerControlFlagBitsAMD) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineCompilerControlFlagBitsAMD) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineCompilerControlFlagBitsAMD) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineCompilerControlFlagBitsAMD) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCompilerControlFlagBitsAMD) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3774,14 +4458,23 @@ struct ShaderCorePropertiesFlagsAMD(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ShaderCorePropertiesFlagBitsAMD) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ShaderCorePropertiesFlagBitsAMD) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ShaderCorePropertiesFlagBitsAMD) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ShaderCorePropertiesFlagBitsAMD) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ShaderCorePropertiesFlagBitsAMD) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ShaderCorePropertiesFlagBitsAMD) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ShaderCorePropertiesFlagBitsAMD) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3820,14 +4513,23 @@ struct DeviceDiagnosticsConfigFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DeviceDiagnosticsConfigFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DeviceDiagnosticsConfigFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DeviceDiagnosticsConfigFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DeviceDiagnosticsConfigFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DeviceDiagnosticsConfigFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DeviceDiagnosticsConfigFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DeviceDiagnosticsConfigFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3871,14 +4573,23 @@ struct RefreshObjectFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: RefreshObjectFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: RefreshObjectFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: RefreshObjectFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: RefreshObjectFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: RefreshObjectFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: RefreshObjectFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: RefreshObjectFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3917,14 +4628,23 @@ struct AccessFlags2(Equatable):
     fn value(self) -> UInt64:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: AccessFlagBits2) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: AccessFlagBits2) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: AccessFlagBits2) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: AccessFlagBits2) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: AccessFlagBits2) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: AccessFlagBits2) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AccessFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
@@ -3985,14 +4705,23 @@ struct PipelineStageFlags2(Equatable):
     fn value(self) -> UInt64:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineStageFlagBits2) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineStageFlagBits2) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineStageFlagBits2) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineStageFlagBits2) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineStageFlagBits2) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineStageFlagBits2) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineStageFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4057,14 +4786,23 @@ struct AccelerationStructureMotionInfoFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: AccelerationStructureMotionInfoFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: AccelerationStructureMotionInfoFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: AccelerationStructureMotionInfoFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: AccelerationStructureMotionInfoFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: AccelerationStructureMotionInfoFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: AccelerationStructureMotionInfoFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AccelerationStructureMotionInfoFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4103,14 +4841,23 @@ struct AccelerationStructureMotionInstanceFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: AccelerationStructureMotionInstanceFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: AccelerationStructureMotionInstanceFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: AccelerationStructureMotionInstanceFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: AccelerationStructureMotionInstanceFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: AccelerationStructureMotionInstanceFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: AccelerationStructureMotionInstanceFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AccelerationStructureMotionInstanceFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4149,14 +4896,23 @@ struct FormatFeatureFlags2(Equatable):
     fn value(self) -> UInt64:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: FormatFeatureFlagBits2) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: FormatFeatureFlagBits2) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: FormatFeatureFlagBits2) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: FormatFeatureFlagBits2) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: FormatFeatureFlagBits2) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: FormatFeatureFlagBits2) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: FormatFeatureFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4222,14 +4978,23 @@ struct RenderingFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: RenderingFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: RenderingFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: RenderingFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: RenderingFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: RenderingFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: RenderingFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: RenderingFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4272,14 +5037,23 @@ struct MemoryDecompressionMethodFlagsNV(Equatable):
     fn value(self) -> UInt64:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: MemoryDecompressionMethodFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: MemoryDecompressionMethodFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: MemoryDecompressionMethodFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: MemoryDecompressionMethodFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: MemoryDecompressionMethodFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: MemoryDecompressionMethodFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MemoryDecompressionMethodFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4320,14 +5094,23 @@ struct BuildMicromapFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: BuildMicromapFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: BuildMicromapFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: BuildMicromapFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: BuildMicromapFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: BuildMicromapFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: BuildMicromapFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: BuildMicromapFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4370,14 +5153,23 @@ struct MicromapCreateFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: MicromapCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: MicromapCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: MicromapCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: MicromapCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: MicromapCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: MicromapCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MicromapCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4418,14 +5210,23 @@ struct IndirectCommandsLayoutUsageFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: IndirectCommandsLayoutUsageFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: IndirectCommandsLayoutUsageFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: IndirectCommandsLayoutUsageFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: IndirectCommandsLayoutUsageFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: IndirectCommandsLayoutUsageFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: IndirectCommandsLayoutUsageFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: IndirectCommandsLayoutUsageFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4467,14 +5268,23 @@ struct IndirectCommandsInputModeFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: IndirectCommandsInputModeFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: IndirectCommandsInputModeFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: IndirectCommandsInputModeFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: IndirectCommandsInputModeFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: IndirectCommandsInputModeFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: IndirectCommandsInputModeFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: IndirectCommandsInputModeFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4516,14 +5326,23 @@ struct DirectDriverLoadingFlagsLUNARG(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DirectDriverLoadingFlagBitsLUNARG) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DirectDriverLoadingFlagBitsLUNARG) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DirectDriverLoadingFlagBitsLUNARG) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DirectDriverLoadingFlagBitsLUNARG) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DirectDriverLoadingFlagBitsLUNARG) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DirectDriverLoadingFlagBitsLUNARG) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DirectDriverLoadingFlagBitsLUNARG) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4562,14 +5381,23 @@ struct PipelineCreateFlags2(Equatable):
     fn value(self) -> UInt64:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineCreateFlagBits2) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineCreateFlagBits2) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineCreateFlagBits2) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineCreateFlagBits2) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineCreateFlagBits2) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineCreateFlagBits2) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCreateFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4618,14 +5446,23 @@ struct BufferUsageFlags2(Equatable):
     fn value(self) -> UInt64:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: BufferUsageFlagBits2) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: BufferUsageFlagBits2) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: BufferUsageFlagBits2) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: BufferUsageFlagBits2) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: BufferUsageFlagBits2) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: BufferUsageFlagBits2) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: BufferUsageFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4674,14 +5511,23 @@ struct TensorCreateFlagsARM(Equatable):
     fn value(self) -> UInt64:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: TensorCreateFlagBitsARM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: TensorCreateFlagBitsARM) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: TensorCreateFlagBitsARM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: TensorCreateFlagBitsARM) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: TensorCreateFlagBitsARM) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: TensorCreateFlagBitsARM) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: TensorCreateFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4723,14 +5569,23 @@ struct TensorUsageFlagsARM(Equatable):
     fn value(self) -> UInt64:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: TensorUsageFlagBitsARM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: TensorUsageFlagBitsARM) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: TensorUsageFlagBitsARM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: TensorUsageFlagBitsARM) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: TensorUsageFlagBitsARM) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: TensorUsageFlagBitsARM) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: TensorUsageFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4774,14 +5629,23 @@ struct TensorViewCreateFlagsARM(Equatable):
     fn value(self) -> UInt64:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: TensorViewCreateFlagBitsARM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: TensorViewCreateFlagBitsARM) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: TensorViewCreateFlagBitsARM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: TensorViewCreateFlagBitsARM) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: TensorViewCreateFlagBitsARM) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: TensorViewCreateFlagBitsARM) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: TensorViewCreateFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4820,14 +5684,23 @@ struct DataGraphPipelineSessionCreateFlagsARM(Equatable):
     fn value(self) -> UInt64:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DataGraphPipelineSessionCreateFlagBitsARM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DataGraphPipelineSessionCreateFlagBitsARM) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DataGraphPipelineSessionCreateFlagBitsARM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DataGraphPipelineSessionCreateFlagBitsARM) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DataGraphPipelineSessionCreateFlagBitsARM) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DataGraphPipelineSessionCreateFlagBitsARM) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DataGraphPipelineSessionCreateFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4868,14 +5741,23 @@ struct DataGraphPipelineDispatchFlagsARM(Equatable):
     fn value(self) -> UInt64:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DataGraphPipelineDispatchFlagBitsARM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DataGraphPipelineDispatchFlagBitsARM) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DataGraphPipelineDispatchFlagBitsARM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DataGraphPipelineDispatchFlagBitsARM) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DataGraphPipelineDispatchFlagBitsARM) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DataGraphPipelineDispatchFlagBitsARM) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DataGraphPipelineDispatchFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4914,14 +5796,23 @@ struct VideoEncodeRgbModelConversionFlagsVALVE(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Bool:
         return Bool(self.value() & bit.value())
@@ -4966,14 +5857,23 @@ struct VideoEncodeRgbRangeCompressionFlagsVALVE(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5015,14 +5915,23 @@ struct VideoEncodeRgbChromaOffsetFlagsVALVE(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5064,14 +5973,23 @@ struct CompositeAlphaFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: CompositeAlphaFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: CompositeAlphaFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: CompositeAlphaFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: CompositeAlphaFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: CompositeAlphaFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: CompositeAlphaFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CompositeAlphaFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5115,14 +6033,23 @@ struct DisplayPlaneAlphaFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DisplayPlaneAlphaFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DisplayPlaneAlphaFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DisplayPlaneAlphaFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DisplayPlaneAlphaFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DisplayPlaneAlphaFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DisplayPlaneAlphaFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DisplayPlaneAlphaFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5166,14 +6093,23 @@ struct SurfaceTransformFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SurfaceTransformFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SurfaceTransformFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SurfaceTransformFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SurfaceTransformFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SurfaceTransformFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SurfaceTransformFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SurfaceTransformFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5222,14 +6158,23 @@ struct SwapchainCreateFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SwapchainCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SwapchainCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SwapchainCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SwapchainCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SwapchainCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SwapchainCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SwapchainCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5268,14 +6213,23 @@ struct DisplayModeCreateFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DisplayModeCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DisplayModeCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DisplayModeCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DisplayModeCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DisplayModeCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DisplayModeCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DisplayModeCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5314,14 +6268,23 @@ struct DisplaySurfaceCreateFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DisplaySurfaceCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DisplaySurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DisplaySurfaceCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DisplaySurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DisplaySurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DisplaySurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DisplaySurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5360,14 +6323,23 @@ struct AndroidSurfaceCreateFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: AndroidSurfaceCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: AndroidSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: AndroidSurfaceCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: AndroidSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: AndroidSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: AndroidSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AndroidSurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5406,14 +6378,23 @@ struct ViSurfaceCreateFlagsNN(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ViSurfaceCreateFlagBitsNN) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ViSurfaceCreateFlagBitsNN) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ViSurfaceCreateFlagBitsNN) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ViSurfaceCreateFlagBitsNN) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ViSurfaceCreateFlagBitsNN) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ViSurfaceCreateFlagBitsNN) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ViSurfaceCreateFlagBitsNN) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5452,14 +6433,23 @@ struct WaylandSurfaceCreateFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: WaylandSurfaceCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: WaylandSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: WaylandSurfaceCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: WaylandSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: WaylandSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: WaylandSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: WaylandSurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5498,14 +6488,23 @@ struct Win32SurfaceCreateFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: Win32SurfaceCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: Win32SurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: Win32SurfaceCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: Win32SurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: Win32SurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: Win32SurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: Win32SurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5544,14 +6543,23 @@ struct XlibSurfaceCreateFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: XlibSurfaceCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: XlibSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: XlibSurfaceCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: XlibSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: XlibSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: XlibSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: XlibSurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5590,14 +6598,23 @@ struct XcbSurfaceCreateFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: XcbSurfaceCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: XcbSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: XcbSurfaceCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: XcbSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: XcbSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: XcbSurfaceCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: XcbSurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5636,14 +6653,23 @@ struct DirectFBSurfaceCreateFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DirectFBSurfaceCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DirectFBSurfaceCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DirectFBSurfaceCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DirectFBSurfaceCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DirectFBSurfaceCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DirectFBSurfaceCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DirectFBSurfaceCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5682,14 +6708,23 @@ struct IOSSurfaceCreateFlagsMVK(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: IOSSurfaceCreateFlagBitsMVK) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: IOSSurfaceCreateFlagBitsMVK) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: IOSSurfaceCreateFlagBitsMVK) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: IOSSurfaceCreateFlagBitsMVK) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: IOSSurfaceCreateFlagBitsMVK) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: IOSSurfaceCreateFlagBitsMVK) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: IOSSurfaceCreateFlagBitsMVK) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5728,14 +6763,23 @@ struct MacOSSurfaceCreateFlagsMVK(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: MacOSSurfaceCreateFlagBitsMVK) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: MacOSSurfaceCreateFlagBitsMVK) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: MacOSSurfaceCreateFlagBitsMVK) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: MacOSSurfaceCreateFlagBitsMVK) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: MacOSSurfaceCreateFlagBitsMVK) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: MacOSSurfaceCreateFlagBitsMVK) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MacOSSurfaceCreateFlagBitsMVK) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5774,14 +6818,23 @@ struct MetalSurfaceCreateFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: MetalSurfaceCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: MetalSurfaceCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: MetalSurfaceCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: MetalSurfaceCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: MetalSurfaceCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: MetalSurfaceCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MetalSurfaceCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5820,14 +6873,23 @@ struct ImagePipeSurfaceCreateFlagsFUCHSIA(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5866,14 +6928,23 @@ struct StreamDescriptorSurfaceCreateFlagsGGP(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5912,14 +6983,23 @@ struct HeadlessSurfaceCreateFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: HeadlessSurfaceCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: HeadlessSurfaceCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: HeadlessSurfaceCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: HeadlessSurfaceCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: HeadlessSurfaceCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: HeadlessSurfaceCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: HeadlessSurfaceCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -5958,14 +7038,23 @@ struct ScreenSurfaceCreateFlagsQNX(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ScreenSurfaceCreateFlagBitsQNX) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ScreenSurfaceCreateFlagBitsQNX) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ScreenSurfaceCreateFlagBitsQNX) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ScreenSurfaceCreateFlagBitsQNX) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ScreenSurfaceCreateFlagBitsQNX) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ScreenSurfaceCreateFlagBitsQNX) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ScreenSurfaceCreateFlagBitsQNX) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6004,14 +7093,23 @@ struct PeerMemoryFeatureFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PeerMemoryFeatureFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PeerMemoryFeatureFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PeerMemoryFeatureFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PeerMemoryFeatureFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PeerMemoryFeatureFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PeerMemoryFeatureFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PeerMemoryFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6055,14 +7153,23 @@ struct MemoryAllocateFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: MemoryAllocateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: MemoryAllocateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: MemoryAllocateFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: MemoryAllocateFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: MemoryAllocateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: MemoryAllocateFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MemoryAllocateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6103,14 +7210,23 @@ struct DeviceGroupPresentModeFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DeviceGroupPresentModeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DeviceGroupPresentModeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DeviceGroupPresentModeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DeviceGroupPresentModeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DeviceGroupPresentModeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DeviceGroupPresentModeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DeviceGroupPresentModeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6154,14 +7270,23 @@ struct DebugReportFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DebugReportFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DebugReportFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DebugReportFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DebugReportFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DebugReportFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DebugReportFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DebugReportFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6206,14 +7331,23 @@ struct CommandPoolTrimFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: CommandPoolTrimFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: CommandPoolTrimFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: CommandPoolTrimFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: CommandPoolTrimFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: CommandPoolTrimFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: CommandPoolTrimFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CommandPoolTrimFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6252,14 +7386,23 @@ struct ExternalMemoryHandleTypeFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ExternalMemoryHandleTypeFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ExternalMemoryHandleTypeFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ExternalMemoryHandleTypeFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ExternalMemoryHandleTypeFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ExternalMemoryHandleTypeFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ExternalMemoryHandleTypeFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalMemoryHandleTypeFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6303,14 +7446,23 @@ struct ClusterAccelerationStructureIndexFormatFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6353,14 +7505,23 @@ struct ExternalMemoryFeatureFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ExternalMemoryFeatureFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ExternalMemoryFeatureFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ExternalMemoryFeatureFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ExternalMemoryFeatureFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ExternalMemoryFeatureFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ExternalMemoryFeatureFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalMemoryFeatureFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6403,14 +7564,23 @@ struct ExternalMemoryHandleTypeFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ExternalMemoryHandleTypeFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ExternalMemoryHandleTypeFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ExternalMemoryHandleTypeFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ExternalMemoryHandleTypeFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ExternalMemoryHandleTypeFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ExternalMemoryHandleTypeFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalMemoryHandleTypeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6457,14 +7627,23 @@ struct ExternalMemoryFeatureFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ExternalMemoryFeatureFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ExternalMemoryFeatureFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ExternalMemoryFeatureFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ExternalMemoryFeatureFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ExternalMemoryFeatureFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ExternalMemoryFeatureFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalMemoryFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6507,14 +7686,23 @@ struct ExternalSemaphoreHandleTypeFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ExternalSemaphoreHandleTypeFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ExternalSemaphoreHandleTypeFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ExternalSemaphoreHandleTypeFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ExternalSemaphoreHandleTypeFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ExternalSemaphoreHandleTypeFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ExternalSemaphoreHandleTypeFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalSemaphoreHandleTypeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6559,14 +7747,23 @@ struct ExternalSemaphoreFeatureFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ExternalSemaphoreFeatureFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ExternalSemaphoreFeatureFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ExternalSemaphoreFeatureFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ExternalSemaphoreFeatureFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ExternalSemaphoreFeatureFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ExternalSemaphoreFeatureFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalSemaphoreFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6608,14 +7805,23 @@ struct SemaphoreImportFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SemaphoreImportFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SemaphoreImportFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SemaphoreImportFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SemaphoreImportFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SemaphoreImportFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SemaphoreImportFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SemaphoreImportFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6656,14 +7862,23 @@ struct ExternalFenceHandleTypeFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ExternalFenceHandleTypeFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ExternalFenceHandleTypeFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ExternalFenceHandleTypeFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ExternalFenceHandleTypeFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ExternalFenceHandleTypeFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ExternalFenceHandleTypeFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalFenceHandleTypeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6707,14 +7922,23 @@ struct ExternalFenceFeatureFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ExternalFenceFeatureFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ExternalFenceFeatureFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ExternalFenceFeatureFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ExternalFenceFeatureFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ExternalFenceFeatureFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ExternalFenceFeatureFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalFenceFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6756,14 +7980,23 @@ struct FenceImportFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: FenceImportFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: FenceImportFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: FenceImportFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: FenceImportFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: FenceImportFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: FenceImportFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: FenceImportFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6804,14 +8037,23 @@ struct SurfaceCounterFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SurfaceCounterFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SurfaceCounterFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SurfaceCounterFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SurfaceCounterFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SurfaceCounterFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SurfaceCounterFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SurfaceCounterFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6852,14 +8094,23 @@ struct PipelineViewportSwizzleStateCreateFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6898,14 +8149,23 @@ struct PipelineDiscardRectangleStateCreateFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6944,14 +8204,23 @@ struct PipelineCoverageToColorStateCreateFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineCoverageToColorStateCreateFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineCoverageToColorStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineCoverageToColorStateCreateFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineCoverageToColorStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineCoverageToColorStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineCoverageToColorStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCoverageToColorStateCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -6990,14 +8259,23 @@ struct PipelineCoverageModulationStateCreateFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineCoverageModulationStateCreateFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineCoverageModulationStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineCoverageModulationStateCreateFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineCoverageModulationStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineCoverageModulationStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineCoverageModulationStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCoverageModulationStateCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7036,14 +8314,23 @@ struct PipelineCoverageReductionStateCreateFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineCoverageReductionStateCreateFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineCoverageReductionStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineCoverageReductionStateCreateFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineCoverageReductionStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineCoverageReductionStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineCoverageReductionStateCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCoverageReductionStateCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7082,14 +8369,23 @@ struct ValidationCacheCreateFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ValidationCacheCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ValidationCacheCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ValidationCacheCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ValidationCacheCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ValidationCacheCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ValidationCacheCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ValidationCacheCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7128,14 +8424,23 @@ struct DebugUtilsMessageSeverityFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DebugUtilsMessageSeverityFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DebugUtilsMessageSeverityFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DebugUtilsMessageSeverityFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DebugUtilsMessageSeverityFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DebugUtilsMessageSeverityFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DebugUtilsMessageSeverityFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DebugUtilsMessageSeverityFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7179,14 +8484,23 @@ struct DebugUtilsMessageTypeFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DebugUtilsMessageTypeFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DebugUtilsMessageTypeFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DebugUtilsMessageTypeFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DebugUtilsMessageTypeFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DebugUtilsMessageTypeFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DebugUtilsMessageTypeFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DebugUtilsMessageTypeFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7229,14 +8543,23 @@ struct DebugUtilsMessengerCreateFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DebugUtilsMessengerCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DebugUtilsMessengerCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DebugUtilsMessengerCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DebugUtilsMessengerCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DebugUtilsMessengerCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DebugUtilsMessengerCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DebugUtilsMessengerCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7275,14 +8598,23 @@ struct DebugUtilsMessengerCallbackDataFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7321,14 +8653,23 @@ struct DeviceMemoryReportFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DeviceMemoryReportFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DeviceMemoryReportFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DeviceMemoryReportFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DeviceMemoryReportFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DeviceMemoryReportFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DeviceMemoryReportFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DeviceMemoryReportFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7367,14 +8708,23 @@ struct PipelineRasterizationConservativeStateCreateFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7413,14 +8763,23 @@ struct DescriptorBindingFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DescriptorBindingFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DescriptorBindingFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DescriptorBindingFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DescriptorBindingFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DescriptorBindingFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DescriptorBindingFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DescriptorBindingFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7464,14 +8823,23 @@ struct ConditionalRenderingFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ConditionalRenderingFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ConditionalRenderingFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ConditionalRenderingFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ConditionalRenderingFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ConditionalRenderingFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ConditionalRenderingFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ConditionalRenderingFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7512,14 +8880,23 @@ struct ResolveModeFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ResolveModeFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ResolveModeFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ResolveModeFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ResolveModeFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ResolveModeFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ResolveModeFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ResolveModeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7564,14 +8941,23 @@ struct PipelineRasterizationStateStreamCreateFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7610,14 +8996,23 @@ struct PipelineRasterizationDepthClipStateCreateFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7656,14 +9051,23 @@ struct SwapchainImageUsageFlagsANDROID(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SwapchainImageUsageFlagBitsANDROID) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SwapchainImageUsageFlagBitsANDROID) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SwapchainImageUsageFlagBitsANDROID) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SwapchainImageUsageFlagBitsANDROID) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SwapchainImageUsageFlagBitsANDROID) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SwapchainImageUsageFlagBitsANDROID) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SwapchainImageUsageFlagBitsANDROID) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7704,14 +9108,23 @@ struct ToolPurposeFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ToolPurposeFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ToolPurposeFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ToolPurposeFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ToolPurposeFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ToolPurposeFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ToolPurposeFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ToolPurposeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7756,14 +9169,23 @@ struct SubmitFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SubmitFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SubmitFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SubmitFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SubmitFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SubmitFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SubmitFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SubmitFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7804,14 +9226,23 @@ struct ImageFormatConstraintsFlagsFUCHSIA(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ImageFormatConstraintsFlagBitsFUCHSIA) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ImageFormatConstraintsFlagBitsFUCHSIA) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ImageFormatConstraintsFlagBitsFUCHSIA) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ImageFormatConstraintsFlagBitsFUCHSIA) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ImageFormatConstraintsFlagBitsFUCHSIA) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ImageFormatConstraintsFlagBitsFUCHSIA) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageFormatConstraintsFlagBitsFUCHSIA) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7850,14 +9281,23 @@ struct HostImageCopyFlags(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: HostImageCopyFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: HostImageCopyFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: HostImageCopyFlagBits) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: HostImageCopyFlagBits) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: HostImageCopyFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: HostImageCopyFlagBits) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: HostImageCopyFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7898,14 +9338,23 @@ struct PartitionedAccelerationStructureInstanceFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -7950,14 +9399,23 @@ struct ImageConstraintsInfoFlagsFUCHSIA(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ImageConstraintsInfoFlagBitsFUCHSIA) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ImageConstraintsInfoFlagBitsFUCHSIA) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ImageConstraintsInfoFlagBitsFUCHSIA) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ImageConstraintsInfoFlagBitsFUCHSIA) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ImageConstraintsInfoFlagBitsFUCHSIA) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ImageConstraintsInfoFlagBitsFUCHSIA) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageConstraintsInfoFlagBitsFUCHSIA) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8002,14 +9460,23 @@ struct GraphicsPipelineLibraryFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: GraphicsPipelineLibraryFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: GraphicsPipelineLibraryFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: GraphicsPipelineLibraryFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: GraphicsPipelineLibraryFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: GraphicsPipelineLibraryFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: GraphicsPipelineLibraryFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: GraphicsPipelineLibraryFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8053,14 +9520,23 @@ struct ImageCompressionFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ImageCompressionFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ImageCompressionFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ImageCompressionFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ImageCompressionFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ImageCompressionFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ImageCompressionFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageCompressionFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8104,14 +9580,23 @@ struct ImageCompressionFixedRateFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ImageCompressionFixedRateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ImageCompressionFixedRateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ImageCompressionFixedRateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ImageCompressionFixedRateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ImageCompressionFixedRateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ImageCompressionFixedRateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageCompressionFixedRateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8176,14 +9661,23 @@ struct ExportMetalObjectTypeFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ExportMetalObjectTypeFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ExportMetalObjectTypeFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ExportMetalObjectTypeFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ExportMetalObjectTypeFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ExportMetalObjectTypeFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ExportMetalObjectTypeFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExportMetalObjectTypeFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8229,14 +9723,23 @@ struct DeviceAddressBindingFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: DeviceAddressBindingFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: DeviceAddressBindingFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: DeviceAddressBindingFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: DeviceAddressBindingFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: DeviceAddressBindingFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: DeviceAddressBindingFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DeviceAddressBindingFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8277,14 +9780,23 @@ struct OpticalFlowGridSizeFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: OpticalFlowGridSizeFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: OpticalFlowGridSizeFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: OpticalFlowGridSizeFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: OpticalFlowGridSizeFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: OpticalFlowGridSizeFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: OpticalFlowGridSizeFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: OpticalFlowGridSizeFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8329,14 +9841,23 @@ struct OpticalFlowUsageFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: OpticalFlowUsageFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: OpticalFlowUsageFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: OpticalFlowUsageFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: OpticalFlowUsageFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: OpticalFlowUsageFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: OpticalFlowUsageFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: OpticalFlowUsageFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8382,14 +9903,23 @@ struct OpticalFlowSessionCreateFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: OpticalFlowSessionCreateFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: OpticalFlowSessionCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: OpticalFlowSessionCreateFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: OpticalFlowSessionCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: OpticalFlowSessionCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: OpticalFlowSessionCreateFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: OpticalFlowSessionCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8434,14 +9964,23 @@ struct OpticalFlowExecuteFlagsNV(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: OpticalFlowExecuteFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: OpticalFlowExecuteFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: OpticalFlowExecuteFlagBitsNV) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: OpticalFlowExecuteFlagBitsNV) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: OpticalFlowExecuteFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: OpticalFlowExecuteFlagBitsNV) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: OpticalFlowExecuteFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8482,14 +10021,23 @@ struct FrameBoundaryFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: FrameBoundaryFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: FrameBoundaryFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: FrameBoundaryFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: FrameBoundaryFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: FrameBoundaryFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: FrameBoundaryFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: FrameBoundaryFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8530,14 +10078,23 @@ struct PresentScalingFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PresentScalingFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PresentScalingFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PresentScalingFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PresentScalingFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PresentScalingFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PresentScalingFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PresentScalingFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8580,14 +10137,23 @@ struct PresentGravityFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PresentGravityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PresentGravityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PresentGravityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PresentGravityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PresentGravityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PresentGravityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PresentGravityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8630,14 +10196,23 @@ struct ShaderCreateFlagsEXT(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: ShaderCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: ShaderCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: ShaderCreateFlagBitsEXT) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: ShaderCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ShaderCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ShaderCreateFlagBitsEXT) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ShaderCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8678,14 +10253,23 @@ struct TileShadingRenderPassFlagsQCOM(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: TileShadingRenderPassFlagBitsQCOM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: TileShadingRenderPassFlagBitsQCOM) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: TileShadingRenderPassFlagBitsQCOM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: TileShadingRenderPassFlagBitsQCOM) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: TileShadingRenderPassFlagBitsQCOM) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: TileShadingRenderPassFlagBitsQCOM) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: TileShadingRenderPassFlagBitsQCOM) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8727,14 +10311,23 @@ struct PhysicalDeviceSchedulingControlsFlagsARM(Equatable):
     fn value(self) -> UInt64:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8775,14 +10368,23 @@ struct SurfaceCreateFlagsOHOS(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: SurfaceCreateFlagBitsOHOS) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: SurfaceCreateFlagBitsOHOS) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: SurfaceCreateFlagBitsOHOS) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: SurfaceCreateFlagBitsOHOS) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SurfaceCreateFlagBitsOHOS) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SurfaceCreateFlagBitsOHOS) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SurfaceCreateFlagBitsOHOS) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8821,14 +10423,23 @@ struct VideoCodecOperationFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoCodecOperationFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoCodecOperationFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoCodecOperationFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoCodecOperationFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoCodecOperationFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoCodecOperationFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoCodecOperationFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8869,14 +10480,23 @@ struct VideoCapabilityFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoCapabilityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoCapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoCapabilityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoCapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoCapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoCapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoCapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8918,14 +10538,23 @@ struct VideoSessionCreateFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoSessionCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoSessionCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoSessionCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoSessionCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoSessionCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoSessionCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoSessionCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -8966,14 +10595,23 @@ struct VideoSessionParametersCreateFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoSessionParametersCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoSessionParametersCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoSessionParametersCreateFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoSessionParametersCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoSessionParametersCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoSessionParametersCreateFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoSessionParametersCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9012,14 +10650,23 @@ struct VideoBeginCodingFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoBeginCodingFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoBeginCodingFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoBeginCodingFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoBeginCodingFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoBeginCodingFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoBeginCodingFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoBeginCodingFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9058,14 +10705,23 @@ struct VideoEndCodingFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEndCodingFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEndCodingFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEndCodingFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEndCodingFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEndCodingFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEndCodingFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEndCodingFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9104,14 +10760,23 @@ struct VideoCodingControlFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoCodingControlFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoCodingControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoCodingControlFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoCodingControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoCodingControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoCodingControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoCodingControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9152,14 +10817,23 @@ struct VideoDecodeUsageFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoDecodeUsageFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoDecodeUsageFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoDecodeUsageFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoDecodeUsageFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoDecodeUsageFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoDecodeUsageFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoDecodeUsageFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9203,14 +10877,23 @@ struct VideoDecodeCapabilityFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoDecodeCapabilityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoDecodeCapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoDecodeCapabilityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoDecodeCapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoDecodeCapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoDecodeCapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoDecodeCapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9252,14 +10935,23 @@ struct VideoDecodeFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoDecodeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoDecodeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoDecodeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoDecodeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoDecodeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoDecodeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoDecodeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9298,14 +10990,23 @@ struct VideoDecodeH264PictureLayoutFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9348,14 +11049,23 @@ struct VideoEncodeFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9394,14 +11104,23 @@ struct VideoEncodeUsageFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeUsageFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeUsageFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeUsageFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeUsageFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeUsageFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeUsageFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeUsageFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9446,14 +11165,23 @@ struct VideoEncodeContentFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeContentFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeContentFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeContentFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeContentFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeContentFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeContentFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeContentFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9497,14 +11225,23 @@ struct VideoEncodeCapabilityFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeCapabilityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeCapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeCapabilityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeCapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeCapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeCapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeCapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9546,14 +11283,23 @@ struct VideoEncodeFeedbackFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeFeedbackFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeFeedbackFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeFeedbackFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeFeedbackFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeFeedbackFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeFeedbackFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeFeedbackFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9596,14 +11342,23 @@ struct VideoEncodeRateControlFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeRateControlFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeRateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeRateControlFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeRateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeRateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeRateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeRateControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9642,14 +11397,23 @@ struct VideoEncodeRateControlModeFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeRateControlModeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeRateControlModeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeRateControlModeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeRateControlModeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeRateControlModeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeRateControlModeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeRateControlModeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9693,14 +11457,23 @@ struct VideoEncodeIntraRefreshModeFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9745,14 +11518,23 @@ struct VideoChromaSubsamplingFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoChromaSubsamplingFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoChromaSubsamplingFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoChromaSubsamplingFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoChromaSubsamplingFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoChromaSubsamplingFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoChromaSubsamplingFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoChromaSubsamplingFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9797,14 +11579,23 @@ struct VideoComponentBitDepthFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoComponentBitDepthFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoComponentBitDepthFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoComponentBitDepthFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoComponentBitDepthFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoComponentBitDepthFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoComponentBitDepthFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoComponentBitDepthFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9848,14 +11639,23 @@ struct VideoEncodeH264CapabilityFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeH264CapabilityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeH264CapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeH264CapabilityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeH264CapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeH264CapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeH264CapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH264CapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9904,14 +11704,23 @@ struct VideoEncodeH264StdFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeH264StdFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeH264StdFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeH264StdFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeH264StdFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeH264StdFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeH264StdFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH264StdFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -9971,14 +11780,23 @@ struct VideoEncodeH264RateControlFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeH264RateControlFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeH264RateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeH264RateControlFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeH264RateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeH264RateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeH264RateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH264RateControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -10023,14 +11841,23 @@ struct VideoEncodeH265CapabilityFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeH265CapabilityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeH265CapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeH265CapabilityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeH265CapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeH265CapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeH265CapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH265CapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -10080,14 +11907,23 @@ struct VideoEncodeH265StdFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeH265StdFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeH265StdFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeH265StdFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeH265StdFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeH265StdFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeH265StdFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH265StdFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -10148,14 +11984,23 @@ struct VideoEncodeH265RateControlFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeH265RateControlFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeH265RateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeH265RateControlFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeH265RateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeH265RateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeH265RateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH265RateControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -10200,14 +12045,23 @@ struct VideoEncodeH265CtbSizeFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeH265CtbSizeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeH265CtbSizeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeH265CtbSizeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeH265CtbSizeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeH265CtbSizeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeH265CtbSizeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH265CtbSizeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -10250,14 +12104,23 @@ struct VideoEncodeH265TransformBlockSizeFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -10301,14 +12164,23 @@ struct VideoEncodeAV1CapabilityFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeAV1CapabilityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeAV1CapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeAV1CapabilityFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeAV1CapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeAV1CapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeAV1CapabilityFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeAV1CapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -10353,14 +12225,23 @@ struct VideoEncodeAV1StdFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeAV1StdFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeAV1StdFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeAV1StdFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeAV1StdFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeAV1StdFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeAV1StdFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeAV1StdFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -10404,14 +12285,23 @@ struct VideoEncodeAV1RateControlFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeAV1RateControlFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeAV1RateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeAV1RateControlFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeAV1RateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeAV1RateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeAV1RateControlFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeAV1RateControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -10455,14 +12345,23 @@ struct VideoEncodeAV1SuperblockSizeFlagsKHR(Equatable):
     fn value(self) -> UInt32:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
@@ -10504,14 +12403,23 @@ struct AccessFlags3KHR(Equatable):
     fn value(self) -> UInt64:
         return self._value
 
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, bit: AccessFlagBits3KHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __or__(self, other: AccessFlagBits3KHR) -> Self:
+        return Self(value = self.value() | other.value())
 
-    fn __ror__(self, bit: AccessFlagBits3KHR) -> Self:
-        return Self(value = self.value() | bit.value())
+    fn __ror__(self, other: AccessFlagBits3KHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: AccessFlagBits3KHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: AccessFlagBits3KHR) -> Self:
+        return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AccessFlagBits3KHR) -> Bool:
         return Bool(self.value() & bit.value())

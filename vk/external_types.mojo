@@ -11,7 +11,7 @@ struct VisualID:
     fn __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn raw(self) -> UInt32:
+    fn value(self) -> UInt32:
         return self._value
 
 
@@ -22,7 +22,7 @@ struct Window:
     fn __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn raw(self) -> UInt32:
+    fn value(self) -> UInt32:
         return self._value
 
 
@@ -33,7 +33,7 @@ struct RROutput:
     fn __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn raw(self) -> UInt32:
+    fn value(self) -> UInt32:
         return self._value
 
 
@@ -52,7 +52,7 @@ struct HINSTANCE:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -63,7 +63,7 @@ struct HWND:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -74,7 +74,7 @@ struct HMONITOR:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -85,7 +85,7 @@ struct HANDLE:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -100,7 +100,7 @@ struct DWORD:
     fn __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn raw(self) -> UInt32:
+    fn value(self) -> UInt32:
         return self._value
 
 
@@ -111,7 +111,7 @@ struct LPCWSTR:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -126,7 +126,7 @@ struct xcb_visualid_t:
     fn __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn raw(self) -> UInt32:
+    fn value(self) -> UInt32:
         return self._value
 
 
@@ -137,7 +137,7 @@ struct xcb_window_t:
     fn __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn raw(self) -> UInt32:
+    fn value(self) -> UInt32:
         return self._value
 
 
@@ -156,7 +156,7 @@ struct zx_handle_t:
     fn __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn raw(self) -> UInt32:
+    fn value(self) -> UInt32:
         return self._value
 
 
@@ -171,7 +171,7 @@ struct GgpStreamDescriptor:
     fn __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn raw(self) -> UInt32:
+    fn value(self) -> UInt32:
         return self._value
 
 
@@ -182,7 +182,7 @@ struct GgpFrameToken:
     fn __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn raw(self) -> UInt32:
+    fn value(self) -> UInt32:
         return self._value
 
 
@@ -193,7 +193,7 @@ struct screen_context_t:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -204,7 +204,7 @@ struct screen_window_t:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -215,7 +215,7 @@ struct screen_buffer_t:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -226,7 +226,7 @@ struct NvSciSyncAttrList:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -237,7 +237,7 @@ struct NvSciSyncObj:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -252,7 +252,7 @@ struct NvSciBufAttrList:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -263,7 +263,7 @@ struct NvSciBufObj:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -286,7 +286,7 @@ struct MTLDevice_id:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -297,7 +297,7 @@ struct MTLCommandQueue_id:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -308,7 +308,7 @@ struct MTLBuffer_id:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -319,7 +319,7 @@ struct MTLTexture_id:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -330,7 +330,7 @@ struct MTLSharedEvent_id:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 
@@ -341,7 +341,7 @@ struct IOSurfaceRef:
     fn __init__(out self, *, value: UInt):
         self._value = value
 
-    fn raw(self) -> UInt:
+    fn value(self) -> UInt:
         return self._value
 
 

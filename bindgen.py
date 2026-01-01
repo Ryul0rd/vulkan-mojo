@@ -901,8 +901,11 @@ def emit_constants(files: Dict[str, str], constants: List[VkConstant]):
 def emit_basetypes(files: Dict[str, str], basetypes: List[VkWrapperType]):
     parts: List[str] = []
     for basetype in basetypes:
-        parts.append("\n\n")
-        parts.append(emit_wrapper_type(basetype))
+        if basetype.underlying_type == "OPAQUE_TYPE":
+            raise ValueError("Unexpected opaque base type")
+        mojo_name = emit_mojo_type_name(basetype.name)
+        mojo_type = emit_mojo_type(basetype.underlying_type, use_external_origin=True)
+        parts.append(f"comptime {mojo_name} = {mojo_type}\n")
     files["basetypes.mojo"] = "".join(parts)
 
 
@@ -922,7 +925,7 @@ def emit_wrapper_type(wrapper_type: VkWrapperType) -> str:
         f"    fn __init__(out self, *, value: {mojo_type}):\n"
         f"        self._value = value\n"
         f"\n"
-        f"    fn raw(self) -> {mojo_type}:\n"
+        f"    fn value(self) -> {mojo_type}:\n"
         f"        return self._value\n"
     )
 
@@ -1046,14 +1049,23 @@ def emit_flags(files: Dict[str, str], flags: List[VkFlags | VkTypeAlias]):
             f"    fn value(self) -> UInt{flag.width}:\n"
             f"        return self._value\n"
             f"\n"
+            f"    fn __bool__(self) -> Bool:\n"
+            f"        return Bool(self._value)\n"
+            f"\n"
             f"    fn __eq__(self, other: Self) -> Bool:\n"
             f"        return self._value == other._value\n"
             f"\n"
-            f"    fn __or__(self, bit: {flag_bits_name}) -> Self:\n"
-            f"        return Self(value = self.value() | bit.value())\n"
+            f"    fn __or__(self, other: {flag_bits_name}) -> Self:\n"
+            f"        return Self(value = self.value() | other.value())\n"
             f"\n"
-            f"    fn __ror__(self, bit: {flag_bits_name}) -> Self:\n"
-            f"        return Self(value = self.value() | bit.value())\n"
+            f"    fn __ror__(self, other: {flag_bits_name}) -> Self:\n"
+            f"        return Self(value = self.value() | other.value())\n"
+            f"\n"
+            f"    fn __and__(self, other: {flag_bits_name}) -> Self:\n"
+            f"        return Self(value = self.value() & other.value())\n"
+            f"\n"
+            f"    fn __rand__(self, other: {flag_bits_name}) -> Self:\n"
+            f"        return Self(value = self.value() & other.value())\n"
             f"\n"
             f"    fn __contains__(self, bit: {flag_bits_name}) -> Bool:\n"
             f"        return Bool(self.value() & bit.value())\n"
