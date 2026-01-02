@@ -54,25 +54,25 @@ struct FramebufferCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: FramebufferCreateFlagBits) -> Self:
+    fn __or__(self, other: FramebufferCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: FramebufferCreateFlagBits) -> Self:
+    fn __ror__(self, other: FramebufferCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: FramebufferCreateFlagBits) -> Self:
+    fn __and__(self, other: FramebufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: FramebufferCreateFlagBits) -> Self:
+    fn __rand__(self, other: FramebufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: FramebufferCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: FramebufferCreateFlagBits) -> Bool:
+    fn is_subset(self, other: FramebufferCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: FramebufferCreateFlagBits) -> Bool:
+    fn is_superset(self, other: FramebufferCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -115,25 +115,25 @@ struct QueryPoolCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: QueryPoolCreateFlagBits) -> Self:
+    fn __or__(self, other: QueryPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: QueryPoolCreateFlagBits) -> Self:
+    fn __ror__(self, other: QueryPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: QueryPoolCreateFlagBits) -> Self:
+    fn __and__(self, other: QueryPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: QueryPoolCreateFlagBits) -> Self:
+    fn __rand__(self, other: QueryPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: QueryPoolCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: QueryPoolCreateFlagBits) -> Bool:
+    fn is_subset(self, other: QueryPoolCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: QueryPoolCreateFlagBits) -> Bool:
+    fn is_superset(self, other: QueryPoolCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -176,25 +176,25 @@ struct RenderPassCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: RenderPassCreateFlagBits) -> Self:
+    fn __or__(self, other: RenderPassCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: RenderPassCreateFlagBits) -> Self:
+    fn __ror__(self, other: RenderPassCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: RenderPassCreateFlagBits) -> Self:
+    fn __and__(self, other: RenderPassCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: RenderPassCreateFlagBits) -> Self:
+    fn __rand__(self, other: RenderPassCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: RenderPassCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: RenderPassCreateFlagBits) -> Bool:
+    fn is_subset(self, other: RenderPassCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: RenderPassCreateFlagBits) -> Bool:
+    fn is_superset(self, other: RenderPassCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -237,25 +237,25 @@ struct SamplerCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SamplerCreateFlagBits) -> Self:
+    fn __or__(self, other: SamplerCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SamplerCreateFlagBits) -> Self:
+    fn __ror__(self, other: SamplerCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SamplerCreateFlagBits) -> Self:
+    fn __and__(self, other: SamplerCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SamplerCreateFlagBits) -> Self:
+    fn __rand__(self, other: SamplerCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SamplerCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SamplerCreateFlagBits) -> Bool:
+    fn is_subset(self, other: SamplerCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SamplerCreateFlagBits) -> Bool:
+    fn is_superset(self, other: SamplerCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -298,25 +298,25 @@ struct PipelineLayoutCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineLayoutCreateFlagBits) -> Self:
+    fn __or__(self, other: PipelineLayoutCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineLayoutCreateFlagBits) -> Self:
+    fn __ror__(self, other: PipelineLayoutCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineLayoutCreateFlagBits) -> Self:
+    fn __and__(self, other: PipelineLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineLayoutCreateFlagBits) -> Self:
+    fn __rand__(self, other: PipelineLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineLayoutCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineLayoutCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineLayoutCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineLayoutCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineLayoutCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -359,25 +359,25 @@ struct PipelineCacheCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCacheCreateFlagBits) -> Self:
+    fn __or__(self, other: PipelineCacheCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCacheCreateFlagBits) -> Self:
+    fn __ror__(self, other: PipelineCacheCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineCacheCreateFlagBits) -> Self:
+    fn __and__(self, other: PipelineCacheCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCacheCreateFlagBits) -> Self:
+    fn __rand__(self, other: PipelineCacheCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCacheCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineCacheCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineCacheCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCacheCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineCacheCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -420,25 +420,25 @@ struct PipelineDepthStencilStateCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineDepthStencilStateCreateFlagBits) -> Self:
+    fn __or__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineDepthStencilStateCreateFlagBits) -> Self:
+    fn __ror__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineDepthStencilStateCreateFlagBits) -> Self:
+    fn __and__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineDepthStencilStateCreateFlagBits) -> Self:
+    fn __rand__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineDepthStencilStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineDepthStencilStateCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineDepthStencilStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineDepthStencilStateCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineDepthStencilStateCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -481,25 +481,25 @@ struct PipelineDynamicStateCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineDynamicStateCreateFlagBits) -> Self:
+    fn __or__(self, other: PipelineDynamicStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineDynamicStateCreateFlagBits) -> Self:
+    fn __ror__(self, other: PipelineDynamicStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineDynamicStateCreateFlagBits) -> Self:
+    fn __and__(self, other: PipelineDynamicStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineDynamicStateCreateFlagBits) -> Self:
+    fn __rand__(self, other: PipelineDynamicStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineDynamicStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineDynamicStateCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineDynamicStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineDynamicStateCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineDynamicStateCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -542,25 +542,25 @@ struct PipelineColorBlendStateCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineColorBlendStateCreateFlagBits) -> Self:
+    fn __or__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineColorBlendStateCreateFlagBits) -> Self:
+    fn __ror__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineColorBlendStateCreateFlagBits) -> Self:
+    fn __and__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineColorBlendStateCreateFlagBits) -> Self:
+    fn __rand__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineColorBlendStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineColorBlendStateCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineColorBlendStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineColorBlendStateCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineColorBlendStateCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -603,25 +603,25 @@ struct PipelineMultisampleStateCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineMultisampleStateCreateFlagBits) -> Self:
+    fn __or__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineMultisampleStateCreateFlagBits) -> Self:
+    fn __ror__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineMultisampleStateCreateFlagBits) -> Self:
+    fn __and__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineMultisampleStateCreateFlagBits) -> Self:
+    fn __rand__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineMultisampleStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineMultisampleStateCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineMultisampleStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineMultisampleStateCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineMultisampleStateCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -664,25 +664,25 @@ struct PipelineRasterizationStateCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineRasterizationStateCreateFlagBits) -> Self:
+    fn __or__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineRasterizationStateCreateFlagBits) -> Self:
+    fn __ror__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineRasterizationStateCreateFlagBits) -> Self:
+    fn __and__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineRasterizationStateCreateFlagBits) -> Self:
+    fn __rand__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineRasterizationStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineRasterizationStateCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineRasterizationStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineRasterizationStateCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineRasterizationStateCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -725,25 +725,25 @@ struct PipelineViewportStateCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineViewportStateCreateFlagBits) -> Self:
+    fn __or__(self, other: PipelineViewportStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineViewportStateCreateFlagBits) -> Self:
+    fn __ror__(self, other: PipelineViewportStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineViewportStateCreateFlagBits) -> Self:
+    fn __and__(self, other: PipelineViewportStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineViewportStateCreateFlagBits) -> Self:
+    fn __rand__(self, other: PipelineViewportStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineViewportStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineViewportStateCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineViewportStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineViewportStateCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineViewportStateCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -786,25 +786,25 @@ struct PipelineTessellationStateCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineTessellationStateCreateFlagBits) -> Self:
+    fn __or__(self, other: PipelineTessellationStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineTessellationStateCreateFlagBits) -> Self:
+    fn __ror__(self, other: PipelineTessellationStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineTessellationStateCreateFlagBits) -> Self:
+    fn __and__(self, other: PipelineTessellationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineTessellationStateCreateFlagBits) -> Self:
+    fn __rand__(self, other: PipelineTessellationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineTessellationStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineTessellationStateCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineTessellationStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineTessellationStateCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineTessellationStateCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -847,25 +847,25 @@ struct PipelineInputAssemblyStateCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineInputAssemblyStateCreateFlagBits) -> Self:
+    fn __or__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineInputAssemblyStateCreateFlagBits) -> Self:
+    fn __ror__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineInputAssemblyStateCreateFlagBits) -> Self:
+    fn __and__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineInputAssemblyStateCreateFlagBits) -> Self:
+    fn __rand__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineInputAssemblyStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineInputAssemblyStateCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineInputAssemblyStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineInputAssemblyStateCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineInputAssemblyStateCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -908,25 +908,25 @@ struct PipelineVertexInputStateCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineVertexInputStateCreateFlagBits) -> Self:
+    fn __or__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineVertexInputStateCreateFlagBits) -> Self:
+    fn __ror__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineVertexInputStateCreateFlagBits) -> Self:
+    fn __and__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineVertexInputStateCreateFlagBits) -> Self:
+    fn __rand__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineVertexInputStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineVertexInputStateCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineVertexInputStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineVertexInputStateCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineVertexInputStateCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -969,25 +969,25 @@ struct PipelineShaderStageCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineShaderStageCreateFlagBits) -> Self:
+    fn __or__(self, other: PipelineShaderStageCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineShaderStageCreateFlagBits) -> Self:
+    fn __ror__(self, other: PipelineShaderStageCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineShaderStageCreateFlagBits) -> Self:
+    fn __and__(self, other: PipelineShaderStageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineShaderStageCreateFlagBits) -> Self:
+    fn __rand__(self, other: PipelineShaderStageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineShaderStageCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineShaderStageCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineShaderStageCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineShaderStageCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineShaderStageCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -1030,25 +1030,25 @@ struct DescriptorSetLayoutCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DescriptorSetLayoutCreateFlagBits) -> Self:
+    fn __or__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DescriptorSetLayoutCreateFlagBits) -> Self:
+    fn __ror__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DescriptorSetLayoutCreateFlagBits) -> Self:
+    fn __and__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DescriptorSetLayoutCreateFlagBits) -> Self:
+    fn __rand__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DescriptorSetLayoutCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DescriptorSetLayoutCreateFlagBits) -> Bool:
+    fn is_subset(self, other: DescriptorSetLayoutCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DescriptorSetLayoutCreateFlagBits) -> Bool:
+    fn is_superset(self, other: DescriptorSetLayoutCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -1091,25 +1091,25 @@ struct BufferViewCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: BufferViewCreateFlagBits) -> Self:
+    fn __or__(self, other: BufferViewCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: BufferViewCreateFlagBits) -> Self:
+    fn __ror__(self, other: BufferViewCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: BufferViewCreateFlagBits) -> Self:
+    fn __and__(self, other: BufferViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: BufferViewCreateFlagBits) -> Self:
+    fn __rand__(self, other: BufferViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: BufferViewCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: BufferViewCreateFlagBits) -> Bool:
+    fn is_subset(self, other: BufferViewCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: BufferViewCreateFlagBits) -> Bool:
+    fn is_superset(self, other: BufferViewCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -1152,25 +1152,25 @@ struct InstanceCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: InstanceCreateFlagBits) -> Self:
+    fn __or__(self, other: InstanceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: InstanceCreateFlagBits) -> Self:
+    fn __ror__(self, other: InstanceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: InstanceCreateFlagBits) -> Self:
+    fn __and__(self, other: InstanceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: InstanceCreateFlagBits) -> Self:
+    fn __rand__(self, other: InstanceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: InstanceCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: InstanceCreateFlagBits) -> Bool:
+    fn is_subset(self, other: InstanceCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: InstanceCreateFlagBits) -> Bool:
+    fn is_superset(self, other: InstanceCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -1213,25 +1213,25 @@ struct DeviceCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DeviceCreateFlagBits) -> Self:
+    fn __or__(self, other: DeviceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DeviceCreateFlagBits) -> Self:
+    fn __ror__(self, other: DeviceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DeviceCreateFlagBits) -> Self:
+    fn __and__(self, other: DeviceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DeviceCreateFlagBits) -> Self:
+    fn __rand__(self, other: DeviceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DeviceCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DeviceCreateFlagBits) -> Bool:
+    fn is_subset(self, other: DeviceCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DeviceCreateFlagBits) -> Bool:
+    fn is_superset(self, other: DeviceCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -1274,25 +1274,25 @@ struct DeviceQueueCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DeviceQueueCreateFlagBits) -> Self:
+    fn __or__(self, other: DeviceQueueCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DeviceQueueCreateFlagBits) -> Self:
+    fn __ror__(self, other: DeviceQueueCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DeviceQueueCreateFlagBits) -> Self:
+    fn __and__(self, other: DeviceQueueCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DeviceQueueCreateFlagBits) -> Self:
+    fn __rand__(self, other: DeviceQueueCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DeviceQueueCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DeviceQueueCreateFlagBits) -> Bool:
+    fn is_subset(self, other: DeviceQueueCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DeviceQueueCreateFlagBits) -> Bool:
+    fn is_superset(self, other: DeviceQueueCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -1335,25 +1335,25 @@ struct QueueFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: QueueFlagBits) -> Self:
+    fn __or__(self, other: QueueFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: QueueFlagBits) -> Self:
+    fn __ror__(self, other: QueueFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: QueueFlagBits) -> Self:
+    fn __and__(self, other: QueueFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: QueueFlagBits) -> Self:
+    fn __rand__(self, other: QueueFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: QueueFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: QueueFlagBits) -> Bool:
+    fn is_subset(self, other: QueueFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: QueueFlagBits) -> Bool:
+    fn is_superset(self, other: QueueFlags) -> Bool:
         return self & other == other
 
     comptime GRAPHICS = QueueFlagBits(value = 1 << 0)
@@ -1401,25 +1401,25 @@ struct MemoryPropertyFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MemoryPropertyFlagBits) -> Self:
+    fn __or__(self, other: MemoryPropertyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MemoryPropertyFlagBits) -> Self:
+    fn __ror__(self, other: MemoryPropertyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: MemoryPropertyFlagBits) -> Self:
+    fn __and__(self, other: MemoryPropertyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MemoryPropertyFlagBits) -> Self:
+    fn __rand__(self, other: MemoryPropertyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MemoryPropertyFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: MemoryPropertyFlagBits) -> Bool:
+    fn is_subset(self, other: MemoryPropertyFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MemoryPropertyFlagBits) -> Bool:
+    fn is_superset(self, other: MemoryPropertyFlags) -> Bool:
         return self & other == other
 
     comptime DEVICE_LOCAL = MemoryPropertyFlagBits(value = 1 << 0)
@@ -1468,25 +1468,25 @@ struct MemoryHeapFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MemoryHeapFlagBits) -> Self:
+    fn __or__(self, other: MemoryHeapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MemoryHeapFlagBits) -> Self:
+    fn __ror__(self, other: MemoryHeapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: MemoryHeapFlagBits) -> Self:
+    fn __and__(self, other: MemoryHeapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MemoryHeapFlagBits) -> Self:
+    fn __rand__(self, other: MemoryHeapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MemoryHeapFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: MemoryHeapFlagBits) -> Bool:
+    fn is_subset(self, other: MemoryHeapFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MemoryHeapFlagBits) -> Bool:
+    fn is_superset(self, other: MemoryHeapFlags) -> Bool:
         return self & other == other
 
     comptime DEVICE_LOCAL = MemoryHeapFlagBits(value = 1 << 0)
@@ -1531,25 +1531,25 @@ struct AccessFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AccessFlagBits) -> Self:
+    fn __or__(self, other: AccessFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AccessFlagBits) -> Self:
+    fn __ror__(self, other: AccessFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: AccessFlagBits) -> Self:
+    fn __and__(self, other: AccessFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AccessFlagBits) -> Self:
+    fn __rand__(self, other: AccessFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AccessFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: AccessFlagBits) -> Bool:
+    fn is_subset(self, other: AccessFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AccessFlagBits) -> Bool:
+    fn is_superset(self, other: AccessFlags) -> Bool:
         return self & other == other
 
     comptime INDIRECT_COMMAND_READ = AccessFlagBits(value = 1 << 0)
@@ -1610,25 +1610,25 @@ struct BufferUsageFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: BufferUsageFlagBits) -> Self:
+    fn __or__(self, other: BufferUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: BufferUsageFlagBits) -> Self:
+    fn __ror__(self, other: BufferUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: BufferUsageFlagBits) -> Self:
+    fn __and__(self, other: BufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: BufferUsageFlagBits) -> Self:
+    fn __rand__(self, other: BufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: BufferUsageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: BufferUsageFlagBits) -> Bool:
+    fn is_subset(self, other: BufferUsageFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: BufferUsageFlagBits) -> Bool:
+    fn is_superset(self, other: BufferUsageFlags) -> Bool:
         return self & other == other
 
     comptime TRANSFER_SRC = BufferUsageFlagBits(value = 1 << 0)
@@ -1681,25 +1681,25 @@ struct BufferCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: BufferCreateFlagBits) -> Self:
+    fn __or__(self, other: BufferCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: BufferCreateFlagBits) -> Self:
+    fn __ror__(self, other: BufferCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: BufferCreateFlagBits) -> Self:
+    fn __and__(self, other: BufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: BufferCreateFlagBits) -> Self:
+    fn __rand__(self, other: BufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: BufferCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: BufferCreateFlagBits) -> Bool:
+    fn is_subset(self, other: BufferCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: BufferCreateFlagBits) -> Bool:
+    fn is_superset(self, other: BufferCreateFlags) -> Bool:
         return self & other == other
 
     comptime SPARSE_BINDING = BufferCreateFlagBits(value = 1 << 0)
@@ -1746,25 +1746,25 @@ struct ShaderStageFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ShaderStageFlagBits) -> Self:
+    fn __or__(self, other: ShaderStageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ShaderStageFlagBits) -> Self:
+    fn __ror__(self, other: ShaderStageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ShaderStageFlagBits) -> Self:
+    fn __and__(self, other: ShaderStageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ShaderStageFlagBits) -> Self:
+    fn __rand__(self, other: ShaderStageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ShaderStageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ShaderStageFlagBits) -> Bool:
+    fn is_subset(self, other: ShaderStageFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ShaderStageFlagBits) -> Bool:
+    fn is_superset(self, other: ShaderStageFlags) -> Bool:
         return self & other == other
 
     comptime ALL_GRAPHICS = ShaderStageFlagBits(value = 31)
@@ -1816,25 +1816,25 @@ struct ImageUsageFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageUsageFlagBits) -> Self:
+    fn __or__(self, other: ImageUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageUsageFlagBits) -> Self:
+    fn __ror__(self, other: ImageUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ImageUsageFlagBits) -> Self:
+    fn __and__(self, other: ImageUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageUsageFlagBits) -> Self:
+    fn __rand__(self, other: ImageUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageUsageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ImageUsageFlagBits) -> Bool:
+    fn is_subset(self, other: ImageUsageFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageUsageFlagBits) -> Bool:
+    fn is_superset(self, other: ImageUsageFlags) -> Bool:
         return self & other == other
 
     comptime TRANSFER_SRC = ImageUsageFlagBits(value = 1 << 0)
@@ -1886,25 +1886,25 @@ struct ImageCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageCreateFlagBits) -> Self:
+    fn __or__(self, other: ImageCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageCreateFlagBits) -> Self:
+    fn __ror__(self, other: ImageCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ImageCreateFlagBits) -> Self:
+    fn __and__(self, other: ImageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageCreateFlagBits) -> Self:
+    fn __rand__(self, other: ImageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ImageCreateFlagBits) -> Bool:
+    fn is_subset(self, other: ImageCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageCreateFlagBits) -> Bool:
+    fn is_superset(self, other: ImageCreateFlags) -> Bool:
         return self & other == other
 
     comptime SPARSE_BINDING = ImageCreateFlagBits(value = 1 << 0)
@@ -1953,25 +1953,25 @@ struct ImageViewCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageViewCreateFlagBits) -> Self:
+    fn __or__(self, other: ImageViewCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageViewCreateFlagBits) -> Self:
+    fn __ror__(self, other: ImageViewCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ImageViewCreateFlagBits) -> Self:
+    fn __and__(self, other: ImageViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageViewCreateFlagBits) -> Self:
+    fn __rand__(self, other: ImageViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageViewCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ImageViewCreateFlagBits) -> Bool:
+    fn is_subset(self, other: ImageViewCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageViewCreateFlagBits) -> Bool:
+    fn is_superset(self, other: ImageViewCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -2014,25 +2014,25 @@ struct PipelineCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCreateFlagBits) -> Self:
+    fn __or__(self, other: PipelineCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCreateFlagBits) -> Self:
+    fn __ror__(self, other: PipelineCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineCreateFlagBits) -> Self:
+    fn __and__(self, other: PipelineCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCreateFlagBits) -> Self:
+    fn __rand__(self, other: PipelineCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineCreateFlags) -> Bool:
         return self & other == other
 
     comptime DISABLE_OPTIMIZATION = PipelineCreateFlagBits(value = 1 << 0)
@@ -2079,25 +2079,25 @@ struct ColorComponentFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ColorComponentFlagBits) -> Self:
+    fn __or__(self, other: ColorComponentFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ColorComponentFlagBits) -> Self:
+    fn __ror__(self, other: ColorComponentFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ColorComponentFlagBits) -> Self:
+    fn __and__(self, other: ColorComponentFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ColorComponentFlagBits) -> Self:
+    fn __rand__(self, other: ColorComponentFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ColorComponentFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ColorComponentFlagBits) -> Bool:
+    fn is_subset(self, other: ColorComponentFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ColorComponentFlagBits) -> Bool:
+    fn is_superset(self, other: ColorComponentFlags) -> Bool:
         return self & other == other
 
     comptime R = ColorComponentFlagBits(value = 1 << 0)
@@ -2145,25 +2145,25 @@ struct FenceCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: FenceCreateFlagBits) -> Self:
+    fn __or__(self, other: FenceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: FenceCreateFlagBits) -> Self:
+    fn __ror__(self, other: FenceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: FenceCreateFlagBits) -> Self:
+    fn __and__(self, other: FenceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: FenceCreateFlagBits) -> Self:
+    fn __rand__(self, other: FenceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: FenceCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: FenceCreateFlagBits) -> Bool:
+    fn is_subset(self, other: FenceCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: FenceCreateFlagBits) -> Bool:
+    fn is_superset(self, other: FenceCreateFlags) -> Bool:
         return self & other == other
 
     comptime SIGNALED = FenceCreateFlagBits(value = 1 << 0)
@@ -2208,25 +2208,25 @@ struct SemaphoreCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SemaphoreCreateFlagBits) -> Self:
+    fn __or__(self, other: SemaphoreCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SemaphoreCreateFlagBits) -> Self:
+    fn __ror__(self, other: SemaphoreCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SemaphoreCreateFlagBits) -> Self:
+    fn __and__(self, other: SemaphoreCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SemaphoreCreateFlagBits) -> Self:
+    fn __rand__(self, other: SemaphoreCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SemaphoreCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SemaphoreCreateFlagBits) -> Bool:
+    fn is_subset(self, other: SemaphoreCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SemaphoreCreateFlagBits) -> Bool:
+    fn is_superset(self, other: SemaphoreCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -2269,25 +2269,25 @@ struct FormatFeatureFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: FormatFeatureFlagBits) -> Self:
+    fn __or__(self, other: FormatFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: FormatFeatureFlagBits) -> Self:
+    fn __ror__(self, other: FormatFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: FormatFeatureFlagBits) -> Self:
+    fn __and__(self, other: FormatFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: FormatFeatureFlagBits) -> Self:
+    fn __rand__(self, other: FormatFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: FormatFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: FormatFeatureFlagBits) -> Bool:
+    fn is_subset(self, other: FormatFeatureFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: FormatFeatureFlagBits) -> Bool:
+    fn is_superset(self, other: FormatFeatureFlags) -> Bool:
         return self & other == other
 
     comptime SAMPLED_IMAGE = FormatFeatureFlagBits(value = 1 << 0)
@@ -2344,25 +2344,25 @@ struct QueryControlFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: QueryControlFlagBits) -> Self:
+    fn __or__(self, other: QueryControlFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: QueryControlFlagBits) -> Self:
+    fn __ror__(self, other: QueryControlFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: QueryControlFlagBits) -> Self:
+    fn __and__(self, other: QueryControlFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: QueryControlFlagBits) -> Self:
+    fn __rand__(self, other: QueryControlFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: QueryControlFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: QueryControlFlagBits) -> Bool:
+    fn is_subset(self, other: QueryControlFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: QueryControlFlagBits) -> Bool:
+    fn is_superset(self, other: QueryControlFlags) -> Bool:
         return self & other == other
 
     comptime PRECISE = QueryControlFlagBits(value = 1 << 0)
@@ -2407,25 +2407,25 @@ struct QueryResultFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: QueryResultFlagBits) -> Self:
+    fn __or__(self, other: QueryResultFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: QueryResultFlagBits) -> Self:
+    fn __ror__(self, other: QueryResultFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: QueryResultFlagBits) -> Self:
+    fn __and__(self, other: QueryResultFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: QueryResultFlagBits) -> Self:
+    fn __rand__(self, other: QueryResultFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: QueryResultFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: QueryResultFlagBits) -> Bool:
+    fn is_subset(self, other: QueryResultFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: QueryResultFlagBits) -> Bool:
+    fn is_superset(self, other: QueryResultFlags) -> Bool:
         return self & other == other
 
     comptime N_64 = QueryResultFlagBits(value = 1 << 0)
@@ -2473,25 +2473,25 @@ struct ShaderModuleCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ShaderModuleCreateFlagBits) -> Self:
+    fn __or__(self, other: ShaderModuleCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ShaderModuleCreateFlagBits) -> Self:
+    fn __ror__(self, other: ShaderModuleCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ShaderModuleCreateFlagBits) -> Self:
+    fn __and__(self, other: ShaderModuleCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ShaderModuleCreateFlagBits) -> Self:
+    fn __rand__(self, other: ShaderModuleCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ShaderModuleCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ShaderModuleCreateFlagBits) -> Bool:
+    fn is_subset(self, other: ShaderModuleCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ShaderModuleCreateFlagBits) -> Bool:
+    fn is_superset(self, other: ShaderModuleCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -2534,25 +2534,25 @@ struct EventCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: EventCreateFlagBits) -> Self:
+    fn __or__(self, other: EventCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: EventCreateFlagBits) -> Self:
+    fn __ror__(self, other: EventCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: EventCreateFlagBits) -> Self:
+    fn __and__(self, other: EventCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: EventCreateFlagBits) -> Self:
+    fn __rand__(self, other: EventCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: EventCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: EventCreateFlagBits) -> Bool:
+    fn is_subset(self, other: EventCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: EventCreateFlagBits) -> Bool:
+    fn is_superset(self, other: EventCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -2595,25 +2595,25 @@ struct CommandPoolCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CommandPoolCreateFlagBits) -> Self:
+    fn __or__(self, other: CommandPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CommandPoolCreateFlagBits) -> Self:
+    fn __ror__(self, other: CommandPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: CommandPoolCreateFlagBits) -> Self:
+    fn __and__(self, other: CommandPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CommandPoolCreateFlagBits) -> Self:
+    fn __rand__(self, other: CommandPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CommandPoolCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: CommandPoolCreateFlagBits) -> Bool:
+    fn is_subset(self, other: CommandPoolCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CommandPoolCreateFlagBits) -> Bool:
+    fn is_superset(self, other: CommandPoolCreateFlags) -> Bool:
         return self & other == other
 
     comptime TRANSIENT = CommandPoolCreateFlagBits(value = 1 << 0)
@@ -2659,25 +2659,25 @@ struct CommandPoolResetFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CommandPoolResetFlagBits) -> Self:
+    fn __or__(self, other: CommandPoolResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CommandPoolResetFlagBits) -> Self:
+    fn __ror__(self, other: CommandPoolResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: CommandPoolResetFlagBits) -> Self:
+    fn __and__(self, other: CommandPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CommandPoolResetFlagBits) -> Self:
+    fn __rand__(self, other: CommandPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CommandPoolResetFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: CommandPoolResetFlagBits) -> Bool:
+    fn is_subset(self, other: CommandPoolResetFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CommandPoolResetFlagBits) -> Bool:
+    fn is_superset(self, other: CommandPoolResetFlags) -> Bool:
         return self & other == other
 
     comptime RELEASE_RESOURCES = CommandPoolResetFlagBits(value = 1 << 0)
@@ -2722,25 +2722,25 @@ struct CommandBufferResetFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CommandBufferResetFlagBits) -> Self:
+    fn __or__(self, other: CommandBufferResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CommandBufferResetFlagBits) -> Self:
+    fn __ror__(self, other: CommandBufferResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: CommandBufferResetFlagBits) -> Self:
+    fn __and__(self, other: CommandBufferResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CommandBufferResetFlagBits) -> Self:
+    fn __rand__(self, other: CommandBufferResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CommandBufferResetFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: CommandBufferResetFlagBits) -> Bool:
+    fn is_subset(self, other: CommandBufferResetFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CommandBufferResetFlagBits) -> Bool:
+    fn is_superset(self, other: CommandBufferResetFlags) -> Bool:
         return self & other == other
 
     comptime RELEASE_RESOURCES = CommandBufferResetFlagBits(value = 1 << 0)
@@ -2785,25 +2785,25 @@ struct CommandBufferUsageFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CommandBufferUsageFlagBits) -> Self:
+    fn __or__(self, other: CommandBufferUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CommandBufferUsageFlagBits) -> Self:
+    fn __ror__(self, other: CommandBufferUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: CommandBufferUsageFlagBits) -> Self:
+    fn __and__(self, other: CommandBufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CommandBufferUsageFlagBits) -> Self:
+    fn __rand__(self, other: CommandBufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CommandBufferUsageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: CommandBufferUsageFlagBits) -> Bool:
+    fn is_subset(self, other: CommandBufferUsageFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CommandBufferUsageFlagBits) -> Bool:
+    fn is_superset(self, other: CommandBufferUsageFlags) -> Bool:
         return self & other == other
 
     comptime ONE_TIME_SUBMIT = CommandBufferUsageFlagBits(value = 1 << 0)
@@ -2850,25 +2850,25 @@ struct QueryPipelineStatisticFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: QueryPipelineStatisticFlagBits) -> Self:
+    fn __or__(self, other: QueryPipelineStatisticFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: QueryPipelineStatisticFlagBits) -> Self:
+    fn __ror__(self, other: QueryPipelineStatisticFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: QueryPipelineStatisticFlagBits) -> Self:
+    fn __and__(self, other: QueryPipelineStatisticFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: QueryPipelineStatisticFlagBits) -> Self:
+    fn __rand__(self, other: QueryPipelineStatisticFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: QueryPipelineStatisticFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: QueryPipelineStatisticFlagBits) -> Bool:
+    fn is_subset(self, other: QueryPipelineStatisticFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: QueryPipelineStatisticFlagBits) -> Bool:
+    fn is_superset(self, other: QueryPipelineStatisticFlags) -> Bool:
         return self & other == other
 
     comptime INPUT_ASSEMBLY_VERTICES = QueryPipelineStatisticFlagBits(value = 1 << 0)
@@ -2923,25 +2923,25 @@ struct MemoryMapFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MemoryMapFlagBits) -> Self:
+    fn __or__(self, other: MemoryMapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MemoryMapFlagBits) -> Self:
+    fn __ror__(self, other: MemoryMapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: MemoryMapFlagBits) -> Self:
+    fn __and__(self, other: MemoryMapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MemoryMapFlagBits) -> Self:
+    fn __rand__(self, other: MemoryMapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MemoryMapFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: MemoryMapFlagBits) -> Bool:
+    fn is_subset(self, other: MemoryMapFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MemoryMapFlagBits) -> Bool:
+    fn is_superset(self, other: MemoryMapFlags) -> Bool:
         return self & other == other
 
 
@@ -2984,25 +2984,25 @@ struct MemoryUnmapFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MemoryUnmapFlagBits) -> Self:
+    fn __or__(self, other: MemoryUnmapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MemoryUnmapFlagBits) -> Self:
+    fn __ror__(self, other: MemoryUnmapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: MemoryUnmapFlagBits) -> Self:
+    fn __and__(self, other: MemoryUnmapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MemoryUnmapFlagBits) -> Self:
+    fn __rand__(self, other: MemoryUnmapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MemoryUnmapFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: MemoryUnmapFlagBits) -> Bool:
+    fn is_subset(self, other: MemoryUnmapFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MemoryUnmapFlagBits) -> Bool:
+    fn is_superset(self, other: MemoryUnmapFlags) -> Bool:
         return self & other == other
 
 
@@ -3045,25 +3045,25 @@ struct ImageAspectFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageAspectFlagBits) -> Self:
+    fn __or__(self, other: ImageAspectFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageAspectFlagBits) -> Self:
+    fn __ror__(self, other: ImageAspectFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ImageAspectFlagBits) -> Self:
+    fn __and__(self, other: ImageAspectFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageAspectFlagBits) -> Self:
+    fn __rand__(self, other: ImageAspectFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageAspectFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ImageAspectFlagBits) -> Bool:
+    fn is_subset(self, other: ImageAspectFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageAspectFlagBits) -> Bool:
+    fn is_superset(self, other: ImageAspectFlags) -> Bool:
         return self & other == other
 
     comptime COLOR = ImageAspectFlagBits(value = 1 << 0)
@@ -3111,25 +3111,25 @@ struct SparseMemoryBindFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SparseMemoryBindFlagBits) -> Self:
+    fn __or__(self, other: SparseMemoryBindFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SparseMemoryBindFlagBits) -> Self:
+    fn __ror__(self, other: SparseMemoryBindFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SparseMemoryBindFlagBits) -> Self:
+    fn __and__(self, other: SparseMemoryBindFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SparseMemoryBindFlagBits) -> Self:
+    fn __rand__(self, other: SparseMemoryBindFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SparseMemoryBindFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SparseMemoryBindFlagBits) -> Bool:
+    fn is_subset(self, other: SparseMemoryBindFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SparseMemoryBindFlagBits) -> Bool:
+    fn is_superset(self, other: SparseMemoryBindFlags) -> Bool:
         return self & other == other
 
     comptime METADATA = SparseMemoryBindFlagBits(value = 1 << 0)
@@ -3174,25 +3174,25 @@ struct SparseImageFormatFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SparseImageFormatFlagBits) -> Self:
+    fn __or__(self, other: SparseImageFormatFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SparseImageFormatFlagBits) -> Self:
+    fn __ror__(self, other: SparseImageFormatFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SparseImageFormatFlagBits) -> Self:
+    fn __and__(self, other: SparseImageFormatFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SparseImageFormatFlagBits) -> Self:
+    fn __rand__(self, other: SparseImageFormatFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SparseImageFormatFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SparseImageFormatFlagBits) -> Bool:
+    fn is_subset(self, other: SparseImageFormatFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SparseImageFormatFlagBits) -> Bool:
+    fn is_superset(self, other: SparseImageFormatFlags) -> Bool:
         return self & other == other
 
     comptime SINGLE_MIPTAIL = SparseImageFormatFlagBits(value = 1 << 0)
@@ -3239,25 +3239,25 @@ struct SubpassDescriptionFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SubpassDescriptionFlagBits) -> Self:
+    fn __or__(self, other: SubpassDescriptionFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SubpassDescriptionFlagBits) -> Self:
+    fn __ror__(self, other: SubpassDescriptionFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SubpassDescriptionFlagBits) -> Self:
+    fn __and__(self, other: SubpassDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SubpassDescriptionFlagBits) -> Self:
+    fn __rand__(self, other: SubpassDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SubpassDescriptionFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SubpassDescriptionFlagBits) -> Bool:
+    fn is_subset(self, other: SubpassDescriptionFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SubpassDescriptionFlagBits) -> Bool:
+    fn is_superset(self, other: SubpassDescriptionFlags) -> Bool:
         return self & other == other
 
 
@@ -3300,25 +3300,25 @@ struct PipelineStageFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineStageFlagBits) -> Self:
+    fn __or__(self, other: PipelineStageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineStageFlagBits) -> Self:
+    fn __ror__(self, other: PipelineStageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineStageFlagBits) -> Self:
+    fn __and__(self, other: PipelineStageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineStageFlagBits) -> Self:
+    fn __rand__(self, other: PipelineStageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineStageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineStageFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineStageFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineStageFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineStageFlags) -> Bool:
         return self & other == other
 
     comptime TOP_OF_PIPE = PipelineStageFlagBits(value = 1 << 0)
@@ -3379,25 +3379,25 @@ struct SampleCountFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SampleCountFlagBits) -> Self:
+    fn __or__(self, other: SampleCountFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SampleCountFlagBits) -> Self:
+    fn __ror__(self, other: SampleCountFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SampleCountFlagBits) -> Self:
+    fn __and__(self, other: SampleCountFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SampleCountFlagBits) -> Self:
+    fn __rand__(self, other: SampleCountFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SampleCountFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SampleCountFlagBits) -> Bool:
+    fn is_subset(self, other: SampleCountFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SampleCountFlagBits) -> Bool:
+    fn is_superset(self, other: SampleCountFlags) -> Bool:
         return self & other == other
 
     comptime N_1 = SampleCountFlagBits(value = 1 << 0)
@@ -3448,25 +3448,25 @@ struct AttachmentDescriptionFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AttachmentDescriptionFlagBits) -> Self:
+    fn __or__(self, other: AttachmentDescriptionFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AttachmentDescriptionFlagBits) -> Self:
+    fn __ror__(self, other: AttachmentDescriptionFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: AttachmentDescriptionFlagBits) -> Self:
+    fn __and__(self, other: AttachmentDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AttachmentDescriptionFlagBits) -> Self:
+    fn __rand__(self, other: AttachmentDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AttachmentDescriptionFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: AttachmentDescriptionFlagBits) -> Bool:
+    fn is_subset(self, other: AttachmentDescriptionFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AttachmentDescriptionFlagBits) -> Bool:
+    fn is_superset(self, other: AttachmentDescriptionFlags) -> Bool:
         return self & other == other
 
     comptime MAY_ALIAS = AttachmentDescriptionFlagBits(value = 1 << 0)
@@ -3511,25 +3511,25 @@ struct StencilFaceFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: StencilFaceFlagBits) -> Self:
+    fn __or__(self, other: StencilFaceFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: StencilFaceFlagBits) -> Self:
+    fn __ror__(self, other: StencilFaceFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: StencilFaceFlagBits) -> Self:
+    fn __and__(self, other: StencilFaceFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: StencilFaceFlagBits) -> Self:
+    fn __rand__(self, other: StencilFaceFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: StencilFaceFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: StencilFaceFlagBits) -> Bool:
+    fn is_subset(self, other: StencilFaceFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: StencilFaceFlagBits) -> Bool:
+    fn is_superset(self, other: StencilFaceFlags) -> Bool:
         return self & other == other
 
     comptime FRONT_AND_BACK = StencilFaceFlagBits(value = 3)
@@ -3576,25 +3576,25 @@ struct CullModeFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CullModeFlagBits) -> Self:
+    fn __or__(self, other: CullModeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CullModeFlagBits) -> Self:
+    fn __ror__(self, other: CullModeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: CullModeFlagBits) -> Self:
+    fn __and__(self, other: CullModeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CullModeFlagBits) -> Self:
+    fn __rand__(self, other: CullModeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CullModeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: CullModeFlagBits) -> Bool:
+    fn is_subset(self, other: CullModeFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CullModeFlagBits) -> Bool:
+    fn is_superset(self, other: CullModeFlags) -> Bool:
         return self & other == other
 
     comptime NONE = CullModeFlagBits(value = 0)
@@ -3642,25 +3642,25 @@ struct DescriptorPoolCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DescriptorPoolCreateFlagBits) -> Self:
+    fn __or__(self, other: DescriptorPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DescriptorPoolCreateFlagBits) -> Self:
+    fn __ror__(self, other: DescriptorPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DescriptorPoolCreateFlagBits) -> Self:
+    fn __and__(self, other: DescriptorPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DescriptorPoolCreateFlagBits) -> Self:
+    fn __rand__(self, other: DescriptorPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DescriptorPoolCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DescriptorPoolCreateFlagBits) -> Bool:
+    fn is_subset(self, other: DescriptorPoolCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DescriptorPoolCreateFlagBits) -> Bool:
+    fn is_superset(self, other: DescriptorPoolCreateFlags) -> Bool:
         return self & other == other
 
     comptime FREE_DESCRIPTOR_SET = DescriptorPoolCreateFlagBits(value = 1 << 0)
@@ -3705,25 +3705,25 @@ struct DescriptorPoolResetFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DescriptorPoolResetFlagBits) -> Self:
+    fn __or__(self, other: DescriptorPoolResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DescriptorPoolResetFlagBits) -> Self:
+    fn __ror__(self, other: DescriptorPoolResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DescriptorPoolResetFlagBits) -> Self:
+    fn __and__(self, other: DescriptorPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DescriptorPoolResetFlagBits) -> Self:
+    fn __rand__(self, other: DescriptorPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DescriptorPoolResetFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DescriptorPoolResetFlagBits) -> Bool:
+    fn is_subset(self, other: DescriptorPoolResetFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DescriptorPoolResetFlagBits) -> Bool:
+    fn is_superset(self, other: DescriptorPoolResetFlags) -> Bool:
         return self & other == other
 
 
@@ -3766,25 +3766,25 @@ struct DependencyFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DependencyFlagBits) -> Self:
+    fn __or__(self, other: DependencyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DependencyFlagBits) -> Self:
+    fn __ror__(self, other: DependencyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DependencyFlagBits) -> Self:
+    fn __and__(self, other: DependencyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DependencyFlagBits) -> Self:
+    fn __rand__(self, other: DependencyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DependencyFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DependencyFlagBits) -> Bool:
+    fn is_subset(self, other: DependencyFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DependencyFlagBits) -> Bool:
+    fn is_superset(self, other: DependencyFlags) -> Bool:
         return self & other == other
 
     comptime BY_REGION = DependencyFlagBits(value = 1 << 0)
@@ -3829,25 +3829,25 @@ struct SubgroupFeatureFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SubgroupFeatureFlagBits) -> Self:
+    fn __or__(self, other: SubgroupFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SubgroupFeatureFlagBits) -> Self:
+    fn __ror__(self, other: SubgroupFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SubgroupFeatureFlagBits) -> Self:
+    fn __and__(self, other: SubgroupFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SubgroupFeatureFlagBits) -> Self:
+    fn __rand__(self, other: SubgroupFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SubgroupFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SubgroupFeatureFlagBits) -> Bool:
+    fn is_subset(self, other: SubgroupFeatureFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SubgroupFeatureFlagBits) -> Bool:
+    fn is_superset(self, other: SubgroupFeatureFlags) -> Bool:
         return self & other == other
 
     comptime BASIC = SubgroupFeatureFlagBits(value = 1 << 0)
@@ -3899,25 +3899,25 @@ struct IndirectCommandsLayoutUsageFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: IndirectCommandsLayoutUsageFlagBitsNV) -> Self:
+    fn __or__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: IndirectCommandsLayoutUsageFlagBitsNV) -> Self:
+    fn __ror__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: IndirectCommandsLayoutUsageFlagBitsNV) -> Self:
+    fn __and__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: IndirectCommandsLayoutUsageFlagBitsNV) -> Self:
+    fn __rand__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: IndirectCommandsLayoutUsageFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: IndirectCommandsLayoutUsageFlagBitsNV) -> Bool:
+    fn is_subset(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: IndirectCommandsLayoutUsageFlagBitsNV) -> Bool:
+    fn is_superset(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Bool:
         return self & other == other
 
     comptime EXPLICIT_PREPROCESS_NV = IndirectCommandsLayoutUsageFlagBitsNV(value = 1 << 0)
@@ -3964,25 +3964,25 @@ struct IndirectStateFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: IndirectStateFlagBitsNV) -> Self:
+    fn __or__(self, other: IndirectStateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: IndirectStateFlagBitsNV) -> Self:
+    fn __ror__(self, other: IndirectStateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: IndirectStateFlagBitsNV) -> Self:
+    fn __and__(self, other: IndirectStateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: IndirectStateFlagBitsNV) -> Self:
+    fn __rand__(self, other: IndirectStateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: IndirectStateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: IndirectStateFlagBitsNV) -> Bool:
+    fn is_subset(self, other: IndirectStateFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: IndirectStateFlagBitsNV) -> Bool:
+    fn is_superset(self, other: IndirectStateFlagsNV) -> Bool:
         return self & other == other
 
     comptime FLAG_FRONTFACE_NV = IndirectStateFlagBitsNV(value = 1 << 0)
@@ -4027,25 +4027,25 @@ struct GeometryFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: GeometryFlagBitsKHR) -> Self:
+    fn __or__(self, other: GeometryFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: GeometryFlagBitsKHR) -> Self:
+    fn __ror__(self, other: GeometryFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: GeometryFlagBitsKHR) -> Self:
+    fn __and__(self, other: GeometryFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: GeometryFlagBitsKHR) -> Self:
+    fn __rand__(self, other: GeometryFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: GeometryFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: GeometryFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: GeometryFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: GeometryFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: GeometryFlagsKHR) -> Bool:
         return self & other == other
 
     comptime OPAQUE_KHR = GeometryFlagBitsKHR(value = 1 << 0)
@@ -4091,25 +4091,25 @@ struct GeometryInstanceFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: GeometryInstanceFlagBitsKHR) -> Self:
+    fn __or__(self, other: GeometryInstanceFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: GeometryInstanceFlagBitsKHR) -> Self:
+    fn __ror__(self, other: GeometryInstanceFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: GeometryInstanceFlagBitsKHR) -> Self:
+    fn __and__(self, other: GeometryInstanceFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: GeometryInstanceFlagBitsKHR) -> Self:
+    fn __rand__(self, other: GeometryInstanceFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: GeometryInstanceFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: GeometryInstanceFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: GeometryInstanceFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: GeometryInstanceFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: GeometryInstanceFlagsKHR) -> Bool:
         return self & other == other
 
     comptime TRIANGLE_FACING_CULL_DISABLE_KHR = GeometryInstanceFlagBitsKHR(value = 1 << 0)
@@ -4157,25 +4157,25 @@ struct ClusterAccelerationStructureGeometryFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ClusterAccelerationStructureGeometryFlagBitsNV) -> Self:
+    fn __or__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ClusterAccelerationStructureGeometryFlagBitsNV) -> Self:
+    fn __ror__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ClusterAccelerationStructureGeometryFlagBitsNV) -> Self:
+    fn __and__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ClusterAccelerationStructureGeometryFlagBitsNV) -> Self:
+    fn __rand__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ClusterAccelerationStructureGeometryFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ClusterAccelerationStructureGeometryFlagBitsNV) -> Bool:
+    fn is_subset(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ClusterAccelerationStructureGeometryFlagBitsNV) -> Bool:
+    fn is_superset(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Bool:
         return self & other == other
 
     comptime CULL_DISABLE_NV = ClusterAccelerationStructureGeometryFlagBitsNV(value = 1 << 0)
@@ -4222,25 +4222,25 @@ struct ClusterAccelerationStructureClusterFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ClusterAccelerationStructureClusterFlagBitsNV) -> Self:
+    fn __or__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ClusterAccelerationStructureClusterFlagBitsNV) -> Self:
+    fn __ror__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ClusterAccelerationStructureClusterFlagBitsNV) -> Self:
+    fn __and__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ClusterAccelerationStructureClusterFlagBitsNV) -> Self:
+    fn __rand__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ClusterAccelerationStructureClusterFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ClusterAccelerationStructureClusterFlagBitsNV) -> Bool:
+    fn is_subset(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ClusterAccelerationStructureClusterFlagBitsNV) -> Bool:
+    fn is_superset(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Bool:
         return self & other == other
 
     comptime ALLOW_DISABLE_OPACITY_MICROMAPS_NV = ClusterAccelerationStructureClusterFlagBitsNV(value = 1 << 0)
@@ -4285,25 +4285,25 @@ struct ClusterAccelerationStructureAddressResolutionFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Self:
+    fn __or__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Self:
+    fn __ror__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Self:
+    fn __and__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Self:
+    fn __rand__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Bool:
+    fn is_subset(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Bool:
+    fn is_superset(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Bool:
         return self & other == other
 
     comptime NONE_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(value = 0)
@@ -4354,25 +4354,25 @@ struct BuildAccelerationStructureFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: BuildAccelerationStructureFlagBitsKHR) -> Self:
+    fn __or__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: BuildAccelerationStructureFlagBitsKHR) -> Self:
+    fn __ror__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: BuildAccelerationStructureFlagBitsKHR) -> Self:
+    fn __and__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: BuildAccelerationStructureFlagBitsKHR) -> Self:
+    fn __rand__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: BuildAccelerationStructureFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: BuildAccelerationStructureFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: BuildAccelerationStructureFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: BuildAccelerationStructureFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: BuildAccelerationStructureFlagsKHR) -> Bool:
         return self & other == other
 
     comptime ALLOW_UPDATE_KHR = BuildAccelerationStructureFlagBitsKHR(value = 1 << 0)
@@ -4421,25 +4421,25 @@ struct PrivateDataSlotCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PrivateDataSlotCreateFlagBits) -> Self:
+    fn __or__(self, other: PrivateDataSlotCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PrivateDataSlotCreateFlagBits) -> Self:
+    fn __ror__(self, other: PrivateDataSlotCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PrivateDataSlotCreateFlagBits) -> Self:
+    fn __and__(self, other: PrivateDataSlotCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PrivateDataSlotCreateFlagBits) -> Self:
+    fn __rand__(self, other: PrivateDataSlotCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PrivateDataSlotCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PrivateDataSlotCreateFlagBits) -> Bool:
+    fn is_subset(self, other: PrivateDataSlotCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PrivateDataSlotCreateFlagBits) -> Bool:
+    fn is_superset(self, other: PrivateDataSlotCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -4482,25 +4482,25 @@ struct AccelerationStructureCreateFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AccelerationStructureCreateFlagBitsKHR) -> Self:
+    fn __or__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AccelerationStructureCreateFlagBitsKHR) -> Self:
+    fn __ror__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: AccelerationStructureCreateFlagBitsKHR) -> Self:
+    fn __and__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AccelerationStructureCreateFlagBitsKHR) -> Self:
+    fn __rand__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AccelerationStructureCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: AccelerationStructureCreateFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: AccelerationStructureCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AccelerationStructureCreateFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: AccelerationStructureCreateFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DEVICE_ADDRESS_CAPTURE_REPLAY_KHR = AccelerationStructureCreateFlagBitsKHR(value = 1 << 0)
@@ -4545,25 +4545,25 @@ struct DescriptorUpdateTemplateCreateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DescriptorUpdateTemplateCreateFlagBits) -> Self:
+    fn __or__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DescriptorUpdateTemplateCreateFlagBits) -> Self:
+    fn __ror__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DescriptorUpdateTemplateCreateFlagBits) -> Self:
+    fn __and__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DescriptorUpdateTemplateCreateFlagBits) -> Self:
+    fn __rand__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DescriptorUpdateTemplateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DescriptorUpdateTemplateCreateFlagBits) -> Bool:
+    fn is_subset(self, other: DescriptorUpdateTemplateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DescriptorUpdateTemplateCreateFlagBits) -> Bool:
+    fn is_superset(self, other: DescriptorUpdateTemplateCreateFlags) -> Bool:
         return self & other == other
 
 
@@ -4606,25 +4606,25 @@ struct PipelineCreationFeedbackFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCreationFeedbackFlagBits) -> Self:
+    fn __or__(self, other: PipelineCreationFeedbackFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCreationFeedbackFlagBits) -> Self:
+    fn __ror__(self, other: PipelineCreationFeedbackFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineCreationFeedbackFlagBits) -> Self:
+    fn __and__(self, other: PipelineCreationFeedbackFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCreationFeedbackFlagBits) -> Self:
+    fn __rand__(self, other: PipelineCreationFeedbackFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCreationFeedbackFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineCreationFeedbackFlagBits) -> Bool:
+    fn is_subset(self, other: PipelineCreationFeedbackFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCreationFeedbackFlagBits) -> Bool:
+    fn is_superset(self, other: PipelineCreationFeedbackFlags) -> Bool:
         return self & other == other
 
     comptime VALID = PipelineCreationFeedbackFlagBits(value = 1 << 0)
@@ -4671,25 +4671,25 @@ struct PerformanceCounterDescriptionFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PerformanceCounterDescriptionFlagBitsKHR) -> Self:
+    fn __or__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PerformanceCounterDescriptionFlagBitsKHR) -> Self:
+    fn __ror__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PerformanceCounterDescriptionFlagBitsKHR) -> Self:
+    fn __and__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PerformanceCounterDescriptionFlagBitsKHR) -> Self:
+    fn __rand__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PerformanceCounterDescriptionFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PerformanceCounterDescriptionFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: PerformanceCounterDescriptionFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PerformanceCounterDescriptionFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: PerformanceCounterDescriptionFlagsKHR) -> Bool:
         return self & other == other
 
     comptime PERFORMANCE_IMPACTING_KHR = PerformanceCounterDescriptionFlagBitsKHR(value = 1 << 0)
@@ -4735,25 +4735,25 @@ struct AcquireProfilingLockFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AcquireProfilingLockFlagBitsKHR) -> Self:
+    fn __or__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AcquireProfilingLockFlagBitsKHR) -> Self:
+    fn __ror__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: AcquireProfilingLockFlagBitsKHR) -> Self:
+    fn __and__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AcquireProfilingLockFlagBitsKHR) -> Self:
+    fn __rand__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AcquireProfilingLockFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: AcquireProfilingLockFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: AcquireProfilingLockFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AcquireProfilingLockFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: AcquireProfilingLockFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -4796,25 +4796,25 @@ struct SemaphoreWaitFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SemaphoreWaitFlagBits) -> Self:
+    fn __or__(self, other: SemaphoreWaitFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SemaphoreWaitFlagBits) -> Self:
+    fn __ror__(self, other: SemaphoreWaitFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SemaphoreWaitFlagBits) -> Self:
+    fn __and__(self, other: SemaphoreWaitFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SemaphoreWaitFlagBits) -> Self:
+    fn __rand__(self, other: SemaphoreWaitFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SemaphoreWaitFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SemaphoreWaitFlagBits) -> Bool:
+    fn is_subset(self, other: SemaphoreWaitFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SemaphoreWaitFlagBits) -> Bool:
+    fn is_superset(self, other: SemaphoreWaitFlags) -> Bool:
         return self & other == other
 
     comptime ANY = SemaphoreWaitFlagBits(value = 1 << 0)
@@ -4859,25 +4859,25 @@ struct PipelineCompilerControlFlagsAMD(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCompilerControlFlagBitsAMD) -> Self:
+    fn __or__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCompilerControlFlagBitsAMD) -> Self:
+    fn __ror__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineCompilerControlFlagBitsAMD) -> Self:
+    fn __and__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCompilerControlFlagBitsAMD) -> Self:
+    fn __rand__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCompilerControlFlagBitsAMD) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineCompilerControlFlagBitsAMD) -> Bool:
+    fn is_subset(self, other: PipelineCompilerControlFlagsAMD) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCompilerControlFlagBitsAMD) -> Bool:
+    fn is_superset(self, other: PipelineCompilerControlFlagsAMD) -> Bool:
         return self & other == other
 
 
@@ -4920,25 +4920,25 @@ struct ShaderCorePropertiesFlagsAMD(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ShaderCorePropertiesFlagBitsAMD) -> Self:
+    fn __or__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ShaderCorePropertiesFlagBitsAMD) -> Self:
+    fn __ror__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ShaderCorePropertiesFlagBitsAMD) -> Self:
+    fn __and__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ShaderCorePropertiesFlagBitsAMD) -> Self:
+    fn __rand__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ShaderCorePropertiesFlagBitsAMD) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ShaderCorePropertiesFlagBitsAMD) -> Bool:
+    fn is_subset(self, other: ShaderCorePropertiesFlagsAMD) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ShaderCorePropertiesFlagBitsAMD) -> Bool:
+    fn is_superset(self, other: ShaderCorePropertiesFlagsAMD) -> Bool:
         return self & other == other
 
 
@@ -4981,25 +4981,25 @@ struct DeviceDiagnosticsConfigFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DeviceDiagnosticsConfigFlagBitsNV) -> Self:
+    fn __or__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DeviceDiagnosticsConfigFlagBitsNV) -> Self:
+    fn __ror__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DeviceDiagnosticsConfigFlagBitsNV) -> Self:
+    fn __and__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DeviceDiagnosticsConfigFlagBitsNV) -> Self:
+    fn __rand__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DeviceDiagnosticsConfigFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DeviceDiagnosticsConfigFlagBitsNV) -> Bool:
+    fn is_subset(self, other: DeviceDiagnosticsConfigFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DeviceDiagnosticsConfigFlagBitsNV) -> Bool:
+    fn is_superset(self, other: DeviceDiagnosticsConfigFlagsNV) -> Bool:
         return self & other == other
 
     comptime ENABLE_SHADER_DEBUG_INFO_NV = DeviceDiagnosticsConfigFlagBitsNV(value = 1 << 0)
@@ -5047,25 +5047,25 @@ struct RefreshObjectFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: RefreshObjectFlagBitsKHR) -> Self:
+    fn __or__(self, other: RefreshObjectFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: RefreshObjectFlagBitsKHR) -> Self:
+    fn __ror__(self, other: RefreshObjectFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: RefreshObjectFlagBitsKHR) -> Self:
+    fn __and__(self, other: RefreshObjectFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: RefreshObjectFlagBitsKHR) -> Self:
+    fn __rand__(self, other: RefreshObjectFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: RefreshObjectFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: RefreshObjectFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: RefreshObjectFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: RefreshObjectFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: RefreshObjectFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -5108,25 +5108,25 @@ struct AccessFlags2(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AccessFlagBits2) -> Self:
+    fn __or__(self, other: AccessFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AccessFlagBits2) -> Self:
+    fn __ror__(self, other: AccessFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: AccessFlagBits2) -> Self:
+    fn __and__(self, other: AccessFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AccessFlagBits2) -> Self:
+    fn __rand__(self, other: AccessFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AccessFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: AccessFlagBits2) -> Bool:
+    fn is_subset(self, other: AccessFlags2) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AccessFlagBits2) -> Bool:
+    fn is_superset(self, other: AccessFlags2) -> Bool:
         return self & other == other
 
     comptime NONE = AccessFlagBits2(value = 0)
@@ -5191,25 +5191,25 @@ struct PipelineStageFlags2(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineStageFlagBits2) -> Self:
+    fn __or__(self, other: PipelineStageFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineStageFlagBits2) -> Self:
+    fn __ror__(self, other: PipelineStageFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineStageFlagBits2) -> Self:
+    fn __and__(self, other: PipelineStageFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineStageFlagBits2) -> Self:
+    fn __rand__(self, other: PipelineStageFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineStageFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineStageFlagBits2) -> Bool:
+    fn is_subset(self, other: PipelineStageFlags2) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineStageFlagBits2) -> Bool:
+    fn is_superset(self, other: PipelineStageFlags2) -> Bool:
         return self & other == other
 
     comptime NONE = PipelineStageFlagBits2(value = 0)
@@ -5278,25 +5278,25 @@ struct AccelerationStructureMotionInfoFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AccelerationStructureMotionInfoFlagBitsNV) -> Self:
+    fn __or__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AccelerationStructureMotionInfoFlagBitsNV) -> Self:
+    fn __ror__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: AccelerationStructureMotionInfoFlagBitsNV) -> Self:
+    fn __and__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AccelerationStructureMotionInfoFlagBitsNV) -> Self:
+    fn __rand__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AccelerationStructureMotionInfoFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: AccelerationStructureMotionInfoFlagBitsNV) -> Bool:
+    fn is_subset(self, other: AccelerationStructureMotionInfoFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AccelerationStructureMotionInfoFlagBitsNV) -> Bool:
+    fn is_superset(self, other: AccelerationStructureMotionInfoFlagsNV) -> Bool:
         return self & other == other
 
 
@@ -5339,25 +5339,25 @@ struct AccelerationStructureMotionInstanceFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AccelerationStructureMotionInstanceFlagBitsNV) -> Self:
+    fn __or__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AccelerationStructureMotionInstanceFlagBitsNV) -> Self:
+    fn __ror__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: AccelerationStructureMotionInstanceFlagBitsNV) -> Self:
+    fn __and__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AccelerationStructureMotionInstanceFlagBitsNV) -> Self:
+    fn __rand__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AccelerationStructureMotionInstanceFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: AccelerationStructureMotionInstanceFlagBitsNV) -> Bool:
+    fn is_subset(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AccelerationStructureMotionInstanceFlagBitsNV) -> Bool:
+    fn is_superset(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Bool:
         return self & other == other
 
 
@@ -5400,25 +5400,25 @@ struct FormatFeatureFlags2(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: FormatFeatureFlagBits2) -> Self:
+    fn __or__(self, other: FormatFeatureFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: FormatFeatureFlagBits2) -> Self:
+    fn __ror__(self, other: FormatFeatureFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: FormatFeatureFlagBits2) -> Self:
+    fn __and__(self, other: FormatFeatureFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: FormatFeatureFlagBits2) -> Self:
+    fn __rand__(self, other: FormatFeatureFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: FormatFeatureFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: FormatFeatureFlagBits2) -> Bool:
+    fn is_subset(self, other: FormatFeatureFlags2) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: FormatFeatureFlagBits2) -> Bool:
+    fn is_superset(self, other: FormatFeatureFlags2) -> Bool:
         return self & other == other
 
     comptime SAMPLED_IMAGE = FormatFeatureFlagBits2(value = 1 << 0)
@@ -5488,25 +5488,25 @@ struct RenderingFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: RenderingFlagBits) -> Self:
+    fn __or__(self, other: RenderingFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: RenderingFlagBits) -> Self:
+    fn __ror__(self, other: RenderingFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: RenderingFlagBits) -> Self:
+    fn __and__(self, other: RenderingFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: RenderingFlagBits) -> Self:
+    fn __rand__(self, other: RenderingFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: RenderingFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: RenderingFlagBits) -> Bool:
+    fn is_subset(self, other: RenderingFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: RenderingFlagBits) -> Bool:
+    fn is_superset(self, other: RenderingFlags) -> Bool:
         return self & other == other
 
     comptime CONTENTS_SECONDARY_COMMAND_BUFFERS = RenderingFlagBits(value = 1 << 0)
@@ -5553,25 +5553,25 @@ struct MemoryDecompressionMethodFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MemoryDecompressionMethodFlagBitsNV) -> Self:
+    fn __or__(self, other: MemoryDecompressionMethodFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MemoryDecompressionMethodFlagBitsNV) -> Self:
+    fn __ror__(self, other: MemoryDecompressionMethodFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: MemoryDecompressionMethodFlagBitsNV) -> Self:
+    fn __and__(self, other: MemoryDecompressionMethodFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MemoryDecompressionMethodFlagBitsNV) -> Self:
+    fn __rand__(self, other: MemoryDecompressionMethodFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MemoryDecompressionMethodFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: MemoryDecompressionMethodFlagBitsNV) -> Bool:
+    fn is_subset(self, other: MemoryDecompressionMethodFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MemoryDecompressionMethodFlagBitsNV) -> Bool:
+    fn is_superset(self, other: MemoryDecompressionMethodFlagsNV) -> Bool:
         return self & other == other
 
     comptime GDEFLATE_1_0_NV = MemoryDecompressionMethodFlagBitsNV(value = 1 << 0)
@@ -5616,25 +5616,25 @@ struct BuildMicromapFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: BuildMicromapFlagBitsEXT) -> Self:
+    fn __or__(self, other: BuildMicromapFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: BuildMicromapFlagBitsEXT) -> Self:
+    fn __ror__(self, other: BuildMicromapFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: BuildMicromapFlagBitsEXT) -> Self:
+    fn __and__(self, other: BuildMicromapFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: BuildMicromapFlagBitsEXT) -> Self:
+    fn __rand__(self, other: BuildMicromapFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: BuildMicromapFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: BuildMicromapFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: BuildMicromapFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: BuildMicromapFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: BuildMicromapFlagsEXT) -> Bool:
         return self & other == other
 
     comptime PREFER_FAST_TRACE_EXT = BuildMicromapFlagBitsEXT(value = 1 << 0)
@@ -5681,25 +5681,25 @@ struct MicromapCreateFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MicromapCreateFlagBitsEXT) -> Self:
+    fn __or__(self, other: MicromapCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MicromapCreateFlagBitsEXT) -> Self:
+    fn __ror__(self, other: MicromapCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: MicromapCreateFlagBitsEXT) -> Self:
+    fn __and__(self, other: MicromapCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MicromapCreateFlagBitsEXT) -> Self:
+    fn __rand__(self, other: MicromapCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MicromapCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: MicromapCreateFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: MicromapCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MicromapCreateFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: MicromapCreateFlagsEXT) -> Bool:
         return self & other == other
 
     comptime DEVICE_ADDRESS_CAPTURE_REPLAY_EXT = MicromapCreateFlagBitsEXT(value = 1 << 0)
@@ -5744,25 +5744,25 @@ struct IndirectCommandsLayoutUsageFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: IndirectCommandsLayoutUsageFlagBitsEXT) -> Self:
+    fn __or__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: IndirectCommandsLayoutUsageFlagBitsEXT) -> Self:
+    fn __ror__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: IndirectCommandsLayoutUsageFlagBitsEXT) -> Self:
+    fn __and__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: IndirectCommandsLayoutUsageFlagBitsEXT) -> Self:
+    fn __rand__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: IndirectCommandsLayoutUsageFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: IndirectCommandsLayoutUsageFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: IndirectCommandsLayoutUsageFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Bool:
         return self & other == other
 
     comptime EXPLICIT_PREPROCESS_EXT = IndirectCommandsLayoutUsageFlagBitsEXT(value = 1 << 0)
@@ -5808,25 +5808,25 @@ struct IndirectCommandsInputModeFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: IndirectCommandsInputModeFlagBitsEXT) -> Self:
+    fn __or__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: IndirectCommandsInputModeFlagBitsEXT) -> Self:
+    fn __ror__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: IndirectCommandsInputModeFlagBitsEXT) -> Self:
+    fn __and__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: IndirectCommandsInputModeFlagBitsEXT) -> Self:
+    fn __rand__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: IndirectCommandsInputModeFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: IndirectCommandsInputModeFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: IndirectCommandsInputModeFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: IndirectCommandsInputModeFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: IndirectCommandsInputModeFlagsEXT) -> Bool:
         return self & other == other
 
     comptime VULKAN_INDEX_BUFFER_EXT = IndirectCommandsInputModeFlagBitsEXT(value = 1 << 0)
@@ -5872,25 +5872,25 @@ struct DirectDriverLoadingFlagsLUNARG(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DirectDriverLoadingFlagBitsLUNARG) -> Self:
+    fn __or__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DirectDriverLoadingFlagBitsLUNARG) -> Self:
+    fn __ror__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DirectDriverLoadingFlagBitsLUNARG) -> Self:
+    fn __and__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DirectDriverLoadingFlagBitsLUNARG) -> Self:
+    fn __rand__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DirectDriverLoadingFlagBitsLUNARG) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DirectDriverLoadingFlagBitsLUNARG) -> Bool:
+    fn is_subset(self, other: DirectDriverLoadingFlagsLUNARG) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DirectDriverLoadingFlagBitsLUNARG) -> Bool:
+    fn is_superset(self, other: DirectDriverLoadingFlagsLUNARG) -> Bool:
         return self & other == other
 
 
@@ -5933,25 +5933,25 @@ struct PipelineCreateFlags2(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCreateFlagBits2) -> Self:
+    fn __or__(self, other: PipelineCreateFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCreateFlagBits2) -> Self:
+    fn __ror__(self, other: PipelineCreateFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineCreateFlagBits2) -> Self:
+    fn __and__(self, other: PipelineCreateFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCreateFlagBits2) -> Self:
+    fn __rand__(self, other: PipelineCreateFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCreateFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineCreateFlagBits2) -> Bool:
+    fn is_subset(self, other: PipelineCreateFlags2) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCreateFlagBits2) -> Bool:
+    fn is_superset(self, other: PipelineCreateFlags2) -> Bool:
         return self & other == other
 
     comptime DISABLE_OPTIMIZATION = PipelineCreateFlagBits2(value = 1 << 0)
@@ -6004,25 +6004,25 @@ struct BufferUsageFlags2(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: BufferUsageFlagBits2) -> Self:
+    fn __or__(self, other: BufferUsageFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: BufferUsageFlagBits2) -> Self:
+    fn __ror__(self, other: BufferUsageFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: BufferUsageFlagBits2) -> Self:
+    fn __and__(self, other: BufferUsageFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: BufferUsageFlagBits2) -> Self:
+    fn __rand__(self, other: BufferUsageFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: BufferUsageFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: BufferUsageFlagBits2) -> Bool:
+    fn is_subset(self, other: BufferUsageFlags2) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: BufferUsageFlagBits2) -> Bool:
+    fn is_superset(self, other: BufferUsageFlags2) -> Bool:
         return self & other == other
 
     comptime TRANSFER_SRC = BufferUsageFlagBits2(value = 1 << 0)
@@ -6075,25 +6075,25 @@ struct TensorCreateFlagsARM(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: TensorCreateFlagBitsARM) -> Self:
+    fn __or__(self, other: TensorCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: TensorCreateFlagBitsARM) -> Self:
+    fn __ror__(self, other: TensorCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: TensorCreateFlagBitsARM) -> Self:
+    fn __and__(self, other: TensorCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: TensorCreateFlagBitsARM) -> Self:
+    fn __rand__(self, other: TensorCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: TensorCreateFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: TensorCreateFlagBitsARM) -> Bool:
+    fn is_subset(self, other: TensorCreateFlagsARM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: TensorCreateFlagBitsARM) -> Bool:
+    fn is_superset(self, other: TensorCreateFlagsARM) -> Bool:
         return self & other == other
 
     comptime MUTABLE_FORMAT_ARM = TensorCreateFlagBitsARM(value = 1 << 0)
@@ -6139,25 +6139,25 @@ struct TensorUsageFlagsARM(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: TensorUsageFlagBitsARM) -> Self:
+    fn __or__(self, other: TensorUsageFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: TensorUsageFlagBitsARM) -> Self:
+    fn __ror__(self, other: TensorUsageFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: TensorUsageFlagBitsARM) -> Self:
+    fn __and__(self, other: TensorUsageFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: TensorUsageFlagBitsARM) -> Self:
+    fn __rand__(self, other: TensorUsageFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: TensorUsageFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: TensorUsageFlagBitsARM) -> Bool:
+    fn is_subset(self, other: TensorUsageFlagsARM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: TensorUsageFlagBitsARM) -> Bool:
+    fn is_superset(self, other: TensorUsageFlagsARM) -> Bool:
         return self & other == other
 
     comptime SHADER_ARM = TensorUsageFlagBitsARM(value = 1 << 1)
@@ -6205,25 +6205,25 @@ struct TensorViewCreateFlagsARM(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: TensorViewCreateFlagBitsARM) -> Self:
+    fn __or__(self, other: TensorViewCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: TensorViewCreateFlagBitsARM) -> Self:
+    fn __ror__(self, other: TensorViewCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: TensorViewCreateFlagBitsARM) -> Self:
+    fn __and__(self, other: TensorViewCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: TensorViewCreateFlagBitsARM) -> Self:
+    fn __rand__(self, other: TensorViewCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: TensorViewCreateFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: TensorViewCreateFlagBitsARM) -> Bool:
+    fn is_subset(self, other: TensorViewCreateFlagsARM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: TensorViewCreateFlagBitsARM) -> Bool:
+    fn is_superset(self, other: TensorViewCreateFlagsARM) -> Bool:
         return self & other == other
 
 
@@ -6266,25 +6266,25 @@ struct DataGraphPipelineSessionCreateFlagsARM(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DataGraphPipelineSessionCreateFlagBitsARM) -> Self:
+    fn __or__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DataGraphPipelineSessionCreateFlagBitsARM) -> Self:
+    fn __ror__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DataGraphPipelineSessionCreateFlagBitsARM) -> Self:
+    fn __and__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DataGraphPipelineSessionCreateFlagBitsARM) -> Self:
+    fn __rand__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DataGraphPipelineSessionCreateFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DataGraphPipelineSessionCreateFlagBitsARM) -> Bool:
+    fn is_subset(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DataGraphPipelineSessionCreateFlagBitsARM) -> Bool:
+    fn is_superset(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Bool:
         return self & other == other
 
     comptime PROTECTED_ARM = DataGraphPipelineSessionCreateFlagBitsARM(value = 1 << 0)
@@ -6329,25 +6329,25 @@ struct DataGraphPipelineDispatchFlagsARM(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DataGraphPipelineDispatchFlagBitsARM) -> Self:
+    fn __or__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DataGraphPipelineDispatchFlagBitsARM) -> Self:
+    fn __ror__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DataGraphPipelineDispatchFlagBitsARM) -> Self:
+    fn __and__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DataGraphPipelineDispatchFlagBitsARM) -> Self:
+    fn __rand__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DataGraphPipelineDispatchFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DataGraphPipelineDispatchFlagBitsARM) -> Bool:
+    fn is_subset(self, other: DataGraphPipelineDispatchFlagsARM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DataGraphPipelineDispatchFlagBitsARM) -> Bool:
+    fn is_superset(self, other: DataGraphPipelineDispatchFlagsARM) -> Bool:
         return self & other == other
 
 
@@ -6390,25 +6390,25 @@ struct VideoEncodeRgbModelConversionFlagsVALVE(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Self:
+    fn __or__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Self:
+    fn __ror__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Self:
+    fn __and__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Self:
+    fn __rand__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Bool:
+    fn is_subset(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Bool:
+    fn is_superset(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Bool:
         return self & other == other
 
     comptime RGB_IDENTITY_VALVE = VideoEncodeRgbModelConversionFlagBitsVALVE(value = 1 << 0)
@@ -6457,25 +6457,25 @@ struct VideoEncodeRgbRangeCompressionFlagsVALVE(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Self:
+    fn __or__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Self:
+    fn __ror__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Self:
+    fn __and__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Self:
+    fn __rand__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Bool:
+    fn is_subset(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Bool:
+    fn is_superset(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Bool:
         return self & other == other
 
     comptime FULL_RANGE_VALVE = VideoEncodeRgbRangeCompressionFlagBitsVALVE(value = 1 << 0)
@@ -6521,25 +6521,25 @@ struct VideoEncodeRgbChromaOffsetFlagsVALVE(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Self:
+    fn __or__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Self:
+    fn __ror__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Self:
+    fn __and__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Self:
+    fn __rand__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Bool:
+    fn is_subset(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Bool:
+    fn is_superset(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Bool:
         return self & other == other
 
     comptime COSITED_EVEN_VALVE = VideoEncodeRgbChromaOffsetFlagBitsVALVE(value = 1 << 0)
@@ -6585,25 +6585,25 @@ struct CompositeAlphaFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CompositeAlphaFlagBitsKHR) -> Self:
+    fn __or__(self, other: CompositeAlphaFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CompositeAlphaFlagBitsKHR) -> Self:
+    fn __ror__(self, other: CompositeAlphaFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: CompositeAlphaFlagBitsKHR) -> Self:
+    fn __and__(self, other: CompositeAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CompositeAlphaFlagBitsKHR) -> Self:
+    fn __rand__(self, other: CompositeAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CompositeAlphaFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: CompositeAlphaFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: CompositeAlphaFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CompositeAlphaFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: CompositeAlphaFlagsKHR) -> Bool:
         return self & other == other
 
     comptime OPAQUE_KHR = CompositeAlphaFlagBitsKHR(value = 1 << 0)
@@ -6651,25 +6651,25 @@ struct DisplayPlaneAlphaFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DisplayPlaneAlphaFlagBitsKHR) -> Self:
+    fn __or__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DisplayPlaneAlphaFlagBitsKHR) -> Self:
+    fn __ror__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DisplayPlaneAlphaFlagBitsKHR) -> Self:
+    fn __and__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DisplayPlaneAlphaFlagBitsKHR) -> Self:
+    fn __rand__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DisplayPlaneAlphaFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DisplayPlaneAlphaFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: DisplayPlaneAlphaFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DisplayPlaneAlphaFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: DisplayPlaneAlphaFlagsKHR) -> Bool:
         return self & other == other
 
     comptime OPAQUE_KHR = DisplayPlaneAlphaFlagBitsKHR(value = 1 << 0)
@@ -6717,25 +6717,25 @@ struct SurfaceTransformFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SurfaceTransformFlagBitsKHR) -> Self:
+    fn __or__(self, other: SurfaceTransformFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SurfaceTransformFlagBitsKHR) -> Self:
+    fn __ror__(self, other: SurfaceTransformFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SurfaceTransformFlagBitsKHR) -> Self:
+    fn __and__(self, other: SurfaceTransformFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SurfaceTransformFlagBitsKHR) -> Self:
+    fn __rand__(self, other: SurfaceTransformFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SurfaceTransformFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SurfaceTransformFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: SurfaceTransformFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SurfaceTransformFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: SurfaceTransformFlagsKHR) -> Bool:
         return self & other == other
 
     comptime IDENTITY_KHR = SurfaceTransformFlagBitsKHR(value = 1 << 0)
@@ -6788,25 +6788,25 @@ struct SwapchainCreateFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SwapchainCreateFlagBitsKHR) -> Self:
+    fn __or__(self, other: SwapchainCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SwapchainCreateFlagBitsKHR) -> Self:
+    fn __ror__(self, other: SwapchainCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SwapchainCreateFlagBitsKHR) -> Self:
+    fn __and__(self, other: SwapchainCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SwapchainCreateFlagBitsKHR) -> Self:
+    fn __rand__(self, other: SwapchainCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SwapchainCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SwapchainCreateFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: SwapchainCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SwapchainCreateFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: SwapchainCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -6849,25 +6849,25 @@ struct DisplayModeCreateFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DisplayModeCreateFlagBitsKHR) -> Self:
+    fn __or__(self, other: DisplayModeCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DisplayModeCreateFlagBitsKHR) -> Self:
+    fn __ror__(self, other: DisplayModeCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DisplayModeCreateFlagBitsKHR) -> Self:
+    fn __and__(self, other: DisplayModeCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DisplayModeCreateFlagBitsKHR) -> Self:
+    fn __rand__(self, other: DisplayModeCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DisplayModeCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DisplayModeCreateFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: DisplayModeCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DisplayModeCreateFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: DisplayModeCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -6910,25 +6910,25 @@ struct DisplaySurfaceCreateFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DisplaySurfaceCreateFlagBitsKHR) -> Self:
+    fn __or__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DisplaySurfaceCreateFlagBitsKHR) -> Self:
+    fn __ror__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DisplaySurfaceCreateFlagBitsKHR) -> Self:
+    fn __and__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DisplaySurfaceCreateFlagBitsKHR) -> Self:
+    fn __rand__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DisplaySurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DisplaySurfaceCreateFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: DisplaySurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DisplaySurfaceCreateFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: DisplaySurfaceCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -6971,25 +6971,25 @@ struct AndroidSurfaceCreateFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AndroidSurfaceCreateFlagBitsKHR) -> Self:
+    fn __or__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AndroidSurfaceCreateFlagBitsKHR) -> Self:
+    fn __ror__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: AndroidSurfaceCreateFlagBitsKHR) -> Self:
+    fn __and__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AndroidSurfaceCreateFlagBitsKHR) -> Self:
+    fn __rand__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AndroidSurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: AndroidSurfaceCreateFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: AndroidSurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AndroidSurfaceCreateFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: AndroidSurfaceCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -7032,25 +7032,25 @@ struct ViSurfaceCreateFlagsNN(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ViSurfaceCreateFlagBitsNN) -> Self:
+    fn __or__(self, other: ViSurfaceCreateFlagsNN) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ViSurfaceCreateFlagBitsNN) -> Self:
+    fn __ror__(self, other: ViSurfaceCreateFlagsNN) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ViSurfaceCreateFlagBitsNN) -> Self:
+    fn __and__(self, other: ViSurfaceCreateFlagsNN) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ViSurfaceCreateFlagBitsNN) -> Self:
+    fn __rand__(self, other: ViSurfaceCreateFlagsNN) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ViSurfaceCreateFlagBitsNN) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ViSurfaceCreateFlagBitsNN) -> Bool:
+    fn is_subset(self, other: ViSurfaceCreateFlagsNN) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ViSurfaceCreateFlagBitsNN) -> Bool:
+    fn is_superset(self, other: ViSurfaceCreateFlagsNN) -> Bool:
         return self & other == other
 
 
@@ -7093,25 +7093,25 @@ struct WaylandSurfaceCreateFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: WaylandSurfaceCreateFlagBitsKHR) -> Self:
+    fn __or__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: WaylandSurfaceCreateFlagBitsKHR) -> Self:
+    fn __ror__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: WaylandSurfaceCreateFlagBitsKHR) -> Self:
+    fn __and__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: WaylandSurfaceCreateFlagBitsKHR) -> Self:
+    fn __rand__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: WaylandSurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: WaylandSurfaceCreateFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: WaylandSurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: WaylandSurfaceCreateFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: WaylandSurfaceCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -7154,25 +7154,25 @@ struct Win32SurfaceCreateFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Win32SurfaceCreateFlagBitsKHR) -> Self:
+    fn __or__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: Win32SurfaceCreateFlagBitsKHR) -> Self:
+    fn __ror__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: Win32SurfaceCreateFlagBitsKHR) -> Self:
+    fn __and__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: Win32SurfaceCreateFlagBitsKHR) -> Self:
+    fn __rand__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: Win32SurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: Win32SurfaceCreateFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: Win32SurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: Win32SurfaceCreateFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: Win32SurfaceCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -7215,25 +7215,25 @@ struct XlibSurfaceCreateFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: XlibSurfaceCreateFlagBitsKHR) -> Self:
+    fn __or__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: XlibSurfaceCreateFlagBitsKHR) -> Self:
+    fn __ror__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: XlibSurfaceCreateFlagBitsKHR) -> Self:
+    fn __and__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: XlibSurfaceCreateFlagBitsKHR) -> Self:
+    fn __rand__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: XlibSurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: XlibSurfaceCreateFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: XlibSurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: XlibSurfaceCreateFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: XlibSurfaceCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -7276,25 +7276,25 @@ struct XcbSurfaceCreateFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: XcbSurfaceCreateFlagBitsKHR) -> Self:
+    fn __or__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: XcbSurfaceCreateFlagBitsKHR) -> Self:
+    fn __ror__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: XcbSurfaceCreateFlagBitsKHR) -> Self:
+    fn __and__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: XcbSurfaceCreateFlagBitsKHR) -> Self:
+    fn __rand__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: XcbSurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: XcbSurfaceCreateFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: XcbSurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: XcbSurfaceCreateFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: XcbSurfaceCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -7337,25 +7337,25 @@ struct DirectFBSurfaceCreateFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DirectFBSurfaceCreateFlagBitsEXT) -> Self:
+    fn __or__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DirectFBSurfaceCreateFlagBitsEXT) -> Self:
+    fn __ror__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DirectFBSurfaceCreateFlagBitsEXT) -> Self:
+    fn __and__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DirectFBSurfaceCreateFlagBitsEXT) -> Self:
+    fn __rand__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DirectFBSurfaceCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DirectFBSurfaceCreateFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: DirectFBSurfaceCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DirectFBSurfaceCreateFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: DirectFBSurfaceCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
@@ -7398,25 +7398,25 @@ struct IOSSurfaceCreateFlagsMVK(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: IOSSurfaceCreateFlagBitsMVK) -> Self:
+    fn __or__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: IOSSurfaceCreateFlagBitsMVK) -> Self:
+    fn __ror__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: IOSSurfaceCreateFlagBitsMVK) -> Self:
+    fn __and__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: IOSSurfaceCreateFlagBitsMVK) -> Self:
+    fn __rand__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: IOSSurfaceCreateFlagBitsMVK) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: IOSSurfaceCreateFlagBitsMVK) -> Bool:
+    fn is_subset(self, other: IOSSurfaceCreateFlagsMVK) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: IOSSurfaceCreateFlagBitsMVK) -> Bool:
+    fn is_superset(self, other: IOSSurfaceCreateFlagsMVK) -> Bool:
         return self & other == other
 
 
@@ -7459,25 +7459,25 @@ struct MacOSSurfaceCreateFlagsMVK(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MacOSSurfaceCreateFlagBitsMVK) -> Self:
+    fn __or__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MacOSSurfaceCreateFlagBitsMVK) -> Self:
+    fn __ror__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: MacOSSurfaceCreateFlagBitsMVK) -> Self:
+    fn __and__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MacOSSurfaceCreateFlagBitsMVK) -> Self:
+    fn __rand__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MacOSSurfaceCreateFlagBitsMVK) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: MacOSSurfaceCreateFlagBitsMVK) -> Bool:
+    fn is_subset(self, other: MacOSSurfaceCreateFlagsMVK) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MacOSSurfaceCreateFlagBitsMVK) -> Bool:
+    fn is_superset(self, other: MacOSSurfaceCreateFlagsMVK) -> Bool:
         return self & other == other
 
 
@@ -7520,25 +7520,25 @@ struct MetalSurfaceCreateFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MetalSurfaceCreateFlagBitsEXT) -> Self:
+    fn __or__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MetalSurfaceCreateFlagBitsEXT) -> Self:
+    fn __ror__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: MetalSurfaceCreateFlagBitsEXT) -> Self:
+    fn __and__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MetalSurfaceCreateFlagBitsEXT) -> Self:
+    fn __rand__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MetalSurfaceCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: MetalSurfaceCreateFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: MetalSurfaceCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MetalSurfaceCreateFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: MetalSurfaceCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
@@ -7581,25 +7581,25 @@ struct ImagePipeSurfaceCreateFlagsFUCHSIA(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Self:
+    fn __or__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Self:
+    fn __ror__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Self:
+    fn __and__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Self:
+    fn __rand__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Bool:
+    fn is_subset(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Bool:
+    fn is_superset(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Bool:
         return self & other == other
 
 
@@ -7642,25 +7642,25 @@ struct StreamDescriptorSurfaceCreateFlagsGGP(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Self:
+    fn __or__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Self:
+    fn __ror__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Self:
+    fn __and__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Self:
+    fn __rand__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Bool:
+    fn is_subset(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Bool:
+    fn is_superset(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Bool:
         return self & other == other
 
 
@@ -7703,25 +7703,25 @@ struct HeadlessSurfaceCreateFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: HeadlessSurfaceCreateFlagBitsEXT) -> Self:
+    fn __or__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: HeadlessSurfaceCreateFlagBitsEXT) -> Self:
+    fn __ror__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: HeadlessSurfaceCreateFlagBitsEXT) -> Self:
+    fn __and__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: HeadlessSurfaceCreateFlagBitsEXT) -> Self:
+    fn __rand__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: HeadlessSurfaceCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: HeadlessSurfaceCreateFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: HeadlessSurfaceCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: HeadlessSurfaceCreateFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: HeadlessSurfaceCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
@@ -7764,25 +7764,25 @@ struct ScreenSurfaceCreateFlagsQNX(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ScreenSurfaceCreateFlagBitsQNX) -> Self:
+    fn __or__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ScreenSurfaceCreateFlagBitsQNX) -> Self:
+    fn __ror__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ScreenSurfaceCreateFlagBitsQNX) -> Self:
+    fn __and__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ScreenSurfaceCreateFlagBitsQNX) -> Self:
+    fn __rand__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ScreenSurfaceCreateFlagBitsQNX) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ScreenSurfaceCreateFlagBitsQNX) -> Bool:
+    fn is_subset(self, other: ScreenSurfaceCreateFlagsQNX) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ScreenSurfaceCreateFlagBitsQNX) -> Bool:
+    fn is_superset(self, other: ScreenSurfaceCreateFlagsQNX) -> Bool:
         return self & other == other
 
 
@@ -7825,25 +7825,25 @@ struct PeerMemoryFeatureFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PeerMemoryFeatureFlagBits) -> Self:
+    fn __or__(self, other: PeerMemoryFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PeerMemoryFeatureFlagBits) -> Self:
+    fn __ror__(self, other: PeerMemoryFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PeerMemoryFeatureFlagBits) -> Self:
+    fn __and__(self, other: PeerMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PeerMemoryFeatureFlagBits) -> Self:
+    fn __rand__(self, other: PeerMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PeerMemoryFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PeerMemoryFeatureFlagBits) -> Bool:
+    fn is_subset(self, other: PeerMemoryFeatureFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PeerMemoryFeatureFlagBits) -> Bool:
+    fn is_superset(self, other: PeerMemoryFeatureFlags) -> Bool:
         return self & other == other
 
     comptime COPY_SRC = PeerMemoryFeatureFlagBits(value = 1 << 0)
@@ -7891,25 +7891,25 @@ struct MemoryAllocateFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MemoryAllocateFlagBits) -> Self:
+    fn __or__(self, other: MemoryAllocateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MemoryAllocateFlagBits) -> Self:
+    fn __ror__(self, other: MemoryAllocateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: MemoryAllocateFlagBits) -> Self:
+    fn __and__(self, other: MemoryAllocateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MemoryAllocateFlagBits) -> Self:
+    fn __rand__(self, other: MemoryAllocateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: MemoryAllocateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: MemoryAllocateFlagBits) -> Bool:
+    fn is_subset(self, other: MemoryAllocateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MemoryAllocateFlagBits) -> Bool:
+    fn is_superset(self, other: MemoryAllocateFlags) -> Bool:
         return self & other == other
 
     comptime DEVICE_MASK = MemoryAllocateFlagBits(value = 1 << 0)
@@ -7954,25 +7954,25 @@ struct DeviceGroupPresentModeFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DeviceGroupPresentModeFlagBitsKHR) -> Self:
+    fn __or__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DeviceGroupPresentModeFlagBitsKHR) -> Self:
+    fn __ror__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DeviceGroupPresentModeFlagBitsKHR) -> Self:
+    fn __and__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DeviceGroupPresentModeFlagBitsKHR) -> Self:
+    fn __rand__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DeviceGroupPresentModeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DeviceGroupPresentModeFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: DeviceGroupPresentModeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DeviceGroupPresentModeFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: DeviceGroupPresentModeFlagsKHR) -> Bool:
         return self & other == other
 
     comptime LOCAL_KHR = DeviceGroupPresentModeFlagBitsKHR(value = 1 << 0)
@@ -8020,25 +8020,25 @@ struct DebugReportFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DebugReportFlagBitsEXT) -> Self:
+    fn __or__(self, other: DebugReportFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DebugReportFlagBitsEXT) -> Self:
+    fn __ror__(self, other: DebugReportFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DebugReportFlagBitsEXT) -> Self:
+    fn __and__(self, other: DebugReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DebugReportFlagBitsEXT) -> Self:
+    fn __rand__(self, other: DebugReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DebugReportFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DebugReportFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: DebugReportFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DebugReportFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: DebugReportFlagsEXT) -> Bool:
         return self & other == other
 
     comptime INFORMATION_EXT = DebugReportFlagBitsEXT(value = 1 << 0)
@@ -8087,25 +8087,25 @@ struct CommandPoolTrimFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CommandPoolTrimFlagBits) -> Self:
+    fn __or__(self, other: CommandPoolTrimFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CommandPoolTrimFlagBits) -> Self:
+    fn __ror__(self, other: CommandPoolTrimFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: CommandPoolTrimFlagBits) -> Self:
+    fn __and__(self, other: CommandPoolTrimFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CommandPoolTrimFlagBits) -> Self:
+    fn __rand__(self, other: CommandPoolTrimFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: CommandPoolTrimFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: CommandPoolTrimFlagBits) -> Bool:
+    fn is_subset(self, other: CommandPoolTrimFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CommandPoolTrimFlagBits) -> Bool:
+    fn is_superset(self, other: CommandPoolTrimFlags) -> Bool:
         return self & other == other
 
 
@@ -8148,25 +8148,25 @@ struct ExternalMemoryHandleTypeFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalMemoryHandleTypeFlagBitsNV) -> Self:
+    fn __or__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalMemoryHandleTypeFlagBitsNV) -> Self:
+    fn __ror__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ExternalMemoryHandleTypeFlagBitsNV) -> Self:
+    fn __and__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalMemoryHandleTypeFlagBitsNV) -> Self:
+    fn __rand__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalMemoryHandleTypeFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ExternalMemoryHandleTypeFlagBitsNV) -> Bool:
+    fn is_subset(self, other: ExternalMemoryHandleTypeFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalMemoryHandleTypeFlagBitsNV) -> Bool:
+    fn is_superset(self, other: ExternalMemoryHandleTypeFlagsNV) -> Bool:
         return self & other == other
 
     comptime OPAQUE_WIN32_NV = ExternalMemoryHandleTypeFlagBitsNV(value = 1 << 0)
@@ -8214,25 +8214,25 @@ struct ClusterAccelerationStructureIndexFormatFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Self:
+    fn __or__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Self:
+    fn __ror__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Self:
+    fn __and__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Self:
+    fn __rand__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Bool:
+    fn is_subset(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Bool:
+    fn is_superset(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Bool:
         return self & other == other
 
     comptime N_8BIT_NV = ClusterAccelerationStructureIndexFormatFlagBitsNV(value = 1 << 0)
@@ -8279,25 +8279,25 @@ struct ExternalMemoryFeatureFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalMemoryFeatureFlagBitsNV) -> Self:
+    fn __or__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalMemoryFeatureFlagBitsNV) -> Self:
+    fn __ror__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ExternalMemoryFeatureFlagBitsNV) -> Self:
+    fn __and__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalMemoryFeatureFlagBitsNV) -> Self:
+    fn __rand__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalMemoryFeatureFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ExternalMemoryFeatureFlagBitsNV) -> Bool:
+    fn is_subset(self, other: ExternalMemoryFeatureFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalMemoryFeatureFlagBitsNV) -> Bool:
+    fn is_superset(self, other: ExternalMemoryFeatureFlagsNV) -> Bool:
         return self & other == other
 
     comptime DEDICATED_ONLY_NV = ExternalMemoryFeatureFlagBitsNV(value = 1 << 0)
@@ -8344,25 +8344,25 @@ struct ExternalMemoryHandleTypeFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalMemoryHandleTypeFlagBits) -> Self:
+    fn __or__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalMemoryHandleTypeFlagBits) -> Self:
+    fn __ror__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ExternalMemoryHandleTypeFlagBits) -> Self:
+    fn __and__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalMemoryHandleTypeFlagBits) -> Self:
+    fn __rand__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalMemoryHandleTypeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ExternalMemoryHandleTypeFlagBits) -> Bool:
+    fn is_subset(self, other: ExternalMemoryHandleTypeFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalMemoryHandleTypeFlagBits) -> Bool:
+    fn is_superset(self, other: ExternalMemoryHandleTypeFlags) -> Bool:
         return self & other == other
 
     comptime OPAQUE_FD = ExternalMemoryHandleTypeFlagBits(value = 1 << 0)
@@ -8413,25 +8413,25 @@ struct ExternalMemoryFeatureFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalMemoryFeatureFlagBits) -> Self:
+    fn __or__(self, other: ExternalMemoryFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalMemoryFeatureFlagBits) -> Self:
+    fn __ror__(self, other: ExternalMemoryFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ExternalMemoryFeatureFlagBits) -> Self:
+    fn __and__(self, other: ExternalMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalMemoryFeatureFlagBits) -> Self:
+    fn __rand__(self, other: ExternalMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalMemoryFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ExternalMemoryFeatureFlagBits) -> Bool:
+    fn is_subset(self, other: ExternalMemoryFeatureFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalMemoryFeatureFlagBits) -> Bool:
+    fn is_superset(self, other: ExternalMemoryFeatureFlags) -> Bool:
         return self & other == other
 
     comptime DEDICATED_ONLY = ExternalMemoryFeatureFlagBits(value = 1 << 0)
@@ -8478,25 +8478,25 @@ struct ExternalSemaphoreHandleTypeFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalSemaphoreHandleTypeFlagBits) -> Self:
+    fn __or__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalSemaphoreHandleTypeFlagBits) -> Self:
+    fn __ror__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ExternalSemaphoreHandleTypeFlagBits) -> Self:
+    fn __and__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalSemaphoreHandleTypeFlagBits) -> Self:
+    fn __rand__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalSemaphoreHandleTypeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ExternalSemaphoreHandleTypeFlagBits) -> Bool:
+    fn is_subset(self, other: ExternalSemaphoreHandleTypeFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalSemaphoreHandleTypeFlagBits) -> Bool:
+    fn is_superset(self, other: ExternalSemaphoreHandleTypeFlags) -> Bool:
         return self & other == other
 
     comptime OPAQUE_FD = ExternalSemaphoreHandleTypeFlagBits(value = 1 << 0)
@@ -8545,25 +8545,25 @@ struct ExternalSemaphoreFeatureFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalSemaphoreFeatureFlagBits) -> Self:
+    fn __or__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalSemaphoreFeatureFlagBits) -> Self:
+    fn __ror__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ExternalSemaphoreFeatureFlagBits) -> Self:
+    fn __and__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalSemaphoreFeatureFlagBits) -> Self:
+    fn __rand__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalSemaphoreFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ExternalSemaphoreFeatureFlagBits) -> Bool:
+    fn is_subset(self, other: ExternalSemaphoreFeatureFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalSemaphoreFeatureFlagBits) -> Bool:
+    fn is_superset(self, other: ExternalSemaphoreFeatureFlags) -> Bool:
         return self & other == other
 
     comptime EXPORTABLE = ExternalSemaphoreFeatureFlagBits(value = 1 << 0)
@@ -8609,25 +8609,25 @@ struct SemaphoreImportFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SemaphoreImportFlagBits) -> Self:
+    fn __or__(self, other: SemaphoreImportFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SemaphoreImportFlagBits) -> Self:
+    fn __ror__(self, other: SemaphoreImportFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SemaphoreImportFlagBits) -> Self:
+    fn __and__(self, other: SemaphoreImportFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SemaphoreImportFlagBits) -> Self:
+    fn __rand__(self, other: SemaphoreImportFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SemaphoreImportFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SemaphoreImportFlagBits) -> Bool:
+    fn is_subset(self, other: SemaphoreImportFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SemaphoreImportFlagBits) -> Bool:
+    fn is_superset(self, other: SemaphoreImportFlags) -> Bool:
         return self & other == other
 
     comptime TEMPORARY = SemaphoreImportFlagBits(value = 1 << 0)
@@ -8672,25 +8672,25 @@ struct ExternalFenceHandleTypeFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalFenceHandleTypeFlagBits) -> Self:
+    fn __or__(self, other: ExternalFenceHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalFenceHandleTypeFlagBits) -> Self:
+    fn __ror__(self, other: ExternalFenceHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ExternalFenceHandleTypeFlagBits) -> Self:
+    fn __and__(self, other: ExternalFenceHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalFenceHandleTypeFlagBits) -> Self:
+    fn __rand__(self, other: ExternalFenceHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalFenceHandleTypeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ExternalFenceHandleTypeFlagBits) -> Bool:
+    fn is_subset(self, other: ExternalFenceHandleTypeFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalFenceHandleTypeFlagBits) -> Bool:
+    fn is_superset(self, other: ExternalFenceHandleTypeFlags) -> Bool:
         return self & other == other
 
     comptime OPAQUE_FD = ExternalFenceHandleTypeFlagBits(value = 1 << 0)
@@ -8738,25 +8738,25 @@ struct ExternalFenceFeatureFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalFenceFeatureFlagBits) -> Self:
+    fn __or__(self, other: ExternalFenceFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalFenceFeatureFlagBits) -> Self:
+    fn __ror__(self, other: ExternalFenceFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ExternalFenceFeatureFlagBits) -> Self:
+    fn __and__(self, other: ExternalFenceFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalFenceFeatureFlagBits) -> Self:
+    fn __rand__(self, other: ExternalFenceFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExternalFenceFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ExternalFenceFeatureFlagBits) -> Bool:
+    fn is_subset(self, other: ExternalFenceFeatureFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalFenceFeatureFlagBits) -> Bool:
+    fn is_superset(self, other: ExternalFenceFeatureFlags) -> Bool:
         return self & other == other
 
     comptime EXPORTABLE = ExternalFenceFeatureFlagBits(value = 1 << 0)
@@ -8802,25 +8802,25 @@ struct FenceImportFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: FenceImportFlagBits) -> Self:
+    fn __or__(self, other: FenceImportFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: FenceImportFlagBits) -> Self:
+    fn __ror__(self, other: FenceImportFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: FenceImportFlagBits) -> Self:
+    fn __and__(self, other: FenceImportFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: FenceImportFlagBits) -> Self:
+    fn __rand__(self, other: FenceImportFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: FenceImportFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: FenceImportFlagBits) -> Bool:
+    fn is_subset(self, other: FenceImportFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: FenceImportFlagBits) -> Bool:
+    fn is_superset(self, other: FenceImportFlags) -> Bool:
         return self & other == other
 
     comptime TEMPORARY = FenceImportFlagBits(value = 1 << 0)
@@ -8865,25 +8865,25 @@ struct SurfaceCounterFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SurfaceCounterFlagBitsEXT) -> Self:
+    fn __or__(self, other: SurfaceCounterFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SurfaceCounterFlagBitsEXT) -> Self:
+    fn __ror__(self, other: SurfaceCounterFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SurfaceCounterFlagBitsEXT) -> Self:
+    fn __and__(self, other: SurfaceCounterFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SurfaceCounterFlagBitsEXT) -> Self:
+    fn __rand__(self, other: SurfaceCounterFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SurfaceCounterFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SurfaceCounterFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: SurfaceCounterFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SurfaceCounterFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: SurfaceCounterFlagsEXT) -> Bool:
         return self & other == other
 
     comptime VBLANK_EXT = SurfaceCounterFlagBitsEXT(value = 1 << 0)
@@ -8928,25 +8928,25 @@ struct PipelineViewportSwizzleStateCreateFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Self:
+    fn __or__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Self:
+    fn __ror__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Self:
+    fn __and__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Self:
+    fn __rand__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Bool:
+    fn is_subset(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Bool:
+    fn is_superset(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Bool:
         return self & other == other
 
 
@@ -8989,25 +8989,25 @@ struct PipelineDiscardRectangleStateCreateFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Self:
+    fn __or__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Self:
+    fn __ror__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Self:
+    fn __and__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Self:
+    fn __rand__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
@@ -9050,25 +9050,25 @@ struct PipelineCoverageToColorStateCreateFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCoverageToColorStateCreateFlagBitsNV) -> Self:
+    fn __or__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCoverageToColorStateCreateFlagBitsNV) -> Self:
+    fn __ror__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineCoverageToColorStateCreateFlagBitsNV) -> Self:
+    fn __and__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCoverageToColorStateCreateFlagBitsNV) -> Self:
+    fn __rand__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCoverageToColorStateCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineCoverageToColorStateCreateFlagBitsNV) -> Bool:
+    fn is_subset(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCoverageToColorStateCreateFlagBitsNV) -> Bool:
+    fn is_superset(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Bool:
         return self & other == other
 
 
@@ -9111,25 +9111,25 @@ struct PipelineCoverageModulationStateCreateFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCoverageModulationStateCreateFlagBitsNV) -> Self:
+    fn __or__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCoverageModulationStateCreateFlagBitsNV) -> Self:
+    fn __ror__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineCoverageModulationStateCreateFlagBitsNV) -> Self:
+    fn __and__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCoverageModulationStateCreateFlagBitsNV) -> Self:
+    fn __rand__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCoverageModulationStateCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineCoverageModulationStateCreateFlagBitsNV) -> Bool:
+    fn is_subset(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCoverageModulationStateCreateFlagBitsNV) -> Bool:
+    fn is_superset(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Bool:
         return self & other == other
 
 
@@ -9172,25 +9172,25 @@ struct PipelineCoverageReductionStateCreateFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCoverageReductionStateCreateFlagBitsNV) -> Self:
+    fn __or__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCoverageReductionStateCreateFlagBitsNV) -> Self:
+    fn __ror__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineCoverageReductionStateCreateFlagBitsNV) -> Self:
+    fn __and__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCoverageReductionStateCreateFlagBitsNV) -> Self:
+    fn __rand__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineCoverageReductionStateCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineCoverageReductionStateCreateFlagBitsNV) -> Bool:
+    fn is_subset(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCoverageReductionStateCreateFlagBitsNV) -> Bool:
+    fn is_superset(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Bool:
         return self & other == other
 
 
@@ -9233,25 +9233,25 @@ struct ValidationCacheCreateFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ValidationCacheCreateFlagBitsEXT) -> Self:
+    fn __or__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ValidationCacheCreateFlagBitsEXT) -> Self:
+    fn __ror__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ValidationCacheCreateFlagBitsEXT) -> Self:
+    fn __and__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ValidationCacheCreateFlagBitsEXT) -> Self:
+    fn __rand__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ValidationCacheCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ValidationCacheCreateFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: ValidationCacheCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ValidationCacheCreateFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: ValidationCacheCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
@@ -9294,25 +9294,25 @@ struct DebugUtilsMessageSeverityFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DebugUtilsMessageSeverityFlagBitsEXT) -> Self:
+    fn __or__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DebugUtilsMessageSeverityFlagBitsEXT) -> Self:
+    fn __ror__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DebugUtilsMessageSeverityFlagBitsEXT) -> Self:
+    fn __and__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DebugUtilsMessageSeverityFlagBitsEXT) -> Self:
+    fn __rand__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DebugUtilsMessageSeverityFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DebugUtilsMessageSeverityFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DebugUtilsMessageSeverityFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Bool:
         return self & other == other
 
     comptime VERBOSE_EXT = DebugUtilsMessageSeverityFlagBitsEXT(value = 1 << 0)
@@ -9360,25 +9360,25 @@ struct DebugUtilsMessageTypeFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DebugUtilsMessageTypeFlagBitsEXT) -> Self:
+    fn __or__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DebugUtilsMessageTypeFlagBitsEXT) -> Self:
+    fn __ror__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DebugUtilsMessageTypeFlagBitsEXT) -> Self:
+    fn __and__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DebugUtilsMessageTypeFlagBitsEXT) -> Self:
+    fn __rand__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DebugUtilsMessageTypeFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DebugUtilsMessageTypeFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: DebugUtilsMessageTypeFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DebugUtilsMessageTypeFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: DebugUtilsMessageTypeFlagsEXT) -> Bool:
         return self & other == other
 
     comptime GENERAL_EXT = DebugUtilsMessageTypeFlagBitsEXT(value = 1 << 0)
@@ -9425,25 +9425,25 @@ struct DebugUtilsMessengerCreateFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DebugUtilsMessengerCreateFlagBitsEXT) -> Self:
+    fn __or__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DebugUtilsMessengerCreateFlagBitsEXT) -> Self:
+    fn __ror__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DebugUtilsMessengerCreateFlagBitsEXT) -> Self:
+    fn __and__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DebugUtilsMessengerCreateFlagBitsEXT) -> Self:
+    fn __rand__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DebugUtilsMessengerCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DebugUtilsMessengerCreateFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DebugUtilsMessengerCreateFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
@@ -9486,25 +9486,25 @@ struct DebugUtilsMessengerCallbackDataFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Self:
+    fn __or__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Self:
+    fn __ror__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Self:
+    fn __and__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Self:
+    fn __rand__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Bool:
         return self & other == other
 
 
@@ -9547,25 +9547,25 @@ struct DeviceMemoryReportFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DeviceMemoryReportFlagBitsEXT) -> Self:
+    fn __or__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DeviceMemoryReportFlagBitsEXT) -> Self:
+    fn __ror__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DeviceMemoryReportFlagBitsEXT) -> Self:
+    fn __and__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DeviceMemoryReportFlagBitsEXT) -> Self:
+    fn __rand__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DeviceMemoryReportFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DeviceMemoryReportFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: DeviceMemoryReportFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DeviceMemoryReportFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: DeviceMemoryReportFlagsEXT) -> Bool:
         return self & other == other
 
 
@@ -9608,25 +9608,25 @@ struct PipelineRasterizationConservativeStateCreateFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Self:
+    fn __or__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Self:
+    fn __ror__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Self:
+    fn __and__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Self:
+    fn __rand__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
@@ -9669,25 +9669,25 @@ struct DescriptorBindingFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DescriptorBindingFlagBits) -> Self:
+    fn __or__(self, other: DescriptorBindingFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DescriptorBindingFlagBits) -> Self:
+    fn __ror__(self, other: DescriptorBindingFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DescriptorBindingFlagBits) -> Self:
+    fn __and__(self, other: DescriptorBindingFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DescriptorBindingFlagBits) -> Self:
+    fn __rand__(self, other: DescriptorBindingFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DescriptorBindingFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DescriptorBindingFlagBits) -> Bool:
+    fn is_subset(self, other: DescriptorBindingFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DescriptorBindingFlagBits) -> Bool:
+    fn is_superset(self, other: DescriptorBindingFlags) -> Bool:
         return self & other == other
 
     comptime UPDATE_AFTER_BIND = DescriptorBindingFlagBits(value = 1 << 0)
@@ -9735,25 +9735,25 @@ struct ConditionalRenderingFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ConditionalRenderingFlagBitsEXT) -> Self:
+    fn __or__(self, other: ConditionalRenderingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ConditionalRenderingFlagBitsEXT) -> Self:
+    fn __ror__(self, other: ConditionalRenderingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ConditionalRenderingFlagBitsEXT) -> Self:
+    fn __and__(self, other: ConditionalRenderingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ConditionalRenderingFlagBitsEXT) -> Self:
+    fn __rand__(self, other: ConditionalRenderingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ConditionalRenderingFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ConditionalRenderingFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: ConditionalRenderingFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ConditionalRenderingFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: ConditionalRenderingFlagsEXT) -> Bool:
         return self & other == other
 
     comptime INVERTED_EXT = ConditionalRenderingFlagBitsEXT(value = 1 << 0)
@@ -9798,25 +9798,25 @@ struct ResolveModeFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ResolveModeFlagBits) -> Self:
+    fn __or__(self, other: ResolveModeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ResolveModeFlagBits) -> Self:
+    fn __ror__(self, other: ResolveModeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ResolveModeFlagBits) -> Self:
+    fn __and__(self, other: ResolveModeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ResolveModeFlagBits) -> Self:
+    fn __rand__(self, other: ResolveModeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ResolveModeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ResolveModeFlagBits) -> Bool:
+    fn is_subset(self, other: ResolveModeFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ResolveModeFlagBits) -> Bool:
+    fn is_superset(self, other: ResolveModeFlags) -> Bool:
         return self & other == other
 
     comptime NONE = ResolveModeFlagBits(value = 0)
@@ -9865,25 +9865,25 @@ struct PipelineRasterizationStateStreamCreateFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Self:
+    fn __or__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Self:
+    fn __ror__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Self:
+    fn __and__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Self:
+    fn __rand__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
@@ -9926,25 +9926,25 @@ struct PipelineRasterizationDepthClipStateCreateFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Self:
+    fn __or__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Self:
+    fn __ror__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Self:
+    fn __and__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Self:
+    fn __rand__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
@@ -9987,25 +9987,25 @@ struct SwapchainImageUsageFlagsANDROID(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SwapchainImageUsageFlagBitsANDROID) -> Self:
+    fn __or__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SwapchainImageUsageFlagBitsANDROID) -> Self:
+    fn __ror__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SwapchainImageUsageFlagBitsANDROID) -> Self:
+    fn __and__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SwapchainImageUsageFlagBitsANDROID) -> Self:
+    fn __rand__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SwapchainImageUsageFlagBitsANDROID) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SwapchainImageUsageFlagBitsANDROID) -> Bool:
+    fn is_subset(self, other: SwapchainImageUsageFlagsANDROID) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SwapchainImageUsageFlagBitsANDROID) -> Bool:
+    fn is_superset(self, other: SwapchainImageUsageFlagsANDROID) -> Bool:
         return self & other == other
 
     comptime VK_SWAPCHAIN_IMAGE_USAGE_SHARED_ANDROID = SwapchainImageUsageFlagBitsANDROID(value = 1 << 0)
@@ -10050,25 +10050,25 @@ struct ToolPurposeFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ToolPurposeFlagBits) -> Self:
+    fn __or__(self, other: ToolPurposeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ToolPurposeFlagBits) -> Self:
+    fn __ror__(self, other: ToolPurposeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ToolPurposeFlagBits) -> Self:
+    fn __and__(self, other: ToolPurposeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ToolPurposeFlagBits) -> Self:
+    fn __rand__(self, other: ToolPurposeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ToolPurposeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ToolPurposeFlagBits) -> Bool:
+    fn is_subset(self, other: ToolPurposeFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ToolPurposeFlagBits) -> Bool:
+    fn is_superset(self, other: ToolPurposeFlags) -> Bool:
         return self & other == other
 
     comptime VALIDATION = ToolPurposeFlagBits(value = 1 << 0)
@@ -10117,25 +10117,25 @@ struct SubmitFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SubmitFlagBits) -> Self:
+    fn __or__(self, other: SubmitFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SubmitFlagBits) -> Self:
+    fn __ror__(self, other: SubmitFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SubmitFlagBits) -> Self:
+    fn __and__(self, other: SubmitFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SubmitFlagBits) -> Self:
+    fn __rand__(self, other: SubmitFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SubmitFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SubmitFlagBits) -> Bool:
+    fn is_subset(self, other: SubmitFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SubmitFlagBits) -> Bool:
+    fn is_superset(self, other: SubmitFlags) -> Bool:
         return self & other == other
 
     comptime PROTECTED = SubmitFlagBits(value = 1 << 0)
@@ -10180,25 +10180,25 @@ struct ImageFormatConstraintsFlagsFUCHSIA(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageFormatConstraintsFlagBitsFUCHSIA) -> Self:
+    fn __or__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageFormatConstraintsFlagBitsFUCHSIA) -> Self:
+    fn __ror__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ImageFormatConstraintsFlagBitsFUCHSIA) -> Self:
+    fn __and__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageFormatConstraintsFlagBitsFUCHSIA) -> Self:
+    fn __rand__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageFormatConstraintsFlagBitsFUCHSIA) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ImageFormatConstraintsFlagBitsFUCHSIA) -> Bool:
+    fn is_subset(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageFormatConstraintsFlagBitsFUCHSIA) -> Bool:
+    fn is_superset(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Bool:
         return self & other == other
 
 
@@ -10241,25 +10241,25 @@ struct HostImageCopyFlags(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: HostImageCopyFlagBits) -> Self:
+    fn __or__(self, other: HostImageCopyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: HostImageCopyFlagBits) -> Self:
+    fn __ror__(self, other: HostImageCopyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: HostImageCopyFlagBits) -> Self:
+    fn __and__(self, other: HostImageCopyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: HostImageCopyFlagBits) -> Self:
+    fn __rand__(self, other: HostImageCopyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: HostImageCopyFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: HostImageCopyFlagBits) -> Bool:
+    fn is_subset(self, other: HostImageCopyFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: HostImageCopyFlagBits) -> Bool:
+    fn is_superset(self, other: HostImageCopyFlags) -> Bool:
         return self & other == other
 
     comptime MEMCPY = HostImageCopyFlagBits(value = 1 << 0)
@@ -10304,25 +10304,25 @@ struct PartitionedAccelerationStructureInstanceFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Self:
+    fn __or__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Self:
+    fn __ror__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Self:
+    fn __and__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Self:
+    fn __rand__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Bool:
+    fn is_subset(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Bool:
+    fn is_superset(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Bool:
         return self & other == other
 
     comptime FLAG_TRIANGLE_FACING_CULL_DISABLE_NV = PartitionedAccelerationStructureInstanceFlagBitsNV(value = 1 << 0)
@@ -10371,25 +10371,25 @@ struct ImageConstraintsInfoFlagsFUCHSIA(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageConstraintsInfoFlagBitsFUCHSIA) -> Self:
+    fn __or__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageConstraintsInfoFlagBitsFUCHSIA) -> Self:
+    fn __ror__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ImageConstraintsInfoFlagBitsFUCHSIA) -> Self:
+    fn __and__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageConstraintsInfoFlagBitsFUCHSIA) -> Self:
+    fn __rand__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageConstraintsInfoFlagBitsFUCHSIA) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ImageConstraintsInfoFlagBitsFUCHSIA) -> Bool:
+    fn is_subset(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageConstraintsInfoFlagBitsFUCHSIA) -> Bool:
+    fn is_superset(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Bool:
         return self & other == other
 
     comptime CPU_READ_RARELY_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(value = 1 << 0)
@@ -10438,25 +10438,25 @@ struct GraphicsPipelineLibraryFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: GraphicsPipelineLibraryFlagBitsEXT) -> Self:
+    fn __or__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: GraphicsPipelineLibraryFlagBitsEXT) -> Self:
+    fn __ror__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: GraphicsPipelineLibraryFlagBitsEXT) -> Self:
+    fn __and__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: GraphicsPipelineLibraryFlagBitsEXT) -> Self:
+    fn __rand__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: GraphicsPipelineLibraryFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: GraphicsPipelineLibraryFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: GraphicsPipelineLibraryFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: GraphicsPipelineLibraryFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: GraphicsPipelineLibraryFlagsEXT) -> Bool:
         return self & other == other
 
     comptime VERTEX_INPUT_INTERFACE_EXT = GraphicsPipelineLibraryFlagBitsEXT(value = 1 << 0)
@@ -10504,25 +10504,25 @@ struct ImageCompressionFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageCompressionFlagBitsEXT) -> Self:
+    fn __or__(self, other: ImageCompressionFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageCompressionFlagBitsEXT) -> Self:
+    fn __ror__(self, other: ImageCompressionFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ImageCompressionFlagBitsEXT) -> Self:
+    fn __and__(self, other: ImageCompressionFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageCompressionFlagBitsEXT) -> Self:
+    fn __rand__(self, other: ImageCompressionFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageCompressionFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ImageCompressionFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: ImageCompressionFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageCompressionFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: ImageCompressionFlagsEXT) -> Bool:
         return self & other == other
 
     comptime DEFAULT_EXT = ImageCompressionFlagBitsEXT(value = 0)
@@ -10570,25 +10570,25 @@ struct ImageCompressionFixedRateFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageCompressionFixedRateFlagBitsEXT) -> Self:
+    fn __or__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageCompressionFixedRateFlagBitsEXT) -> Self:
+    fn __ror__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ImageCompressionFixedRateFlagBitsEXT) -> Self:
+    fn __and__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageCompressionFixedRateFlagBitsEXT) -> Self:
+    fn __rand__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ImageCompressionFixedRateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ImageCompressionFixedRateFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: ImageCompressionFixedRateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageCompressionFixedRateFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: ImageCompressionFixedRateFlagsEXT) -> Bool:
         return self & other == other
 
     comptime NONE_EXT = ImageCompressionFixedRateFlagBitsEXT(value = 0)
@@ -10657,25 +10657,25 @@ struct ExportMetalObjectTypeFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExportMetalObjectTypeFlagBitsEXT) -> Self:
+    fn __or__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExportMetalObjectTypeFlagBitsEXT) -> Self:
+    fn __ror__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ExportMetalObjectTypeFlagBitsEXT) -> Self:
+    fn __and__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExportMetalObjectTypeFlagBitsEXT) -> Self:
+    fn __rand__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ExportMetalObjectTypeFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ExportMetalObjectTypeFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: ExportMetalObjectTypeFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExportMetalObjectTypeFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: ExportMetalObjectTypeFlagsEXT) -> Bool:
         return self & other == other
 
     comptime METAL_DEVICE_EXT = ExportMetalObjectTypeFlagBitsEXT(value = 1 << 0)
@@ -10725,25 +10725,25 @@ struct DeviceAddressBindingFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DeviceAddressBindingFlagBitsEXT) -> Self:
+    fn __or__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DeviceAddressBindingFlagBitsEXT) -> Self:
+    fn __ror__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: DeviceAddressBindingFlagBitsEXT) -> Self:
+    fn __and__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DeviceAddressBindingFlagBitsEXT) -> Self:
+    fn __rand__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: DeviceAddressBindingFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: DeviceAddressBindingFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: DeviceAddressBindingFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DeviceAddressBindingFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: DeviceAddressBindingFlagsEXT) -> Bool:
         return self & other == other
 
     comptime INTERNAL_OBJECT_EXT = DeviceAddressBindingFlagBitsEXT(value = 1 << 0)
@@ -10788,25 +10788,25 @@ struct OpticalFlowGridSizeFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: OpticalFlowGridSizeFlagBitsNV) -> Self:
+    fn __or__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: OpticalFlowGridSizeFlagBitsNV) -> Self:
+    fn __ror__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: OpticalFlowGridSizeFlagBitsNV) -> Self:
+    fn __and__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: OpticalFlowGridSizeFlagBitsNV) -> Self:
+    fn __rand__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: OpticalFlowGridSizeFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: OpticalFlowGridSizeFlagBitsNV) -> Bool:
+    fn is_subset(self, other: OpticalFlowGridSizeFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: OpticalFlowGridSizeFlagBitsNV) -> Bool:
+    fn is_superset(self, other: OpticalFlowGridSizeFlagsNV) -> Bool:
         return self & other == other
 
     comptime UNKNOWN_NV = OpticalFlowGridSizeFlagBitsNV(value = 0)
@@ -10855,25 +10855,25 @@ struct OpticalFlowUsageFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: OpticalFlowUsageFlagBitsNV) -> Self:
+    fn __or__(self, other: OpticalFlowUsageFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: OpticalFlowUsageFlagBitsNV) -> Self:
+    fn __ror__(self, other: OpticalFlowUsageFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: OpticalFlowUsageFlagBitsNV) -> Self:
+    fn __and__(self, other: OpticalFlowUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: OpticalFlowUsageFlagBitsNV) -> Self:
+    fn __rand__(self, other: OpticalFlowUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: OpticalFlowUsageFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: OpticalFlowUsageFlagBitsNV) -> Bool:
+    fn is_subset(self, other: OpticalFlowUsageFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: OpticalFlowUsageFlagBitsNV) -> Bool:
+    fn is_superset(self, other: OpticalFlowUsageFlagsNV) -> Bool:
         return self & other == other
 
     comptime UNKNOWN_NV = OpticalFlowUsageFlagBitsNV(value = 0)
@@ -10923,25 +10923,25 @@ struct OpticalFlowSessionCreateFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: OpticalFlowSessionCreateFlagBitsNV) -> Self:
+    fn __or__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: OpticalFlowSessionCreateFlagBitsNV) -> Self:
+    fn __ror__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: OpticalFlowSessionCreateFlagBitsNV) -> Self:
+    fn __and__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: OpticalFlowSessionCreateFlagBitsNV) -> Self:
+    fn __rand__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: OpticalFlowSessionCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: OpticalFlowSessionCreateFlagBitsNV) -> Bool:
+    fn is_subset(self, other: OpticalFlowSessionCreateFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: OpticalFlowSessionCreateFlagBitsNV) -> Bool:
+    fn is_superset(self, other: OpticalFlowSessionCreateFlagsNV) -> Bool:
         return self & other == other
 
     comptime ENABLE_HINT_NV = OpticalFlowSessionCreateFlagBitsNV(value = 1 << 0)
@@ -10990,25 +10990,25 @@ struct OpticalFlowExecuteFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: OpticalFlowExecuteFlagBitsNV) -> Self:
+    fn __or__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: OpticalFlowExecuteFlagBitsNV) -> Self:
+    fn __ror__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: OpticalFlowExecuteFlagBitsNV) -> Self:
+    fn __and__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: OpticalFlowExecuteFlagBitsNV) -> Self:
+    fn __rand__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: OpticalFlowExecuteFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: OpticalFlowExecuteFlagBitsNV) -> Bool:
+    fn is_subset(self, other: OpticalFlowExecuteFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: OpticalFlowExecuteFlagBitsNV) -> Bool:
+    fn is_superset(self, other: OpticalFlowExecuteFlagsNV) -> Bool:
         return self & other == other
 
     comptime DISABLE_TEMPORAL_HINTS_NV = OpticalFlowExecuteFlagBitsNV(value = 1 << 0)
@@ -11053,25 +11053,25 @@ struct FrameBoundaryFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: FrameBoundaryFlagBitsEXT) -> Self:
+    fn __or__(self, other: FrameBoundaryFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: FrameBoundaryFlagBitsEXT) -> Self:
+    fn __ror__(self, other: FrameBoundaryFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: FrameBoundaryFlagBitsEXT) -> Self:
+    fn __and__(self, other: FrameBoundaryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: FrameBoundaryFlagBitsEXT) -> Self:
+    fn __rand__(self, other: FrameBoundaryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: FrameBoundaryFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: FrameBoundaryFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: FrameBoundaryFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: FrameBoundaryFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: FrameBoundaryFlagsEXT) -> Bool:
         return self & other == other
 
     comptime FRAME_END_EXT = FrameBoundaryFlagBitsEXT(value = 1 << 0)
@@ -11116,25 +11116,25 @@ struct PresentScalingFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PresentScalingFlagBitsKHR) -> Self:
+    fn __or__(self, other: PresentScalingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PresentScalingFlagBitsKHR) -> Self:
+    fn __ror__(self, other: PresentScalingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PresentScalingFlagBitsKHR) -> Self:
+    fn __and__(self, other: PresentScalingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PresentScalingFlagBitsKHR) -> Self:
+    fn __rand__(self, other: PresentScalingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PresentScalingFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PresentScalingFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: PresentScalingFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PresentScalingFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: PresentScalingFlagsKHR) -> Bool:
         return self & other == other
 
     comptime ONE_TO_ONE_KHR = PresentScalingFlagBitsKHR(value = 1 << 0)
@@ -11181,25 +11181,25 @@ struct PresentGravityFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PresentGravityFlagBitsKHR) -> Self:
+    fn __or__(self, other: PresentGravityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PresentGravityFlagBitsKHR) -> Self:
+    fn __ror__(self, other: PresentGravityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PresentGravityFlagBitsKHR) -> Self:
+    fn __and__(self, other: PresentGravityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PresentGravityFlagBitsKHR) -> Self:
+    fn __rand__(self, other: PresentGravityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PresentGravityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PresentGravityFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: PresentGravityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PresentGravityFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: PresentGravityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime MIN_KHR = PresentGravityFlagBitsKHR(value = 1 << 0)
@@ -11246,25 +11246,25 @@ struct ShaderCreateFlagsEXT(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ShaderCreateFlagBitsEXT) -> Self:
+    fn __or__(self, other: ShaderCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ShaderCreateFlagBitsEXT) -> Self:
+    fn __ror__(self, other: ShaderCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: ShaderCreateFlagBitsEXT) -> Self:
+    fn __and__(self, other: ShaderCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ShaderCreateFlagBitsEXT) -> Self:
+    fn __rand__(self, other: ShaderCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: ShaderCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: ShaderCreateFlagBitsEXT) -> Bool:
+    fn is_subset(self, other: ShaderCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ShaderCreateFlagBitsEXT) -> Bool:
+    fn is_superset(self, other: ShaderCreateFlagsEXT) -> Bool:
         return self & other == other
 
     comptime LINK_STAGE_EXT = ShaderCreateFlagBitsEXT(value = 1 << 0)
@@ -11309,25 +11309,25 @@ struct TileShadingRenderPassFlagsQCOM(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: TileShadingRenderPassFlagBitsQCOM) -> Self:
+    fn __or__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: TileShadingRenderPassFlagBitsQCOM) -> Self:
+    fn __ror__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: TileShadingRenderPassFlagBitsQCOM) -> Self:
+    fn __and__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: TileShadingRenderPassFlagBitsQCOM) -> Self:
+    fn __rand__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: TileShadingRenderPassFlagBitsQCOM) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: TileShadingRenderPassFlagBitsQCOM) -> Bool:
+    fn is_subset(self, other: TileShadingRenderPassFlagsQCOM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: TileShadingRenderPassFlagBitsQCOM) -> Bool:
+    fn is_superset(self, other: TileShadingRenderPassFlagsQCOM) -> Bool:
         return self & other == other
 
     comptime ENABLE_QCOM = TileShadingRenderPassFlagBitsQCOM(value = 1 << 0)
@@ -11373,25 +11373,25 @@ struct PhysicalDeviceSchedulingControlsFlagsARM(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Self:
+    fn __or__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Self:
+    fn __ror__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Self:
+    fn __and__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Self:
+    fn __rand__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Bool:
+    fn is_subset(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Bool:
+    fn is_superset(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Bool:
         return self & other == other
 
     comptime SHADER_CORE_COUNT_ARM = PhysicalDeviceSchedulingControlsFlagBitsARM(value = 1 << 0)
@@ -11436,25 +11436,25 @@ struct SurfaceCreateFlagsOHOS(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SurfaceCreateFlagBitsOHOS) -> Self:
+    fn __or__(self, other: SurfaceCreateFlagsOHOS) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SurfaceCreateFlagBitsOHOS) -> Self:
+    fn __ror__(self, other: SurfaceCreateFlagsOHOS) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: SurfaceCreateFlagBitsOHOS) -> Self:
+    fn __and__(self, other: SurfaceCreateFlagsOHOS) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SurfaceCreateFlagBitsOHOS) -> Self:
+    fn __rand__(self, other: SurfaceCreateFlagsOHOS) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: SurfaceCreateFlagBitsOHOS) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: SurfaceCreateFlagBitsOHOS) -> Bool:
+    fn is_subset(self, other: SurfaceCreateFlagsOHOS) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SurfaceCreateFlagBitsOHOS) -> Bool:
+    fn is_superset(self, other: SurfaceCreateFlagsOHOS) -> Bool:
         return self & other == other
 
 
@@ -11497,25 +11497,25 @@ struct VideoCodecOperationFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoCodecOperationFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoCodecOperationFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoCodecOperationFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoCodecOperationFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoCodecOperationFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoCodecOperationFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoCodecOperationFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoCodecOperationFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoCodecOperationFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoCodecOperationFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoCodecOperationFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoCodecOperationFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoCodecOperationFlagsKHR) -> Bool:
         return self & other == other
 
     comptime NONE_KHR = VideoCodecOperationFlagBitsKHR(value = 0)
@@ -11560,25 +11560,25 @@ struct VideoCapabilityFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoCapabilityFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoCapabilityFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoCapabilityFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoCapabilityFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoCapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoCapabilityFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoCapabilityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoCapabilityFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoCapabilityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime PROTECTED_CONTENT_KHR = VideoCapabilityFlagBitsKHR(value = 1 << 0)
@@ -11624,25 +11624,25 @@ struct VideoSessionCreateFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoSessionCreateFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoSessionCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoSessionCreateFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoSessionCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoSessionCreateFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoSessionCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoSessionCreateFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoSessionCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoSessionCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoSessionCreateFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoSessionCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoSessionCreateFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoSessionCreateFlagsKHR) -> Bool:
         return self & other == other
 
     comptime PROTECTED_CONTENT_KHR = VideoSessionCreateFlagBitsKHR(value = 1 << 0)
@@ -11687,25 +11687,25 @@ struct VideoSessionParametersCreateFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoSessionParametersCreateFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoSessionParametersCreateFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoSessionParametersCreateFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoSessionParametersCreateFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoSessionParametersCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoSessionParametersCreateFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoSessionParametersCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoSessionParametersCreateFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoSessionParametersCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -11748,25 +11748,25 @@ struct VideoBeginCodingFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoBeginCodingFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoBeginCodingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoBeginCodingFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoBeginCodingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoBeginCodingFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoBeginCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoBeginCodingFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoBeginCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoBeginCodingFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoBeginCodingFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoBeginCodingFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoBeginCodingFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoBeginCodingFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -11809,25 +11809,25 @@ struct VideoEndCodingFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEndCodingFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEndCodingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEndCodingFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEndCodingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEndCodingFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEndCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEndCodingFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEndCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEndCodingFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEndCodingFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEndCodingFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEndCodingFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEndCodingFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -11870,25 +11870,25 @@ struct VideoCodingControlFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoCodingControlFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoCodingControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoCodingControlFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoCodingControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoCodingControlFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoCodingControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoCodingControlFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoCodingControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoCodingControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoCodingControlFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoCodingControlFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoCodingControlFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoCodingControlFlagsKHR) -> Bool:
         return self & other == other
 
     comptime RESET_KHR = VideoCodingControlFlagBitsKHR(value = 1 << 0)
@@ -11933,25 +11933,25 @@ struct VideoDecodeUsageFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoDecodeUsageFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoDecodeUsageFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoDecodeUsageFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoDecodeUsageFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoDecodeUsageFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoDecodeUsageFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoDecodeUsageFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoDecodeUsageFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoDecodeUsageFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DEFAULT_KHR = VideoDecodeUsageFlagBitsKHR(value = 0)
@@ -11999,25 +11999,25 @@ struct VideoDecodeCapabilityFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoDecodeCapabilityFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoDecodeCapabilityFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoDecodeCapabilityFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoDecodeCapabilityFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoDecodeCapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoDecodeCapabilityFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoDecodeCapabilityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoDecodeCapabilityFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoDecodeCapabilityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DPB_AND_OUTPUT_COINCIDE_KHR = VideoDecodeCapabilityFlagBitsKHR(value = 1 << 0)
@@ -12063,25 +12063,25 @@ struct VideoDecodeFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoDecodeFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoDecodeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoDecodeFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoDecodeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoDecodeFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoDecodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoDecodeFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoDecodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoDecodeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoDecodeFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoDecodeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoDecodeFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoDecodeFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -12124,25 +12124,25 @@ struct VideoDecodeH264PictureLayoutFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Bool:
         return self & other == other
 
     comptime PROGRESSIVE_KHR = VideoDecodeH264PictureLayoutFlagBitsKHR(value = 0)
@@ -12189,25 +12189,25 @@ struct VideoEncodeFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -12250,25 +12250,25 @@ struct VideoEncodeUsageFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeUsageFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeUsageFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeUsageFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeUsageFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeUsageFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeUsageFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeUsageFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeUsageFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeUsageFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DEFAULT_KHR = VideoEncodeUsageFlagBitsKHR(value = 0)
@@ -12317,25 +12317,25 @@ struct VideoEncodeContentFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeContentFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeContentFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeContentFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeContentFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeContentFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeContentFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeContentFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeContentFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeContentFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeContentFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeContentFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeContentFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeContentFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DEFAULT_KHR = VideoEncodeContentFlagBitsKHR(value = 0)
@@ -12383,25 +12383,25 @@ struct VideoEncodeCapabilityFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeCapabilityFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeCapabilityFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeCapabilityFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeCapabilityFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeCapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeCapabilityFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeCapabilityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeCapabilityFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeCapabilityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime PRECEDING_EXTERNALLY_ENCODED_BYTES_KHR = VideoEncodeCapabilityFlagBitsKHR(value = 1 << 0)
@@ -12447,25 +12447,25 @@ struct VideoEncodeFeedbackFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeFeedbackFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeFeedbackFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeFeedbackFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeFeedbackFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeFeedbackFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeFeedbackFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeFeedbackFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeFeedbackFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeFeedbackFlagsKHR) -> Bool:
         return self & other == other
 
     comptime BITSTREAM_BUFFER_OFFSET_KHR = VideoEncodeFeedbackFlagBitsKHR(value = 1 << 0)
@@ -12512,25 +12512,25 @@ struct VideoEncodeRateControlFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeRateControlFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeRateControlFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeRateControlFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeRateControlFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeRateControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeRateControlFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeRateControlFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeRateControlFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeRateControlFlagsKHR) -> Bool:
         return self & other == other
 
 
@@ -12573,25 +12573,25 @@ struct VideoEncodeRateControlModeFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeRateControlModeFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeRateControlModeFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeRateControlModeFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeRateControlModeFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeRateControlModeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeRateControlModeFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeRateControlModeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeRateControlModeFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeRateControlModeFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DEFAULT_KHR = VideoEncodeRateControlModeFlagBitsKHR(value = 0)
@@ -12639,25 +12639,25 @@ struct VideoEncodeIntraRefreshModeFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Bool:
         return self & other == other
 
     comptime NONE_KHR = VideoEncodeIntraRefreshModeFlagBitsKHR(value = 0)
@@ -12706,25 +12706,25 @@ struct VideoChromaSubsamplingFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoChromaSubsamplingFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoChromaSubsamplingFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoChromaSubsamplingFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoChromaSubsamplingFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoChromaSubsamplingFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoChromaSubsamplingFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoChromaSubsamplingFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoChromaSubsamplingFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoChromaSubsamplingFlagsKHR) -> Bool:
         return self & other == other
 
     comptime INVALID_KHR = VideoChromaSubsamplingFlagBitsKHR(value = 0)
@@ -12773,25 +12773,25 @@ struct VideoComponentBitDepthFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoComponentBitDepthFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoComponentBitDepthFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoComponentBitDepthFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoComponentBitDepthFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoComponentBitDepthFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoComponentBitDepthFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoComponentBitDepthFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoComponentBitDepthFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoComponentBitDepthFlagsKHR) -> Bool:
         return self & other == other
 
     comptime INVALID_KHR = VideoComponentBitDepthFlagBitsKHR(value = 0)
@@ -12839,25 +12839,25 @@ struct VideoEncodeH264CapabilityFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH264CapabilityFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH264CapabilityFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeH264CapabilityFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH264CapabilityFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH264CapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeH264CapabilityFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH264CapabilityFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime HRD_COMPLIANCE_KHR = VideoEncodeH264CapabilityFlagBitsKHR(value = 1 << 0)
@@ -12910,25 +12910,25 @@ struct VideoEncodeH264StdFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH264StdFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH264StdFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeH264StdFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH264StdFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH264StdFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeH264StdFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeH264StdFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH264StdFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeH264StdFlagsKHR) -> Bool:
         return self & other == other
 
     comptime SEPARATE_COLOR_PLANE_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(value = 1 << 0)
@@ -12992,25 +12992,25 @@ struct VideoEncodeH264RateControlFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH264RateControlFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH264RateControlFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeH264RateControlFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH264RateControlFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH264RateControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeH264RateControlFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeH264RateControlFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH264RateControlFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeH264RateControlFlagsKHR) -> Bool:
         return self & other == other
 
     comptime ATTEMPT_HRD_COMPLIANCE_KHR = VideoEncodeH264RateControlFlagBitsKHR(value = 1 << 0)
@@ -13059,25 +13059,25 @@ struct VideoEncodeH265CapabilityFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH265CapabilityFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH265CapabilityFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeH265CapabilityFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH265CapabilityFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH265CapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeH265CapabilityFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH265CapabilityFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime HRD_COMPLIANCE_KHR = VideoEncodeH265CapabilityFlagBitsKHR(value = 1 << 0)
@@ -13131,25 +13131,25 @@ struct VideoEncodeH265StdFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH265StdFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH265StdFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeH265StdFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH265StdFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH265StdFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeH265StdFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeH265StdFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH265StdFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeH265StdFlagsKHR) -> Bool:
         return self & other == other
 
     comptime SEPARATE_COLOR_PLANE_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(value = 1 << 0)
@@ -13214,25 +13214,25 @@ struct VideoEncodeH265RateControlFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH265RateControlFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH265RateControlFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeH265RateControlFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH265RateControlFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH265RateControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeH265RateControlFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeH265RateControlFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH265RateControlFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeH265RateControlFlagsKHR) -> Bool:
         return self & other == other
 
     comptime ATTEMPT_HRD_COMPLIANCE_KHR = VideoEncodeH265RateControlFlagBitsKHR(value = 1 << 0)
@@ -13281,25 +13281,25 @@ struct VideoEncodeH265CtbSizeFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH265CtbSizeFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH265CtbSizeFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeH265CtbSizeFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH265CtbSizeFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH265CtbSizeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeH265CtbSizeFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH265CtbSizeFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Bool:
         return self & other == other
 
     comptime N_16_KHR = VideoEncodeH265CtbSizeFlagBitsKHR(value = 1 << 0)
@@ -13346,25 +13346,25 @@ struct VideoEncodeH265TransformBlockSizeFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Bool:
         return self & other == other
 
     comptime N_4_KHR = VideoEncodeH265TransformBlockSizeFlagBitsKHR(value = 1 << 0)
@@ -13412,25 +13412,25 @@ struct VideoEncodeAV1CapabilityFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeAV1CapabilityFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeAV1CapabilityFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeAV1CapabilityFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeAV1CapabilityFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeAV1CapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeAV1CapabilityFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeAV1CapabilityFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime PER_RATE_CONTROL_GROUP_MIN_MAX_Q_INDEX_KHR = VideoEncodeAV1CapabilityFlagBitsKHR(value = 1 << 0)
@@ -13479,25 +13479,25 @@ struct VideoEncodeAV1StdFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeAV1StdFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeAV1StdFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeAV1StdFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeAV1StdFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeAV1StdFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeAV1StdFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeAV1StdFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeAV1StdFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeAV1StdFlagsKHR) -> Bool:
         return self & other == other
 
     comptime UNIFORM_TILE_SPACING_FLAG_SET_KHR = VideoEncodeAV1StdFlagBitsKHR(value = 1 << 0)
@@ -13545,25 +13545,25 @@ struct VideoEncodeAV1RateControlFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeAV1RateControlFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeAV1RateControlFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeAV1RateControlFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeAV1RateControlFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeAV1RateControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeAV1RateControlFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeAV1RateControlFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Bool:
         return self & other == other
 
     comptime REGULAR_GOP_KHR = VideoEncodeAV1RateControlFlagBitsKHR(value = 1 << 0)
@@ -13611,25 +13611,25 @@ struct VideoEncodeAV1SuperblockSizeFlagsKHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Self:
+    fn __or__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Self:
+    fn __ror__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Self:
+    fn __and__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Self:
+    fn __rand__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Bool:
+    fn is_subset(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Bool:
+    fn is_superset(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Bool:
         return self & other == other
 
     comptime N_64_KHR = VideoEncodeAV1SuperblockSizeFlagBitsKHR(value = 1 << 0)
@@ -13675,25 +13675,25 @@ struct AccessFlags3KHR(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AccessFlagBits3KHR) -> Self:
+    fn __or__(self, other: AccessFlags3KHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AccessFlagBits3KHR) -> Self:
+    fn __ror__(self, other: AccessFlags3KHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: AccessFlagBits3KHR) -> Self:
+    fn __and__(self, other: AccessFlags3KHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AccessFlagBits3KHR) -> Self:
+    fn __rand__(self, other: AccessFlags3KHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __contains__(self, bit: AccessFlagBits3KHR) -> Bool:
         return Bool(self.value() & bit.value())
 
-    fn is_subset(self, other: AccessFlagBits3KHR) -> Bool:
+    fn is_subset(self, other: AccessFlags3KHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AccessFlagBits3KHR) -> Bool:
+    fn is_superset(self, other: AccessFlags3KHR) -> Bool:
         return self & other == other
 
     comptime NONE_KHR = AccessFlagBits3KHR(value = 0)
