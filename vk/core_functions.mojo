@@ -3511,13 +3511,20 @@ struct DeviceFunctionsV1_0(Movable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
+        mut p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
-        return self._v1_0.map_memory(device, memory, offset, size, flags, pp_data)
+        return self._v1_0.map_memory(
+            device,
+            memory,
+            offset,
+            size,
+            flags,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
+        )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
@@ -5235,13 +5242,20 @@ struct DeviceFunctionsV1_1(Movable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
+        mut p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
-        return self._v1_0.map_memory(device, memory, offset, size, flags, pp_data)
+        return self._v1_0.map_memory(
+            device,
+            memory,
+            offset,
+            size,
+            flags,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
+        )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
@@ -7094,14 +7108,14 @@ struct DeviceFunctionsV1_1(Movable):
         device: Device,
         descriptor_set: DescriptorSet,
         descriptor_update_template: DescriptorUpdateTemplate,
-        data: NoneType,
+        p_data: Ptr[NoneType, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._v1_1.update_descriptor_set_with_template(
-            device, descriptor_set, descriptor_update_template, Ptr(to=data).bitcast[NoneType]()
+            device, descriptor_set, descriptor_update_template, p_data
         )
 
     fn get_descriptor_set_layout_support(
@@ -7215,13 +7229,20 @@ struct DeviceFunctionsV1_2(Movable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
+        mut p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
-        return self._v1_0.map_memory(device, memory, offset, size, flags, pp_data)
+        return self._v1_0.map_memory(
+            device,
+            memory,
+            offset,
+            size,
+            flags,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
+        )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
@@ -9074,14 +9095,14 @@ struct DeviceFunctionsV1_2(Movable):
         device: Device,
         descriptor_set: DescriptorSet,
         descriptor_update_template: DescriptorUpdateTemplate,
-        data: NoneType,
+        p_data: Ptr[NoneType, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._v1_1.update_descriptor_set_with_template(
-            device, descriptor_set, descriptor_update_template, Ptr(to=data).bitcast[NoneType]()
+            device, descriptor_set, descriptor_update_template, p_data
         )
 
     fn get_descriptor_set_layout_support(
@@ -9379,13 +9400,20 @@ struct DeviceFunctionsV1_3(Movable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
+        mut p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
-        return self._v1_0.map_memory(device, memory, offset, size, flags, pp_data)
+        return self._v1_0.map_memory(
+            device,
+            memory,
+            offset,
+            size,
+            flags,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
+        )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
@@ -11238,14 +11266,14 @@ struct DeviceFunctionsV1_3(Movable):
         device: Device,
         descriptor_set: DescriptorSet,
         descriptor_update_template: DescriptorUpdateTemplate,
-        data: NoneType,
+        p_data: Ptr[NoneType, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._v1_1.update_descriptor_set_with_template(
-            device, descriptor_set, descriptor_update_template, Ptr(to=data).bitcast[NoneType]()
+            device, descriptor_set, descriptor_update_template, p_data
         )
 
     fn get_descriptor_set_layout_support(
@@ -11977,13 +12005,20 @@ struct DeviceFunctionsV1_4(Movable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
+        mut p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
-        return self._v1_0.map_memory(device, memory, offset, size, flags, pp_data)
+        return self._v1_0.map_memory(
+            device,
+            memory,
+            offset,
+            size,
+            flags,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
+        )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
@@ -13836,14 +13871,14 @@ struct DeviceFunctionsV1_4(Movable):
         device: Device,
         descriptor_set: DescriptorSet,
         descriptor_update_template: DescriptorUpdateTemplate,
-        data: NoneType,
+        p_data: Ptr[NoneType, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._v1_1.update_descriptor_set_with_template(
-            device, descriptor_set, descriptor_update_template, Ptr(to=data).bitcast[NoneType]()
+            device, descriptor_set, descriptor_update_template, p_data
         )
 
     fn get_descriptor_set_layout_support(
@@ -14494,14 +14529,16 @@ struct DeviceFunctionsV1_4(Movable):
         self,
         device: Device,
         memory_map_info: MemoryMapInfo,
-        pp_data: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
+        mut p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory2.html
         """
         return self._v1_4.map_memory_2(
-            device, Ptr(to=memory_map_info).bitcast[MemoryMapInfo](), pp_data
+            device,
+            Ptr(to=memory_map_info).bitcast[MemoryMapInfo](),
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
         )
 
     fn unmap_memory_2(self, device: Device, memory_unmap_info: MemoryUnmapInfo) -> Result:
@@ -14599,18 +14636,14 @@ struct DeviceFunctionsV1_4(Movable):
         descriptor_update_template: DescriptorUpdateTemplate,
         layout: PipelineLayout,
         set: UInt32,
-        data: NoneType,
+        p_data: Ptr[NoneType, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSetWithTemplate.html
         """
         return self._v1_4.cmd_push_descriptor_set_with_template(
-            command_buffer,
-            descriptor_update_template,
-            layout,
-            set,
-            Ptr(to=data).bitcast[NoneType](),
+            command_buffer, descriptor_update_template, layout, set, p_data
         )
 
     fn cmd_set_rendering_attachment_locations(

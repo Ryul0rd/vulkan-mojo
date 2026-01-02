@@ -45,13 +45,12 @@ struct DescriptorSetHostMapping(Copyable):
         )
 
     fn get_descriptor_set_host_mapping_valve(
-        self,
-        device: Device,
-        descriptor_set: DescriptorSet,
-        pp_data: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
+        self, device: Device, descriptor_set: DescriptorSet, mut p_data: Ptr[NoneType, MutAnyOrigin]
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetHostMappingVALVE.html
         """
-        return self._get_descriptor_set_host_mapping_valve(device, descriptor_set, pp_data)
+        return self._get_descriptor_set_host_mapping_valve(
+            device, descriptor_set, Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()
+        )

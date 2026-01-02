@@ -721,14 +721,14 @@ struct DeviceDiagnosticCheckpoints(Copyable):
             device, "vkGetQueueCheckpointData2NV".unsafe_ptr()
         )).bitcast[type_of(self._get_queue_checkpoint_data_2_nv)]()[]
 
-    fn cmd_set_checkpoint_nv(self, command_buffer: CommandBuffer, checkpoint_marker: NoneType):
+    fn cmd_set_checkpoint_nv(
+        self, command_buffer: CommandBuffer, p_checkpoint_marker: Ptr[NoneType, ImmutAnyOrigin]
+    ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCheckpointNV.html
         """
-        return self._cmd_set_checkpoint_nv(
-            command_buffer, Ptr(to=checkpoint_marker).bitcast[NoneType]()
-        )
+        return self._cmd_set_checkpoint_nv(command_buffer, p_checkpoint_marker)
 
     fn get_queue_checkpoint_data_nv(
         self,
@@ -1934,16 +1934,14 @@ struct ExternalComputeQueue(Copyable):
         self,
         external_queue: ExternalComputeQueueNV,
         mut params: ExternalComputeQueueDataParamsNV,
-        mut data: NoneType,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetExternalComputeQueueDataNV.html
         """
         return self._get_external_compute_queue_data_nv(
-            external_queue,
-            Ptr(to=params).bitcast[ExternalComputeQueueDataParamsNV](),
-            Ptr(to=data).bitcast[NoneType](),
+            external_queue, Ptr(to=params).bitcast[ExternalComputeQueueDataParamsNV](), p_data
         )
 
 

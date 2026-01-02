@@ -1150,7 +1150,7 @@ struct ExternalMemoryHost(Copyable):
         self,
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
-        host_pointer: NoneType,
+        p_host_pointer: Ptr[NoneType, ImmutAnyOrigin],
         mut memory_host_pointer_properties: MemoryHostPointerPropertiesEXT,
     ) -> Result:
         """See official vulkan docs for details.
@@ -1160,7 +1160,7 @@ struct ExternalMemoryHost(Copyable):
         return self._get_memory_host_pointer_properties_ext(
             device,
             handle_type,
-            Ptr(to=host_pointer).bitcast[NoneType](),
+            p_host_pointer,
             Ptr(to=memory_host_pointer_properties).bitcast[MemoryHostPointerPropertiesEXT](),
         )
 
@@ -2314,62 +2314,66 @@ struct DescriptorBuffer(Copyable):
         )
 
     fn get_buffer_opaque_capture_descriptor_data_ext(
-        self, device: Device, info: BufferCaptureDescriptorDataInfoEXT, mut data: NoneType
+        self,
+        device: Device,
+        info: BufferCaptureDescriptorDataInfoEXT,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_buffer_opaque_capture_descriptor_data_ext(
-            device,
-            Ptr(to=info).bitcast[BufferCaptureDescriptorDataInfoEXT](),
-            Ptr(to=data).bitcast[NoneType](),
+            device, Ptr(to=info).bitcast[BufferCaptureDescriptorDataInfoEXT](), p_data
         )
 
     fn get_image_opaque_capture_descriptor_data_ext(
-        self, device: Device, info: ImageCaptureDescriptorDataInfoEXT, mut data: NoneType
+        self,
+        device: Device,
+        info: ImageCaptureDescriptorDataInfoEXT,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_image_opaque_capture_descriptor_data_ext(
-            device,
-            Ptr(to=info).bitcast[ImageCaptureDescriptorDataInfoEXT](),
-            Ptr(to=data).bitcast[NoneType](),
+            device, Ptr(to=info).bitcast[ImageCaptureDescriptorDataInfoEXT](), p_data
         )
 
     fn get_image_view_opaque_capture_descriptor_data_ext(
-        self, device: Device, info: ImageViewCaptureDescriptorDataInfoEXT, mut data: NoneType
+        self,
+        device: Device,
+        info: ImageViewCaptureDescriptorDataInfoEXT,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_image_view_opaque_capture_descriptor_data_ext(
-            device,
-            Ptr(to=info).bitcast[ImageViewCaptureDescriptorDataInfoEXT](),
-            Ptr(to=data).bitcast[NoneType](),
+            device, Ptr(to=info).bitcast[ImageViewCaptureDescriptorDataInfoEXT](), p_data
         )
 
     fn get_sampler_opaque_capture_descriptor_data_ext(
-        self, device: Device, info: SamplerCaptureDescriptorDataInfoEXT, mut data: NoneType
+        self,
+        device: Device,
+        info: SamplerCaptureDescriptorDataInfoEXT,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSamplerOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_sampler_opaque_capture_descriptor_data_ext(
-            device,
-            Ptr(to=info).bitcast[SamplerCaptureDescriptorDataInfoEXT](),
-            Ptr(to=data).bitcast[NoneType](),
+            device, Ptr(to=info).bitcast[SamplerCaptureDescriptorDataInfoEXT](), p_data
         )
 
     fn get_acceleration_structure_opaque_capture_descriptor_data_ext(
         self,
         device: Device,
         info: AccelerationStructureCaptureDescriptorDataInfoEXT,
-        mut data: NoneType,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
@@ -2378,7 +2382,7 @@ struct DescriptorBuffer(Copyable):
         return self._get_acceleration_structure_opaque_capture_descriptor_data_ext(
             device,
             Ptr(to=info).bitcast[AccelerationStructureCaptureDescriptorDataInfoEXT](),
-            Ptr(to=data).bitcast[NoneType](),
+            p_data,
         )
 
 
@@ -5067,21 +5071,23 @@ struct ExternalMemoryMetal(Copyable):
         self,
         device: Device,
         get_metal_handle_info: MemoryGetMetalHandleInfoEXT,
-        p_handle: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
+        mut handle: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryMetalHandleEXT.html
         """
         return self._get_memory_metal_handle_ext(
-            device, Ptr(to=get_metal_handle_info).bitcast[MemoryGetMetalHandleInfoEXT](), p_handle
+            device,
+            Ptr(to=get_metal_handle_info).bitcast[MemoryGetMetalHandleInfoEXT](),
+            Ptr(to=handle).bitcast[Ptr[NoneType, MutAnyOrigin]](),
         )
 
     fn get_memory_metal_handle_properties_ext(
         self,
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
-        handle: NoneType,
+        p_handle: Ptr[NoneType, ImmutAnyOrigin],
         mut memory_metal_handle_properties: MemoryMetalHandlePropertiesEXT,
     ) -> Result:
         """See official vulkan docs for details.
@@ -5091,7 +5097,7 @@ struct ExternalMemoryMetal(Copyable):
         return self._get_memory_metal_handle_properties_ext(
             device,
             handle_type,
-            Ptr(to=handle).bitcast[NoneType](),
+            p_handle,
             Ptr(to=memory_metal_handle_properties).bitcast[MemoryMetalHandlePropertiesEXT](),
         )
 

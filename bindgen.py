@@ -1584,17 +1584,23 @@ def emit_command_wrapper(command: VkCommand, version: Optional[VkVersion]=None) 
     wrapper_call_args: List[str] = []
     for arg in command.params:
         mojo_arg_name = pascal_to_snake(arg.name)
+        is_opaque_ptr = arg.type.ptr_level == 1 and arg.type.name == "void"
         is_required_ptr_to_scalar = (
             not arg.optional
-            and arg.type.ptr_level == 1
+            and arg.type.ptr_level > 0
             and arg.length is None
             and arg.type.name != "char"
+            and not is_opaque_ptr
         )
         if is_required_ptr_to_scalar:
-            mut_prefix = "" if arg.type.const[-1] else "mut "
-            sig_arg_strs.append(f"{mut_prefix}{mojo_arg_name.removeprefix('p_')}: {emit_mojo_type(arg.type, strip_ptr=True)}")
-            ffi_call_args.append(f"Ptr(to={mojo_arg_name.removeprefix('p_')}).bitcast[{emit_mojo_type(arg.type, strip_ptr=True)}]()")
-            wrapper_call_args.append(mojo_arg_name.removeprefix('p_'))
+            mut_prefix = "" if arg.type.const[-arg.type.ptr_level] else "mut "
+            if mojo_arg_name.startswith("pp_"):
+                mojo_arg_name = mojo_arg_name.removeprefix("p")
+            elif mojo_arg_name.startswith("p_"):
+                mojo_arg_name = mojo_arg_name.removeprefix("p_")
+            sig_arg_strs.append(f"{mut_prefix}{mojo_arg_name}: {emit_mojo_type(arg.type, strip_ptr=True)}")
+            ffi_call_args.append(f"Ptr(to={mojo_arg_name}).bitcast[{emit_mojo_type(arg.type, strip_ptr=True)}]()")
+            wrapper_call_args.append(mojo_arg_name)
         else:
             is_string = (
                 arg.type.ptr_level == 1

@@ -230,29 +230,31 @@ struct Tensors(Copyable):
         )
 
     fn get_tensor_opaque_capture_descriptor_data_arm(
-        self, device: Device, info: TensorCaptureDescriptorDataInfoARM, mut data: NoneType
+        self,
+        device: Device,
+        info: TensorCaptureDescriptorDataInfoARM,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorOpaqueCaptureDescriptorDataARM.html
         """
         return self._get_tensor_opaque_capture_descriptor_data_arm(
-            device,
-            Ptr(to=info).bitcast[TensorCaptureDescriptorDataInfoARM](),
-            Ptr(to=data).bitcast[NoneType](),
+            device, Ptr(to=info).bitcast[TensorCaptureDescriptorDataInfoARM](), p_data
         )
 
     fn get_tensor_view_opaque_capture_descriptor_data_arm(
-        self, device: Device, info: TensorViewCaptureDescriptorDataInfoARM, mut data: NoneType
+        self,
+        device: Device,
+        info: TensorViewCaptureDescriptorDataInfoARM,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorViewOpaqueCaptureDescriptorDataARM.html
         """
         return self._get_tensor_view_opaque_capture_descriptor_data_arm(
-            device,
-            Ptr(to=info).bitcast[TensorViewCaptureDescriptorDataInfoARM](),
-            Ptr(to=data).bitcast[NoneType](),
+            device, Ptr(to=info).bitcast[TensorViewCaptureDescriptorDataInfoARM](), p_data
         )
 
 
