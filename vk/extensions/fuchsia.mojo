@@ -1,8 +1,10 @@
-from sys.ffi import CStringSlice, c_char
+from sys.ffi import OwnedDLHandle, CStringSlice, c_char
+from memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct ImagepipeSurface(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_image_pipe_surface_fuchsia: fn(
         instance: Instance,
         pCreateInfo: Ptr[ImagePipeSurfaceCreateInfoFUCHSIA, ImmutAnyOrigin],
@@ -10,8 +12,9 @@ struct ImagepipeSurface(Copyable):
         pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_image_pipe_surface_fuchsia = Ptr(to=get_instance_proc_addr(
@@ -38,6 +41,7 @@ struct ImagepipeSurface(Copyable):
 
 
 struct ExternalMemory(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_memory_zircon_handle_fuchsia: fn(
         device: Device,
         pGetZirconHandleInfo: Ptr[MemoryGetZirconHandleInfoFUCHSIA, ImmutAnyOrigin],
@@ -50,8 +54,9 @@ struct ExternalMemory(Copyable):
         pMemoryZirconHandleProperties: Ptr[MemoryZirconHandlePropertiesFUCHSIA, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_zircon_handle_fuchsia = Ptr(to=get_device_proc_addr(
@@ -97,6 +102,7 @@ struct ExternalMemory(Copyable):
 
 
 struct ExternalSemaphore(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _import_semaphore_zircon_handle_fuchsia: fn(
         device: Device,
         pImportSemaphoreZirconHandleInfo: Ptr[ImportSemaphoreZirconHandleInfoFUCHSIA, ImmutAnyOrigin],
@@ -107,8 +113,9 @@ struct ExternalSemaphore(Copyable):
         pZirconHandle: Ptr[zx_handle_t, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._import_semaphore_zircon_handle_fuchsia = Ptr(to=get_device_proc_addr(
@@ -150,6 +157,7 @@ struct ExternalSemaphore(Copyable):
 
 
 struct BufferCollection(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_buffer_collection_fuchsia: fn(
         device: Device,
         pCreateInfo: Ptr[BufferCollectionCreateInfoFUCHSIA, ImmutAnyOrigin],
@@ -177,8 +185,9 @@ struct BufferCollection(Copyable):
         pProperties: Ptr[BufferCollectionPropertiesFUCHSIA, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_buffer_collection_fuchsia = Ptr(to=get_device_proc_addr(

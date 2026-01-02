@@ -1395,7 +1395,8 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
     # Core Functions
     parts: List[str] = []
     parts.append((
-        "from sys.ffi import OwnedDLHandle, _DLHandle, RTLD, CStringSlice, c_char\n"
+        "from sys.ffi import OwnedDLHandle, RTLD, CStringSlice, c_char\n"
+        "from memory import ArcPointer\n"
         "from .fn_types import *\n"
         "from .handles import *\n"
         "from .structs import *\n"
@@ -1404,7 +1405,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
         "comptime Ptr = UnsafePointer\n"
         "\n\n"
         "trait GlobalFunctions:\n"
-        "    fn borrow_handle(self) -> _DLHandle:\n"
+        "    fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:\n"
         "        ...\n"
     ))
     for command_level, core_versions in parsed_commands.core_commands.items():
@@ -1419,9 +1420,8 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
             parts.append((
                 f"\n\n"
                 f"struct {fn_group_name}{trait_section}:\n"
+                f"    var _dlhandle: ArcPointer[OwnedDLHandle]\n"
             ))
-            if command_level == "global":
-                parts.append(f"    var _handle: OwnedDLHandle\n")
             for addition_version in addition_versions:
                 req_ver_str = f"{addition_version.major}_{addition_version.minor}"
                 parts.append(f"    var _v{req_ver_str}: {command_level.capitalize()}FunctionAdditionsV{req_ver_str}\n")
@@ -1429,7 +1429,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
             if command_level == "global":
                 parts.append((
                     "    fn __init__(out self) raises:\n"
-                    '        self._handle = OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)\n'
+                    '        self._dlhandle = ArcPointer(OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL))\n'
                 ))
             else:
                 parts.append(emit_fn_like(
@@ -1442,19 +1442,20 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                     f"):\n",
                     base_indent_level = 1,
                 ))
+                parts.append(f"        self._dlhandle = global_functions.get_dlhandle()\n")
             for addition_version in addition_versions:
                 req_ver_str = f"{addition_version.major}_{addition_version.minor}"
-                args = f"{command_level}, global_functions.borrow_handle()"
+                args = f"{command_level}, global_functions.get_dlhandle()[]"
                 if command_level == "global":
-                    args = "self._handle.borrow()"
+                    args = "self._dlhandle[]"
                 parts.append(
                     f"        self._v{req_ver_str} = {command_level.capitalize()}FunctionAdditionsV{req_ver_str}({args})\n"
                 )
             if command_level == "global":
                 parts.append((
                     "\n"
-                    "    fn borrow_handle(self) -> _DLHandle:\n"
-                    "        return self._handle.borrow()\n"
+                    "    fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:\n"
+                    "        return self._dlhandle\n"
                 ))
             for versioned_command in versioned_commands:
                 parts.append(emit_command_wrapper(versioned_command.command, versioned_command.version))
@@ -1474,19 +1475,16 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 sig_ret = f" -> {ret_type}" if ret_type != "NoneType" else ""
                 parts.append(emit_fn_like(
                     f"var {mojo_command_name}: fn(",
-                    [
-                        f"{arg.name}: {emit_mojo_type(arg.type)}" 
-                        for arg in new_command.command.params
-                    ],
+                    [f"{arg.name}: {emit_mojo_type(arg.type)}" for arg in new_command.command.params],
                     f"){sig_ret}\n",
                     base_indent_level = 1,
                 ))
             parts.append("\n")
             if command_level == "global":
-                parts.append("    fn __init__(out self, handle: _DLHandle):\n")
+                parts.append("    fn __init__(out self, dlhandle: OwnedDLHandle):\n")
             else:
                 parts.append(
-                    f"    fn __init__(out self, {command_level}: {command_level.capitalize()}, handle: _DLHandle):\n"
+                    f"    fn __init__(out self, {command_level}: {command_level.capitalize()}, dlhandle: OwnedDLHandle):\n"
                 )
             get_proc_level = "instance" if command_level == "global" else command_level
             if len(versioned_commands) == 0:
@@ -1494,7 +1492,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
             else:
                 level_arg = f"{get_proc_level}: {get_proc_level.capitalize()}"
                 parts.append((
-                    f"        get_{get_proc_level}_proc_addr = handle.get_function[\n"
+                    f"        get_{get_proc_level}_proc_addr = dlhandle.get_function[\n"
                     f"            fn({level_arg}, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction\n"
                     f'        ]("vkGet{get_proc_level.capitalize()}ProcAddr")\n'
                 ))
@@ -1511,8 +1509,11 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
     # Extension Functions
     extension_parts_by_tag: Dict[str, List[str]] = {extension_tag: [] for extension_tag in parsed_commands.extension_commands.keys()}
     for parts in extension_parts_by_tag.values():
-        parts.append("from sys.ffi import CStringSlice, c_char\n")
-        parts.append("from vk.core_functions import GlobalFunctions\n")
+        parts.append(
+            "from sys.ffi import OwnedDLHandle, CStringSlice, c_char\n"
+            "from memory import ArcPointer\n"
+            "from vk.core_functions import GlobalFunctions\n"
+        )
     for extension_tag, extensions in parsed_commands.extension_commands.items():
         for extension in extensions:
             extension_parts = extension_parts_by_tag[extension_tag]
@@ -1521,6 +1522,7 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
             extension_parts.append((
                 f"\n\n"
                 f"struct {extension_name}(Copyable):\n"
+                f"    var _dlhandle: ArcPointer[OwnedDLHandle]\n"
             ))
             for command in extension.commands:
                 mojo_command_name = pascal_to_snake(emit_mojo_type_name(command.name)).removeprefix("vk_")
@@ -1528,17 +1530,15 @@ def emit_commands(files: Dict[str, str], parsed_commands: VkParsedCommands):
                 sig_ret = f" -> {ret_type}" if ret_type != "NoneType" else ""
                 extension_parts.append(emit_fn_like(
                     f"var _{mojo_command_name}: fn(",
-                    [
-                        f"{arg.name}: {emit_mojo_type(arg.type)}"
-                        for arg in command.params
-                    ],
+                    [f"{arg.name}: {emit_mojo_type(arg.type)}" for arg in command.params],
                     f"){sig_ret}\n",
                     base_indent_level = 1,
                 ))
             extension_parts.append((
                 f"\n"
-                f"    fn __init__[T: GlobalFunctions](out self, global_fns: T, {extension.type}: {extension.type.capitalize()}) raises:\n"
-                f"        var get_{extension.type}_proc_addr = global_fns.borrow_handle().get_function[\n"
+                f"    fn __init__[T: GlobalFunctions](out self, global_functions: T, {extension.type}: {extension.type.capitalize()}) raises:\n"
+                f"        self._dlhandle = global_functions.get_dlhandle()\n"
+                f"        var get_{extension.type}_proc_addr = global_functions.get_dlhandle()[].get_function[\n"
                 f"            fn({extension.type}: {extension.type.capitalize()}, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction\n"
                 f'        ]("vkGet{extension.type.capitalize()}ProcAddr")\n'
             ))

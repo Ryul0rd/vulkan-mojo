@@ -1,15 +1,18 @@
-from sys.ffi import CStringSlice, c_char
+from sys.ffi import OwnedDLHandle, CStringSlice, c_char
+from memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct SubpassShading(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_device_subpass_shading_max_workgroup_size_huawei: fn(
         device: Device, renderpass: RenderPass, pMaxWorkgroupSize: Ptr[Extent2D, MutAnyOrigin]
     ) -> Result
     var _cmd_subpass_shading_huawei: fn(commandBuffer: CommandBuffer)
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_device_subpass_shading_max_workgroup_size_huawei = Ptr(to=get_device_proc_addr(
@@ -42,12 +45,14 @@ struct SubpassShading(Copyable):
 
 
 struct InvocationMask(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_bind_invocation_mask_huawei: fn(
         commandBuffer: CommandBuffer, imageView: ImageView, imageLayout: ImageLayout
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_bind_invocation_mask_huawei = Ptr(to=get_device_proc_addr(
@@ -65,6 +70,7 @@ struct InvocationMask(Copyable):
 
 
 struct ClusterCullingShader(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_draw_cluster_huawei: fn(
         commandBuffer: CommandBuffer, groupCountX: UInt32, groupCountY: UInt32, groupCountZ: UInt32
     )
@@ -72,8 +78,9 @@ struct ClusterCullingShader(Copyable):
         commandBuffer: CommandBuffer, buffer: Buffer, offset: DeviceSize
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_draw_cluster_huawei = Ptr(to=get_device_proc_addr(

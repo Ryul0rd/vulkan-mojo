@@ -1,8 +1,10 @@
-from sys.ffi import CStringSlice, c_char
+from sys.ffi import OwnedDLHandle, CStringSlice, c_char
+from memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct DescriptorSetHostMapping(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_descriptor_set_layout_host_mapping_info_valve: fn(
         device: Device,
         pBindingReference: Ptr[DescriptorSetBindingReferenceVALVE, ImmutAnyOrigin],
@@ -14,8 +16,9 @@ struct DescriptorSetHostMapping(Copyable):
         ppData: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_descriptor_set_layout_host_mapping_info_valve = Ptr(to=get_device_proc_addr(

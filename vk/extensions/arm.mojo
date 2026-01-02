@@ -1,8 +1,10 @@
-from sys.ffi import CStringSlice, c_char
+from sys.ffi import OwnedDLHandle, CStringSlice, c_char
+from memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct Tensors(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_tensor_arm: fn(
         device: Device,
         pCreateInfo: Ptr[TensorCreateInfoARM, ImmutAnyOrigin],
@@ -57,8 +59,9 @@ struct Tensors(Copyable):
         pData: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_tensor_arm = Ptr(to=get_device_proc_addr(
@@ -254,6 +257,7 @@ struct Tensors(Copyable):
 
 
 struct DataGraph(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_data_graph_pipelines_arm: fn(
         device: Device,
         deferredOperation: DeferredOperationKHR,
@@ -319,8 +323,9 @@ struct DataGraph(Copyable):
         pQueueFamilyDataGraphProcessingEngineProperties: Ptr[QueueFamilyDataGraphProcessingEnginePropertiesARM, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_data_graph_pipelines_arm = Ptr(to=get_device_proc_addr(

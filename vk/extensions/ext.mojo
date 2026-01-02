@@ -1,8 +1,10 @@
-from sys.ffi import CStringSlice, c_char
+from sys.ffi import OwnedDLHandle, CStringSlice, c_char
+from memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct DebugReport(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_debug_report_callback_ext: fn(
         instance: Instance,
         pCreateInfo: Ptr[DebugReportCallbackCreateInfoEXT, ImmutAnyOrigin],
@@ -25,8 +27,9 @@ struct DebugReport(Copyable):
         pMessage: CStringSlice[ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_debug_report_callback_ext = Ptr(to=get_instance_proc_addr(
@@ -97,6 +100,7 @@ struct DebugReport(Copyable):
 
 
 struct DebugMarker(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _debug_marker_set_object_tag_ext: fn(
         device: Device, pTagInfo: Ptr[DebugMarkerObjectTagInfoEXT, ImmutAnyOrigin]
     ) -> Result
@@ -111,8 +115,9 @@ struct DebugMarker(Copyable):
         commandBuffer: CommandBuffer, pMarkerInfo: Ptr[DebugMarkerMarkerInfoEXT, ImmutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._debug_marker_set_object_tag_ext = Ptr(to=get_device_proc_addr(
@@ -184,6 +189,7 @@ struct DebugMarker(Copyable):
 
 
 struct TransformFeedback(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_bind_transform_feedback_buffers_ext: fn(
         commandBuffer: CommandBuffer,
         firstBinding: UInt32,
@@ -226,8 +232,9 @@ struct TransformFeedback(Copyable):
         vertexStride: UInt32,
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_bind_transform_feedback_buffers_ext = Ptr(to=get_device_proc_addr(
@@ -355,14 +362,16 @@ struct TransformFeedback(Copyable):
 
 
 struct ConditionalRendering(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_begin_conditional_rendering_ext: fn(
         commandBuffer: CommandBuffer,
         pConditionalRenderingBegin: Ptr[ConditionalRenderingBeginInfoEXT, ImmutAnyOrigin],
     )
     var _cmd_end_conditional_rendering_ext: fn(commandBuffer: CommandBuffer)
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_begin_conditional_rendering_ext = Ptr(to=get_device_proc_addr(
@@ -395,10 +404,12 @@ struct ConditionalRendering(Copyable):
 
 
 struct DirectModeDisplay(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _release_display_ext: fn(physicalDevice: PhysicalDevice, display: DisplayKHR) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._release_display_ext = Ptr(to=get_instance_proc_addr(
@@ -414,6 +425,7 @@ struct DirectModeDisplay(Copyable):
 
 
 struct AcquireXlibDisplay(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _acquire_xlib_display_ext: fn(
         physicalDevice: PhysicalDevice, dpy: Ptr[Display, MutAnyOrigin], display: DisplayKHR
     ) -> Result
@@ -424,8 +436,9 @@ struct AcquireXlibDisplay(Copyable):
         pDisplay: Ptr[DisplayKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._acquire_xlib_display_ext = Ptr(to=get_instance_proc_addr(
@@ -466,14 +479,16 @@ struct AcquireXlibDisplay(Copyable):
 
 
 struct DisplaySurfaceCounter(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_surface_capabilities_2_ext: fn(
         physicalDevice: PhysicalDevice,
         surface: SurfaceKHR,
         pSurfaceCapabilities: Ptr[SurfaceCapabilities2EXT, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_surface_capabilities_2_ext = Ptr(to=get_instance_proc_addr(
@@ -498,6 +513,7 @@ struct DisplaySurfaceCounter(Copyable):
 
 
 struct DisplayControl(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _display_power_control_ext: fn(
         device: Device,
         display: DisplayKHR,
@@ -523,8 +539,9 @@ struct DisplayControl(Copyable):
         pCounterValue: Ptr[UInt64, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._display_power_control_ext = Ptr(to=get_device_proc_addr(
@@ -606,6 +623,7 @@ struct DisplayControl(Copyable):
 
 
 struct DiscardRectangles(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_discard_rectangle_ext: fn(
         commandBuffer: CommandBuffer,
         firstDiscardRectangle: UInt32,
@@ -619,8 +637,9 @@ struct DiscardRectangles(Copyable):
         commandBuffer: CommandBuffer, discardRectangleMode: DiscardRectangleModeEXT
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_discard_rectangle_ext = Ptr(to=get_device_proc_addr(
@@ -668,6 +687,7 @@ struct DiscardRectangles(Copyable):
 
 
 struct HdrMetadata(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _set_hdr_metadata_ext: fn(
         device: Device,
         swapchainCount: UInt32,
@@ -675,8 +695,9 @@ struct HdrMetadata(Copyable):
         pMetadata: Ptr[HdrMetadataEXT, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._set_hdr_metadata_ext = Ptr(to=get_device_proc_addr(
@@ -698,6 +719,7 @@ struct HdrMetadata(Copyable):
 
 
 struct DebugUtils(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _set_debug_utils_object_name_ext: fn(
         device: Device, pNameInfo: Ptr[DebugUtilsObjectNameInfoEXT, ImmutAnyOrigin]
     ) -> Result
@@ -736,8 +758,9 @@ struct DebugUtils(Copyable):
         pCallbackData: Ptr[DebugUtilsMessengerCallbackDataEXT, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._set_debug_utils_object_name_ext = Ptr(to=get_instance_proc_addr(
@@ -900,6 +923,7 @@ struct DebugUtils(Copyable):
 
 
 struct SampleLocations(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_sample_locations_ext: fn(
         commandBuffer: CommandBuffer,
         pSampleLocationsInfo: Ptr[SampleLocationsInfoEXT, ImmutAnyOrigin],
@@ -910,8 +934,9 @@ struct SampleLocations(Copyable):
         pMultisampleProperties: Ptr[MultisamplePropertiesEXT, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_sample_locations_ext = Ptr(to=get_device_proc_addr(
@@ -950,14 +975,16 @@ struct SampleLocations(Copyable):
 
 
 struct ImageDrmFormatModifier(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_image_drm_format_modifier_properties_ext: fn(
         device: Device,
         image: Image,
         pProperties: Ptr[ImageDrmFormatModifierPropertiesEXT, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_image_drm_format_modifier_properties_ext = Ptr(to=get_device_proc_addr(
@@ -977,6 +1004,7 @@ struct ImageDrmFormatModifier(Copyable):
 
 
 struct ValidationCache(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_validation_cache_ext: fn(
         device: Device,
         pCreateInfo: Ptr[ValidationCacheCreateInfoEXT, ImmutAnyOrigin],
@@ -1001,8 +1029,9 @@ struct ValidationCache(Copyable):
         pData: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_validation_cache_ext = Ptr(to=get_device_proc_addr(
@@ -1100,6 +1129,7 @@ struct ValidationCache(Copyable):
 
 
 struct ExternalMemoryHost(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_memory_host_pointer_properties_ext: fn(
         device: Device,
         handleType: ExternalMemoryHandleTypeFlagBits,
@@ -1107,8 +1137,9 @@ struct ExternalMemoryHost(Copyable):
         pMemoryHostPointerProperties: Ptr[MemoryHostPointerPropertiesEXT, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_host_pointer_properties_ext = Ptr(to=get_device_proc_addr(
@@ -1135,6 +1166,7 @@ struct ExternalMemoryHost(Copyable):
 
 
 struct CalibratedTimestamps(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_calibrateable_time_domains_khr: fn(
         physicalDevice: PhysicalDevice,
         pTimeDomainCount: Ptr[UInt32, MutAnyOrigin],
@@ -1148,8 +1180,9 @@ struct CalibratedTimestamps(Copyable):
         pMaxDeviation: Ptr[UInt64, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_calibrateable_time_domains_khr = Ptr(to=get_device_proc_addr(
@@ -1217,6 +1250,7 @@ struct CalibratedTimestamps(Copyable):
 
 
 struct MetalSurface(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_metal_surface_ext: fn(
         instance: Instance,
         pCreateInfo: Ptr[MetalSurfaceCreateInfoEXT, ImmutAnyOrigin],
@@ -1224,8 +1258,9 @@ struct MetalSurface(Copyable):
         pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_metal_surface_ext = Ptr(to=get_instance_proc_addr(
@@ -1252,12 +1287,14 @@ struct MetalSurface(Copyable):
 
 
 struct BufferDeviceAddress(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_buffer_device_address: fn(
         device: Device, pInfo: Ptr[BufferDeviceAddressInfo, ImmutAnyOrigin]
     ) -> DeviceAddress
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_buffer_device_address = Ptr(to=get_device_proc_addr(
@@ -1277,14 +1314,16 @@ struct BufferDeviceAddress(Copyable):
 
 
 struct ToolingInfo(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_tool_properties: fn(
         physicalDevice: PhysicalDevice,
         pToolCount: Ptr[UInt32, MutAnyOrigin],
         pToolProperties: Ptr[PhysicalDeviceToolProperties, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_tool_properties = Ptr(to=get_device_proc_addr(
@@ -1329,6 +1368,7 @@ struct ToolingInfo(Copyable):
 
 
 struct FullScreenExclusive(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_surface_present_modes_2_ext: fn(
         physicalDevice: PhysicalDevice,
         pSurfaceInfo: Ptr[PhysicalDeviceSurfaceInfo2KHR, ImmutAnyOrigin],
@@ -1347,8 +1387,9 @@ struct FullScreenExclusive(Copyable):
         pModes: Ptr[DeviceGroupPresentModeFlagsKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_surface_present_modes_2_ext = Ptr(to=get_device_proc_addr(
@@ -1440,6 +1481,7 @@ struct FullScreenExclusive(Copyable):
 
 
 struct HeadlessSurface(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_headless_surface_ext: fn(
         instance: Instance,
         pCreateInfo: Ptr[HeadlessSurfaceCreateInfoEXT, ImmutAnyOrigin],
@@ -1447,8 +1489,9 @@ struct HeadlessSurface(Copyable):
         pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_headless_surface_ext = Ptr(to=get_instance_proc_addr(
@@ -1475,12 +1518,14 @@ struct HeadlessSurface(Copyable):
 
 
 struct LineRasterization(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_line_stipple: fn(
         commandBuffer: CommandBuffer, lineStippleFactor: UInt32, lineStipplePattern: UInt16
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_line_stipple = Ptr(to=get_device_proc_addr(
@@ -1503,12 +1548,14 @@ struct LineRasterization(Copyable):
 
 
 struct HostQueryReset(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _reset_query_pool: fn(
         device: Device, queryPool: QueryPool, firstQuery: UInt32, queryCount: UInt32
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._reset_query_pool = Ptr(to=get_device_proc_addr(
@@ -1526,6 +1573,7 @@ struct HostQueryReset(Copyable):
 
 
 struct ExtendedDynamicState(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_cull_mode: fn(commandBuffer: CommandBuffer, cullMode: CullModeFlags)
     var _cmd_set_front_face: fn(commandBuffer: CommandBuffer, frontFace: FrontFace)
     var _cmd_set_primitive_topology: fn(
@@ -1564,8 +1612,9 @@ struct ExtendedDynamicState(Copyable):
         compareOp: CompareOp,
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_cull_mode = Ptr(to=get_device_proc_addr(
@@ -1728,6 +1777,7 @@ struct ExtendedDynamicState(Copyable):
 
 
 struct HostImageCopy(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _copy_memory_to_image: fn(
         device: Device, pCopyMemoryToImageInfo: Ptr[CopyMemoryToImageInfo, ImmutAnyOrigin]
     ) -> Result
@@ -1749,8 +1799,9 @@ struct HostImageCopy(Copyable):
         pLayout: Ptr[SubresourceLayout2, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._copy_memory_to_image = Ptr(to=get_device_proc_addr(
@@ -1834,12 +1885,14 @@ struct HostImageCopy(Copyable):
 
 
 struct SwapchainMaintenance1(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _release_swapchain_images_khr: fn(
         device: Device, pReleaseInfo: Ptr[ReleaseSwapchainImagesInfoKHR, ImmutAnyOrigin]
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._release_swapchain_images_khr = Ptr(to=get_device_proc_addr(
@@ -1859,12 +1912,14 @@ struct SwapchainMaintenance1(Copyable):
 
 
 struct DepthBiasControl(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_depth_bias_2_ext: fn(
         commandBuffer: CommandBuffer, pDepthBiasInfo: Ptr[DepthBiasInfoEXT, ImmutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_depth_bias_2_ext = Ptr(to=get_device_proc_addr(
@@ -1884,6 +1939,7 @@ struct DepthBiasControl(Copyable):
 
 
 struct AcquireDrmDisplay(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _acquire_drm_display_ext: fn(
         physicalDevice: PhysicalDevice, drmFd: Int32, display: DisplayKHR
     ) -> Result
@@ -1894,8 +1950,9 @@ struct AcquireDrmDisplay(Copyable):
         display: Ptr[DisplayKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._acquire_drm_display_ext = Ptr(to=get_instance_proc_addr(
@@ -1931,6 +1988,7 @@ struct AcquireDrmDisplay(Copyable):
 
 
 struct PrivateData(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_private_data_slot: fn(
         device: Device,
         pCreateInfo: Ptr[PrivateDataSlotCreateInfo, ImmutAnyOrigin],
@@ -1957,8 +2015,9 @@ struct PrivateData(Copyable):
         pData: Ptr[UInt64, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_private_data_slot = Ptr(to=get_device_proc_addr(
@@ -2036,12 +2095,14 @@ struct PrivateData(Copyable):
 
 
 struct MetalObjects(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _export_metal_objects_ext: fn(
         device: Device, pMetalObjectsInfo: Ptr[ExportMetalObjectsInfoEXT, MutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._export_metal_objects_ext = Ptr(to=get_device_proc_addr(
@@ -2061,6 +2122,7 @@ struct MetalObjects(Copyable):
 
 
 struct DescriptorBuffer(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_descriptor_set_layout_size_ext: fn(
         device: Device,
         layout: DescriptorSetLayout,
@@ -2124,8 +2186,9 @@ struct DescriptorBuffer(Copyable):
         pData: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_descriptor_set_layout_size_ext = Ptr(to=get_device_proc_addr(
@@ -2320,6 +2383,7 @@ struct DescriptorBuffer(Copyable):
 
 
 struct MeshShader(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_draw_mesh_tasks_ext: fn(
         commandBuffer: CommandBuffer, groupCountX: UInt32, groupCountY: UInt32, groupCountZ: UInt32
     )
@@ -2340,8 +2404,9 @@ struct MeshShader(Copyable):
         stride: UInt32,
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_draw_mesh_tasks_ext = Ptr(to=get_device_proc_addr(
@@ -2411,6 +2476,7 @@ struct MeshShader(Copyable):
 
 
 struct ImageCompressionControl(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_image_subresource_layout_2: fn(
         device: Device,
         image: Image,
@@ -2418,8 +2484,9 @@ struct ImageCompressionControl(Copyable):
         pLayout: Ptr[SubresourceLayout2, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_image_subresource_layout_2 = Ptr(to=get_device_proc_addr(
@@ -2446,14 +2513,16 @@ struct ImageCompressionControl(Copyable):
 
 
 struct DeviceFault(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_device_fault_info_ext: fn(
         device: Device,
         pFaultCounts: Ptr[DeviceFaultCountsEXT, MutAnyOrigin],
         pFaultInfo: Ptr[DeviceFaultInfoEXT, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_device_fault_info_ext = Ptr(to=get_device_proc_addr(
@@ -2476,6 +2545,7 @@ struct DeviceFault(Copyable):
 
 
 struct DirectfbSurface(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_direct_fb_surface_ext: fn(
         instance: Instance,
         pCreateInfo: Ptr[DirectFBSurfaceCreateInfoEXT, ImmutAnyOrigin],
@@ -2486,8 +2556,9 @@ struct DirectfbSurface(Copyable):
         physicalDevice: PhysicalDevice, queueFamilyIndex: UInt32, dfb: Ptr[IDirectFB, MutAnyOrigin]
     ) -> Bool32
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_direct_fb_surface_ext = Ptr(to=get_instance_proc_addr(
@@ -2528,6 +2599,7 @@ struct DirectfbSurface(Copyable):
 
 
 struct VertexInputDynamicState(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_vertex_input_ext: fn(
         commandBuffer: CommandBuffer,
         vertexBindingDescriptionCount: UInt32,
@@ -2536,8 +2608,9 @@ struct VertexInputDynamicState(Copyable):
         pVertexAttributeDescriptions: Ptr[VertexInputAttributeDescription2EXT, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_vertex_input_ext = Ptr(to=get_device_proc_addr(
@@ -2566,14 +2639,16 @@ struct VertexInputDynamicState(Copyable):
 
 
 struct PipelineProperties(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_pipeline_properties_ext: fn(
         device: Device,
         pPipelineInfo: Ptr[PipelineInfoEXT, ImmutAnyOrigin],
         pPipelineProperties: Ptr[BaseOutStructure, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_pipeline_properties_ext = Ptr(to=get_device_proc_addr(
@@ -2598,6 +2673,7 @@ struct PipelineProperties(Copyable):
 
 
 struct ExtendedDynamicState2(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_patch_control_points_ext: fn(
         commandBuffer: CommandBuffer, patchControlPoints: UInt32
     )
@@ -2610,8 +2686,9 @@ struct ExtendedDynamicState2(Copyable):
         commandBuffer: CommandBuffer, primitiveRestartEnable: Bool32
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_patch_control_points_ext = Ptr(to=get_device_proc_addr(
@@ -2673,14 +2750,16 @@ struct ExtendedDynamicState2(Copyable):
 
 
 struct ColorWriteEnable(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_color_write_enable_ext: fn(
         commandBuffer: CommandBuffer,
         attachmentCount: UInt32,
         pColorWriteEnables: Ptr[Bool32, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_color_write_enable_ext = Ptr(to=get_device_proc_addr(
@@ -2703,6 +2782,7 @@ struct ColorWriteEnable(Copyable):
 
 
 struct MultiDraw(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_draw_multi_ext: fn(
         commandBuffer: CommandBuffer,
         drawCount: UInt32,
@@ -2721,8 +2801,9 @@ struct MultiDraw(Copyable):
         pVertexOffset: Ptr[Int32, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_draw_multi_ext = Ptr(to=get_device_proc_addr(
@@ -2775,6 +2856,7 @@ struct MultiDraw(Copyable):
 
 
 struct OpacityMicromap(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_micromap_ext: fn(
         device: Device,
         pCreateInfo: Ptr[MicromapCreateInfoEXT, ImmutAnyOrigin],
@@ -2848,8 +2930,9 @@ struct OpacityMicromap(Copyable):
         pSizeInfo: Ptr[MicromapBuildSizesInfoEXT, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_micromap_ext = Ptr(to=get_device_proc_addr(
@@ -3091,12 +3174,14 @@ struct OpacityMicromap(Copyable):
 
 
 struct PageableDeviceLocalMemory(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _set_device_memory_priority_ext: fn(
         device: Device, memory: DeviceMemory, priority: Float32
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._set_device_memory_priority_ext = Ptr(to=get_device_proc_addr(
@@ -3114,6 +3199,7 @@ struct PageableDeviceLocalMemory(Copyable):
 
 
 struct ExtendedDynamicState3(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_depth_clamp_enable_ext: fn(commandBuffer: CommandBuffer, depthClampEnable: Bool32)
     var _cmd_set_polygon_mode_ext: fn(commandBuffer: CommandBuffer, polygonMode: PolygonMode)
     var _cmd_set_rasterization_samples_ext: fn(
@@ -3220,8 +3306,9 @@ struct ExtendedDynamicState3(Copyable):
         commandBuffer: CommandBuffer, coverageReductionMode: CoverageReductionModeNV
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_depth_clamp_enable_ext = Ptr(to=get_device_proc_addr(
@@ -3651,6 +3738,7 @@ struct ExtendedDynamicState3(Copyable):
 
 
 struct ShaderModuleIdentifier(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_shader_module_identifier_ext: fn(
         device: Device,
         shaderModule: ShaderModule,
@@ -3662,8 +3750,9 @@ struct ShaderModuleIdentifier(Copyable):
         pIdentifier: Ptr[ShaderModuleIdentifierEXT, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_shader_module_identifier_ext = Ptr(to=get_device_proc_addr(
@@ -3702,6 +3791,7 @@ struct ShaderModuleIdentifier(Copyable):
 
 
 struct ShaderObject(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_shaders_ext: fn(
         device: Device,
         createInfoCount: UInt32,
@@ -3890,8 +3980,9 @@ struct ShaderObject(Copyable):
         pDepthClampRange: Ptr[DepthClampRangeEXT, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_shaders_ext = Ptr(to=get_device_proc_addr(
@@ -4662,12 +4753,14 @@ struct ShaderObject(Copyable):
 
 
 struct AttachmentFeedbackLoopDynamicState(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_attachment_feedback_loop_enable_ext: fn(
         commandBuffer: CommandBuffer, aspectMask: ImageAspectFlags
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_attachment_feedback_loop_enable_ext = Ptr(to=get_device_proc_addr(
@@ -4685,6 +4778,7 @@ struct AttachmentFeedbackLoopDynamicState(Copyable):
 
 
 struct DeviceGeneratedCommands(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_generated_commands_memory_requirements_ext: fn(
         device: Device,
         pInfo: Ptr[GeneratedCommandsMemoryRequirementsInfoEXT, ImmutAnyOrigin],
@@ -4735,8 +4829,9 @@ struct DeviceGeneratedCommands(Copyable):
         pExecutionSetWrites: Ptr[WriteIndirectExecutionSetShaderEXT, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_generated_commands_memory_requirements_ext = Ptr(to=get_device_proc_addr(
@@ -4911,14 +5006,16 @@ struct DeviceGeneratedCommands(Copyable):
 
 
 struct DepthClampControl(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_depth_clamp_range_ext: fn(
         commandBuffer: CommandBuffer,
         depthClampMode: DepthClampModeEXT,
         pDepthClampRange: Ptr[DepthClampRangeEXT, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_depth_clamp_range_ext = Ptr(to=get_device_proc_addr(
@@ -4941,6 +5038,7 @@ struct DepthClampControl(Copyable):
 
 
 struct ExternalMemoryMetal(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_memory_metal_handle_ext: fn(
         device: Device,
         pGetMetalHandleInfo: Ptr[MemoryGetMetalHandleInfoEXT, ImmutAnyOrigin],
@@ -4953,8 +5051,9 @@ struct ExternalMemoryMetal(Copyable):
         pMemoryMetalHandleProperties: Ptr[MemoryMetalHandlePropertiesEXT, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_metal_handle_ext = Ptr(to=get_device_proc_addr(
@@ -4998,12 +5097,14 @@ struct ExternalMemoryMetal(Copyable):
 
 
 struct FragmentDensityMapOffset(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_end_rendering_2_ext: fn(
         commandBuffer: CommandBuffer, pRenderingEndInfo: Ptr[RenderingEndInfoEXT, ImmutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_end_rendering_2_ext = Ptr(to=get_device_proc_addr(

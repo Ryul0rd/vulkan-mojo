@@ -1,8 +1,10 @@
-from sys.ffi import CStringSlice, c_char
+from sys.ffi import OwnedDLHandle, CStringSlice, c_char
+from memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct ScreenSurface(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_screen_surface_qnx: fn(
         instance: Instance,
         pCreateInfo: Ptr[ScreenSurfaceCreateInfoQNX, ImmutAnyOrigin],
@@ -13,8 +15,9 @@ struct ScreenSurface(Copyable):
         physicalDevice: PhysicalDevice, queueFamilyIndex: UInt32, window: screen_window_t
     ) -> Bool32
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_screen_surface_qnx = Ptr(to=get_instance_proc_addr(
@@ -55,14 +58,16 @@ struct ScreenSurface(Copyable):
 
 
 struct ExternalMemoryScreenBuffer(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_screen_buffer_properties_qnx: fn(
         device: Device,
         buffer: screen_buffer_t,
         pProperties: Ptr[ScreenBufferPropertiesQNX, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_screen_buffer_properties_qnx = Ptr(to=get_device_proc_addr(

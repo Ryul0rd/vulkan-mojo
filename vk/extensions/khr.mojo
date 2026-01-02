@@ -1,8 +1,10 @@
-from sys.ffi import CStringSlice, c_char
+from sys.ffi import OwnedDLHandle, CStringSlice, c_char
+from memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct Surface(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _destroy_surface_khr: fn(
         instance: Instance,
         surface: SurfaceKHR,
@@ -32,8 +34,9 @@ struct Surface(Copyable):
         pPresentModes: Ptr[PresentModeKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._destroy_surface_khr = Ptr(to=get_instance_proc_addr(
@@ -172,6 +175,7 @@ struct Surface(Copyable):
 
 
 struct Swapchain(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_swapchain_khr: fn(
         device: Device,
         pCreateInfo: Ptr[SwapchainCreateInfoKHR, ImmutAnyOrigin],
@@ -221,8 +225,9 @@ struct Swapchain(Copyable):
         pImageIndex: Ptr[UInt32, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_swapchain_khr = Ptr(to=get_device_proc_addr(
@@ -419,6 +424,7 @@ struct Swapchain(Copyable):
 
 
 struct Display(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_display_properties_khr: fn(
         physicalDevice: PhysicalDevice,
         pPropertyCount: Ptr[UInt32, MutAnyOrigin],
@@ -461,8 +467,9 @@ struct Display(Copyable):
         pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_display_properties_khr = Ptr(to=get_instance_proc_addr(
@@ -691,6 +698,7 @@ struct Display(Copyable):
 
 
 struct DisplaySwapchain(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_shared_swapchains_khr: fn(
         device: Device,
         swapchainCount: UInt32,
@@ -699,8 +707,9 @@ struct DisplaySwapchain(Copyable):
         pSwapchains: Ptr[SwapchainKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_shared_swapchains_khr = Ptr(to=get_device_proc_addr(
@@ -725,6 +734,7 @@ struct DisplaySwapchain(Copyable):
 
 
 struct XlibSurface(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_xlib_surface_khr: fn(
         instance: Instance,
         pCreateInfo: Ptr[XlibSurfaceCreateInfoKHR, ImmutAnyOrigin],
@@ -738,8 +748,9 @@ struct XlibSurface(Copyable):
         visualID: VisualID,
     ) -> Bool32
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_xlib_surface_khr = Ptr(to=get_instance_proc_addr(
@@ -784,6 +795,7 @@ struct XlibSurface(Copyable):
 
 
 struct XcbSurface(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_xcb_surface_khr: fn(
         instance: Instance,
         pCreateInfo: Ptr[XcbSurfaceCreateInfoKHR, ImmutAnyOrigin],
@@ -797,8 +809,9 @@ struct XcbSurface(Copyable):
         visual_id: xcb_visualid_t,
     ) -> Bool32
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_xcb_surface_khr = Ptr(to=get_instance_proc_addr(
@@ -846,6 +859,7 @@ struct XcbSurface(Copyable):
 
 
 struct WaylandSurface(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_wayland_surface_khr: fn(
         instance: Instance,
         pCreateInfo: Ptr[WaylandSurfaceCreateInfoKHR, ImmutAnyOrigin],
@@ -858,8 +872,9 @@ struct WaylandSurface(Copyable):
         display: Ptr[wl_display, MutAnyOrigin],
     ) -> Bool32
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_wayland_surface_khr = Ptr(to=get_instance_proc_addr(
@@ -900,6 +915,7 @@ struct WaylandSurface(Copyable):
 
 
 struct AndroidSurface(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_android_surface_khr: fn(
         instance: Instance,
         pCreateInfo: Ptr[AndroidSurfaceCreateInfoKHR, ImmutAnyOrigin],
@@ -907,8 +923,9 @@ struct AndroidSurface(Copyable):
         pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_android_surface_khr = Ptr(to=get_instance_proc_addr(
@@ -935,6 +952,7 @@ struct AndroidSurface(Copyable):
 
 
 struct Win32Surface(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_win_32_surface_khr: fn(
         instance: Instance,
         pCreateInfo: Ptr[Win32SurfaceCreateInfoKHR, ImmutAnyOrigin],
@@ -945,8 +963,9 @@ struct Win32Surface(Copyable):
         physicalDevice: PhysicalDevice, queueFamilyIndex: UInt32
     ) -> Bool32
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_win_32_surface_khr = Ptr(to=get_instance_proc_addr(
@@ -987,6 +1006,7 @@ struct Win32Surface(Copyable):
 
 
 struct VideoQueue(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_video_capabilities_khr: fn(
         physicalDevice: PhysicalDevice,
         pVideoProfile: Ptr[VideoProfileInfoKHR, ImmutAnyOrigin],
@@ -1048,8 +1068,9 @@ struct VideoQueue(Copyable):
         pCodingControlInfo: Ptr[VideoCodingControlInfoKHR, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_video_capabilities_khr = Ptr(to=get_device_proc_addr(
@@ -1316,12 +1337,14 @@ struct VideoQueue(Copyable):
 
 
 struct VideoDecodeQueue(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_decode_video_khr: fn(
         commandBuffer: CommandBuffer, pDecodeInfo: Ptr[VideoDecodeInfoKHR, ImmutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_decode_video_khr = Ptr(to=get_device_proc_addr(
@@ -1339,13 +1362,15 @@ struct VideoDecodeQueue(Copyable):
 
 
 struct DynamicRendering(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_begin_rendering: fn(
         commandBuffer: CommandBuffer, pRenderingInfo: Ptr[RenderingInfo, ImmutAnyOrigin]
     )
     var _cmd_end_rendering: fn(commandBuffer: CommandBuffer)
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_begin_rendering = Ptr(to=get_device_proc_addr(
@@ -1373,6 +1398,7 @@ struct DynamicRendering(Copyable):
 
 
 struct GetPhysicalDeviceProperties2(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_features_2: fn(
         physicalDevice: PhysicalDevice, pFeatures: Ptr[PhysicalDeviceFeatures2, MutAnyOrigin]
     )
@@ -1405,8 +1431,9 @@ struct GetPhysicalDeviceProperties2(Copyable):
         pProperties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_features_2 = Ptr(to=get_instance_proc_addr(
@@ -1572,6 +1599,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
 
 
 struct DeviceGroup(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_device_group_peer_memory_features: fn(
         device: Device,
         heapIndex: UInt32,
@@ -1610,8 +1638,9 @@ struct DeviceGroup(Copyable):
         pImageIndex: Ptr[UInt32, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_device_group_peer_memory_features = Ptr(to=get_device_proc_addr(
@@ -1764,12 +1793,14 @@ struct DeviceGroup(Copyable):
 
 
 struct Maintenance1(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _trim_command_pool: fn(
         device: Device, commandPool: CommandPool, flags: CommandPoolTrimFlags
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._trim_command_pool = Ptr(to=get_device_proc_addr(
@@ -1787,14 +1818,16 @@ struct Maintenance1(Copyable):
 
 
 struct DeviceGroupCreation(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _enumerate_physical_device_groups: fn(
         instance: Instance,
         pPhysicalDeviceGroupCount: Ptr[UInt32, MutAnyOrigin],
         pPhysicalDeviceGroupProperties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._enumerate_physical_device_groups = Ptr(to=get_instance_proc_addr(
@@ -1839,14 +1872,16 @@ struct DeviceGroupCreation(Copyable):
 
 
 struct ExternalMemoryCapabilities(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_external_buffer_properties: fn(
         physicalDevice: PhysicalDevice,
         pExternalBufferInfo: Ptr[PhysicalDeviceExternalBufferInfo, ImmutAnyOrigin],
         pExternalBufferProperties: Ptr[ExternalBufferProperties, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_external_buffer_properties = Ptr(to=get_instance_proc_addr(
@@ -1871,6 +1906,7 @@ struct ExternalMemoryCapabilities(Copyable):
 
 
 struct ExternalMemoryWin32(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_memory_win_32_handle_khr: fn(
         device: Device,
         pGetWin32HandleInfo: Ptr[MemoryGetWin32HandleInfoKHR, ImmutAnyOrigin],
@@ -1883,8 +1919,9 @@ struct ExternalMemoryWin32(Copyable):
         pMemoryWin32HandleProperties: Ptr[MemoryWin32HandlePropertiesKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_win_32_handle_khr = Ptr(to=get_device_proc_addr(
@@ -1930,6 +1967,7 @@ struct ExternalMemoryWin32(Copyable):
 
 
 struct ExternalMemoryFd(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_memory_fd_khr: fn(
         device: Device,
         pGetFdInfo: Ptr[MemoryGetFdInfoKHR, ImmutAnyOrigin],
@@ -1942,8 +1980,9 @@ struct ExternalMemoryFd(Copyable):
         pMemoryFdProperties: Ptr[MemoryFdPropertiesKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_fd_khr = Ptr(to=get_device_proc_addr(
@@ -1981,14 +2020,16 @@ struct ExternalMemoryFd(Copyable):
 
 
 struct ExternalSemaphoreCapabilities(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_external_semaphore_properties: fn(
         physicalDevice: PhysicalDevice,
         pExternalSemaphoreInfo: Ptr[PhysicalDeviceExternalSemaphoreInfo, ImmutAnyOrigin],
         pExternalSemaphoreProperties: Ptr[ExternalSemaphoreProperties, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_external_semaphore_properties = Ptr(to=get_instance_proc_addr(
@@ -2013,6 +2054,7 @@ struct ExternalSemaphoreCapabilities(Copyable):
 
 
 struct ExternalSemaphoreWin32(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _import_semaphore_win_32_handle_khr: fn(
         device: Device,
         pImportSemaphoreWin32HandleInfo: Ptr[ImportSemaphoreWin32HandleInfoKHR, ImmutAnyOrigin],
@@ -2023,8 +2065,9 @@ struct ExternalSemaphoreWin32(Copyable):
         pHandle: Ptr[HANDLE, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._import_semaphore_win_32_handle_khr = Ptr(to=get_device_proc_addr(
@@ -2064,6 +2107,7 @@ struct ExternalSemaphoreWin32(Copyable):
 
 
 struct ExternalSemaphoreFd(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _import_semaphore_fd_khr: fn(
         device: Device, pImportSemaphoreFdInfo: Ptr[ImportSemaphoreFdInfoKHR, ImmutAnyOrigin]
     ) -> Result
@@ -2073,8 +2117,9 @@ struct ExternalSemaphoreFd(Copyable):
         pFd: Ptr[Int32, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._import_semaphore_fd_khr = Ptr(to=get_device_proc_addr(
@@ -2110,6 +2155,7 @@ struct ExternalSemaphoreFd(Copyable):
 
 
 struct PushDescriptor(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_push_descriptor_set: fn(
         commandBuffer: CommandBuffer,
         pipelineBindPoint: PipelineBindPoint,
@@ -2126,8 +2172,9 @@ struct PushDescriptor(Copyable):
         pData: Ptr[NoneType, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_push_descriptor_set = Ptr(to=get_device_proc_addr(
@@ -2181,6 +2228,7 @@ struct PushDescriptor(Copyable):
 
 
 struct DescriptorUpdateTemplate(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_descriptor_update_template: fn(
         device: Device,
         pCreateInfo: Ptr[DescriptorUpdateTemplateCreateInfo, ImmutAnyOrigin],
@@ -2206,8 +2254,9 @@ struct DescriptorUpdateTemplate(Copyable):
         pData: Ptr[NoneType, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_descriptor_update_template = Ptr(to=get_device_proc_addr(
@@ -2292,6 +2341,7 @@ struct DescriptorUpdateTemplate(Copyable):
 
 
 struct CreateRenderpass2(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_render_pass_2: fn(
         device: Device,
         pCreateInfo: Ptr[RenderPassCreateInfo2, ImmutAnyOrigin],
@@ -2312,8 +2362,9 @@ struct CreateRenderpass2(Copyable):
         commandBuffer: CommandBuffer, pSubpassEndInfo: Ptr[SubpassEndInfo, ImmutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_render_pass_2 = Ptr(to=get_device_proc_addr(
@@ -2392,10 +2443,12 @@ struct CreateRenderpass2(Copyable):
 
 
 struct SharedPresentableImage(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_swapchain_status_khr: fn(device: Device, swapchain: SwapchainKHR) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_swapchain_status_khr = Ptr(to=get_device_proc_addr(
@@ -2411,14 +2464,16 @@ struct SharedPresentableImage(Copyable):
 
 
 struct ExternalFenceCapabilities(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_external_fence_properties: fn(
         physicalDevice: PhysicalDevice,
         pExternalFenceInfo: Ptr[PhysicalDeviceExternalFenceInfo, ImmutAnyOrigin],
         pExternalFenceProperties: Ptr[ExternalFenceProperties, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_external_fence_properties = Ptr(to=get_instance_proc_addr(
@@ -2443,6 +2498,7 @@ struct ExternalFenceCapabilities(Copyable):
 
 
 struct ExternalFenceWin32(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _import_fence_win_32_handle_khr: fn(
         device: Device,
         pImportFenceWin32HandleInfo: Ptr[ImportFenceWin32HandleInfoKHR, ImmutAnyOrigin],
@@ -2453,8 +2509,9 @@ struct ExternalFenceWin32(Copyable):
         pHandle: Ptr[HANDLE, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._import_fence_win_32_handle_khr = Ptr(to=get_device_proc_addr(
@@ -2490,6 +2547,7 @@ struct ExternalFenceWin32(Copyable):
 
 
 struct ExternalFenceFd(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _import_fence_fd_khr: fn(
         device: Device, pImportFenceFdInfo: Ptr[ImportFenceFdInfoKHR, ImmutAnyOrigin]
     ) -> Result
@@ -2499,8 +2557,9 @@ struct ExternalFenceFd(Copyable):
         pFd: Ptr[Int32, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._import_fence_fd_khr = Ptr(to=get_device_proc_addr(
@@ -2534,6 +2593,7 @@ struct ExternalFenceFd(Copyable):
 
 
 struct PerformanceQuery(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _enumerate_physical_device_queue_family_performance_query_counters_khr: fn(
         physicalDevice: PhysicalDevice,
         queueFamilyIndex: UInt32,
@@ -2551,8 +2611,9 @@ struct PerformanceQuery(Copyable):
     ) -> Result
     var _release_profiling_lock_khr: fn(device: Device)
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._enumerate_physical_device_queue_family_performance_query_counters_khr = Ptr(to=get_device_proc_addr(
@@ -2624,6 +2685,7 @@ struct PerformanceQuery(Copyable):
 
 
 struct GetSurfaceCapabilities2(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_surface_capabilities_2_khr: fn(
         physicalDevice: PhysicalDevice,
         pSurfaceInfo: Ptr[PhysicalDeviceSurfaceInfo2KHR, ImmutAnyOrigin],
@@ -2636,8 +2698,9 @@ struct GetSurfaceCapabilities2(Copyable):
         pSurfaceFormats: Ptr[SurfaceFormat2KHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_surface_capabilities_2_khr = Ptr(to=get_instance_proc_addr(
@@ -2705,6 +2768,7 @@ struct GetSurfaceCapabilities2(Copyable):
 
 
 struct GetDisplayProperties2(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_display_properties_2_khr: fn(
         physicalDevice: PhysicalDevice,
         pPropertyCount: Ptr[UInt32, MutAnyOrigin],
@@ -2727,8 +2791,9 @@ struct GetDisplayProperties2(Copyable):
         pCapabilities: Ptr[DisplayPlaneCapabilities2KHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_display_properties_2_khr = Ptr(to=get_instance_proc_addr(
@@ -2871,6 +2936,7 @@ struct GetDisplayProperties2(Copyable):
 
 
 struct GetMemoryRequirements2(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_image_memory_requirements_2: fn(
         device: Device,
         pInfo: Ptr[ImageMemoryRequirementsInfo2, ImmutAnyOrigin],
@@ -2888,8 +2954,9 @@ struct GetMemoryRequirements2(Copyable):
         pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_image_memory_requirements_2 = Ptr(to=get_device_proc_addr(
@@ -2972,6 +3039,7 @@ struct GetMemoryRequirements2(Copyable):
 
 
 struct AccelerationStructure(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_acceleration_structure_khr: fn(
         device: Device,
         pCreateInfo: Ptr[AccelerationStructureCreateInfoKHR, ImmutAnyOrigin],
@@ -3063,8 +3131,9 @@ struct AccelerationStructure(Copyable):
         pSizeInfo: Ptr[AccelerationStructureBuildSizesInfoKHR, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_acceleration_structure_khr = Ptr(to=get_device_proc_addr(
@@ -3375,6 +3444,7 @@ struct AccelerationStructure(Copyable):
 
 
 struct RayTracingPipeline(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_trace_rays_khr: fn(
         commandBuffer: CommandBuffer,
         pRaygenShaderBindingTable: Ptr[StridedDeviceAddressRegionKHR, ImmutAnyOrigin],
@@ -3425,8 +3495,9 @@ struct RayTracingPipeline(Copyable):
         commandBuffer: CommandBuffer, pipelineStackSize: UInt32
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_trace_rays_khr = Ptr(to=get_device_proc_addr(
@@ -3581,6 +3652,7 @@ struct RayTracingPipeline(Copyable):
 
 
 struct SamplerYcbcrConversion(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_sampler_ycbcr_conversion: fn(
         device: Device,
         pCreateInfo: Ptr[SamplerYcbcrConversionCreateInfo, ImmutAnyOrigin],
@@ -3593,8 +3665,9 @@ struct SamplerYcbcrConversion(Copyable):
         pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_sampler_ycbcr_conversion = Ptr(to=get_device_proc_addr(
@@ -3636,6 +3709,7 @@ struct SamplerYcbcrConversion(Copyable):
 
 
 struct BindMemory2(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _bind_buffer_memory_2: fn(
         device: Device, bindInfoCount: UInt32, pBindInfos: Ptr[BindBufferMemoryInfo, ImmutAnyOrigin]
     ) -> Result
@@ -3643,8 +3717,9 @@ struct BindMemory2(Copyable):
         device: Device, bindInfoCount: UInt32, pBindInfos: Ptr[BindImageMemoryInfo, ImmutAnyOrigin]
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._bind_buffer_memory_2 = Ptr(to=get_device_proc_addr(
@@ -3680,14 +3755,16 @@ struct BindMemory2(Copyable):
 
 
 struct Maintenance3(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_descriptor_set_layout_support: fn(
         device: Device,
         pCreateInfo: Ptr[DescriptorSetLayoutCreateInfo, ImmutAnyOrigin],
         pSupport: Ptr[DescriptorSetLayoutSupport, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_descriptor_set_layout_support = Ptr(to=get_device_proc_addr(
@@ -3712,6 +3789,7 @@ struct Maintenance3(Copyable):
 
 
 struct DrawIndirectCount(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_draw_indirect_count: fn(
         commandBuffer: CommandBuffer,
         buffer: Buffer,
@@ -3731,8 +3809,9 @@ struct DrawIndirectCount(Copyable):
         stride: UInt32,
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(
@@ -3792,6 +3871,7 @@ struct DrawIndirectCount(Copyable):
 
 
 struct TimelineSemaphore(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_semaphore_counter_value: fn(
         device: Device, semaphore: Semaphore, pValue: Ptr[UInt64, MutAnyOrigin]
     ) -> Result
@@ -3802,8 +3882,9 @@ struct TimelineSemaphore(Copyable):
         device: Device, pSignalInfo: Ptr[SemaphoreSignalInfo, ImmutAnyOrigin]
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_semaphore_counter_value = Ptr(to=get_device_proc_addr(
@@ -3847,6 +3928,7 @@ struct TimelineSemaphore(Copyable):
 
 
 struct FragmentShadingRate(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_fragment_shading_rates_khr: fn(
         physicalDevice: PhysicalDevice,
         pFragmentShadingRateCount: Ptr[UInt32, MutAnyOrigin],
@@ -3858,8 +3940,9 @@ struct FragmentShadingRate(Copyable):
         combinerOps: InlineArray[FragmentShadingRateCombinerOpKHR, Int(2)],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_fragment_shading_rates_khr = Ptr(to=get_device_proc_addr(
@@ -3923,6 +4006,7 @@ struct FragmentShadingRate(Copyable):
 
 
 struct DynamicRenderingLocalRead(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_rendering_attachment_locations: fn(
         commandBuffer: CommandBuffer,
         pLocationInfo: Ptr[RenderingAttachmentLocationInfo, ImmutAnyOrigin],
@@ -3932,8 +4016,9 @@ struct DynamicRenderingLocalRead(Copyable):
         pInputAttachmentIndexInfo: Ptr[RenderingInputAttachmentIndexInfo, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_rendering_attachment_locations = Ptr(to=get_device_proc_addr(
@@ -3970,12 +4055,14 @@ struct DynamicRenderingLocalRead(Copyable):
 
 
 struct PresentWait(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _wait_for_present_khr: fn(
         device: Device, swapchain: SwapchainKHR, presentId: UInt64, timeout: UInt64
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._wait_for_present_khr = Ptr(to=get_device_proc_addr(
@@ -3993,6 +4080,7 @@ struct PresentWait(Copyable):
 
 
 struct BufferDeviceAddress(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_buffer_device_address: fn(
         device: Device, pInfo: Ptr[BufferDeviceAddressInfo, ImmutAnyOrigin]
     ) -> DeviceAddress
@@ -4003,8 +4091,9 @@ struct BufferDeviceAddress(Copyable):
         device: Device, pInfo: Ptr[DeviceMemoryOpaqueCaptureAddressInfo, ImmutAnyOrigin]
     ) -> UInt64
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_buffer_device_address = Ptr(to=get_device_proc_addr(
@@ -4052,6 +4141,7 @@ struct BufferDeviceAddress(Copyable):
 
 
 struct DeferredHostOperations(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_deferred_operation_khr: fn(
         device: Device,
         pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
@@ -4070,8 +4160,9 @@ struct DeferredHostOperations(Copyable):
     ) -> Result
     var _deferred_operation_join_khr: fn(device: Device, operation: DeferredOperationKHR) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_deferred_operation_khr = Ptr(to=get_device_proc_addr(
@@ -4145,6 +4236,7 @@ struct DeferredHostOperations(Copyable):
 
 
 struct PipelineExecutableProperties(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_pipeline_executable_properties_khr: fn(
         device: Device,
         pPipelineInfo: Ptr[PipelineInfoKHR, ImmutAnyOrigin],
@@ -4164,8 +4256,9 @@ struct PipelineExecutableProperties(Copyable):
         pInternalRepresentations: Ptr[PipelineExecutableInternalRepresentationKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_pipeline_executable_properties_khr = Ptr(to=get_device_proc_addr(
@@ -4303,6 +4396,7 @@ struct PipelineExecutableProperties(Copyable):
 
 
 struct MapMemory2(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _map_memory_2: fn(
         device: Device,
         pMemoryMapInfo: Ptr[MemoryMapInfo, ImmutAnyOrigin],
@@ -4312,8 +4406,9 @@ struct MapMemory2(Copyable):
         device: Device, pMemoryUnmapInfo: Ptr[MemoryUnmapInfo, ImmutAnyOrigin]
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._map_memory_2 = Ptr(to=get_device_proc_addr(
@@ -4346,6 +4441,7 @@ struct MapMemory2(Copyable):
 
 
 struct VideoEncodeQueue(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_video_encode_quality_level_properties_khr: fn(
         physicalDevice: PhysicalDevice,
         pQualityLevelInfo: Ptr[PhysicalDeviceVideoEncodeQualityLevelInfoKHR, ImmutAnyOrigin],
@@ -4362,8 +4458,9 @@ struct VideoEncodeQueue(Copyable):
         commandBuffer: CommandBuffer, pEncodeInfo: Ptr[VideoEncodeInfoKHR, ImmutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_video_encode_quality_level_properties_khr = Ptr(to=get_device_proc_addr(
@@ -4456,6 +4553,7 @@ struct VideoEncodeQueue(Copyable):
 
 
 struct Synchronization2(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_event_2: fn(
         commandBuffer: CommandBuffer,
         event: Event,
@@ -4483,8 +4581,9 @@ struct Synchronization2(Copyable):
         queue: Queue, submitCount: UInt32, pSubmits: Ptr[SubmitInfo2, ImmutAnyOrigin], fence: Fence
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_event_2 = Ptr(to=get_device_proc_addr(
@@ -4578,6 +4677,7 @@ struct Synchronization2(Copyable):
 
 
 struct CopyCommands2(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_copy_buffer_2: fn(
         commandBuffer: CommandBuffer, pCopyBufferInfo: Ptr[CopyBufferInfo2, ImmutAnyOrigin]
     )
@@ -4599,8 +4699,9 @@ struct CopyCommands2(Copyable):
         commandBuffer: CommandBuffer, pResolveImageInfo: Ptr[ResolveImageInfo2, ImmutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_copy_buffer_2 = Ptr(to=get_device_proc_addr(
@@ -4684,12 +4785,14 @@ struct CopyCommands2(Copyable):
 
 
 struct RayTracingMaintenance1(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_trace_rays_indirect_2_khr: fn(
         commandBuffer: CommandBuffer, indirectDeviceAddress: DeviceAddress
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_trace_rays_indirect_2_khr = Ptr(to=get_device_proc_addr(
@@ -4707,6 +4810,7 @@ struct RayTracingMaintenance1(Copyable):
 
 
 struct Maintenance4(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_device_buffer_memory_requirements: fn(
         device: Device,
         pInfo: Ptr[DeviceBufferMemoryRequirements, ImmutAnyOrigin],
@@ -4724,8 +4828,9 @@ struct Maintenance4(Copyable):
         pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_device_buffer_memory_requirements = Ptr(to=get_device_proc_addr(
@@ -4810,6 +4915,7 @@ struct Maintenance4(Copyable):
 
 
 struct Maintenance5(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_bind_index_buffer_2: fn(
         commandBuffer: CommandBuffer,
         buffer: Buffer,
@@ -4834,8 +4940,9 @@ struct Maintenance5(Copyable):
         pLayout: Ptr[SubresourceLayout2, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_bind_index_buffer_2 = Ptr(to=get_device_proc_addr(
@@ -4911,14 +5018,16 @@ struct Maintenance5(Copyable):
 
 
 struct PresentWait2(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _wait_for_present_2_khr: fn(
         device: Device,
         swapchain: SwapchainKHR,
         pPresentWait2Info: Ptr[PresentWait2InfoKHR, ImmutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._wait_for_present_2_khr = Ptr(to=get_device_proc_addr(
@@ -4938,6 +5047,7 @@ struct PresentWait2(Copyable):
 
 
 struct PipelineBinary(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_pipeline_binaries_khr: fn(
         device: Device,
         pCreateInfo: Ptr[PipelineBinaryCreateInfoKHR, ImmutAnyOrigin],
@@ -4967,8 +5077,9 @@ struct PipelineBinary(Copyable):
         pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_pipeline_binaries_khr = Ptr(to=get_device_proc_addr(
@@ -5092,12 +5203,14 @@ struct PipelineBinary(Copyable):
 
 
 struct SwapchainMaintenance1(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _release_swapchain_images_khr: fn(
         device: Device, pReleaseInfo: Ptr[ReleaseSwapchainImagesInfoKHR, ImmutAnyOrigin]
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._release_swapchain_images_khr = Ptr(to=get_device_proc_addr(
@@ -5117,14 +5230,16 @@ struct SwapchainMaintenance1(Copyable):
 
 
 struct CooperativeMatrix(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_cooperative_matrix_properties_khr: fn(
         physicalDevice: PhysicalDevice,
         pPropertyCount: Ptr[UInt32, MutAnyOrigin],
         pProperties: Ptr[CooperativeMatrixPropertiesKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_cooperative_matrix_properties_khr = Ptr(to=get_device_proc_addr(
@@ -5169,12 +5284,14 @@ struct CooperativeMatrix(Copyable):
 
 
 struct LineRasterization(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_line_stipple: fn(
         commandBuffer: CommandBuffer, lineStippleFactor: UInt32, lineStipplePattern: UInt16
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_line_stipple = Ptr(to=get_device_proc_addr(
@@ -5197,6 +5314,7 @@ struct LineRasterization(Copyable):
 
 
 struct CalibratedTimestamps(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_calibrateable_time_domains_khr: fn(
         physicalDevice: PhysicalDevice,
         pTimeDomainCount: Ptr[UInt32, MutAnyOrigin],
@@ -5210,8 +5328,9 @@ struct CalibratedTimestamps(Copyable):
         pMaxDeviation: Ptr[UInt64, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_calibrateable_time_domains_khr = Ptr(to=get_device_proc_addr(
@@ -5279,6 +5398,7 @@ struct CalibratedTimestamps(Copyable):
 
 
 struct Maintenance6(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_bind_descriptor_sets_2: fn(
         commandBuffer: CommandBuffer,
         pBindDescriptorSetsInfo: Ptr[BindDescriptorSetsInfo, ImmutAnyOrigin],
@@ -5303,8 +5423,9 @@ struct Maintenance6(Copyable):
         pBindDescriptorBufferEmbeddedSamplersInfo: Ptr[BindDescriptorBufferEmbeddedSamplersInfoEXT, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_bind_descriptor_sets_2 = Ptr(to=get_device_proc_addr(

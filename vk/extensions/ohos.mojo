@@ -1,8 +1,10 @@
-from sys.ffi import CStringSlice, c_char
+from sys.ffi import OwnedDLHandle, CStringSlice, c_char
+from memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct Surface(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_surface_ohos: fn(
         instance: Instance,
         pCreateInfo: Ptr[SurfaceCreateInfoOHOS, ImmutAnyOrigin],
@@ -10,8 +12,9 @@ struct Surface(Copyable):
         pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, instance: Instance) raises:
-        var get_instance_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_surface_ohos = Ptr(to=get_instance_proc_addr(

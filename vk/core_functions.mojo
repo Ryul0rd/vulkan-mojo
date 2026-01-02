@@ -1,4 +1,5 @@
-from sys.ffi import OwnedDLHandle, _DLHandle, RTLD, CStringSlice, c_char
+from sys.ffi import OwnedDLHandle, RTLD, CStringSlice, c_char
+from memory import ArcPointer
 from .fn_types import *
 from .handles import *
 from .structs import *
@@ -9,20 +10,20 @@ comptime Ptr = UnsafePointer
 
 
 trait GlobalFunctions:
-    fn borrow_handle(self) -> _DLHandle:
+    fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
         ...
 
 
 struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
-    var _handle: OwnedDLHandle
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: GlobalFunctionAdditionsV1_0
 
     fn __init__(out self) raises:
-        self._handle = OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
-        self._v1_0 = GlobalFunctionAdditionsV1_0(self._handle.borrow())
+        self._dlhandle = ArcPointer(OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL))
+        self._v1_0 = GlobalFunctionAdditionsV1_0(self._dlhandle[])
 
-    fn borrow_handle(self) -> _DLHandle:
-        return self._handle.borrow()
+    fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
+        return self._dlhandle
 
     fn create_instance(
         self,
@@ -120,17 +121,17 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
 
 
 struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
-    var _handle: OwnedDLHandle
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: GlobalFunctionAdditionsV1_0
     var _v1_1: GlobalFunctionAdditionsV1_1
 
     fn __init__(out self) raises:
-        self._handle = OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
-        self._v1_0 = GlobalFunctionAdditionsV1_0(self._handle.borrow())
-        self._v1_1 = GlobalFunctionAdditionsV1_1(self._handle.borrow())
+        self._dlhandle = ArcPointer(OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL))
+        self._v1_0 = GlobalFunctionAdditionsV1_0(self._dlhandle[])
+        self._v1_1 = GlobalFunctionAdditionsV1_1(self._dlhandle[])
 
-    fn borrow_handle(self) -> _DLHandle:
-        return self._handle.borrow()
+    fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
+        return self._dlhandle
 
     fn create_instance(
         self,
@@ -235,17 +236,17 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
 
 
 struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
-    var _handle: OwnedDLHandle
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: GlobalFunctionAdditionsV1_0
     var _v1_1: GlobalFunctionAdditionsV1_1
 
     fn __init__(out self) raises:
-        self._handle = OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
-        self._v1_0 = GlobalFunctionAdditionsV1_0(self._handle.borrow())
-        self._v1_1 = GlobalFunctionAdditionsV1_1(self._handle.borrow())
+        self._dlhandle = ArcPointer(OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL))
+        self._v1_0 = GlobalFunctionAdditionsV1_0(self._dlhandle[])
+        self._v1_1 = GlobalFunctionAdditionsV1_1(self._dlhandle[])
 
-    fn borrow_handle(self) -> _DLHandle:
-        return self._handle.borrow()
+    fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
+        return self._dlhandle
 
     fn create_instance(
         self,
@@ -350,17 +351,17 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
 
 
 struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
-    var _handle: OwnedDLHandle
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: GlobalFunctionAdditionsV1_0
     var _v1_1: GlobalFunctionAdditionsV1_1
 
     fn __init__(out self) raises:
-        self._handle = OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
-        self._v1_0 = GlobalFunctionAdditionsV1_0(self._handle.borrow())
-        self._v1_1 = GlobalFunctionAdditionsV1_1(self._handle.borrow())
+        self._dlhandle = ArcPointer(OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL))
+        self._v1_0 = GlobalFunctionAdditionsV1_0(self._dlhandle[])
+        self._v1_1 = GlobalFunctionAdditionsV1_1(self._dlhandle[])
 
-    fn borrow_handle(self) -> _DLHandle:
-        return self._handle.borrow()
+    fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
+        return self._dlhandle
 
     fn create_instance(
         self,
@@ -465,17 +466,17 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
 
 
 struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
-    var _handle: OwnedDLHandle
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: GlobalFunctionAdditionsV1_0
     var _v1_1: GlobalFunctionAdditionsV1_1
 
     fn __init__(out self) raises:
-        self._handle = OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL)
-        self._v1_0 = GlobalFunctionAdditionsV1_0(self._handle.borrow())
-        self._v1_1 = GlobalFunctionAdditionsV1_1(self._handle.borrow())
+        self._dlhandle = ArcPointer(OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL))
+        self._v1_0 = GlobalFunctionAdditionsV1_0(self._dlhandle[])
+        self._v1_1 = GlobalFunctionAdditionsV1_1(self._dlhandle[])
 
-    fn borrow_handle(self) -> _DLHandle:
-        return self._handle.borrow()
+    fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
+        return self._dlhandle
 
     fn create_instance(
         self,
@@ -597,8 +598,8 @@ struct GlobalFunctionAdditionsV1_0(Copyable, Movable):
         pPropertyCount: Ptr[UInt32, MutAnyOrigin], pProperties: Ptr[LayerProperties, MutAnyOrigin]
     ) -> Result
 
-    fn __init__(out self, handle: _DLHandle):
-        get_instance_proc_addr = handle.get_function[
+    fn __init__(out self, dlhandle: OwnedDLHandle):
+        get_instance_proc_addr = dlhandle.get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self.create_instance = Ptr(to=get_instance_proc_addr(
@@ -618,8 +619,8 @@ struct GlobalFunctionAdditionsV1_0(Copyable, Movable):
 struct GlobalFunctionAdditionsV1_1(Copyable, Movable):
     var enumerate_instance_version: fn(pApiVersion: Ptr[UInt32, MutAnyOrigin]) -> Result
 
-    fn __init__(out self, handle: _DLHandle):
-        get_instance_proc_addr = handle.get_function[
+    fn __init__(out self, dlhandle: OwnedDLHandle):
+        get_instance_proc_addr = dlhandle.get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self.enumerate_instance_version = Ptr(to=get_instance_proc_addr(
@@ -628,10 +629,12 @@ struct GlobalFunctionAdditionsV1_1(Copyable, Movable):
 
 
 struct InstanceFunctionsV1_0(Movable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: InstanceFunctionAdditionsV1_0
 
     fn __init__(out self, global_functions: GlobalFunctionsV1_0, instance: Instance):
-        self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.borrow_handle())
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.get_dlhandle()[])
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -945,12 +948,14 @@ struct InstanceFunctionsV1_0(Movable):
 
 
 struct InstanceFunctionsV1_1(Movable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: InstanceFunctionAdditionsV1_0
     var _v1_1: InstanceFunctionAdditionsV1_1
 
     fn __init__(out self, global_functions: GlobalFunctionsV1_1, instance: Instance):
-        self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.borrow_handle())
-        self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.borrow_handle())
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.get_dlhandle()[])
+        self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.get_dlhandle()[])
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -1487,12 +1492,14 @@ struct InstanceFunctionsV1_1(Movable):
 
 
 struct InstanceFunctionsV1_2(Movable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: InstanceFunctionAdditionsV1_0
     var _v1_1: InstanceFunctionAdditionsV1_1
 
     fn __init__(out self, global_functions: GlobalFunctionsV1_2, instance: Instance):
-        self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.borrow_handle())
-        self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.borrow_handle())
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.get_dlhandle()[])
+        self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.get_dlhandle()[])
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -2029,14 +2036,16 @@ struct InstanceFunctionsV1_2(Movable):
 
 
 struct InstanceFunctionsV1_3(Movable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: InstanceFunctionAdditionsV1_0
     var _v1_1: InstanceFunctionAdditionsV1_1
     var _v1_3: InstanceFunctionAdditionsV1_3
 
     fn __init__(out self, global_functions: GlobalFunctionsV1_3, instance: Instance):
-        self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.borrow_handle())
-        self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.borrow_handle())
-        self._v1_3 = InstanceFunctionAdditionsV1_3(instance, global_functions.borrow_handle())
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.get_dlhandle()[])
+        self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.get_dlhandle()[])
+        self._v1_3 = InstanceFunctionAdditionsV1_3(instance, global_functions.get_dlhandle()[])
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -2609,14 +2618,16 @@ struct InstanceFunctionsV1_3(Movable):
 
 
 struct InstanceFunctionsV1_4(Movable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: InstanceFunctionAdditionsV1_0
     var _v1_1: InstanceFunctionAdditionsV1_1
     var _v1_3: InstanceFunctionAdditionsV1_3
 
     fn __init__(out self, global_functions: GlobalFunctionsV1_4, instance: Instance):
-        self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.borrow_handle())
-        self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.borrow_handle())
-        self._v1_3 = InstanceFunctionAdditionsV1_3(instance, global_functions.borrow_handle())
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = InstanceFunctionAdditionsV1_0(instance, global_functions.get_dlhandle()[])
+        self._v1_1 = InstanceFunctionAdditionsV1_1(instance, global_functions.get_dlhandle()[])
+        self._v1_3 = InstanceFunctionAdditionsV1_3(instance, global_functions.get_dlhandle()[])
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -3257,8 +3268,8 @@ struct InstanceFunctionAdditionsV1_0(Copyable, Movable):
         pProperties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
     )
 
-    fn __init__(out self, instance: Instance, handle: _DLHandle):
-        get_instance_proc_addr = handle.get_function[
+    fn __init__(out self, instance: Instance, dlhandle: OwnedDLHandle):
+        get_instance_proc_addr = dlhandle.get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self.destroy_instance = Ptr(to=get_instance_proc_addr(
@@ -3355,8 +3366,8 @@ struct InstanceFunctionAdditionsV1_1(Copyable, Movable):
         pExternalSemaphoreProperties: Ptr[ExternalSemaphoreProperties, MutAnyOrigin],
     )
 
-    fn __init__(out self, instance: Instance, handle: _DLHandle):
-        get_instance_proc_addr = handle.get_function[
+    fn __init__(out self, instance: Instance, dlhandle: OwnedDLHandle):
+        get_instance_proc_addr = dlhandle.get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self.enumerate_physical_device_groups = Ptr(to=get_instance_proc_addr(
@@ -3401,8 +3412,8 @@ struct InstanceFunctionAdditionsV1_3(Copyable, Movable):
         pToolProperties: Ptr[PhysicalDeviceToolProperties, MutAnyOrigin],
     ) -> Result
 
-    fn __init__(out self, instance: Instance, handle: _DLHandle):
-        get_instance_proc_addr = handle.get_function[
+    fn __init__(out self, instance: Instance, dlhandle: OwnedDLHandle):
+        get_instance_proc_addr = dlhandle.get_function[
             fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self.get_physical_device_tool_properties = Ptr(to=get_instance_proc_addr(
@@ -3411,10 +3422,12 @@ struct InstanceFunctionAdditionsV1_3(Copyable, Movable):
 
 
 struct DeviceFunctionsV1_0(Movable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: DeviceFunctionAdditionsV1_0
 
     fn __init__(out self, global_functions: GlobalFunctionsV1_0, device: Device):
-        self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.borrow_handle())
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.get_dlhandle()[])
 
     fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
         """See official vulkan docs for details.
@@ -5131,12 +5144,14 @@ struct DeviceFunctionsV1_0(Movable):
 
 
 struct DeviceFunctionsV1_1(Movable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: DeviceFunctionAdditionsV1_0
     var _v1_1: DeviceFunctionAdditionsV1_1
 
     fn __init__(out self, global_functions: GlobalFunctionsV1_1, device: Device):
-        self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.borrow_handle())
-        self._v1_1 = DeviceFunctionAdditionsV1_1(device, global_functions.borrow_handle())
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.get_dlhandle()[])
+        self._v1_1 = DeviceFunctionAdditionsV1_1(device, global_functions.get_dlhandle()[])
 
     fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
         """See official vulkan docs for details.
@@ -7107,14 +7122,16 @@ struct DeviceFunctionsV1_1(Movable):
 
 
 struct DeviceFunctionsV1_2(Movable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: DeviceFunctionAdditionsV1_0
     var _v1_1: DeviceFunctionAdditionsV1_1
     var _v1_2: DeviceFunctionAdditionsV1_2
 
     fn __init__(out self, global_functions: GlobalFunctionsV1_2, device: Device):
-        self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.borrow_handle())
-        self._v1_1 = DeviceFunctionAdditionsV1_1(device, global_functions.borrow_handle())
-        self._v1_2 = DeviceFunctionAdditionsV1_2(device, global_functions.borrow_handle())
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.get_dlhandle()[])
+        self._v1_1 = DeviceFunctionAdditionsV1_1(device, global_functions.get_dlhandle()[])
+        self._v1_2 = DeviceFunctionAdditionsV1_2(device, global_functions.get_dlhandle()[])
 
     fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
         """See official vulkan docs for details.
@@ -9267,16 +9284,18 @@ struct DeviceFunctionsV1_2(Movable):
 
 
 struct DeviceFunctionsV1_3(Movable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: DeviceFunctionAdditionsV1_0
     var _v1_1: DeviceFunctionAdditionsV1_1
     var _v1_2: DeviceFunctionAdditionsV1_2
     var _v1_3: DeviceFunctionAdditionsV1_3
 
     fn __init__(out self, global_functions: GlobalFunctionsV1_3, device: Device):
-        self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.borrow_handle())
-        self._v1_1 = DeviceFunctionAdditionsV1_1(device, global_functions.borrow_handle())
-        self._v1_2 = DeviceFunctionAdditionsV1_2(device, global_functions.borrow_handle())
-        self._v1_3 = DeviceFunctionAdditionsV1_3(device, global_functions.borrow_handle())
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.get_dlhandle()[])
+        self._v1_1 = DeviceFunctionAdditionsV1_1(device, global_functions.get_dlhandle()[])
+        self._v1_2 = DeviceFunctionAdditionsV1_2(device, global_functions.get_dlhandle()[])
+        self._v1_3 = DeviceFunctionAdditionsV1_3(device, global_functions.get_dlhandle()[])
 
     fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
         """See official vulkan docs for details.
@@ -11861,6 +11880,7 @@ struct DeviceFunctionsV1_3(Movable):
 
 
 struct DeviceFunctionsV1_4(Movable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: DeviceFunctionAdditionsV1_0
     var _v1_1: DeviceFunctionAdditionsV1_1
     var _v1_2: DeviceFunctionAdditionsV1_2
@@ -11868,11 +11888,12 @@ struct DeviceFunctionsV1_4(Movable):
     var _v1_4: DeviceFunctionAdditionsV1_4
 
     fn __init__(out self, global_functions: GlobalFunctionsV1_4, device: Device):
-        self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.borrow_handle())
-        self._v1_1 = DeviceFunctionAdditionsV1_1(device, global_functions.borrow_handle())
-        self._v1_2 = DeviceFunctionAdditionsV1_2(device, global_functions.borrow_handle())
-        self._v1_3 = DeviceFunctionAdditionsV1_3(device, global_functions.borrow_handle())
-        self._v1_4 = DeviceFunctionAdditionsV1_4(device, global_functions.borrow_handle())
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = DeviceFunctionAdditionsV1_0(device, global_functions.get_dlhandle()[])
+        self._v1_1 = DeviceFunctionAdditionsV1_1(device, global_functions.get_dlhandle()[])
+        self._v1_2 = DeviceFunctionAdditionsV1_2(device, global_functions.get_dlhandle()[])
+        self._v1_3 = DeviceFunctionAdditionsV1_3(device, global_functions.get_dlhandle()[])
+        self._v1_4 = DeviceFunctionAdditionsV1_4(device, global_functions.get_dlhandle()[])
 
     fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
         """See official vulkan docs for details.
@@ -15304,8 +15325,8 @@ struct DeviceFunctionAdditionsV1_0(Copyable, Movable):
         pCommandBuffers: Ptr[CommandBuffer, ImmutAnyOrigin],
     )
 
-    fn __init__(out self, device: Device, handle: _DLHandle):
-        get_device_proc_addr = handle.get_function[
+    fn __init__(out self, device: Device, dlhandle: OwnedDLHandle):
+        get_device_proc_addr = dlhandle.get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self.destroy_device = Ptr(to=get_device_proc_addr(
@@ -15752,8 +15773,8 @@ struct DeviceFunctionAdditionsV1_1(Copyable, Movable):
         pSupport: Ptr[DescriptorSetLayoutSupport, MutAnyOrigin],
     )
 
-    fn __init__(out self, device: Device, handle: _DLHandle):
-        get_device_proc_addr = handle.get_function[
+    fn __init__(out self, device: Device, dlhandle: OwnedDLHandle):
+        get_device_proc_addr = dlhandle.get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self.bind_buffer_memory_2 = Ptr(to=get_device_proc_addr(
@@ -15866,8 +15887,8 @@ struct DeviceFunctionAdditionsV1_2(Copyable, Movable):
         device: Device, pInfo: Ptr[DeviceMemoryOpaqueCaptureAddressInfo, ImmutAnyOrigin]
     ) -> UInt64
 
-    fn __init__(out self, device: Device, handle: _DLHandle):
-        get_device_proc_addr = handle.get_function[
+    fn __init__(out self, device: Device, dlhandle: OwnedDLHandle):
+        get_device_proc_addr = dlhandle.get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self.cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(
@@ -16048,8 +16069,8 @@ struct DeviceFunctionAdditionsV1_3(Copyable, Movable):
         pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     )
 
-    fn __init__(out self, device: Device, handle: _DLHandle):
-        get_device_proc_addr = handle.get_function[
+    fn __init__(out self, device: Device, dlhandle: OwnedDLHandle):
+        get_device_proc_addr = dlhandle.get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self.create_private_data_slot = Ptr(to=get_device_proc_addr(
@@ -16250,8 +16271,8 @@ struct DeviceFunctionAdditionsV1_4(Copyable, Movable):
         pTransitions: Ptr[HostImageLayoutTransitionInfo, ImmutAnyOrigin],
     ) -> Result
 
-    fn __init__(out self, device: Device, handle: _DLHandle):
-        get_device_proc_addr = handle.get_function[
+    fn __init__(out self, device: Device, dlhandle: OwnedDLHandle):
+        get_device_proc_addr = dlhandle.get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self.cmd_set_line_stipple = Ptr(to=get_device_proc_addr(

@@ -1,8 +1,10 @@
-from sys.ffi import CStringSlice, c_char
+from sys.ffi import OwnedDLHandle, CStringSlice, c_char
+from memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct ShaderEnqueue(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_execution_graph_pipelines_amdx: fn(
         device: Device,
         pipelineCache: PipelineCache,
@@ -47,8 +49,9 @@ struct ShaderEnqueue(Copyable):
         countInfo: DeviceAddress,
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_execution_graph_pipelines_amdx = Ptr(to=get_device_proc_addr(

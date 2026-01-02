@@ -1,8 +1,10 @@
-from sys.ffi import CStringSlice, c_char
+from sys.ffi import OwnedDLHandle, CStringSlice, c_char
+from memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct BinaryImport(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_cu_module_nvx: fn(
         device: Device,
         pCreateInfo: Ptr[CuModuleCreateInfoNVX, ImmutAnyOrigin],
@@ -27,8 +29,9 @@ struct BinaryImport(Copyable):
         commandBuffer: CommandBuffer, pLaunchInfo: Ptr[CuLaunchInfoNVX, ImmutAnyOrigin]
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_cu_module_nvx = Ptr(to=get_device_proc_addr(
@@ -118,6 +121,7 @@ struct BinaryImport(Copyable):
 
 
 struct ImageViewHandle(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_image_view_handle_nvx: fn(
         device: Device, pInfo: Ptr[ImageViewHandleInfoNVX, ImmutAnyOrigin]
     ) -> UInt32
@@ -130,8 +134,9 @@ struct ImageViewHandle(Copyable):
         pProperties: Ptr[ImageViewAddressPropertiesNVX, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_image_view_handle_nvx = Ptr(to=get_device_proc_addr(

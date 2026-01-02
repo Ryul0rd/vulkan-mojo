@@ -1,8 +1,10 @@
-from sys.ffi import CStringSlice, c_char
+from sys.ffi import OwnedDLHandle, CStringSlice, c_char
+from memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct DrawIndirectCount(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_draw_indirect_count: fn(
         commandBuffer: CommandBuffer,
         buffer: Buffer,
@@ -22,8 +24,9 @@ struct DrawIndirectCount(Copyable):
         stride: UInt32,
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(
@@ -83,6 +86,7 @@ struct DrawIndirectCount(Copyable):
 
 
 struct ShaderInfo(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_shader_info_amd: fn(
         device: Device,
         pipeline: Pipeline,
@@ -92,8 +96,9 @@ struct ShaderInfo(Copyable):
         pInfo: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_shader_info_amd = Ptr(to=get_device_proc_addr(
@@ -150,6 +155,7 @@ struct ShaderInfo(Copyable):
 
 
 struct BufferMarker(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_write_buffer_marker_amd: fn(
         commandBuffer: CommandBuffer,
         pipelineStage: PipelineStageFlagBits,
@@ -165,8 +171,9 @@ struct BufferMarker(Copyable):
         marker: UInt32,
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_write_buffer_marker_amd = Ptr(to=get_device_proc_addr(
@@ -210,12 +217,14 @@ struct BufferMarker(Copyable):
 
 
 struct DisplayNativeHdr(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _set_local_dimming_amd: fn(
         device: Device, swapChain: SwapchainKHR, localDimmingEnable: Bool32
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._set_local_dimming_amd = Ptr(to=get_device_proc_addr(
@@ -233,10 +242,12 @@ struct DisplayNativeHdr(Copyable):
 
 
 struct AntiLag(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
     var _anti_lag_update_amd: fn(device: Device, pData: Ptr[AntiLagDataAMD, ImmutAnyOrigin])
 
-    fn __init__[T: GlobalFunctions](out self, global_fns: T, device: Device) raises:
-        var get_device_proc_addr = global_fns.borrow_handle().get_function[
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._anti_lag_update_amd = Ptr(to=get_device_proc_addr(
