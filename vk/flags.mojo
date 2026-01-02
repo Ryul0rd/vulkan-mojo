@@ -69,6 +69,12 @@ struct FramebufferCreateFlags(Equatable):
     fn __contains__(self, bit: FramebufferCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: FramebufferCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: FramebufferCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct FramebufferCreateFlagBits(Equatable):
@@ -123,6 +129,12 @@ struct QueryPoolCreateFlags(Equatable):
 
     fn __contains__(self, bit: QueryPoolCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: QueryPoolCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: QueryPoolCreateFlagBits) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -179,6 +191,12 @@ struct RenderPassCreateFlags(Equatable):
     fn __contains__(self, bit: RenderPassCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: RenderPassCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: RenderPassCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct RenderPassCreateFlagBits(Equatable):
@@ -233,6 +251,12 @@ struct SamplerCreateFlags(Equatable):
 
     fn __contains__(self, bit: SamplerCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: SamplerCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SamplerCreateFlagBits) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -289,6 +313,12 @@ struct PipelineLayoutCreateFlags(Equatable):
     fn __contains__(self, bit: PipelineLayoutCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PipelineLayoutCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineLayoutCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PipelineLayoutCreateFlagBits(Equatable):
@@ -343,6 +373,12 @@ struct PipelineCacheCreateFlags(Equatable):
 
     fn __contains__(self, bit: PipelineCacheCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PipelineCacheCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineCacheCreateFlagBits) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -399,6 +435,12 @@ struct PipelineDepthStencilStateCreateFlags(Equatable):
     fn __contains__(self, bit: PipelineDepthStencilStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PipelineDepthStencilStateCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineDepthStencilStateCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PipelineDepthStencilStateCreateFlagBits(Equatable):
@@ -453,6 +495,12 @@ struct PipelineDynamicStateCreateFlags(Equatable):
 
     fn __contains__(self, bit: PipelineDynamicStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PipelineDynamicStateCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineDynamicStateCreateFlagBits) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -509,6 +557,12 @@ struct PipelineColorBlendStateCreateFlags(Equatable):
     fn __contains__(self, bit: PipelineColorBlendStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PipelineColorBlendStateCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineColorBlendStateCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PipelineColorBlendStateCreateFlagBits(Equatable):
@@ -563,6 +617,12 @@ struct PipelineMultisampleStateCreateFlags(Equatable):
 
     fn __contains__(self, bit: PipelineMultisampleStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PipelineMultisampleStateCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineMultisampleStateCreateFlagBits) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -619,6 +679,12 @@ struct PipelineRasterizationStateCreateFlags(Equatable):
     fn __contains__(self, bit: PipelineRasterizationStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PipelineRasterizationStateCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineRasterizationStateCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PipelineRasterizationStateCreateFlagBits(Equatable):
@@ -673,6 +739,12 @@ struct PipelineViewportStateCreateFlags(Equatable):
 
     fn __contains__(self, bit: PipelineViewportStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PipelineViewportStateCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineViewportStateCreateFlagBits) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -729,6 +801,12 @@ struct PipelineTessellationStateCreateFlags(Equatable):
     fn __contains__(self, bit: PipelineTessellationStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PipelineTessellationStateCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineTessellationStateCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PipelineTessellationStateCreateFlagBits(Equatable):
@@ -783,6 +861,12 @@ struct PipelineInputAssemblyStateCreateFlags(Equatable):
 
     fn __contains__(self, bit: PipelineInputAssemblyStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PipelineInputAssemblyStateCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineInputAssemblyStateCreateFlagBits) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -839,6 +923,12 @@ struct PipelineVertexInputStateCreateFlags(Equatable):
     fn __contains__(self, bit: PipelineVertexInputStateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PipelineVertexInputStateCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineVertexInputStateCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PipelineVertexInputStateCreateFlagBits(Equatable):
@@ -893,6 +983,12 @@ struct PipelineShaderStageCreateFlags(Equatable):
 
     fn __contains__(self, bit: PipelineShaderStageCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PipelineShaderStageCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineShaderStageCreateFlagBits) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -949,6 +1045,12 @@ struct DescriptorSetLayoutCreateFlags(Equatable):
     fn __contains__(self, bit: DescriptorSetLayoutCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: DescriptorSetLayoutCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DescriptorSetLayoutCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct DescriptorSetLayoutCreateFlagBits(Equatable):
@@ -1003,6 +1105,12 @@ struct BufferViewCreateFlags(Equatable):
 
     fn __contains__(self, bit: BufferViewCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: BufferViewCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: BufferViewCreateFlagBits) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -1059,6 +1167,12 @@ struct InstanceCreateFlags(Equatable):
     fn __contains__(self, bit: InstanceCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: InstanceCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: InstanceCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct InstanceCreateFlagBits(Equatable):
@@ -1113,6 +1227,12 @@ struct DeviceCreateFlags(Equatable):
 
     fn __contains__(self, bit: DeviceCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: DeviceCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DeviceCreateFlagBits) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -1169,6 +1289,12 @@ struct DeviceQueueCreateFlags(Equatable):
     fn __contains__(self, bit: DeviceQueueCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: DeviceQueueCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DeviceQueueCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct DeviceQueueCreateFlagBits(Equatable):
@@ -1223,6 +1349,12 @@ struct QueueFlags(Equatable):
 
     fn __contains__(self, bit: QueueFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: QueueFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: QueueFlagBits) -> Bool:
+        return self & other == other
 
     comptime GRAPHICS = QueueFlagBits(value = 1 << 0)
     comptime COMPUTE = QueueFlagBits(value = 1 << 1)
@@ -1283,6 +1415,12 @@ struct MemoryPropertyFlags(Equatable):
 
     fn __contains__(self, bit: MemoryPropertyFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: MemoryPropertyFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: MemoryPropertyFlagBits) -> Bool:
+        return self & other == other
 
     comptime DEVICE_LOCAL = MemoryPropertyFlagBits(value = 1 << 0)
     comptime HOST_VISIBLE = MemoryPropertyFlagBits(value = 1 << 1)
@@ -1345,6 +1483,12 @@ struct MemoryHeapFlags(Equatable):
     fn __contains__(self, bit: MemoryHeapFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: MemoryHeapFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: MemoryHeapFlagBits) -> Bool:
+        return self & other == other
+
     comptime DEVICE_LOCAL = MemoryHeapFlagBits(value = 1 << 0)
 
 
@@ -1401,6 +1545,12 @@ struct AccessFlags(Equatable):
 
     fn __contains__(self, bit: AccessFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: AccessFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: AccessFlagBits) -> Bool:
+        return self & other == other
 
     comptime INDIRECT_COMMAND_READ = AccessFlagBits(value = 1 << 0)
     comptime INDEX_READ = AccessFlagBits(value = 1 << 1)
@@ -1475,6 +1625,12 @@ struct BufferUsageFlags(Equatable):
     fn __contains__(self, bit: BufferUsageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: BufferUsageFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: BufferUsageFlagBits) -> Bool:
+        return self & other == other
+
     comptime TRANSFER_SRC = BufferUsageFlagBits(value = 1 << 0)
     comptime TRANSFER_DST = BufferUsageFlagBits(value = 1 << 1)
     comptime UNIFORM_TEXEL_BUFFER = BufferUsageFlagBits(value = 1 << 2)
@@ -1540,6 +1696,12 @@ struct BufferCreateFlags(Equatable):
     fn __contains__(self, bit: BufferCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: BufferCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: BufferCreateFlagBits) -> Bool:
+        return self & other == other
+
     comptime SPARSE_BINDING = BufferCreateFlagBits(value = 1 << 0)
     comptime SPARSE_RESIDENCY = BufferCreateFlagBits(value = 1 << 1)
     comptime SPARSE_ALIASED = BufferCreateFlagBits(value = 1 << 2)
@@ -1598,6 +1760,12 @@ struct ShaderStageFlags(Equatable):
 
     fn __contains__(self, bit: ShaderStageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: ShaderStageFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ShaderStageFlagBits) -> Bool:
+        return self & other == other
 
     comptime ALL_GRAPHICS = ShaderStageFlagBits(value = 31)
     comptime ALL = ShaderStageFlagBits(value = 2147483647)
@@ -1663,6 +1831,12 @@ struct ImageUsageFlags(Equatable):
     fn __contains__(self, bit: ImageUsageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ImageUsageFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ImageUsageFlagBits) -> Bool:
+        return self & other == other
+
     comptime TRANSFER_SRC = ImageUsageFlagBits(value = 1 << 0)
     comptime TRANSFER_DST = ImageUsageFlagBits(value = 1 << 1)
     comptime SAMPLED = ImageUsageFlagBits(value = 1 << 2)
@@ -1727,6 +1901,12 @@ struct ImageCreateFlags(Equatable):
     fn __contains__(self, bit: ImageCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ImageCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ImageCreateFlagBits) -> Bool:
+        return self & other == other
+
     comptime SPARSE_BINDING = ImageCreateFlagBits(value = 1 << 0)
     comptime SPARSE_RESIDENCY = ImageCreateFlagBits(value = 1 << 1)
     comptime SPARSE_ALIASED = ImageCreateFlagBits(value = 1 << 2)
@@ -1788,6 +1968,12 @@ struct ImageViewCreateFlags(Equatable):
     fn __contains__(self, bit: ImageViewCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ImageViewCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ImageViewCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct ImageViewCreateFlagBits(Equatable):
@@ -1842,6 +2028,12 @@ struct PipelineCreateFlags(Equatable):
 
     fn __contains__(self, bit: PipelineCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PipelineCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineCreateFlagBits) -> Bool:
+        return self & other == other
 
     comptime DISABLE_OPTIMIZATION = PipelineCreateFlagBits(value = 1 << 0)
     comptime ALLOW_DERIVATIVES = PipelineCreateFlagBits(value = 1 << 1)
@@ -1901,6 +2093,12 @@ struct ColorComponentFlags(Equatable):
 
     fn __contains__(self, bit: ColorComponentFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: ColorComponentFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ColorComponentFlagBits) -> Bool:
+        return self & other == other
 
     comptime R = ColorComponentFlagBits(value = 1 << 0)
     comptime G = ColorComponentFlagBits(value = 1 << 1)
@@ -1962,6 +2160,12 @@ struct FenceCreateFlags(Equatable):
     fn __contains__(self, bit: FenceCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: FenceCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: FenceCreateFlagBits) -> Bool:
+        return self & other == other
+
     comptime SIGNALED = FenceCreateFlagBits(value = 1 << 0)
 
 
@@ -2019,6 +2223,12 @@ struct SemaphoreCreateFlags(Equatable):
     fn __contains__(self, bit: SemaphoreCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: SemaphoreCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SemaphoreCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct SemaphoreCreateFlagBits(Equatable):
@@ -2073,6 +2283,12 @@ struct FormatFeatureFlags(Equatable):
 
     fn __contains__(self, bit: FormatFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: FormatFeatureFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: FormatFeatureFlagBits) -> Bool:
+        return self & other == other
 
     comptime SAMPLED_IMAGE = FormatFeatureFlagBits(value = 1 << 0)
     comptime STORAGE_IMAGE = FormatFeatureFlagBits(value = 1 << 1)
@@ -2143,6 +2359,12 @@ struct QueryControlFlags(Equatable):
     fn __contains__(self, bit: QueryControlFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: QueryControlFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: QueryControlFlagBits) -> Bool:
+        return self & other == other
+
     comptime PRECISE = QueryControlFlagBits(value = 1 << 0)
 
 
@@ -2199,6 +2421,12 @@ struct QueryResultFlags(Equatable):
 
     fn __contains__(self, bit: QueryResultFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: QueryResultFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: QueryResultFlagBits) -> Bool:
+        return self & other == other
 
     comptime N_64 = QueryResultFlagBits(value = 1 << 0)
     comptime WAIT = QueryResultFlagBits(value = 1 << 1)
@@ -2260,6 +2488,12 @@ struct ShaderModuleCreateFlags(Equatable):
     fn __contains__(self, bit: ShaderModuleCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ShaderModuleCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ShaderModuleCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct ShaderModuleCreateFlagBits(Equatable):
@@ -2315,6 +2549,12 @@ struct EventCreateFlags(Equatable):
     fn __contains__(self, bit: EventCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: EventCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: EventCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct EventCreateFlagBits(Equatable):
@@ -2369,6 +2609,12 @@ struct CommandPoolCreateFlags(Equatable):
 
     fn __contains__(self, bit: CommandPoolCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: CommandPoolCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: CommandPoolCreateFlagBits) -> Bool:
+        return self & other == other
 
     comptime TRANSIENT = CommandPoolCreateFlagBits(value = 1 << 0)
     comptime RESET_COMMAND_BUFFER = CommandPoolCreateFlagBits(value = 1 << 1)
@@ -2428,6 +2674,12 @@ struct CommandPoolResetFlags(Equatable):
     fn __contains__(self, bit: CommandPoolResetFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: CommandPoolResetFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: CommandPoolResetFlagBits) -> Bool:
+        return self & other == other
+
     comptime RELEASE_RESOURCES = CommandPoolResetFlagBits(value = 1 << 0)
 
 
@@ -2485,6 +2737,12 @@ struct CommandBufferResetFlags(Equatable):
     fn __contains__(self, bit: CommandBufferResetFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: CommandBufferResetFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: CommandBufferResetFlagBits) -> Bool:
+        return self & other == other
+
     comptime RELEASE_RESOURCES = CommandBufferResetFlagBits(value = 1 << 0)
 
 
@@ -2541,6 +2799,12 @@ struct CommandBufferUsageFlags(Equatable):
 
     fn __contains__(self, bit: CommandBufferUsageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: CommandBufferUsageFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: CommandBufferUsageFlagBits) -> Bool:
+        return self & other == other
 
     comptime ONE_TIME_SUBMIT = CommandBufferUsageFlagBits(value = 1 << 0)
     comptime RENDER_PASS_CONTINUE = CommandBufferUsageFlagBits(value = 1 << 1)
@@ -2600,6 +2864,12 @@ struct QueryPipelineStatisticFlags(Equatable):
 
     fn __contains__(self, bit: QueryPipelineStatisticFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: QueryPipelineStatisticFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: QueryPipelineStatisticFlagBits) -> Bool:
+        return self & other == other
 
     comptime INPUT_ASSEMBLY_VERTICES = QueryPipelineStatisticFlagBits(value = 1 << 0)
     comptime INPUT_ASSEMBLY_PRIMITIVES = QueryPipelineStatisticFlagBits(value = 1 << 1)
@@ -2668,6 +2938,12 @@ struct MemoryMapFlags(Equatable):
     fn __contains__(self, bit: MemoryMapFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: MemoryMapFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: MemoryMapFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct MemoryMapFlagBits(Equatable):
@@ -2723,6 +2999,12 @@ struct MemoryUnmapFlags(Equatable):
     fn __contains__(self, bit: MemoryUnmapFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: MemoryUnmapFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: MemoryUnmapFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct MemoryUnmapFlagBits(Equatable):
@@ -2777,6 +3059,12 @@ struct ImageAspectFlags(Equatable):
 
     fn __contains__(self, bit: ImageAspectFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: ImageAspectFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ImageAspectFlagBits) -> Bool:
+        return self & other == other
 
     comptime COLOR = ImageAspectFlagBits(value = 1 << 0)
     comptime DEPTH = ImageAspectFlagBits(value = 1 << 1)
@@ -2838,6 +3126,12 @@ struct SparseMemoryBindFlags(Equatable):
     fn __contains__(self, bit: SparseMemoryBindFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: SparseMemoryBindFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SparseMemoryBindFlagBits) -> Bool:
+        return self & other == other
+
     comptime METADATA = SparseMemoryBindFlagBits(value = 1 << 0)
 
 
@@ -2894,6 +3188,12 @@ struct SparseImageFormatFlags(Equatable):
 
     fn __contains__(self, bit: SparseImageFormatFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: SparseImageFormatFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SparseImageFormatFlagBits) -> Bool:
+        return self & other == other
 
     comptime SINGLE_MIPTAIL = SparseImageFormatFlagBits(value = 1 << 0)
     comptime ALIGNED_MIP_SIZE = SparseImageFormatFlagBits(value = 1 << 1)
@@ -2954,6 +3254,12 @@ struct SubpassDescriptionFlags(Equatable):
     fn __contains__(self, bit: SubpassDescriptionFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: SubpassDescriptionFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SubpassDescriptionFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct SubpassDescriptionFlagBits(Equatable):
@@ -3008,6 +3314,12 @@ struct PipelineStageFlags(Equatable):
 
     fn __contains__(self, bit: PipelineStageFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PipelineStageFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineStageFlagBits) -> Bool:
+        return self & other == other
 
     comptime TOP_OF_PIPE = PipelineStageFlagBits(value = 1 << 0)
     comptime DRAW_INDIRECT = PipelineStageFlagBits(value = 1 << 1)
@@ -3082,6 +3394,12 @@ struct SampleCountFlags(Equatable):
     fn __contains__(self, bit: SampleCountFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: SampleCountFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SampleCountFlagBits) -> Bool:
+        return self & other == other
+
     comptime N_1 = SampleCountFlagBits(value = 1 << 0)
     comptime N_2 = SampleCountFlagBits(value = 1 << 1)
     comptime N_4 = SampleCountFlagBits(value = 1 << 2)
@@ -3145,6 +3463,12 @@ struct AttachmentDescriptionFlags(Equatable):
     fn __contains__(self, bit: AttachmentDescriptionFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: AttachmentDescriptionFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: AttachmentDescriptionFlagBits) -> Bool:
+        return self & other == other
+
     comptime MAY_ALIAS = AttachmentDescriptionFlagBits(value = 1 << 0)
 
 
@@ -3201,6 +3525,12 @@ struct StencilFaceFlags(Equatable):
 
     fn __contains__(self, bit: StencilFaceFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: StencilFaceFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: StencilFaceFlagBits) -> Bool:
+        return self & other == other
 
     comptime FRONT_AND_BACK = StencilFaceFlagBits(value = 3)
     comptime FRONT = StencilFaceFlagBits(value = 1 << 0)
@@ -3260,6 +3590,12 @@ struct CullModeFlags(Equatable):
 
     fn __contains__(self, bit: CullModeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: CullModeFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: CullModeFlagBits) -> Bool:
+        return self & other == other
 
     comptime NONE = CullModeFlagBits(value = 0)
     comptime FRONT_AND_BACK = CullModeFlagBits(value = 3)
@@ -3321,6 +3657,12 @@ struct DescriptorPoolCreateFlags(Equatable):
     fn __contains__(self, bit: DescriptorPoolCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: DescriptorPoolCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DescriptorPoolCreateFlagBits) -> Bool:
+        return self & other == other
+
     comptime FREE_DESCRIPTOR_SET = DescriptorPoolCreateFlagBits(value = 1 << 0)
 
 
@@ -3378,6 +3720,12 @@ struct DescriptorPoolResetFlags(Equatable):
     fn __contains__(self, bit: DescriptorPoolResetFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: DescriptorPoolResetFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DescriptorPoolResetFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct DescriptorPoolResetFlagBits(Equatable):
@@ -3432,6 +3780,12 @@ struct DependencyFlags(Equatable):
 
     fn __contains__(self, bit: DependencyFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: DependencyFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DependencyFlagBits) -> Bool:
+        return self & other == other
 
     comptime BY_REGION = DependencyFlagBits(value = 1 << 0)
 
@@ -3489,6 +3843,12 @@ struct SubgroupFeatureFlags(Equatable):
 
     fn __contains__(self, bit: SubgroupFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: SubgroupFeatureFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SubgroupFeatureFlagBits) -> Bool:
+        return self & other == other
 
     comptime BASIC = SubgroupFeatureFlagBits(value = 1 << 0)
     comptime VOTE = SubgroupFeatureFlagBits(value = 1 << 1)
@@ -3554,6 +3914,12 @@ struct IndirectCommandsLayoutUsageFlagsNV(Equatable):
     fn __contains__(self, bit: IndirectCommandsLayoutUsageFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: IndirectCommandsLayoutUsageFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: IndirectCommandsLayoutUsageFlagBitsNV) -> Bool:
+        return self & other == other
+
     comptime EXPLICIT_PREPROCESS_NV = IndirectCommandsLayoutUsageFlagBitsNV(value = 1 << 0)
     comptime INDEXED_SEQUENCES_NV = IndirectCommandsLayoutUsageFlagBitsNV(value = 1 << 1)
     comptime UNORDERED_SEQUENCES_NV = IndirectCommandsLayoutUsageFlagBitsNV(value = 1 << 2)
@@ -3613,6 +3979,12 @@ struct IndirectStateFlagsNV(Equatable):
     fn __contains__(self, bit: IndirectStateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: IndirectStateFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: IndirectStateFlagBitsNV) -> Bool:
+        return self & other == other
+
     comptime FLAG_FRONTFACE_NV = IndirectStateFlagBitsNV(value = 1 << 0)
 
 
@@ -3669,6 +4041,12 @@ struct GeometryFlagsKHR(Equatable):
 
     fn __contains__(self, bit: GeometryFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: GeometryFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: GeometryFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime OPAQUE_KHR = GeometryFlagBitsKHR(value = 1 << 0)
     comptime NO_DUPLICATE_ANY_HIT_INVOCATION_KHR = GeometryFlagBitsKHR(value = 1 << 1)
@@ -3727,6 +4105,12 @@ struct GeometryInstanceFlagsKHR(Equatable):
 
     fn __contains__(self, bit: GeometryInstanceFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: GeometryInstanceFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: GeometryInstanceFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime TRIANGLE_FACING_CULL_DISABLE_KHR = GeometryInstanceFlagBitsKHR(value = 1 << 0)
     comptime TRIANGLE_FLIP_FACING_KHR = GeometryInstanceFlagBitsKHR(value = 1 << 1)
@@ -3788,6 +4172,12 @@ struct ClusterAccelerationStructureGeometryFlagsNV(Equatable):
     fn __contains__(self, bit: ClusterAccelerationStructureGeometryFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ClusterAccelerationStructureGeometryFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ClusterAccelerationStructureGeometryFlagBitsNV) -> Bool:
+        return self & other == other
+
     comptime CULL_DISABLE_NV = ClusterAccelerationStructureGeometryFlagBitsNV(value = 1 << 0)
     comptime NO_DUPLICATE_ANYHIT_INVOCATION_NV = ClusterAccelerationStructureGeometryFlagBitsNV(value = 1 << 1)
     comptime OPAQUE_NV = ClusterAccelerationStructureGeometryFlagBitsNV(value = 1 << 2)
@@ -3847,6 +4237,12 @@ struct ClusterAccelerationStructureClusterFlagsNV(Equatable):
     fn __contains__(self, bit: ClusterAccelerationStructureClusterFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ClusterAccelerationStructureClusterFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ClusterAccelerationStructureClusterFlagBitsNV) -> Bool:
+        return self & other == other
+
     comptime ALLOW_DISABLE_OPACITY_MICROMAPS_NV = ClusterAccelerationStructureClusterFlagBitsNV(value = 1 << 0)
 
 
@@ -3903,6 +4299,12 @@ struct ClusterAccelerationStructureAddressResolutionFlagsNV(Equatable):
 
     fn __contains__(self, bit: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Bool:
+        return self & other == other
 
     comptime NONE_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(value = 0)
     comptime INDIRECTED_DST_IMPLICIT_DATA_NV = ClusterAccelerationStructureAddressResolutionFlagBitsNV(value = 1 << 0)
@@ -3967,6 +4369,12 @@ struct BuildAccelerationStructureFlagsKHR(Equatable):
     fn __contains__(self, bit: BuildAccelerationStructureFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: BuildAccelerationStructureFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: BuildAccelerationStructureFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime ALLOW_UPDATE_KHR = BuildAccelerationStructureFlagBitsKHR(value = 1 << 0)
     comptime ALLOW_COMPACTION_KHR = BuildAccelerationStructureFlagBitsKHR(value = 1 << 1)
     comptime PREFER_FAST_TRACE_KHR = BuildAccelerationStructureFlagBitsKHR(value = 1 << 2)
@@ -4028,6 +4436,12 @@ struct PrivateDataSlotCreateFlags(Equatable):
     fn __contains__(self, bit: PrivateDataSlotCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PrivateDataSlotCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PrivateDataSlotCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PrivateDataSlotCreateFlagBits(Equatable):
@@ -4082,6 +4496,12 @@ struct AccelerationStructureCreateFlagsKHR(Equatable):
 
     fn __contains__(self, bit: AccelerationStructureCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: AccelerationStructureCreateFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: AccelerationStructureCreateFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime DEVICE_ADDRESS_CAPTURE_REPLAY_KHR = AccelerationStructureCreateFlagBitsKHR(value = 1 << 0)
 
@@ -4140,6 +4560,12 @@ struct DescriptorUpdateTemplateCreateFlags(Equatable):
     fn __contains__(self, bit: DescriptorUpdateTemplateCreateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: DescriptorUpdateTemplateCreateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DescriptorUpdateTemplateCreateFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct DescriptorUpdateTemplateCreateFlagBits(Equatable):
@@ -4194,6 +4620,12 @@ struct PipelineCreationFeedbackFlags(Equatable):
 
     fn __contains__(self, bit: PipelineCreationFeedbackFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PipelineCreationFeedbackFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineCreationFeedbackFlagBits) -> Bool:
+        return self & other == other
 
     comptime VALID = PipelineCreationFeedbackFlagBits(value = 1 << 0)
     comptime APPLICATION_PIPELINE_CACHE_HIT = PipelineCreationFeedbackFlagBits(value = 1 << 1)
@@ -4254,6 +4686,12 @@ struct PerformanceCounterDescriptionFlagsKHR(Equatable):
     fn __contains__(self, bit: PerformanceCounterDescriptionFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PerformanceCounterDescriptionFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PerformanceCounterDescriptionFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime PERFORMANCE_IMPACTING_KHR = PerformanceCounterDescriptionFlagBitsKHR(value = 1 << 0)
     comptime CONCURRENTLY_IMPACTED_KHR = PerformanceCounterDescriptionFlagBitsKHR(value = 1 << 1)
 
@@ -4312,6 +4750,12 @@ struct AcquireProfilingLockFlagsKHR(Equatable):
     fn __contains__(self, bit: AcquireProfilingLockFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: AcquireProfilingLockFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: AcquireProfilingLockFlagBitsKHR) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct AcquireProfilingLockFlagBitsKHR(Equatable):
@@ -4366,6 +4810,12 @@ struct SemaphoreWaitFlags(Equatable):
 
     fn __contains__(self, bit: SemaphoreWaitFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: SemaphoreWaitFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SemaphoreWaitFlagBits) -> Bool:
+        return self & other == other
 
     comptime ANY = SemaphoreWaitFlagBits(value = 1 << 0)
 
@@ -4424,6 +4874,12 @@ struct PipelineCompilerControlFlagsAMD(Equatable):
     fn __contains__(self, bit: PipelineCompilerControlFlagBitsAMD) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PipelineCompilerControlFlagBitsAMD) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineCompilerControlFlagBitsAMD) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PipelineCompilerControlFlagBitsAMD(Equatable):
@@ -4479,6 +4935,12 @@ struct ShaderCorePropertiesFlagsAMD(Equatable):
     fn __contains__(self, bit: ShaderCorePropertiesFlagBitsAMD) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ShaderCorePropertiesFlagBitsAMD) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ShaderCorePropertiesFlagBitsAMD) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct ShaderCorePropertiesFlagBitsAMD(Equatable):
@@ -4533,6 +4995,12 @@ struct DeviceDiagnosticsConfigFlagsNV(Equatable):
 
     fn __contains__(self, bit: DeviceDiagnosticsConfigFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: DeviceDiagnosticsConfigFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DeviceDiagnosticsConfigFlagBitsNV) -> Bool:
+        return self & other == other
 
     comptime ENABLE_SHADER_DEBUG_INFO_NV = DeviceDiagnosticsConfigFlagBitsNV(value = 1 << 0)
     comptime ENABLE_RESOURCE_TRACKING_NV = DeviceDiagnosticsConfigFlagBitsNV(value = 1 << 1)
@@ -4594,6 +5062,12 @@ struct RefreshObjectFlagsKHR(Equatable):
     fn __contains__(self, bit: RefreshObjectFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: RefreshObjectFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: RefreshObjectFlagBitsKHR) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct RefreshObjectFlagBitsKHR(Equatable):
@@ -4648,6 +5122,12 @@ struct AccessFlags2(Equatable):
 
     fn __contains__(self, bit: AccessFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: AccessFlagBits2) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: AccessFlagBits2) -> Bool:
+        return self & other == other
 
     comptime NONE = AccessFlagBits2(value = 0)
     comptime INDIRECT_COMMAND_READ = AccessFlagBits2(value = 1 << 0)
@@ -4725,6 +5205,12 @@ struct PipelineStageFlags2(Equatable):
 
     fn __contains__(self, bit: PipelineStageFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PipelineStageFlagBits2) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineStageFlagBits2) -> Bool:
+        return self & other == other
 
     comptime NONE = PipelineStageFlagBits2(value = 0)
     comptime TOP_OF_PIPE = PipelineStageFlagBits2(value = 1 << 0)
@@ -4807,6 +5293,12 @@ struct AccelerationStructureMotionInfoFlagsNV(Equatable):
     fn __contains__(self, bit: AccelerationStructureMotionInfoFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: AccelerationStructureMotionInfoFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: AccelerationStructureMotionInfoFlagBitsNV) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct AccelerationStructureMotionInfoFlagBitsNV(Equatable):
@@ -4862,6 +5354,12 @@ struct AccelerationStructureMotionInstanceFlagsNV(Equatable):
     fn __contains__(self, bit: AccelerationStructureMotionInstanceFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: AccelerationStructureMotionInstanceFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: AccelerationStructureMotionInstanceFlagBitsNV) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct AccelerationStructureMotionInstanceFlagBitsNV(Equatable):
@@ -4916,6 +5414,12 @@ struct FormatFeatureFlags2(Equatable):
 
     fn __contains__(self, bit: FormatFeatureFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: FormatFeatureFlagBits2) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: FormatFeatureFlagBits2) -> Bool:
+        return self & other == other
 
     comptime SAMPLED_IMAGE = FormatFeatureFlagBits2(value = 1 << 0)
     comptime STORAGE_IMAGE = FormatFeatureFlagBits2(value = 1 << 1)
@@ -4999,6 +5503,12 @@ struct RenderingFlags(Equatable):
     fn __contains__(self, bit: RenderingFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: RenderingFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: RenderingFlagBits) -> Bool:
+        return self & other == other
+
     comptime CONTENTS_SECONDARY_COMMAND_BUFFERS = RenderingFlagBits(value = 1 << 0)
     comptime SUSPENDING = RenderingFlagBits(value = 1 << 1)
     comptime RESUMING = RenderingFlagBits(value = 1 << 2)
@@ -5058,6 +5568,12 @@ struct MemoryDecompressionMethodFlagsNV(Equatable):
     fn __contains__(self, bit: MemoryDecompressionMethodFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: MemoryDecompressionMethodFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: MemoryDecompressionMethodFlagBitsNV) -> Bool:
+        return self & other == other
+
     comptime GDEFLATE_1_0_NV = MemoryDecompressionMethodFlagBitsNV(value = 1 << 0)
 
 
@@ -5114,6 +5630,12 @@ struct BuildMicromapFlagsEXT(Equatable):
 
     fn __contains__(self, bit: BuildMicromapFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: BuildMicromapFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: BuildMicromapFlagBitsEXT) -> Bool:
+        return self & other == other
 
     comptime PREFER_FAST_TRACE_EXT = BuildMicromapFlagBitsEXT(value = 1 << 0)
     comptime PREFER_FAST_BUILD_EXT = BuildMicromapFlagBitsEXT(value = 1 << 1)
@@ -5174,6 +5696,12 @@ struct MicromapCreateFlagsEXT(Equatable):
     fn __contains__(self, bit: MicromapCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: MicromapCreateFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: MicromapCreateFlagBitsEXT) -> Bool:
+        return self & other == other
+
     comptime DEVICE_ADDRESS_CAPTURE_REPLAY_EXT = MicromapCreateFlagBitsEXT(value = 1 << 0)
 
 
@@ -5230,6 +5758,12 @@ struct IndirectCommandsLayoutUsageFlagsEXT(Equatable):
 
     fn __contains__(self, bit: IndirectCommandsLayoutUsageFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: IndirectCommandsLayoutUsageFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: IndirectCommandsLayoutUsageFlagBitsEXT) -> Bool:
+        return self & other == other
 
     comptime EXPLICIT_PREPROCESS_EXT = IndirectCommandsLayoutUsageFlagBitsEXT(value = 1 << 0)
     comptime UNORDERED_SEQUENCES_EXT = IndirectCommandsLayoutUsageFlagBitsEXT(value = 1 << 1)
@@ -5289,6 +5823,12 @@ struct IndirectCommandsInputModeFlagsEXT(Equatable):
     fn __contains__(self, bit: IndirectCommandsInputModeFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: IndirectCommandsInputModeFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: IndirectCommandsInputModeFlagBitsEXT) -> Bool:
+        return self & other == other
+
     comptime VULKAN_INDEX_BUFFER_EXT = IndirectCommandsInputModeFlagBitsEXT(value = 1 << 0)
     comptime DXGI_INDEX_BUFFER_EXT = IndirectCommandsInputModeFlagBitsEXT(value = 1 << 1)
 
@@ -5347,6 +5887,12 @@ struct DirectDriverLoadingFlagsLUNARG(Equatable):
     fn __contains__(self, bit: DirectDriverLoadingFlagBitsLUNARG) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: DirectDriverLoadingFlagBitsLUNARG) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DirectDriverLoadingFlagBitsLUNARG) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct DirectDriverLoadingFlagBitsLUNARG(Equatable):
@@ -5401,6 +5947,12 @@ struct PipelineCreateFlags2(Equatable):
 
     fn __contains__(self, bit: PipelineCreateFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PipelineCreateFlagBits2) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineCreateFlagBits2) -> Bool:
+        return self & other == other
 
     comptime DISABLE_OPTIMIZATION = PipelineCreateFlagBits2(value = 1 << 0)
     comptime ALLOW_DERIVATIVES = PipelineCreateFlagBits2(value = 1 << 1)
@@ -5467,6 +6019,12 @@ struct BufferUsageFlags2(Equatable):
     fn __contains__(self, bit: BufferUsageFlagBits2) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: BufferUsageFlagBits2) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: BufferUsageFlagBits2) -> Bool:
+        return self & other == other
+
     comptime TRANSFER_SRC = BufferUsageFlagBits2(value = 1 << 0)
     comptime TRANSFER_DST = BufferUsageFlagBits2(value = 1 << 1)
     comptime UNIFORM_TEXEL_BUFFER = BufferUsageFlagBits2(value = 1 << 2)
@@ -5532,6 +6090,12 @@ struct TensorCreateFlagsARM(Equatable):
     fn __contains__(self, bit: TensorCreateFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: TensorCreateFlagBitsARM) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: TensorCreateFlagBitsARM) -> Bool:
+        return self & other == other
+
     comptime MUTABLE_FORMAT_ARM = TensorCreateFlagBitsARM(value = 1 << 0)
     comptime PROTECTED_ARM = TensorCreateFlagBitsARM(value = 1 << 1)
 
@@ -5589,6 +6153,12 @@ struct TensorUsageFlagsARM(Equatable):
 
     fn __contains__(self, bit: TensorUsageFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: TensorUsageFlagBitsARM) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: TensorUsageFlagBitsARM) -> Bool:
+        return self & other == other
 
     comptime SHADER_ARM = TensorUsageFlagBitsARM(value = 1 << 1)
     comptime TRANSFER_SRC_ARM = TensorUsageFlagBitsARM(value = 1 << 2)
@@ -5650,6 +6220,12 @@ struct TensorViewCreateFlagsARM(Equatable):
     fn __contains__(self, bit: TensorViewCreateFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: TensorViewCreateFlagBitsARM) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: TensorViewCreateFlagBitsARM) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct TensorViewCreateFlagBitsARM(Equatable):
@@ -5704,6 +6280,12 @@ struct DataGraphPipelineSessionCreateFlagsARM(Equatable):
 
     fn __contains__(self, bit: DataGraphPipelineSessionCreateFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: DataGraphPipelineSessionCreateFlagBitsARM) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DataGraphPipelineSessionCreateFlagBitsARM) -> Bool:
+        return self & other == other
 
     comptime PROTECTED_ARM = DataGraphPipelineSessionCreateFlagBitsARM(value = 1 << 0)
 
@@ -5762,6 +6344,12 @@ struct DataGraphPipelineDispatchFlagsARM(Equatable):
     fn __contains__(self, bit: DataGraphPipelineDispatchFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: DataGraphPipelineDispatchFlagBitsARM) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DataGraphPipelineDispatchFlagBitsARM) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct DataGraphPipelineDispatchFlagBitsARM(Equatable):
@@ -5816,6 +6404,12 @@ struct VideoEncodeRgbModelConversionFlagsVALVE(Equatable):
 
     fn __contains__(self, bit: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Bool:
+        return self & other == other
 
     comptime RGB_IDENTITY_VALVE = VideoEncodeRgbModelConversionFlagBitsVALVE(value = 1 << 0)
     comptime YCBCR_IDENTITY_VALVE = VideoEncodeRgbModelConversionFlagBitsVALVE(value = 1 << 1)
@@ -5878,6 +6472,12 @@ struct VideoEncodeRgbRangeCompressionFlagsVALVE(Equatable):
     fn __contains__(self, bit: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Bool:
+        return self & other == other
+
     comptime FULL_RANGE_VALVE = VideoEncodeRgbRangeCompressionFlagBitsVALVE(value = 1 << 0)
     comptime NARROW_RANGE_VALVE = VideoEncodeRgbRangeCompressionFlagBitsVALVE(value = 1 << 1)
 
@@ -5936,6 +6536,12 @@ struct VideoEncodeRgbChromaOffsetFlagsVALVE(Equatable):
     fn __contains__(self, bit: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Bool:
+        return self & other == other
+
     comptime COSITED_EVEN_VALVE = VideoEncodeRgbChromaOffsetFlagBitsVALVE(value = 1 << 0)
     comptime MIDPOINT_VALVE = VideoEncodeRgbChromaOffsetFlagBitsVALVE(value = 1 << 1)
 
@@ -5993,6 +6599,12 @@ struct CompositeAlphaFlagsKHR(Equatable):
 
     fn __contains__(self, bit: CompositeAlphaFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: CompositeAlphaFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: CompositeAlphaFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime OPAQUE_KHR = CompositeAlphaFlagBitsKHR(value = 1 << 0)
     comptime PRE_MULTIPLIED_KHR = CompositeAlphaFlagBitsKHR(value = 1 << 1)
@@ -6054,6 +6666,12 @@ struct DisplayPlaneAlphaFlagsKHR(Equatable):
     fn __contains__(self, bit: DisplayPlaneAlphaFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: DisplayPlaneAlphaFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DisplayPlaneAlphaFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime OPAQUE_KHR = DisplayPlaneAlphaFlagBitsKHR(value = 1 << 0)
     comptime GLOBAL_KHR = DisplayPlaneAlphaFlagBitsKHR(value = 1 << 1)
     comptime PER_PIXEL_KHR = DisplayPlaneAlphaFlagBitsKHR(value = 1 << 2)
@@ -6113,6 +6731,12 @@ struct SurfaceTransformFlagsKHR(Equatable):
 
     fn __contains__(self, bit: SurfaceTransformFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: SurfaceTransformFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SurfaceTransformFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime IDENTITY_KHR = SurfaceTransformFlagBitsKHR(value = 1 << 0)
     comptime ROTATE_90_KHR = SurfaceTransformFlagBitsKHR(value = 1 << 1)
@@ -6179,6 +6803,12 @@ struct SwapchainCreateFlagsKHR(Equatable):
     fn __contains__(self, bit: SwapchainCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: SwapchainCreateFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SwapchainCreateFlagBitsKHR) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct SwapchainCreateFlagBitsKHR(Equatable):
@@ -6233,6 +6863,12 @@ struct DisplayModeCreateFlagsKHR(Equatable):
 
     fn __contains__(self, bit: DisplayModeCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: DisplayModeCreateFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DisplayModeCreateFlagBitsKHR) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -6289,6 +6925,12 @@ struct DisplaySurfaceCreateFlagsKHR(Equatable):
     fn __contains__(self, bit: DisplaySurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: DisplaySurfaceCreateFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DisplaySurfaceCreateFlagBitsKHR) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct DisplaySurfaceCreateFlagBitsKHR(Equatable):
@@ -6343,6 +6985,12 @@ struct AndroidSurfaceCreateFlagsKHR(Equatable):
 
     fn __contains__(self, bit: AndroidSurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: AndroidSurfaceCreateFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: AndroidSurfaceCreateFlagBitsKHR) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -6399,6 +7047,12 @@ struct ViSurfaceCreateFlagsNN(Equatable):
     fn __contains__(self, bit: ViSurfaceCreateFlagBitsNN) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ViSurfaceCreateFlagBitsNN) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ViSurfaceCreateFlagBitsNN) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct ViSurfaceCreateFlagBitsNN(Equatable):
@@ -6453,6 +7107,12 @@ struct WaylandSurfaceCreateFlagsKHR(Equatable):
 
     fn __contains__(self, bit: WaylandSurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: WaylandSurfaceCreateFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: WaylandSurfaceCreateFlagBitsKHR) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -6509,6 +7169,12 @@ struct Win32SurfaceCreateFlagsKHR(Equatable):
     fn __contains__(self, bit: Win32SurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: Win32SurfaceCreateFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: Win32SurfaceCreateFlagBitsKHR) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct Win32SurfaceCreateFlagBitsKHR(Equatable):
@@ -6563,6 +7229,12 @@ struct XlibSurfaceCreateFlagsKHR(Equatable):
 
     fn __contains__(self, bit: XlibSurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: XlibSurfaceCreateFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: XlibSurfaceCreateFlagBitsKHR) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -6619,6 +7291,12 @@ struct XcbSurfaceCreateFlagsKHR(Equatable):
     fn __contains__(self, bit: XcbSurfaceCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: XcbSurfaceCreateFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: XcbSurfaceCreateFlagBitsKHR) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct XcbSurfaceCreateFlagBitsKHR(Equatable):
@@ -6673,6 +7351,12 @@ struct DirectFBSurfaceCreateFlagsEXT(Equatable):
 
     fn __contains__(self, bit: DirectFBSurfaceCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: DirectFBSurfaceCreateFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DirectFBSurfaceCreateFlagBitsEXT) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -6729,6 +7413,12 @@ struct IOSSurfaceCreateFlagsMVK(Equatable):
     fn __contains__(self, bit: IOSSurfaceCreateFlagBitsMVK) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: IOSSurfaceCreateFlagBitsMVK) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: IOSSurfaceCreateFlagBitsMVK) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct IOSSurfaceCreateFlagBitsMVK(Equatable):
@@ -6783,6 +7473,12 @@ struct MacOSSurfaceCreateFlagsMVK(Equatable):
 
     fn __contains__(self, bit: MacOSSurfaceCreateFlagBitsMVK) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: MacOSSurfaceCreateFlagBitsMVK) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: MacOSSurfaceCreateFlagBitsMVK) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -6839,6 +7535,12 @@ struct MetalSurfaceCreateFlagsEXT(Equatable):
     fn __contains__(self, bit: MetalSurfaceCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: MetalSurfaceCreateFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: MetalSurfaceCreateFlagBitsEXT) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct MetalSurfaceCreateFlagBitsEXT(Equatable):
@@ -6893,6 +7595,12 @@ struct ImagePipeSurfaceCreateFlagsFUCHSIA(Equatable):
 
     fn __contains__(self, bit: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -6949,6 +7657,12 @@ struct StreamDescriptorSurfaceCreateFlagsGGP(Equatable):
     fn __contains__(self, bit: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct StreamDescriptorSurfaceCreateFlagBitsGGP(Equatable):
@@ -7003,6 +7717,12 @@ struct HeadlessSurfaceCreateFlagsEXT(Equatable):
 
     fn __contains__(self, bit: HeadlessSurfaceCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: HeadlessSurfaceCreateFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: HeadlessSurfaceCreateFlagBitsEXT) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -7059,6 +7779,12 @@ struct ScreenSurfaceCreateFlagsQNX(Equatable):
     fn __contains__(self, bit: ScreenSurfaceCreateFlagBitsQNX) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ScreenSurfaceCreateFlagBitsQNX) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ScreenSurfaceCreateFlagBitsQNX) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct ScreenSurfaceCreateFlagBitsQNX(Equatable):
@@ -7113,6 +7839,12 @@ struct PeerMemoryFeatureFlags(Equatable):
 
     fn __contains__(self, bit: PeerMemoryFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PeerMemoryFeatureFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PeerMemoryFeatureFlagBits) -> Bool:
+        return self & other == other
 
     comptime COPY_SRC = PeerMemoryFeatureFlagBits(value = 1 << 0)
     comptime COPY_DST = PeerMemoryFeatureFlagBits(value = 1 << 1)
@@ -7174,6 +7906,12 @@ struct MemoryAllocateFlags(Equatable):
     fn __contains__(self, bit: MemoryAllocateFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: MemoryAllocateFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: MemoryAllocateFlagBits) -> Bool:
+        return self & other == other
+
     comptime DEVICE_MASK = MemoryAllocateFlagBits(value = 1 << 0)
 
 
@@ -7230,6 +7968,12 @@ struct DeviceGroupPresentModeFlagsKHR(Equatable):
 
     fn __contains__(self, bit: DeviceGroupPresentModeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: DeviceGroupPresentModeFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DeviceGroupPresentModeFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime LOCAL_KHR = DeviceGroupPresentModeFlagBitsKHR(value = 1 << 0)
     comptime REMOTE_KHR = DeviceGroupPresentModeFlagBitsKHR(value = 1 << 1)
@@ -7290,6 +8034,12 @@ struct DebugReportFlagsEXT(Equatable):
 
     fn __contains__(self, bit: DebugReportFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: DebugReportFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DebugReportFlagBitsEXT) -> Bool:
+        return self & other == other
 
     comptime INFORMATION_EXT = DebugReportFlagBitsEXT(value = 1 << 0)
     comptime WARNING_EXT = DebugReportFlagBitsEXT(value = 1 << 1)
@@ -7352,6 +8102,12 @@ struct CommandPoolTrimFlags(Equatable):
     fn __contains__(self, bit: CommandPoolTrimFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: CommandPoolTrimFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: CommandPoolTrimFlagBits) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct CommandPoolTrimFlagBits(Equatable):
@@ -7406,6 +8162,12 @@ struct ExternalMemoryHandleTypeFlagsNV(Equatable):
 
     fn __contains__(self, bit: ExternalMemoryHandleTypeFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: ExternalMemoryHandleTypeFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ExternalMemoryHandleTypeFlagBitsNV) -> Bool:
+        return self & other == other
 
     comptime OPAQUE_WIN32_NV = ExternalMemoryHandleTypeFlagBitsNV(value = 1 << 0)
     comptime OPAQUE_WIN32_KMT_NV = ExternalMemoryHandleTypeFlagBitsNV(value = 1 << 1)
@@ -7467,6 +8229,12 @@ struct ClusterAccelerationStructureIndexFormatFlagsNV(Equatable):
     fn __contains__(self, bit: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Bool:
+        return self & other == other
+
     comptime N_8BIT_NV = ClusterAccelerationStructureIndexFormatFlagBitsNV(value = 1 << 0)
     comptime N_16BIT_NV = ClusterAccelerationStructureIndexFormatFlagBitsNV(value = 1 << 1)
     comptime N_32BIT_NV = ClusterAccelerationStructureIndexFormatFlagBitsNV(value = 1 << 2)
@@ -7526,6 +8294,12 @@ struct ExternalMemoryFeatureFlagsNV(Equatable):
     fn __contains__(self, bit: ExternalMemoryFeatureFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ExternalMemoryFeatureFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ExternalMemoryFeatureFlagBitsNV) -> Bool:
+        return self & other == other
+
     comptime DEDICATED_ONLY_NV = ExternalMemoryFeatureFlagBitsNV(value = 1 << 0)
     comptime EXPORTABLE_NV = ExternalMemoryFeatureFlagBitsNV(value = 1 << 1)
     comptime IMPORTABLE_NV = ExternalMemoryFeatureFlagBitsNV(value = 1 << 2)
@@ -7584,6 +8358,12 @@ struct ExternalMemoryHandleTypeFlags(Equatable):
 
     fn __contains__(self, bit: ExternalMemoryHandleTypeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: ExternalMemoryHandleTypeFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ExternalMemoryHandleTypeFlagBits) -> Bool:
+        return self & other == other
 
     comptime OPAQUE_FD = ExternalMemoryHandleTypeFlagBits(value = 1 << 0)
     comptime OPAQUE_WIN32 = ExternalMemoryHandleTypeFlagBits(value = 1 << 1)
@@ -7648,6 +8428,12 @@ struct ExternalMemoryFeatureFlags(Equatable):
     fn __contains__(self, bit: ExternalMemoryFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ExternalMemoryFeatureFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ExternalMemoryFeatureFlagBits) -> Bool:
+        return self & other == other
+
     comptime DEDICATED_ONLY = ExternalMemoryFeatureFlagBits(value = 1 << 0)
     comptime EXPORTABLE = ExternalMemoryFeatureFlagBits(value = 1 << 1)
     comptime IMPORTABLE = ExternalMemoryFeatureFlagBits(value = 1 << 2)
@@ -7706,6 +8492,12 @@ struct ExternalSemaphoreHandleTypeFlags(Equatable):
 
     fn __contains__(self, bit: ExternalSemaphoreHandleTypeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: ExternalSemaphoreHandleTypeFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ExternalSemaphoreHandleTypeFlagBits) -> Bool:
+        return self & other == other
 
     comptime OPAQUE_FD = ExternalSemaphoreHandleTypeFlagBits(value = 1 << 0)
     comptime OPAQUE_WIN32 = ExternalSemaphoreHandleTypeFlagBits(value = 1 << 1)
@@ -7768,6 +8560,12 @@ struct ExternalSemaphoreFeatureFlags(Equatable):
     fn __contains__(self, bit: ExternalSemaphoreFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ExternalSemaphoreFeatureFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ExternalSemaphoreFeatureFlagBits) -> Bool:
+        return self & other == other
+
     comptime EXPORTABLE = ExternalSemaphoreFeatureFlagBits(value = 1 << 0)
     comptime IMPORTABLE = ExternalSemaphoreFeatureFlagBits(value = 1 << 1)
 
@@ -7826,6 +8624,12 @@ struct SemaphoreImportFlags(Equatable):
     fn __contains__(self, bit: SemaphoreImportFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: SemaphoreImportFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SemaphoreImportFlagBits) -> Bool:
+        return self & other == other
+
     comptime TEMPORARY = SemaphoreImportFlagBits(value = 1 << 0)
 
 
@@ -7882,6 +8686,12 @@ struct ExternalFenceHandleTypeFlags(Equatable):
 
     fn __contains__(self, bit: ExternalFenceHandleTypeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: ExternalFenceHandleTypeFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ExternalFenceHandleTypeFlagBits) -> Bool:
+        return self & other == other
 
     comptime OPAQUE_FD = ExternalFenceHandleTypeFlagBits(value = 1 << 0)
     comptime OPAQUE_WIN32 = ExternalFenceHandleTypeFlagBits(value = 1 << 1)
@@ -7943,6 +8753,12 @@ struct ExternalFenceFeatureFlags(Equatable):
     fn __contains__(self, bit: ExternalFenceFeatureFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ExternalFenceFeatureFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ExternalFenceFeatureFlagBits) -> Bool:
+        return self & other == other
+
     comptime EXPORTABLE = ExternalFenceFeatureFlagBits(value = 1 << 0)
     comptime IMPORTABLE = ExternalFenceFeatureFlagBits(value = 1 << 1)
 
@@ -8001,6 +8817,12 @@ struct FenceImportFlags(Equatable):
     fn __contains__(self, bit: FenceImportFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: FenceImportFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: FenceImportFlagBits) -> Bool:
+        return self & other == other
+
     comptime TEMPORARY = FenceImportFlagBits(value = 1 << 0)
 
 
@@ -8057,6 +8879,12 @@ struct SurfaceCounterFlagsEXT(Equatable):
 
     fn __contains__(self, bit: SurfaceCounterFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: SurfaceCounterFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SurfaceCounterFlagBitsEXT) -> Bool:
+        return self & other == other
 
     comptime VBLANK_EXT = SurfaceCounterFlagBitsEXT(value = 1 << 0)
 
@@ -8115,6 +8943,12 @@ struct PipelineViewportSwizzleStateCreateFlagsNV(Equatable):
     fn __contains__(self, bit: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PipelineViewportSwizzleStateCreateFlagBitsNV(Equatable):
@@ -8169,6 +9003,12 @@ struct PipelineDiscardRectangleStateCreateFlagsEXT(Equatable):
 
     fn __contains__(self, bit: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -8225,6 +9065,12 @@ struct PipelineCoverageToColorStateCreateFlagsNV(Equatable):
     fn __contains__(self, bit: PipelineCoverageToColorStateCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PipelineCoverageToColorStateCreateFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineCoverageToColorStateCreateFlagBitsNV) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PipelineCoverageToColorStateCreateFlagBitsNV(Equatable):
@@ -8279,6 +9125,12 @@ struct PipelineCoverageModulationStateCreateFlagsNV(Equatable):
 
     fn __contains__(self, bit: PipelineCoverageModulationStateCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PipelineCoverageModulationStateCreateFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineCoverageModulationStateCreateFlagBitsNV) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -8335,6 +9187,12 @@ struct PipelineCoverageReductionStateCreateFlagsNV(Equatable):
     fn __contains__(self, bit: PipelineCoverageReductionStateCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PipelineCoverageReductionStateCreateFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineCoverageReductionStateCreateFlagBitsNV) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PipelineCoverageReductionStateCreateFlagBitsNV(Equatable):
@@ -8390,6 +9248,12 @@ struct ValidationCacheCreateFlagsEXT(Equatable):
     fn __contains__(self, bit: ValidationCacheCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ValidationCacheCreateFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ValidationCacheCreateFlagBitsEXT) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct ValidationCacheCreateFlagBitsEXT(Equatable):
@@ -8444,6 +9308,12 @@ struct DebugUtilsMessageSeverityFlagsEXT(Equatable):
 
     fn __contains__(self, bit: DebugUtilsMessageSeverityFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: DebugUtilsMessageSeverityFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DebugUtilsMessageSeverityFlagBitsEXT) -> Bool:
+        return self & other == other
 
     comptime VERBOSE_EXT = DebugUtilsMessageSeverityFlagBitsEXT(value = 1 << 0)
     comptime INFO_EXT = DebugUtilsMessageSeverityFlagBitsEXT(value = 1 << 4)
@@ -8505,6 +9375,12 @@ struct DebugUtilsMessageTypeFlagsEXT(Equatable):
     fn __contains__(self, bit: DebugUtilsMessageTypeFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: DebugUtilsMessageTypeFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DebugUtilsMessageTypeFlagBitsEXT) -> Bool:
+        return self & other == other
+
     comptime GENERAL_EXT = DebugUtilsMessageTypeFlagBitsEXT(value = 1 << 0)
     comptime VALIDATION_EXT = DebugUtilsMessageTypeFlagBitsEXT(value = 1 << 1)
     comptime PERFORMANCE_EXT = DebugUtilsMessageTypeFlagBitsEXT(value = 1 << 2)
@@ -8564,6 +9440,12 @@ struct DebugUtilsMessengerCreateFlagsEXT(Equatable):
     fn __contains__(self, bit: DebugUtilsMessengerCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: DebugUtilsMessengerCreateFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DebugUtilsMessengerCreateFlagBitsEXT) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct DebugUtilsMessengerCreateFlagBitsEXT(Equatable):
@@ -8618,6 +9500,12 @@ struct DebugUtilsMessengerCallbackDataFlagsEXT(Equatable):
 
     fn __contains__(self, bit: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -8674,6 +9562,12 @@ struct DeviceMemoryReportFlagsEXT(Equatable):
     fn __contains__(self, bit: DeviceMemoryReportFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: DeviceMemoryReportFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DeviceMemoryReportFlagBitsEXT) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct DeviceMemoryReportFlagBitsEXT(Equatable):
@@ -8729,6 +9623,12 @@ struct PipelineRasterizationConservativeStateCreateFlagsEXT(Equatable):
     fn __contains__(self, bit: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PipelineRasterizationConservativeStateCreateFlagBitsEXT(Equatable):
@@ -8783,6 +9683,12 @@ struct DescriptorBindingFlags(Equatable):
 
     fn __contains__(self, bit: DescriptorBindingFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: DescriptorBindingFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DescriptorBindingFlagBits) -> Bool:
+        return self & other == other
 
     comptime UPDATE_AFTER_BIND = DescriptorBindingFlagBits(value = 1 << 0)
     comptime UPDATE_UNUSED_WHILE_PENDING = DescriptorBindingFlagBits(value = 1 << 1)
@@ -8844,6 +9750,12 @@ struct ConditionalRenderingFlagsEXT(Equatable):
     fn __contains__(self, bit: ConditionalRenderingFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ConditionalRenderingFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ConditionalRenderingFlagBitsEXT) -> Bool:
+        return self & other == other
+
     comptime INVERTED_EXT = ConditionalRenderingFlagBitsEXT(value = 1 << 0)
 
 
@@ -8900,6 +9812,12 @@ struct ResolveModeFlags(Equatable):
 
     fn __contains__(self, bit: ResolveModeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: ResolveModeFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ResolveModeFlagBits) -> Bool:
+        return self & other == other
 
     comptime NONE = ResolveModeFlagBits(value = 0)
     comptime SAMPLE_ZERO = ResolveModeFlagBits(value = 1 << 0)
@@ -8962,6 +9880,12 @@ struct PipelineRasterizationStateStreamCreateFlagsEXT(Equatable):
     fn __contains__(self, bit: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PipelineRasterizationStateStreamCreateFlagBitsEXT(Equatable):
@@ -9017,6 +9941,12 @@ struct PipelineRasterizationDepthClipStateCreateFlagsEXT(Equatable):
     fn __contains__(self, bit: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct PipelineRasterizationDepthClipStateCreateFlagBitsEXT(Equatable):
@@ -9071,6 +10001,12 @@ struct SwapchainImageUsageFlagsANDROID(Equatable):
 
     fn __contains__(self, bit: SwapchainImageUsageFlagBitsANDROID) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: SwapchainImageUsageFlagBitsANDROID) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SwapchainImageUsageFlagBitsANDROID) -> Bool:
+        return self & other == other
 
     comptime VK_SWAPCHAIN_IMAGE_USAGE_SHARED_ANDROID = SwapchainImageUsageFlagBitsANDROID(value = 1 << 0)
 
@@ -9128,6 +10064,12 @@ struct ToolPurposeFlags(Equatable):
 
     fn __contains__(self, bit: ToolPurposeFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: ToolPurposeFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ToolPurposeFlagBits) -> Bool:
+        return self & other == other
 
     comptime VALIDATION = ToolPurposeFlagBits(value = 1 << 0)
     comptime PROFILING = ToolPurposeFlagBits(value = 1 << 1)
@@ -9190,6 +10132,12 @@ struct SubmitFlags(Equatable):
     fn __contains__(self, bit: SubmitFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: SubmitFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SubmitFlagBits) -> Bool:
+        return self & other == other
+
     comptime PROTECTED = SubmitFlagBits(value = 1 << 0)
 
 
@@ -9247,6 +10195,12 @@ struct ImageFormatConstraintsFlagsFUCHSIA(Equatable):
     fn __contains__(self, bit: ImageFormatConstraintsFlagBitsFUCHSIA) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ImageFormatConstraintsFlagBitsFUCHSIA) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ImageFormatConstraintsFlagBitsFUCHSIA) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct ImageFormatConstraintsFlagBitsFUCHSIA(Equatable):
@@ -9301,6 +10255,12 @@ struct HostImageCopyFlags(Equatable):
 
     fn __contains__(self, bit: HostImageCopyFlagBits) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: HostImageCopyFlagBits) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: HostImageCopyFlagBits) -> Bool:
+        return self & other == other
 
     comptime MEMCPY = HostImageCopyFlagBits(value = 1 << 0)
 
@@ -9358,6 +10318,12 @@ struct PartitionedAccelerationStructureInstanceFlagsNV(Equatable):
 
     fn __contains__(self, bit: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Bool:
+        return self & other == other
 
     comptime FLAG_TRIANGLE_FACING_CULL_DISABLE_NV = PartitionedAccelerationStructureInstanceFlagBitsNV(value = 1 << 0)
     comptime FLAG_TRIANGLE_FLIP_FACING_NV = PartitionedAccelerationStructureInstanceFlagBitsNV(value = 1 << 1)
@@ -9420,6 +10386,12 @@ struct ImageConstraintsInfoFlagsFUCHSIA(Equatable):
     fn __contains__(self, bit: ImageConstraintsInfoFlagBitsFUCHSIA) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ImageConstraintsInfoFlagBitsFUCHSIA) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ImageConstraintsInfoFlagBitsFUCHSIA) -> Bool:
+        return self & other == other
+
     comptime CPU_READ_RARELY_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(value = 1 << 0)
     comptime CPU_READ_OFTEN_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(value = 1 << 1)
     comptime CPU_WRITE_RARELY_FUCHSIA = ImageConstraintsInfoFlagBitsFUCHSIA(value = 1 << 2)
@@ -9481,6 +10453,12 @@ struct GraphicsPipelineLibraryFlagsEXT(Equatable):
     fn __contains__(self, bit: GraphicsPipelineLibraryFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: GraphicsPipelineLibraryFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: GraphicsPipelineLibraryFlagBitsEXT) -> Bool:
+        return self & other == other
+
     comptime VERTEX_INPUT_INTERFACE_EXT = GraphicsPipelineLibraryFlagBitsEXT(value = 1 << 0)
     comptime PRE_RASTERIZATION_SHADERS_EXT = GraphicsPipelineLibraryFlagBitsEXT(value = 1 << 1)
     comptime FRAGMENT_SHADER_EXT = GraphicsPipelineLibraryFlagBitsEXT(value = 1 << 2)
@@ -9541,6 +10519,12 @@ struct ImageCompressionFlagsEXT(Equatable):
     fn __contains__(self, bit: ImageCompressionFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ImageCompressionFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ImageCompressionFlagBitsEXT) -> Bool:
+        return self & other == other
+
     comptime DEFAULT_EXT = ImageCompressionFlagBitsEXT(value = 0)
     comptime FIXED_RATE_DEFAULT_EXT = ImageCompressionFlagBitsEXT(value = 1 << 0)
     comptime FIXED_RATE_EXPLICIT_EXT = ImageCompressionFlagBitsEXT(value = 1 << 1)
@@ -9600,6 +10584,12 @@ struct ImageCompressionFixedRateFlagsEXT(Equatable):
 
     fn __contains__(self, bit: ImageCompressionFixedRateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: ImageCompressionFixedRateFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ImageCompressionFixedRateFlagBitsEXT) -> Bool:
+        return self & other == other
 
     comptime NONE_EXT = ImageCompressionFixedRateFlagBitsEXT(value = 0)
     comptime N_1BPC_EXT = ImageCompressionFixedRateFlagBitsEXT(value = 1 << 0)
@@ -9682,6 +10672,12 @@ struct ExportMetalObjectTypeFlagsEXT(Equatable):
     fn __contains__(self, bit: ExportMetalObjectTypeFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ExportMetalObjectTypeFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ExportMetalObjectTypeFlagBitsEXT) -> Bool:
+        return self & other == other
+
     comptime METAL_DEVICE_EXT = ExportMetalObjectTypeFlagBitsEXT(value = 1 << 0)
     comptime METAL_COMMAND_QUEUE_EXT = ExportMetalObjectTypeFlagBitsEXT(value = 1 << 1)
     comptime METAL_BUFFER_EXT = ExportMetalObjectTypeFlagBitsEXT(value = 1 << 2)
@@ -9744,6 +10740,12 @@ struct DeviceAddressBindingFlagsEXT(Equatable):
     fn __contains__(self, bit: DeviceAddressBindingFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: DeviceAddressBindingFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: DeviceAddressBindingFlagBitsEXT) -> Bool:
+        return self & other == other
+
     comptime INTERNAL_OBJECT_EXT = DeviceAddressBindingFlagBitsEXT(value = 1 << 0)
 
 
@@ -9800,6 +10802,12 @@ struct OpticalFlowGridSizeFlagsNV(Equatable):
 
     fn __contains__(self, bit: OpticalFlowGridSizeFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: OpticalFlowGridSizeFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: OpticalFlowGridSizeFlagBitsNV) -> Bool:
+        return self & other == other
 
     comptime UNKNOWN_NV = OpticalFlowGridSizeFlagBitsNV(value = 0)
     comptime N_1X1_NV = OpticalFlowGridSizeFlagBitsNV(value = 1 << 0)
@@ -9861,6 +10869,12 @@ struct OpticalFlowUsageFlagsNV(Equatable):
 
     fn __contains__(self, bit: OpticalFlowUsageFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: OpticalFlowUsageFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: OpticalFlowUsageFlagBitsNV) -> Bool:
+        return self & other == other
 
     comptime UNKNOWN_NV = OpticalFlowUsageFlagBitsNV(value = 0)
     comptime INPUT_NV = OpticalFlowUsageFlagBitsNV(value = 1 << 0)
@@ -9924,6 +10938,12 @@ struct OpticalFlowSessionCreateFlagsNV(Equatable):
     fn __contains__(self, bit: OpticalFlowSessionCreateFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: OpticalFlowSessionCreateFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: OpticalFlowSessionCreateFlagBitsNV) -> Bool:
+        return self & other == other
+
     comptime ENABLE_HINT_NV = OpticalFlowSessionCreateFlagBitsNV(value = 1 << 0)
     comptime ENABLE_COST_NV = OpticalFlowSessionCreateFlagBitsNV(value = 1 << 1)
     comptime ENABLE_GLOBAL_FLOW_NV = OpticalFlowSessionCreateFlagBitsNV(value = 1 << 2)
@@ -9985,6 +11005,12 @@ struct OpticalFlowExecuteFlagsNV(Equatable):
     fn __contains__(self, bit: OpticalFlowExecuteFlagBitsNV) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: OpticalFlowExecuteFlagBitsNV) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: OpticalFlowExecuteFlagBitsNV) -> Bool:
+        return self & other == other
+
     comptime DISABLE_TEMPORAL_HINTS_NV = OpticalFlowExecuteFlagBitsNV(value = 1 << 0)
 
 
@@ -10042,6 +11068,12 @@ struct FrameBoundaryFlagsEXT(Equatable):
     fn __contains__(self, bit: FrameBoundaryFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: FrameBoundaryFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: FrameBoundaryFlagBitsEXT) -> Bool:
+        return self & other == other
+
     comptime FRAME_END_EXT = FrameBoundaryFlagBitsEXT(value = 1 << 0)
 
 
@@ -10098,6 +11130,12 @@ struct PresentScalingFlagsKHR(Equatable):
 
     fn __contains__(self, bit: PresentScalingFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: PresentScalingFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PresentScalingFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime ONE_TO_ONE_KHR = PresentScalingFlagBitsKHR(value = 1 << 0)
     comptime ASPECT_RATIO_STRETCH_KHR = PresentScalingFlagBitsKHR(value = 1 << 1)
@@ -10158,6 +11196,12 @@ struct PresentGravityFlagsKHR(Equatable):
     fn __contains__(self, bit: PresentGravityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PresentGravityFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PresentGravityFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime MIN_KHR = PresentGravityFlagBitsKHR(value = 1 << 0)
     comptime MAX_KHR = PresentGravityFlagBitsKHR(value = 1 << 1)
     comptime CENTERED_KHR = PresentGravityFlagBitsKHR(value = 1 << 2)
@@ -10217,6 +11261,12 @@ struct ShaderCreateFlagsEXT(Equatable):
     fn __contains__(self, bit: ShaderCreateFlagBitsEXT) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: ShaderCreateFlagBitsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ShaderCreateFlagBitsEXT) -> Bool:
+        return self & other == other
+
     comptime LINK_STAGE_EXT = ShaderCreateFlagBitsEXT(value = 1 << 0)
 
 
@@ -10273,6 +11323,12 @@ struct TileShadingRenderPassFlagsQCOM(Equatable):
 
     fn __contains__(self, bit: TileShadingRenderPassFlagBitsQCOM) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: TileShadingRenderPassFlagBitsQCOM) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: TileShadingRenderPassFlagBitsQCOM) -> Bool:
+        return self & other == other
 
     comptime ENABLE_QCOM = TileShadingRenderPassFlagBitsQCOM(value = 1 << 0)
     comptime PER_TILE_EXECUTION_QCOM = TileShadingRenderPassFlagBitsQCOM(value = 1 << 1)
@@ -10332,6 +11388,12 @@ struct PhysicalDeviceSchedulingControlsFlagsARM(Equatable):
     fn __contains__(self, bit: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Bool:
+        return self & other == other
+
     comptime SHADER_CORE_COUNT_ARM = PhysicalDeviceSchedulingControlsFlagBitsARM(value = 1 << 0)
 
 
@@ -10389,6 +11451,12 @@ struct SurfaceCreateFlagsOHOS(Equatable):
     fn __contains__(self, bit: SurfaceCreateFlagBitsOHOS) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: SurfaceCreateFlagBitsOHOS) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SurfaceCreateFlagBitsOHOS) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct SurfaceCreateFlagBitsOHOS(Equatable):
@@ -10443,6 +11511,12 @@ struct VideoCodecOperationFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoCodecOperationFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoCodecOperationFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoCodecOperationFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime NONE_KHR = VideoCodecOperationFlagBitsKHR(value = 0)
 
@@ -10500,6 +11574,12 @@ struct VideoCapabilityFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoCapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoCapabilityFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoCapabilityFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime PROTECTED_CONTENT_KHR = VideoCapabilityFlagBitsKHR(value = 1 << 0)
     comptime SEPARATE_REFERENCE_IMAGES_KHR = VideoCapabilityFlagBitsKHR(value = 1 << 1)
@@ -10559,6 +11639,12 @@ struct VideoSessionCreateFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoSessionCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoSessionCreateFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoSessionCreateFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime PROTECTED_CONTENT_KHR = VideoSessionCreateFlagBitsKHR(value = 1 << 0)
 
 
@@ -10616,6 +11702,12 @@ struct VideoSessionParametersCreateFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoSessionParametersCreateFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoSessionParametersCreateFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoSessionParametersCreateFlagBitsKHR) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct VideoSessionParametersCreateFlagBitsKHR(Equatable):
@@ -10670,6 +11762,12 @@ struct VideoBeginCodingFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoBeginCodingFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoBeginCodingFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoBeginCodingFlagBitsKHR) -> Bool:
+        return self & other == other
 
 
 @register_passable("trivial")
@@ -10726,6 +11824,12 @@ struct VideoEndCodingFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoEndCodingFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoEndCodingFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEndCodingFlagBitsKHR) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct VideoEndCodingFlagBitsKHR(Equatable):
@@ -10780,6 +11884,12 @@ struct VideoCodingControlFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoCodingControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoCodingControlFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoCodingControlFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime RESET_KHR = VideoCodingControlFlagBitsKHR(value = 1 << 0)
 
@@ -10837,6 +11947,12 @@ struct VideoDecodeUsageFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoDecodeUsageFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoDecodeUsageFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoDecodeUsageFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime DEFAULT_KHR = VideoDecodeUsageFlagBitsKHR(value = 0)
     comptime TRANSCODING_KHR = VideoDecodeUsageFlagBitsKHR(value = 1 << 0)
@@ -10898,6 +12014,12 @@ struct VideoDecodeCapabilityFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoDecodeCapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoDecodeCapabilityFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoDecodeCapabilityFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime DPB_AND_OUTPUT_COINCIDE_KHR = VideoDecodeCapabilityFlagBitsKHR(value = 1 << 0)
     comptime DPB_AND_OUTPUT_DISTINCT_KHR = VideoDecodeCapabilityFlagBitsKHR(value = 1 << 1)
 
@@ -10956,6 +12078,12 @@ struct VideoDecodeFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoDecodeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoDecodeFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoDecodeFlagBitsKHR) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct VideoDecodeFlagBitsKHR(Equatable):
@@ -11010,6 +12138,12 @@ struct VideoDecodeH264PictureLayoutFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime PROGRESSIVE_KHR = VideoDecodeH264PictureLayoutFlagBitsKHR(value = 0)
     comptime INTERLACED_INTERLEAVED_LINES_KHR = VideoDecodeH264PictureLayoutFlagBitsKHR(value = 1 << 0)
@@ -11070,6 +12204,12 @@ struct VideoEncodeFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoEncodeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoEncodeFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeFlagBitsKHR) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct VideoEncodeFlagBitsKHR(Equatable):
@@ -11124,6 +12264,12 @@ struct VideoEncodeUsageFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoEncodeUsageFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoEncodeUsageFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeUsageFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime DEFAULT_KHR = VideoEncodeUsageFlagBitsKHR(value = 0)
     comptime TRANSCODING_KHR = VideoEncodeUsageFlagBitsKHR(value = 1 << 0)
@@ -11186,6 +12332,12 @@ struct VideoEncodeContentFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoEncodeContentFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoEncodeContentFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeContentFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime DEFAULT_KHR = VideoEncodeContentFlagBitsKHR(value = 0)
     comptime CAMERA_KHR = VideoEncodeContentFlagBitsKHR(value = 1 << 0)
     comptime DESKTOP_KHR = VideoEncodeContentFlagBitsKHR(value = 1 << 1)
@@ -11246,6 +12398,12 @@ struct VideoEncodeCapabilityFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoEncodeCapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoEncodeCapabilityFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeCapabilityFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime PRECEDING_EXTERNALLY_ENCODED_BYTES_KHR = VideoEncodeCapabilityFlagBitsKHR(value = 1 << 0)
     comptime INSUFFICIENT_BITSTREAM_BUFFER_RANGE_DETECTION_KHR = VideoEncodeCapabilityFlagBitsKHR(value = 1 << 1)
 
@@ -11303,6 +12461,12 @@ struct VideoEncodeFeedbackFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoEncodeFeedbackFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoEncodeFeedbackFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeFeedbackFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime BITSTREAM_BUFFER_OFFSET_KHR = VideoEncodeFeedbackFlagBitsKHR(value = 1 << 0)
     comptime BITSTREAM_BYTES_WRITTEN_KHR = VideoEncodeFeedbackFlagBitsKHR(value = 1 << 1)
@@ -11363,6 +12527,12 @@ struct VideoEncodeRateControlFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoEncodeRateControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoEncodeRateControlFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeRateControlFlagBitsKHR) -> Bool:
+        return self & other == other
+
 
 @register_passable("trivial")
 struct VideoEncodeRateControlFlagBitsKHR(Equatable):
@@ -11417,6 +12587,12 @@ struct VideoEncodeRateControlModeFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoEncodeRateControlModeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoEncodeRateControlModeFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeRateControlModeFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime DEFAULT_KHR = VideoEncodeRateControlModeFlagBitsKHR(value = 0)
     comptime DISABLED_KHR = VideoEncodeRateControlModeFlagBitsKHR(value = 1 << 0)
@@ -11477,6 +12653,12 @@ struct VideoEncodeIntraRefreshModeFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime NONE_KHR = VideoEncodeIntraRefreshModeFlagBitsKHR(value = 0)
     comptime PER_PICTURE_PARTITION_KHR = VideoEncodeIntraRefreshModeFlagBitsKHR(value = 1 << 0)
@@ -11539,6 +12721,12 @@ struct VideoChromaSubsamplingFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoChromaSubsamplingFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoChromaSubsamplingFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoChromaSubsamplingFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime INVALID_KHR = VideoChromaSubsamplingFlagBitsKHR(value = 0)
     comptime MONOCHROME_KHR = VideoChromaSubsamplingFlagBitsKHR(value = 1 << 0)
     comptime N_420_KHR = VideoChromaSubsamplingFlagBitsKHR(value = 1 << 1)
@@ -11600,6 +12788,12 @@ struct VideoComponentBitDepthFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoComponentBitDepthFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoComponentBitDepthFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoComponentBitDepthFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime INVALID_KHR = VideoComponentBitDepthFlagBitsKHR(value = 0)
     comptime N_8_KHR = VideoComponentBitDepthFlagBitsKHR(value = 1 << 0)
     comptime N_10_KHR = VideoComponentBitDepthFlagBitsKHR(value = 1 << 2)
@@ -11659,6 +12853,12 @@ struct VideoEncodeH264CapabilityFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoEncodeH264CapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoEncodeH264CapabilityFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeH264CapabilityFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime HRD_COMPLIANCE_KHR = VideoEncodeH264CapabilityFlagBitsKHR(value = 1 << 0)
     comptime PREDICTION_WEIGHT_TABLE_GENERATED_KHR = VideoEncodeH264CapabilityFlagBitsKHR(value = 1 << 1)
@@ -11724,6 +12924,12 @@ struct VideoEncodeH264StdFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoEncodeH264StdFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoEncodeH264StdFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeH264StdFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime SEPARATE_COLOR_PLANE_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(value = 1 << 0)
     comptime QPPRIME_Y_ZERO_TRANSFORM_BYPASS_FLAG_SET_KHR = VideoEncodeH264StdFlagBitsKHR(value = 1 << 1)
@@ -11801,6 +13007,12 @@ struct VideoEncodeH264RateControlFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoEncodeH264RateControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoEncodeH264RateControlFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeH264RateControlFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime ATTEMPT_HRD_COMPLIANCE_KHR = VideoEncodeH264RateControlFlagBitsKHR(value = 1 << 0)
     comptime REGULAR_GOP_KHR = VideoEncodeH264RateControlFlagBitsKHR(value = 1 << 1)
     comptime REFERENCE_PATTERN_FLAT_KHR = VideoEncodeH264RateControlFlagBitsKHR(value = 1 << 2)
@@ -11861,6 +13073,12 @@ struct VideoEncodeH265CapabilityFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoEncodeH265CapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoEncodeH265CapabilityFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeH265CapabilityFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime HRD_COMPLIANCE_KHR = VideoEncodeH265CapabilityFlagBitsKHR(value = 1 << 0)
     comptime PREDICTION_WEIGHT_TABLE_GENERATED_KHR = VideoEncodeH265CapabilityFlagBitsKHR(value = 1 << 1)
@@ -11927,6 +13145,12 @@ struct VideoEncodeH265StdFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoEncodeH265StdFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoEncodeH265StdFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeH265StdFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime SEPARATE_COLOR_PLANE_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(value = 1 << 0)
     comptime SAMPLE_ADAPTIVE_OFFSET_ENABLED_FLAG_SET_KHR = VideoEncodeH265StdFlagBitsKHR(value = 1 << 1)
@@ -12005,6 +13229,12 @@ struct VideoEncodeH265RateControlFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoEncodeH265RateControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoEncodeH265RateControlFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeH265RateControlFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime ATTEMPT_HRD_COMPLIANCE_KHR = VideoEncodeH265RateControlFlagBitsKHR(value = 1 << 0)
     comptime REGULAR_GOP_KHR = VideoEncodeH265RateControlFlagBitsKHR(value = 1 << 1)
     comptime REFERENCE_PATTERN_FLAT_KHR = VideoEncodeH265RateControlFlagBitsKHR(value = 1 << 2)
@@ -12066,6 +13296,12 @@ struct VideoEncodeH265CtbSizeFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoEncodeH265CtbSizeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoEncodeH265CtbSizeFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeH265CtbSizeFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime N_16_KHR = VideoEncodeH265CtbSizeFlagBitsKHR(value = 1 << 0)
     comptime N_32_KHR = VideoEncodeH265CtbSizeFlagBitsKHR(value = 1 << 1)
     comptime N_64_KHR = VideoEncodeH265CtbSizeFlagBitsKHR(value = 1 << 2)
@@ -12124,6 +13360,12 @@ struct VideoEncodeH265TransformBlockSizeFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime N_4_KHR = VideoEncodeH265TransformBlockSizeFlagBitsKHR(value = 1 << 0)
     comptime N_8_KHR = VideoEncodeH265TransformBlockSizeFlagBitsKHR(value = 1 << 1)
@@ -12184,6 +13426,12 @@ struct VideoEncodeAV1CapabilityFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoEncodeAV1CapabilityFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoEncodeAV1CapabilityFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeAV1CapabilityFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime PER_RATE_CONTROL_GROUP_MIN_MAX_Q_INDEX_KHR = VideoEncodeAV1CapabilityFlagBitsKHR(value = 1 << 0)
     comptime GENERATE_OBU_EXTENSION_HEADER_KHR = VideoEncodeAV1CapabilityFlagBitsKHR(value = 1 << 1)
@@ -12246,6 +13494,12 @@ struct VideoEncodeAV1StdFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoEncodeAV1StdFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoEncodeAV1StdFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeAV1StdFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime UNIFORM_TILE_SPACING_FLAG_SET_KHR = VideoEncodeAV1StdFlagBitsKHR(value = 1 << 0)
     comptime SKIP_MODE_PRESENT_UNSET_KHR = VideoEncodeAV1StdFlagBitsKHR(value = 1 << 1)
     comptime PRIMARY_REF_FRAME_KHR = VideoEncodeAV1StdFlagBitsKHR(value = 1 << 2)
@@ -12305,6 +13559,12 @@ struct VideoEncodeAV1RateControlFlagsKHR(Equatable):
 
     fn __contains__(self, bit: VideoEncodeAV1RateControlFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: VideoEncodeAV1RateControlFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeAV1RateControlFlagBitsKHR) -> Bool:
+        return self & other == other
 
     comptime REGULAR_GOP_KHR = VideoEncodeAV1RateControlFlagBitsKHR(value = 1 << 0)
     comptime TEMPORAL_LAYER_PATTERN_DYADIC_KHR = VideoEncodeAV1RateControlFlagBitsKHR(value = 1 << 1)
@@ -12366,6 +13626,12 @@ struct VideoEncodeAV1SuperblockSizeFlagsKHR(Equatable):
     fn __contains__(self, bit: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Bool:
         return Bool(self.value() & bit.value())
 
+    fn is_subset(self, other: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Bool:
+        return self & other == other
+
     comptime N_64_KHR = VideoEncodeAV1SuperblockSizeFlagBitsKHR(value = 1 << 0)
     comptime N_128_KHR = VideoEncodeAV1SuperblockSizeFlagBitsKHR(value = 1 << 1)
 
@@ -12423,6 +13689,12 @@ struct AccessFlags3KHR(Equatable):
 
     fn __contains__(self, bit: AccessFlagBits3KHR) -> Bool:
         return Bool(self.value() & bit.value())
+
+    fn is_subset(self, other: AccessFlagBits3KHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: AccessFlagBits3KHR) -> Bool:
+        return self & other == other
 
     comptime NONE_KHR = AccessFlagBits3KHR(value = 0)
 

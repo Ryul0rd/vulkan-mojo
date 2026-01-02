@@ -1069,6 +1069,12 @@ def emit_flags(files: Dict[str, str], flags: List[VkFlags | VkTypeAlias]):
             f"\n"
             f"    fn __contains__(self, bit: {flag_bits_name}) -> Bool:\n"
             f"        return Bool(self.value() & bit.value())\n"
+            f"\n"
+            f"    fn is_subset(self, other: {flag_bits_name}) -> Bool:\n"
+            f"        return self & other == self\n"
+            f"\n"
+            f"    fn is_superset(self, other: {flag_bits_name}) -> Bool:\n"
+            f"        return self & other == other\n"
         ))
         if len(flag.flag_bits.values) > 0 or len(flag.flag_bits.bits) > 0:
             parts.append("\n")
