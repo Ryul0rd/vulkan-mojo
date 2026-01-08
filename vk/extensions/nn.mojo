@@ -7,9 +7,9 @@ struct ViSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_vi_surface_nn: fn(
         instance: Instance,
-        pCreateInfo: Ptr[ViSurfaceCreateInfoNN, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
+        create_info: ViSurfaceCreateInfoNN,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        surface: SurfaceKHR,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -34,7 +34,7 @@ struct ViSurface(Copyable):
         """
         return self._create_vi_surface_nn(
             instance,
-            Ptr(to=create_info).bitcast[ViSurfaceCreateInfoNN](),
+            Ptr(to=create_info).bitcast[ViSurfaceCreateInfoNN]()[],
             p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            Ptr(to=surface).bitcast[SurfaceKHR]()[],
         )

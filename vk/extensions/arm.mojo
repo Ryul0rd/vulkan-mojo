@@ -7,56 +7,54 @@ struct Tensors(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_tensor_arm: fn(
         device: Device,
-        pCreateInfo: Ptr[TensorCreateInfoARM, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pTensor: Ptr[TensorARM, MutAnyOrigin],
+        create_info: TensorCreateInfoARM,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        tensor: TensorARM,
     ) -> Result
     var _destroy_tensor_arm: fn(
-        device: Device, tensor: TensorARM, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, tensor: TensorARM, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var _create_tensor_view_arm: fn(
         device: Device,
-        pCreateInfo: Ptr[TensorViewCreateInfoARM, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pView: Ptr[TensorViewARM, MutAnyOrigin],
+        create_info: TensorViewCreateInfoARM,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        view: TensorViewARM,
     ) -> Result
     var _destroy_tensor_view_arm: fn(
         device: Device,
-        tensorView: TensorViewARM,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        tensor_view: TensorViewARM,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var _get_tensor_memory_requirements_arm: fn(
         device: Device,
-        pInfo: Ptr[TensorMemoryRequirementsInfoARM, ImmutAnyOrigin],
-        pMemoryRequirements: Ptr[MemoryRequirements2, MutAnyOrigin],
+        info: TensorMemoryRequirementsInfoARM,
+        memory_requirements: MemoryRequirements2,
     )
     var _bind_tensor_memory_arm: fn(
         device: Device,
-        bindInfoCount: UInt32,
-        pBindInfos: Ptr[BindTensorMemoryInfoARM, ImmutAnyOrigin],
+        bind_info_count: UInt32,
+        p_bind_infos: Ptr[BindTensorMemoryInfoARM, ImmutAnyOrigin],
     ) -> Result
     var _get_device_tensor_memory_requirements_arm: fn(
         device: Device,
-        pInfo: Ptr[DeviceTensorMemoryRequirementsARM, ImmutAnyOrigin],
-        pMemoryRequirements: Ptr[MemoryRequirements2, MutAnyOrigin],
+        info: DeviceTensorMemoryRequirementsARM,
+        memory_requirements: MemoryRequirements2,
     )
-    var _cmd_copy_tensor_arm: fn(
-        commandBuffer: CommandBuffer, pCopyTensorInfo: Ptr[CopyTensorInfoARM, ImmutAnyOrigin]
-    )
+    var _cmd_copy_tensor_arm: fn(command_buffer: CommandBuffer, copy_tensor_info: CopyTensorInfoARM)
     var _get_physical_device_external_tensor_properties_arm: fn(
-        physicalDevice: PhysicalDevice,
-        pExternalTensorInfo: Ptr[PhysicalDeviceExternalTensorInfoARM, ImmutAnyOrigin],
-        pExternalTensorProperties: Ptr[ExternalTensorPropertiesARM, MutAnyOrigin],
+        physical_device: PhysicalDevice,
+        external_tensor_info: PhysicalDeviceExternalTensorInfoARM,
+        external_tensor_properties: ExternalTensorPropertiesARM,
     )
     var _get_tensor_opaque_capture_descriptor_data_arm: fn(
         device: Device,
-        pInfo: Ptr[TensorCaptureDescriptorDataInfoARM, ImmutAnyOrigin],
-        pData: Ptr[NoneType, MutAnyOrigin],
+        info: TensorCaptureDescriptorDataInfoARM,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
     var _get_tensor_view_opaque_capture_descriptor_data_arm: fn(
         device: Device,
-        pInfo: Ptr[TensorViewCaptureDescriptorDataInfoARM, ImmutAnyOrigin],
-        pData: Ptr[NoneType, MutAnyOrigin],
+        info: TensorViewCaptureDescriptorDataInfoARM,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -111,9 +109,9 @@ struct Tensors(Copyable):
         """
         return self._create_tensor_arm(
             device,
-            Ptr(to=create_info).bitcast[TensorCreateInfoARM](),
+            Ptr(to=create_info).bitcast[TensorCreateInfoARM]()[],
             p_allocator,
-            Ptr(to=tensor).bitcast[TensorARM](),
+            Ptr(to=tensor).bitcast[TensorARM]()[],
         )
 
     fn destroy_tensor_arm(
@@ -141,9 +139,9 @@ struct Tensors(Copyable):
         """
         return self._create_tensor_view_arm(
             device,
-            Ptr(to=create_info).bitcast[TensorViewCreateInfoARM](),
+            Ptr(to=create_info).bitcast[TensorViewCreateInfoARM]()[],
             p_allocator,
-            Ptr(to=view).bitcast[TensorViewARM](),
+            Ptr(to=view).bitcast[TensorViewARM]()[],
         )
 
     fn destroy_tensor_view_arm(
@@ -170,8 +168,8 @@ struct Tensors(Copyable):
         """
         return self._get_tensor_memory_requirements_arm(
             device,
-            Ptr(to=info).bitcast[TensorMemoryRequirementsInfoARM](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[TensorMemoryRequirementsInfoARM]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn bind_tensor_memory_arm(
@@ -198,8 +196,8 @@ struct Tensors(Copyable):
         """
         return self._get_device_tensor_memory_requirements_arm(
             device,
-            Ptr(to=info).bitcast[DeviceTensorMemoryRequirementsARM](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[DeviceTensorMemoryRequirementsARM]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn cmd_copy_tensor_arm(
@@ -210,7 +208,7 @@ struct Tensors(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyTensorARM.html
         """
         return self._cmd_copy_tensor_arm(
-            command_buffer, Ptr(to=copy_tensor_info).bitcast[CopyTensorInfoARM]()
+            command_buffer, Ptr(to=copy_tensor_info).bitcast[CopyTensorInfoARM]()[]
         )
 
     fn get_physical_device_external_tensor_properties_arm(
@@ -225,8 +223,8 @@ struct Tensors(Copyable):
         """
         return self._get_physical_device_external_tensor_properties_arm(
             physical_device,
-            Ptr(to=external_tensor_info).bitcast[PhysicalDeviceExternalTensorInfoARM](),
-            Ptr(to=external_tensor_properties).bitcast[ExternalTensorPropertiesARM](),
+            Ptr(to=external_tensor_info).bitcast[PhysicalDeviceExternalTensorInfoARM]()[],
+            Ptr(to=external_tensor_properties).bitcast[ExternalTensorPropertiesARM]()[],
         )
 
     fn get_tensor_opaque_capture_descriptor_data_arm(
@@ -240,7 +238,7 @@ struct Tensors(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorOpaqueCaptureDescriptorDataARM.html
         """
         return self._get_tensor_opaque_capture_descriptor_data_arm(
-            device, Ptr(to=info).bitcast[TensorCaptureDescriptorDataInfoARM](), p_data
+            device, Ptr(to=info).bitcast[TensorCaptureDescriptorDataInfoARM]()[], p_data
         )
 
     fn get_tensor_view_opaque_capture_descriptor_data_arm(
@@ -254,7 +252,7 @@ struct Tensors(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorViewOpaqueCaptureDescriptorDataARM.html
         """
         return self._get_tensor_view_opaque_capture_descriptor_data_arm(
-            device, Ptr(to=info).bitcast[TensorViewCaptureDescriptorDataInfoARM](), p_data
+            device, Ptr(to=info).bitcast[TensorViewCaptureDescriptorDataInfoARM]()[], p_data
         )
 
 
@@ -262,67 +260,67 @@ struct DataGraph(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_data_graph_pipelines_arm: fn(
         device: Device,
-        deferredOperation: DeferredOperationKHR,
-        pipelineCache: PipelineCache,
-        createInfoCount: UInt32,
-        pCreateInfos: Ptr[DataGraphPipelineCreateInfoARM, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pPipelines: Ptr[Pipeline, MutAnyOrigin],
+        deferred_operation: DeferredOperationKHR,
+        pipeline_cache: PipelineCache,
+        create_info_count: UInt32,
+        p_create_infos: Ptr[DataGraphPipelineCreateInfoARM, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result
     var _create_data_graph_pipeline_session_arm: fn(
         device: Device,
-        pCreateInfo: Ptr[DataGraphPipelineSessionCreateInfoARM, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSession: Ptr[DataGraphPipelineSessionARM, MutAnyOrigin],
+        create_info: DataGraphPipelineSessionCreateInfoARM,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        session: DataGraphPipelineSessionARM,
     ) -> Result
     var _get_data_graph_pipeline_session_bind_point_requirements_arm: fn(
         device: Device,
-        pInfo: Ptr[DataGraphPipelineSessionBindPointRequirementsInfoARM, ImmutAnyOrigin],
-        pBindPointRequirementCount: Ptr[UInt32, MutAnyOrigin],
-        pBindPointRequirements: Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutAnyOrigin],
+        info: DataGraphPipelineSessionBindPointRequirementsInfoARM,
+        bind_point_requirement_count: UInt32,
+        p_bind_point_requirements: Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutAnyOrigin],
     ) -> Result
     var _get_data_graph_pipeline_session_memory_requirements_arm: fn(
         device: Device,
-        pInfo: Ptr[DataGraphPipelineSessionMemoryRequirementsInfoARM, ImmutAnyOrigin],
-        pMemoryRequirements: Ptr[MemoryRequirements2, MutAnyOrigin],
+        info: DataGraphPipelineSessionMemoryRequirementsInfoARM,
+        memory_requirements: MemoryRequirements2,
     )
     var _bind_data_graph_pipeline_session_memory_arm: fn(
         device: Device,
-        bindInfoCount: UInt32,
-        pBindInfos: Ptr[BindDataGraphPipelineSessionMemoryInfoARM, ImmutAnyOrigin],
+        bind_info_count: UInt32,
+        p_bind_infos: Ptr[BindDataGraphPipelineSessionMemoryInfoARM, ImmutAnyOrigin],
     ) -> Result
     var _destroy_data_graph_pipeline_session_arm: fn(
         device: Device,
         session: DataGraphPipelineSessionARM,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var _cmd_dispatch_data_graph_arm: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         session: DataGraphPipelineSessionARM,
-        pInfo: Ptr[DataGraphPipelineDispatchInfoARM, ImmutAnyOrigin],
+        p_info: Ptr[DataGraphPipelineDispatchInfoARM, ImmutAnyOrigin],
     )
     var _get_data_graph_pipeline_available_properties_arm: fn(
         device: Device,
-        pPipelineInfo: Ptr[DataGraphPipelineInfoARM, ImmutAnyOrigin],
-        pPropertiesCount: Ptr[UInt32, MutAnyOrigin],
-        pProperties: Ptr[DataGraphPipelinePropertyARM, MutAnyOrigin],
+        pipeline_info: DataGraphPipelineInfoARM,
+        properties_count: UInt32,
+        p_properties: Ptr[DataGraphPipelinePropertyARM, MutAnyOrigin],
     ) -> Result
     var _get_data_graph_pipeline_properties_arm: fn(
         device: Device,
-        pPipelineInfo: Ptr[DataGraphPipelineInfoARM, ImmutAnyOrigin],
-        propertiesCount: UInt32,
-        pProperties: Ptr[DataGraphPipelinePropertyQueryResultARM, MutAnyOrigin],
+        pipeline_info: DataGraphPipelineInfoARM,
+        properties_count: UInt32,
+        p_properties: Ptr[DataGraphPipelinePropertyQueryResultARM, MutAnyOrigin],
     ) -> Result
     var _get_physical_device_queue_family_data_graph_properties_arm: fn(
-        physicalDevice: PhysicalDevice,
-        queueFamilyIndex: UInt32,
-        pQueueFamilyDataGraphPropertyCount: Ptr[UInt32, MutAnyOrigin],
-        pQueueFamilyDataGraphProperties: Ptr[QueueFamilyDataGraphPropertiesARM, MutAnyOrigin],
+        physical_device: PhysicalDevice,
+        queue_family_index: UInt32,
+        queue_family_data_graph_property_count: UInt32,
+        p_queue_family_data_graph_properties: Ptr[QueueFamilyDataGraphPropertiesARM, MutAnyOrigin],
     ) -> Result
     var _get_physical_device_queue_family_data_graph_processing_engine_properties_arm: fn(
-        physicalDevice: PhysicalDevice,
-        pQueueFamilyDataGraphProcessingEngineInfo: Ptr[PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM, ImmutAnyOrigin],
-        pQueueFamilyDataGraphProcessingEngineProperties: Ptr[QueueFamilyDataGraphProcessingEnginePropertiesARM, MutAnyOrigin],
+        physical_device: PhysicalDevice,
+        queue_family_data_graph_processing_engine_info: PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM,
+        queue_family_data_graph_processing_engine_properties: QueueFamilyDataGraphProcessingEnginePropertiesARM,
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -401,9 +399,9 @@ struct DataGraph(Copyable):
         """
         return self._create_data_graph_pipeline_session_arm(
             device,
-            Ptr(to=create_info).bitcast[DataGraphPipelineSessionCreateInfoARM](),
+            Ptr(to=create_info).bitcast[DataGraphPipelineSessionCreateInfoARM]()[],
             p_allocator,
-            Ptr(to=session).bitcast[DataGraphPipelineSessionARM](),
+            Ptr(to=session).bitcast[DataGraphPipelineSessionARM]()[],
         )
 
     fn get_data_graph_pipeline_session_bind_point_requirements_arm(
@@ -419,8 +417,8 @@ struct DataGraph(Copyable):
         """
         return self._get_data_graph_pipeline_session_bind_point_requirements_arm(
             device,
-            Ptr(to=info).bitcast[DataGraphPipelineSessionBindPointRequirementsInfoARM](),
-            Ptr(to=bind_point_requirement_count).bitcast[UInt32](),
+            Ptr(to=info).bitcast[DataGraphPipelineSessionBindPointRequirementsInfoARM]()[],
+            Ptr(to=bind_point_requirement_count).bitcast[UInt32]()[],
             p_bind_point_requirements,
         )
 
@@ -441,8 +439,8 @@ struct DataGraph(Copyable):
                 count,
                 Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutAnyOrigin](),
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_data_graph_pipeline_session_bind_point_requirements_arm(
                 device, info, count, list.unsafe_ptr()
             )
@@ -461,8 +459,8 @@ struct DataGraph(Copyable):
         """
         return self._get_data_graph_pipeline_session_memory_requirements_arm(
             device,
-            Ptr(to=info).bitcast[DataGraphPipelineSessionMemoryRequirementsInfoARM](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[DataGraphPipelineSessionMemoryRequirementsInfoARM]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn bind_data_graph_pipeline_session_memory_arm(
@@ -516,8 +514,8 @@ struct DataGraph(Copyable):
         """
         return self._get_data_graph_pipeline_available_properties_arm(
             device,
-            Ptr(to=pipeline_info).bitcast[DataGraphPipelineInfoARM](),
-            Ptr(to=properties_count).bitcast[UInt32](),
+            Ptr(to=pipeline_info).bitcast[DataGraphPipelineInfoARM]()[],
+            Ptr(to=properties_count).bitcast[UInt32]()[],
             p_properties,
         )
 
@@ -535,8 +533,8 @@ struct DataGraph(Copyable):
             result = self.get_data_graph_pipeline_available_properties_arm(
                 device, pipeline_info, count, Ptr[DataGraphPipelinePropertyARM, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_data_graph_pipeline_available_properties_arm(
                 device, pipeline_info, count, list.unsafe_ptr()
             )
@@ -556,7 +554,7 @@ struct DataGraph(Copyable):
         """
         return self._get_data_graph_pipeline_properties_arm(
             device,
-            Ptr(to=pipeline_info).bitcast[DataGraphPipelineInfoARM](),
+            Ptr(to=pipeline_info).bitcast[DataGraphPipelineInfoARM]()[],
             properties_count,
             p_properties,
         )
@@ -575,7 +573,7 @@ struct DataGraph(Copyable):
         return self._get_physical_device_queue_family_data_graph_properties_arm(
             physical_device,
             queue_family_index,
-            Ptr(to=queue_family_data_graph_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_data_graph_property_count).bitcast[UInt32]()[],
             p_queue_family_data_graph_properties,
         )
 
@@ -596,8 +594,8 @@ struct DataGraph(Copyable):
                 count,
                 Ptr[QueueFamilyDataGraphPropertiesARM, MutAnyOrigin](),
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_physical_device_queue_family_data_graph_properties_arm(
                 physical_device, queue_family_index, count, list.unsafe_ptr()
             )
@@ -616,6 +614,6 @@ struct DataGraph(Copyable):
         """
         return self._get_physical_device_queue_family_data_graph_processing_engine_properties_arm(
             physical_device,
-            Ptr(to=queue_family_data_graph_processing_engine_info).bitcast[PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM](),
-            Ptr(to=queue_family_data_graph_processing_engine_properties).bitcast[QueueFamilyDataGraphProcessingEnginePropertiesARM](),
+            Ptr(to=queue_family_data_graph_processing_engine_info).bitcast[PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM]()[],
+            Ptr(to=queue_family_data_graph_processing_engine_properties).bitcast[QueueFamilyDataGraphProcessingEnginePropertiesARM]()[],
         )

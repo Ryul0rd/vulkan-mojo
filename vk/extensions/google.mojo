@@ -8,13 +8,13 @@ struct DisplayTiming(Copyable):
     var _get_refresh_cycle_duration_google: fn(
         device: Device,
         swapchain: SwapchainKHR,
-        pDisplayTimingProperties: Ptr[RefreshCycleDurationGOOGLE, MutAnyOrigin],
+        display_timing_properties: RefreshCycleDurationGOOGLE,
     ) -> Result
     var _get_past_presentation_timing_google: fn(
         device: Device,
         swapchain: SwapchainKHR,
-        pPresentationTimingCount: Ptr[UInt32, MutAnyOrigin],
-        pPresentationTimings: Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin],
+        presentation_timing_count: UInt32,
+        p_presentation_timings: Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin],
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -42,7 +42,7 @@ struct DisplayTiming(Copyable):
         return self._get_refresh_cycle_duration_google(
             device,
             swapchain,
-            Ptr(to=display_timing_properties).bitcast[RefreshCycleDurationGOOGLE](),
+            Ptr(to=display_timing_properties).bitcast[RefreshCycleDurationGOOGLE]()[],
         )
 
     fn get_past_presentation_timing_google(
@@ -59,7 +59,7 @@ struct DisplayTiming(Copyable):
         return self._get_past_presentation_timing_google(
             device,
             swapchain,
-            Ptr(to=presentation_timing_count).bitcast[UInt32](),
+            Ptr(to=presentation_timing_count).bitcast[UInt32]()[],
             p_presentation_timings,
         )
 
@@ -77,8 +77,8 @@ struct DisplayTiming(Copyable):
             result = self.get_past_presentation_timing_google(
                 device, swapchain, count, Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_past_presentation_timing_google(
                 device, swapchain, count, list.unsafe_ptr()
             )

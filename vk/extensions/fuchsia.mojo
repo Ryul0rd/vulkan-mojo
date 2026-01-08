@@ -7,9 +7,9 @@ struct ImagepipeSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_image_pipe_surface_fuchsia: fn(
         instance: Instance,
-        pCreateInfo: Ptr[ImagePipeSurfaceCreateInfoFUCHSIA, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
+        create_info: ImagePipeSurfaceCreateInfoFUCHSIA,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        surface: SurfaceKHR,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -34,9 +34,9 @@ struct ImagepipeSurface(Copyable):
         """
         return self._create_image_pipe_surface_fuchsia(
             instance,
-            Ptr(to=create_info).bitcast[ImagePipeSurfaceCreateInfoFUCHSIA](),
+            Ptr(to=create_info).bitcast[ImagePipeSurfaceCreateInfoFUCHSIA]()[],
             p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            Ptr(to=surface).bitcast[SurfaceKHR]()[],
         )
 
 
@@ -44,14 +44,14 @@ struct ExternalMemory(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_memory_zircon_handle_fuchsia: fn(
         device: Device,
-        pGetZirconHandleInfo: Ptr[MemoryGetZirconHandleInfoFUCHSIA, ImmutAnyOrigin],
-        pZirconHandle: Ptr[zx_handle_t, MutAnyOrigin],
+        get_zircon_handle_info: MemoryGetZirconHandleInfoFUCHSIA,
+        zircon_handle: zx_handle_t,
     ) -> Result
     var _get_memory_zircon_handle_properties_fuchsia: fn(
         device: Device,
-        handleType: ExternalMemoryHandleTypeFlagBits,
-        zirconHandle: zx_handle_t,
-        pMemoryZirconHandleProperties: Ptr[MemoryZirconHandlePropertiesFUCHSIA, MutAnyOrigin],
+        handle_type: ExternalMemoryHandleTypeFlagBits,
+        zircon_handle: zx_handle_t,
+        memory_zircon_handle_properties: MemoryZirconHandlePropertiesFUCHSIA,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -78,8 +78,8 @@ struct ExternalMemory(Copyable):
         """
         return self._get_memory_zircon_handle_fuchsia(
             device,
-            Ptr(to=get_zircon_handle_info).bitcast[MemoryGetZirconHandleInfoFUCHSIA](),
-            Ptr(to=zircon_handle).bitcast[zx_handle_t](),
+            Ptr(to=get_zircon_handle_info).bitcast[MemoryGetZirconHandleInfoFUCHSIA]()[],
+            Ptr(to=zircon_handle).bitcast[zx_handle_t]()[],
         )
 
     fn get_memory_zircon_handle_properties_fuchsia(
@@ -97,20 +97,19 @@ struct ExternalMemory(Copyable):
             device,
             handle_type,
             zircon_handle,
-            Ptr(to=memory_zircon_handle_properties).bitcast[MemoryZirconHandlePropertiesFUCHSIA](),
+            Ptr(to=memory_zircon_handle_properties).bitcast[MemoryZirconHandlePropertiesFUCHSIA]()[],
         )
 
 
 struct ExternalSemaphore(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _import_semaphore_zircon_handle_fuchsia: fn(
-        device: Device,
-        pImportSemaphoreZirconHandleInfo: Ptr[ImportSemaphoreZirconHandleInfoFUCHSIA, ImmutAnyOrigin],
+        device: Device, import_semaphore_zircon_handle_info: ImportSemaphoreZirconHandleInfoFUCHSIA
     ) -> Result
     var _get_semaphore_zircon_handle_fuchsia: fn(
         device: Device,
-        pGetZirconHandleInfo: Ptr[SemaphoreGetZirconHandleInfoFUCHSIA, ImmutAnyOrigin],
-        pZirconHandle: Ptr[zx_handle_t, MutAnyOrigin],
+        get_zircon_handle_info: SemaphoreGetZirconHandleInfoFUCHSIA,
+        zircon_handle: zx_handle_t,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -136,7 +135,7 @@ struct ExternalSemaphore(Copyable):
         """
         return self._import_semaphore_zircon_handle_fuchsia(
             device,
-            Ptr(to=import_semaphore_zircon_handle_info).bitcast[ImportSemaphoreZirconHandleInfoFUCHSIA](),
+            Ptr(to=import_semaphore_zircon_handle_info).bitcast[ImportSemaphoreZirconHandleInfoFUCHSIA]()[],
         )
 
     fn get_semaphore_zircon_handle_fuchsia(
@@ -151,8 +150,8 @@ struct ExternalSemaphore(Copyable):
         """
         return self._get_semaphore_zircon_handle_fuchsia(
             device,
-            Ptr(to=get_zircon_handle_info).bitcast[SemaphoreGetZirconHandleInfoFUCHSIA](),
-            Ptr(to=zircon_handle).bitcast[zx_handle_t](),
+            Ptr(to=get_zircon_handle_info).bitcast[SemaphoreGetZirconHandleInfoFUCHSIA]()[],
+            Ptr(to=zircon_handle).bitcast[zx_handle_t]()[],
         )
 
 
@@ -160,29 +159,29 @@ struct BufferCollection(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_buffer_collection_fuchsia: fn(
         device: Device,
-        pCreateInfo: Ptr[BufferCollectionCreateInfoFUCHSIA, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pCollection: Ptr[BufferCollectionFUCHSIA, MutAnyOrigin],
+        create_info: BufferCollectionCreateInfoFUCHSIA,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        collection: BufferCollectionFUCHSIA,
     ) -> Result
     var _set_buffer_collection_image_constraints_fuchsia: fn(
         device: Device,
         collection: BufferCollectionFUCHSIA,
-        pImageConstraintsInfo: Ptr[ImageConstraintsInfoFUCHSIA, ImmutAnyOrigin],
+        image_constraints_info: ImageConstraintsInfoFUCHSIA,
     ) -> Result
     var _set_buffer_collection_buffer_constraints_fuchsia: fn(
         device: Device,
         collection: BufferCollectionFUCHSIA,
-        pBufferConstraintsInfo: Ptr[BufferConstraintsInfoFUCHSIA, ImmutAnyOrigin],
+        buffer_constraints_info: BufferConstraintsInfoFUCHSIA,
     ) -> Result
     var _destroy_buffer_collection_fuchsia: fn(
         device: Device,
         collection: BufferCollectionFUCHSIA,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var _get_buffer_collection_properties_fuchsia: fn(
         device: Device,
         collection: BufferCollectionFUCHSIA,
-        pProperties: Ptr[BufferCollectionPropertiesFUCHSIA, MutAnyOrigin],
+        properties: BufferCollectionPropertiesFUCHSIA,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -219,9 +218,9 @@ struct BufferCollection(Copyable):
         """
         return self._create_buffer_collection_fuchsia(
             device,
-            Ptr(to=create_info).bitcast[BufferCollectionCreateInfoFUCHSIA](),
+            Ptr(to=create_info).bitcast[BufferCollectionCreateInfoFUCHSIA]()[],
             p_allocator,
-            Ptr(to=collection).bitcast[BufferCollectionFUCHSIA](),
+            Ptr(to=collection).bitcast[BufferCollectionFUCHSIA]()[],
         )
 
     fn set_buffer_collection_image_constraints_fuchsia(
@@ -237,7 +236,7 @@ struct BufferCollection(Copyable):
         return self._set_buffer_collection_image_constraints_fuchsia(
             device,
             collection,
-            Ptr(to=image_constraints_info).bitcast[ImageConstraintsInfoFUCHSIA](),
+            Ptr(to=image_constraints_info).bitcast[ImageConstraintsInfoFUCHSIA]()[],
         )
 
     fn set_buffer_collection_buffer_constraints_fuchsia(
@@ -253,7 +252,7 @@ struct BufferCollection(Copyable):
         return self._set_buffer_collection_buffer_constraints_fuchsia(
             device,
             collection,
-            Ptr(to=buffer_constraints_info).bitcast[BufferConstraintsInfoFUCHSIA](),
+            Ptr(to=buffer_constraints_info).bitcast[BufferConstraintsInfoFUCHSIA]()[],
         )
 
     fn destroy_buffer_collection_fuchsia(
@@ -279,5 +278,5 @@ struct BufferCollection(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferCollectionPropertiesFUCHSIA.html
         """
         return self._get_buffer_collection_properties_fuchsia(
-            device, collection, Ptr(to=properties).bitcast[BufferCollectionPropertiesFUCHSIA]()
+            device, collection, Ptr(to=properties).bitcast[BufferCollectionPropertiesFUCHSIA]()[]
         )

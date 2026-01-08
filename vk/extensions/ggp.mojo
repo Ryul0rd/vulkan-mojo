@@ -7,9 +7,9 @@ struct StreamDescriptorSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_stream_descriptor_surface_ggp: fn(
         instance: Instance,
-        pCreateInfo: Ptr[StreamDescriptorSurfaceCreateInfoGGP, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
+        create_info: StreamDescriptorSurfaceCreateInfoGGP,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        surface: SurfaceKHR,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -34,7 +34,7 @@ struct StreamDescriptorSurface(Copyable):
         """
         return self._create_stream_descriptor_surface_ggp(
             instance,
-            Ptr(to=create_info).bitcast[StreamDescriptorSurfaceCreateInfoGGP](),
+            Ptr(to=create_info).bitcast[StreamDescriptorSurfaceCreateInfoGGP]()[],
             p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            Ptr(to=surface).bitcast[SurfaceKHR]()[],
         )

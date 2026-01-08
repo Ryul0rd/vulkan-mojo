@@ -7,9 +7,9 @@ struct IosSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_ios_surface_mvk: fn(
         instance: Instance,
-        pCreateInfo: Ptr[IOSSurfaceCreateInfoMVK, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
+        create_info: IOSSurfaceCreateInfoMVK,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        surface: SurfaceKHR,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -34,9 +34,9 @@ struct IosSurface(Copyable):
         """
         return self._create_ios_surface_mvk(
             instance,
-            Ptr(to=create_info).bitcast[IOSSurfaceCreateInfoMVK](),
+            Ptr(to=create_info).bitcast[IOSSurfaceCreateInfoMVK]()[],
             p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            Ptr(to=surface).bitcast[SurfaceKHR]()[],
         )
 
 
@@ -44,9 +44,9 @@ struct MacosSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_mac_os_surface_mvk: fn(
         instance: Instance,
-        pCreateInfo: Ptr[MacOSSurfaceCreateInfoMVK, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
+        create_info: MacOSSurfaceCreateInfoMVK,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        surface: SurfaceKHR,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -71,7 +71,7 @@ struct MacosSurface(Copyable):
         """
         return self._create_mac_os_surface_mvk(
             instance,
-            Ptr(to=create_info).bitcast[MacOSSurfaceCreateInfoMVK](),
+            Ptr(to=create_info).bitcast[MacOSSurfaceCreateInfoMVK]()[],
             p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            Ptr(to=surface).bitcast[SurfaceKHR]()[],
         )

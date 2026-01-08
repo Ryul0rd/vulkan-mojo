@@ -7,24 +7,24 @@ struct DebugReport(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_debug_report_callback_ext: fn(
         instance: Instance,
-        pCreateInfo: Ptr[DebugReportCallbackCreateInfoEXT, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pCallback: Ptr[DebugReportCallbackEXT, MutAnyOrigin],
+        create_info: DebugReportCallbackCreateInfoEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        callback: DebugReportCallbackEXT,
     ) -> Result
     var _destroy_debug_report_callback_ext: fn(
         instance: Instance,
         callback: DebugReportCallbackEXT,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var _debug_report_message_ext: fn(
         instance: Instance,
         flags: DebugReportFlagsEXT,
-        objectType: DebugReportObjectTypeEXT,
+        object_type: DebugReportObjectTypeEXT,
         object: UInt64,
         location: UInt,
-        messageCode: Int32,
-        pLayerPrefix: CStringSlice[ImmutAnyOrigin],
-        pMessage: CStringSlice[ImmutAnyOrigin],
+        message_code: Int32,
+        p_layer_prefix: CStringSlice[ImmutAnyOrigin],
+        p_message: CStringSlice[ImmutAnyOrigin],
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -55,9 +55,9 @@ struct DebugReport(Copyable):
         """
         return self._create_debug_report_callback_ext(
             instance,
-            Ptr(to=create_info).bitcast[DebugReportCallbackCreateInfoEXT](),
+            Ptr(to=create_info).bitcast[DebugReportCallbackCreateInfoEXT]()[],
             p_allocator,
-            Ptr(to=callback).bitcast[DebugReportCallbackEXT](),
+            Ptr(to=callback).bitcast[DebugReportCallbackEXT]()[],
         )
 
     fn destroy_debug_report_callback_ext(
@@ -80,39 +80,32 @@ struct DebugReport(Copyable):
         object: UInt64,
         location: UInt,
         message_code: Int32,
-        p_layer_prefix: CStringSlice,
-        p_message: CStringSlice,
+        p_layer_prefix: CStringSlice[ImmutAnyOrigin],
+        p_message: CStringSlice[ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDebugReportMessageEXT.html
         """
         return self._debug_report_message_ext(
-            instance,
-            flags,
-            object_type,
-            object,
-            location,
-            message_code,
-            Ptr(to=p_layer_prefix).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
-            Ptr(to=p_message).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            instance, flags, object_type, object, location, message_code, p_layer_prefix, p_message
         )
 
 
 struct DebugMarker(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _debug_marker_set_object_tag_ext: fn(
-        device: Device, pTagInfo: Ptr[DebugMarkerObjectTagInfoEXT, ImmutAnyOrigin]
+        device: Device, tag_info: DebugMarkerObjectTagInfoEXT
     ) -> Result
     var _debug_marker_set_object_name_ext: fn(
-        device: Device, pNameInfo: Ptr[DebugMarkerObjectNameInfoEXT, ImmutAnyOrigin]
+        device: Device, name_info: DebugMarkerObjectNameInfoEXT
     ) -> Result
     var _cmd_debug_marker_begin_ext: fn(
-        commandBuffer: CommandBuffer, pMarkerInfo: Ptr[DebugMarkerMarkerInfoEXT, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, marker_info: DebugMarkerMarkerInfoEXT
     )
-    var _cmd_debug_marker_end_ext: fn(commandBuffer: CommandBuffer)
+    var _cmd_debug_marker_end_ext: fn(command_buffer: CommandBuffer)
     var _cmd_debug_marker_insert_ext: fn(
-        commandBuffer: CommandBuffer, pMarkerInfo: Ptr[DebugMarkerMarkerInfoEXT, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, marker_info: DebugMarkerMarkerInfoEXT
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -144,7 +137,7 @@ struct DebugMarker(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDebugMarkerSetObjectTagEXT.html
         """
         return self._debug_marker_set_object_tag_ext(
-            device, Ptr(to=tag_info).bitcast[DebugMarkerObjectTagInfoEXT]()
+            device, Ptr(to=tag_info).bitcast[DebugMarkerObjectTagInfoEXT]()[]
         )
 
     fn debug_marker_set_object_name_ext(
@@ -155,7 +148,7 @@ struct DebugMarker(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDebugMarkerSetObjectNameEXT.html
         """
         return self._debug_marker_set_object_name_ext(
-            device, Ptr(to=name_info).bitcast[DebugMarkerObjectNameInfoEXT]()
+            device, Ptr(to=name_info).bitcast[DebugMarkerObjectNameInfoEXT]()[]
         )
 
     fn cmd_debug_marker_begin_ext(
@@ -166,7 +159,7 @@ struct DebugMarker(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDebugMarkerBeginEXT.html
         """
         return self._cmd_debug_marker_begin_ext(
-            command_buffer, Ptr(to=marker_info).bitcast[DebugMarkerMarkerInfoEXT]()
+            command_buffer, Ptr(to=marker_info).bitcast[DebugMarkerMarkerInfoEXT]()[]
         )
 
     fn cmd_debug_marker_end_ext(self, command_buffer: CommandBuffer):
@@ -184,52 +177,52 @@ struct DebugMarker(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDebugMarkerInsertEXT.html
         """
         return self._cmd_debug_marker_insert_ext(
-            command_buffer, Ptr(to=marker_info).bitcast[DebugMarkerMarkerInfoEXT]()
+            command_buffer, Ptr(to=marker_info).bitcast[DebugMarkerMarkerInfoEXT]()[]
         )
 
 
 struct TransformFeedback(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_bind_transform_feedback_buffers_ext: fn(
-        commandBuffer: CommandBuffer,
-        firstBinding: UInt32,
-        bindingCount: UInt32,
-        pBuffers: Ptr[Buffer, ImmutAnyOrigin],
-        pOffsets: Ptr[DeviceSize, ImmutAnyOrigin],
-        pSizes: Ptr[DeviceSize, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_binding: UInt32,
+        binding_count: UInt32,
+        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
+        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
     )
     var _cmd_begin_transform_feedback_ext: fn(
-        commandBuffer: CommandBuffer,
-        firstCounterBuffer: UInt32,
-        counterBufferCount: UInt32,
-        pCounterBuffers: Ptr[Buffer, ImmutAnyOrigin],
-        pCounterBufferOffsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_counter_buffer: UInt32,
+        counter_buffer_count: UInt32,
+        p_counter_buffers: Ptr[Buffer, ImmutAnyOrigin],
+        p_counter_buffer_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
     )
     var _cmd_end_transform_feedback_ext: fn(
-        commandBuffer: CommandBuffer,
-        firstCounterBuffer: UInt32,
-        counterBufferCount: UInt32,
-        pCounterBuffers: Ptr[Buffer, ImmutAnyOrigin],
-        pCounterBufferOffsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_counter_buffer: UInt32,
+        counter_buffer_count: UInt32,
+        p_counter_buffers: Ptr[Buffer, ImmutAnyOrigin],
+        p_counter_buffer_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
     )
     var _cmd_begin_query_indexed_ext: fn(
-        commandBuffer: CommandBuffer,
-        queryPool: QueryPool,
+        command_buffer: CommandBuffer,
+        query_pool: QueryPool,
         query: UInt32,
         flags: QueryControlFlags,
         index: UInt32,
     )
     var _cmd_end_query_indexed_ext: fn(
-        commandBuffer: CommandBuffer, queryPool: QueryPool, query: UInt32, index: UInt32
+        command_buffer: CommandBuffer, query_pool: QueryPool, query: UInt32, index: UInt32
     )
     var _cmd_draw_indirect_byte_count_ext: fn(
-        commandBuffer: CommandBuffer,
-        instanceCount: UInt32,
-        firstInstance: UInt32,
-        counterBuffer: Buffer,
-        counterBufferOffset: DeviceSize,
-        counterOffset: UInt32,
-        vertexStride: UInt32,
+        command_buffer: CommandBuffer,
+        instance_count: UInt32,
+        first_instance: UInt32,
+        counter_buffer: Buffer,
+        counter_buffer_offset: DeviceSize,
+        counter_offset: UInt32,
+        vertex_stride: UInt32,
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -364,10 +357,9 @@ struct TransformFeedback(Copyable):
 struct ConditionalRendering(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_begin_conditional_rendering_ext: fn(
-        commandBuffer: CommandBuffer,
-        pConditionalRenderingBegin: Ptr[ConditionalRenderingBeginInfoEXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer, conditional_rendering_begin: ConditionalRenderingBeginInfoEXT
     )
-    var _cmd_end_conditional_rendering_ext: fn(commandBuffer: CommandBuffer)
+    var _cmd_end_conditional_rendering_ext: fn(command_buffer: CommandBuffer)
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
         self._dlhandle = global_functions.get_dlhandle()
@@ -392,7 +384,7 @@ struct ConditionalRendering(Copyable):
         """
         return self._cmd_begin_conditional_rendering_ext(
             command_buffer,
-            Ptr(to=conditional_rendering_begin).bitcast[ConditionalRenderingBeginInfoEXT](),
+            Ptr(to=conditional_rendering_begin).bitcast[ConditionalRenderingBeginInfoEXT]()[],
         )
 
     fn cmd_end_conditional_rendering_ext(self, command_buffer: CommandBuffer):
@@ -405,7 +397,7 @@ struct ConditionalRendering(Copyable):
 
 struct DirectModeDisplay(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _release_display_ext: fn(physicalDevice: PhysicalDevice, display: DisplayKHR) -> Result
+    var _release_display_ext: fn(physical_device: PhysicalDevice, display: DisplayKHR) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
         self._dlhandle = global_functions.get_dlhandle()
@@ -427,13 +419,10 @@ struct DirectModeDisplay(Copyable):
 struct AcquireXlibDisplay(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _acquire_xlib_display_ext: fn(
-        physicalDevice: PhysicalDevice, dpy: Ptr[Display, MutAnyOrigin], display: DisplayKHR
+        physical_device: PhysicalDevice, dpy: Display, display: DisplayKHR
     ) -> Result
     var _get_rand_r_output_display_ext: fn(
-        physicalDevice: PhysicalDevice,
-        dpy: Ptr[Display, MutAnyOrigin],
-        rrOutput: RROutput,
-        pDisplay: Ptr[DisplayKHR, MutAnyOrigin],
+        physical_device: PhysicalDevice, dpy: Display, rr_output: RROutput, display: DisplayKHR
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -456,7 +445,7 @@ struct AcquireXlibDisplay(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireXlibDisplayEXT.html
         """
         return self._acquire_xlib_display_ext(
-            physical_device, Ptr(to=dpy).bitcast[Display](), display
+            physical_device, Ptr(to=dpy).bitcast[Display]()[], display
         )
 
     fn get_rand_r_output_display_ext(
@@ -472,18 +461,18 @@ struct AcquireXlibDisplay(Copyable):
         """
         return self._get_rand_r_output_display_ext(
             physical_device,
-            Ptr(to=dpy).bitcast[Display](),
+            Ptr(to=dpy).bitcast[Display]()[],
             rr_output,
-            Ptr(to=display).bitcast[DisplayKHR](),
+            Ptr(to=display).bitcast[DisplayKHR]()[],
         )
 
 
 struct DisplaySurfaceCounter(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_surface_capabilities_2_ext: fn(
-        physicalDevice: PhysicalDevice,
+        physical_device: PhysicalDevice,
         surface: SurfaceKHR,
-        pSurfaceCapabilities: Ptr[SurfaceCapabilities2EXT, MutAnyOrigin],
+        surface_capabilities: SurfaceCapabilities2EXT,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -508,35 +497,33 @@ struct DisplaySurfaceCounter(Copyable):
         return self._get_physical_device_surface_capabilities_2_ext(
             physical_device,
             surface,
-            Ptr(to=surface_capabilities).bitcast[SurfaceCapabilities2EXT](),
+            Ptr(to=surface_capabilities).bitcast[SurfaceCapabilities2EXT]()[],
         )
 
 
 struct DisplayControl(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _display_power_control_ext: fn(
-        device: Device,
-        display: DisplayKHR,
-        pDisplayPowerInfo: Ptr[DisplayPowerInfoEXT, ImmutAnyOrigin],
+        device: Device, display: DisplayKHR, display_power_info: DisplayPowerInfoEXT
     ) -> Result
     var _register_device_event_ext: fn(
         device: Device,
-        pDeviceEventInfo: Ptr[DeviceEventInfoEXT, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pFence: Ptr[Fence, MutAnyOrigin],
+        device_event_info: DeviceEventInfoEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        fence: Fence,
     ) -> Result
     var _register_display_event_ext: fn(
         device: Device,
         display: DisplayKHR,
-        pDisplayEventInfo: Ptr[DisplayEventInfoEXT, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pFence: Ptr[Fence, MutAnyOrigin],
+        display_event_info: DisplayEventInfoEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        fence: Fence,
     ) -> Result
     var _get_swapchain_counter_ext: fn(
         device: Device,
         swapchain: SwapchainKHR,
         counter: SurfaceCounterFlagBitsEXT,
-        pCounterValue: Ptr[UInt64, MutAnyOrigin],
+        counter_value: UInt64,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -565,7 +552,7 @@ struct DisplayControl(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDisplayPowerControlEXT.html
         """
         return self._display_power_control_ext(
-            device, display, Ptr(to=display_power_info).bitcast[DisplayPowerInfoEXT]()
+            device, display, Ptr(to=display_power_info).bitcast[DisplayPowerInfoEXT]()[]
         )
 
     fn register_device_event_ext(
@@ -581,9 +568,9 @@ struct DisplayControl(Copyable):
         """
         return self._register_device_event_ext(
             device,
-            Ptr(to=device_event_info).bitcast[DeviceEventInfoEXT](),
+            Ptr(to=device_event_info).bitcast[DeviceEventInfoEXT]()[],
             p_allocator,
-            Ptr(to=fence).bitcast[Fence](),
+            Ptr(to=fence).bitcast[Fence]()[],
         )
 
     fn register_display_event_ext(
@@ -601,9 +588,9 @@ struct DisplayControl(Copyable):
         return self._register_display_event_ext(
             device,
             display,
-            Ptr(to=display_event_info).bitcast[DisplayEventInfoEXT](),
+            Ptr(to=display_event_info).bitcast[DisplayEventInfoEXT]()[],
             p_allocator,
-            Ptr(to=fence).bitcast[Fence](),
+            Ptr(to=fence).bitcast[Fence]()[],
         )
 
     fn get_swapchain_counter_ext(
@@ -618,23 +605,23 @@ struct DisplayControl(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSwapchainCounterEXT.html
         """
         return self._get_swapchain_counter_ext(
-            device, swapchain, counter, Ptr(to=counter_value).bitcast[UInt64]()
+            device, swapchain, counter, Ptr(to=counter_value).bitcast[UInt64]()[]
         )
 
 
 struct DiscardRectangles(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_discard_rectangle_ext: fn(
-        commandBuffer: CommandBuffer,
-        firstDiscardRectangle: UInt32,
-        discardRectangleCount: UInt32,
-        pDiscardRectangles: Ptr[Rect2D, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_discard_rectangle: UInt32,
+        discard_rectangle_count: UInt32,
+        p_discard_rectangles: Ptr[Rect2D, ImmutAnyOrigin],
     )
     var _cmd_set_discard_rectangle_enable_ext: fn(
-        commandBuffer: CommandBuffer, discardRectangleEnable: Bool32
+        command_buffer: CommandBuffer, discard_rectangle_enable: Bool32
     )
     var _cmd_set_discard_rectangle_mode_ext: fn(
-        commandBuffer: CommandBuffer, discardRectangleMode: DiscardRectangleModeEXT
+        command_buffer: CommandBuffer, discard_rectangle_mode: DiscardRectangleModeEXT
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -690,9 +677,9 @@ struct HdrMetadata(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _set_hdr_metadata_ext: fn(
         device: Device,
-        swapchainCount: UInt32,
-        pSwapchains: Ptr[SwapchainKHR, ImmutAnyOrigin],
-        pMetadata: Ptr[HdrMetadataEXT, ImmutAnyOrigin],
+        swapchain_count: UInt32,
+        p_swapchains: Ptr[SwapchainKHR, ImmutAnyOrigin],
+        p_metadata: Ptr[HdrMetadataEXT, ImmutAnyOrigin],
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -721,41 +708,37 @@ struct HdrMetadata(Copyable):
 struct DebugUtils(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _set_debug_utils_object_name_ext: fn(
-        device: Device, pNameInfo: Ptr[DebugUtilsObjectNameInfoEXT, ImmutAnyOrigin]
+        device: Device, name_info: DebugUtilsObjectNameInfoEXT
     ) -> Result
     var _set_debug_utils_object_tag_ext: fn(
-        device: Device, pTagInfo: Ptr[DebugUtilsObjectTagInfoEXT, ImmutAnyOrigin]
+        device: Device, tag_info: DebugUtilsObjectTagInfoEXT
     ) -> Result
-    var _queue_begin_debug_utils_label_ext: fn(
-        queue: Queue, pLabelInfo: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]
-    )
+    var _queue_begin_debug_utils_label_ext: fn(queue: Queue, label_info: DebugUtilsLabelEXT)
     var _queue_end_debug_utils_label_ext: fn(queue: Queue)
-    var _queue_insert_debug_utils_label_ext: fn(
-        queue: Queue, pLabelInfo: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]
-    )
+    var _queue_insert_debug_utils_label_ext: fn(queue: Queue, label_info: DebugUtilsLabelEXT)
     var _cmd_begin_debug_utils_label_ext: fn(
-        commandBuffer: CommandBuffer, pLabelInfo: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, label_info: DebugUtilsLabelEXT
     )
-    var _cmd_end_debug_utils_label_ext: fn(commandBuffer: CommandBuffer)
+    var _cmd_end_debug_utils_label_ext: fn(command_buffer: CommandBuffer)
     var _cmd_insert_debug_utils_label_ext: fn(
-        commandBuffer: CommandBuffer, pLabelInfo: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, label_info: DebugUtilsLabelEXT
     )
     var _create_debug_utils_messenger_ext: fn(
         instance: Instance,
-        pCreateInfo: Ptr[DebugUtilsMessengerCreateInfoEXT, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pMessenger: Ptr[DebugUtilsMessengerEXT, MutAnyOrigin],
+        create_info: DebugUtilsMessengerCreateInfoEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        messenger: DebugUtilsMessengerEXT,
     ) -> Result
     var _destroy_debug_utils_messenger_ext: fn(
         instance: Instance,
         messenger: DebugUtilsMessengerEXT,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var _submit_debug_utils_message_ext: fn(
         instance: Instance,
-        messageSeverity: DebugUtilsMessageSeverityFlagBitsEXT,
-        messageTypes: DebugUtilsMessageTypeFlagsEXT,
-        pCallbackData: Ptr[DebugUtilsMessengerCallbackDataEXT, ImmutAnyOrigin],
+        message_severity: DebugUtilsMessageSeverityFlagBitsEXT,
+        message_types: DebugUtilsMessageTypeFlagsEXT,
+        callback_data: DebugUtilsMessengerCallbackDataEXT,
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -805,7 +788,7 @@ struct DebugUtils(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetDebugUtilsObjectNameEXT.html
         """
         return self._set_debug_utils_object_name_ext(
-            device, Ptr(to=name_info).bitcast[DebugUtilsObjectNameInfoEXT]()
+            device, Ptr(to=name_info).bitcast[DebugUtilsObjectNameInfoEXT]()[]
         )
 
     fn set_debug_utils_object_tag_ext(
@@ -816,7 +799,7 @@ struct DebugUtils(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetDebugUtilsObjectTagEXT.html
         """
         return self._set_debug_utils_object_tag_ext(
-            device, Ptr(to=tag_info).bitcast[DebugUtilsObjectTagInfoEXT]()
+            device, Ptr(to=tag_info).bitcast[DebugUtilsObjectTagInfoEXT]()[]
         )
 
     fn queue_begin_debug_utils_label_ext(self, queue: Queue, label_info: DebugUtilsLabelEXT):
@@ -825,7 +808,7 @@ struct DebugUtils(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBeginDebugUtilsLabelEXT.html
         """
         return self._queue_begin_debug_utils_label_ext(
-            queue, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()
+            queue, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()[]
         )
 
     fn queue_end_debug_utils_label_ext(self, queue: Queue):
@@ -841,7 +824,7 @@ struct DebugUtils(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueInsertDebugUtilsLabelEXT.html
         """
         return self._queue_insert_debug_utils_label_ext(
-            queue, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()
+            queue, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()[]
         )
 
     fn cmd_begin_debug_utils_label_ext(
@@ -852,7 +835,7 @@ struct DebugUtils(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginDebugUtilsLabelEXT.html
         """
         return self._cmd_begin_debug_utils_label_ext(
-            command_buffer, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()
+            command_buffer, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()[]
         )
 
     fn cmd_end_debug_utils_label_ext(self, command_buffer: CommandBuffer):
@@ -870,7 +853,7 @@ struct DebugUtils(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdInsertDebugUtilsLabelEXT.html
         """
         return self._cmd_insert_debug_utils_label_ext(
-            command_buffer, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()
+            command_buffer, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()[]
         )
 
     fn create_debug_utils_messenger_ext(
@@ -886,9 +869,9 @@ struct DebugUtils(Copyable):
         """
         return self._create_debug_utils_messenger_ext(
             instance,
-            Ptr(to=create_info).bitcast[DebugUtilsMessengerCreateInfoEXT](),
+            Ptr(to=create_info).bitcast[DebugUtilsMessengerCreateInfoEXT]()[],
             p_allocator,
-            Ptr(to=messenger).bitcast[DebugUtilsMessengerEXT](),
+            Ptr(to=messenger).bitcast[DebugUtilsMessengerEXT]()[],
         )
 
     fn destroy_debug_utils_messenger_ext(
@@ -918,20 +901,19 @@ struct DebugUtils(Copyable):
             instance,
             message_severity,
             message_types,
-            Ptr(to=callback_data).bitcast[DebugUtilsMessengerCallbackDataEXT](),
+            Ptr(to=callback_data).bitcast[DebugUtilsMessengerCallbackDataEXT]()[],
         )
 
 
 struct SampleLocations(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_sample_locations_ext: fn(
-        commandBuffer: CommandBuffer,
-        pSampleLocationsInfo: Ptr[SampleLocationsInfoEXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer, sample_locations_info: SampleLocationsInfoEXT
     )
     var _get_physical_device_multisample_properties_ext: fn(
-        physicalDevice: PhysicalDevice,
+        physical_device: PhysicalDevice,
         samples: SampleCountFlagBits,
-        pMultisampleProperties: Ptr[MultisamplePropertiesEXT, MutAnyOrigin],
+        multisample_properties: MultisamplePropertiesEXT,
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -954,7 +936,7 @@ struct SampleLocations(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetSampleLocationsEXT.html
         """
         return self._cmd_set_sample_locations_ext(
-            command_buffer, Ptr(to=sample_locations_info).bitcast[SampleLocationsInfoEXT]()
+            command_buffer, Ptr(to=sample_locations_info).bitcast[SampleLocationsInfoEXT]()[]
         )
 
     fn get_physical_device_multisample_properties_ext(
@@ -970,16 +952,14 @@ struct SampleLocations(Copyable):
         return self._get_physical_device_multisample_properties_ext(
             physical_device,
             samples,
-            Ptr(to=multisample_properties).bitcast[MultisamplePropertiesEXT](),
+            Ptr(to=multisample_properties).bitcast[MultisamplePropertiesEXT]()[],
         )
 
 
 struct ImageDrmFormatModifier(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_image_drm_format_modifier_properties_ext: fn(
-        device: Device,
-        image: Image,
-        pProperties: Ptr[ImageDrmFormatModifierPropertiesEXT, MutAnyOrigin],
+        device: Device, image: Image, properties: ImageDrmFormatModifierPropertiesEXT
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -999,7 +979,7 @@ struct ImageDrmFormatModifier(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageDrmFormatModifierPropertiesEXT.html
         """
         return self._get_image_drm_format_modifier_properties_ext(
-            device, image, Ptr(to=properties).bitcast[ImageDrmFormatModifierPropertiesEXT]()
+            device, image, Ptr(to=properties).bitcast[ImageDrmFormatModifierPropertiesEXT]()[]
         )
 
 
@@ -1007,26 +987,26 @@ struct ValidationCache(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_validation_cache_ext: fn(
         device: Device,
-        pCreateInfo: Ptr[ValidationCacheCreateInfoEXT, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pValidationCache: Ptr[ValidationCacheEXT, MutAnyOrigin],
+        create_info: ValidationCacheCreateInfoEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        validation_cache: ValidationCacheEXT,
     ) -> Result
     var _destroy_validation_cache_ext: fn(
         device: Device,
-        validationCache: ValidationCacheEXT,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        validation_cache: ValidationCacheEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var _merge_validation_caches_ext: fn(
         device: Device,
-        dstCache: ValidationCacheEXT,
-        srcCacheCount: UInt32,
-        pSrcCaches: Ptr[ValidationCacheEXT, ImmutAnyOrigin],
+        dst_cache: ValidationCacheEXT,
+        src_cache_count: UInt32,
+        p_src_caches: Ptr[ValidationCacheEXT, ImmutAnyOrigin],
     ) -> Result
     var _get_validation_cache_data_ext: fn(
         device: Device,
-        validationCache: ValidationCacheEXT,
-        pDataSize: Ptr[UInt, MutAnyOrigin],
-        pData: Ptr[NoneType, MutAnyOrigin],
+        validation_cache: ValidationCacheEXT,
+        data_size: UInt,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -1060,9 +1040,9 @@ struct ValidationCache(Copyable):
         """
         return self._create_validation_cache_ext(
             device,
-            Ptr(to=create_info).bitcast[ValidationCacheCreateInfoEXT](),
+            Ptr(to=create_info).bitcast[ValidationCacheCreateInfoEXT]()[],
             p_allocator,
-            Ptr(to=validation_cache).bitcast[ValidationCacheEXT](),
+            Ptr(to=validation_cache).bitcast[ValidationCacheEXT]()[],
         )
 
     fn destroy_validation_cache_ext(
@@ -1102,7 +1082,7 @@ struct ValidationCache(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetValidationCacheDataEXT.html
         """
         return self._get_validation_cache_data_ext(
-            device, validation_cache, Ptr(to=data_size).bitcast[UInt](), p_data
+            device, validation_cache, Ptr(to=data_size).bitcast[UInt]()[], p_data
         )
 
     fn get_validation_cache_data_ext(
@@ -1119,8 +1099,8 @@ struct ValidationCache(Copyable):
             result = self.get_validation_cache_data_ext(
                 device, validation_cache, count, Ptr[NoneType, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_validation_cache_data_ext(
                 device, validation_cache, count, list.unsafe_ptr().bitcast[NoneType]()
             )
@@ -1132,9 +1112,9 @@ struct ExternalMemoryHost(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_memory_host_pointer_properties_ext: fn(
         device: Device,
-        handleType: ExternalMemoryHandleTypeFlagBits,
-        pHostPointer: Ptr[NoneType, ImmutAnyOrigin],
-        pMemoryHostPointerProperties: Ptr[MemoryHostPointerPropertiesEXT, MutAnyOrigin],
+        handle_type: ExternalMemoryHandleTypeFlagBits,
+        p_host_pointer: Ptr[NoneType, ImmutAnyOrigin],
+        memory_host_pointer_properties: MemoryHostPointerPropertiesEXT,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -1161,23 +1141,23 @@ struct ExternalMemoryHost(Copyable):
             device,
             handle_type,
             p_host_pointer,
-            Ptr(to=memory_host_pointer_properties).bitcast[MemoryHostPointerPropertiesEXT](),
+            Ptr(to=memory_host_pointer_properties).bitcast[MemoryHostPointerPropertiesEXT]()[],
         )
 
 
 struct CalibratedTimestamps(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_calibrateable_time_domains_khr: fn(
-        physicalDevice: PhysicalDevice,
-        pTimeDomainCount: Ptr[UInt32, MutAnyOrigin],
-        pTimeDomains: Ptr[TimeDomainKHR, MutAnyOrigin],
+        physical_device: PhysicalDevice,
+        time_domain_count: UInt32,
+        p_time_domains: Ptr[TimeDomainKHR, MutAnyOrigin],
     ) -> Result
     var _get_calibrated_timestamps_khr: fn(
         device: Device,
-        timestampCount: UInt32,
-        pTimestampInfos: Ptr[CalibratedTimestampInfoKHR, ImmutAnyOrigin],
-        pTimestamps: Ptr[UInt64, MutAnyOrigin],
-        pMaxDeviation: Ptr[UInt64, MutAnyOrigin],
+        timestamp_count: UInt32,
+        p_timestamp_infos: Ptr[CalibratedTimestampInfoKHR, ImmutAnyOrigin],
+        p_timestamps: Ptr[UInt64, MutAnyOrigin],
+        max_deviation: UInt64,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -1203,7 +1183,7 @@ struct CalibratedTimestamps(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCalibrateableTimeDomainsKHR.html
         """
         return self._get_physical_device_calibrateable_time_domains_khr(
-            physical_device, Ptr(to=time_domain_count).bitcast[UInt32](), p_time_domains
+            physical_device, Ptr(to=time_domain_count).bitcast[UInt32]()[], p_time_domains
         )
 
     fn get_physical_device_calibrateable_time_domains_khr(
@@ -1220,8 +1200,8 @@ struct CalibratedTimestamps(Copyable):
             result = self.get_physical_device_calibrateable_time_domains_khr(
                 physical_device, count, Ptr[TimeDomainKHR, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_physical_device_calibrateable_time_domains_khr(
                 physical_device, count, list.unsafe_ptr()
             )
@@ -1245,7 +1225,7 @@ struct CalibratedTimestamps(Copyable):
             timestamp_count,
             p_timestamp_infos,
             p_timestamps,
-            Ptr(to=max_deviation).bitcast[UInt64](),
+            Ptr(to=max_deviation).bitcast[UInt64]()[],
         )
 
 
@@ -1253,9 +1233,9 @@ struct MetalSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_metal_surface_ext: fn(
         instance: Instance,
-        pCreateInfo: Ptr[MetalSurfaceCreateInfoEXT, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
+        create_info: MetalSurfaceCreateInfoEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        surface: SurfaceKHR,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -1280,16 +1260,16 @@ struct MetalSurface(Copyable):
         """
         return self._create_metal_surface_ext(
             instance,
-            Ptr(to=create_info).bitcast[MetalSurfaceCreateInfoEXT](),
+            Ptr(to=create_info).bitcast[MetalSurfaceCreateInfoEXT]()[],
             p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            Ptr(to=surface).bitcast[SurfaceKHR]()[],
         )
 
 
 struct BufferDeviceAddress(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_buffer_device_address: fn(
-        device: Device, pInfo: Ptr[BufferDeviceAddressInfo, ImmutAnyOrigin]
+        device: Device, info: BufferDeviceAddressInfo
     ) -> DeviceAddress
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -1309,16 +1289,16 @@ struct BufferDeviceAddress(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
         return self._get_buffer_device_address(
-            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
+            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()[]
         )
 
 
 struct ToolingInfo(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_tool_properties: fn(
-        physicalDevice: PhysicalDevice,
-        pToolCount: Ptr[UInt32, MutAnyOrigin],
-        pToolProperties: Ptr[PhysicalDeviceToolProperties, MutAnyOrigin],
+        physical_device: PhysicalDevice,
+        tool_count: UInt32,
+        p_tool_properties: Ptr[PhysicalDeviceToolProperties, MutAnyOrigin],
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -1341,7 +1321,7 @@ struct ToolingInfo(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
         """
         return self._get_physical_device_tool_properties(
-            physical_device, Ptr(to=tool_count).bitcast[UInt32](), p_tool_properties
+            physical_device, Ptr(to=tool_count).bitcast[UInt32]()[], p_tool_properties
         )
 
     fn get_physical_device_tool_properties(
@@ -1358,8 +1338,8 @@ struct ToolingInfo(Copyable):
             result = self.get_physical_device_tool_properties(
                 physical_device, count, Ptr[PhysicalDeviceToolProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_physical_device_tool_properties(
                 physical_device, count, list.unsafe_ptr()
             )
@@ -1370,10 +1350,10 @@ struct ToolingInfo(Copyable):
 struct FullScreenExclusive(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_surface_present_modes_2_ext: fn(
-        physicalDevice: PhysicalDevice,
-        pSurfaceInfo: Ptr[PhysicalDeviceSurfaceInfo2KHR, ImmutAnyOrigin],
-        pPresentModeCount: Ptr[UInt32, MutAnyOrigin],
-        pPresentModes: Ptr[PresentModeKHR, MutAnyOrigin],
+        physical_device: PhysicalDevice,
+        surface_info: PhysicalDeviceSurfaceInfo2KHR,
+        present_mode_count: UInt32,
+        p_present_modes: Ptr[PresentModeKHR, MutAnyOrigin],
     ) -> Result
     var _acquire_full_screen_exclusive_mode_ext: fn(
         device: Device, swapchain: SwapchainKHR
@@ -1383,8 +1363,8 @@ struct FullScreenExclusive(Copyable):
     ) -> Result
     var _get_device_group_surface_present_modes_2_ext: fn(
         device: Device,
-        pSurfaceInfo: Ptr[PhysicalDeviceSurfaceInfo2KHR, ImmutAnyOrigin],
-        pModes: Ptr[DeviceGroupPresentModeFlagsKHR, MutAnyOrigin],
+        surface_info: PhysicalDeviceSurfaceInfo2KHR,
+        modes: DeviceGroupPresentModeFlagsKHR,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -1418,8 +1398,8 @@ struct FullScreenExclusive(Copyable):
         """
         return self._get_physical_device_surface_present_modes_2_ext(
             physical_device,
-            Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR](),
-            Ptr(to=present_mode_count).bitcast[UInt32](),
+            Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR]()[],
+            Ptr(to=present_mode_count).bitcast[UInt32]()[],
             p_present_modes,
         )
 
@@ -1437,8 +1417,8 @@ struct FullScreenExclusive(Copyable):
             result = self.get_physical_device_surface_present_modes_2_ext(
                 physical_device, surface_info, count, Ptr[PresentModeKHR, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_physical_device_surface_present_modes_2_ext(
                 physical_device, surface_info, count, list.unsafe_ptr()
             )
@@ -1475,8 +1455,8 @@ struct FullScreenExclusive(Copyable):
         """
         return self._get_device_group_surface_present_modes_2_ext(
             device,
-            Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR](),
-            Ptr(to=modes).bitcast[DeviceGroupPresentModeFlagsKHR](),
+            Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR]()[],
+            Ptr(to=modes).bitcast[DeviceGroupPresentModeFlagsKHR]()[],
         )
 
 
@@ -1484,9 +1464,9 @@ struct HeadlessSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_headless_surface_ext: fn(
         instance: Instance,
-        pCreateInfo: Ptr[HeadlessSurfaceCreateInfoEXT, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
+        create_info: HeadlessSurfaceCreateInfoEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        surface: SurfaceKHR,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -1511,16 +1491,16 @@ struct HeadlessSurface(Copyable):
         """
         return self._create_headless_surface_ext(
             instance,
-            Ptr(to=create_info).bitcast[HeadlessSurfaceCreateInfoEXT](),
+            Ptr(to=create_info).bitcast[HeadlessSurfaceCreateInfoEXT]()[],
             p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            Ptr(to=surface).bitcast[SurfaceKHR]()[],
         )
 
 
 struct LineRasterization(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_line_stipple: fn(
-        commandBuffer: CommandBuffer, lineStippleFactor: UInt32, lineStipplePattern: UInt16
+        command_buffer: CommandBuffer, line_stipple_factor: UInt32, line_stipple_pattern: UInt16
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -1542,15 +1522,13 @@ struct LineRasterization(Copyable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLineStipple.html
         """
-        return self._cmd_set_line_stipple(
-            command_buffer, line_stipple_factor, line_stipple_pattern
-        )
+        return self._cmd_set_line_stipple(command_buffer, line_stipple_factor, line_stipple_pattern)
 
 
 struct HostQueryReset(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _reset_query_pool: fn(
-        device: Device, queryPool: QueryPool, firstQuery: UInt32, queryCount: UInt32
+        device: Device, query_pool: QueryPool, first_query: UInt32, query_count: UInt32
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -1574,42 +1552,44 @@ struct HostQueryReset(Copyable):
 
 struct ExtendedDynamicState(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_cull_mode: fn(commandBuffer: CommandBuffer, cullMode: CullModeFlags)
-    var _cmd_set_front_face: fn(commandBuffer: CommandBuffer, frontFace: FrontFace)
+    var _cmd_set_cull_mode: fn(command_buffer: CommandBuffer, cull_mode: CullModeFlags)
+    var _cmd_set_front_face: fn(command_buffer: CommandBuffer, front_face: FrontFace)
     var _cmd_set_primitive_topology: fn(
-        commandBuffer: CommandBuffer, primitiveTopology: PrimitiveTopology
+        command_buffer: CommandBuffer, primitive_topology: PrimitiveTopology
     )
     var _cmd_set_viewport_with_count: fn(
-        commandBuffer: CommandBuffer,
-        viewportCount: UInt32,
-        pViewports: Ptr[Viewport, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        viewport_count: UInt32,
+        p_viewports: Ptr[Viewport, ImmutAnyOrigin],
     )
     var _cmd_set_scissor_with_count: fn(
-        commandBuffer: CommandBuffer, scissorCount: UInt32, pScissors: Ptr[Rect2D, ImmutAnyOrigin]
+        command_buffer: CommandBuffer,
+        scissor_count: UInt32,
+        p_scissors: Ptr[Rect2D, ImmutAnyOrigin],
     )
     var _cmd_bind_vertex_buffers_2: fn(
-        commandBuffer: CommandBuffer,
-        firstBinding: UInt32,
-        bindingCount: UInt32,
-        pBuffers: Ptr[Buffer, ImmutAnyOrigin],
-        pOffsets: Ptr[DeviceSize, ImmutAnyOrigin],
-        pSizes: Ptr[DeviceSize, ImmutAnyOrigin],
-        pStrides: Ptr[DeviceSize, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_binding: UInt32,
+        binding_count: UInt32,
+        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
+        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_strides: Ptr[DeviceSize, ImmutAnyOrigin],
     )
-    var _cmd_set_depth_test_enable: fn(commandBuffer: CommandBuffer, depthTestEnable: Bool32)
-    var _cmd_set_depth_write_enable: fn(commandBuffer: CommandBuffer, depthWriteEnable: Bool32)
-    var _cmd_set_depth_compare_op: fn(commandBuffer: CommandBuffer, depthCompareOp: CompareOp)
+    var _cmd_set_depth_test_enable: fn(command_buffer: CommandBuffer, depth_test_enable: Bool32)
+    var _cmd_set_depth_write_enable: fn(command_buffer: CommandBuffer, depth_write_enable: Bool32)
+    var _cmd_set_depth_compare_op: fn(command_buffer: CommandBuffer, depth_compare_op: CompareOp)
     var _cmd_set_depth_bounds_test_enable: fn(
-        commandBuffer: CommandBuffer, depthBoundsTestEnable: Bool32
+        command_buffer: CommandBuffer, depth_bounds_test_enable: Bool32
     )
-    var _cmd_set_stencil_test_enable: fn(commandBuffer: CommandBuffer, stencilTestEnable: Bool32)
+    var _cmd_set_stencil_test_enable: fn(command_buffer: CommandBuffer, stencil_test_enable: Bool32)
     var _cmd_set_stencil_op: fn(
-        commandBuffer: CommandBuffer,
-        faceMask: StencilFaceFlags,
-        failOp: StencilOp,
-        passOp: StencilOp,
-        depthFailOp: StencilOp,
-        compareOp: CompareOp,
+        command_buffer: CommandBuffer,
+        face_mask: StencilFaceFlags,
+        fail_op: StencilOp,
+        pass_op: StencilOp,
+        depth_fail_op: StencilOp,
+        compare_op: CompareOp,
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -1779,24 +1759,21 @@ struct ExtendedDynamicState(Copyable):
 struct HostImageCopy(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _copy_memory_to_image: fn(
-        device: Device, pCopyMemoryToImageInfo: Ptr[CopyMemoryToImageInfo, ImmutAnyOrigin]
+        device: Device, copy_memory_to_image_info: CopyMemoryToImageInfo
     ) -> Result
     var _copy_image_to_memory: fn(
-        device: Device, pCopyImageToMemoryInfo: Ptr[CopyImageToMemoryInfo, ImmutAnyOrigin]
+        device: Device, copy_image_to_memory_info: CopyImageToMemoryInfo
     ) -> Result
     var _copy_image_to_image: fn(
-        device: Device, pCopyImageToImageInfo: Ptr[CopyImageToImageInfo, ImmutAnyOrigin]
+        device: Device, copy_image_to_image_info: CopyImageToImageInfo
     ) -> Result
     var _transition_image_layout: fn(
         device: Device,
-        transitionCount: UInt32,
-        pTransitions: Ptr[HostImageLayoutTransitionInfo, ImmutAnyOrigin],
+        transition_count: UInt32,
+        p_transitions: Ptr[HostImageLayoutTransitionInfo, ImmutAnyOrigin],
     ) -> Result
     var _get_image_subresource_layout_2: fn(
-        device: Device,
-        image: Image,
-        pSubresource: Ptr[ImageSubresource2, ImmutAnyOrigin],
-        pLayout: Ptr[SubresourceLayout2, MutAnyOrigin],
+        device: Device, image: Image, subresource: ImageSubresource2, layout: SubresourceLayout2
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -1828,7 +1805,7 @@ struct HostImageCopy(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMemoryToImage.html
         """
         return self._copy_memory_to_image(
-            device, Ptr(to=copy_memory_to_image_info).bitcast[CopyMemoryToImageInfo]()
+            device, Ptr(to=copy_memory_to_image_info).bitcast[CopyMemoryToImageInfo]()[]
         )
 
     fn copy_image_to_memory(
@@ -1839,7 +1816,7 @@ struct HostImageCopy(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyImageToMemory.html
         """
         return self._copy_image_to_memory(
-            device, Ptr(to=copy_image_to_memory_info).bitcast[CopyImageToMemoryInfo]()
+            device, Ptr(to=copy_image_to_memory_info).bitcast[CopyImageToMemoryInfo]()[]
         )
 
     fn copy_image_to_image(
@@ -1850,7 +1827,7 @@ struct HostImageCopy(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyImageToImage.html
         """
         return self._copy_image_to_image(
-            device, Ptr(to=copy_image_to_image_info).bitcast[CopyImageToImageInfo]()
+            device, Ptr(to=copy_image_to_image_info).bitcast[CopyImageToImageInfo]()[]
         )
 
     fn transition_image_layout(
@@ -1879,15 +1856,15 @@ struct HostImageCopy(Copyable):
         return self._get_image_subresource_layout_2(
             device,
             image,
-            Ptr(to=subresource).bitcast[ImageSubresource2](),
-            Ptr(to=layout).bitcast[SubresourceLayout2](),
+            Ptr(to=subresource).bitcast[ImageSubresource2]()[],
+            Ptr(to=layout).bitcast[SubresourceLayout2]()[],
         )
 
 
 struct SwapchainMaintenance1(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _release_swapchain_images_khr: fn(
-        device: Device, pReleaseInfo: Ptr[ReleaseSwapchainImagesInfoKHR, ImmutAnyOrigin]
+        device: Device, release_info: ReleaseSwapchainImagesInfoKHR
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -1907,14 +1884,14 @@ struct SwapchainMaintenance1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkReleaseSwapchainImagesKHR.html
         """
         return self._release_swapchain_images_khr(
-            device, Ptr(to=release_info).bitcast[ReleaseSwapchainImagesInfoKHR]()
+            device, Ptr(to=release_info).bitcast[ReleaseSwapchainImagesInfoKHR]()[]
         )
 
 
 struct DepthBiasControl(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_depth_bias_2_ext: fn(
-        commandBuffer: CommandBuffer, pDepthBiasInfo: Ptr[DepthBiasInfoEXT, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, depth_bias_info: DepthBiasInfoEXT
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -1934,20 +1911,17 @@ struct DepthBiasControl(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBias2EXT.html
         """
         return self._cmd_set_depth_bias_2_ext(
-            command_buffer, Ptr(to=depth_bias_info).bitcast[DepthBiasInfoEXT]()
+            command_buffer, Ptr(to=depth_bias_info).bitcast[DepthBiasInfoEXT]()[]
         )
 
 
 struct AcquireDrmDisplay(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _acquire_drm_display_ext: fn(
-        physicalDevice: PhysicalDevice, drmFd: Int32, display: DisplayKHR
+        physical_device: PhysicalDevice, drm_fd: Int32, display: DisplayKHR
     ) -> Result
     var _get_drm_display_ext: fn(
-        physicalDevice: PhysicalDevice,
-        drmFd: Int32,
-        connectorId: UInt32,
-        display: Ptr[DisplayKHR, MutAnyOrigin],
+        physical_device: PhysicalDevice, drm_fd: Int32, connector_id: UInt32, display: DisplayKHR
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -1983,7 +1957,7 @@ struct AcquireDrmDisplay(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDrmDisplayEXT.html
         """
         return self._get_drm_display_ext(
-            physical_device, drm_fd, connector_id, Ptr(to=display).bitcast[DisplayKHR]()
+            physical_device, drm_fd, connector_id, Ptr(to=display).bitcast[DisplayKHR]()[]
         )
 
 
@@ -1991,28 +1965,28 @@ struct PrivateData(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_private_data_slot: fn(
         device: Device,
-        pCreateInfo: Ptr[PrivateDataSlotCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pPrivateDataSlot: Ptr[PrivateDataSlot, MutAnyOrigin],
+        create_info: PrivateDataSlotCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        private_data_slot: PrivateDataSlot,
     ) -> Result
     var _destroy_private_data_slot: fn(
         device: Device,
-        privateDataSlot: PrivateDataSlot,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        private_data_slot: PrivateDataSlot,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var _set_private_data: fn(
         device: Device,
-        objectType: ObjectType,
-        objectHandle: UInt64,
-        privateDataSlot: PrivateDataSlot,
+        object_type: ObjectType,
+        object_handle: UInt64,
+        private_data_slot: PrivateDataSlot,
         data: UInt64,
     ) -> Result
     var _get_private_data: fn(
         device: Device,
-        objectType: ObjectType,
-        objectHandle: UInt64,
-        privateDataSlot: PrivateDataSlot,
-        pData: Ptr[UInt64, MutAnyOrigin],
+        object_type: ObjectType,
+        object_handle: UInt64,
+        private_data_slot: PrivateDataSlot,
+        data: UInt64,
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -2046,9 +2020,9 @@ struct PrivateData(Copyable):
         """
         return self._create_private_data_slot(
             device,
-            Ptr(to=create_info).bitcast[PrivateDataSlotCreateInfo](),
+            Ptr(to=create_info).bitcast[PrivateDataSlotCreateInfo]()[],
             p_allocator,
-            Ptr(to=private_data_slot).bitcast[PrivateDataSlot](),
+            Ptr(to=private_data_slot).bitcast[PrivateDataSlot]()[],
         )
 
     fn destroy_private_data_slot(
@@ -2090,15 +2064,13 @@ struct PrivateData(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPrivateData.html
         """
         return self._get_private_data(
-            device, object_type, object_handle, private_data_slot, Ptr(to=data).bitcast[UInt64]()
+            device, object_type, object_handle, private_data_slot, Ptr(to=data).bitcast[UInt64]()[]
         )
 
 
 struct MetalObjects(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _export_metal_objects_ext: fn(
-        device: Device, pMetalObjectsInfo: Ptr[ExportMetalObjectsInfoEXT, MutAnyOrigin]
-    )
+    var _export_metal_objects_ext: fn(device: Device, metal_objects_info: ExportMetalObjectsInfoEXT)
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
         self._dlhandle = global_functions.get_dlhandle()
@@ -2117,73 +2089,66 @@ struct MetalObjects(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkExportMetalObjectsEXT.html
         """
         return self._export_metal_objects_ext(
-            device, Ptr(to=metal_objects_info).bitcast[ExportMetalObjectsInfoEXT]()
+            device, Ptr(to=metal_objects_info).bitcast[ExportMetalObjectsInfoEXT]()[]
         )
 
 
 struct DescriptorBuffer(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_descriptor_set_layout_size_ext: fn(
-        device: Device,
-        layout: DescriptorSetLayout,
-        pLayoutSizeInBytes: Ptr[DeviceSize, MutAnyOrigin],
+        device: Device, layout: DescriptorSetLayout, layout_size_in_bytes: DeviceSize
     )
     var _get_descriptor_set_layout_binding_offset_ext: fn(
-        device: Device,
-        layout: DescriptorSetLayout,
-        binding: UInt32,
-        pOffset: Ptr[DeviceSize, MutAnyOrigin],
+        device: Device, layout: DescriptorSetLayout, binding: UInt32, offset: DeviceSize
     )
     var _get_descriptor_ext: fn(
         device: Device,
-        pDescriptorInfo: Ptr[DescriptorGetInfoEXT, ImmutAnyOrigin],
-        dataSize: UInt,
-        pDescriptor: Ptr[NoneType, MutAnyOrigin],
+        descriptor_info: DescriptorGetInfoEXT,
+        data_size: UInt,
+        p_descriptor: Ptr[NoneType, MutAnyOrigin],
     )
     var _cmd_bind_descriptor_buffers_ext: fn(
-        commandBuffer: CommandBuffer,
-        bufferCount: UInt32,
-        pBindingInfos: Ptr[DescriptorBufferBindingInfoEXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        buffer_count: UInt32,
+        p_binding_infos: Ptr[DescriptorBufferBindingInfoEXT, ImmutAnyOrigin],
     )
     var _cmd_set_descriptor_buffer_offsets_ext: fn(
-        commandBuffer: CommandBuffer,
-        pipelineBindPoint: PipelineBindPoint,
+        command_buffer: CommandBuffer,
+        pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
-        firstSet: UInt32,
-        setCount: UInt32,
-        pBufferIndices: Ptr[UInt32, ImmutAnyOrigin],
-        pOffsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        first_set: UInt32,
+        set_count: UInt32,
+        p_buffer_indices: Ptr[UInt32, ImmutAnyOrigin],
+        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
     )
     var _cmd_bind_descriptor_buffer_embedded_samplers_ext: fn(
-        commandBuffer: CommandBuffer,
-        pipelineBindPoint: PipelineBindPoint,
+        command_buffer: CommandBuffer,
+        pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
         set: UInt32,
     )
     var _get_buffer_opaque_capture_descriptor_data_ext: fn(
         device: Device,
-        pInfo: Ptr[BufferCaptureDescriptorDataInfoEXT, ImmutAnyOrigin],
-        pData: Ptr[NoneType, MutAnyOrigin],
+        info: BufferCaptureDescriptorDataInfoEXT,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
     var _get_image_opaque_capture_descriptor_data_ext: fn(
-        device: Device,
-        pInfo: Ptr[ImageCaptureDescriptorDataInfoEXT, ImmutAnyOrigin],
-        pData: Ptr[NoneType, MutAnyOrigin],
+        device: Device, info: ImageCaptureDescriptorDataInfoEXT, p_data: Ptr[NoneType, MutAnyOrigin]
     ) -> Result
     var _get_image_view_opaque_capture_descriptor_data_ext: fn(
         device: Device,
-        pInfo: Ptr[ImageViewCaptureDescriptorDataInfoEXT, ImmutAnyOrigin],
-        pData: Ptr[NoneType, MutAnyOrigin],
+        info: ImageViewCaptureDescriptorDataInfoEXT,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
     var _get_sampler_opaque_capture_descriptor_data_ext: fn(
         device: Device,
-        pInfo: Ptr[SamplerCaptureDescriptorDataInfoEXT, ImmutAnyOrigin],
-        pData: Ptr[NoneType, MutAnyOrigin],
+        info: SamplerCaptureDescriptorDataInfoEXT,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
     var _get_acceleration_structure_opaque_capture_descriptor_data_ext: fn(
         device: Device,
-        pInfo: Ptr[AccelerationStructureCaptureDescriptorDataInfoEXT, ImmutAnyOrigin],
-        pData: Ptr[NoneType, MutAnyOrigin],
+        info: AccelerationStructureCaptureDescriptorDataInfoEXT,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -2233,7 +2198,7 @@ struct DescriptorBuffer(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutSizeEXT.html
         """
         return self._get_descriptor_set_layout_size_ext(
-            device, layout, Ptr(to=layout_size_in_bytes).bitcast[DeviceSize]()
+            device, layout, Ptr(to=layout_size_in_bytes).bitcast[DeviceSize]()[]
         )
 
     fn get_descriptor_set_layout_binding_offset_ext(
@@ -2244,7 +2209,7 @@ struct DescriptorBuffer(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutBindingOffsetEXT.html
         """
         return self._get_descriptor_set_layout_binding_offset_ext(
-            device, layout, binding, Ptr(to=offset).bitcast[DeviceSize]()
+            device, layout, binding, Ptr(to=offset).bitcast[DeviceSize]()[]
         )
 
     fn get_descriptor_ext(
@@ -2259,7 +2224,10 @@ struct DescriptorBuffer(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorEXT.html
         """
         return self._get_descriptor_ext(
-            device, Ptr(to=descriptor_info).bitcast[DescriptorGetInfoEXT](), data_size, p_descriptor
+            device,
+            Ptr(to=descriptor_info).bitcast[DescriptorGetInfoEXT]()[],
+            data_size,
+            p_descriptor,
         )
 
     fn cmd_bind_descriptor_buffers_ext(
@@ -2324,7 +2292,7 @@ struct DescriptorBuffer(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_buffer_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info).bitcast[BufferCaptureDescriptorDataInfoEXT](), p_data
+            device, Ptr(to=info).bitcast[BufferCaptureDescriptorDataInfoEXT]()[], p_data
         )
 
     fn get_image_opaque_capture_descriptor_data_ext(
@@ -2338,7 +2306,7 @@ struct DescriptorBuffer(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_image_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info).bitcast[ImageCaptureDescriptorDataInfoEXT](), p_data
+            device, Ptr(to=info).bitcast[ImageCaptureDescriptorDataInfoEXT]()[], p_data
         )
 
     fn get_image_view_opaque_capture_descriptor_data_ext(
@@ -2352,7 +2320,7 @@ struct DescriptorBuffer(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_image_view_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info).bitcast[ImageViewCaptureDescriptorDataInfoEXT](), p_data
+            device, Ptr(to=info).bitcast[ImageViewCaptureDescriptorDataInfoEXT]()[], p_data
         )
 
     fn get_sampler_opaque_capture_descriptor_data_ext(
@@ -2366,7 +2334,7 @@ struct DescriptorBuffer(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSamplerOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_sampler_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info).bitcast[SamplerCaptureDescriptorDataInfoEXT](), p_data
+            device, Ptr(to=info).bitcast[SamplerCaptureDescriptorDataInfoEXT]()[], p_data
         )
 
     fn get_acceleration_structure_opaque_capture_descriptor_data_ext(
@@ -2381,7 +2349,7 @@ struct DescriptorBuffer(Copyable):
         """
         return self._get_acceleration_structure_opaque_capture_descriptor_data_ext(
             device,
-            Ptr(to=info).bitcast[AccelerationStructureCaptureDescriptorDataInfoEXT](),
+            Ptr(to=info).bitcast[AccelerationStructureCaptureDescriptorDataInfoEXT]()[],
             p_data,
         )
 
@@ -2389,22 +2357,25 @@ struct DescriptorBuffer(Copyable):
 struct MeshShader(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_draw_mesh_tasks_ext: fn(
-        commandBuffer: CommandBuffer, groupCountX: UInt32, groupCountY: UInt32, groupCountZ: UInt32
+        command_buffer: CommandBuffer,
+        group_count_x: UInt32,
+        group_count_y: UInt32,
+        group_count_z: UInt32,
     )
     var _cmd_draw_mesh_tasks_indirect_ext: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
-        drawCount: UInt32,
+        draw_count: UInt32,
         stride: UInt32,
     )
     var _cmd_draw_mesh_tasks_indirect_count_ext: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
-        countBuffer: Buffer,
-        countBufferOffset: DeviceSize,
-        maxDrawCount: UInt32,
+        count_buffer: Buffer,
+        count_buffer_offset: DeviceSize,
+        max_draw_count: UInt32,
         stride: UInt32,
     )
 
@@ -2482,10 +2453,7 @@ struct MeshShader(Copyable):
 struct ImageCompressionControl(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_image_subresource_layout_2: fn(
-        device: Device,
-        image: Image,
-        pSubresource: Ptr[ImageSubresource2, ImmutAnyOrigin],
-        pLayout: Ptr[SubresourceLayout2, MutAnyOrigin],
+        device: Device, image: Image, subresource: ImageSubresource2, layout: SubresourceLayout2
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -2511,8 +2479,8 @@ struct ImageCompressionControl(Copyable):
         return self._get_image_subresource_layout_2(
             device,
             image,
-            Ptr(to=subresource).bitcast[ImageSubresource2](),
-            Ptr(to=layout).bitcast[SubresourceLayout2](),
+            Ptr(to=subresource).bitcast[ImageSubresource2]()[],
+            Ptr(to=layout).bitcast[SubresourceLayout2]()[],
         )
 
 
@@ -2520,8 +2488,8 @@ struct DeviceFault(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_device_fault_info_ext: fn(
         device: Device,
-        pFaultCounts: Ptr[DeviceFaultCountsEXT, MutAnyOrigin],
-        pFaultInfo: Ptr[DeviceFaultInfoEXT, MutAnyOrigin],
+        fault_counts: DeviceFaultCountsEXT,
+        p_fault_info: Ptr[DeviceFaultInfoEXT, MutAnyOrigin],
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -2544,7 +2512,7 @@ struct DeviceFault(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceFaultInfoEXT.html
         """
         return self._get_device_fault_info_ext(
-            device, Ptr(to=fault_counts).bitcast[DeviceFaultCountsEXT](), p_fault_info
+            device, Ptr(to=fault_counts).bitcast[DeviceFaultCountsEXT]()[], p_fault_info
         )
 
 
@@ -2552,12 +2520,12 @@ struct DirectfbSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_direct_fb_surface_ext: fn(
         instance: Instance,
-        pCreateInfo: Ptr[DirectFBSurfaceCreateInfoEXT, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
+        create_info: DirectFBSurfaceCreateInfoEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        surface: SurfaceKHR,
     ) -> Result
     var _get_physical_device_direct_fb_presentation_support_ext: fn(
-        physicalDevice: PhysicalDevice, queueFamilyIndex: UInt32, dfb: Ptr[IDirectFB, MutAnyOrigin]
+        physical_device: PhysicalDevice, queue_family_index: UInt32, dfb: IDirectFB
     ) -> Bool32
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -2585,9 +2553,9 @@ struct DirectfbSurface(Copyable):
         """
         return self._create_direct_fb_surface_ext(
             instance,
-            Ptr(to=create_info).bitcast[DirectFBSurfaceCreateInfoEXT](),
+            Ptr(to=create_info).bitcast[DirectFBSurfaceCreateInfoEXT]()[],
             p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            Ptr(to=surface).bitcast[SurfaceKHR]()[],
         )
 
     fn get_physical_device_direct_fb_presentation_support_ext(
@@ -2598,18 +2566,18 @@ struct DirectfbSurface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDirectFBPresentationSupportEXT.html
         """
         return self._get_physical_device_direct_fb_presentation_support_ext(
-            physical_device, queue_family_index, Ptr(to=dfb).bitcast[IDirectFB]()
+            physical_device, queue_family_index, Ptr(to=dfb).bitcast[IDirectFB]()[]
         )
 
 
 struct VertexInputDynamicState(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_vertex_input_ext: fn(
-        commandBuffer: CommandBuffer,
-        vertexBindingDescriptionCount: UInt32,
-        pVertexBindingDescriptions: Ptr[VertexInputBindingDescription2EXT, ImmutAnyOrigin],
-        vertexAttributeDescriptionCount: UInt32,
-        pVertexAttributeDescriptions: Ptr[VertexInputAttributeDescription2EXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        vertex_binding_description_count: UInt32,
+        p_vertex_binding_descriptions: Ptr[VertexInputBindingDescription2EXT, ImmutAnyOrigin],
+        vertex_attribute_description_count: UInt32,
+        p_vertex_attribute_descriptions: Ptr[VertexInputAttributeDescription2EXT, ImmutAnyOrigin],
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -2645,9 +2613,7 @@ struct VertexInputDynamicState(Copyable):
 struct PipelineProperties(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_pipeline_properties_ext: fn(
-        device: Device,
-        pPipelineInfo: Ptr[PipelineInfoEXT, ImmutAnyOrigin],
-        pPipelineProperties: Ptr[BaseOutStructure, MutAnyOrigin],
+        device: Device, pipeline_info: PipelineInfoEXT, pipeline_properties: BaseOutStructure
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -2671,23 +2637,23 @@ struct PipelineProperties(Copyable):
         """
         return self._get_pipeline_properties_ext(
             device,
-            Ptr(to=pipeline_info).bitcast[PipelineInfoEXT](),
-            Ptr(to=pipeline_properties).bitcast[BaseOutStructure](),
+            Ptr(to=pipeline_info).bitcast[PipelineInfoEXT]()[],
+            Ptr(to=pipeline_properties).bitcast[BaseOutStructure]()[],
         )
 
 
 struct ExtendedDynamicState2(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_patch_control_points_ext: fn(
-        commandBuffer: CommandBuffer, patchControlPoints: UInt32
+        command_buffer: CommandBuffer, patch_control_points: UInt32
     )
     var _cmd_set_rasterizer_discard_enable: fn(
-        commandBuffer: CommandBuffer, rasterizerDiscardEnable: Bool32
+        command_buffer: CommandBuffer, rasterizer_discard_enable: Bool32
     )
-    var _cmd_set_depth_bias_enable: fn(commandBuffer: CommandBuffer, depthBiasEnable: Bool32)
-    var _cmd_set_logic_op_ext: fn(commandBuffer: CommandBuffer, logicOp: LogicOp)
+    var _cmd_set_depth_bias_enable: fn(command_buffer: CommandBuffer, depth_bias_enable: Bool32)
+    var _cmd_set_logic_op_ext: fn(command_buffer: CommandBuffer, logic_op: LogicOp)
     var _cmd_set_primitive_restart_enable: fn(
-        commandBuffer: CommandBuffer, primitiveRestartEnable: Bool32
+        command_buffer: CommandBuffer, primitive_restart_enable: Bool32
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -2756,9 +2722,9 @@ struct ExtendedDynamicState2(Copyable):
 struct ColorWriteEnable(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_color_write_enable_ext: fn(
-        commandBuffer: CommandBuffer,
-        attachmentCount: UInt32,
-        pColorWriteEnables: Ptr[Bool32, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        attachment_count: UInt32,
+        p_color_write_enables: Ptr[Bool32, ImmutAnyOrigin],
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -2788,21 +2754,21 @@ struct ColorWriteEnable(Copyable):
 struct MultiDraw(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_draw_multi_ext: fn(
-        commandBuffer: CommandBuffer,
-        drawCount: UInt32,
-        pVertexInfo: Ptr[MultiDrawInfoEXT, ImmutAnyOrigin],
-        instanceCount: UInt32,
-        firstInstance: UInt32,
+        command_buffer: CommandBuffer,
+        draw_count: UInt32,
+        p_vertex_info: Ptr[MultiDrawInfoEXT, ImmutAnyOrigin],
+        instance_count: UInt32,
+        first_instance: UInt32,
         stride: UInt32,
     )
     var _cmd_draw_multi_indexed_ext: fn(
-        commandBuffer: CommandBuffer,
-        drawCount: UInt32,
-        pIndexInfo: Ptr[MultiDrawIndexedInfoEXT, ImmutAnyOrigin],
-        instanceCount: UInt32,
-        firstInstance: UInt32,
+        command_buffer: CommandBuffer,
+        draw_count: UInt32,
+        p_index_info: Ptr[MultiDrawIndexedInfoEXT, ImmutAnyOrigin],
+        instance_count: UInt32,
+        first_instance: UInt32,
         stride: UInt32,
-        pVertexOffset: Ptr[Int32, ImmutAnyOrigin],
+        p_vertex_offset: Ptr[Int32, ImmutAnyOrigin],
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -2863,75 +2829,67 @@ struct OpacityMicromap(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_micromap_ext: fn(
         device: Device,
-        pCreateInfo: Ptr[MicromapCreateInfoEXT, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pMicromap: Ptr[MicromapEXT, MutAnyOrigin],
+        create_info: MicromapCreateInfoEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        micromap: MicromapEXT,
     ) -> Result
     var _destroy_micromap_ext: fn(
-        device: Device, micromap: MicromapEXT, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, micromap: MicromapEXT, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var _cmd_build_micromaps_ext: fn(
-        commandBuffer: CommandBuffer,
-        infoCount: UInt32,
-        pInfos: Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        info_count: UInt32,
+        p_infos: Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin],
     )
     var _build_micromaps_ext: fn(
         device: Device,
-        deferredOperation: DeferredOperationKHR,
-        infoCount: UInt32,
-        pInfos: Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin],
+        deferred_operation: DeferredOperationKHR,
+        info_count: UInt32,
+        p_infos: Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin],
     ) -> Result
     var _copy_micromap_ext: fn(
-        device: Device,
-        deferredOperation: DeferredOperationKHR,
-        pInfo: Ptr[CopyMicromapInfoEXT, ImmutAnyOrigin],
+        device: Device, deferred_operation: DeferredOperationKHR, info: CopyMicromapInfoEXT
     ) -> Result
     var _copy_micromap_to_memory_ext: fn(
-        device: Device,
-        deferredOperation: DeferredOperationKHR,
-        pInfo: Ptr[CopyMicromapToMemoryInfoEXT, ImmutAnyOrigin],
+        device: Device, deferred_operation: DeferredOperationKHR, info: CopyMicromapToMemoryInfoEXT
     ) -> Result
     var _copy_memory_to_micromap_ext: fn(
-        device: Device,
-        deferredOperation: DeferredOperationKHR,
-        pInfo: Ptr[CopyMemoryToMicromapInfoEXT, ImmutAnyOrigin],
+        device: Device, deferred_operation: DeferredOperationKHR, info: CopyMemoryToMicromapInfoEXT
     ) -> Result
     var _write_micromaps_properties_ext: fn(
         device: Device,
-        micromapCount: UInt32,
-        pMicromaps: Ptr[MicromapEXT, ImmutAnyOrigin],
-        queryType: QueryType,
-        dataSize: UInt,
-        pData: Ptr[NoneType, MutAnyOrigin],
+        micromap_count: UInt32,
+        p_micromaps: Ptr[MicromapEXT, ImmutAnyOrigin],
+        query_type: QueryType,
+        data_size: UInt,
+        p_data: Ptr[NoneType, MutAnyOrigin],
         stride: UInt,
     ) -> Result
-    var _cmd_copy_micromap_ext: fn(
-        commandBuffer: CommandBuffer, pInfo: Ptr[CopyMicromapInfoEXT, ImmutAnyOrigin]
-    )
+    var _cmd_copy_micromap_ext: fn(command_buffer: CommandBuffer, info: CopyMicromapInfoEXT)
     var _cmd_copy_micromap_to_memory_ext: fn(
-        commandBuffer: CommandBuffer, pInfo: Ptr[CopyMicromapToMemoryInfoEXT, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, info: CopyMicromapToMemoryInfoEXT
     )
     var _cmd_copy_memory_to_micromap_ext: fn(
-        commandBuffer: CommandBuffer, pInfo: Ptr[CopyMemoryToMicromapInfoEXT, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, info: CopyMemoryToMicromapInfoEXT
     )
     var _cmd_write_micromaps_properties_ext: fn(
-        commandBuffer: CommandBuffer,
-        micromapCount: UInt32,
-        pMicromaps: Ptr[MicromapEXT, ImmutAnyOrigin],
-        queryType: QueryType,
-        queryPool: QueryPool,
-        firstQuery: UInt32,
+        command_buffer: CommandBuffer,
+        micromap_count: UInt32,
+        p_micromaps: Ptr[MicromapEXT, ImmutAnyOrigin],
+        query_type: QueryType,
+        query_pool: QueryPool,
+        first_query: UInt32,
     )
     var _get_device_micromap_compatibility_ext: fn(
         device: Device,
-        pVersionInfo: Ptr[MicromapVersionInfoEXT, ImmutAnyOrigin],
-        pCompatibility: Ptr[AccelerationStructureCompatibilityKHR, MutAnyOrigin],
+        version_info: MicromapVersionInfoEXT,
+        compatibility: AccelerationStructureCompatibilityKHR,
     )
     var _get_micromap_build_sizes_ext: fn(
         device: Device,
-        buildType: AccelerationStructureBuildTypeKHR,
-        pBuildInfo: Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin],
-        pSizeInfo: Ptr[MicromapBuildSizesInfoEXT, MutAnyOrigin],
+        build_type: AccelerationStructureBuildTypeKHR,
+        build_info: MicromapBuildInfoEXT,
+        size_info: MicromapBuildSizesInfoEXT,
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -2995,9 +2953,9 @@ struct OpacityMicromap(Copyable):
         """
         return self._create_micromap_ext(
             device,
-            Ptr(to=create_info).bitcast[MicromapCreateInfoEXT](),
+            Ptr(to=create_info).bitcast[MicromapCreateInfoEXT]()[],
             p_allocator,
-            Ptr(to=micromap).bitcast[MicromapEXT](),
+            Ptr(to=micromap).bitcast[MicromapEXT]()[],
         )
 
     fn destroy_micromap_ext(
@@ -3045,7 +3003,7 @@ struct OpacityMicromap(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMicromapEXT.html
         """
         return self._copy_micromap_ext(
-            device, deferred_operation, Ptr(to=info).bitcast[CopyMicromapInfoEXT]()
+            device, deferred_operation, Ptr(to=info).bitcast[CopyMicromapInfoEXT]()[]
         )
 
     fn copy_micromap_to_memory_ext(
@@ -3059,7 +3017,7 @@ struct OpacityMicromap(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMicromapToMemoryEXT.html
         """
         return self._copy_micromap_to_memory_ext(
-            device, deferred_operation, Ptr(to=info).bitcast[CopyMicromapToMemoryInfoEXT]()
+            device, deferred_operation, Ptr(to=info).bitcast[CopyMicromapToMemoryInfoEXT]()[]
         )
 
     fn copy_memory_to_micromap_ext(
@@ -3073,7 +3031,7 @@ struct OpacityMicromap(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMemoryToMicromapEXT.html
         """
         return self._copy_memory_to_micromap_ext(
-            device, deferred_operation, Ptr(to=info).bitcast[CopyMemoryToMicromapInfoEXT]()
+            device, deferred_operation, Ptr(to=info).bitcast[CopyMemoryToMicromapInfoEXT]()[]
         )
 
     fn write_micromaps_properties_ext(
@@ -3100,7 +3058,7 @@ struct OpacityMicromap(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMicromapEXT.html
         """
         return self._cmd_copy_micromap_ext(
-            command_buffer, Ptr(to=info).bitcast[CopyMicromapInfoEXT]()
+            command_buffer, Ptr(to=info).bitcast[CopyMicromapInfoEXT]()[]
         )
 
     fn cmd_copy_micromap_to_memory_ext(
@@ -3111,7 +3069,7 @@ struct OpacityMicromap(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMicromapToMemoryEXT.html
         """
         return self._cmd_copy_micromap_to_memory_ext(
-            command_buffer, Ptr(to=info).bitcast[CopyMicromapToMemoryInfoEXT]()
+            command_buffer, Ptr(to=info).bitcast[CopyMicromapToMemoryInfoEXT]()[]
         )
 
     fn cmd_copy_memory_to_micromap_ext(
@@ -3122,7 +3080,7 @@ struct OpacityMicromap(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMemoryToMicromapEXT.html
         """
         return self._cmd_copy_memory_to_micromap_ext(
-            command_buffer, Ptr(to=info).bitcast[CopyMemoryToMicromapInfoEXT]()
+            command_buffer, Ptr(to=info).bitcast[CopyMemoryToMicromapInfoEXT]()[]
         )
 
     fn cmd_write_micromaps_properties_ext(
@@ -3154,8 +3112,8 @@ struct OpacityMicromap(Copyable):
         """
         return self._get_device_micromap_compatibility_ext(
             device,
-            Ptr(to=version_info).bitcast[MicromapVersionInfoEXT](),
-            Ptr(to=compatibility).bitcast[AccelerationStructureCompatibilityKHR](),
+            Ptr(to=version_info).bitcast[MicromapVersionInfoEXT]()[],
+            Ptr(to=compatibility).bitcast[AccelerationStructureCompatibilityKHR]()[],
         )
 
     fn get_micromap_build_sizes_ext(
@@ -3172,16 +3130,14 @@ struct OpacityMicromap(Copyable):
         return self._get_micromap_build_sizes_ext(
             device,
             build_type,
-            Ptr(to=build_info).bitcast[MicromapBuildInfoEXT](),
-            Ptr(to=size_info).bitcast[MicromapBuildSizesInfoEXT](),
+            Ptr(to=build_info).bitcast[MicromapBuildInfoEXT]()[],
+            Ptr(to=size_info).bitcast[MicromapBuildSizesInfoEXT]()[],
         )
 
 
 struct PageableDeviceLocalMemory(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _set_device_memory_priority_ext: fn(
-        device: Device, memory: DeviceMemory, priority: Float32
-    )
+    var _set_device_memory_priority_ext: fn(device: Device, memory: DeviceMemory, priority: Float32)
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
         self._dlhandle = global_functions.get_dlhandle()
@@ -3204,110 +3160,112 @@ struct PageableDeviceLocalMemory(Copyable):
 
 struct ExtendedDynamicState3(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_depth_clamp_enable_ext: fn(commandBuffer: CommandBuffer, depthClampEnable: Bool32)
-    var _cmd_set_polygon_mode_ext: fn(commandBuffer: CommandBuffer, polygonMode: PolygonMode)
+    var _cmd_set_depth_clamp_enable_ext: fn(
+        command_buffer: CommandBuffer, depth_clamp_enable: Bool32
+    )
+    var _cmd_set_polygon_mode_ext: fn(command_buffer: CommandBuffer, polygon_mode: PolygonMode)
     var _cmd_set_rasterization_samples_ext: fn(
-        commandBuffer: CommandBuffer, rasterizationSamples: SampleCountFlagBits
+        command_buffer: CommandBuffer, rasterization_samples: SampleCountFlagBits
     )
     var _cmd_set_sample_mask_ext: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         samples: SampleCountFlagBits,
-        pSampleMask: Ptr[SampleMask, ImmutAnyOrigin],
+        p_sample_mask: Ptr[SampleMask, ImmutAnyOrigin],
     )
     var _cmd_set_alpha_to_coverage_enable_ext: fn(
-        commandBuffer: CommandBuffer, alphaToCoverageEnable: Bool32
+        command_buffer: CommandBuffer, alpha_to_coverage_enable: Bool32
     )
     var _cmd_set_alpha_to_one_enable_ext: fn(
-        commandBuffer: CommandBuffer, alphaToOneEnable: Bool32
+        command_buffer: CommandBuffer, alpha_to_one_enable: Bool32
     )
-    var _cmd_set_logic_op_enable_ext: fn(commandBuffer: CommandBuffer, logicOpEnable: Bool32)
+    var _cmd_set_logic_op_enable_ext: fn(command_buffer: CommandBuffer, logic_op_enable: Bool32)
     var _cmd_set_color_blend_enable_ext: fn(
-        commandBuffer: CommandBuffer,
-        firstAttachment: UInt32,
-        attachmentCount: UInt32,
-        pColorBlendEnables: Ptr[Bool32, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_attachment: UInt32,
+        attachment_count: UInt32,
+        p_color_blend_enables: Ptr[Bool32, ImmutAnyOrigin],
     )
     var _cmd_set_color_blend_equation_ext: fn(
-        commandBuffer: CommandBuffer,
-        firstAttachment: UInt32,
-        attachmentCount: UInt32,
-        pColorBlendEquations: Ptr[ColorBlendEquationEXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_attachment: UInt32,
+        attachment_count: UInt32,
+        p_color_blend_equations: Ptr[ColorBlendEquationEXT, ImmutAnyOrigin],
     )
     var _cmd_set_color_write_mask_ext: fn(
-        commandBuffer: CommandBuffer,
-        firstAttachment: UInt32,
-        attachmentCount: UInt32,
-        pColorWriteMasks: Ptr[ColorComponentFlags, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_attachment: UInt32,
+        attachment_count: UInt32,
+        p_color_write_masks: Ptr[ColorComponentFlags, ImmutAnyOrigin],
     )
     var _cmd_set_tessellation_domain_origin_ext: fn(
-        commandBuffer: CommandBuffer, domainOrigin: TessellationDomainOrigin
+        command_buffer: CommandBuffer, domain_origin: TessellationDomainOrigin
     )
     var _cmd_set_rasterization_stream_ext: fn(
-        commandBuffer: CommandBuffer, rasterizationStream: UInt32
+        command_buffer: CommandBuffer, rasterization_stream: UInt32
     )
     var _cmd_set_conservative_rasterization_mode_ext: fn(
-        commandBuffer: CommandBuffer,
-        conservativeRasterizationMode: ConservativeRasterizationModeEXT,
+        command_buffer: CommandBuffer,
+        conservative_rasterization_mode: ConservativeRasterizationModeEXT,
     )
     var _cmd_set_extra_primitive_overestimation_size_ext: fn(
-        commandBuffer: CommandBuffer, extraPrimitiveOverestimationSize: Float32
+        command_buffer: CommandBuffer, extra_primitive_overestimation_size: Float32
     )
-    var _cmd_set_depth_clip_enable_ext: fn(commandBuffer: CommandBuffer, depthClipEnable: Bool32)
+    var _cmd_set_depth_clip_enable_ext: fn(command_buffer: CommandBuffer, depth_clip_enable: Bool32)
     var _cmd_set_sample_locations_enable_ext: fn(
-        commandBuffer: CommandBuffer, sampleLocationsEnable: Bool32
+        command_buffer: CommandBuffer, sample_locations_enable: Bool32
     )
     var _cmd_set_color_blend_advanced_ext: fn(
-        commandBuffer: CommandBuffer,
-        firstAttachment: UInt32,
-        attachmentCount: UInt32,
-        pColorBlendAdvanced: Ptr[ColorBlendAdvancedEXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_attachment: UInt32,
+        attachment_count: UInt32,
+        p_color_blend_advanced: Ptr[ColorBlendAdvancedEXT, ImmutAnyOrigin],
     )
     var _cmd_set_provoking_vertex_mode_ext: fn(
-        commandBuffer: CommandBuffer, provokingVertexMode: ProvokingVertexModeEXT
+        command_buffer: CommandBuffer, provoking_vertex_mode: ProvokingVertexModeEXT
     )
     var _cmd_set_line_rasterization_mode_ext: fn(
-        commandBuffer: CommandBuffer, lineRasterizationMode: LineRasterizationModeEXT
+        command_buffer: CommandBuffer, line_rasterization_mode: LineRasterizationModeEXT
     )
     var _cmd_set_line_stipple_enable_ext: fn(
-        commandBuffer: CommandBuffer, stippledLineEnable: Bool32
+        command_buffer: CommandBuffer, stippled_line_enable: Bool32
     )
     var _cmd_set_depth_clip_negative_one_to_one_ext: fn(
-        commandBuffer: CommandBuffer, negativeOneToOne: Bool32
+        command_buffer: CommandBuffer, negative_one_to_one: Bool32
     )
     var _cmd_set_viewport_w_scaling_enable_nv: fn(
-        commandBuffer: CommandBuffer, viewportWScalingEnable: Bool32
+        command_buffer: CommandBuffer, viewport_w_scaling_enable: Bool32
     )
     var _cmd_set_viewport_swizzle_nv: fn(
-        commandBuffer: CommandBuffer,
-        firstViewport: UInt32,
-        viewportCount: UInt32,
-        pViewportSwizzles: Ptr[ViewportSwizzleNV, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_viewport: UInt32,
+        viewport_count: UInt32,
+        p_viewport_swizzles: Ptr[ViewportSwizzleNV, ImmutAnyOrigin],
     )
     var _cmd_set_coverage_to_color_enable_nv: fn(
-        commandBuffer: CommandBuffer, coverageToColorEnable: Bool32
+        command_buffer: CommandBuffer, coverage_to_color_enable: Bool32
     )
     var _cmd_set_coverage_to_color_location_nv: fn(
-        commandBuffer: CommandBuffer, coverageToColorLocation: UInt32
+        command_buffer: CommandBuffer, coverage_to_color_location: UInt32
     )
     var _cmd_set_coverage_modulation_mode_nv: fn(
-        commandBuffer: CommandBuffer, coverageModulationMode: CoverageModulationModeNV
+        command_buffer: CommandBuffer, coverage_modulation_mode: CoverageModulationModeNV
     )
     var _cmd_set_coverage_modulation_table_enable_nv: fn(
-        commandBuffer: CommandBuffer, coverageModulationTableEnable: Bool32
+        command_buffer: CommandBuffer, coverage_modulation_table_enable: Bool32
     )
     var _cmd_set_coverage_modulation_table_nv: fn(
-        commandBuffer: CommandBuffer,
-        coverageModulationTableCount: UInt32,
-        pCoverageModulationTable: Ptr[Float32, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        coverage_modulation_table_count: UInt32,
+        p_coverage_modulation_table: Ptr[Float32, ImmutAnyOrigin],
     )
     var _cmd_set_shading_rate_image_enable_nv: fn(
-        commandBuffer: CommandBuffer, shadingRateImageEnable: Bool32
+        command_buffer: CommandBuffer, shading_rate_image_enable: Bool32
     )
     var _cmd_set_representative_fragment_test_enable_nv: fn(
-        commandBuffer: CommandBuffer, representativeFragmentTestEnable: Bool32
+        command_buffer: CommandBuffer, representative_fragment_test_enable: Bool32
     )
     var _cmd_set_coverage_reduction_mode_nv: fn(
-        commandBuffer: CommandBuffer, coverageReductionMode: CoverageReductionModeNV
+        command_buffer: CommandBuffer, coverage_reduction_mode: CoverageReductionModeNV
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -3625,9 +3583,7 @@ struct ExtendedDynamicState3(Copyable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClipNegativeOneToOneEXT.html
         """
-        return self._cmd_set_depth_clip_negative_one_to_one_ext(
-            command_buffer, negative_one_to_one
-        )
+        return self._cmd_set_depth_clip_negative_one_to_one_ext(command_buffer, negative_one_to_one)
 
     fn cmd_set_viewport_w_scaling_enable_nv(
         self, command_buffer: CommandBuffer, viewport_w_scaling_enable: Bool32
@@ -3636,9 +3592,7 @@ struct ExtendedDynamicState3(Copyable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWScalingEnableNV.html
         """
-        return self._cmd_set_viewport_w_scaling_enable_nv(
-            command_buffer, viewport_w_scaling_enable
-        )
+        return self._cmd_set_viewport_w_scaling_enable_nv(command_buffer, viewport_w_scaling_enable)
 
     fn cmd_set_viewport_swizzle_nv(
         self,
@@ -3716,9 +3670,7 @@ struct ExtendedDynamicState3(Copyable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetShadingRateImageEnableNV.html
         """
-        return self._cmd_set_shading_rate_image_enable_nv(
-            command_buffer, shading_rate_image_enable
-        )
+        return self._cmd_set_shading_rate_image_enable_nv(command_buffer, shading_rate_image_enable)
 
     fn cmd_set_representative_fragment_test_enable_nv(
         self, command_buffer: CommandBuffer, representative_fragment_test_enable: Bool32
@@ -3744,14 +3696,10 @@ struct ExtendedDynamicState3(Copyable):
 struct ShaderModuleIdentifier(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_shader_module_identifier_ext: fn(
-        device: Device,
-        shaderModule: ShaderModule,
-        pIdentifier: Ptr[ShaderModuleIdentifierEXT, MutAnyOrigin],
+        device: Device, shader_module: ShaderModule, identifier: ShaderModuleIdentifierEXT
     )
     var _get_shader_module_create_info_identifier_ext: fn(
-        device: Device,
-        pCreateInfo: Ptr[ShaderModuleCreateInfo, ImmutAnyOrigin],
-        pIdentifier: Ptr[ShaderModuleIdentifierEXT, MutAnyOrigin],
+        device: Device, create_info: ShaderModuleCreateInfo, identifier: ShaderModuleIdentifierEXT
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -3774,7 +3722,7 @@ struct ShaderModuleIdentifier(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderModuleIdentifierEXT.html
         """
         return self._get_shader_module_identifier_ext(
-            device, shader_module, Ptr(to=identifier).bitcast[ShaderModuleIdentifierEXT]()
+            device, shader_module, Ptr(to=identifier).bitcast[ShaderModuleIdentifierEXT]()[]
         )
 
     fn get_shader_module_create_info_identifier_ext(
@@ -3789,8 +3737,8 @@ struct ShaderModuleIdentifier(Copyable):
         """
         return self._get_shader_module_create_info_identifier_ext(
             device,
-            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo](),
-            Ptr(to=identifier).bitcast[ShaderModuleIdentifierEXT](),
+            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo]()[],
+            Ptr(to=identifier).bitcast[ShaderModuleIdentifierEXT]()[],
         )
 
 
@@ -3798,190 +3746,191 @@ struct ShaderObject(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_shaders_ext: fn(
         device: Device,
-        createInfoCount: UInt32,
-        pCreateInfos: Ptr[ShaderCreateInfoEXT, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pShaders: Ptr[ShaderEXT, MutAnyOrigin],
+        create_info_count: UInt32,
+        p_create_infos: Ptr[ShaderCreateInfoEXT, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_shaders: Ptr[ShaderEXT, MutAnyOrigin],
     ) -> Result
     var _destroy_shader_ext: fn(
-        device: Device, shader: ShaderEXT, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, shader: ShaderEXT, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var _get_shader_binary_data_ext: fn(
-        device: Device,
-        shader: ShaderEXT,
-        pDataSize: Ptr[UInt, MutAnyOrigin],
-        pData: Ptr[NoneType, MutAnyOrigin],
+        device: Device, shader: ShaderEXT, data_size: UInt, p_data: Ptr[NoneType, MutAnyOrigin]
     ) -> Result
     var _cmd_bind_shaders_ext: fn(
-        commandBuffer: CommandBuffer,
-        stageCount: UInt32,
-        pStages: Ptr[ShaderStageFlagBits, ImmutAnyOrigin],
-        pShaders: Ptr[ShaderEXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        stage_count: UInt32,
+        p_stages: Ptr[ShaderStageFlagBits, ImmutAnyOrigin],
+        p_shaders: Ptr[ShaderEXT, ImmutAnyOrigin],
     )
-    var _cmd_set_cull_mode: fn(commandBuffer: CommandBuffer, cullMode: CullModeFlags)
-    var _cmd_set_front_face: fn(commandBuffer: CommandBuffer, frontFace: FrontFace)
+    var _cmd_set_cull_mode: fn(command_buffer: CommandBuffer, cull_mode: CullModeFlags)
+    var _cmd_set_front_face: fn(command_buffer: CommandBuffer, front_face: FrontFace)
     var _cmd_set_primitive_topology: fn(
-        commandBuffer: CommandBuffer, primitiveTopology: PrimitiveTopology
+        command_buffer: CommandBuffer, primitive_topology: PrimitiveTopology
     )
     var _cmd_set_viewport_with_count: fn(
-        commandBuffer: CommandBuffer,
-        viewportCount: UInt32,
-        pViewports: Ptr[Viewport, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        viewport_count: UInt32,
+        p_viewports: Ptr[Viewport, ImmutAnyOrigin],
     )
     var _cmd_set_scissor_with_count: fn(
-        commandBuffer: CommandBuffer, scissorCount: UInt32, pScissors: Ptr[Rect2D, ImmutAnyOrigin]
+        command_buffer: CommandBuffer,
+        scissor_count: UInt32,
+        p_scissors: Ptr[Rect2D, ImmutAnyOrigin],
     )
     var _cmd_bind_vertex_buffers_2: fn(
-        commandBuffer: CommandBuffer,
-        firstBinding: UInt32,
-        bindingCount: UInt32,
-        pBuffers: Ptr[Buffer, ImmutAnyOrigin],
-        pOffsets: Ptr[DeviceSize, ImmutAnyOrigin],
-        pSizes: Ptr[DeviceSize, ImmutAnyOrigin],
-        pStrides: Ptr[DeviceSize, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_binding: UInt32,
+        binding_count: UInt32,
+        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
+        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_strides: Ptr[DeviceSize, ImmutAnyOrigin],
     )
-    var _cmd_set_depth_test_enable: fn(commandBuffer: CommandBuffer, depthTestEnable: Bool32)
-    var _cmd_set_depth_write_enable: fn(commandBuffer: CommandBuffer, depthWriteEnable: Bool32)
-    var _cmd_set_depth_compare_op: fn(commandBuffer: CommandBuffer, depthCompareOp: CompareOp)
+    var _cmd_set_depth_test_enable: fn(command_buffer: CommandBuffer, depth_test_enable: Bool32)
+    var _cmd_set_depth_write_enable: fn(command_buffer: CommandBuffer, depth_write_enable: Bool32)
+    var _cmd_set_depth_compare_op: fn(command_buffer: CommandBuffer, depth_compare_op: CompareOp)
     var _cmd_set_depth_bounds_test_enable: fn(
-        commandBuffer: CommandBuffer, depthBoundsTestEnable: Bool32
+        command_buffer: CommandBuffer, depth_bounds_test_enable: Bool32
     )
-    var _cmd_set_stencil_test_enable: fn(commandBuffer: CommandBuffer, stencilTestEnable: Bool32)
+    var _cmd_set_stencil_test_enable: fn(command_buffer: CommandBuffer, stencil_test_enable: Bool32)
     var _cmd_set_stencil_op: fn(
-        commandBuffer: CommandBuffer,
-        faceMask: StencilFaceFlags,
-        failOp: StencilOp,
-        passOp: StencilOp,
-        depthFailOp: StencilOp,
-        compareOp: CompareOp,
+        command_buffer: CommandBuffer,
+        face_mask: StencilFaceFlags,
+        fail_op: StencilOp,
+        pass_op: StencilOp,
+        depth_fail_op: StencilOp,
+        compare_op: CompareOp,
     )
     var _cmd_set_vertex_input_ext: fn(
-        commandBuffer: CommandBuffer,
-        vertexBindingDescriptionCount: UInt32,
-        pVertexBindingDescriptions: Ptr[VertexInputBindingDescription2EXT, ImmutAnyOrigin],
-        vertexAttributeDescriptionCount: UInt32,
-        pVertexAttributeDescriptions: Ptr[VertexInputAttributeDescription2EXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        vertex_binding_description_count: UInt32,
+        p_vertex_binding_descriptions: Ptr[VertexInputBindingDescription2EXT, ImmutAnyOrigin],
+        vertex_attribute_description_count: UInt32,
+        p_vertex_attribute_descriptions: Ptr[VertexInputAttributeDescription2EXT, ImmutAnyOrigin],
     )
     var _cmd_set_patch_control_points_ext: fn(
-        commandBuffer: CommandBuffer, patchControlPoints: UInt32
+        command_buffer: CommandBuffer, patch_control_points: UInt32
     )
     var _cmd_set_rasterizer_discard_enable: fn(
-        commandBuffer: CommandBuffer, rasterizerDiscardEnable: Bool32
+        command_buffer: CommandBuffer, rasterizer_discard_enable: Bool32
     )
-    var _cmd_set_depth_bias_enable: fn(commandBuffer: CommandBuffer, depthBiasEnable: Bool32)
-    var _cmd_set_logic_op_ext: fn(commandBuffer: CommandBuffer, logicOp: LogicOp)
+    var _cmd_set_depth_bias_enable: fn(command_buffer: CommandBuffer, depth_bias_enable: Bool32)
+    var _cmd_set_logic_op_ext: fn(command_buffer: CommandBuffer, logic_op: LogicOp)
     var _cmd_set_primitive_restart_enable: fn(
-        commandBuffer: CommandBuffer, primitiveRestartEnable: Bool32
+        command_buffer: CommandBuffer, primitive_restart_enable: Bool32
     )
     var _cmd_set_tessellation_domain_origin_ext: fn(
-        commandBuffer: CommandBuffer, domainOrigin: TessellationDomainOrigin
+        command_buffer: CommandBuffer, domain_origin: TessellationDomainOrigin
     )
-    var _cmd_set_depth_clamp_enable_ext: fn(commandBuffer: CommandBuffer, depthClampEnable: Bool32)
-    var _cmd_set_polygon_mode_ext: fn(commandBuffer: CommandBuffer, polygonMode: PolygonMode)
+    var _cmd_set_depth_clamp_enable_ext: fn(
+        command_buffer: CommandBuffer, depth_clamp_enable: Bool32
+    )
+    var _cmd_set_polygon_mode_ext: fn(command_buffer: CommandBuffer, polygon_mode: PolygonMode)
     var _cmd_set_rasterization_samples_ext: fn(
-        commandBuffer: CommandBuffer, rasterizationSamples: SampleCountFlagBits
+        command_buffer: CommandBuffer, rasterization_samples: SampleCountFlagBits
     )
     var _cmd_set_sample_mask_ext: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         samples: SampleCountFlagBits,
-        pSampleMask: Ptr[SampleMask, ImmutAnyOrigin],
+        p_sample_mask: Ptr[SampleMask, ImmutAnyOrigin],
     )
     var _cmd_set_alpha_to_coverage_enable_ext: fn(
-        commandBuffer: CommandBuffer, alphaToCoverageEnable: Bool32
+        command_buffer: CommandBuffer, alpha_to_coverage_enable: Bool32
     )
     var _cmd_set_alpha_to_one_enable_ext: fn(
-        commandBuffer: CommandBuffer, alphaToOneEnable: Bool32
+        command_buffer: CommandBuffer, alpha_to_one_enable: Bool32
     )
-    var _cmd_set_logic_op_enable_ext: fn(commandBuffer: CommandBuffer, logicOpEnable: Bool32)
+    var _cmd_set_logic_op_enable_ext: fn(command_buffer: CommandBuffer, logic_op_enable: Bool32)
     var _cmd_set_color_blend_enable_ext: fn(
-        commandBuffer: CommandBuffer,
-        firstAttachment: UInt32,
-        attachmentCount: UInt32,
-        pColorBlendEnables: Ptr[Bool32, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_attachment: UInt32,
+        attachment_count: UInt32,
+        p_color_blend_enables: Ptr[Bool32, ImmutAnyOrigin],
     )
     var _cmd_set_color_blend_equation_ext: fn(
-        commandBuffer: CommandBuffer,
-        firstAttachment: UInt32,
-        attachmentCount: UInt32,
-        pColorBlendEquations: Ptr[ColorBlendEquationEXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_attachment: UInt32,
+        attachment_count: UInt32,
+        p_color_blend_equations: Ptr[ColorBlendEquationEXT, ImmutAnyOrigin],
     )
     var _cmd_set_color_write_mask_ext: fn(
-        commandBuffer: CommandBuffer,
-        firstAttachment: UInt32,
-        attachmentCount: UInt32,
-        pColorWriteMasks: Ptr[ColorComponentFlags, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_attachment: UInt32,
+        attachment_count: UInt32,
+        p_color_write_masks: Ptr[ColorComponentFlags, ImmutAnyOrigin],
     )
     var _cmd_set_rasterization_stream_ext: fn(
-        commandBuffer: CommandBuffer, rasterizationStream: UInt32
+        command_buffer: CommandBuffer, rasterization_stream: UInt32
     )
     var _cmd_set_conservative_rasterization_mode_ext: fn(
-        commandBuffer: CommandBuffer,
-        conservativeRasterizationMode: ConservativeRasterizationModeEXT,
+        command_buffer: CommandBuffer,
+        conservative_rasterization_mode: ConservativeRasterizationModeEXT,
     )
     var _cmd_set_extra_primitive_overestimation_size_ext: fn(
-        commandBuffer: CommandBuffer, extraPrimitiveOverestimationSize: Float32
+        command_buffer: CommandBuffer, extra_primitive_overestimation_size: Float32
     )
-    var _cmd_set_depth_clip_enable_ext: fn(commandBuffer: CommandBuffer, depthClipEnable: Bool32)
+    var _cmd_set_depth_clip_enable_ext: fn(command_buffer: CommandBuffer, depth_clip_enable: Bool32)
     var _cmd_set_sample_locations_enable_ext: fn(
-        commandBuffer: CommandBuffer, sampleLocationsEnable: Bool32
+        command_buffer: CommandBuffer, sample_locations_enable: Bool32
     )
     var _cmd_set_color_blend_advanced_ext: fn(
-        commandBuffer: CommandBuffer,
-        firstAttachment: UInt32,
-        attachmentCount: UInt32,
-        pColorBlendAdvanced: Ptr[ColorBlendAdvancedEXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_attachment: UInt32,
+        attachment_count: UInt32,
+        p_color_blend_advanced: Ptr[ColorBlendAdvancedEXT, ImmutAnyOrigin],
     )
     var _cmd_set_provoking_vertex_mode_ext: fn(
-        commandBuffer: CommandBuffer, provokingVertexMode: ProvokingVertexModeEXT
+        command_buffer: CommandBuffer, provoking_vertex_mode: ProvokingVertexModeEXT
     )
     var _cmd_set_line_rasterization_mode_ext: fn(
-        commandBuffer: CommandBuffer, lineRasterizationMode: LineRasterizationModeEXT
+        command_buffer: CommandBuffer, line_rasterization_mode: LineRasterizationModeEXT
     )
     var _cmd_set_line_stipple_enable_ext: fn(
-        commandBuffer: CommandBuffer, stippledLineEnable: Bool32
+        command_buffer: CommandBuffer, stippled_line_enable: Bool32
     )
     var _cmd_set_depth_clip_negative_one_to_one_ext: fn(
-        commandBuffer: CommandBuffer, negativeOneToOne: Bool32
+        command_buffer: CommandBuffer, negative_one_to_one: Bool32
     )
     var _cmd_set_viewport_w_scaling_enable_nv: fn(
-        commandBuffer: CommandBuffer, viewportWScalingEnable: Bool32
+        command_buffer: CommandBuffer, viewport_w_scaling_enable: Bool32
     )
     var _cmd_set_viewport_swizzle_nv: fn(
-        commandBuffer: CommandBuffer,
-        firstViewport: UInt32,
-        viewportCount: UInt32,
-        pViewportSwizzles: Ptr[ViewportSwizzleNV, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_viewport: UInt32,
+        viewport_count: UInt32,
+        p_viewport_swizzles: Ptr[ViewportSwizzleNV, ImmutAnyOrigin],
     )
     var _cmd_set_coverage_to_color_enable_nv: fn(
-        commandBuffer: CommandBuffer, coverageToColorEnable: Bool32
+        command_buffer: CommandBuffer, coverage_to_color_enable: Bool32
     )
     var _cmd_set_coverage_to_color_location_nv: fn(
-        commandBuffer: CommandBuffer, coverageToColorLocation: UInt32
+        command_buffer: CommandBuffer, coverage_to_color_location: UInt32
     )
     var _cmd_set_coverage_modulation_mode_nv: fn(
-        commandBuffer: CommandBuffer, coverageModulationMode: CoverageModulationModeNV
+        command_buffer: CommandBuffer, coverage_modulation_mode: CoverageModulationModeNV
     )
     var _cmd_set_coverage_modulation_table_enable_nv: fn(
-        commandBuffer: CommandBuffer, coverageModulationTableEnable: Bool32
+        command_buffer: CommandBuffer, coverage_modulation_table_enable: Bool32
     )
     var _cmd_set_coverage_modulation_table_nv: fn(
-        commandBuffer: CommandBuffer,
-        coverageModulationTableCount: UInt32,
-        pCoverageModulationTable: Ptr[Float32, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        coverage_modulation_table_count: UInt32,
+        p_coverage_modulation_table: Ptr[Float32, ImmutAnyOrigin],
     )
     var _cmd_set_shading_rate_image_enable_nv: fn(
-        commandBuffer: CommandBuffer, shadingRateImageEnable: Bool32
+        command_buffer: CommandBuffer, shading_rate_image_enable: Bool32
     )
     var _cmd_set_representative_fragment_test_enable_nv: fn(
-        commandBuffer: CommandBuffer, representativeFragmentTestEnable: Bool32
+        command_buffer: CommandBuffer, representative_fragment_test_enable: Bool32
     )
     var _cmd_set_coverage_reduction_mode_nv: fn(
-        commandBuffer: CommandBuffer, coverageReductionMode: CoverageReductionModeNV
+        command_buffer: CommandBuffer, coverage_reduction_mode: CoverageReductionModeNV
     )
     var _cmd_set_depth_clamp_range_ext: fn(
-        commandBuffer: CommandBuffer,
-        depthClampMode: DepthClampModeEXT,
-        pDepthClampRange: Ptr[DepthClampRangeEXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        depth_clamp_mode: DepthClampModeEXT,
+        p_depth_clamp_range: Ptr[DepthClampRangeEXT, ImmutAnyOrigin],
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -4192,7 +4141,7 @@ struct ShaderObject(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderBinaryDataEXT.html
         """
         return self._get_shader_binary_data_ext(
-            device, shader, Ptr(to=data_size).bitcast[UInt](), p_data
+            device, shader, Ptr(to=data_size).bitcast[UInt]()[], p_data
         )
 
     fn get_shader_binary_data_ext(self, device: Device, shader: ShaderEXT) -> ListResult[UInt8]:
@@ -4207,8 +4156,8 @@ struct ShaderObject(Copyable):
             result = self.get_shader_binary_data_ext(
                 device, shader, count, Ptr[NoneType, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_shader_binary_data_ext(
                 device, shader, count, list.unsafe_ptr().bitcast[NoneType]()
             )
@@ -4626,9 +4575,7 @@ struct ShaderObject(Copyable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClipNegativeOneToOneEXT.html
         """
-        return self._cmd_set_depth_clip_negative_one_to_one_ext(
-            command_buffer, negative_one_to_one
-        )
+        return self._cmd_set_depth_clip_negative_one_to_one_ext(command_buffer, negative_one_to_one)
 
     fn cmd_set_viewport_w_scaling_enable_nv(
         self, command_buffer: CommandBuffer, viewport_w_scaling_enable: Bool32
@@ -4637,9 +4584,7 @@ struct ShaderObject(Copyable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWScalingEnableNV.html
         """
-        return self._cmd_set_viewport_w_scaling_enable_nv(
-            command_buffer, viewport_w_scaling_enable
-        )
+        return self._cmd_set_viewport_w_scaling_enable_nv(command_buffer, viewport_w_scaling_enable)
 
     fn cmd_set_viewport_swizzle_nv(
         self,
@@ -4717,9 +4662,7 @@ struct ShaderObject(Copyable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetShadingRateImageEnableNV.html
         """
-        return self._cmd_set_shading_rate_image_enable_nv(
-            command_buffer, shading_rate_image_enable
-        )
+        return self._cmd_set_shading_rate_image_enable_nv(command_buffer, shading_rate_image_enable)
 
     fn cmd_set_representative_fragment_test_enable_nv(
         self, command_buffer: CommandBuffer, representative_fragment_test_enable: Bool32
@@ -4759,7 +4702,7 @@ struct ShaderObject(Copyable):
 struct AttachmentFeedbackLoopDynamicState(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_attachment_feedback_loop_enable_ext: fn(
-        commandBuffer: CommandBuffer, aspectMask: ImageAspectFlags
+        command_buffer: CommandBuffer, aspect_mask: ImageAspectFlags
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -4785,52 +4728,52 @@ struct DeviceGeneratedCommands(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_generated_commands_memory_requirements_ext: fn(
         device: Device,
-        pInfo: Ptr[GeneratedCommandsMemoryRequirementsInfoEXT, ImmutAnyOrigin],
-        pMemoryRequirements: Ptr[MemoryRequirements2, MutAnyOrigin],
+        info: GeneratedCommandsMemoryRequirementsInfoEXT,
+        memory_requirements: MemoryRequirements2,
     )
     var _cmd_preprocess_generated_commands_ext: fn(
-        commandBuffer: CommandBuffer,
-        pGeneratedCommandsInfo: Ptr[GeneratedCommandsInfoEXT, ImmutAnyOrigin],
-        stateCommandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
+        generated_commands_info: GeneratedCommandsInfoEXT,
+        state_command_buffer: CommandBuffer,
     )
     var _cmd_execute_generated_commands_ext: fn(
-        commandBuffer: CommandBuffer,
-        isPreprocessed: Bool32,
-        pGeneratedCommandsInfo: Ptr[GeneratedCommandsInfoEXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        is_preprocessed: Bool32,
+        generated_commands_info: GeneratedCommandsInfoEXT,
     )
     var _create_indirect_commands_layout_ext: fn(
         device: Device,
-        pCreateInfo: Ptr[IndirectCommandsLayoutCreateInfoEXT, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pIndirectCommandsLayout: Ptr[IndirectCommandsLayoutEXT, MutAnyOrigin],
+        create_info: IndirectCommandsLayoutCreateInfoEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        indirect_commands_layout: IndirectCommandsLayoutEXT,
     ) -> Result
     var _destroy_indirect_commands_layout_ext: fn(
         device: Device,
-        indirectCommandsLayout: IndirectCommandsLayoutEXT,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        indirect_commands_layout: IndirectCommandsLayoutEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var _create_indirect_execution_set_ext: fn(
         device: Device,
-        pCreateInfo: Ptr[IndirectExecutionSetCreateInfoEXT, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pIndirectExecutionSet: Ptr[IndirectExecutionSetEXT, MutAnyOrigin],
+        create_info: IndirectExecutionSetCreateInfoEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        indirect_execution_set: IndirectExecutionSetEXT,
     ) -> Result
     var _destroy_indirect_execution_set_ext: fn(
         device: Device,
-        indirectExecutionSet: IndirectExecutionSetEXT,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        indirect_execution_set: IndirectExecutionSetEXT,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var _update_indirect_execution_set_pipeline_ext: fn(
         device: Device,
-        indirectExecutionSet: IndirectExecutionSetEXT,
-        executionSetWriteCount: UInt32,
-        pExecutionSetWrites: Ptr[WriteIndirectExecutionSetPipelineEXT, ImmutAnyOrigin],
+        indirect_execution_set: IndirectExecutionSetEXT,
+        execution_set_write_count: UInt32,
+        p_execution_set_writes: Ptr[WriteIndirectExecutionSetPipelineEXT, ImmutAnyOrigin],
     )
     var _update_indirect_execution_set_shader_ext: fn(
         device: Device,
-        indirectExecutionSet: IndirectExecutionSetEXT,
-        executionSetWriteCount: UInt32,
-        pExecutionSetWrites: Ptr[WriteIndirectExecutionSetShaderEXT, ImmutAnyOrigin],
+        indirect_execution_set: IndirectExecutionSetEXT,
+        execution_set_write_count: UInt32,
+        p_execution_set_writes: Ptr[WriteIndirectExecutionSetShaderEXT, ImmutAnyOrigin],
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -4878,8 +4821,8 @@ struct DeviceGeneratedCommands(Copyable):
         """
         return self._get_generated_commands_memory_requirements_ext(
             device,
-            Ptr(to=info).bitcast[GeneratedCommandsMemoryRequirementsInfoEXT](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[GeneratedCommandsMemoryRequirementsInfoEXT]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn cmd_preprocess_generated_commands_ext(
@@ -4894,7 +4837,7 @@ struct DeviceGeneratedCommands(Copyable):
         """
         return self._cmd_preprocess_generated_commands_ext(
             command_buffer,
-            Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoEXT](),
+            Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoEXT]()[],
             state_command_buffer,
         )
 
@@ -4911,7 +4854,7 @@ struct DeviceGeneratedCommands(Copyable):
         return self._cmd_execute_generated_commands_ext(
             command_buffer,
             is_preprocessed,
-            Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoEXT](),
+            Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoEXT]()[],
         )
 
     fn create_indirect_commands_layout_ext(
@@ -4927,9 +4870,9 @@ struct DeviceGeneratedCommands(Copyable):
         """
         return self._create_indirect_commands_layout_ext(
             device,
-            Ptr(to=create_info).bitcast[IndirectCommandsLayoutCreateInfoEXT](),
+            Ptr(to=create_info).bitcast[IndirectCommandsLayoutCreateInfoEXT]()[],
             p_allocator,
-            Ptr(to=indirect_commands_layout).bitcast[IndirectCommandsLayoutEXT](),
+            Ptr(to=indirect_commands_layout).bitcast[IndirectCommandsLayoutEXT]()[],
         )
 
     fn destroy_indirect_commands_layout_ext(
@@ -4959,9 +4902,9 @@ struct DeviceGeneratedCommands(Copyable):
         """
         return self._create_indirect_execution_set_ext(
             device,
-            Ptr(to=create_info).bitcast[IndirectExecutionSetCreateInfoEXT](),
+            Ptr(to=create_info).bitcast[IndirectExecutionSetCreateInfoEXT]()[],
             p_allocator,
-            Ptr(to=indirect_execution_set).bitcast[IndirectExecutionSetEXT](),
+            Ptr(to=indirect_execution_set).bitcast[IndirectExecutionSetEXT]()[],
         )
 
     fn destroy_indirect_execution_set_ext(
@@ -4974,9 +4917,7 @@ struct DeviceGeneratedCommands(Copyable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyIndirectExecutionSetEXT.html
         """
-        return self._destroy_indirect_execution_set_ext(
-            device, indirect_execution_set, p_allocator
-        )
+        return self._destroy_indirect_execution_set_ext(device, indirect_execution_set, p_allocator)
 
     fn update_indirect_execution_set_pipeline_ext(
         self,
@@ -5012,9 +4953,9 @@ struct DeviceGeneratedCommands(Copyable):
 struct DepthClampControl(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_depth_clamp_range_ext: fn(
-        commandBuffer: CommandBuffer,
-        depthClampMode: DepthClampModeEXT,
-        pDepthClampRange: Ptr[DepthClampRangeEXT, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        depth_clamp_mode: DepthClampModeEXT,
+        p_depth_clamp_range: Ptr[DepthClampRangeEXT, ImmutAnyOrigin],
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -5045,14 +4986,14 @@ struct ExternalMemoryMetal(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_memory_metal_handle_ext: fn(
         device: Device,
-        pGetMetalHandleInfo: Ptr[MemoryGetMetalHandleInfoEXT, ImmutAnyOrigin],
-        pHandle: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
+        get_metal_handle_info: MemoryGetMetalHandleInfoEXT,
+        handle: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
     var _get_memory_metal_handle_properties_ext: fn(
         device: Device,
-        handleType: ExternalMemoryHandleTypeFlagBits,
-        pHandle: Ptr[NoneType, ImmutAnyOrigin],
-        pMemoryMetalHandleProperties: Ptr[MemoryMetalHandlePropertiesEXT, MutAnyOrigin],
+        handle_type: ExternalMemoryHandleTypeFlagBits,
+        p_handle: Ptr[NoneType, ImmutAnyOrigin],
+        memory_metal_handle_properties: MemoryMetalHandlePropertiesEXT,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -5079,8 +5020,8 @@ struct ExternalMemoryMetal(Copyable):
         """
         return self._get_memory_metal_handle_ext(
             device,
-            Ptr(to=get_metal_handle_info).bitcast[MemoryGetMetalHandleInfoEXT](),
-            Ptr(to=handle).bitcast[Ptr[NoneType, MutAnyOrigin]](),
+            Ptr(to=get_metal_handle_info).bitcast[MemoryGetMetalHandleInfoEXT]()[],
+            Ptr(to=handle).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
     fn get_memory_metal_handle_properties_ext(
@@ -5098,14 +5039,15 @@ struct ExternalMemoryMetal(Copyable):
             device,
             handle_type,
             p_handle,
-            Ptr(to=memory_metal_handle_properties).bitcast[MemoryMetalHandlePropertiesEXT](),
+            Ptr(to=memory_metal_handle_properties).bitcast[MemoryMetalHandlePropertiesEXT]()[],
         )
 
 
 struct FragmentDensityMapOffset(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_end_rendering_2_ext: fn(
-        commandBuffer: CommandBuffer, pRenderingEndInfo: Ptr[RenderingEndInfoEXT, ImmutAnyOrigin]
+        command_buffer: CommandBuffer,
+        p_rendering_end_info: Ptr[RenderingEndInfoEXT, ImmutAnyOrigin],
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:

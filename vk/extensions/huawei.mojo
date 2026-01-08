@@ -6,9 +6,9 @@ from vk.core_functions import GlobalFunctions
 struct SubpassShading(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_device_subpass_shading_max_workgroup_size_huawei: fn(
-        device: Device, renderpass: RenderPass, pMaxWorkgroupSize: Ptr[Extent2D, MutAnyOrigin]
+        device: Device, renderpass: RenderPass, p_max_workgroup_size: Ptr[Extent2D, MutAnyOrigin]
     ) -> Result
-    var _cmd_subpass_shading_huawei: fn(commandBuffer: CommandBuffer)
+    var _cmd_subpass_shading_huawei: fn(command_buffer: CommandBuffer)
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
         self._dlhandle = global_functions.get_dlhandle()
@@ -47,7 +47,7 @@ struct SubpassShading(Copyable):
 struct InvocationMask(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_bind_invocation_mask_huawei: fn(
-        commandBuffer: CommandBuffer, imageView: ImageView, imageLayout: ImageLayout
+        command_buffer: CommandBuffer, image_view: ImageView, image_layout: ImageLayout
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -72,10 +72,13 @@ struct InvocationMask(Copyable):
 struct ClusterCullingShader(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_draw_cluster_huawei: fn(
-        commandBuffer: CommandBuffer, groupCountX: UInt32, groupCountY: UInt32, groupCountZ: UInt32
+        command_buffer: CommandBuffer,
+        group_count_x: UInt32,
+        group_count_y: UInt32,
+        group_count_z: UInt32,
     )
     var _cmd_draw_cluster_indirect_huawei: fn(
-        commandBuffer: CommandBuffer, buffer: Buffer, offset: DeviceSize
+        command_buffer: CommandBuffer, buffer: Buffer, offset: DeviceSize
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:

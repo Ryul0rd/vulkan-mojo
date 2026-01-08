@@ -7,27 +7,25 @@ struct BinaryImport(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_cu_module_nvx: fn(
         device: Device,
-        pCreateInfo: Ptr[CuModuleCreateInfoNVX, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pModule: Ptr[CuModuleNVX, MutAnyOrigin],
+        create_info: CuModuleCreateInfoNVX,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        module: CuModuleNVX,
     ) -> Result
     var _create_cu_function_nvx: fn(
         device: Device,
-        pCreateInfo: Ptr[CuFunctionCreateInfoNVX, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pFunction: Ptr[CuFunctionNVX, MutAnyOrigin],
+        create_info: CuFunctionCreateInfoNVX,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        function: CuFunctionNVX,
     ) -> Result
     var _destroy_cu_module_nvx: fn(
-        device: Device, module: CuModuleNVX, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, module: CuModuleNVX, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var _destroy_cu_function_nvx: fn(
         device: Device,
         function: CuFunctionNVX,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
-    var _cmd_cu_launch_kernel_nvx: fn(
-        commandBuffer: CommandBuffer, pLaunchInfo: Ptr[CuLaunchInfoNVX, ImmutAnyOrigin]
-    )
+    var _cmd_cu_launch_kernel_nvx: fn(command_buffer: CommandBuffer, launch_info: CuLaunchInfoNVX)
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
         self._dlhandle = global_functions.get_dlhandle()
@@ -63,9 +61,9 @@ struct BinaryImport(Copyable):
         """
         return self._create_cu_module_nvx(
             device,
-            Ptr(to=create_info).bitcast[CuModuleCreateInfoNVX](),
+            Ptr(to=create_info).bitcast[CuModuleCreateInfoNVX]()[],
             p_allocator,
-            Ptr(to=module).bitcast[CuModuleNVX](),
+            Ptr(to=module).bitcast[CuModuleNVX]()[],
         )
 
     fn create_cu_function_nvx(
@@ -81,9 +79,9 @@ struct BinaryImport(Copyable):
         """
         return self._create_cu_function_nvx(
             device,
-            Ptr(to=create_info).bitcast[CuFunctionCreateInfoNVX](),
+            Ptr(to=create_info).bitcast[CuFunctionCreateInfoNVX]()[],
             p_allocator,
-            Ptr(to=function).bitcast[CuFunctionNVX](),
+            Ptr(to=function).bitcast[CuFunctionNVX]()[],
         )
 
     fn destroy_cu_module_nvx(
@@ -116,22 +114,16 @@ struct BinaryImport(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCuLaunchKernelNVX.html
         """
         return self._cmd_cu_launch_kernel_nvx(
-            command_buffer, Ptr(to=launch_info).bitcast[CuLaunchInfoNVX]()
+            command_buffer, Ptr(to=launch_info).bitcast[CuLaunchInfoNVX]()[]
         )
 
 
 struct ImageViewHandle(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_image_view_handle_nvx: fn(
-        device: Device, pInfo: Ptr[ImageViewHandleInfoNVX, ImmutAnyOrigin]
-    ) -> UInt32
-    var _get_image_view_handle_64_nvx: fn(
-        device: Device, pInfo: Ptr[ImageViewHandleInfoNVX, ImmutAnyOrigin]
-    ) -> UInt64
+    var _get_image_view_handle_nvx: fn(device: Device, info: ImageViewHandleInfoNVX) -> UInt32
+    var _get_image_view_handle_64_nvx: fn(device: Device, info: ImageViewHandleInfoNVX) -> UInt64
     var _get_image_view_address_nvx: fn(
-        device: Device,
-        imageView: ImageView,
-        pProperties: Ptr[ImageViewAddressPropertiesNVX, MutAnyOrigin],
+        device: Device, image_view: ImageView, properties: ImageViewAddressPropertiesNVX
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -155,7 +147,7 @@ struct ImageViewHandle(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewHandleNVX.html
         """
         return self._get_image_view_handle_nvx(
-            device, Ptr(to=info).bitcast[ImageViewHandleInfoNVX]()
+            device, Ptr(to=info).bitcast[ImageViewHandleInfoNVX]()[]
         )
 
     fn get_image_view_handle_64_nvx(self, device: Device, info: ImageViewHandleInfoNVX) -> UInt64:
@@ -164,7 +156,7 @@ struct ImageViewHandle(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewHandle64NVX.html
         """
         return self._get_image_view_handle_64_nvx(
-            device, Ptr(to=info).bitcast[ImageViewHandleInfoNVX]()
+            device, Ptr(to=info).bitcast[ImageViewHandleInfoNVX]()[]
         )
 
     fn get_image_view_address_nvx(
@@ -175,5 +167,5 @@ struct ImageViewHandle(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewAddressNVX.html
         """
         return self._get_image_view_address_nvx(
-            device, image_view, Ptr(to=properties).bitcast[ImageViewAddressPropertiesNVX]()
+            device, image_view, Ptr(to=properties).bitcast[ImageViewAddressPropertiesNVX]()[]
         )

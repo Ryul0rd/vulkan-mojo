@@ -7,13 +7,11 @@ struct DescriptorSetHostMapping(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_descriptor_set_layout_host_mapping_info_valve: fn(
         device: Device,
-        pBindingReference: Ptr[DescriptorSetBindingReferenceVALVE, ImmutAnyOrigin],
-        pHostMapping: Ptr[DescriptorSetLayoutHostMappingInfoVALVE, MutAnyOrigin],
+        binding_reference: DescriptorSetBindingReferenceVALVE,
+        host_mapping: DescriptorSetLayoutHostMappingInfoVALVE,
     )
     var _get_descriptor_set_host_mapping_valve: fn(
-        device: Device,
-        descriptorSet: DescriptorSet,
-        ppData: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
+        device: Device, descriptor_set: DescriptorSet, p_data: Ptr[NoneType, MutAnyOrigin]
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -40,8 +38,8 @@ struct DescriptorSetHostMapping(Copyable):
         """
         return self._get_descriptor_set_layout_host_mapping_info_valve(
             device,
-            Ptr(to=binding_reference).bitcast[DescriptorSetBindingReferenceVALVE](),
-            Ptr(to=host_mapping).bitcast[DescriptorSetLayoutHostMappingInfoVALVE](),
+            Ptr(to=binding_reference).bitcast[DescriptorSetBindingReferenceVALVE]()[],
+            Ptr(to=host_mapping).bitcast[DescriptorSetLayoutHostMappingInfoVALVE]()[],
         )
 
     fn get_descriptor_set_host_mapping_valve(
@@ -52,5 +50,5 @@ struct DescriptorSetHostMapping(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetHostMappingVALVE.html
         """
         return self._get_descriptor_set_host_mapping_valve(
-            device, descriptor_set, Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()
+            device, descriptor_set, Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[]
         )

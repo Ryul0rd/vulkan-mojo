@@ -6,14 +6,12 @@ from vk.core_functions import GlobalFunctions
 struct ExternalMemoryAndroidHardwareBuffer(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_android_hardware_buffer_properties_android: fn(
-        device: Device,
-        buffer: Ptr[AHardwareBuffer, ImmutAnyOrigin],
-        pProperties: Ptr[AndroidHardwareBufferPropertiesANDROID, MutAnyOrigin],
+        device: Device, buffer: AHardwareBuffer, properties: AndroidHardwareBufferPropertiesANDROID
     ) -> Result
     var _get_memory_android_hardware_buffer_android: fn(
         device: Device,
-        pInfo: Ptr[MemoryGetAndroidHardwareBufferInfoANDROID, ImmutAnyOrigin],
-        pBuffer: Ptr[Ptr[AHardwareBuffer, MutAnyOrigin], MutAnyOrigin],
+        info: MemoryGetAndroidHardwareBufferInfoANDROID,
+        buffer: Ptr[AHardwareBuffer, MutAnyOrigin],
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -40,8 +38,8 @@ struct ExternalMemoryAndroidHardwareBuffer(Copyable):
         """
         return self._get_android_hardware_buffer_properties_android(
             device,
-            Ptr(to=buffer).bitcast[AHardwareBuffer](),
-            Ptr(to=properties).bitcast[AndroidHardwareBufferPropertiesANDROID](),
+            Ptr(to=buffer).bitcast[AHardwareBuffer]()[],
+            Ptr(to=properties).bitcast[AndroidHardwareBufferPropertiesANDROID]()[],
         )
 
     fn get_memory_android_hardware_buffer_android(
@@ -56,6 +54,6 @@ struct ExternalMemoryAndroidHardwareBuffer(Copyable):
         """
         return self._get_memory_android_hardware_buffer_android(
             device,
-            Ptr(to=info).bitcast[MemoryGetAndroidHardwareBufferInfoANDROID](),
-            Ptr(to=buffer).bitcast[Ptr[AHardwareBuffer, MutAnyOrigin]](),
+            Ptr(to=info).bitcast[MemoryGetAndroidHardwareBufferInfoANDROID]()[],
+            Ptr(to=buffer).bitcast[Ptr[AHardwareBuffer, MutAnyOrigin]]()[],
         )

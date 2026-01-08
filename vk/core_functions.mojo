@@ -36,25 +36,23 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
         return self._v1_0.create_instance(
-            Ptr(to=create_info).bitcast[InstanceCreateInfo](),
+            Ptr(to=create_info).bitcast[InstanceCreateInfo]()[],
             p_allocator,
-            Ptr(to=instance).bitcast[Instance](),
+            Ptr(to=instance).bitcast[Instance]()[],
         )
 
     fn get_instance_proc_addr(
-        self, instance: Instance, p_name: CStringSlice
+        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(
-            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
-        )
+        return self._v1_0.get_instance_proc_addr(instance, p_name)
 
     fn enumerate_instance_extension_properties(
         self,
-        p_layer_name: CStringSlice,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
         mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
@@ -63,13 +61,11 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
-            Ptr(to=property_count).bitcast[UInt32](),
-            p_properties,
+            p_layer_name, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_instance_extension_properties(
-        self, p_layer_name: CStringSlice
+        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
@@ -82,8 +78,8 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
             result = self.enumerate_instance_extension_properties(
                 p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_instance_extension_properties(
                 p_layer_name, count, list.unsafe_ptr()
             )
@@ -98,7 +94,7 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         return self._v1_0.enumerate_instance_layer_properties(
-            Ptr(to=property_count).bitcast[UInt32](), p_properties
+            Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
@@ -113,8 +109,8 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
             result = self.enumerate_instance_layer_properties(
                 count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
@@ -144,25 +140,23 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
         return self._v1_0.create_instance(
-            Ptr(to=create_info).bitcast[InstanceCreateInfo](),
+            Ptr(to=create_info).bitcast[InstanceCreateInfo]()[],
             p_allocator,
-            Ptr(to=instance).bitcast[Instance](),
+            Ptr(to=instance).bitcast[Instance]()[],
         )
 
     fn get_instance_proc_addr(
-        self, instance: Instance, p_name: CStringSlice
+        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(
-            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
-        )
+        return self._v1_0.get_instance_proc_addr(instance, p_name)
 
     fn enumerate_instance_extension_properties(
         self,
-        p_layer_name: CStringSlice,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
         mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
@@ -171,13 +165,11 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
-            Ptr(to=property_count).bitcast[UInt32](),
-            p_properties,
+            p_layer_name, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_instance_extension_properties(
-        self, p_layer_name: CStringSlice
+        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
@@ -190,8 +182,8 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
             result = self.enumerate_instance_extension_properties(
                 p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_instance_extension_properties(
                 p_layer_name, count, list.unsafe_ptr()
             )
@@ -206,7 +198,7 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         return self._v1_0.enumerate_instance_layer_properties(
-            Ptr(to=property_count).bitcast[UInt32](), p_properties
+            Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
@@ -221,18 +213,18 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
             result = self.enumerate_instance_layer_properties(
                 count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_instance_version(self, mut version: Version) -> Result:
+    fn enumerate_instance_version(self, mut api_version: Version) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
         """
-        return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())
+        return self._v1_1.enumerate_instance_version(Ptr(to=api_version).bitcast[Version]()[])
 
 
 struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
@@ -259,25 +251,23 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
         return self._v1_0.create_instance(
-            Ptr(to=create_info).bitcast[InstanceCreateInfo](),
+            Ptr(to=create_info).bitcast[InstanceCreateInfo]()[],
             p_allocator,
-            Ptr(to=instance).bitcast[Instance](),
+            Ptr(to=instance).bitcast[Instance]()[],
         )
 
     fn get_instance_proc_addr(
-        self, instance: Instance, p_name: CStringSlice
+        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(
-            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
-        )
+        return self._v1_0.get_instance_proc_addr(instance, p_name)
 
     fn enumerate_instance_extension_properties(
         self,
-        p_layer_name: CStringSlice,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
         mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
@@ -286,13 +276,11 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
-            Ptr(to=property_count).bitcast[UInt32](),
-            p_properties,
+            p_layer_name, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_instance_extension_properties(
-        self, p_layer_name: CStringSlice
+        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
@@ -305,8 +293,8 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
             result = self.enumerate_instance_extension_properties(
                 p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_instance_extension_properties(
                 p_layer_name, count, list.unsafe_ptr()
             )
@@ -321,7 +309,7 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         return self._v1_0.enumerate_instance_layer_properties(
-            Ptr(to=property_count).bitcast[UInt32](), p_properties
+            Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
@@ -336,18 +324,18 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
             result = self.enumerate_instance_layer_properties(
                 count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_instance_version(self, mut version: Version) -> Result:
+    fn enumerate_instance_version(self, mut api_version: Version) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
         """
-        return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())
+        return self._v1_1.enumerate_instance_version(Ptr(to=api_version).bitcast[Version]()[])
 
 
 struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
@@ -374,25 +362,23 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
         return self._v1_0.create_instance(
-            Ptr(to=create_info).bitcast[InstanceCreateInfo](),
+            Ptr(to=create_info).bitcast[InstanceCreateInfo]()[],
             p_allocator,
-            Ptr(to=instance).bitcast[Instance](),
+            Ptr(to=instance).bitcast[Instance]()[],
         )
 
     fn get_instance_proc_addr(
-        self, instance: Instance, p_name: CStringSlice
+        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(
-            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
-        )
+        return self._v1_0.get_instance_proc_addr(instance, p_name)
 
     fn enumerate_instance_extension_properties(
         self,
-        p_layer_name: CStringSlice,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
         mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
@@ -401,13 +387,11 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
-            Ptr(to=property_count).bitcast[UInt32](),
-            p_properties,
+            p_layer_name, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_instance_extension_properties(
-        self, p_layer_name: CStringSlice
+        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
@@ -420,8 +404,8 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
             result = self.enumerate_instance_extension_properties(
                 p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_instance_extension_properties(
                 p_layer_name, count, list.unsafe_ptr()
             )
@@ -436,7 +420,7 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         return self._v1_0.enumerate_instance_layer_properties(
-            Ptr(to=property_count).bitcast[UInt32](), p_properties
+            Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
@@ -451,18 +435,18 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
             result = self.enumerate_instance_layer_properties(
                 count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_instance_version(self, mut version: Version) -> Result:
+    fn enumerate_instance_version(self, mut api_version: Version) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
         """
-        return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())
+        return self._v1_1.enumerate_instance_version(Ptr(to=api_version).bitcast[Version]()[])
 
 
 struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
@@ -489,25 +473,23 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
         return self._v1_0.create_instance(
-            Ptr(to=create_info).bitcast[InstanceCreateInfo](),
+            Ptr(to=create_info).bitcast[InstanceCreateInfo]()[],
             p_allocator,
-            Ptr(to=instance).bitcast[Instance](),
+            Ptr(to=instance).bitcast[Instance]()[],
         )
 
     fn get_instance_proc_addr(
-        self, instance: Instance, p_name: CStringSlice
+        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(
-            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
-        )
+        return self._v1_0.get_instance_proc_addr(instance, p_name)
 
     fn enumerate_instance_extension_properties(
         self,
-        p_layer_name: CStringSlice,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
         mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
@@ -516,13 +498,11 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
-            Ptr(to=property_count).bitcast[UInt32](),
-            p_properties,
+            p_layer_name, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_instance_extension_properties(
-        self, p_layer_name: CStringSlice
+        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
@@ -535,8 +515,8 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
             result = self.enumerate_instance_extension_properties(
                 p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_instance_extension_properties(
                 p_layer_name, count, list.unsafe_ptr()
             )
@@ -551,7 +531,7 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         return self._v1_0.enumerate_instance_layer_properties(
-            Ptr(to=property_count).bitcast[UInt32](), p_properties
+            Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
@@ -566,66 +546,18 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
             result = self.enumerate_instance_layer_properties(
                 count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_instance_layer_properties(count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_instance_version(self, mut version: Version) -> Result:
+    fn enumerate_instance_version(self, mut api_version: Version) -> Result:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
         """
-        return self._v1_1.enumerate_instance_version(Ptr(to=version).bitcast[UInt32]())
-
-
-struct GlobalFunctionAdditionsV1_0(Copyable, Movable):
-    var create_instance: fn(
-        pCreateInfo: Ptr[InstanceCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pInstance: Ptr[Instance, MutAnyOrigin],
-    ) -> Result
-    var get_instance_proc_addr: fn(
-        instance: Instance, pName: CStringSlice[ImmutAnyOrigin]
-    ) -> PFN_vkVoidFunction
-    var enumerate_instance_extension_properties: fn(
-        pLayerName: CStringSlice[ImmutAnyOrigin],
-        pPropertyCount: Ptr[UInt32, MutAnyOrigin],
-        pProperties: Ptr[ExtensionProperties, MutAnyOrigin],
-    ) -> Result
-    var enumerate_instance_layer_properties: fn(
-        pPropertyCount: Ptr[UInt32, MutAnyOrigin], pProperties: Ptr[LayerProperties, MutAnyOrigin]
-    ) -> Result
-
-    fn __init__(out self, dlhandle: OwnedDLHandle):
-        get_instance_proc_addr = dlhandle.get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
-        ]("vkGetInstanceProcAddr")
-        self.create_instance = Ptr(to=get_instance_proc_addr(
-            Instance.NULL, "vkCreateInstance".unsafe_ptr()
-        )).bitcast[type_of(self.create_instance)]()[]
-        self.get_instance_proc_addr = Ptr(to=get_instance_proc_addr(
-            Instance.NULL, "vkGetInstanceProcAddr".unsafe_ptr()
-        )).bitcast[type_of(self.get_instance_proc_addr)]()[]
-        self.enumerate_instance_extension_properties = Ptr(to=get_instance_proc_addr(
-            Instance.NULL, "vkEnumerateInstanceExtensionProperties".unsafe_ptr()
-        )).bitcast[type_of(self.enumerate_instance_extension_properties)]()[]
-        self.enumerate_instance_layer_properties = Ptr(to=get_instance_proc_addr(
-            Instance.NULL, "vkEnumerateInstanceLayerProperties".unsafe_ptr()
-        )).bitcast[type_of(self.enumerate_instance_layer_properties)]()[]
-
-
-struct GlobalFunctionAdditionsV1_1(Copyable, Movable):
-    var enumerate_instance_version: fn(pApiVersion: Ptr[UInt32, MutAnyOrigin]) -> Result
-
-    fn __init__(out self, dlhandle: OwnedDLHandle):
-        get_instance_proc_addr = dlhandle.get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
-        ]("vkGetInstanceProcAddr")
-        self.enumerate_instance_version = Ptr(to=get_instance_proc_addr(
-            Instance.NULL, "vkEnumerateInstanceVersion".unsafe_ptr()
-        )).bitcast[type_of(self.enumerate_instance_version)]()[]
+        return self._v1_1.enumerate_instance_version(Ptr(to=api_version).bitcast[Version]()[])
 
 
 struct InstanceFunctionsV1_0(Movable):
@@ -656,7 +588,7 @@ struct InstanceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
-            instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
+            instance, Ptr(to=physical_device_count).bitcast[UInt32]()[], p_physical_devices
         )
 
     fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
@@ -671,8 +603,8 @@ struct InstanceFunctionsV1_0(Movable):
             result = self.enumerate_physical_devices(
                 instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
@@ -685,7 +617,7 @@ struct InstanceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
         """
         return self._v1_0.get_physical_device_features(
-            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()[]
         )
 
     fn get_physical_device_format_properties(
@@ -699,7 +631,7 @@ struct InstanceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
         """
         return self._v1_0.get_physical_device_format_properties(
-            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()[]
         )
 
     fn get_physical_device_image_format_properties(
@@ -723,7 +655,7 @@ struct InstanceFunctionsV1_0(Movable):
             tiling,
             usage,
             flags,
-            Ptr(to=image_format_properties).bitcast[ImageFormatProperties](),
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties]()[],
         )
 
     fn get_physical_device_properties(
@@ -734,7 +666,7 @@ struct InstanceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
         """
         return self._v1_0.get_physical_device_properties(
-            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()[]
         )
 
     fn get_physical_device_queue_family_properties(
@@ -749,7 +681,7 @@ struct InstanceFunctionsV1_0(Movable):
         """
         return self._v1_0.get_physical_device_queue_family_properties(
             physical_device,
-            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32]()[],
             p_queue_family_properties,
         )
 
@@ -765,11 +697,8 @@ struct InstanceFunctionsV1_0(Movable):
         self.get_physical_device_queue_family_properties(
             physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_queue_family_properties(
-                physical_device, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_queue_family_properties(physical_device, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -781,17 +710,17 @@ struct InstanceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
         """
         return self._v1_0.get_physical_device_memory_properties(
-            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()[]
         )
 
-    fn get_device_proc_addr(self, device: Device, p_name: CStringSlice) -> PFN_vkVoidFunction:
+    fn get_device_proc_addr(
+        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
+    ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(
-            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
-        )
+        return self._v1_0.get_device_proc_addr(device, p_name)
 
     fn create_device(
         self,
@@ -806,15 +735,15 @@ struct InstanceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_device(
             physical_device,
-            Ptr(to=create_info).bitcast[DeviceCreateInfo](),
+            Ptr(to=create_info).bitcast[DeviceCreateInfo]()[],
             p_allocator,
-            Ptr(to=device).bitcast[Device](),
+            Ptr(to=device).bitcast[Device]()[],
         )
 
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: CStringSlice,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
         mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
@@ -823,14 +752,11 @@ struct InstanceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
-            physical_device,
-            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
-            Ptr(to=property_count).bitcast[UInt32](),
-            p_properties,
+            physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
@@ -843,8 +769,8 @@ struct InstanceFunctionsV1_0(Movable):
             result = self.enumerate_device_extension_properties(
                 physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_device_extension_properties(
                 physical_device, p_layer_name, count, list.unsafe_ptr()
             )
@@ -862,7 +788,7 @@ struct InstanceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
-            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_device_layer_properties(
@@ -879,8 +805,8 @@ struct InstanceFunctionsV1_0(Movable):
             result = self.enumerate_device_layer_properties(
                 physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_device_layer_properties(
                 physical_device, count, list.unsafe_ptr()
             )
@@ -909,7 +835,7 @@ struct InstanceFunctionsV1_0(Movable):
             samples,
             usage,
             tiling,
-            Ptr(to=property_count).bitcast[UInt32](),
+            Ptr(to=property_count).bitcast[UInt32]()[],
             p_properties,
         )
 
@@ -938,11 +864,10 @@ struct InstanceFunctionsV1_0(Movable):
             count,
             Ptr[SparseImageFormatProperties, MutAnyOrigin](),
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_sparse_image_format_properties(
-                physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_sparse_image_format_properties(
+            physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
+        )
         list._len = Int(count)
         return list^
 
@@ -977,7 +902,7 @@ struct InstanceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
-            instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
+            instance, Ptr(to=physical_device_count).bitcast[UInt32]()[], p_physical_devices
         )
 
     fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
@@ -992,8 +917,8 @@ struct InstanceFunctionsV1_1(Movable):
             result = self.enumerate_physical_devices(
                 instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
@@ -1006,7 +931,7 @@ struct InstanceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
         """
         return self._v1_0.get_physical_device_features(
-            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()[]
         )
 
     fn get_physical_device_format_properties(
@@ -1020,7 +945,7 @@ struct InstanceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
         """
         return self._v1_0.get_physical_device_format_properties(
-            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()[]
         )
 
     fn get_physical_device_image_format_properties(
@@ -1044,7 +969,7 @@ struct InstanceFunctionsV1_1(Movable):
             tiling,
             usage,
             flags,
-            Ptr(to=image_format_properties).bitcast[ImageFormatProperties](),
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties]()[],
         )
 
     fn get_physical_device_properties(
@@ -1055,7 +980,7 @@ struct InstanceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
         """
         return self._v1_0.get_physical_device_properties(
-            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()[]
         )
 
     fn get_physical_device_queue_family_properties(
@@ -1070,7 +995,7 @@ struct InstanceFunctionsV1_1(Movable):
         """
         return self._v1_0.get_physical_device_queue_family_properties(
             physical_device,
-            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32]()[],
             p_queue_family_properties,
         )
 
@@ -1086,11 +1011,8 @@ struct InstanceFunctionsV1_1(Movable):
         self.get_physical_device_queue_family_properties(
             physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_queue_family_properties(
-                physical_device, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_queue_family_properties(physical_device, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -1102,17 +1024,17 @@ struct InstanceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
         """
         return self._v1_0.get_physical_device_memory_properties(
-            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()[]
         )
 
-    fn get_device_proc_addr(self, device: Device, p_name: CStringSlice) -> PFN_vkVoidFunction:
+    fn get_device_proc_addr(
+        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
+    ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(
-            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
-        )
+        return self._v1_0.get_device_proc_addr(device, p_name)
 
     fn create_device(
         self,
@@ -1127,15 +1049,15 @@ struct InstanceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_device(
             physical_device,
-            Ptr(to=create_info).bitcast[DeviceCreateInfo](),
+            Ptr(to=create_info).bitcast[DeviceCreateInfo]()[],
             p_allocator,
-            Ptr(to=device).bitcast[Device](),
+            Ptr(to=device).bitcast[Device]()[],
         )
 
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: CStringSlice,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
         mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
@@ -1144,14 +1066,11 @@ struct InstanceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
-            physical_device,
-            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
-            Ptr(to=property_count).bitcast[UInt32](),
-            p_properties,
+            physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
@@ -1164,8 +1083,8 @@ struct InstanceFunctionsV1_1(Movable):
             result = self.enumerate_device_extension_properties(
                 physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_device_extension_properties(
                 physical_device, p_layer_name, count, list.unsafe_ptr()
             )
@@ -1183,7 +1102,7 @@ struct InstanceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
-            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_device_layer_properties(
@@ -1200,8 +1119,8 @@ struct InstanceFunctionsV1_1(Movable):
             result = self.enumerate_device_layer_properties(
                 physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_device_layer_properties(
                 physical_device, count, list.unsafe_ptr()
             )
@@ -1230,7 +1149,7 @@ struct InstanceFunctionsV1_1(Movable):
             samples,
             usage,
             tiling,
-            Ptr(to=property_count).bitcast[UInt32](),
+            Ptr(to=property_count).bitcast[UInt32]()[],
             p_properties,
         )
 
@@ -1259,11 +1178,10 @@ struct InstanceFunctionsV1_1(Movable):
             count,
             Ptr[SparseImageFormatProperties, MutAnyOrigin](),
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_sparse_image_format_properties(
-                physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_sparse_image_format_properties(
+            physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
+        )
         list._len = Int(count)
         return list^
 
@@ -1279,7 +1197,7 @@ struct InstanceFunctionsV1_1(Movable):
         """
         return self._v1_1.enumerate_physical_device_groups(
             instance,
-            Ptr(to=physical_device_group_count).bitcast[UInt32](),
+            Ptr(to=physical_device_group_count).bitcast[UInt32]()[],
             p_physical_device_group_properties,
         )
 
@@ -1297,8 +1215,8 @@ struct InstanceFunctionsV1_1(Movable):
             result = self.enumerate_physical_device_groups(
                 instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
@@ -1311,7 +1229,7 @@ struct InstanceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
         """
         return self._v1_1.get_physical_device_features_2(
-            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()[]
         )
 
     fn get_physical_device_properties_2(
@@ -1322,7 +1240,7 @@ struct InstanceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
         """
         return self._v1_1.get_physical_device_properties_2(
-            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()[]
         )
 
     fn get_physical_device_format_properties_2(
@@ -1336,7 +1254,7 @@ struct InstanceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
         """
         return self._v1_1.get_physical_device_format_properties_2(
-            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()[]
         )
 
     fn get_physical_device_image_format_properties_2(
@@ -1351,8 +1269,8 @@ struct InstanceFunctionsV1_1(Movable):
         """
         return self._v1_1.get_physical_device_image_format_properties_2(
             physical_device,
-            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2](),
-            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2](),
+            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2]()[],
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2]()[],
         )
 
     fn get_physical_device_queue_family_properties_2(
@@ -1367,7 +1285,7 @@ struct InstanceFunctionsV1_1(Movable):
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
             physical_device,
-            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32]()[],
             p_queue_family_properties,
         )
 
@@ -1383,11 +1301,10 @@ struct InstanceFunctionsV1_1(Movable):
         self.get_physical_device_queue_family_properties_2(
             physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_queue_family_properties_2(
-                physical_device, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_queue_family_properties_2(
+            physical_device, count, list.unsafe_ptr()
+        )
         list._len = Int(count)
         return list^
 
@@ -1401,7 +1318,7 @@ struct InstanceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
         """
         return self._v1_1.get_physical_device_memory_properties_2(
-            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()[]
         )
 
     fn get_physical_device_sparse_image_format_properties_2(
@@ -1417,8 +1334,8 @@ struct InstanceFunctionsV1_1(Movable):
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
             physical_device,
-            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2](),
-            Ptr(to=property_count).bitcast[UInt32](),
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]()[],
+            Ptr(to=property_count).bitcast[UInt32]()[],
             p_properties,
         )
 
@@ -1434,11 +1351,10 @@ struct InstanceFunctionsV1_1(Movable):
         self.get_physical_device_sparse_image_format_properties_2(
             physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_sparse_image_format_properties_2(
-                physical_device, format_info, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_sparse_image_format_properties_2(
+            physical_device, format_info, count, list.unsafe_ptr()
+        )
         list._len = Int(count)
         return list^
 
@@ -1454,8 +1370,8 @@ struct InstanceFunctionsV1_1(Movable):
         """
         return self._v1_1.get_physical_device_external_buffer_properties(
             physical_device,
-            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo](),
-            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties](),
+            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo]()[],
+            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties]()[],
         )
 
     fn get_physical_device_external_fence_properties(
@@ -1470,8 +1386,8 @@ struct InstanceFunctionsV1_1(Movable):
         """
         return self._v1_1.get_physical_device_external_fence_properties(
             physical_device,
-            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo](),
-            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties](),
+            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo]()[],
+            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties]()[],
         )
 
     fn get_physical_device_external_semaphore_properties(
@@ -1486,8 +1402,8 @@ struct InstanceFunctionsV1_1(Movable):
         """
         return self._v1_1.get_physical_device_external_semaphore_properties(
             physical_device,
-            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo](),
-            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties](),
+            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo]()[],
+            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties]()[],
         )
 
 
@@ -1521,7 +1437,7 @@ struct InstanceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
-            instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
+            instance, Ptr(to=physical_device_count).bitcast[UInt32]()[], p_physical_devices
         )
 
     fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
@@ -1536,8 +1452,8 @@ struct InstanceFunctionsV1_2(Movable):
             result = self.enumerate_physical_devices(
                 instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
@@ -1550,7 +1466,7 @@ struct InstanceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
         """
         return self._v1_0.get_physical_device_features(
-            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()[]
         )
 
     fn get_physical_device_format_properties(
@@ -1564,7 +1480,7 @@ struct InstanceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
         """
         return self._v1_0.get_physical_device_format_properties(
-            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()[]
         )
 
     fn get_physical_device_image_format_properties(
@@ -1588,7 +1504,7 @@ struct InstanceFunctionsV1_2(Movable):
             tiling,
             usage,
             flags,
-            Ptr(to=image_format_properties).bitcast[ImageFormatProperties](),
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties]()[],
         )
 
     fn get_physical_device_properties(
@@ -1599,7 +1515,7 @@ struct InstanceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
         """
         return self._v1_0.get_physical_device_properties(
-            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()[]
         )
 
     fn get_physical_device_queue_family_properties(
@@ -1614,7 +1530,7 @@ struct InstanceFunctionsV1_2(Movable):
         """
         return self._v1_0.get_physical_device_queue_family_properties(
             physical_device,
-            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32]()[],
             p_queue_family_properties,
         )
 
@@ -1630,11 +1546,8 @@ struct InstanceFunctionsV1_2(Movable):
         self.get_physical_device_queue_family_properties(
             physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_queue_family_properties(
-                physical_device, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_queue_family_properties(physical_device, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -1646,17 +1559,17 @@ struct InstanceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
         """
         return self._v1_0.get_physical_device_memory_properties(
-            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()[]
         )
 
-    fn get_device_proc_addr(self, device: Device, p_name: CStringSlice) -> PFN_vkVoidFunction:
+    fn get_device_proc_addr(
+        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
+    ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(
-            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
-        )
+        return self._v1_0.get_device_proc_addr(device, p_name)
 
     fn create_device(
         self,
@@ -1671,15 +1584,15 @@ struct InstanceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_device(
             physical_device,
-            Ptr(to=create_info).bitcast[DeviceCreateInfo](),
+            Ptr(to=create_info).bitcast[DeviceCreateInfo]()[],
             p_allocator,
-            Ptr(to=device).bitcast[Device](),
+            Ptr(to=device).bitcast[Device]()[],
         )
 
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: CStringSlice,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
         mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
@@ -1688,14 +1601,11 @@ struct InstanceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
-            physical_device,
-            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
-            Ptr(to=property_count).bitcast[UInt32](),
-            p_properties,
+            physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
@@ -1708,8 +1618,8 @@ struct InstanceFunctionsV1_2(Movable):
             result = self.enumerate_device_extension_properties(
                 physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_device_extension_properties(
                 physical_device, p_layer_name, count, list.unsafe_ptr()
             )
@@ -1727,7 +1637,7 @@ struct InstanceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
-            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_device_layer_properties(
@@ -1744,8 +1654,8 @@ struct InstanceFunctionsV1_2(Movable):
             result = self.enumerate_device_layer_properties(
                 physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_device_layer_properties(
                 physical_device, count, list.unsafe_ptr()
             )
@@ -1774,7 +1684,7 @@ struct InstanceFunctionsV1_2(Movable):
             samples,
             usage,
             tiling,
-            Ptr(to=property_count).bitcast[UInt32](),
+            Ptr(to=property_count).bitcast[UInt32]()[],
             p_properties,
         )
 
@@ -1803,11 +1713,10 @@ struct InstanceFunctionsV1_2(Movable):
             count,
             Ptr[SparseImageFormatProperties, MutAnyOrigin](),
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_sparse_image_format_properties(
-                physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_sparse_image_format_properties(
+            physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
+        )
         list._len = Int(count)
         return list^
 
@@ -1823,7 +1732,7 @@ struct InstanceFunctionsV1_2(Movable):
         """
         return self._v1_1.enumerate_physical_device_groups(
             instance,
-            Ptr(to=physical_device_group_count).bitcast[UInt32](),
+            Ptr(to=physical_device_group_count).bitcast[UInt32]()[],
             p_physical_device_group_properties,
         )
 
@@ -1841,8 +1750,8 @@ struct InstanceFunctionsV1_2(Movable):
             result = self.enumerate_physical_device_groups(
                 instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
@@ -1855,7 +1764,7 @@ struct InstanceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
         """
         return self._v1_1.get_physical_device_features_2(
-            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()[]
         )
 
     fn get_physical_device_properties_2(
@@ -1866,7 +1775,7 @@ struct InstanceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
         """
         return self._v1_1.get_physical_device_properties_2(
-            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()[]
         )
 
     fn get_physical_device_format_properties_2(
@@ -1880,7 +1789,7 @@ struct InstanceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
         """
         return self._v1_1.get_physical_device_format_properties_2(
-            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()[]
         )
 
     fn get_physical_device_image_format_properties_2(
@@ -1895,8 +1804,8 @@ struct InstanceFunctionsV1_2(Movable):
         """
         return self._v1_1.get_physical_device_image_format_properties_2(
             physical_device,
-            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2](),
-            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2](),
+            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2]()[],
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2]()[],
         )
 
     fn get_physical_device_queue_family_properties_2(
@@ -1911,7 +1820,7 @@ struct InstanceFunctionsV1_2(Movable):
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
             physical_device,
-            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32]()[],
             p_queue_family_properties,
         )
 
@@ -1927,11 +1836,10 @@ struct InstanceFunctionsV1_2(Movable):
         self.get_physical_device_queue_family_properties_2(
             physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_queue_family_properties_2(
-                physical_device, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_queue_family_properties_2(
+            physical_device, count, list.unsafe_ptr()
+        )
         list._len = Int(count)
         return list^
 
@@ -1945,7 +1853,7 @@ struct InstanceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
         """
         return self._v1_1.get_physical_device_memory_properties_2(
-            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()[]
         )
 
     fn get_physical_device_sparse_image_format_properties_2(
@@ -1961,8 +1869,8 @@ struct InstanceFunctionsV1_2(Movable):
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
             physical_device,
-            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2](),
-            Ptr(to=property_count).bitcast[UInt32](),
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]()[],
+            Ptr(to=property_count).bitcast[UInt32]()[],
             p_properties,
         )
 
@@ -1978,11 +1886,10 @@ struct InstanceFunctionsV1_2(Movable):
         self.get_physical_device_sparse_image_format_properties_2(
             physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_sparse_image_format_properties_2(
-                physical_device, format_info, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_sparse_image_format_properties_2(
+            physical_device, format_info, count, list.unsafe_ptr()
+        )
         list._len = Int(count)
         return list^
 
@@ -1998,8 +1905,8 @@ struct InstanceFunctionsV1_2(Movable):
         """
         return self._v1_1.get_physical_device_external_buffer_properties(
             physical_device,
-            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo](),
-            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties](),
+            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo]()[],
+            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties]()[],
         )
 
     fn get_physical_device_external_fence_properties(
@@ -2014,8 +1921,8 @@ struct InstanceFunctionsV1_2(Movable):
         """
         return self._v1_1.get_physical_device_external_fence_properties(
             physical_device,
-            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo](),
-            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties](),
+            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo]()[],
+            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties]()[],
         )
 
     fn get_physical_device_external_semaphore_properties(
@@ -2030,8 +1937,8 @@ struct InstanceFunctionsV1_2(Movable):
         """
         return self._v1_1.get_physical_device_external_semaphore_properties(
             physical_device,
-            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo](),
-            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties](),
+            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo]()[],
+            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties]()[],
         )
 
 
@@ -2067,7 +1974,7 @@ struct InstanceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
-            instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
+            instance, Ptr(to=physical_device_count).bitcast[UInt32]()[], p_physical_devices
         )
 
     fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
@@ -2082,8 +1989,8 @@ struct InstanceFunctionsV1_3(Movable):
             result = self.enumerate_physical_devices(
                 instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
@@ -2096,7 +2003,7 @@ struct InstanceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
         """
         return self._v1_0.get_physical_device_features(
-            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()[]
         )
 
     fn get_physical_device_format_properties(
@@ -2110,7 +2017,7 @@ struct InstanceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
         """
         return self._v1_0.get_physical_device_format_properties(
-            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()[]
         )
 
     fn get_physical_device_image_format_properties(
@@ -2134,7 +2041,7 @@ struct InstanceFunctionsV1_3(Movable):
             tiling,
             usage,
             flags,
-            Ptr(to=image_format_properties).bitcast[ImageFormatProperties](),
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties]()[],
         )
 
     fn get_physical_device_properties(
@@ -2145,7 +2052,7 @@ struct InstanceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
         """
         return self._v1_0.get_physical_device_properties(
-            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()[]
         )
 
     fn get_physical_device_queue_family_properties(
@@ -2160,7 +2067,7 @@ struct InstanceFunctionsV1_3(Movable):
         """
         return self._v1_0.get_physical_device_queue_family_properties(
             physical_device,
-            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32]()[],
             p_queue_family_properties,
         )
 
@@ -2176,11 +2083,8 @@ struct InstanceFunctionsV1_3(Movable):
         self.get_physical_device_queue_family_properties(
             physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_queue_family_properties(
-                physical_device, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_queue_family_properties(physical_device, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -2192,17 +2096,17 @@ struct InstanceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
         """
         return self._v1_0.get_physical_device_memory_properties(
-            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()[]
         )
 
-    fn get_device_proc_addr(self, device: Device, p_name: CStringSlice) -> PFN_vkVoidFunction:
+    fn get_device_proc_addr(
+        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
+    ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(
-            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
-        )
+        return self._v1_0.get_device_proc_addr(device, p_name)
 
     fn create_device(
         self,
@@ -2217,15 +2121,15 @@ struct InstanceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_device(
             physical_device,
-            Ptr(to=create_info).bitcast[DeviceCreateInfo](),
+            Ptr(to=create_info).bitcast[DeviceCreateInfo]()[],
             p_allocator,
-            Ptr(to=device).bitcast[Device](),
+            Ptr(to=device).bitcast[Device]()[],
         )
 
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: CStringSlice,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
         mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
@@ -2234,14 +2138,11 @@ struct InstanceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
-            physical_device,
-            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
-            Ptr(to=property_count).bitcast[UInt32](),
-            p_properties,
+            physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
@@ -2254,8 +2155,8 @@ struct InstanceFunctionsV1_3(Movable):
             result = self.enumerate_device_extension_properties(
                 physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_device_extension_properties(
                 physical_device, p_layer_name, count, list.unsafe_ptr()
             )
@@ -2273,7 +2174,7 @@ struct InstanceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
-            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_device_layer_properties(
@@ -2290,8 +2191,8 @@ struct InstanceFunctionsV1_3(Movable):
             result = self.enumerate_device_layer_properties(
                 physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_device_layer_properties(
                 physical_device, count, list.unsafe_ptr()
             )
@@ -2320,7 +2221,7 @@ struct InstanceFunctionsV1_3(Movable):
             samples,
             usage,
             tiling,
-            Ptr(to=property_count).bitcast[UInt32](),
+            Ptr(to=property_count).bitcast[UInt32]()[],
             p_properties,
         )
 
@@ -2349,11 +2250,10 @@ struct InstanceFunctionsV1_3(Movable):
             count,
             Ptr[SparseImageFormatProperties, MutAnyOrigin](),
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_sparse_image_format_properties(
-                physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_sparse_image_format_properties(
+            physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
+        )
         list._len = Int(count)
         return list^
 
@@ -2369,7 +2269,7 @@ struct InstanceFunctionsV1_3(Movable):
         """
         return self._v1_1.enumerate_physical_device_groups(
             instance,
-            Ptr(to=physical_device_group_count).bitcast[UInt32](),
+            Ptr(to=physical_device_group_count).bitcast[UInt32]()[],
             p_physical_device_group_properties,
         )
 
@@ -2387,8 +2287,8 @@ struct InstanceFunctionsV1_3(Movable):
             result = self.enumerate_physical_device_groups(
                 instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
@@ -2401,7 +2301,7 @@ struct InstanceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
         """
         return self._v1_1.get_physical_device_features_2(
-            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()[]
         )
 
     fn get_physical_device_properties_2(
@@ -2412,7 +2312,7 @@ struct InstanceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
         """
         return self._v1_1.get_physical_device_properties_2(
-            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()[]
         )
 
     fn get_physical_device_format_properties_2(
@@ -2426,7 +2326,7 @@ struct InstanceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
         """
         return self._v1_1.get_physical_device_format_properties_2(
-            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()[]
         )
 
     fn get_physical_device_image_format_properties_2(
@@ -2441,8 +2341,8 @@ struct InstanceFunctionsV1_3(Movable):
         """
         return self._v1_1.get_physical_device_image_format_properties_2(
             physical_device,
-            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2](),
-            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2](),
+            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2]()[],
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2]()[],
         )
 
     fn get_physical_device_queue_family_properties_2(
@@ -2457,7 +2357,7 @@ struct InstanceFunctionsV1_3(Movable):
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
             physical_device,
-            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32]()[],
             p_queue_family_properties,
         )
 
@@ -2473,11 +2373,10 @@ struct InstanceFunctionsV1_3(Movable):
         self.get_physical_device_queue_family_properties_2(
             physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_queue_family_properties_2(
-                physical_device, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_queue_family_properties_2(
+            physical_device, count, list.unsafe_ptr()
+        )
         list._len = Int(count)
         return list^
 
@@ -2491,7 +2390,7 @@ struct InstanceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
         """
         return self._v1_1.get_physical_device_memory_properties_2(
-            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()[]
         )
 
     fn get_physical_device_sparse_image_format_properties_2(
@@ -2507,8 +2406,8 @@ struct InstanceFunctionsV1_3(Movable):
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
             physical_device,
-            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2](),
-            Ptr(to=property_count).bitcast[UInt32](),
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]()[],
+            Ptr(to=property_count).bitcast[UInt32]()[],
             p_properties,
         )
 
@@ -2524,11 +2423,10 @@ struct InstanceFunctionsV1_3(Movable):
         self.get_physical_device_sparse_image_format_properties_2(
             physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_sparse_image_format_properties_2(
-                physical_device, format_info, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_sparse_image_format_properties_2(
+            physical_device, format_info, count, list.unsafe_ptr()
+        )
         list._len = Int(count)
         return list^
 
@@ -2544,8 +2442,8 @@ struct InstanceFunctionsV1_3(Movable):
         """
         return self._v1_1.get_physical_device_external_buffer_properties(
             physical_device,
-            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo](),
-            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties](),
+            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo]()[],
+            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties]()[],
         )
 
     fn get_physical_device_external_fence_properties(
@@ -2560,8 +2458,8 @@ struct InstanceFunctionsV1_3(Movable):
         """
         return self._v1_1.get_physical_device_external_fence_properties(
             physical_device,
-            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo](),
-            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties](),
+            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo]()[],
+            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties]()[],
         )
 
     fn get_physical_device_external_semaphore_properties(
@@ -2576,8 +2474,8 @@ struct InstanceFunctionsV1_3(Movable):
         """
         return self._v1_1.get_physical_device_external_semaphore_properties(
             physical_device,
-            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo](),
-            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties](),
+            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo]()[],
+            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties]()[],
         )
 
     fn get_physical_device_tool_properties(
@@ -2591,7 +2489,7 @@ struct InstanceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
         """
         return self._v1_3.get_physical_device_tool_properties(
-            physical_device, Ptr(to=tool_count).bitcast[UInt32](), p_tool_properties
+            physical_device, Ptr(to=tool_count).bitcast[UInt32]()[], p_tool_properties
         )
 
     fn get_physical_device_tool_properties(
@@ -2608,8 +2506,8 @@ struct InstanceFunctionsV1_3(Movable):
             result = self.get_physical_device_tool_properties(
                 physical_device, count, Ptr[PhysicalDeviceToolProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_physical_device_tool_properties(
                 physical_device, count, list.unsafe_ptr()
             )
@@ -2649,7 +2547,7 @@ struct InstanceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
-            instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
+            instance, Ptr(to=physical_device_count).bitcast[UInt32]()[], p_physical_devices
         )
 
     fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
@@ -2664,8 +2562,8 @@ struct InstanceFunctionsV1_4(Movable):
             result = self.enumerate_physical_devices(
                 instance, count, Ptr[PhysicalDevice, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_physical_devices(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
@@ -2678,7 +2576,7 @@ struct InstanceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
         """
         return self._v1_0.get_physical_device_features(
-            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()[]
         )
 
     fn get_physical_device_format_properties(
@@ -2692,7 +2590,7 @@ struct InstanceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
         """
         return self._v1_0.get_physical_device_format_properties(
-            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()[]
         )
 
     fn get_physical_device_image_format_properties(
@@ -2716,7 +2614,7 @@ struct InstanceFunctionsV1_4(Movable):
             tiling,
             usage,
             flags,
-            Ptr(to=image_format_properties).bitcast[ImageFormatProperties](),
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties]()[],
         )
 
     fn get_physical_device_properties(
@@ -2727,7 +2625,7 @@ struct InstanceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
         """
         return self._v1_0.get_physical_device_properties(
-            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()[]
         )
 
     fn get_physical_device_queue_family_properties(
@@ -2742,7 +2640,7 @@ struct InstanceFunctionsV1_4(Movable):
         """
         return self._v1_0.get_physical_device_queue_family_properties(
             physical_device,
-            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32]()[],
             p_queue_family_properties,
         )
 
@@ -2758,11 +2656,8 @@ struct InstanceFunctionsV1_4(Movable):
         self.get_physical_device_queue_family_properties(
             physical_device, count, Ptr[QueueFamilyProperties, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_queue_family_properties(
-                physical_device, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_queue_family_properties(physical_device, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -2774,17 +2669,17 @@ struct InstanceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
         """
         return self._v1_0.get_physical_device_memory_properties(
-            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()[]
         )
 
-    fn get_device_proc_addr(self, device: Device, p_name: CStringSlice) -> PFN_vkVoidFunction:
+    fn get_device_proc_addr(
+        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
+    ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(
-            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
-        )
+        return self._v1_0.get_device_proc_addr(device, p_name)
 
     fn create_device(
         self,
@@ -2799,15 +2694,15 @@ struct InstanceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_device(
             physical_device,
-            Ptr(to=create_info).bitcast[DeviceCreateInfo](),
+            Ptr(to=create_info).bitcast[DeviceCreateInfo]()[],
             p_allocator,
-            Ptr(to=device).bitcast[Device](),
+            Ptr(to=device).bitcast[Device]()[],
         )
 
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: CStringSlice,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
         mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
@@ -2816,14 +2711,11 @@ struct InstanceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
-            physical_device,
-            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
-            Ptr(to=property_count).bitcast[UInt32](),
-            p_properties,
+            physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
 
@@ -2836,8 +2728,8 @@ struct InstanceFunctionsV1_4(Movable):
             result = self.enumerate_device_extension_properties(
                 physical_device, p_layer_name, count, Ptr[ExtensionProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_device_extension_properties(
                 physical_device, p_layer_name, count, list.unsafe_ptr()
             )
@@ -2855,7 +2747,7 @@ struct InstanceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
-            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
         )
 
     fn enumerate_device_layer_properties(
@@ -2872,8 +2764,8 @@ struct InstanceFunctionsV1_4(Movable):
             result = self.enumerate_device_layer_properties(
                 physical_device, count, Ptr[LayerProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_device_layer_properties(
                 physical_device, count, list.unsafe_ptr()
             )
@@ -2902,7 +2794,7 @@ struct InstanceFunctionsV1_4(Movable):
             samples,
             usage,
             tiling,
-            Ptr(to=property_count).bitcast[UInt32](),
+            Ptr(to=property_count).bitcast[UInt32]()[],
             p_properties,
         )
 
@@ -2931,11 +2823,10 @@ struct InstanceFunctionsV1_4(Movable):
             count,
             Ptr[SparseImageFormatProperties, MutAnyOrigin](),
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_sparse_image_format_properties(
-                physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_sparse_image_format_properties(
+            physical_device, format, type, samples, usage, tiling, count, list.unsafe_ptr()
+        )
         list._len = Int(count)
         return list^
 
@@ -2951,7 +2842,7 @@ struct InstanceFunctionsV1_4(Movable):
         """
         return self._v1_1.enumerate_physical_device_groups(
             instance,
-            Ptr(to=physical_device_group_count).bitcast[UInt32](),
+            Ptr(to=physical_device_group_count).bitcast[UInt32]()[],
             p_physical_device_group_properties,
         )
 
@@ -2969,8 +2860,8 @@ struct InstanceFunctionsV1_4(Movable):
             result = self.enumerate_physical_device_groups(
                 instance, count, Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.enumerate_physical_device_groups(instance, count, list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
@@ -2983,7 +2874,7 @@ struct InstanceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
         """
         return self._v1_1.get_physical_device_features_2(
-            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()[]
         )
 
     fn get_physical_device_properties_2(
@@ -2994,7 +2885,7 @@ struct InstanceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
         """
         return self._v1_1.get_physical_device_properties_2(
-            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()[]
         )
 
     fn get_physical_device_format_properties_2(
@@ -3008,7 +2899,7 @@ struct InstanceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
         """
         return self._v1_1.get_physical_device_format_properties_2(
-            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()[]
         )
 
     fn get_physical_device_image_format_properties_2(
@@ -3023,8 +2914,8 @@ struct InstanceFunctionsV1_4(Movable):
         """
         return self._v1_1.get_physical_device_image_format_properties_2(
             physical_device,
-            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2](),
-            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2](),
+            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2]()[],
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2]()[],
         )
 
     fn get_physical_device_queue_family_properties_2(
@@ -3039,7 +2930,7 @@ struct InstanceFunctionsV1_4(Movable):
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
             physical_device,
-            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32]()[],
             p_queue_family_properties,
         )
 
@@ -3055,11 +2946,10 @@ struct InstanceFunctionsV1_4(Movable):
         self.get_physical_device_queue_family_properties_2(
             physical_device, count, Ptr[QueueFamilyProperties2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_queue_family_properties_2(
-                physical_device, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_queue_family_properties_2(
+            physical_device, count, list.unsafe_ptr()
+        )
         list._len = Int(count)
         return list^
 
@@ -3073,7 +2963,7 @@ struct InstanceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
         """
         return self._v1_1.get_physical_device_memory_properties_2(
-            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()[]
         )
 
     fn get_physical_device_sparse_image_format_properties_2(
@@ -3089,8 +2979,8 @@ struct InstanceFunctionsV1_4(Movable):
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
             physical_device,
-            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2](),
-            Ptr(to=property_count).bitcast[UInt32](),
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]()[],
+            Ptr(to=property_count).bitcast[UInt32]()[],
             p_properties,
         )
 
@@ -3106,11 +2996,10 @@ struct InstanceFunctionsV1_4(Movable):
         self.get_physical_device_sparse_image_format_properties_2(
             physical_device, format_info, count, Ptr[SparseImageFormatProperties2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_physical_device_sparse_image_format_properties_2(
-                physical_device, format_info, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_physical_device_sparse_image_format_properties_2(
+            physical_device, format_info, count, list.unsafe_ptr()
+        )
         list._len = Int(count)
         return list^
 
@@ -3126,8 +3015,8 @@ struct InstanceFunctionsV1_4(Movable):
         """
         return self._v1_1.get_physical_device_external_buffer_properties(
             physical_device,
-            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo](),
-            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties](),
+            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo]()[],
+            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties]()[],
         )
 
     fn get_physical_device_external_fence_properties(
@@ -3142,8 +3031,8 @@ struct InstanceFunctionsV1_4(Movable):
         """
         return self._v1_1.get_physical_device_external_fence_properties(
             physical_device,
-            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo](),
-            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties](),
+            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo]()[],
+            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties]()[],
         )
 
     fn get_physical_device_external_semaphore_properties(
@@ -3158,8 +3047,8 @@ struct InstanceFunctionsV1_4(Movable):
         """
         return self._v1_1.get_physical_device_external_semaphore_properties(
             physical_device,
-            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo](),
-            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties](),
+            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo]()[],
+            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties]()[],
         )
 
     fn get_physical_device_tool_properties(
@@ -3173,7 +3062,7 @@ struct InstanceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
         """
         return self._v1_3.get_physical_device_tool_properties(
-            physical_device, Ptr(to=tool_count).bitcast[UInt32](), p_tool_properties
+            physical_device, Ptr(to=tool_count).bitcast[UInt32]()[], p_tool_properties
         )
 
     fn get_physical_device_tool_properties(
@@ -3190,235 +3079,13 @@ struct InstanceFunctionsV1_4(Movable):
             result = self.get_physical_device_tool_properties(
                 physical_device, count, Ptr[PhysicalDeviceToolProperties, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_physical_device_tool_properties(
                 physical_device, count, list.unsafe_ptr()
             )
         list._len = Int(count)
         return ListResult(list^, result)
-
-
-struct InstanceFunctionAdditionsV1_0(Copyable, Movable):
-    var destroy_instance: fn(
-        instance: Instance, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    )
-    var enumerate_physical_devices: fn(
-        instance: Instance,
-        pPhysicalDeviceCount: Ptr[UInt32, MutAnyOrigin],
-        pPhysicalDevices: Ptr[PhysicalDevice, MutAnyOrigin],
-    ) -> Result
-    var get_physical_device_features: fn(
-        physicalDevice: PhysicalDevice, pFeatures: Ptr[PhysicalDeviceFeatures, MutAnyOrigin]
-    )
-    var get_physical_device_format_properties: fn(
-        physicalDevice: PhysicalDevice,
-        format: Format,
-        pFormatProperties: Ptr[FormatProperties, MutAnyOrigin],
-    )
-    var get_physical_device_image_format_properties: fn(
-        physicalDevice: PhysicalDevice,
-        format: Format,
-        type: ImageType,
-        tiling: ImageTiling,
-        usage: ImageUsageFlags,
-        flags: ImageCreateFlags,
-        pImageFormatProperties: Ptr[ImageFormatProperties, MutAnyOrigin],
-    ) -> Result
-    var get_physical_device_properties: fn(
-        physicalDevice: PhysicalDevice, pProperties: Ptr[PhysicalDeviceProperties, MutAnyOrigin]
-    )
-    var get_physical_device_queue_family_properties: fn(
-        physicalDevice: PhysicalDevice,
-        pQueueFamilyPropertyCount: Ptr[UInt32, MutAnyOrigin],
-        pQueueFamilyProperties: Ptr[QueueFamilyProperties, MutAnyOrigin],
-    )
-    var get_physical_device_memory_properties: fn(
-        physicalDevice: PhysicalDevice,
-        pMemoryProperties: Ptr[PhysicalDeviceMemoryProperties, MutAnyOrigin],
-    )
-    var get_device_proc_addr: fn(
-        device: Device, pName: CStringSlice[ImmutAnyOrigin]
-    ) -> PFN_vkVoidFunction
-    var create_device: fn(
-        physicalDevice: PhysicalDevice,
-        pCreateInfo: Ptr[DeviceCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pDevice: Ptr[Device, MutAnyOrigin],
-    ) -> Result
-    var enumerate_device_extension_properties: fn(
-        physicalDevice: PhysicalDevice,
-        pLayerName: CStringSlice[ImmutAnyOrigin],
-        pPropertyCount: Ptr[UInt32, MutAnyOrigin],
-        pProperties: Ptr[ExtensionProperties, MutAnyOrigin],
-    ) -> Result
-    var enumerate_device_layer_properties: fn(
-        physicalDevice: PhysicalDevice,
-        pPropertyCount: Ptr[UInt32, MutAnyOrigin],
-        pProperties: Ptr[LayerProperties, MutAnyOrigin],
-    ) -> Result
-    var get_physical_device_sparse_image_format_properties: fn(
-        physicalDevice: PhysicalDevice,
-        format: Format,
-        type: ImageType,
-        samples: SampleCountFlagBits,
-        usage: ImageUsageFlags,
-        tiling: ImageTiling,
-        pPropertyCount: Ptr[UInt32, MutAnyOrigin],
-        pProperties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
-    )
-
-    fn __init__(out self, instance: Instance, dlhandle: OwnedDLHandle):
-        get_instance_proc_addr = dlhandle.get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
-        ]("vkGetInstanceProcAddr")
-        self.destroy_instance = Ptr(to=get_instance_proc_addr(
-            instance, "vkDestroyInstance".unsafe_ptr()
-        )).bitcast[type_of(self.destroy_instance)]()[]
-        self.enumerate_physical_devices = Ptr(to=get_instance_proc_addr(
-            instance, "vkEnumeratePhysicalDevices".unsafe_ptr()
-        )).bitcast[type_of(self.enumerate_physical_devices)]()[]
-        self.get_physical_device_features = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceFeatures".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_features)]()[]
-        self.get_physical_device_format_properties = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceFormatProperties".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_format_properties)]()[]
-        self.get_physical_device_image_format_properties = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceImageFormatProperties".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_image_format_properties)]()[]
-        self.get_physical_device_properties = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceProperties".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_properties)]()[]
-        self.get_physical_device_queue_family_properties = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceQueueFamilyProperties".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_queue_family_properties)]()[]
-        self.get_physical_device_memory_properties = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceMemoryProperties".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_memory_properties)]()[]
-        self.get_device_proc_addr = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetDeviceProcAddr".unsafe_ptr()
-        )).bitcast[type_of(self.get_device_proc_addr)]()[]
-        self.create_device = Ptr(to=get_instance_proc_addr(
-            instance, "vkCreateDevice".unsafe_ptr()
-        )).bitcast[type_of(self.create_device)]()[]
-        self.enumerate_device_extension_properties = Ptr(to=get_instance_proc_addr(
-            instance, "vkEnumerateDeviceExtensionProperties".unsafe_ptr()
-        )).bitcast[type_of(self.enumerate_device_extension_properties)]()[]
-        self.enumerate_device_layer_properties = Ptr(to=get_instance_proc_addr(
-            instance, "vkEnumerateDeviceLayerProperties".unsafe_ptr()
-        )).bitcast[type_of(self.enumerate_device_layer_properties)]()[]
-        self.get_physical_device_sparse_image_format_properties = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceSparseImageFormatProperties".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_sparse_image_format_properties)]()[]
-
-
-struct InstanceFunctionAdditionsV1_1(Copyable, Movable):
-    var enumerate_physical_device_groups: fn(
-        instance: Instance,
-        pPhysicalDeviceGroupCount: Ptr[UInt32, MutAnyOrigin],
-        pPhysicalDeviceGroupProperties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
-    ) -> Result
-    var get_physical_device_features_2: fn(
-        physicalDevice: PhysicalDevice, pFeatures: Ptr[PhysicalDeviceFeatures2, MutAnyOrigin]
-    )
-    var get_physical_device_properties_2: fn(
-        physicalDevice: PhysicalDevice, pProperties: Ptr[PhysicalDeviceProperties2, MutAnyOrigin]
-    )
-    var get_physical_device_format_properties_2: fn(
-        physicalDevice: PhysicalDevice,
-        format: Format,
-        pFormatProperties: Ptr[FormatProperties2, MutAnyOrigin],
-    )
-    var get_physical_device_image_format_properties_2: fn(
-        physicalDevice: PhysicalDevice,
-        pImageFormatInfo: Ptr[PhysicalDeviceImageFormatInfo2, ImmutAnyOrigin],
-        pImageFormatProperties: Ptr[ImageFormatProperties2, MutAnyOrigin],
-    ) -> Result
-    var get_physical_device_queue_family_properties_2: fn(
-        physicalDevice: PhysicalDevice,
-        pQueueFamilyPropertyCount: Ptr[UInt32, MutAnyOrigin],
-        pQueueFamilyProperties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
-    )
-    var get_physical_device_memory_properties_2: fn(
-        physicalDevice: PhysicalDevice,
-        pMemoryProperties: Ptr[PhysicalDeviceMemoryProperties2, MutAnyOrigin],
-    )
-    var get_physical_device_sparse_image_format_properties_2: fn(
-        physicalDevice: PhysicalDevice,
-        pFormatInfo: Ptr[PhysicalDeviceSparseImageFormatInfo2, ImmutAnyOrigin],
-        pPropertyCount: Ptr[UInt32, MutAnyOrigin],
-        pProperties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
-    )
-    var get_physical_device_external_buffer_properties: fn(
-        physicalDevice: PhysicalDevice,
-        pExternalBufferInfo: Ptr[PhysicalDeviceExternalBufferInfo, ImmutAnyOrigin],
-        pExternalBufferProperties: Ptr[ExternalBufferProperties, MutAnyOrigin],
-    )
-    var get_physical_device_external_fence_properties: fn(
-        physicalDevice: PhysicalDevice,
-        pExternalFenceInfo: Ptr[PhysicalDeviceExternalFenceInfo, ImmutAnyOrigin],
-        pExternalFenceProperties: Ptr[ExternalFenceProperties, MutAnyOrigin],
-    )
-    var get_physical_device_external_semaphore_properties: fn(
-        physicalDevice: PhysicalDevice,
-        pExternalSemaphoreInfo: Ptr[PhysicalDeviceExternalSemaphoreInfo, ImmutAnyOrigin],
-        pExternalSemaphoreProperties: Ptr[ExternalSemaphoreProperties, MutAnyOrigin],
-    )
-
-    fn __init__(out self, instance: Instance, dlhandle: OwnedDLHandle):
-        get_instance_proc_addr = dlhandle.get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
-        ]("vkGetInstanceProcAddr")
-        self.enumerate_physical_device_groups = Ptr(to=get_instance_proc_addr(
-            instance, "vkEnumeratePhysicalDeviceGroups".unsafe_ptr()
-        )).bitcast[type_of(self.enumerate_physical_device_groups)]()[]
-        self.get_physical_device_features_2 = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceFeatures2".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_features_2)]()[]
-        self.get_physical_device_properties_2 = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceProperties2".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_properties_2)]()[]
-        self.get_physical_device_format_properties_2 = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceFormatProperties2".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_format_properties_2)]()[]
-        self.get_physical_device_image_format_properties_2 = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceImageFormatProperties2".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_image_format_properties_2)]()[]
-        self.get_physical_device_queue_family_properties_2 = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceQueueFamilyProperties2".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_queue_family_properties_2)]()[]
-        self.get_physical_device_memory_properties_2 = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceMemoryProperties2".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_memory_properties_2)]()[]
-        self.get_physical_device_sparse_image_format_properties_2 = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceSparseImageFormatProperties2".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_sparse_image_format_properties_2)]()[]
-        self.get_physical_device_external_buffer_properties = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceExternalBufferProperties".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_external_buffer_properties)]()[]
-        self.get_physical_device_external_fence_properties = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceExternalFenceProperties".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_external_fence_properties)]()[]
-        self.get_physical_device_external_semaphore_properties = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceExternalSemaphoreProperties".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_external_semaphore_properties)]()[]
-
-
-struct InstanceFunctionAdditionsV1_3(Copyable, Movable):
-    var get_physical_device_tool_properties: fn(
-        physicalDevice: PhysicalDevice,
-        pToolCount: Ptr[UInt32, MutAnyOrigin],
-        pToolProperties: Ptr[PhysicalDeviceToolProperties, MutAnyOrigin],
-    ) -> Result
-
-    fn __init__(out self, instance: Instance, dlhandle: OwnedDLHandle):
-        get_instance_proc_addr = dlhandle.get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
-        ]("vkGetInstanceProcAddr")
-        self.get_physical_device_tool_properties = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceToolProperties".unsafe_ptr()
-        )).bitcast[type_of(self.get_physical_device_tool_properties)]()[]
 
 
 struct DeviceFunctionsV1_0(Movable):
@@ -3444,7 +3111,7 @@ struct DeviceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(
-            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()
+            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()[]
         )
 
     fn queue_submit(
@@ -3487,9 +3154,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.allocate_memory(
             device,
-            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo](),
+            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo]()[],
             p_allocator,
-            Ptr(to=memory).bitcast[DeviceMemory](),
+            Ptr(to=memory).bitcast[DeviceMemory]()[],
         )
 
     fn free_memory(
@@ -3523,7 +3190,7 @@ struct DeviceFunctionsV1_0(Movable):
             offset,
             size,
             flags,
-            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
@@ -3567,7 +3234,7 @@ struct DeviceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
-            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()
+            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()[]
         )
 
     fn bind_buffer_memory(
@@ -3596,7 +3263,7 @@ struct DeviceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
-            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
+            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()[]
         )
 
     fn get_image_memory_requirements(
@@ -3607,7 +3274,7 @@ struct DeviceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(
-            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
+            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()[]
         )
 
     fn get_image_sparse_memory_requirements(
@@ -3624,7 +3291,7 @@ struct DeviceFunctionsV1_0(Movable):
         return self._v1_0.get_image_sparse_memory_requirements(
             device,
             image,
-            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32]()[],
             p_sparse_memory_requirements,
         )
 
@@ -3640,9 +3307,8 @@ struct DeviceFunctionsV1_0(Movable):
         self.get_image_sparse_memory_requirements(
             device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
+        list.reserve(Int(count))
+        self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -3672,9 +3338,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_fence(
             device,
-            Ptr(to=create_info).bitcast[FenceCreateInfo](),
+            Ptr(to=create_info).bitcast[FenceCreateInfo]()[],
             p_allocator,
-            Ptr(to=fence).bitcast[Fence](),
+            Ptr(to=fence).bitcast[Fence]()[],
         )
 
     fn destroy_fence(
@@ -3729,9 +3395,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_semaphore(
             device,
-            Ptr(to=create_info).bitcast[SemaphoreCreateInfo](),
+            Ptr(to=create_info).bitcast[SemaphoreCreateInfo]()[],
             p_allocator,
-            Ptr(to=semaphore).bitcast[Semaphore](),
+            Ptr(to=semaphore).bitcast[Semaphore]()[],
         )
 
     fn destroy_semaphore(
@@ -3759,9 +3425,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_event(
             device,
-            Ptr(to=create_info).bitcast[EventCreateInfo](),
+            Ptr(to=create_info).bitcast[EventCreateInfo]()[],
             p_allocator,
-            Ptr(to=event).bitcast[Event](),
+            Ptr(to=event).bitcast[Event]()[],
         )
 
     fn destroy_event(
@@ -3807,9 +3473,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_query_pool(
             device,
-            Ptr(to=create_info).bitcast[QueryPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[QueryPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=query_pool).bitcast[QueryPool](),
+            Ptr(to=query_pool).bitcast[QueryPool]()[],
         )
 
     fn destroy_query_pool(
@@ -3856,9 +3522,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_buffer(
             device,
-            Ptr(to=create_info).bitcast[BufferCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferCreateInfo]()[],
             p_allocator,
-            Ptr(to=buffer).bitcast[Buffer](),
+            Ptr(to=buffer).bitcast[Buffer]()[],
         )
 
     fn destroy_buffer(
@@ -3883,9 +3549,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_buffer_view(
             device,
-            Ptr(to=create_info).bitcast[BufferViewCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferViewCreateInfo]()[],
             p_allocator,
-            Ptr(to=view).bitcast[BufferView](),
+            Ptr(to=view).bitcast[BufferView]()[],
         )
 
     fn destroy_buffer_view(
@@ -3913,9 +3579,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_image(
             device,
-            Ptr(to=create_info).bitcast[ImageCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageCreateInfo]()[],
             p_allocator,
-            Ptr(to=image).bitcast[Image](),
+            Ptr(to=image).bitcast[Image]()[],
         )
 
     fn destroy_image(
@@ -3941,8 +3607,8 @@ struct DeviceFunctionsV1_0(Movable):
         return self._v1_0.get_image_subresource_layout(
             device,
             image,
-            Ptr(to=subresource).bitcast[ImageSubresource](),
-            Ptr(to=layout).bitcast[SubresourceLayout](),
+            Ptr(to=subresource).bitcast[ImageSubresource]()[],
+            Ptr(to=layout).bitcast[SubresourceLayout]()[],
         )
 
     fn create_image_view(
@@ -3958,9 +3624,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_image_view(
             device,
-            Ptr(to=create_info).bitcast[ImageViewCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageViewCreateInfo]()[],
             p_allocator,
-            Ptr(to=view).bitcast[ImageView](),
+            Ptr(to=view).bitcast[ImageView]()[],
         )
 
     fn destroy_image_view(
@@ -3988,9 +3654,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_shader_module(
             device,
-            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo](),
+            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo]()[],
             p_allocator,
-            Ptr(to=shader_module).bitcast[ShaderModule](),
+            Ptr(to=shader_module).bitcast[ShaderModule]()[],
         )
 
     fn destroy_shader_module(
@@ -4018,9 +3684,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_pipeline_cache(
             device,
-            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo]()[],
             p_allocator,
-            Ptr(to=pipeline_cache).bitcast[PipelineCache](),
+            Ptr(to=pipeline_cache).bitcast[PipelineCache]()[],
         )
 
     fn destroy_pipeline_cache(
@@ -4047,7 +3713,7 @@ struct DeviceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         return self._v1_0.get_pipeline_cache_data(
-            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
+            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt]()[], p_data
         )
 
     fn get_pipeline_cache_data(
@@ -4064,8 +3730,8 @@ struct DeviceFunctionsV1_0(Movable):
             result = self.get_pipeline_cache_data(
                 device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_pipeline_cache_data(
                 device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
             )
@@ -4144,9 +3810,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_pipeline_layout(
             device,
-            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo]()[],
             p_allocator,
-            Ptr(to=pipeline_layout).bitcast[PipelineLayout](),
+            Ptr(to=pipeline_layout).bitcast[PipelineLayout]()[],
         )
 
     fn destroy_pipeline_layout(
@@ -4174,9 +3840,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_sampler(
             device,
-            Ptr(to=create_info).bitcast[SamplerCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerCreateInfo]()[],
             p_allocator,
-            Ptr(to=sampler).bitcast[Sampler](),
+            Ptr(to=sampler).bitcast[Sampler]()[],
         )
 
     fn destroy_sampler(
@@ -4204,9 +3870,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_descriptor_set_layout(
             device,
-            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo]()[],
             p_allocator,
-            Ptr(to=set_layout).bitcast[DescriptorSetLayout](),
+            Ptr(to=set_layout).bitcast[DescriptorSetLayout]()[],
         )
 
     fn destroy_descriptor_set_layout(
@@ -4234,9 +3900,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_descriptor_pool(
             device,
-            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=descriptor_pool).bitcast[DescriptorPool](),
+            Ptr(to=descriptor_pool).bitcast[DescriptorPool]()[],
         )
 
     fn destroy_descriptor_pool(
@@ -4271,7 +3937,7 @@ struct DeviceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
         return self._v1_0.allocate_descriptor_sets(
-            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
+            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo]()[], p_descriptor_sets
         )
 
     fn free_descriptor_sets(
@@ -4322,9 +3988,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_framebuffer(
             device,
-            Ptr(to=create_info).bitcast[FramebufferCreateInfo](),
+            Ptr(to=create_info).bitcast[FramebufferCreateInfo]()[],
             p_allocator,
-            Ptr(to=framebuffer).bitcast[Framebuffer](),
+            Ptr(to=framebuffer).bitcast[Framebuffer]()[],
         )
 
     fn destroy_framebuffer(
@@ -4352,9 +4018,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_render_pass(
             device,
-            Ptr(to=create_info).bitcast[RenderPassCreateInfo](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo]()[],
             p_allocator,
-            Ptr(to=render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass]()[],
         )
 
     fn destroy_render_pass(
@@ -4377,7 +4043,7 @@ struct DeviceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(
-            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()
+            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()[]
         )
 
     fn create_command_pool(
@@ -4393,9 +4059,9 @@ struct DeviceFunctionsV1_0(Movable):
         """
         return self._v1_0.create_command_pool(
             device,
-            Ptr(to=create_info).bitcast[CommandPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[CommandPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=command_pool).bitcast[CommandPool](),
+            Ptr(to=command_pool).bitcast[CommandPool]()[],
         )
 
     fn destroy_command_pool(
@@ -4430,7 +4096,7 @@ struct DeviceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
         return self._v1_0.allocate_command_buffers(
-            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
+            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo]()[], p_command_buffers
         )
 
     fn free_command_buffers(
@@ -4456,7 +4122,7 @@ struct DeviceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(
-            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()
+            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()[]
         )
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
@@ -4869,7 +4535,7 @@ struct DeviceFunctionsV1_0(Movable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=color).bitcast[ClearColorValue](),
+            Ptr(to=color).bitcast[ClearColorValue]()[],
             range_count,
             p_ranges,
         )
@@ -4891,7 +4557,7 @@ struct DeviceFunctionsV1_0(Movable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue](),
+            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue]()[],
             range_count,
             p_ranges,
         )
@@ -5047,9 +4713,7 @@ struct DeviceFunctionsV1_0(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetQueryPool.html
         """
-        return self._v1_0.cmd_reset_query_pool(
-            command_buffer, query_pool, first_query, query_count
-        )
+        return self._v1_0.cmd_reset_query_pool(command_buffer, query_pool, first_query, query_count)
 
     fn cmd_write_timestamp(
         self,
@@ -5118,7 +4782,7 @@ struct DeviceFunctionsV1_0(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
         return self._v1_0.cmd_begin_render_pass(
-            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](), contents
+            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo]()[], contents
         )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
@@ -5175,7 +4839,7 @@ struct DeviceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(
-            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()
+            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()[]
         )
 
     fn queue_submit(
@@ -5218,9 +4882,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.allocate_memory(
             device,
-            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo](),
+            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo]()[],
             p_allocator,
-            Ptr(to=memory).bitcast[DeviceMemory](),
+            Ptr(to=memory).bitcast[DeviceMemory]()[],
         )
 
     fn free_memory(
@@ -5254,7 +4918,7 @@ struct DeviceFunctionsV1_1(Movable):
             offset,
             size,
             flags,
-            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
@@ -5298,7 +4962,7 @@ struct DeviceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
-            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()
+            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()[]
         )
 
     fn bind_buffer_memory(
@@ -5327,7 +4991,7 @@ struct DeviceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
-            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
+            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()[]
         )
 
     fn get_image_memory_requirements(
@@ -5338,7 +5002,7 @@ struct DeviceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(
-            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
+            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()[]
         )
 
     fn get_image_sparse_memory_requirements(
@@ -5355,7 +5019,7 @@ struct DeviceFunctionsV1_1(Movable):
         return self._v1_0.get_image_sparse_memory_requirements(
             device,
             image,
-            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32]()[],
             p_sparse_memory_requirements,
         )
 
@@ -5371,9 +5035,8 @@ struct DeviceFunctionsV1_1(Movable):
         self.get_image_sparse_memory_requirements(
             device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
+        list.reserve(Int(count))
+        self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -5403,9 +5066,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_fence(
             device,
-            Ptr(to=create_info).bitcast[FenceCreateInfo](),
+            Ptr(to=create_info).bitcast[FenceCreateInfo]()[],
             p_allocator,
-            Ptr(to=fence).bitcast[Fence](),
+            Ptr(to=fence).bitcast[Fence]()[],
         )
 
     fn destroy_fence(
@@ -5460,9 +5123,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_semaphore(
             device,
-            Ptr(to=create_info).bitcast[SemaphoreCreateInfo](),
+            Ptr(to=create_info).bitcast[SemaphoreCreateInfo]()[],
             p_allocator,
-            Ptr(to=semaphore).bitcast[Semaphore](),
+            Ptr(to=semaphore).bitcast[Semaphore]()[],
         )
 
     fn destroy_semaphore(
@@ -5490,9 +5153,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_event(
             device,
-            Ptr(to=create_info).bitcast[EventCreateInfo](),
+            Ptr(to=create_info).bitcast[EventCreateInfo]()[],
             p_allocator,
-            Ptr(to=event).bitcast[Event](),
+            Ptr(to=event).bitcast[Event]()[],
         )
 
     fn destroy_event(
@@ -5538,9 +5201,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_query_pool(
             device,
-            Ptr(to=create_info).bitcast[QueryPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[QueryPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=query_pool).bitcast[QueryPool](),
+            Ptr(to=query_pool).bitcast[QueryPool]()[],
         )
 
     fn destroy_query_pool(
@@ -5587,9 +5250,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_buffer(
             device,
-            Ptr(to=create_info).bitcast[BufferCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferCreateInfo]()[],
             p_allocator,
-            Ptr(to=buffer).bitcast[Buffer](),
+            Ptr(to=buffer).bitcast[Buffer]()[],
         )
 
     fn destroy_buffer(
@@ -5614,9 +5277,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_buffer_view(
             device,
-            Ptr(to=create_info).bitcast[BufferViewCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferViewCreateInfo]()[],
             p_allocator,
-            Ptr(to=view).bitcast[BufferView](),
+            Ptr(to=view).bitcast[BufferView]()[],
         )
 
     fn destroy_buffer_view(
@@ -5644,9 +5307,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_image(
             device,
-            Ptr(to=create_info).bitcast[ImageCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageCreateInfo]()[],
             p_allocator,
-            Ptr(to=image).bitcast[Image](),
+            Ptr(to=image).bitcast[Image]()[],
         )
 
     fn destroy_image(
@@ -5672,8 +5335,8 @@ struct DeviceFunctionsV1_1(Movable):
         return self._v1_0.get_image_subresource_layout(
             device,
             image,
-            Ptr(to=subresource).bitcast[ImageSubresource](),
-            Ptr(to=layout).bitcast[SubresourceLayout](),
+            Ptr(to=subresource).bitcast[ImageSubresource]()[],
+            Ptr(to=layout).bitcast[SubresourceLayout]()[],
         )
 
     fn create_image_view(
@@ -5689,9 +5352,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_image_view(
             device,
-            Ptr(to=create_info).bitcast[ImageViewCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageViewCreateInfo]()[],
             p_allocator,
-            Ptr(to=view).bitcast[ImageView](),
+            Ptr(to=view).bitcast[ImageView]()[],
         )
 
     fn destroy_image_view(
@@ -5719,9 +5382,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_shader_module(
             device,
-            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo](),
+            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo]()[],
             p_allocator,
-            Ptr(to=shader_module).bitcast[ShaderModule](),
+            Ptr(to=shader_module).bitcast[ShaderModule]()[],
         )
 
     fn destroy_shader_module(
@@ -5749,9 +5412,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_pipeline_cache(
             device,
-            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo]()[],
             p_allocator,
-            Ptr(to=pipeline_cache).bitcast[PipelineCache](),
+            Ptr(to=pipeline_cache).bitcast[PipelineCache]()[],
         )
 
     fn destroy_pipeline_cache(
@@ -5778,7 +5441,7 @@ struct DeviceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         return self._v1_0.get_pipeline_cache_data(
-            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
+            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt]()[], p_data
         )
 
     fn get_pipeline_cache_data(
@@ -5795,8 +5458,8 @@ struct DeviceFunctionsV1_1(Movable):
             result = self.get_pipeline_cache_data(
                 device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_pipeline_cache_data(
                 device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
             )
@@ -5875,9 +5538,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_pipeline_layout(
             device,
-            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo]()[],
             p_allocator,
-            Ptr(to=pipeline_layout).bitcast[PipelineLayout](),
+            Ptr(to=pipeline_layout).bitcast[PipelineLayout]()[],
         )
 
     fn destroy_pipeline_layout(
@@ -5905,9 +5568,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_sampler(
             device,
-            Ptr(to=create_info).bitcast[SamplerCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerCreateInfo]()[],
             p_allocator,
-            Ptr(to=sampler).bitcast[Sampler](),
+            Ptr(to=sampler).bitcast[Sampler]()[],
         )
 
     fn destroy_sampler(
@@ -5935,9 +5598,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_descriptor_set_layout(
             device,
-            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo]()[],
             p_allocator,
-            Ptr(to=set_layout).bitcast[DescriptorSetLayout](),
+            Ptr(to=set_layout).bitcast[DescriptorSetLayout]()[],
         )
 
     fn destroy_descriptor_set_layout(
@@ -5965,9 +5628,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_descriptor_pool(
             device,
-            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=descriptor_pool).bitcast[DescriptorPool](),
+            Ptr(to=descriptor_pool).bitcast[DescriptorPool]()[],
         )
 
     fn destroy_descriptor_pool(
@@ -6002,7 +5665,7 @@ struct DeviceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
         return self._v1_0.allocate_descriptor_sets(
-            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
+            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo]()[], p_descriptor_sets
         )
 
     fn free_descriptor_sets(
@@ -6053,9 +5716,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_framebuffer(
             device,
-            Ptr(to=create_info).bitcast[FramebufferCreateInfo](),
+            Ptr(to=create_info).bitcast[FramebufferCreateInfo]()[],
             p_allocator,
-            Ptr(to=framebuffer).bitcast[Framebuffer](),
+            Ptr(to=framebuffer).bitcast[Framebuffer]()[],
         )
 
     fn destroy_framebuffer(
@@ -6083,9 +5746,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_render_pass(
             device,
-            Ptr(to=create_info).bitcast[RenderPassCreateInfo](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo]()[],
             p_allocator,
-            Ptr(to=render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass]()[],
         )
 
     fn destroy_render_pass(
@@ -6108,7 +5771,7 @@ struct DeviceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(
-            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()
+            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()[]
         )
 
     fn create_command_pool(
@@ -6124,9 +5787,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_0.create_command_pool(
             device,
-            Ptr(to=create_info).bitcast[CommandPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[CommandPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=command_pool).bitcast[CommandPool](),
+            Ptr(to=command_pool).bitcast[CommandPool]()[],
         )
 
     fn destroy_command_pool(
@@ -6161,7 +5824,7 @@ struct DeviceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
         return self._v1_0.allocate_command_buffers(
-            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
+            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo]()[], p_command_buffers
         )
 
     fn free_command_buffers(
@@ -6187,7 +5850,7 @@ struct DeviceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(
-            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()
+            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()[]
         )
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
@@ -6600,7 +6263,7 @@ struct DeviceFunctionsV1_1(Movable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=color).bitcast[ClearColorValue](),
+            Ptr(to=color).bitcast[ClearColorValue]()[],
             range_count,
             p_ranges,
         )
@@ -6622,7 +6285,7 @@ struct DeviceFunctionsV1_1(Movable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue](),
+            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue]()[],
             range_count,
             p_ranges,
         )
@@ -6778,9 +6441,7 @@ struct DeviceFunctionsV1_1(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetQueryPool.html
         """
-        return self._v1_0.cmd_reset_query_pool(
-            command_buffer, query_pool, first_query, query_count
-        )
+        return self._v1_0.cmd_reset_query_pool(command_buffer, query_pool, first_query, query_count)
 
     fn cmd_write_timestamp(
         self,
@@ -6849,7 +6510,7 @@ struct DeviceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
         return self._v1_0.cmd_begin_render_pass(
-            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](), contents
+            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo]()[], contents
         )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
@@ -6921,7 +6582,7 @@ struct DeviceFunctionsV1_1(Movable):
             heap_index,
             local_device_index,
             remote_device_index,
-            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
+            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags]()[],
         )
 
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
@@ -6967,8 +6628,8 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_1.get_image_memory_requirements_2(
             device,
-            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn get_buffer_memory_requirements_2(
@@ -6983,8 +6644,8 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_1.get_buffer_memory_requirements_2(
             device,
-            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn get_image_sparse_memory_requirements_2(
@@ -7000,8 +6661,8 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
             device,
-            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2](),
-            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]()[],
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32]()[],
             p_sparse_memory_requirements,
         )
 
@@ -7017,9 +6678,8 @@ struct DeviceFunctionsV1_1(Movable):
         self.get_image_sparse_memory_requirements_2(
             device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
+        list.reserve(Int(count))
+        self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -7038,7 +6698,9 @@ struct DeviceFunctionsV1_1(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
         """
         return self._v1_1.get_device_queue_2(
-            device, Ptr(to=queue_info).bitcast[DeviceQueueInfo2](), Ptr(to=queue).bitcast[Queue]()
+            device,
+            Ptr(to=queue_info).bitcast[DeviceQueueInfo2]()[],
+            Ptr(to=queue).bitcast[Queue]()[],
         )
 
     fn create_sampler_ycbcr_conversion(
@@ -7054,9 +6716,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
             device,
-            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo]()[],
             p_allocator,
-            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
+            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion]()[],
         )
 
     fn destroy_sampler_ycbcr_conversion(
@@ -7084,9 +6746,9 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_1.create_descriptor_update_template(
             device,
-            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo]()[],
             p_allocator,
-            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
+            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate]()[],
         )
 
     fn destroy_descriptor_update_template(
@@ -7130,8 +6792,8 @@ struct DeviceFunctionsV1_1(Movable):
         """
         return self._v1_1.get_descriptor_set_layout_support(
             device,
-            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
-            Ptr(to=support).bitcast[DescriptorSetLayoutSupport](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo]()[],
+            Ptr(to=support).bitcast[DescriptorSetLayoutSupport]()[],
         )
 
 
@@ -7162,7 +6824,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(
-            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()
+            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()[]
         )
 
     fn queue_submit(
@@ -7205,9 +6867,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.allocate_memory(
             device,
-            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo](),
+            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo]()[],
             p_allocator,
-            Ptr(to=memory).bitcast[DeviceMemory](),
+            Ptr(to=memory).bitcast[DeviceMemory]()[],
         )
 
     fn free_memory(
@@ -7241,7 +6903,7 @@ struct DeviceFunctionsV1_2(Movable):
             offset,
             size,
             flags,
-            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
@@ -7285,7 +6947,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
-            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()
+            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()[]
         )
 
     fn bind_buffer_memory(
@@ -7314,7 +6976,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
-            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
+            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()[]
         )
 
     fn get_image_memory_requirements(
@@ -7325,7 +6987,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(
-            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
+            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()[]
         )
 
     fn get_image_sparse_memory_requirements(
@@ -7342,7 +7004,7 @@ struct DeviceFunctionsV1_2(Movable):
         return self._v1_0.get_image_sparse_memory_requirements(
             device,
             image,
-            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32]()[],
             p_sparse_memory_requirements,
         )
 
@@ -7358,9 +7020,8 @@ struct DeviceFunctionsV1_2(Movable):
         self.get_image_sparse_memory_requirements(
             device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
+        list.reserve(Int(count))
+        self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -7390,9 +7051,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_fence(
             device,
-            Ptr(to=create_info).bitcast[FenceCreateInfo](),
+            Ptr(to=create_info).bitcast[FenceCreateInfo]()[],
             p_allocator,
-            Ptr(to=fence).bitcast[Fence](),
+            Ptr(to=fence).bitcast[Fence]()[],
         )
 
     fn destroy_fence(
@@ -7447,9 +7108,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_semaphore(
             device,
-            Ptr(to=create_info).bitcast[SemaphoreCreateInfo](),
+            Ptr(to=create_info).bitcast[SemaphoreCreateInfo]()[],
             p_allocator,
-            Ptr(to=semaphore).bitcast[Semaphore](),
+            Ptr(to=semaphore).bitcast[Semaphore]()[],
         )
 
     fn destroy_semaphore(
@@ -7477,9 +7138,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_event(
             device,
-            Ptr(to=create_info).bitcast[EventCreateInfo](),
+            Ptr(to=create_info).bitcast[EventCreateInfo]()[],
             p_allocator,
-            Ptr(to=event).bitcast[Event](),
+            Ptr(to=event).bitcast[Event]()[],
         )
 
     fn destroy_event(
@@ -7525,9 +7186,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_query_pool(
             device,
-            Ptr(to=create_info).bitcast[QueryPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[QueryPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=query_pool).bitcast[QueryPool](),
+            Ptr(to=query_pool).bitcast[QueryPool]()[],
         )
 
     fn destroy_query_pool(
@@ -7574,9 +7235,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_buffer(
             device,
-            Ptr(to=create_info).bitcast[BufferCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferCreateInfo]()[],
             p_allocator,
-            Ptr(to=buffer).bitcast[Buffer](),
+            Ptr(to=buffer).bitcast[Buffer]()[],
         )
 
     fn destroy_buffer(
@@ -7601,9 +7262,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_buffer_view(
             device,
-            Ptr(to=create_info).bitcast[BufferViewCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferViewCreateInfo]()[],
             p_allocator,
-            Ptr(to=view).bitcast[BufferView](),
+            Ptr(to=view).bitcast[BufferView]()[],
         )
 
     fn destroy_buffer_view(
@@ -7631,9 +7292,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_image(
             device,
-            Ptr(to=create_info).bitcast[ImageCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageCreateInfo]()[],
             p_allocator,
-            Ptr(to=image).bitcast[Image](),
+            Ptr(to=image).bitcast[Image]()[],
         )
 
     fn destroy_image(
@@ -7659,8 +7320,8 @@ struct DeviceFunctionsV1_2(Movable):
         return self._v1_0.get_image_subresource_layout(
             device,
             image,
-            Ptr(to=subresource).bitcast[ImageSubresource](),
-            Ptr(to=layout).bitcast[SubresourceLayout](),
+            Ptr(to=subresource).bitcast[ImageSubresource]()[],
+            Ptr(to=layout).bitcast[SubresourceLayout]()[],
         )
 
     fn create_image_view(
@@ -7676,9 +7337,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_image_view(
             device,
-            Ptr(to=create_info).bitcast[ImageViewCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageViewCreateInfo]()[],
             p_allocator,
-            Ptr(to=view).bitcast[ImageView](),
+            Ptr(to=view).bitcast[ImageView]()[],
         )
 
     fn destroy_image_view(
@@ -7706,9 +7367,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_shader_module(
             device,
-            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo](),
+            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo]()[],
             p_allocator,
-            Ptr(to=shader_module).bitcast[ShaderModule](),
+            Ptr(to=shader_module).bitcast[ShaderModule]()[],
         )
 
     fn destroy_shader_module(
@@ -7736,9 +7397,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_pipeline_cache(
             device,
-            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo]()[],
             p_allocator,
-            Ptr(to=pipeline_cache).bitcast[PipelineCache](),
+            Ptr(to=pipeline_cache).bitcast[PipelineCache]()[],
         )
 
     fn destroy_pipeline_cache(
@@ -7765,7 +7426,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         return self._v1_0.get_pipeline_cache_data(
-            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
+            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt]()[], p_data
         )
 
     fn get_pipeline_cache_data(
@@ -7782,8 +7443,8 @@ struct DeviceFunctionsV1_2(Movable):
             result = self.get_pipeline_cache_data(
                 device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_pipeline_cache_data(
                 device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
             )
@@ -7862,9 +7523,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_pipeline_layout(
             device,
-            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo]()[],
             p_allocator,
-            Ptr(to=pipeline_layout).bitcast[PipelineLayout](),
+            Ptr(to=pipeline_layout).bitcast[PipelineLayout]()[],
         )
 
     fn destroy_pipeline_layout(
@@ -7892,9 +7553,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_sampler(
             device,
-            Ptr(to=create_info).bitcast[SamplerCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerCreateInfo]()[],
             p_allocator,
-            Ptr(to=sampler).bitcast[Sampler](),
+            Ptr(to=sampler).bitcast[Sampler]()[],
         )
 
     fn destroy_sampler(
@@ -7922,9 +7583,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_descriptor_set_layout(
             device,
-            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo]()[],
             p_allocator,
-            Ptr(to=set_layout).bitcast[DescriptorSetLayout](),
+            Ptr(to=set_layout).bitcast[DescriptorSetLayout]()[],
         )
 
     fn destroy_descriptor_set_layout(
@@ -7952,9 +7613,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_descriptor_pool(
             device,
-            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=descriptor_pool).bitcast[DescriptorPool](),
+            Ptr(to=descriptor_pool).bitcast[DescriptorPool]()[],
         )
 
     fn destroy_descriptor_pool(
@@ -7989,7 +7650,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
         return self._v1_0.allocate_descriptor_sets(
-            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
+            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo]()[], p_descriptor_sets
         )
 
     fn free_descriptor_sets(
@@ -8040,9 +7701,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_framebuffer(
             device,
-            Ptr(to=create_info).bitcast[FramebufferCreateInfo](),
+            Ptr(to=create_info).bitcast[FramebufferCreateInfo]()[],
             p_allocator,
-            Ptr(to=framebuffer).bitcast[Framebuffer](),
+            Ptr(to=framebuffer).bitcast[Framebuffer]()[],
         )
 
     fn destroy_framebuffer(
@@ -8070,9 +7731,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_render_pass(
             device,
-            Ptr(to=create_info).bitcast[RenderPassCreateInfo](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo]()[],
             p_allocator,
-            Ptr(to=render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass]()[],
         )
 
     fn destroy_render_pass(
@@ -8095,7 +7756,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(
-            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()
+            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()[]
         )
 
     fn create_command_pool(
@@ -8111,9 +7772,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_0.create_command_pool(
             device,
-            Ptr(to=create_info).bitcast[CommandPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[CommandPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=command_pool).bitcast[CommandPool](),
+            Ptr(to=command_pool).bitcast[CommandPool]()[],
         )
 
     fn destroy_command_pool(
@@ -8148,7 +7809,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
         return self._v1_0.allocate_command_buffers(
-            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
+            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo]()[], p_command_buffers
         )
 
     fn free_command_buffers(
@@ -8174,7 +7835,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(
-            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()
+            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()[]
         )
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
@@ -8587,7 +8248,7 @@ struct DeviceFunctionsV1_2(Movable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=color).bitcast[ClearColorValue](),
+            Ptr(to=color).bitcast[ClearColorValue]()[],
             range_count,
             p_ranges,
         )
@@ -8609,7 +8270,7 @@ struct DeviceFunctionsV1_2(Movable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue](),
+            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue]()[],
             range_count,
             p_ranges,
         )
@@ -8765,9 +8426,7 @@ struct DeviceFunctionsV1_2(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetQueryPool.html
         """
-        return self._v1_0.cmd_reset_query_pool(
-            command_buffer, query_pool, first_query, query_count
-        )
+        return self._v1_0.cmd_reset_query_pool(command_buffer, query_pool, first_query, query_count)
 
     fn cmd_write_timestamp(
         self,
@@ -8836,7 +8495,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
         return self._v1_0.cmd_begin_render_pass(
-            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](), contents
+            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo]()[], contents
         )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
@@ -8908,7 +8567,7 @@ struct DeviceFunctionsV1_2(Movable):
             heap_index,
             local_device_index,
             remote_device_index,
-            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
+            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags]()[],
         )
 
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
@@ -8954,8 +8613,8 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_1.get_image_memory_requirements_2(
             device,
-            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn get_buffer_memory_requirements_2(
@@ -8970,8 +8629,8 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_1.get_buffer_memory_requirements_2(
             device,
-            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn get_image_sparse_memory_requirements_2(
@@ -8987,8 +8646,8 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
             device,
-            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2](),
-            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]()[],
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32]()[],
             p_sparse_memory_requirements,
         )
 
@@ -9004,9 +8663,8 @@ struct DeviceFunctionsV1_2(Movable):
         self.get_image_sparse_memory_requirements_2(
             device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
+        list.reserve(Int(count))
+        self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -9025,7 +8683,9 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
         """
         return self._v1_1.get_device_queue_2(
-            device, Ptr(to=queue_info).bitcast[DeviceQueueInfo2](), Ptr(to=queue).bitcast[Queue]()
+            device,
+            Ptr(to=queue_info).bitcast[DeviceQueueInfo2]()[],
+            Ptr(to=queue).bitcast[Queue]()[],
         )
 
     fn create_sampler_ycbcr_conversion(
@@ -9041,9 +8701,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
             device,
-            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo]()[],
             p_allocator,
-            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
+            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion]()[],
         )
 
     fn destroy_sampler_ycbcr_conversion(
@@ -9071,9 +8731,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_1.create_descriptor_update_template(
             device,
-            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo]()[],
             p_allocator,
-            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
+            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate]()[],
         )
 
     fn destroy_descriptor_update_template(
@@ -9117,8 +8777,8 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_1.get_descriptor_set_layout_support(
             device,
-            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
-            Ptr(to=support).bitcast[DescriptorSetLayoutSupport](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo]()[],
+            Ptr(to=support).bitcast[DescriptorSetLayoutSupport]()[],
         )
 
     fn cmd_draw_indirect_count(
@@ -9182,9 +8842,9 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_2.create_render_pass_2(
             device,
-            Ptr(to=create_info).bitcast[RenderPassCreateInfo2](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo2]()[],
             p_allocator,
-            Ptr(to=render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass]()[],
         )
 
     fn cmd_begin_render_pass_2(
@@ -9199,8 +8859,8 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_2.cmd_begin_render_pass_2(
             command_buffer,
-            Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](),
-            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
+            Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo]()[],
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo]()[],
         )
 
     fn cmd_next_subpass_2(
@@ -9215,19 +8875,17 @@ struct DeviceFunctionsV1_2(Movable):
         """
         return self._v1_2.cmd_next_subpass_2(
             command_buffer,
-            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
-            Ptr(to=subpass_end_info).bitcast[SubpassEndInfo](),
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo]()[],
+            Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()[],
         )
 
-    fn cmd_end_render_pass_2(
-        self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo
-    ):
+    fn cmd_end_render_pass_2(self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass2.html
         """
         return self._v1_2.cmd_end_render_pass_2(
-            command_buffer, Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()
+            command_buffer, Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()[]
         )
 
     fn reset_query_pool(
@@ -9247,7 +8905,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreCounterValue.html
         """
         return self._v1_2.get_semaphore_counter_value(
-            device, semaphore, Ptr(to=value).bitcast[UInt64]()
+            device, semaphore, Ptr(to=value).bitcast[UInt64]()[]
         )
 
     fn wait_semaphores(
@@ -9258,7 +8916,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitSemaphores.html
         """
         return self._v1_2.wait_semaphores(
-            device, Ptr(to=wait_info).bitcast[SemaphoreWaitInfo](), timeout
+            device, Ptr(to=wait_info).bitcast[SemaphoreWaitInfo]()[], timeout
         )
 
     fn signal_semaphore(self, device: Device, signal_info: SemaphoreSignalInfo) -> Result:
@@ -9267,7 +8925,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSignalSemaphore.html
         """
         return self._v1_2.signal_semaphore(
-            device, Ptr(to=signal_info).bitcast[SemaphoreSignalInfo]()
+            device, Ptr(to=signal_info).bitcast[SemaphoreSignalInfo]()[]
         )
 
     fn get_buffer_device_address(
@@ -9278,7 +8936,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
         return self._v1_2.get_buffer_device_address(
-            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
+            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()[]
         )
 
     fn get_buffer_opaque_capture_address(
@@ -9289,7 +8947,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureAddress.html
         """
         return self._v1_2.get_buffer_opaque_capture_address(
-            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
+            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()[]
         )
 
     fn get_device_memory_opaque_capture_address(
@@ -9300,7 +8958,7 @@ struct DeviceFunctionsV1_2(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryOpaqueCaptureAddress.html
         """
         return self._v1_2.get_device_memory_opaque_capture_address(
-            device, Ptr(to=info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()
+            device, Ptr(to=info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()[]
         )
 
 
@@ -9333,7 +8991,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(
-            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()
+            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()[]
         )
 
     fn queue_submit(
@@ -9376,9 +9034,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.allocate_memory(
             device,
-            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo](),
+            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo]()[],
             p_allocator,
-            Ptr(to=memory).bitcast[DeviceMemory](),
+            Ptr(to=memory).bitcast[DeviceMemory]()[],
         )
 
     fn free_memory(
@@ -9412,7 +9070,7 @@ struct DeviceFunctionsV1_3(Movable):
             offset,
             size,
             flags,
-            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
@@ -9456,7 +9114,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
-            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()
+            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()[]
         )
 
     fn bind_buffer_memory(
@@ -9485,7 +9143,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
-            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
+            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()[]
         )
 
     fn get_image_memory_requirements(
@@ -9496,7 +9154,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(
-            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
+            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()[]
         )
 
     fn get_image_sparse_memory_requirements(
@@ -9513,7 +9171,7 @@ struct DeviceFunctionsV1_3(Movable):
         return self._v1_0.get_image_sparse_memory_requirements(
             device,
             image,
-            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32]()[],
             p_sparse_memory_requirements,
         )
 
@@ -9529,9 +9187,8 @@ struct DeviceFunctionsV1_3(Movable):
         self.get_image_sparse_memory_requirements(
             device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
+        list.reserve(Int(count))
+        self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -9561,9 +9218,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_fence(
             device,
-            Ptr(to=create_info).bitcast[FenceCreateInfo](),
+            Ptr(to=create_info).bitcast[FenceCreateInfo]()[],
             p_allocator,
-            Ptr(to=fence).bitcast[Fence](),
+            Ptr(to=fence).bitcast[Fence]()[],
         )
 
     fn destroy_fence(
@@ -9618,9 +9275,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_semaphore(
             device,
-            Ptr(to=create_info).bitcast[SemaphoreCreateInfo](),
+            Ptr(to=create_info).bitcast[SemaphoreCreateInfo]()[],
             p_allocator,
-            Ptr(to=semaphore).bitcast[Semaphore](),
+            Ptr(to=semaphore).bitcast[Semaphore]()[],
         )
 
     fn destroy_semaphore(
@@ -9648,9 +9305,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_event(
             device,
-            Ptr(to=create_info).bitcast[EventCreateInfo](),
+            Ptr(to=create_info).bitcast[EventCreateInfo]()[],
             p_allocator,
-            Ptr(to=event).bitcast[Event](),
+            Ptr(to=event).bitcast[Event]()[],
         )
 
     fn destroy_event(
@@ -9696,9 +9353,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_query_pool(
             device,
-            Ptr(to=create_info).bitcast[QueryPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[QueryPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=query_pool).bitcast[QueryPool](),
+            Ptr(to=query_pool).bitcast[QueryPool]()[],
         )
 
     fn destroy_query_pool(
@@ -9745,9 +9402,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_buffer(
             device,
-            Ptr(to=create_info).bitcast[BufferCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferCreateInfo]()[],
             p_allocator,
-            Ptr(to=buffer).bitcast[Buffer](),
+            Ptr(to=buffer).bitcast[Buffer]()[],
         )
 
     fn destroy_buffer(
@@ -9772,9 +9429,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_buffer_view(
             device,
-            Ptr(to=create_info).bitcast[BufferViewCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferViewCreateInfo]()[],
             p_allocator,
-            Ptr(to=view).bitcast[BufferView](),
+            Ptr(to=view).bitcast[BufferView]()[],
         )
 
     fn destroy_buffer_view(
@@ -9802,9 +9459,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_image(
             device,
-            Ptr(to=create_info).bitcast[ImageCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageCreateInfo]()[],
             p_allocator,
-            Ptr(to=image).bitcast[Image](),
+            Ptr(to=image).bitcast[Image]()[],
         )
 
     fn destroy_image(
@@ -9830,8 +9487,8 @@ struct DeviceFunctionsV1_3(Movable):
         return self._v1_0.get_image_subresource_layout(
             device,
             image,
-            Ptr(to=subresource).bitcast[ImageSubresource](),
-            Ptr(to=layout).bitcast[SubresourceLayout](),
+            Ptr(to=subresource).bitcast[ImageSubresource]()[],
+            Ptr(to=layout).bitcast[SubresourceLayout]()[],
         )
 
     fn create_image_view(
@@ -9847,9 +9504,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_image_view(
             device,
-            Ptr(to=create_info).bitcast[ImageViewCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageViewCreateInfo]()[],
             p_allocator,
-            Ptr(to=view).bitcast[ImageView](),
+            Ptr(to=view).bitcast[ImageView]()[],
         )
 
     fn destroy_image_view(
@@ -9877,9 +9534,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_shader_module(
             device,
-            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo](),
+            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo]()[],
             p_allocator,
-            Ptr(to=shader_module).bitcast[ShaderModule](),
+            Ptr(to=shader_module).bitcast[ShaderModule]()[],
         )
 
     fn destroy_shader_module(
@@ -9907,9 +9564,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_pipeline_cache(
             device,
-            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo]()[],
             p_allocator,
-            Ptr(to=pipeline_cache).bitcast[PipelineCache](),
+            Ptr(to=pipeline_cache).bitcast[PipelineCache]()[],
         )
 
     fn destroy_pipeline_cache(
@@ -9936,7 +9593,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         return self._v1_0.get_pipeline_cache_data(
-            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
+            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt]()[], p_data
         )
 
     fn get_pipeline_cache_data(
@@ -9953,8 +9610,8 @@ struct DeviceFunctionsV1_3(Movable):
             result = self.get_pipeline_cache_data(
                 device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_pipeline_cache_data(
                 device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
             )
@@ -10033,9 +9690,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_pipeline_layout(
             device,
-            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo]()[],
             p_allocator,
-            Ptr(to=pipeline_layout).bitcast[PipelineLayout](),
+            Ptr(to=pipeline_layout).bitcast[PipelineLayout]()[],
         )
 
     fn destroy_pipeline_layout(
@@ -10063,9 +9720,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_sampler(
             device,
-            Ptr(to=create_info).bitcast[SamplerCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerCreateInfo]()[],
             p_allocator,
-            Ptr(to=sampler).bitcast[Sampler](),
+            Ptr(to=sampler).bitcast[Sampler]()[],
         )
 
     fn destroy_sampler(
@@ -10093,9 +9750,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_descriptor_set_layout(
             device,
-            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo]()[],
             p_allocator,
-            Ptr(to=set_layout).bitcast[DescriptorSetLayout](),
+            Ptr(to=set_layout).bitcast[DescriptorSetLayout]()[],
         )
 
     fn destroy_descriptor_set_layout(
@@ -10123,9 +9780,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_descriptor_pool(
             device,
-            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=descriptor_pool).bitcast[DescriptorPool](),
+            Ptr(to=descriptor_pool).bitcast[DescriptorPool]()[],
         )
 
     fn destroy_descriptor_pool(
@@ -10160,7 +9817,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
         return self._v1_0.allocate_descriptor_sets(
-            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
+            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo]()[], p_descriptor_sets
         )
 
     fn free_descriptor_sets(
@@ -10211,9 +9868,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_framebuffer(
             device,
-            Ptr(to=create_info).bitcast[FramebufferCreateInfo](),
+            Ptr(to=create_info).bitcast[FramebufferCreateInfo]()[],
             p_allocator,
-            Ptr(to=framebuffer).bitcast[Framebuffer](),
+            Ptr(to=framebuffer).bitcast[Framebuffer]()[],
         )
 
     fn destroy_framebuffer(
@@ -10241,9 +9898,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_render_pass(
             device,
-            Ptr(to=create_info).bitcast[RenderPassCreateInfo](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo]()[],
             p_allocator,
-            Ptr(to=render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass]()[],
         )
 
     fn destroy_render_pass(
@@ -10266,7 +9923,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(
-            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()
+            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()[]
         )
 
     fn create_command_pool(
@@ -10282,9 +9939,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_0.create_command_pool(
             device,
-            Ptr(to=create_info).bitcast[CommandPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[CommandPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=command_pool).bitcast[CommandPool](),
+            Ptr(to=command_pool).bitcast[CommandPool]()[],
         )
 
     fn destroy_command_pool(
@@ -10319,7 +9976,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
         return self._v1_0.allocate_command_buffers(
-            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
+            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo]()[], p_command_buffers
         )
 
     fn free_command_buffers(
@@ -10345,7 +10002,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(
-            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()
+            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()[]
         )
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
@@ -10758,7 +10415,7 @@ struct DeviceFunctionsV1_3(Movable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=color).bitcast[ClearColorValue](),
+            Ptr(to=color).bitcast[ClearColorValue]()[],
             range_count,
             p_ranges,
         )
@@ -10780,7 +10437,7 @@ struct DeviceFunctionsV1_3(Movable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue](),
+            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue]()[],
             range_count,
             p_ranges,
         )
@@ -10936,9 +10593,7 @@ struct DeviceFunctionsV1_3(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetQueryPool.html
         """
-        return self._v1_0.cmd_reset_query_pool(
-            command_buffer, query_pool, first_query, query_count
-        )
+        return self._v1_0.cmd_reset_query_pool(command_buffer, query_pool, first_query, query_count)
 
     fn cmd_write_timestamp(
         self,
@@ -11007,7 +10662,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
         return self._v1_0.cmd_begin_render_pass(
-            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](), contents
+            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo]()[], contents
         )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
@@ -11079,7 +10734,7 @@ struct DeviceFunctionsV1_3(Movable):
             heap_index,
             local_device_index,
             remote_device_index,
-            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
+            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags]()[],
         )
 
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
@@ -11125,8 +10780,8 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_1.get_image_memory_requirements_2(
             device,
-            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn get_buffer_memory_requirements_2(
@@ -11141,8 +10796,8 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_1.get_buffer_memory_requirements_2(
             device,
-            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn get_image_sparse_memory_requirements_2(
@@ -11158,8 +10813,8 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
             device,
-            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2](),
-            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]()[],
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32]()[],
             p_sparse_memory_requirements,
         )
 
@@ -11175,9 +10830,8 @@ struct DeviceFunctionsV1_3(Movable):
         self.get_image_sparse_memory_requirements_2(
             device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
+        list.reserve(Int(count))
+        self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -11196,7 +10850,9 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
         """
         return self._v1_1.get_device_queue_2(
-            device, Ptr(to=queue_info).bitcast[DeviceQueueInfo2](), Ptr(to=queue).bitcast[Queue]()
+            device,
+            Ptr(to=queue_info).bitcast[DeviceQueueInfo2]()[],
+            Ptr(to=queue).bitcast[Queue]()[],
         )
 
     fn create_sampler_ycbcr_conversion(
@@ -11212,9 +10868,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
             device,
-            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo]()[],
             p_allocator,
-            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
+            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion]()[],
         )
 
     fn destroy_sampler_ycbcr_conversion(
@@ -11242,9 +10898,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_1.create_descriptor_update_template(
             device,
-            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo]()[],
             p_allocator,
-            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
+            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate]()[],
         )
 
     fn destroy_descriptor_update_template(
@@ -11288,8 +10944,8 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_1.get_descriptor_set_layout_support(
             device,
-            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
-            Ptr(to=support).bitcast[DescriptorSetLayoutSupport](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo]()[],
+            Ptr(to=support).bitcast[DescriptorSetLayoutSupport]()[],
         )
 
     fn cmd_draw_indirect_count(
@@ -11353,9 +11009,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_2.create_render_pass_2(
             device,
-            Ptr(to=create_info).bitcast[RenderPassCreateInfo2](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo2]()[],
             p_allocator,
-            Ptr(to=render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass]()[],
         )
 
     fn cmd_begin_render_pass_2(
@@ -11370,8 +11026,8 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_2.cmd_begin_render_pass_2(
             command_buffer,
-            Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](),
-            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
+            Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo]()[],
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo]()[],
         )
 
     fn cmd_next_subpass_2(
@@ -11386,19 +11042,17 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_2.cmd_next_subpass_2(
             command_buffer,
-            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
-            Ptr(to=subpass_end_info).bitcast[SubpassEndInfo](),
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo]()[],
+            Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()[],
         )
 
-    fn cmd_end_render_pass_2(
-        self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo
-    ):
+    fn cmd_end_render_pass_2(self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass2.html
         """
         return self._v1_2.cmd_end_render_pass_2(
-            command_buffer, Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()
+            command_buffer, Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()[]
         )
 
     fn reset_query_pool(
@@ -11418,7 +11072,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreCounterValue.html
         """
         return self._v1_2.get_semaphore_counter_value(
-            device, semaphore, Ptr(to=value).bitcast[UInt64]()
+            device, semaphore, Ptr(to=value).bitcast[UInt64]()[]
         )
 
     fn wait_semaphores(
@@ -11429,7 +11083,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitSemaphores.html
         """
         return self._v1_2.wait_semaphores(
-            device, Ptr(to=wait_info).bitcast[SemaphoreWaitInfo](), timeout
+            device, Ptr(to=wait_info).bitcast[SemaphoreWaitInfo]()[], timeout
         )
 
     fn signal_semaphore(self, device: Device, signal_info: SemaphoreSignalInfo) -> Result:
@@ -11438,7 +11092,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSignalSemaphore.html
         """
         return self._v1_2.signal_semaphore(
-            device, Ptr(to=signal_info).bitcast[SemaphoreSignalInfo]()
+            device, Ptr(to=signal_info).bitcast[SemaphoreSignalInfo]()[]
         )
 
     fn get_buffer_device_address(
@@ -11449,7 +11103,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
         return self._v1_2.get_buffer_device_address(
-            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
+            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()[]
         )
 
     fn get_buffer_opaque_capture_address(
@@ -11460,7 +11114,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureAddress.html
         """
         return self._v1_2.get_buffer_opaque_capture_address(
-            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
+            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()[]
         )
 
     fn get_device_memory_opaque_capture_address(
@@ -11471,7 +11125,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryOpaqueCaptureAddress.html
         """
         return self._v1_2.get_device_memory_opaque_capture_address(
-            device, Ptr(to=info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()
+            device, Ptr(to=info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()[]
         )
 
     fn create_private_data_slot(
@@ -11487,9 +11141,9 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_3.create_private_data_slot(
             device,
-            Ptr(to=create_info).bitcast[PrivateDataSlotCreateInfo](),
+            Ptr(to=create_info).bitcast[PrivateDataSlotCreateInfo]()[],
             p_allocator,
-            Ptr(to=private_data_slot).bitcast[PrivateDataSlot](),
+            Ptr(to=private_data_slot).bitcast[PrivateDataSlot]()[],
         )
 
     fn destroy_private_data_slot(
@@ -11533,7 +11187,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPrivateData.html
         """
         return self._v1_3.get_private_data(
-            device, object_type, object_handle, private_data_slot, Ptr(to=data).bitcast[UInt64]()
+            device, object_type, object_handle, private_data_slot, Ptr(to=data).bitcast[UInt64]()[]
         )
 
     fn cmd_set_event_2(
@@ -11544,7 +11198,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetEvent2.html
         """
         return self._v1_3.cmd_set_event_2(
-            command_buffer, event, Ptr(to=dependency_info).bitcast[DependencyInfo]()
+            command_buffer, event, Ptr(to=dependency_info).bitcast[DependencyInfo]()[]
         )
 
     fn cmd_reset_event_2(
@@ -11571,15 +11225,13 @@ struct DeviceFunctionsV1_3(Movable):
             command_buffer, event_count, p_events, p_dependency_infos
         )
 
-    fn cmd_pipeline_barrier_2(
-        self, command_buffer: CommandBuffer, dependency_info: DependencyInfo
-    ):
+    fn cmd_pipeline_barrier_2(self, command_buffer: CommandBuffer, dependency_info: DependencyInfo):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPipelineBarrier2.html
         """
         return self._v1_3.cmd_pipeline_barrier_2(
-            command_buffer, Ptr(to=dependency_info).bitcast[DependencyInfo]()
+            command_buffer, Ptr(to=dependency_info).bitcast[DependencyInfo]()[]
         )
 
     fn cmd_write_timestamp_2(
@@ -11614,7 +11266,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer2.html
         """
         return self._v1_3.cmd_copy_buffer_2(
-            command_buffer, Ptr(to=copy_buffer_info).bitcast[CopyBufferInfo2]()
+            command_buffer, Ptr(to=copy_buffer_info).bitcast[CopyBufferInfo2]()[]
         )
 
     fn cmd_copy_image_2(self, command_buffer: CommandBuffer, copy_image_info: CopyImageInfo2):
@@ -11623,7 +11275,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImage2.html
         """
         return self._v1_3.cmd_copy_image_2(
-            command_buffer, Ptr(to=copy_image_info).bitcast[CopyImageInfo2]()
+            command_buffer, Ptr(to=copy_image_info).bitcast[CopyImageInfo2]()[]
         )
 
     fn cmd_copy_buffer_to_image_2(
@@ -11634,7 +11286,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage2.html
         """
         return self._v1_3.cmd_copy_buffer_to_image_2(
-            command_buffer, Ptr(to=copy_buffer_to_image_info).bitcast[CopyBufferToImageInfo2]()
+            command_buffer, Ptr(to=copy_buffer_to_image_info).bitcast[CopyBufferToImageInfo2]()[]
         )
 
     fn cmd_copy_image_to_buffer_2(
@@ -11645,7 +11297,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer2.html
         """
         return self._v1_3.cmd_copy_image_to_buffer_2(
-            command_buffer, Ptr(to=copy_image_to_buffer_info).bitcast[CopyImageToBufferInfo2]()
+            command_buffer, Ptr(to=copy_image_to_buffer_info).bitcast[CopyImageToBufferInfo2]()[]
         )
 
     fn cmd_blit_image_2(self, command_buffer: CommandBuffer, blit_image_info: BlitImageInfo2):
@@ -11654,7 +11306,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBlitImage2.html
         """
         return self._v1_3.cmd_blit_image_2(
-            command_buffer, Ptr(to=blit_image_info).bitcast[BlitImageInfo2]()
+            command_buffer, Ptr(to=blit_image_info).bitcast[BlitImageInfo2]()[]
         )
 
     fn cmd_resolve_image_2(
@@ -11665,7 +11317,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResolveImage2.html
         """
         return self._v1_3.cmd_resolve_image_2(
-            command_buffer, Ptr(to=resolve_image_info).bitcast[ResolveImageInfo2]()
+            command_buffer, Ptr(to=resolve_image_info).bitcast[ResolveImageInfo2]()[]
         )
 
     fn cmd_begin_rendering(self, command_buffer: CommandBuffer, rendering_info: RenderingInfo):
@@ -11674,7 +11326,7 @@ struct DeviceFunctionsV1_3(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRendering.html
         """
         return self._v1_3.cmd_begin_rendering(
-            command_buffer, Ptr(to=rendering_info).bitcast[RenderingInfo]()
+            command_buffer, Ptr(to=rendering_info).bitcast[RenderingInfo]()[]
         )
 
     fn cmd_end_rendering(self, command_buffer: CommandBuffer):
@@ -11777,9 +11429,7 @@ struct DeviceFunctionsV1_3(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBoundsTestEnable.html
         """
-        return self._v1_3.cmd_set_depth_bounds_test_enable(
-            command_buffer, depth_bounds_test_enable
-        )
+        return self._v1_3.cmd_set_depth_bounds_test_enable(command_buffer, depth_bounds_test_enable)
 
     fn cmd_set_stencil_test_enable(
         self, command_buffer: CommandBuffer, stencil_test_enable: Bool32
@@ -11832,9 +11482,7 @@ struct DeviceFunctionsV1_3(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPrimitiveRestartEnable.html
         """
-        return self._v1_3.cmd_set_primitive_restart_enable(
-            command_buffer, primitive_restart_enable
-        )
+        return self._v1_3.cmd_set_primitive_restart_enable(command_buffer, primitive_restart_enable)
 
     fn get_device_buffer_memory_requirements(
         self,
@@ -11848,8 +11496,8 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_3.get_device_buffer_memory_requirements(
             device,
-            Ptr(to=info).bitcast[DeviceBufferMemoryRequirements](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[DeviceBufferMemoryRequirements]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn get_device_image_memory_requirements(
@@ -11864,8 +11512,8 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_3.get_device_image_memory_requirements(
             device,
-            Ptr(to=info).bitcast[DeviceImageMemoryRequirements](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn get_device_image_sparse_memory_requirements(
@@ -11881,8 +11529,8 @@ struct DeviceFunctionsV1_3(Movable):
         """
         return self._v1_3.get_device_image_sparse_memory_requirements(
             device,
-            Ptr(to=info).bitcast[DeviceImageMemoryRequirements](),
-            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements]()[],
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32]()[],
             p_sparse_memory_requirements,
         )
 
@@ -11898,11 +11546,8 @@ struct DeviceFunctionsV1_3(Movable):
         self.get_device_image_sparse_memory_requirements(
             device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_device_image_sparse_memory_requirements(
-                device, info, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_device_image_sparse_memory_requirements(device, info, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -11938,7 +11583,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(
-            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()
+            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()[]
         )
 
     fn queue_submit(
@@ -11981,9 +11626,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.allocate_memory(
             device,
-            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo](),
+            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo]()[],
             p_allocator,
-            Ptr(to=memory).bitcast[DeviceMemory](),
+            Ptr(to=memory).bitcast[DeviceMemory]()[],
         )
 
     fn free_memory(
@@ -12017,7 +11662,7 @@ struct DeviceFunctionsV1_4(Movable):
             offset,
             size,
             flags,
-            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
@@ -12061,7 +11706,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
-            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()
+            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()[]
         )
 
     fn bind_buffer_memory(
@@ -12090,7 +11735,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
-            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
+            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()[]
         )
 
     fn get_image_memory_requirements(
@@ -12101,7 +11746,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(
-            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
+            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()[]
         )
 
     fn get_image_sparse_memory_requirements(
@@ -12118,7 +11763,7 @@ struct DeviceFunctionsV1_4(Movable):
         return self._v1_0.get_image_sparse_memory_requirements(
             device,
             image,
-            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32]()[],
             p_sparse_memory_requirements,
         )
 
@@ -12134,9 +11779,8 @@ struct DeviceFunctionsV1_4(Movable):
         self.get_image_sparse_memory_requirements(
             device, image, count, Ptr[SparseImageMemoryRequirements, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
+        list.reserve(Int(count))
+        self.get_image_sparse_memory_requirements(device, image, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -12166,9 +11810,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_fence(
             device,
-            Ptr(to=create_info).bitcast[FenceCreateInfo](),
+            Ptr(to=create_info).bitcast[FenceCreateInfo]()[],
             p_allocator,
-            Ptr(to=fence).bitcast[Fence](),
+            Ptr(to=fence).bitcast[Fence]()[],
         )
 
     fn destroy_fence(
@@ -12223,9 +11867,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_semaphore(
             device,
-            Ptr(to=create_info).bitcast[SemaphoreCreateInfo](),
+            Ptr(to=create_info).bitcast[SemaphoreCreateInfo]()[],
             p_allocator,
-            Ptr(to=semaphore).bitcast[Semaphore](),
+            Ptr(to=semaphore).bitcast[Semaphore]()[],
         )
 
     fn destroy_semaphore(
@@ -12253,9 +11897,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_event(
             device,
-            Ptr(to=create_info).bitcast[EventCreateInfo](),
+            Ptr(to=create_info).bitcast[EventCreateInfo]()[],
             p_allocator,
-            Ptr(to=event).bitcast[Event](),
+            Ptr(to=event).bitcast[Event]()[],
         )
 
     fn destroy_event(
@@ -12301,9 +11945,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_query_pool(
             device,
-            Ptr(to=create_info).bitcast[QueryPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[QueryPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=query_pool).bitcast[QueryPool](),
+            Ptr(to=query_pool).bitcast[QueryPool]()[],
         )
 
     fn destroy_query_pool(
@@ -12350,9 +11994,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_buffer(
             device,
-            Ptr(to=create_info).bitcast[BufferCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferCreateInfo]()[],
             p_allocator,
-            Ptr(to=buffer).bitcast[Buffer](),
+            Ptr(to=buffer).bitcast[Buffer]()[],
         )
 
     fn destroy_buffer(
@@ -12377,9 +12021,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_buffer_view(
             device,
-            Ptr(to=create_info).bitcast[BufferViewCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferViewCreateInfo]()[],
             p_allocator,
-            Ptr(to=view).bitcast[BufferView](),
+            Ptr(to=view).bitcast[BufferView]()[],
         )
 
     fn destroy_buffer_view(
@@ -12407,9 +12051,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_image(
             device,
-            Ptr(to=create_info).bitcast[ImageCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageCreateInfo]()[],
             p_allocator,
-            Ptr(to=image).bitcast[Image](),
+            Ptr(to=image).bitcast[Image]()[],
         )
 
     fn destroy_image(
@@ -12435,8 +12079,8 @@ struct DeviceFunctionsV1_4(Movable):
         return self._v1_0.get_image_subresource_layout(
             device,
             image,
-            Ptr(to=subresource).bitcast[ImageSubresource](),
-            Ptr(to=layout).bitcast[SubresourceLayout](),
+            Ptr(to=subresource).bitcast[ImageSubresource]()[],
+            Ptr(to=layout).bitcast[SubresourceLayout]()[],
         )
 
     fn create_image_view(
@@ -12452,9 +12096,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_image_view(
             device,
-            Ptr(to=create_info).bitcast[ImageViewCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageViewCreateInfo]()[],
             p_allocator,
-            Ptr(to=view).bitcast[ImageView](),
+            Ptr(to=view).bitcast[ImageView]()[],
         )
 
     fn destroy_image_view(
@@ -12482,9 +12126,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_shader_module(
             device,
-            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo](),
+            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo]()[],
             p_allocator,
-            Ptr(to=shader_module).bitcast[ShaderModule](),
+            Ptr(to=shader_module).bitcast[ShaderModule]()[],
         )
 
     fn destroy_shader_module(
@@ -12512,9 +12156,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_pipeline_cache(
             device,
-            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo]()[],
             p_allocator,
-            Ptr(to=pipeline_cache).bitcast[PipelineCache](),
+            Ptr(to=pipeline_cache).bitcast[PipelineCache]()[],
         )
 
     fn destroy_pipeline_cache(
@@ -12541,7 +12185,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         return self._v1_0.get_pipeline_cache_data(
-            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
+            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt]()[], p_data
         )
 
     fn get_pipeline_cache_data(
@@ -12558,8 +12202,8 @@ struct DeviceFunctionsV1_4(Movable):
             result = self.get_pipeline_cache_data(
                 device, pipeline_cache, count, Ptr[NoneType, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_pipeline_cache_data(
                 device, pipeline_cache, count, list.unsafe_ptr().bitcast[NoneType]()
             )
@@ -12638,9 +12282,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_pipeline_layout(
             device,
-            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo]()[],
             p_allocator,
-            Ptr(to=pipeline_layout).bitcast[PipelineLayout](),
+            Ptr(to=pipeline_layout).bitcast[PipelineLayout]()[],
         )
 
     fn destroy_pipeline_layout(
@@ -12668,9 +12312,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_sampler(
             device,
-            Ptr(to=create_info).bitcast[SamplerCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerCreateInfo]()[],
             p_allocator,
-            Ptr(to=sampler).bitcast[Sampler](),
+            Ptr(to=sampler).bitcast[Sampler]()[],
         )
 
     fn destroy_sampler(
@@ -12698,9 +12342,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_descriptor_set_layout(
             device,
-            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo]()[],
             p_allocator,
-            Ptr(to=set_layout).bitcast[DescriptorSetLayout](),
+            Ptr(to=set_layout).bitcast[DescriptorSetLayout]()[],
         )
 
     fn destroy_descriptor_set_layout(
@@ -12728,9 +12372,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_descriptor_pool(
             device,
-            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=descriptor_pool).bitcast[DescriptorPool](),
+            Ptr(to=descriptor_pool).bitcast[DescriptorPool]()[],
         )
 
     fn destroy_descriptor_pool(
@@ -12765,7 +12409,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
         return self._v1_0.allocate_descriptor_sets(
-            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
+            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo]()[], p_descriptor_sets
         )
 
     fn free_descriptor_sets(
@@ -12816,9 +12460,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_framebuffer(
             device,
-            Ptr(to=create_info).bitcast[FramebufferCreateInfo](),
+            Ptr(to=create_info).bitcast[FramebufferCreateInfo]()[],
             p_allocator,
-            Ptr(to=framebuffer).bitcast[Framebuffer](),
+            Ptr(to=framebuffer).bitcast[Framebuffer]()[],
         )
 
     fn destroy_framebuffer(
@@ -12846,9 +12490,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_render_pass(
             device,
-            Ptr(to=create_info).bitcast[RenderPassCreateInfo](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo]()[],
             p_allocator,
-            Ptr(to=render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass]()[],
         )
 
     fn destroy_render_pass(
@@ -12871,7 +12515,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(
-            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()
+            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()[]
         )
 
     fn create_command_pool(
@@ -12887,9 +12531,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_0.create_command_pool(
             device,
-            Ptr(to=create_info).bitcast[CommandPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[CommandPoolCreateInfo]()[],
             p_allocator,
-            Ptr(to=command_pool).bitcast[CommandPool](),
+            Ptr(to=command_pool).bitcast[CommandPool]()[],
         )
 
     fn destroy_command_pool(
@@ -12924,7 +12568,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
         return self._v1_0.allocate_command_buffers(
-            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
+            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo]()[], p_command_buffers
         )
 
     fn free_command_buffers(
@@ -12950,7 +12594,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(
-            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()
+            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()[]
         )
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
@@ -13363,7 +13007,7 @@ struct DeviceFunctionsV1_4(Movable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=color).bitcast[ClearColorValue](),
+            Ptr(to=color).bitcast[ClearColorValue]()[],
             range_count,
             p_ranges,
         )
@@ -13385,7 +13029,7 @@ struct DeviceFunctionsV1_4(Movable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue](),
+            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue]()[],
             range_count,
             p_ranges,
         )
@@ -13541,9 +13185,7 @@ struct DeviceFunctionsV1_4(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResetQueryPool.html
         """
-        return self._v1_0.cmd_reset_query_pool(
-            command_buffer, query_pool, first_query, query_count
-        )
+        return self._v1_0.cmd_reset_query_pool(command_buffer, query_pool, first_query, query_count)
 
     fn cmd_write_timestamp(
         self,
@@ -13612,7 +13254,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
         return self._v1_0.cmd_begin_render_pass(
-            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](), contents
+            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo]()[], contents
         )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
@@ -13684,7 +13326,7 @@ struct DeviceFunctionsV1_4(Movable):
             heap_index,
             local_device_index,
             remote_device_index,
-            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
+            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags]()[],
         )
 
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
@@ -13730,8 +13372,8 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_1.get_image_memory_requirements_2(
             device,
-            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn get_buffer_memory_requirements_2(
@@ -13746,8 +13388,8 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_1.get_buffer_memory_requirements_2(
             device,
-            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn get_image_sparse_memory_requirements_2(
@@ -13763,8 +13405,8 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
             device,
-            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2](),
-            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]()[],
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32]()[],
             p_sparse_memory_requirements,
         )
 
@@ -13780,9 +13422,8 @@ struct DeviceFunctionsV1_4(Movable):
         self.get_image_sparse_memory_requirements_2(
             device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
+        list.reserve(Int(count))
+        self.get_image_sparse_memory_requirements_2(device, info, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -13801,7 +13442,9 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
         """
         return self._v1_1.get_device_queue_2(
-            device, Ptr(to=queue_info).bitcast[DeviceQueueInfo2](), Ptr(to=queue).bitcast[Queue]()
+            device,
+            Ptr(to=queue_info).bitcast[DeviceQueueInfo2]()[],
+            Ptr(to=queue).bitcast[Queue]()[],
         )
 
     fn create_sampler_ycbcr_conversion(
@@ -13817,9 +13460,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
             device,
-            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo]()[],
             p_allocator,
-            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
+            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion]()[],
         )
 
     fn destroy_sampler_ycbcr_conversion(
@@ -13847,9 +13490,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_1.create_descriptor_update_template(
             device,
-            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo]()[],
             p_allocator,
-            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
+            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate]()[],
         )
 
     fn destroy_descriptor_update_template(
@@ -13893,8 +13536,8 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_1.get_descriptor_set_layout_support(
             device,
-            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
-            Ptr(to=support).bitcast[DescriptorSetLayoutSupport](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo]()[],
+            Ptr(to=support).bitcast[DescriptorSetLayoutSupport]()[],
         )
 
     fn cmd_draw_indirect_count(
@@ -13958,9 +13601,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_2.create_render_pass_2(
             device,
-            Ptr(to=create_info).bitcast[RenderPassCreateInfo2](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo2]()[],
             p_allocator,
-            Ptr(to=render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass]()[],
         )
 
     fn cmd_begin_render_pass_2(
@@ -13975,8 +13618,8 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_2.cmd_begin_render_pass_2(
             command_buffer,
-            Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](),
-            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
+            Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo]()[],
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo]()[],
         )
 
     fn cmd_next_subpass_2(
@@ -13991,19 +13634,17 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_2.cmd_next_subpass_2(
             command_buffer,
-            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
-            Ptr(to=subpass_end_info).bitcast[SubpassEndInfo](),
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo]()[],
+            Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()[],
         )
 
-    fn cmd_end_render_pass_2(
-        self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo
-    ):
+    fn cmd_end_render_pass_2(self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass2.html
         """
         return self._v1_2.cmd_end_render_pass_2(
-            command_buffer, Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()
+            command_buffer, Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()[]
         )
 
     fn reset_query_pool(
@@ -14023,7 +13664,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreCounterValue.html
         """
         return self._v1_2.get_semaphore_counter_value(
-            device, semaphore, Ptr(to=value).bitcast[UInt64]()
+            device, semaphore, Ptr(to=value).bitcast[UInt64]()[]
         )
 
     fn wait_semaphores(
@@ -14034,7 +13675,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitSemaphores.html
         """
         return self._v1_2.wait_semaphores(
-            device, Ptr(to=wait_info).bitcast[SemaphoreWaitInfo](), timeout
+            device, Ptr(to=wait_info).bitcast[SemaphoreWaitInfo]()[], timeout
         )
 
     fn signal_semaphore(self, device: Device, signal_info: SemaphoreSignalInfo) -> Result:
@@ -14043,7 +13684,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSignalSemaphore.html
         """
         return self._v1_2.signal_semaphore(
-            device, Ptr(to=signal_info).bitcast[SemaphoreSignalInfo]()
+            device, Ptr(to=signal_info).bitcast[SemaphoreSignalInfo]()[]
         )
 
     fn get_buffer_device_address(
@@ -14054,7 +13695,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
         return self._v1_2.get_buffer_device_address(
-            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
+            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()[]
         )
 
     fn get_buffer_opaque_capture_address(
@@ -14065,7 +13706,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureAddress.html
         """
         return self._v1_2.get_buffer_opaque_capture_address(
-            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
+            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()[]
         )
 
     fn get_device_memory_opaque_capture_address(
@@ -14076,7 +13717,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryOpaqueCaptureAddress.html
         """
         return self._v1_2.get_device_memory_opaque_capture_address(
-            device, Ptr(to=info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()
+            device, Ptr(to=info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()[]
         )
 
     fn create_private_data_slot(
@@ -14092,9 +13733,9 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_3.create_private_data_slot(
             device,
-            Ptr(to=create_info).bitcast[PrivateDataSlotCreateInfo](),
+            Ptr(to=create_info).bitcast[PrivateDataSlotCreateInfo]()[],
             p_allocator,
-            Ptr(to=private_data_slot).bitcast[PrivateDataSlot](),
+            Ptr(to=private_data_slot).bitcast[PrivateDataSlot]()[],
         )
 
     fn destroy_private_data_slot(
@@ -14138,7 +13779,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPrivateData.html
         """
         return self._v1_3.get_private_data(
-            device, object_type, object_handle, private_data_slot, Ptr(to=data).bitcast[UInt64]()
+            device, object_type, object_handle, private_data_slot, Ptr(to=data).bitcast[UInt64]()[]
         )
 
     fn cmd_set_event_2(
@@ -14149,7 +13790,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetEvent2.html
         """
         return self._v1_3.cmd_set_event_2(
-            command_buffer, event, Ptr(to=dependency_info).bitcast[DependencyInfo]()
+            command_buffer, event, Ptr(to=dependency_info).bitcast[DependencyInfo]()[]
         )
 
     fn cmd_reset_event_2(
@@ -14176,15 +13817,13 @@ struct DeviceFunctionsV1_4(Movable):
             command_buffer, event_count, p_events, p_dependency_infos
         )
 
-    fn cmd_pipeline_barrier_2(
-        self, command_buffer: CommandBuffer, dependency_info: DependencyInfo
-    ):
+    fn cmd_pipeline_barrier_2(self, command_buffer: CommandBuffer, dependency_info: DependencyInfo):
         """See official vulkan docs for details.
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPipelineBarrier2.html
         """
         return self._v1_3.cmd_pipeline_barrier_2(
-            command_buffer, Ptr(to=dependency_info).bitcast[DependencyInfo]()
+            command_buffer, Ptr(to=dependency_info).bitcast[DependencyInfo]()[]
         )
 
     fn cmd_write_timestamp_2(
@@ -14219,7 +13858,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer2.html
         """
         return self._v1_3.cmd_copy_buffer_2(
-            command_buffer, Ptr(to=copy_buffer_info).bitcast[CopyBufferInfo2]()
+            command_buffer, Ptr(to=copy_buffer_info).bitcast[CopyBufferInfo2]()[]
         )
 
     fn cmd_copy_image_2(self, command_buffer: CommandBuffer, copy_image_info: CopyImageInfo2):
@@ -14228,7 +13867,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImage2.html
         """
         return self._v1_3.cmd_copy_image_2(
-            command_buffer, Ptr(to=copy_image_info).bitcast[CopyImageInfo2]()
+            command_buffer, Ptr(to=copy_image_info).bitcast[CopyImageInfo2]()[]
         )
 
     fn cmd_copy_buffer_to_image_2(
@@ -14239,7 +13878,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage2.html
         """
         return self._v1_3.cmd_copy_buffer_to_image_2(
-            command_buffer, Ptr(to=copy_buffer_to_image_info).bitcast[CopyBufferToImageInfo2]()
+            command_buffer, Ptr(to=copy_buffer_to_image_info).bitcast[CopyBufferToImageInfo2]()[]
         )
 
     fn cmd_copy_image_to_buffer_2(
@@ -14250,7 +13889,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer2.html
         """
         return self._v1_3.cmd_copy_image_to_buffer_2(
-            command_buffer, Ptr(to=copy_image_to_buffer_info).bitcast[CopyImageToBufferInfo2]()
+            command_buffer, Ptr(to=copy_image_to_buffer_info).bitcast[CopyImageToBufferInfo2]()[]
         )
 
     fn cmd_blit_image_2(self, command_buffer: CommandBuffer, blit_image_info: BlitImageInfo2):
@@ -14259,7 +13898,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBlitImage2.html
         """
         return self._v1_3.cmd_blit_image_2(
-            command_buffer, Ptr(to=blit_image_info).bitcast[BlitImageInfo2]()
+            command_buffer, Ptr(to=blit_image_info).bitcast[BlitImageInfo2]()[]
         )
 
     fn cmd_resolve_image_2(
@@ -14270,7 +13909,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResolveImage2.html
         """
         return self._v1_3.cmd_resolve_image_2(
-            command_buffer, Ptr(to=resolve_image_info).bitcast[ResolveImageInfo2]()
+            command_buffer, Ptr(to=resolve_image_info).bitcast[ResolveImageInfo2]()[]
         )
 
     fn cmd_begin_rendering(self, command_buffer: CommandBuffer, rendering_info: RenderingInfo):
@@ -14279,7 +13918,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRendering.html
         """
         return self._v1_3.cmd_begin_rendering(
-            command_buffer, Ptr(to=rendering_info).bitcast[RenderingInfo]()
+            command_buffer, Ptr(to=rendering_info).bitcast[RenderingInfo]()[]
         )
 
     fn cmd_end_rendering(self, command_buffer: CommandBuffer):
@@ -14382,9 +14021,7 @@ struct DeviceFunctionsV1_4(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBoundsTestEnable.html
         """
-        return self._v1_3.cmd_set_depth_bounds_test_enable(
-            command_buffer, depth_bounds_test_enable
-        )
+        return self._v1_3.cmd_set_depth_bounds_test_enable(command_buffer, depth_bounds_test_enable)
 
     fn cmd_set_stencil_test_enable(
         self, command_buffer: CommandBuffer, stencil_test_enable: Bool32
@@ -14437,9 +14074,7 @@ struct DeviceFunctionsV1_4(Movable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPrimitiveRestartEnable.html
         """
-        return self._v1_3.cmd_set_primitive_restart_enable(
-            command_buffer, primitive_restart_enable
-        )
+        return self._v1_3.cmd_set_primitive_restart_enable(command_buffer, primitive_restart_enable)
 
     fn get_device_buffer_memory_requirements(
         self,
@@ -14453,8 +14088,8 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_3.get_device_buffer_memory_requirements(
             device,
-            Ptr(to=info).bitcast[DeviceBufferMemoryRequirements](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[DeviceBufferMemoryRequirements]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn get_device_image_memory_requirements(
@@ -14469,8 +14104,8 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_3.get_device_image_memory_requirements(
             device,
-            Ptr(to=info).bitcast[DeviceImageMemoryRequirements](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements]()[],
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
         )
 
     fn get_device_image_sparse_memory_requirements(
@@ -14486,8 +14121,8 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_3.get_device_image_sparse_memory_requirements(
             device,
-            Ptr(to=info).bitcast[DeviceImageMemoryRequirements](),
-            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements]()[],
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32]()[],
             p_sparse_memory_requirements,
         )
 
@@ -14503,11 +14138,8 @@ struct DeviceFunctionsV1_4(Movable):
         self.get_device_image_sparse_memory_requirements(
             device, info, count, Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]()
         )
-        if count > 0:
-            list.reserve(Int(count))
-            self.get_device_image_sparse_memory_requirements(
-                device, info, count, list.unsafe_ptr()
-            )
+        list.reserve(Int(count))
+        self.get_device_image_sparse_memory_requirements(device, info, count, list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
@@ -14537,8 +14169,8 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_4.map_memory_2(
             device,
-            Ptr(to=memory_map_info).bitcast[MemoryMapInfo](),
-            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
+            Ptr(to=memory_map_info).bitcast[MemoryMapInfo]()[],
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
     fn unmap_memory_2(self, device: Device, memory_unmap_info: MemoryUnmapInfo) -> Result:
@@ -14547,7 +14179,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUnmapMemory2.html
         """
         return self._v1_4.unmap_memory_2(
-            device, Ptr(to=memory_unmap_info).bitcast[MemoryUnmapInfo]()
+            device, Ptr(to=memory_unmap_info).bitcast[MemoryUnmapInfo]()[]
         )
 
     fn cmd_bind_index_buffer_2(
@@ -14573,8 +14205,8 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_4.get_rendering_area_granularity(
             device,
-            Ptr(to=rendering_area_info).bitcast[RenderingAreaInfo](),
-            Ptr(to=granularity).bitcast[Extent2D](),
+            Ptr(to=rendering_area_info).bitcast[RenderingAreaInfo]()[],
+            Ptr(to=granularity).bitcast[Extent2D]()[],
         )
 
     fn get_device_image_subresource_layout(
@@ -14586,8 +14218,8 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_4.get_device_image_subresource_layout(
             device,
-            Ptr(to=info).bitcast[DeviceImageSubresourceInfo](),
-            Ptr(to=layout).bitcast[SubresourceLayout2](),
+            Ptr(to=info).bitcast[DeviceImageSubresourceInfo]()[],
+            Ptr(to=layout).bitcast[SubresourceLayout2]()[],
         )
 
     fn get_image_subresource_layout_2(
@@ -14604,8 +14236,8 @@ struct DeviceFunctionsV1_4(Movable):
         return self._v1_4.get_image_subresource_layout_2(
             device,
             image,
-            Ptr(to=subresource).bitcast[ImageSubresource2](),
-            Ptr(to=layout).bitcast[SubresourceLayout2](),
+            Ptr(to=subresource).bitcast[ImageSubresource2]()[],
+            Ptr(to=layout).bitcast[SubresourceLayout2]()[],
         )
 
     fn cmd_push_descriptor_set(
@@ -14654,7 +14286,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRenderingAttachmentLocations.html
         """
         return self._v1_4.cmd_set_rendering_attachment_locations(
-            command_buffer, Ptr(to=location_info).bitcast[RenderingAttachmentLocationInfo]()
+            command_buffer, Ptr(to=location_info).bitcast[RenderingAttachmentLocationInfo]()[]
         )
 
     fn cmd_set_rendering_input_attachment_indices(
@@ -14668,7 +14300,7 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_4.cmd_set_rendering_input_attachment_indices(
             command_buffer,
-            Ptr(to=input_attachment_index_info).bitcast[RenderingInputAttachmentIndexInfo](),
+            Ptr(to=input_attachment_index_info).bitcast[RenderingInputAttachmentIndexInfo]()[],
         )
 
     fn cmd_bind_descriptor_sets_2(
@@ -14679,7 +14311,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorSets2.html
         """
         return self._v1_4.cmd_bind_descriptor_sets_2(
-            command_buffer, Ptr(to=bind_descriptor_sets_info).bitcast[BindDescriptorSetsInfo]()
+            command_buffer, Ptr(to=bind_descriptor_sets_info).bitcast[BindDescriptorSetsInfo]()[]
         )
 
     fn cmd_push_constants_2(
@@ -14690,7 +14322,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants2.html
         """
         return self._v1_4.cmd_push_constants_2(
-            command_buffer, Ptr(to=push_constants_info).bitcast[PushConstantsInfo]()
+            command_buffer, Ptr(to=push_constants_info).bitcast[PushConstantsInfo]()[]
         )
 
     fn cmd_push_descriptor_set_2(
@@ -14701,7 +14333,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSet2.html
         """
         return self._v1_4.cmd_push_descriptor_set_2(
-            command_buffer, Ptr(to=push_descriptor_set_info).bitcast[PushDescriptorSetInfo]()
+            command_buffer, Ptr(to=push_descriptor_set_info).bitcast[PushDescriptorSetInfo]()[]
         )
 
     fn cmd_push_descriptor_set_with_template_2(
@@ -14715,7 +14347,7 @@ struct DeviceFunctionsV1_4(Movable):
         """
         return self._v1_4.cmd_push_descriptor_set_with_template_2(
             command_buffer,
-            Ptr(to=push_descriptor_set_with_template_info).bitcast[PushDescriptorSetWithTemplateInfo](),
+            Ptr(to=push_descriptor_set_with_template_info).bitcast[PushDescriptorSetWithTemplateInfo]()[],
         )
 
     fn copy_memory_to_image(
@@ -14726,7 +14358,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMemoryToImage.html
         """
         return self._v1_4.copy_memory_to_image(
-            device, Ptr(to=copy_memory_to_image_info).bitcast[CopyMemoryToImageInfo]()
+            device, Ptr(to=copy_memory_to_image_info).bitcast[CopyMemoryToImageInfo]()[]
         )
 
     fn copy_image_to_memory(
@@ -14737,7 +14369,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyImageToMemory.html
         """
         return self._v1_4.copy_image_to_memory(
-            device, Ptr(to=copy_image_to_memory_info).bitcast[CopyImageToMemoryInfo]()
+            device, Ptr(to=copy_image_to_memory_info).bitcast[CopyImageToMemoryInfo]()[]
         )
 
     fn copy_image_to_image(
@@ -14748,7 +14380,7 @@ struct DeviceFunctionsV1_4(Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyImageToImage.html
         """
         return self._v1_4.copy_image_to_image(
-            device, Ptr(to=copy_image_to_image_info).bitcast[CopyImageToImageInfo]()
+            device, Ptr(to=copy_image_to_image_info).bitcast[CopyImageToImageInfo]()[]
         )
 
     fn transition_image_layout(
@@ -14764,27 +14396,288 @@ struct DeviceFunctionsV1_4(Movable):
         return self._v1_4.transition_image_layout(device, transition_count, p_transitions)
 
 
-struct DeviceFunctionAdditionsV1_0(Copyable, Movable):
-    var destroy_device: fn(device: Device, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin])
-    var get_device_queue: fn(
+struct GlobalFunctionAdditionsV1_0(Movable):
+    var create_instance: fn(
+        create_info: InstanceCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        instance: Instance,
+    ) -> Result
+    var get_instance_proc_addr: fn(
+        instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
+    ) -> PFN_vkVoidFunction
+    var enumerate_instance_extension_properties: fn(
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        property_count: UInt32,
+        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+    ) -> Result
+    var enumerate_instance_layer_properties: fn(
+        property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
+    ) -> Result
+
+    fn __init__(out self, dlhandle: OwnedDLHandle):
+        get_instance_proc_addr = dlhandle.get_function[
+            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
+        self.create_instance = Ptr(to=get_instance_proc_addr(
+            Instance.NULL, "vkCreateInstance".unsafe_ptr()
+        )).bitcast[type_of(self.create_instance)]()[]
+        self.get_instance_proc_addr = Ptr(to=get_instance_proc_addr(
+            Instance.NULL, "vkGetInstanceProcAddr".unsafe_ptr()
+        )).bitcast[type_of(self.get_instance_proc_addr)]()[]
+        self.enumerate_instance_extension_properties = Ptr(to=get_instance_proc_addr(
+            Instance.NULL, "vkEnumerateInstanceExtensionProperties".unsafe_ptr()
+        )).bitcast[type_of(self.enumerate_instance_extension_properties)]()[]
+        self.enumerate_instance_layer_properties = Ptr(to=get_instance_proc_addr(
+            Instance.NULL, "vkEnumerateInstanceLayerProperties".unsafe_ptr()
+        )).bitcast[type_of(self.enumerate_instance_layer_properties)]()[]
+
+
+struct GlobalFunctionAdditionsV1_1(Movable):
+    var enumerate_instance_version: fn(api_version: Version) -> Result
+
+    fn __init__(out self, dlhandle: OwnedDLHandle):
+        get_instance_proc_addr = dlhandle.get_function[
+            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
+        self.enumerate_instance_version = Ptr(to=get_instance_proc_addr(
+            Instance.NULL, "vkEnumerateInstanceVersion".unsafe_ptr()
+        )).bitcast[type_of(self.enumerate_instance_version)]()[]
+
+
+struct InstanceFunctionAdditionsV1_0(Movable):
+    var destroy_instance: fn(
+        instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    )
+    var enumerate_physical_devices: fn(
+        instance: Instance,
+        physical_device_count: UInt32,
+        p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
+    ) -> Result
+    var get_physical_device_features: fn(
+        physical_device: PhysicalDevice, features: PhysicalDeviceFeatures
+    )
+    var get_physical_device_format_properties: fn(
+        physical_device: PhysicalDevice, format: Format, format_properties: FormatProperties
+    )
+    var get_physical_device_image_format_properties: fn(
+        physical_device: PhysicalDevice,
+        format: Format,
+        type: ImageType,
+        tiling: ImageTiling,
+        usage: ImageUsageFlags,
+        flags: ImageCreateFlags,
+        image_format_properties: ImageFormatProperties,
+    ) -> Result
+    var get_physical_device_properties: fn(
+        physical_device: PhysicalDevice, properties: PhysicalDeviceProperties
+    )
+    var get_physical_device_queue_family_properties: fn(
+        physical_device: PhysicalDevice,
+        queue_family_property_count: UInt32,
+        p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
+    )
+    var get_physical_device_memory_properties: fn(
+        physical_device: PhysicalDevice, memory_properties: PhysicalDeviceMemoryProperties
+    )
+    var get_device_proc_addr: fn(
+        device: Device, p_name: CStringSlice[ImmutAnyOrigin]
+    ) -> PFN_vkVoidFunction
+    var create_device: fn(
+        physical_device: PhysicalDevice,
+        create_info: DeviceCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         device: Device,
-        queueFamilyIndex: UInt32,
-        queueIndex: UInt32,
-        pQueue: Ptr[Queue, MutAnyOrigin],
+    ) -> Result
+    var enumerate_device_extension_properties: fn(
+        physical_device: PhysicalDevice,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        property_count: UInt32,
+        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+    ) -> Result
+    var enumerate_device_layer_properties: fn(
+        physical_device: PhysicalDevice,
+        property_count: UInt32,
+        p_properties: Ptr[LayerProperties, MutAnyOrigin],
+    ) -> Result
+    var get_physical_device_sparse_image_format_properties: fn(
+        physical_device: PhysicalDevice,
+        format: Format,
+        type: ImageType,
+        samples: SampleCountFlagBits,
+        usage: ImageUsageFlags,
+        tiling: ImageTiling,
+        property_count: UInt32,
+        p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
+    )
+
+    fn __init__(out self, instance: Instance, dlhandle: OwnedDLHandle):
+        get_instance_proc_addr = dlhandle.get_function[
+            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
+        self.destroy_instance = Ptr(to=get_instance_proc_addr(
+            instance, "vkDestroyInstance".unsafe_ptr()
+        )).bitcast[type_of(self.destroy_instance)]()[]
+        self.enumerate_physical_devices = Ptr(to=get_instance_proc_addr(
+            instance, "vkEnumeratePhysicalDevices".unsafe_ptr()
+        )).bitcast[type_of(self.enumerate_physical_devices)]()[]
+        self.get_physical_device_features = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceFeatures".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_features)]()[]
+        self.get_physical_device_format_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceFormatProperties".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_format_properties)]()[]
+        self.get_physical_device_image_format_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceImageFormatProperties".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_image_format_properties)]()[]
+        self.get_physical_device_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceProperties".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_properties)]()[]
+        self.get_physical_device_queue_family_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceQueueFamilyProperties".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_queue_family_properties)]()[]
+        self.get_physical_device_memory_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceMemoryProperties".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_memory_properties)]()[]
+        self.get_device_proc_addr = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetDeviceProcAddr".unsafe_ptr()
+        )).bitcast[type_of(self.get_device_proc_addr)]()[]
+        self.create_device = Ptr(to=get_instance_proc_addr(
+            instance, "vkCreateDevice".unsafe_ptr()
+        )).bitcast[type_of(self.create_device)]()[]
+        self.enumerate_device_extension_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkEnumerateDeviceExtensionProperties".unsafe_ptr()
+        )).bitcast[type_of(self.enumerate_device_extension_properties)]()[]
+        self.enumerate_device_layer_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkEnumerateDeviceLayerProperties".unsafe_ptr()
+        )).bitcast[type_of(self.enumerate_device_layer_properties)]()[]
+        self.get_physical_device_sparse_image_format_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceSparseImageFormatProperties".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_sparse_image_format_properties)]()[]
+
+
+struct InstanceFunctionAdditionsV1_1(Movable):
+    var enumerate_physical_device_groups: fn(
+        instance: Instance,
+        physical_device_group_count: UInt32,
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
+    ) -> Result
+    var get_physical_device_features_2: fn(
+        physical_device: PhysicalDevice, features: PhysicalDeviceFeatures2
+    )
+    var get_physical_device_properties_2: fn(
+        physical_device: PhysicalDevice, properties: PhysicalDeviceProperties2
+    )
+    var get_physical_device_format_properties_2: fn(
+        physical_device: PhysicalDevice, format: Format, format_properties: FormatProperties2
+    )
+    var get_physical_device_image_format_properties_2: fn(
+        physical_device: PhysicalDevice,
+        image_format_info: PhysicalDeviceImageFormatInfo2,
+        image_format_properties: ImageFormatProperties2,
+    ) -> Result
+    var get_physical_device_queue_family_properties_2: fn(
+        physical_device: PhysicalDevice,
+        queue_family_property_count: UInt32,
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
+    )
+    var get_physical_device_memory_properties_2: fn(
+        physical_device: PhysicalDevice, memory_properties: PhysicalDeviceMemoryProperties2
+    )
+    var get_physical_device_sparse_image_format_properties_2: fn(
+        physical_device: PhysicalDevice,
+        format_info: PhysicalDeviceSparseImageFormatInfo2,
+        property_count: UInt32,
+        p_properties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
+    )
+    var get_physical_device_external_buffer_properties: fn(
+        physical_device: PhysicalDevice,
+        external_buffer_info: PhysicalDeviceExternalBufferInfo,
+        external_buffer_properties: ExternalBufferProperties,
+    )
+    var get_physical_device_external_fence_properties: fn(
+        physical_device: PhysicalDevice,
+        external_fence_info: PhysicalDeviceExternalFenceInfo,
+        external_fence_properties: ExternalFenceProperties,
+    )
+    var get_physical_device_external_semaphore_properties: fn(
+        physical_device: PhysicalDevice,
+        external_semaphore_info: PhysicalDeviceExternalSemaphoreInfo,
+        external_semaphore_properties: ExternalSemaphoreProperties,
+    )
+
+    fn __init__(out self, instance: Instance, dlhandle: OwnedDLHandle):
+        get_instance_proc_addr = dlhandle.get_function[
+            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
+        self.enumerate_physical_device_groups = Ptr(to=get_instance_proc_addr(
+            instance, "vkEnumeratePhysicalDeviceGroups".unsafe_ptr()
+        )).bitcast[type_of(self.enumerate_physical_device_groups)]()[]
+        self.get_physical_device_features_2 = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceFeatures2".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_features_2)]()[]
+        self.get_physical_device_properties_2 = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceProperties2".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_properties_2)]()[]
+        self.get_physical_device_format_properties_2 = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceFormatProperties2".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_format_properties_2)]()[]
+        self.get_physical_device_image_format_properties_2 = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceImageFormatProperties2".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_image_format_properties_2)]()[]
+        self.get_physical_device_queue_family_properties_2 = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceQueueFamilyProperties2".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_queue_family_properties_2)]()[]
+        self.get_physical_device_memory_properties_2 = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceMemoryProperties2".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_memory_properties_2)]()[]
+        self.get_physical_device_sparse_image_format_properties_2 = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceSparseImageFormatProperties2".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_sparse_image_format_properties_2)]()[]
+        self.get_physical_device_external_buffer_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceExternalBufferProperties".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_external_buffer_properties)]()[]
+        self.get_physical_device_external_fence_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceExternalFenceProperties".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_external_fence_properties)]()[]
+        self.get_physical_device_external_semaphore_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceExternalSemaphoreProperties".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_external_semaphore_properties)]()[]
+
+
+struct InstanceFunctionAdditionsV1_3(Movable):
+    var get_physical_device_tool_properties: fn(
+        physical_device: PhysicalDevice,
+        tool_count: UInt32,
+        p_tool_properties: Ptr[PhysicalDeviceToolProperties, MutAnyOrigin],
+    ) -> Result
+
+    fn __init__(out self, instance: Instance, dlhandle: OwnedDLHandle):
+        get_instance_proc_addr = dlhandle.get_function[
+            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
+        self.get_physical_device_tool_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceToolProperties".unsafe_ptr()
+        )).bitcast[type_of(self.get_physical_device_tool_properties)]()[]
+
+
+struct DeviceFunctionAdditionsV1_0(Movable):
+    var destroy_device: fn(device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin])
+    var get_device_queue: fn(
+        device: Device, queue_family_index: UInt32, queue_index: UInt32, queue: Queue
     )
     var queue_submit: fn(
-        queue: Queue, submitCount: UInt32, pSubmits: Ptr[SubmitInfo, ImmutAnyOrigin], fence: Fence
+        queue: Queue, submit_count: UInt32, p_submits: Ptr[SubmitInfo, ImmutAnyOrigin], fence: Fence
     ) -> Result
     var queue_wait_idle: fn(queue: Queue) -> Result
     var device_wait_idle: fn(device: Device) -> Result
     var allocate_memory: fn(
         device: Device,
-        pAllocateInfo: Ptr[MemoryAllocateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pMemory: Ptr[DeviceMemory, MutAnyOrigin],
+        allocate_info: MemoryAllocateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        memory: DeviceMemory,
     ) -> Result
     var free_memory: fn(
-        device: Device, memory: DeviceMemory, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, memory: DeviceMemory, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var map_memory: fn(
         device: Device,
@@ -14792,570 +14685,580 @@ struct DeviceFunctionAdditionsV1_0(Copyable, Movable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        ppData: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
     var unmap_memory: fn(device: Device, memory: DeviceMemory)
     var flush_mapped_memory_ranges: fn(
         device: Device,
-        memoryRangeCount: UInt32,
-        pMemoryRanges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
+        memory_range_count: UInt32,
+        p_memory_ranges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
     ) -> Result
     var invalidate_mapped_memory_ranges: fn(
         device: Device,
-        memoryRangeCount: UInt32,
-        pMemoryRanges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
+        memory_range_count: UInt32,
+        p_memory_ranges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
     ) -> Result
     var get_device_memory_commitment: fn(
-        device: Device, memory: DeviceMemory, pCommittedMemoryInBytes: Ptr[DeviceSize, MutAnyOrigin]
+        device: Device, memory: DeviceMemory, committed_memory_in_bytes: DeviceSize
     )
     var bind_buffer_memory: fn(
-        device: Device, buffer: Buffer, memory: DeviceMemory, memoryOffset: DeviceSize
+        device: Device, buffer: Buffer, memory: DeviceMemory, memory_offset: DeviceSize
     ) -> Result
     var bind_image_memory: fn(
-        device: Device, image: Image, memory: DeviceMemory, memoryOffset: DeviceSize
+        device: Device, image: Image, memory: DeviceMemory, memory_offset: DeviceSize
     ) -> Result
     var get_buffer_memory_requirements: fn(
-        device: Device, buffer: Buffer, pMemoryRequirements: Ptr[MemoryRequirements, MutAnyOrigin]
+        device: Device, buffer: Buffer, memory_requirements: MemoryRequirements
     )
     var get_image_memory_requirements: fn(
-        device: Device, image: Image, pMemoryRequirements: Ptr[MemoryRequirements, MutAnyOrigin]
+        device: Device, image: Image, memory_requirements: MemoryRequirements
     )
     var get_image_sparse_memory_requirements: fn(
         device: Device,
         image: Image,
-        pSparseMemoryRequirementCount: Ptr[UInt32, MutAnyOrigin],
-        pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
+        sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
     )
     var queue_bind_sparse: fn(
         queue: Queue,
-        bindInfoCount: UInt32,
-        pBindInfo: Ptr[BindSparseInfo, ImmutAnyOrigin],
+        bind_info_count: UInt32,
+        p_bind_info: Ptr[BindSparseInfo, ImmutAnyOrigin],
         fence: Fence,
     ) -> Result
     var create_fence: fn(
         device: Device,
-        pCreateInfo: Ptr[FenceCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pFence: Ptr[Fence, MutAnyOrigin],
+        create_info: FenceCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        fence: Fence,
     ) -> Result
     var destroy_fence: fn(
-        device: Device, fence: Fence, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, fence: Fence, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var reset_fences: fn(
-        device: Device, fenceCount: UInt32, pFences: Ptr[Fence, ImmutAnyOrigin]
+        device: Device, fence_count: UInt32, p_fences: Ptr[Fence, ImmutAnyOrigin]
     ) -> Result
     var get_fence_status: fn(device: Device, fence: Fence) -> Result
     var wait_for_fences: fn(
         device: Device,
-        fenceCount: UInt32,
-        pFences: Ptr[Fence, ImmutAnyOrigin],
-        waitAll: Bool32,
+        fence_count: UInt32,
+        p_fences: Ptr[Fence, ImmutAnyOrigin],
+        wait_all: Bool32,
         timeout: UInt64,
     ) -> Result
     var create_semaphore: fn(
         device: Device,
-        pCreateInfo: Ptr[SemaphoreCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSemaphore: Ptr[Semaphore, MutAnyOrigin],
+        create_info: SemaphoreCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        semaphore: Semaphore,
     ) -> Result
     var destroy_semaphore: fn(
-        device: Device, semaphore: Semaphore, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, semaphore: Semaphore, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var create_event: fn(
         device: Device,
-        pCreateInfo: Ptr[EventCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pEvent: Ptr[Event, MutAnyOrigin],
+        create_info: EventCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        event: Event,
     ) -> Result
     var destroy_event: fn(
-        device: Device, event: Event, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, event: Event, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var get_event_status: fn(device: Device, event: Event) -> Result
     var set_event: fn(device: Device, event: Event) -> Result
     var reset_event: fn(device: Device, event: Event) -> Result
     var create_query_pool: fn(
         device: Device,
-        pCreateInfo: Ptr[QueryPoolCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pQueryPool: Ptr[QueryPool, MutAnyOrigin],
+        create_info: QueryPoolCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        query_pool: QueryPool,
     ) -> Result
     var destroy_query_pool: fn(
-        device: Device, queryPool: QueryPool, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, query_pool: QueryPool, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var get_query_pool_results: fn(
         device: Device,
-        queryPool: QueryPool,
-        firstQuery: UInt32,
-        queryCount: UInt32,
-        dataSize: UInt,
-        pData: Ptr[NoneType, MutAnyOrigin],
+        query_pool: QueryPool,
+        first_query: UInt32,
+        query_count: UInt32,
+        data_size: UInt,
+        p_data: Ptr[NoneType, MutAnyOrigin],
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result
     var create_buffer: fn(
         device: Device,
-        pCreateInfo: Ptr[BufferCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pBuffer: Ptr[Buffer, MutAnyOrigin],
+        create_info: BufferCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        buffer: Buffer,
     ) -> Result
     var destroy_buffer: fn(
-        device: Device, buffer: Buffer, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, buffer: Buffer, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var create_buffer_view: fn(
         device: Device,
-        pCreateInfo: Ptr[BufferViewCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pView: Ptr[BufferView, MutAnyOrigin],
+        create_info: BufferViewCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        view: BufferView,
     ) -> Result
     var destroy_buffer_view: fn(
-        device: Device, bufferView: BufferView, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device,
+        buffer_view: BufferView,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var create_image: fn(
         device: Device,
-        pCreateInfo: Ptr[ImageCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pImage: Ptr[Image, MutAnyOrigin],
+        create_info: ImageCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        image: Image,
     ) -> Result
     var destroy_image: fn(
-        device: Device, image: Image, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, image: Image, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var get_image_subresource_layout: fn(
-        device: Device,
-        image: Image,
-        pSubresource: Ptr[ImageSubresource, ImmutAnyOrigin],
-        pLayout: Ptr[SubresourceLayout, MutAnyOrigin],
+        device: Device, image: Image, subresource: ImageSubresource, layout: SubresourceLayout
     )
     var create_image_view: fn(
         device: Device,
-        pCreateInfo: Ptr[ImageViewCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pView: Ptr[ImageView, MutAnyOrigin],
+        create_info: ImageViewCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        view: ImageView,
     ) -> Result
     var destroy_image_view: fn(
-        device: Device, imageView: ImageView, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, image_view: ImageView, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var create_shader_module: fn(
         device: Device,
-        pCreateInfo: Ptr[ShaderModuleCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pShaderModule: Ptr[ShaderModule, MutAnyOrigin],
+        create_info: ShaderModuleCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        shader_module: ShaderModule,
     ) -> Result
     var destroy_shader_module: fn(
         device: Device,
-        shaderModule: ShaderModule,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        shader_module: ShaderModule,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var create_pipeline_cache: fn(
         device: Device,
-        pCreateInfo: Ptr[PipelineCacheCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pPipelineCache: Ptr[PipelineCache, MutAnyOrigin],
+        create_info: PipelineCacheCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        pipeline_cache: PipelineCache,
     ) -> Result
     var destroy_pipeline_cache: fn(
         device: Device,
-        pipelineCache: PipelineCache,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        pipeline_cache: PipelineCache,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var get_pipeline_cache_data: fn(
         device: Device,
-        pipelineCache: PipelineCache,
-        pDataSize: Ptr[UInt, MutAnyOrigin],
-        pData: Ptr[NoneType, MutAnyOrigin],
+        pipeline_cache: PipelineCache,
+        data_size: UInt,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
     var merge_pipeline_caches: fn(
         device: Device,
-        dstCache: PipelineCache,
-        srcCacheCount: UInt32,
-        pSrcCaches: Ptr[PipelineCache, ImmutAnyOrigin],
+        dst_cache: PipelineCache,
+        src_cache_count: UInt32,
+        p_src_caches: Ptr[PipelineCache, ImmutAnyOrigin],
     ) -> Result
     var create_graphics_pipelines: fn(
         device: Device,
-        pipelineCache: PipelineCache,
-        createInfoCount: UInt32,
-        pCreateInfos: Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pPipelines: Ptr[Pipeline, MutAnyOrigin],
+        pipeline_cache: PipelineCache,
+        create_info_count: UInt32,
+        p_create_infos: Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result
     var create_compute_pipelines: fn(
         device: Device,
-        pipelineCache: PipelineCache,
-        createInfoCount: UInt32,
-        pCreateInfos: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pPipelines: Ptr[Pipeline, MutAnyOrigin],
+        pipeline_cache: PipelineCache,
+        create_info_count: UInt32,
+        p_create_infos: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result
     var destroy_pipeline: fn(
-        device: Device, pipeline: Pipeline, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, pipeline: Pipeline, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var create_pipeline_layout: fn(
         device: Device,
-        pCreateInfo: Ptr[PipelineLayoutCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pPipelineLayout: Ptr[PipelineLayout, MutAnyOrigin],
+        create_info: PipelineLayoutCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        pipeline_layout: PipelineLayout,
     ) -> Result
     var destroy_pipeline_layout: fn(
         device: Device,
-        pipelineLayout: PipelineLayout,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        pipeline_layout: PipelineLayout,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var create_sampler: fn(
         device: Device,
-        pCreateInfo: Ptr[SamplerCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSampler: Ptr[Sampler, MutAnyOrigin],
+        create_info: SamplerCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        sampler: Sampler,
     ) -> Result
     var destroy_sampler: fn(
-        device: Device, sampler: Sampler, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device, sampler: Sampler, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var create_descriptor_set_layout: fn(
         device: Device,
-        pCreateInfo: Ptr[DescriptorSetLayoutCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSetLayout: Ptr[DescriptorSetLayout, MutAnyOrigin],
+        create_info: DescriptorSetLayoutCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        set_layout: DescriptorSetLayout,
     ) -> Result
     var destroy_descriptor_set_layout: fn(
         device: Device,
-        descriptorSetLayout: DescriptorSetLayout,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        descriptor_set_layout: DescriptorSetLayout,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var create_descriptor_pool: fn(
         device: Device,
-        pCreateInfo: Ptr[DescriptorPoolCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pDescriptorPool: Ptr[DescriptorPool, MutAnyOrigin],
+        create_info: DescriptorPoolCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        descriptor_pool: DescriptorPool,
     ) -> Result
     var destroy_descriptor_pool: fn(
         device: Device,
-        descriptorPool: DescriptorPool,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        descriptor_pool: DescriptorPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var reset_descriptor_pool: fn(
-        device: Device, descriptorPool: DescriptorPool, flags: DescriptorPoolResetFlags
+        device: Device, descriptor_pool: DescriptorPool, flags: DescriptorPoolResetFlags
     ) -> Result
     var allocate_descriptor_sets: fn(
         device: Device,
-        pAllocateInfo: Ptr[DescriptorSetAllocateInfo, ImmutAnyOrigin],
-        pDescriptorSets: Ptr[DescriptorSet, MutAnyOrigin],
+        allocate_info: DescriptorSetAllocateInfo,
+        p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
     ) -> Result
     var free_descriptor_sets: fn(
         device: Device,
-        descriptorPool: DescriptorPool,
-        descriptorSetCount: UInt32,
-        pDescriptorSets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        descriptor_pool: DescriptorPool,
+        descriptor_set_count: UInt32,
+        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
     ) -> Result
     var update_descriptor_sets: fn(
         device: Device,
-        descriptorWriteCount: UInt32,
-        pDescriptorWrites: Ptr[WriteDescriptorSet, ImmutAnyOrigin],
-        descriptorCopyCount: UInt32,
-        pDescriptorCopies: Ptr[CopyDescriptorSet, ImmutAnyOrigin],
+        descriptor_write_count: UInt32,
+        p_descriptor_writes: Ptr[WriteDescriptorSet, ImmutAnyOrigin],
+        descriptor_copy_count: UInt32,
+        p_descriptor_copies: Ptr[CopyDescriptorSet, ImmutAnyOrigin],
     )
     var create_framebuffer: fn(
         device: Device,
-        pCreateInfo: Ptr[FramebufferCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pFramebuffer: Ptr[Framebuffer, MutAnyOrigin],
+        create_info: FramebufferCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        framebuffer: Framebuffer,
     ) -> Result
     var destroy_framebuffer: fn(
         device: Device,
         framebuffer: Framebuffer,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var create_render_pass: fn(
         device: Device,
-        pCreateInfo: Ptr[RenderPassCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pRenderPass: Ptr[RenderPass, MutAnyOrigin],
+        create_info: RenderPassCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        render_pass: RenderPass,
     ) -> Result
     var destroy_render_pass: fn(
-        device: Device, renderPass: RenderPass, pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+        device: Device,
+        render_pass: RenderPass,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var get_render_area_granularity: fn(
-        device: Device, renderPass: RenderPass, pGranularity: Ptr[Extent2D, MutAnyOrigin]
+        device: Device, render_pass: RenderPass, granularity: Extent2D
     )
     var create_command_pool: fn(
         device: Device,
-        pCreateInfo: Ptr[CommandPoolCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pCommandPool: Ptr[CommandPool, MutAnyOrigin],
+        create_info: CommandPoolCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        command_pool: CommandPool,
     ) -> Result
     var destroy_command_pool: fn(
         device: Device,
-        commandPool: CommandPool,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        command_pool: CommandPool,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var reset_command_pool: fn(
-        device: Device, commandPool: CommandPool, flags: CommandPoolResetFlags
+        device: Device, command_pool: CommandPool, flags: CommandPoolResetFlags
     ) -> Result
     var allocate_command_buffers: fn(
         device: Device,
-        pAllocateInfo: Ptr[CommandBufferAllocateInfo, ImmutAnyOrigin],
-        pCommandBuffers: Ptr[CommandBuffer, MutAnyOrigin],
+        allocate_info: CommandBufferAllocateInfo,
+        p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
     ) -> Result
     var free_command_buffers: fn(
         device: Device,
-        commandPool: CommandPool,
-        commandBufferCount: UInt32,
-        pCommandBuffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        command_pool: CommandPool,
+        command_buffer_count: UInt32,
+        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
     )
     var begin_command_buffer: fn(
-        commandBuffer: CommandBuffer, pBeginInfo: Ptr[CommandBufferBeginInfo, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, begin_info: CommandBufferBeginInfo
     ) -> Result
-    var end_command_buffer: fn(commandBuffer: CommandBuffer) -> Result
+    var end_command_buffer: fn(command_buffer: CommandBuffer) -> Result
     var reset_command_buffer: fn(
-        commandBuffer: CommandBuffer, flags: CommandBufferResetFlags
+        command_buffer: CommandBuffer, flags: CommandBufferResetFlags
     ) -> Result
     var cmd_bind_pipeline: fn(
-        commandBuffer: CommandBuffer, pipelineBindPoint: PipelineBindPoint, pipeline: Pipeline
+        command_buffer: CommandBuffer, pipeline_bind_point: PipelineBindPoint, pipeline: Pipeline
     )
     var cmd_set_viewport: fn(
-        commandBuffer: CommandBuffer,
-        firstViewport: UInt32,
-        viewportCount: UInt32,
-        pViewports: Ptr[Viewport, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_viewport: UInt32,
+        viewport_count: UInt32,
+        p_viewports: Ptr[Viewport, ImmutAnyOrigin],
     )
     var cmd_set_scissor: fn(
-        commandBuffer: CommandBuffer,
-        firstScissor: UInt32,
-        scissorCount: UInt32,
-        pScissors: Ptr[Rect2D, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_scissor: UInt32,
+        scissor_count: UInt32,
+        p_scissors: Ptr[Rect2D, ImmutAnyOrigin],
     )
-    var cmd_set_line_width: fn(commandBuffer: CommandBuffer, lineWidth: Float32)
+    var cmd_set_line_width: fn(command_buffer: CommandBuffer, line_width: Float32)
     var cmd_set_depth_bias: fn(
-        commandBuffer: CommandBuffer,
-        depthBiasConstantFactor: Float32,
-        depthBiasClamp: Float32,
-        depthBiasSlopeFactor: Float32,
+        command_buffer: CommandBuffer,
+        depth_bias_constant_factor: Float32,
+        depth_bias_clamp: Float32,
+        depth_bias_slope_factor: Float32,
     )
     var cmd_set_blend_constants: fn(
-        commandBuffer: CommandBuffer, blendConstants: InlineArray[Float32, Int(4)]
+        command_buffer: CommandBuffer, blend_constants: InlineArray[Float32, Int(4)]
     )
     var cmd_set_depth_bounds: fn(
-        commandBuffer: CommandBuffer, minDepthBounds: Float32, maxDepthBounds: Float32
+        command_buffer: CommandBuffer, min_depth_bounds: Float32, max_depth_bounds: Float32
     )
     var cmd_set_stencil_compare_mask: fn(
-        commandBuffer: CommandBuffer, faceMask: StencilFaceFlags, compareMask: UInt32
+        command_buffer: CommandBuffer, face_mask: StencilFaceFlags, compare_mask: UInt32
     )
     var cmd_set_stencil_write_mask: fn(
-        commandBuffer: CommandBuffer, faceMask: StencilFaceFlags, writeMask: UInt32
+        command_buffer: CommandBuffer, face_mask: StencilFaceFlags, write_mask: UInt32
     )
     var cmd_set_stencil_reference: fn(
-        commandBuffer: CommandBuffer, faceMask: StencilFaceFlags, reference: UInt32
+        command_buffer: CommandBuffer, face_mask: StencilFaceFlags, reference: UInt32
     )
     var cmd_bind_descriptor_sets: fn(
-        commandBuffer: CommandBuffer,
-        pipelineBindPoint: PipelineBindPoint,
+        command_buffer: CommandBuffer,
+        pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
-        firstSet: UInt32,
-        descriptorSetCount: UInt32,
-        pDescriptorSets: Ptr[DescriptorSet, ImmutAnyOrigin],
-        dynamicOffsetCount: UInt32,
-        pDynamicOffsets: Ptr[UInt32, ImmutAnyOrigin],
+        first_set: UInt32,
+        descriptor_set_count: UInt32,
+        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        dynamic_offset_count: UInt32,
+        p_dynamic_offsets: Ptr[UInt32, ImmutAnyOrigin],
     )
     var cmd_bind_index_buffer: fn(
-        commandBuffer: CommandBuffer, buffer: Buffer, offset: DeviceSize, indexType: IndexType
+        command_buffer: CommandBuffer, buffer: Buffer, offset: DeviceSize, index_type: IndexType
     )
     var cmd_bind_vertex_buffers: fn(
-        commandBuffer: CommandBuffer,
-        firstBinding: UInt32,
-        bindingCount: UInt32,
-        pBuffers: Ptr[Buffer, ImmutAnyOrigin],
-        pOffsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_binding: UInt32,
+        binding_count: UInt32,
+        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
+        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
     )
     var cmd_draw: fn(
-        commandBuffer: CommandBuffer,
-        vertexCount: UInt32,
-        instanceCount: UInt32,
-        firstVertex: UInt32,
-        firstInstance: UInt32,
+        command_buffer: CommandBuffer,
+        vertex_count: UInt32,
+        instance_count: UInt32,
+        first_vertex: UInt32,
+        first_instance: UInt32,
     )
     var cmd_draw_indexed: fn(
-        commandBuffer: CommandBuffer,
-        indexCount: UInt32,
-        instanceCount: UInt32,
-        firstIndex: UInt32,
-        vertexOffset: Int32,
-        firstInstance: UInt32,
+        command_buffer: CommandBuffer,
+        index_count: UInt32,
+        instance_count: UInt32,
+        first_index: UInt32,
+        vertex_offset: Int32,
+        first_instance: UInt32,
     )
     var cmd_draw_indirect: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
-        drawCount: UInt32,
+        draw_count: UInt32,
         stride: UInt32,
     )
     var cmd_draw_indexed_indirect: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
-        drawCount: UInt32,
+        draw_count: UInt32,
         stride: UInt32,
     )
     var cmd_dispatch: fn(
-        commandBuffer: CommandBuffer, groupCountX: UInt32, groupCountY: UInt32, groupCountZ: UInt32
+        command_buffer: CommandBuffer,
+        group_count_x: UInt32,
+        group_count_y: UInt32,
+        group_count_z: UInt32,
     )
-    var cmd_dispatch_indirect: fn(commandBuffer: CommandBuffer, buffer: Buffer, offset: DeviceSize)
+    var cmd_dispatch_indirect: fn(command_buffer: CommandBuffer, buffer: Buffer, offset: DeviceSize)
     var cmd_copy_buffer: fn(
-        commandBuffer: CommandBuffer,
-        srcBuffer: Buffer,
-        dstBuffer: Buffer,
-        regionCount: UInt32,
-        pRegions: Ptr[BufferCopy, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        src_buffer: Buffer,
+        dst_buffer: Buffer,
+        region_count: UInt32,
+        p_regions: Ptr[BufferCopy, ImmutAnyOrigin],
     )
     var cmd_copy_image: fn(
-        commandBuffer: CommandBuffer,
-        srcImage: Image,
-        srcImageLayout: ImageLayout,
-        dstImage: Image,
-        dstImageLayout: ImageLayout,
-        regionCount: UInt32,
-        pRegions: Ptr[ImageCopy, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        src_image: Image,
+        src_image_layout: ImageLayout,
+        dst_image: Image,
+        dst_image_layout: ImageLayout,
+        region_count: UInt32,
+        p_regions: Ptr[ImageCopy, ImmutAnyOrigin],
     )
     var cmd_blit_image: fn(
-        commandBuffer: CommandBuffer,
-        srcImage: Image,
-        srcImageLayout: ImageLayout,
-        dstImage: Image,
-        dstImageLayout: ImageLayout,
-        regionCount: UInt32,
-        pRegions: Ptr[ImageBlit, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        src_image: Image,
+        src_image_layout: ImageLayout,
+        dst_image: Image,
+        dst_image_layout: ImageLayout,
+        region_count: UInt32,
+        p_regions: Ptr[ImageBlit, ImmutAnyOrigin],
         filter: Filter,
     )
     var cmd_copy_buffer_to_image: fn(
-        commandBuffer: CommandBuffer,
-        srcBuffer: Buffer,
-        dstImage: Image,
-        dstImageLayout: ImageLayout,
-        regionCount: UInt32,
-        pRegions: Ptr[BufferImageCopy, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        src_buffer: Buffer,
+        dst_image: Image,
+        dst_image_layout: ImageLayout,
+        region_count: UInt32,
+        p_regions: Ptr[BufferImageCopy, ImmutAnyOrigin],
     )
     var cmd_copy_image_to_buffer: fn(
-        commandBuffer: CommandBuffer,
-        srcImage: Image,
-        srcImageLayout: ImageLayout,
-        dstBuffer: Buffer,
-        regionCount: UInt32,
-        pRegions: Ptr[BufferImageCopy, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        src_image: Image,
+        src_image_layout: ImageLayout,
+        dst_buffer: Buffer,
+        region_count: UInt32,
+        p_regions: Ptr[BufferImageCopy, ImmutAnyOrigin],
     )
     var cmd_update_buffer: fn(
-        commandBuffer: CommandBuffer,
-        dstBuffer: Buffer,
-        dstOffset: DeviceSize,
-        dataSize: DeviceSize,
-        pData: Ptr[NoneType, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        dst_buffer: Buffer,
+        dst_offset: DeviceSize,
+        data_size: DeviceSize,
+        p_data: Ptr[NoneType, ImmutAnyOrigin],
     )
     var cmd_fill_buffer: fn(
-        commandBuffer: CommandBuffer,
-        dstBuffer: Buffer,
-        dstOffset: DeviceSize,
+        command_buffer: CommandBuffer,
+        dst_buffer: Buffer,
+        dst_offset: DeviceSize,
         size: DeviceSize,
         data: UInt32,
     )
     var cmd_clear_color_image: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         image: Image,
-        imageLayout: ImageLayout,
-        pColor: Ptr[ClearColorValue, ImmutAnyOrigin],
-        rangeCount: UInt32,
-        pRanges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
+        image_layout: ImageLayout,
+        color: ClearColorValue,
+        range_count: UInt32,
+        p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
     )
     var cmd_clear_depth_stencil_image: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         image: Image,
-        imageLayout: ImageLayout,
-        pDepthStencil: Ptr[ClearDepthStencilValue, ImmutAnyOrigin],
-        rangeCount: UInt32,
-        pRanges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
+        image_layout: ImageLayout,
+        depth_stencil: ClearDepthStencilValue,
+        range_count: UInt32,
+        p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
     )
     var cmd_clear_attachments: fn(
-        commandBuffer: CommandBuffer,
-        attachmentCount: UInt32,
-        pAttachments: Ptr[ClearAttachment, ImmutAnyOrigin],
-        rectCount: UInt32,
-        pRects: Ptr[ClearRect, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        attachment_count: UInt32,
+        p_attachments: Ptr[ClearAttachment, ImmutAnyOrigin],
+        rect_count: UInt32,
+        p_rects: Ptr[ClearRect, ImmutAnyOrigin],
     )
     var cmd_resolve_image: fn(
-        commandBuffer: CommandBuffer,
-        srcImage: Image,
-        srcImageLayout: ImageLayout,
-        dstImage: Image,
-        dstImageLayout: ImageLayout,
-        regionCount: UInt32,
-        pRegions: Ptr[ImageResolve, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        src_image: Image,
+        src_image_layout: ImageLayout,
+        dst_image: Image,
+        dst_image_layout: ImageLayout,
+        region_count: UInt32,
+        p_regions: Ptr[ImageResolve, ImmutAnyOrigin],
     )
     var cmd_set_event: fn(
-        commandBuffer: CommandBuffer, event: Event, stageMask: PipelineStageFlags
+        command_buffer: CommandBuffer, event: Event, stage_mask: PipelineStageFlags
     )
     var cmd_reset_event: fn(
-        commandBuffer: CommandBuffer, event: Event, stageMask: PipelineStageFlags
+        command_buffer: CommandBuffer, event: Event, stage_mask: PipelineStageFlags
     )
     var cmd_wait_events: fn(
-        commandBuffer: CommandBuffer,
-        eventCount: UInt32,
-        pEvents: Ptr[Event, ImmutAnyOrigin],
-        srcStageMask: PipelineStageFlags,
-        dstStageMask: PipelineStageFlags,
-        memoryBarrierCount: UInt32,
-        pMemoryBarriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
-        bufferMemoryBarrierCount: UInt32,
-        pBufferMemoryBarriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
-        imageMemoryBarrierCount: UInt32,
-        pImageMemoryBarriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        event_count: UInt32,
+        p_events: Ptr[Event, ImmutAnyOrigin],
+        src_stage_mask: PipelineStageFlags,
+        dst_stage_mask: PipelineStageFlags,
+        memory_barrier_count: UInt32,
+        p_memory_barriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
+        buffer_memory_barrier_count: UInt32,
+        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
+        image_memory_barrier_count: UInt32,
+        p_image_memory_barriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
     )
     var cmd_pipeline_barrier: fn(
-        commandBuffer: CommandBuffer,
-        srcStageMask: PipelineStageFlags,
-        dstStageMask: PipelineStageFlags,
-        dependencyFlags: DependencyFlags,
-        memoryBarrierCount: UInt32,
-        pMemoryBarriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
-        bufferMemoryBarrierCount: UInt32,
-        pBufferMemoryBarriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
-        imageMemoryBarrierCount: UInt32,
-        pImageMemoryBarriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        src_stage_mask: PipelineStageFlags,
+        dst_stage_mask: PipelineStageFlags,
+        dependency_flags: DependencyFlags,
+        memory_barrier_count: UInt32,
+        p_memory_barriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
+        buffer_memory_barrier_count: UInt32,
+        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
+        image_memory_barrier_count: UInt32,
+        p_image_memory_barriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
     )
     var cmd_begin_query: fn(
-        commandBuffer: CommandBuffer, queryPool: QueryPool, query: UInt32, flags: QueryControlFlags
+        command_buffer: CommandBuffer,
+        query_pool: QueryPool,
+        query: UInt32,
+        flags: QueryControlFlags,
     )
-    var cmd_end_query: fn(commandBuffer: CommandBuffer, queryPool: QueryPool, query: UInt32)
+    var cmd_end_query: fn(command_buffer: CommandBuffer, query_pool: QueryPool, query: UInt32)
     var cmd_reset_query_pool: fn(
-        commandBuffer: CommandBuffer, queryPool: QueryPool, firstQuery: UInt32, queryCount: UInt32
+        command_buffer: CommandBuffer,
+        query_pool: QueryPool,
+        first_query: UInt32,
+        query_count: UInt32,
     )
     var cmd_write_timestamp: fn(
-        commandBuffer: CommandBuffer,
-        pipelineStage: PipelineStageFlagBits,
-        queryPool: QueryPool,
+        command_buffer: CommandBuffer,
+        pipeline_stage: PipelineStageFlagBits,
+        query_pool: QueryPool,
         query: UInt32,
     )
     var cmd_copy_query_pool_results: fn(
-        commandBuffer: CommandBuffer,
-        queryPool: QueryPool,
-        firstQuery: UInt32,
-        queryCount: UInt32,
-        dstBuffer: Buffer,
-        dstOffset: DeviceSize,
+        command_buffer: CommandBuffer,
+        query_pool: QueryPool,
+        first_query: UInt32,
+        query_count: UInt32,
+        dst_buffer: Buffer,
+        dst_offset: DeviceSize,
         stride: DeviceSize,
         flags: QueryResultFlags,
     )
     var cmd_push_constants: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         layout: PipelineLayout,
-        stageFlags: ShaderStageFlags,
+        stage_flags: ShaderStageFlags,
         offset: UInt32,
         size: UInt32,
-        pValues: Ptr[NoneType, ImmutAnyOrigin],
+        p_values: Ptr[NoneType, ImmutAnyOrigin],
     )
     var cmd_begin_render_pass: fn(
-        commandBuffer: CommandBuffer,
-        pRenderPassBegin: Ptr[RenderPassBeginInfo, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        render_pass_begin: RenderPassBeginInfo,
         contents: SubpassContents,
     )
-    var cmd_next_subpass: fn(commandBuffer: CommandBuffer, contents: SubpassContents)
-    var cmd_end_render_pass: fn(commandBuffer: CommandBuffer)
+    var cmd_next_subpass: fn(command_buffer: CommandBuffer, contents: SubpassContents)
+    var cmd_end_render_pass: fn(command_buffer: CommandBuffer)
     var cmd_execute_commands: fn(
-        commandBuffer: CommandBuffer,
-        commandBufferCount: UInt32,
-        pCommandBuffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        command_buffer_count: UInt32,
+        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
     )
 
     fn __init__(out self, device: Device, dlhandle: OwnedDLHandle):
@@ -15724,86 +15627,84 @@ struct DeviceFunctionAdditionsV1_0(Copyable, Movable):
         )).bitcast[type_of(self.cmd_execute_commands)]()[]
 
 
-struct DeviceFunctionAdditionsV1_1(Copyable, Movable):
+struct DeviceFunctionAdditionsV1_1(Movable):
     var bind_buffer_memory_2: fn(
-        device: Device, bindInfoCount: UInt32, pBindInfos: Ptr[BindBufferMemoryInfo, ImmutAnyOrigin]
+        device: Device,
+        bind_info_count: UInt32,
+        p_bind_infos: Ptr[BindBufferMemoryInfo, ImmutAnyOrigin],
     ) -> Result
     var bind_image_memory_2: fn(
-        device: Device, bindInfoCount: UInt32, pBindInfos: Ptr[BindImageMemoryInfo, ImmutAnyOrigin]
+        device: Device,
+        bind_info_count: UInt32,
+        p_bind_infos: Ptr[BindImageMemoryInfo, ImmutAnyOrigin],
     ) -> Result
     var get_device_group_peer_memory_features: fn(
         device: Device,
-        heapIndex: UInt32,
-        localDeviceIndex: UInt32,
-        remoteDeviceIndex: UInt32,
-        pPeerMemoryFeatures: Ptr[PeerMemoryFeatureFlags, MutAnyOrigin],
+        heap_index: UInt32,
+        local_device_index: UInt32,
+        remote_device_index: UInt32,
+        peer_memory_features: PeerMemoryFeatureFlags,
     )
-    var cmd_set_device_mask: fn(commandBuffer: CommandBuffer, deviceMask: UInt32)
+    var cmd_set_device_mask: fn(command_buffer: CommandBuffer, device_mask: UInt32)
     var cmd_dispatch_base: fn(
-        commandBuffer: CommandBuffer,
-        baseGroupX: UInt32,
-        baseGroupY: UInt32,
-        baseGroupZ: UInt32,
-        groupCountX: UInt32,
-        groupCountY: UInt32,
-        groupCountZ: UInt32,
+        command_buffer: CommandBuffer,
+        base_group_x: UInt32,
+        base_group_y: UInt32,
+        base_group_z: UInt32,
+        group_count_x: UInt32,
+        group_count_y: UInt32,
+        group_count_z: UInt32,
     )
     var get_image_memory_requirements_2: fn(
-        device: Device,
-        pInfo: Ptr[ImageMemoryRequirementsInfo2, ImmutAnyOrigin],
-        pMemoryRequirements: Ptr[MemoryRequirements2, MutAnyOrigin],
+        device: Device, info: ImageMemoryRequirementsInfo2, memory_requirements: MemoryRequirements2
     )
     var get_buffer_memory_requirements_2: fn(
         device: Device,
-        pInfo: Ptr[BufferMemoryRequirementsInfo2, ImmutAnyOrigin],
-        pMemoryRequirements: Ptr[MemoryRequirements2, MutAnyOrigin],
+        info: BufferMemoryRequirementsInfo2,
+        memory_requirements: MemoryRequirements2,
     )
     var get_image_sparse_memory_requirements_2: fn(
         device: Device,
-        pInfo: Ptr[ImageSparseMemoryRequirementsInfo2, ImmutAnyOrigin],
-        pSparseMemoryRequirementCount: Ptr[UInt32, MutAnyOrigin],
-        pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
+        info: ImageSparseMemoryRequirementsInfo2,
+        sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     )
     var trim_command_pool: fn(
-        device: Device, commandPool: CommandPool, flags: CommandPoolTrimFlags
+        device: Device, command_pool: CommandPool, flags: CommandPoolTrimFlags
     )
-    var get_device_queue_2: fn(
-        device: Device,
-        pQueueInfo: Ptr[DeviceQueueInfo2, ImmutAnyOrigin],
-        pQueue: Ptr[Queue, MutAnyOrigin],
-    )
+    var get_device_queue_2: fn(device: Device, queue_info: DeviceQueueInfo2, queue: Queue)
     var create_sampler_ycbcr_conversion: fn(
         device: Device,
-        pCreateInfo: Ptr[SamplerYcbcrConversionCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pYcbcrConversion: Ptr[SamplerYcbcrConversion, MutAnyOrigin],
+        create_info: SamplerYcbcrConversionCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result
     var destroy_sampler_ycbcr_conversion: fn(
         device: Device,
-        ycbcrConversion: SamplerYcbcrConversion,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        ycbcr_conversion: SamplerYcbcrConversion,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var create_descriptor_update_template: fn(
         device: Device,
-        pCreateInfo: Ptr[DescriptorUpdateTemplateCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pDescriptorUpdateTemplate: Ptr[DescriptorUpdateTemplate, MutAnyOrigin],
+        create_info: DescriptorUpdateTemplateCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result
     var destroy_descriptor_update_template: fn(
         device: Device,
-        descriptorUpdateTemplate: DescriptorUpdateTemplate,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        descriptor_update_template: DescriptorUpdateTemplate,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var update_descriptor_set_with_template: fn(
         device: Device,
-        descriptorSet: DescriptorSet,
-        descriptorUpdateTemplate: DescriptorUpdateTemplate,
-        pData: Ptr[NoneType, ImmutAnyOrigin],
+        descriptor_set: DescriptorSet,
+        descriptor_update_template: DescriptorUpdateTemplate,
+        p_data: Ptr[NoneType, ImmutAnyOrigin],
     )
     var get_descriptor_set_layout_support: fn(
         device: Device,
-        pCreateInfo: Ptr[DescriptorSetLayoutCreateInfo, ImmutAnyOrigin],
-        pSupport: Ptr[DescriptorSetLayoutSupport, MutAnyOrigin],
+        create_info: DescriptorSetLayoutCreateInfo,
+        support: DescriptorSetLayoutSupport,
     )
 
     fn __init__(out self, device: Device, dlhandle: OwnedDLHandle):
@@ -15860,64 +15761,58 @@ struct DeviceFunctionAdditionsV1_1(Copyable, Movable):
         )).bitcast[type_of(self.get_descriptor_set_layout_support)]()[]
 
 
-struct DeviceFunctionAdditionsV1_2(Copyable, Movable):
+struct DeviceFunctionAdditionsV1_2(Movable):
     var cmd_draw_indirect_count: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
-        countBuffer: Buffer,
-        countBufferOffset: DeviceSize,
-        maxDrawCount: UInt32,
+        count_buffer: Buffer,
+        count_buffer_offset: DeviceSize,
+        max_draw_count: UInt32,
         stride: UInt32,
     )
     var cmd_draw_indexed_indirect_count: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
-        countBuffer: Buffer,
-        countBufferOffset: DeviceSize,
-        maxDrawCount: UInt32,
+        count_buffer: Buffer,
+        count_buffer_offset: DeviceSize,
+        max_draw_count: UInt32,
         stride: UInt32,
     )
     var create_render_pass_2: fn(
         device: Device,
-        pCreateInfo: Ptr[RenderPassCreateInfo2, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pRenderPass: Ptr[RenderPass, MutAnyOrigin],
+        create_info: RenderPassCreateInfo2,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        render_pass: RenderPass,
     ) -> Result
     var cmd_begin_render_pass_2: fn(
-        commandBuffer: CommandBuffer,
-        pRenderPassBegin: Ptr[RenderPassBeginInfo, ImmutAnyOrigin],
-        pSubpassBeginInfo: Ptr[SubpassBeginInfo, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        render_pass_begin: RenderPassBeginInfo,
+        subpass_begin_info: SubpassBeginInfo,
     )
     var cmd_next_subpass_2: fn(
-        commandBuffer: CommandBuffer,
-        pSubpassBeginInfo: Ptr[SubpassBeginInfo, ImmutAnyOrigin],
-        pSubpassEndInfo: Ptr[SubpassEndInfo, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        subpass_begin_info: SubpassBeginInfo,
+        subpass_end_info: SubpassEndInfo,
     )
-    var cmd_end_render_pass_2: fn(
-        commandBuffer: CommandBuffer, pSubpassEndInfo: Ptr[SubpassEndInfo, ImmutAnyOrigin]
-    )
+    var cmd_end_render_pass_2: fn(command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo)
     var reset_query_pool: fn(
-        device: Device, queryPool: QueryPool, firstQuery: UInt32, queryCount: UInt32
+        device: Device, query_pool: QueryPool, first_query: UInt32, query_count: UInt32
     )
     var get_semaphore_counter_value: fn(
-        device: Device, semaphore: Semaphore, pValue: Ptr[UInt64, MutAnyOrigin]
+        device: Device, semaphore: Semaphore, value: UInt64
     ) -> Result
-    var wait_semaphores: fn(
-        device: Device, pWaitInfo: Ptr[SemaphoreWaitInfo, ImmutAnyOrigin], timeout: UInt64
-    ) -> Result
-    var signal_semaphore: fn(
-        device: Device, pSignalInfo: Ptr[SemaphoreSignalInfo, ImmutAnyOrigin]
-    ) -> Result
+    var wait_semaphores: fn(device: Device, wait_info: SemaphoreWaitInfo, timeout: UInt64) -> Result
+    var signal_semaphore: fn(device: Device, signal_info: SemaphoreSignalInfo) -> Result
     var get_buffer_device_address: fn(
-        device: Device, pInfo: Ptr[BufferDeviceAddressInfo, ImmutAnyOrigin]
+        device: Device, info: BufferDeviceAddressInfo
     ) -> DeviceAddress
     var get_buffer_opaque_capture_address: fn(
-        device: Device, pInfo: Ptr[BufferDeviceAddressInfo, ImmutAnyOrigin]
+        device: Device, info: BufferDeviceAddressInfo
     ) -> UInt64
     var get_device_memory_opaque_capture_address: fn(
-        device: Device, pInfo: Ptr[DeviceMemoryOpaqueCaptureAddressInfo, ImmutAnyOrigin]
+        device: Device, info: DeviceMemoryOpaqueCaptureAddressInfo
     ) -> UInt64
 
     fn __init__(out self, device: Device, dlhandle: OwnedDLHandle):
@@ -15965,141 +15860,132 @@ struct DeviceFunctionAdditionsV1_2(Copyable, Movable):
         )).bitcast[type_of(self.get_device_memory_opaque_capture_address)]()[]
 
 
-struct DeviceFunctionAdditionsV1_3(Copyable, Movable):
+struct DeviceFunctionAdditionsV1_3(Movable):
     var create_private_data_slot: fn(
         device: Device,
-        pCreateInfo: Ptr[PrivateDataSlotCreateInfo, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pPrivateDataSlot: Ptr[PrivateDataSlot, MutAnyOrigin],
+        create_info: PrivateDataSlotCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        private_data_slot: PrivateDataSlot,
     ) -> Result
     var destroy_private_data_slot: fn(
         device: Device,
-        privateDataSlot: PrivateDataSlot,
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        private_data_slot: PrivateDataSlot,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
     var set_private_data: fn(
         device: Device,
-        objectType: ObjectType,
-        objectHandle: UInt64,
-        privateDataSlot: PrivateDataSlot,
+        object_type: ObjectType,
+        object_handle: UInt64,
+        private_data_slot: PrivateDataSlot,
         data: UInt64,
     ) -> Result
     var get_private_data: fn(
         device: Device,
-        objectType: ObjectType,
-        objectHandle: UInt64,
-        privateDataSlot: PrivateDataSlot,
-        pData: Ptr[UInt64, MutAnyOrigin],
+        object_type: ObjectType,
+        object_handle: UInt64,
+        private_data_slot: PrivateDataSlot,
+        data: UInt64,
     )
     var cmd_set_event_2: fn(
-        commandBuffer: CommandBuffer,
-        event: Event,
-        pDependencyInfo: Ptr[DependencyInfo, ImmutAnyOrigin],
+        command_buffer: CommandBuffer, event: Event, dependency_info: DependencyInfo
     )
     var cmd_reset_event_2: fn(
-        commandBuffer: CommandBuffer, event: Event, stageMask: PipelineStageFlags2
+        command_buffer: CommandBuffer, event: Event, stage_mask: PipelineStageFlags2
     )
     var cmd_wait_events_2: fn(
-        commandBuffer: CommandBuffer,
-        eventCount: UInt32,
-        pEvents: Ptr[Event, ImmutAnyOrigin],
-        pDependencyInfos: Ptr[DependencyInfo, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        event_count: UInt32,
+        p_events: Ptr[Event, ImmutAnyOrigin],
+        p_dependency_infos: Ptr[DependencyInfo, ImmutAnyOrigin],
     )
-    var cmd_pipeline_barrier_2: fn(
-        commandBuffer: CommandBuffer, pDependencyInfo: Ptr[DependencyInfo, ImmutAnyOrigin]
-    )
+    var cmd_pipeline_barrier_2: fn(command_buffer: CommandBuffer, dependency_info: DependencyInfo)
     var cmd_write_timestamp_2: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         stage: PipelineStageFlags2,
-        queryPool: QueryPool,
+        query_pool: QueryPool,
         query: UInt32,
     )
     var queue_submit_2: fn(
-        queue: Queue, submitCount: UInt32, pSubmits: Ptr[SubmitInfo2, ImmutAnyOrigin], fence: Fence
+        queue: Queue,
+        submit_count: UInt32,
+        p_submits: Ptr[SubmitInfo2, ImmutAnyOrigin],
+        fence: Fence,
     ) -> Result
-    var cmd_copy_buffer_2: fn(
-        commandBuffer: CommandBuffer, pCopyBufferInfo: Ptr[CopyBufferInfo2, ImmutAnyOrigin]
-    )
-    var cmd_copy_image_2: fn(
-        commandBuffer: CommandBuffer, pCopyImageInfo: Ptr[CopyImageInfo2, ImmutAnyOrigin]
-    )
+    var cmd_copy_buffer_2: fn(command_buffer: CommandBuffer, copy_buffer_info: CopyBufferInfo2)
+    var cmd_copy_image_2: fn(command_buffer: CommandBuffer, copy_image_info: CopyImageInfo2)
     var cmd_copy_buffer_to_image_2: fn(
-        commandBuffer: CommandBuffer,
-        pCopyBufferToImageInfo: Ptr[CopyBufferToImageInfo2, ImmutAnyOrigin],
+        command_buffer: CommandBuffer, copy_buffer_to_image_info: CopyBufferToImageInfo2
     )
     var cmd_copy_image_to_buffer_2: fn(
-        commandBuffer: CommandBuffer,
-        pCopyImageToBufferInfo: Ptr[CopyImageToBufferInfo2, ImmutAnyOrigin],
+        command_buffer: CommandBuffer, copy_image_to_buffer_info: CopyImageToBufferInfo2
     )
-    var cmd_blit_image_2: fn(
-        commandBuffer: CommandBuffer, pBlitImageInfo: Ptr[BlitImageInfo2, ImmutAnyOrigin]
-    )
+    var cmd_blit_image_2: fn(command_buffer: CommandBuffer, blit_image_info: BlitImageInfo2)
     var cmd_resolve_image_2: fn(
-        commandBuffer: CommandBuffer, pResolveImageInfo: Ptr[ResolveImageInfo2, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, resolve_image_info: ResolveImageInfo2
     )
-    var cmd_begin_rendering: fn(
-        commandBuffer: CommandBuffer, pRenderingInfo: Ptr[RenderingInfo, ImmutAnyOrigin]
-    )
-    var cmd_end_rendering: fn(commandBuffer: CommandBuffer)
-    var cmd_set_cull_mode: fn(commandBuffer: CommandBuffer, cullMode: CullModeFlags)
-    var cmd_set_front_face: fn(commandBuffer: CommandBuffer, frontFace: FrontFace)
+    var cmd_begin_rendering: fn(command_buffer: CommandBuffer, rendering_info: RenderingInfo)
+    var cmd_end_rendering: fn(command_buffer: CommandBuffer)
+    var cmd_set_cull_mode: fn(command_buffer: CommandBuffer, cull_mode: CullModeFlags)
+    var cmd_set_front_face: fn(command_buffer: CommandBuffer, front_face: FrontFace)
     var cmd_set_primitive_topology: fn(
-        commandBuffer: CommandBuffer, primitiveTopology: PrimitiveTopology
+        command_buffer: CommandBuffer, primitive_topology: PrimitiveTopology
     )
     var cmd_set_viewport_with_count: fn(
-        commandBuffer: CommandBuffer,
-        viewportCount: UInt32,
-        pViewports: Ptr[Viewport, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        viewport_count: UInt32,
+        p_viewports: Ptr[Viewport, ImmutAnyOrigin],
     )
     var cmd_set_scissor_with_count: fn(
-        commandBuffer: CommandBuffer, scissorCount: UInt32, pScissors: Ptr[Rect2D, ImmutAnyOrigin]
+        command_buffer: CommandBuffer,
+        scissor_count: UInt32,
+        p_scissors: Ptr[Rect2D, ImmutAnyOrigin],
     )
     var cmd_bind_vertex_buffers_2: fn(
-        commandBuffer: CommandBuffer,
-        firstBinding: UInt32,
-        bindingCount: UInt32,
-        pBuffers: Ptr[Buffer, ImmutAnyOrigin],
-        pOffsets: Ptr[DeviceSize, ImmutAnyOrigin],
-        pSizes: Ptr[DeviceSize, ImmutAnyOrigin],
-        pStrides: Ptr[DeviceSize, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        first_binding: UInt32,
+        binding_count: UInt32,
+        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
+        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_strides: Ptr[DeviceSize, ImmutAnyOrigin],
     )
-    var cmd_set_depth_test_enable: fn(commandBuffer: CommandBuffer, depthTestEnable: Bool32)
-    var cmd_set_depth_write_enable: fn(commandBuffer: CommandBuffer, depthWriteEnable: Bool32)
-    var cmd_set_depth_compare_op: fn(commandBuffer: CommandBuffer, depthCompareOp: CompareOp)
+    var cmd_set_depth_test_enable: fn(command_buffer: CommandBuffer, depth_test_enable: Bool32)
+    var cmd_set_depth_write_enable: fn(command_buffer: CommandBuffer, depth_write_enable: Bool32)
+    var cmd_set_depth_compare_op: fn(command_buffer: CommandBuffer, depth_compare_op: CompareOp)
     var cmd_set_depth_bounds_test_enable: fn(
-        commandBuffer: CommandBuffer, depthBoundsTestEnable: Bool32
+        command_buffer: CommandBuffer, depth_bounds_test_enable: Bool32
     )
-    var cmd_set_stencil_test_enable: fn(commandBuffer: CommandBuffer, stencilTestEnable: Bool32)
+    var cmd_set_stencil_test_enable: fn(command_buffer: CommandBuffer, stencil_test_enable: Bool32)
     var cmd_set_stencil_op: fn(
-        commandBuffer: CommandBuffer,
-        faceMask: StencilFaceFlags,
-        failOp: StencilOp,
-        passOp: StencilOp,
-        depthFailOp: StencilOp,
-        compareOp: CompareOp,
+        command_buffer: CommandBuffer,
+        face_mask: StencilFaceFlags,
+        fail_op: StencilOp,
+        pass_op: StencilOp,
+        depth_fail_op: StencilOp,
+        compare_op: CompareOp,
     )
     var cmd_set_rasterizer_discard_enable: fn(
-        commandBuffer: CommandBuffer, rasterizerDiscardEnable: Bool32
+        command_buffer: CommandBuffer, rasterizer_discard_enable: Bool32
     )
-    var cmd_set_depth_bias_enable: fn(commandBuffer: CommandBuffer, depthBiasEnable: Bool32)
+    var cmd_set_depth_bias_enable: fn(command_buffer: CommandBuffer, depth_bias_enable: Bool32)
     var cmd_set_primitive_restart_enable: fn(
-        commandBuffer: CommandBuffer, primitiveRestartEnable: Bool32
+        command_buffer: CommandBuffer, primitive_restart_enable: Bool32
     )
     var get_device_buffer_memory_requirements: fn(
         device: Device,
-        pInfo: Ptr[DeviceBufferMemoryRequirements, ImmutAnyOrigin],
-        pMemoryRequirements: Ptr[MemoryRequirements2, MutAnyOrigin],
+        info: DeviceBufferMemoryRequirements,
+        memory_requirements: MemoryRequirements2,
     )
     var get_device_image_memory_requirements: fn(
         device: Device,
-        pInfo: Ptr[DeviceImageMemoryRequirements, ImmutAnyOrigin],
-        pMemoryRequirements: Ptr[MemoryRequirements2, MutAnyOrigin],
+        info: DeviceImageMemoryRequirements,
+        memory_requirements: MemoryRequirements2,
     )
     var get_device_image_sparse_memory_requirements: fn(
         device: Device,
-        pInfo: Ptr[DeviceImageMemoryRequirements, ImmutAnyOrigin],
-        pSparseMemoryRequirementCount: Ptr[UInt32, MutAnyOrigin],
-        pSparseMemoryRequirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
+        info: DeviceImageMemoryRequirements,
+        sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     )
 
     fn __init__(out self, device: Device, dlhandle: OwnedDLHandle):
@@ -16216,92 +16102,78 @@ struct DeviceFunctionAdditionsV1_3(Copyable, Movable):
         )).bitcast[type_of(self.get_device_image_sparse_memory_requirements)]()[]
 
 
-struct DeviceFunctionAdditionsV1_4(Copyable, Movable):
+struct DeviceFunctionAdditionsV1_4(Movable):
     var cmd_set_line_stipple: fn(
-        commandBuffer: CommandBuffer, lineStippleFactor: UInt32, lineStipplePattern: UInt16
+        command_buffer: CommandBuffer, line_stipple_factor: UInt32, line_stipple_pattern: UInt16
     )
     var map_memory_2: fn(
-        device: Device,
-        pMemoryMapInfo: Ptr[MemoryMapInfo, ImmutAnyOrigin],
-        ppData: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
+        device: Device, memory_map_info: MemoryMapInfo, p_data: Ptr[NoneType, MutAnyOrigin]
     ) -> Result
-    var unmap_memory_2: fn(
-        device: Device, pMemoryUnmapInfo: Ptr[MemoryUnmapInfo, ImmutAnyOrigin]
-    ) -> Result
+    var unmap_memory_2: fn(device: Device, memory_unmap_info: MemoryUnmapInfo) -> Result
     var cmd_bind_index_buffer_2: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
         size: DeviceSize,
-        indexType: IndexType,
+        index_type: IndexType,
     )
     var get_rendering_area_granularity: fn(
-        device: Device,
-        pRenderingAreaInfo: Ptr[RenderingAreaInfo, ImmutAnyOrigin],
-        pGranularity: Ptr[Extent2D, MutAnyOrigin],
+        device: Device, rendering_area_info: RenderingAreaInfo, granularity: Extent2D
     )
     var get_device_image_subresource_layout: fn(
-        device: Device,
-        pInfo: Ptr[DeviceImageSubresourceInfo, ImmutAnyOrigin],
-        pLayout: Ptr[SubresourceLayout2, MutAnyOrigin],
+        device: Device, info: DeviceImageSubresourceInfo, layout: SubresourceLayout2
     )
     var get_image_subresource_layout_2: fn(
-        device: Device,
-        image: Image,
-        pSubresource: Ptr[ImageSubresource2, ImmutAnyOrigin],
-        pLayout: Ptr[SubresourceLayout2, MutAnyOrigin],
+        device: Device, image: Image, subresource: ImageSubresource2, layout: SubresourceLayout2
     )
     var cmd_push_descriptor_set: fn(
-        commandBuffer: CommandBuffer,
-        pipelineBindPoint: PipelineBindPoint,
+        command_buffer: CommandBuffer,
+        pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
         set: UInt32,
-        descriptorWriteCount: UInt32,
-        pDescriptorWrites: Ptr[WriteDescriptorSet, ImmutAnyOrigin],
+        descriptor_write_count: UInt32,
+        p_descriptor_writes: Ptr[WriteDescriptorSet, ImmutAnyOrigin],
     )
     var cmd_push_descriptor_set_with_template: fn(
-        commandBuffer: CommandBuffer,
-        descriptorUpdateTemplate: DescriptorUpdateTemplate,
+        command_buffer: CommandBuffer,
+        descriptor_update_template: DescriptorUpdateTemplate,
         layout: PipelineLayout,
         set: UInt32,
-        pData: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, ImmutAnyOrigin],
     )
     var cmd_set_rendering_attachment_locations: fn(
-        commandBuffer: CommandBuffer,
-        pLocationInfo: Ptr[RenderingAttachmentLocationInfo, ImmutAnyOrigin],
+        command_buffer: CommandBuffer, location_info: RenderingAttachmentLocationInfo
     )
     var cmd_set_rendering_input_attachment_indices: fn(
-        commandBuffer: CommandBuffer,
-        pInputAttachmentIndexInfo: Ptr[RenderingInputAttachmentIndexInfo, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        input_attachment_index_info: RenderingInputAttachmentIndexInfo,
     )
     var cmd_bind_descriptor_sets_2: fn(
-        commandBuffer: CommandBuffer,
-        pBindDescriptorSetsInfo: Ptr[BindDescriptorSetsInfo, ImmutAnyOrigin],
+        command_buffer: CommandBuffer, bind_descriptor_sets_info: BindDescriptorSetsInfo
     )
     var cmd_push_constants_2: fn(
-        commandBuffer: CommandBuffer, pPushConstantsInfo: Ptr[PushConstantsInfo, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, push_constants_info: PushConstantsInfo
     )
     var cmd_push_descriptor_set_2: fn(
-        commandBuffer: CommandBuffer,
-        pPushDescriptorSetInfo: Ptr[PushDescriptorSetInfo, ImmutAnyOrigin],
+        command_buffer: CommandBuffer, push_descriptor_set_info: PushDescriptorSetInfo
     )
     var cmd_push_descriptor_set_with_template_2: fn(
-        commandBuffer: CommandBuffer,
-        pPushDescriptorSetWithTemplateInfo: Ptr[PushDescriptorSetWithTemplateInfo, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        push_descriptor_set_with_template_info: PushDescriptorSetWithTemplateInfo,
     )
     var copy_memory_to_image: fn(
-        device: Device, pCopyMemoryToImageInfo: Ptr[CopyMemoryToImageInfo, ImmutAnyOrigin]
+        device: Device, copy_memory_to_image_info: CopyMemoryToImageInfo
     ) -> Result
     var copy_image_to_memory: fn(
-        device: Device, pCopyImageToMemoryInfo: Ptr[CopyImageToMemoryInfo, ImmutAnyOrigin]
+        device: Device, copy_image_to_memory_info: CopyImageToMemoryInfo
     ) -> Result
     var copy_image_to_image: fn(
-        device: Device, pCopyImageToImageInfo: Ptr[CopyImageToImageInfo, ImmutAnyOrigin]
+        device: Device, copy_image_to_image_info: CopyImageToImageInfo
     ) -> Result
     var transition_image_layout: fn(
         device: Device,
-        transitionCount: UInt32,
-        pTransitions: Ptr[HostImageLayoutTransitionInfo, ImmutAnyOrigin],
+        transition_count: UInt32,
+        p_transitions: Ptr[HostImageLayoutTransitionInfo, ImmutAnyOrigin],
     ) -> Result
 
     fn __init__(out self, device: Device, dlhandle: OwnedDLHandle):

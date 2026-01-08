@@ -7,9 +7,9 @@ struct Surface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_surface_ohos: fn(
         instance: Instance,
-        pCreateInfo: Ptr[SurfaceCreateInfoOHOS, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
+        create_info: SurfaceCreateInfoOHOS,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        surface: SurfaceKHR,
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -34,7 +34,7 @@ struct Surface(Copyable):
         """
         return self._create_surface_ohos(
             instance,
-            Ptr(to=create_info).bitcast[SurfaceCreateInfoOHOS](),
+            Ptr(to=create_info).bitcast[SurfaceCreateInfoOHOS]()[],
             p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            Ptr(to=surface).bitcast[SurfaceKHR]()[],
         )

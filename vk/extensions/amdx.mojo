@@ -7,46 +7,44 @@ struct ShaderEnqueue(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_execution_graph_pipelines_amdx: fn(
         device: Device,
-        pipelineCache: PipelineCache,
-        createInfoCount: UInt32,
-        pCreateInfos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pPipelines: Ptr[Pipeline, MutAnyOrigin],
+        pipeline_cache: PipelineCache,
+        create_info_count: UInt32,
+        p_create_infos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result
     var _get_execution_graph_pipeline_scratch_size_amdx: fn(
-        device: Device,
-        executionGraph: Pipeline,
-        pSizeInfo: Ptr[ExecutionGraphPipelineScratchSizeAMDX, MutAnyOrigin],
+        device: Device, execution_graph: Pipeline, size_info: ExecutionGraphPipelineScratchSizeAMDX
     ) -> Result
     var _get_execution_graph_pipeline_node_index_amdx: fn(
         device: Device,
-        executionGraph: Pipeline,
-        pNodeInfo: Ptr[PipelineShaderStageNodeCreateInfoAMDX, ImmutAnyOrigin],
-        pNodeIndex: Ptr[UInt32, MutAnyOrigin],
+        execution_graph: Pipeline,
+        node_info: PipelineShaderStageNodeCreateInfoAMDX,
+        node_index: UInt32,
     ) -> Result
     var _cmd_initialize_graph_scratch_memory_amdx: fn(
-        commandBuffer: CommandBuffer,
-        executionGraph: Pipeline,
+        command_buffer: CommandBuffer,
+        execution_graph: Pipeline,
         scratch: DeviceAddress,
-        scratchSize: DeviceSize,
+        scratch_size: DeviceSize,
     )
     var _cmd_dispatch_graph_amdx: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         scratch: DeviceAddress,
-        scratchSize: DeviceSize,
-        pCountInfo: Ptr[DispatchGraphCountInfoAMDX, ImmutAnyOrigin],
+        scratch_size: DeviceSize,
+        count_info: DispatchGraphCountInfoAMDX,
     )
     var _cmd_dispatch_graph_indirect_amdx: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         scratch: DeviceAddress,
-        scratchSize: DeviceSize,
-        pCountInfo: Ptr[DispatchGraphCountInfoAMDX, ImmutAnyOrigin],
+        scratch_size: DeviceSize,
+        count_info: DispatchGraphCountInfoAMDX,
     )
     var _cmd_dispatch_graph_indirect_count_amdx: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         scratch: DeviceAddress,
-        scratchSize: DeviceSize,
-        countInfo: DeviceAddress,
+        scratch_size: DeviceSize,
+        count_info: DeviceAddress,
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -106,7 +104,7 @@ struct ShaderEnqueue(Copyable):
         return self._get_execution_graph_pipeline_scratch_size_amdx(
             device,
             execution_graph,
-            Ptr(to=size_info).bitcast[ExecutionGraphPipelineScratchSizeAMDX](),
+            Ptr(to=size_info).bitcast[ExecutionGraphPipelineScratchSizeAMDX]()[],
         )
 
     fn get_execution_graph_pipeline_node_index_amdx(
@@ -123,8 +121,8 @@ struct ShaderEnqueue(Copyable):
         return self._get_execution_graph_pipeline_node_index_amdx(
             device,
             execution_graph,
-            Ptr(to=node_info).bitcast[PipelineShaderStageNodeCreateInfoAMDX](),
-            Ptr(to=node_index).bitcast[UInt32](),
+            Ptr(to=node_info).bitcast[PipelineShaderStageNodeCreateInfoAMDX]()[],
+            Ptr(to=node_index).bitcast[UInt32]()[],
         )
 
     fn cmd_initialize_graph_scratch_memory_amdx(
@@ -157,7 +155,7 @@ struct ShaderEnqueue(Copyable):
             command_buffer,
             scratch,
             scratch_size,
-            Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX](),
+            Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX]()[],
         )
 
     fn cmd_dispatch_graph_indirect_amdx(
@@ -175,7 +173,7 @@ struct ShaderEnqueue(Copyable):
             command_buffer,
             scratch,
             scratch_size,
-            Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX](),
+            Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX]()[],
         )
 
     fn cmd_dispatch_graph_indirect_count_amdx(

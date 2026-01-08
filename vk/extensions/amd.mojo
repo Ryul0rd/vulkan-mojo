@@ -6,21 +6,21 @@ from vk.core_functions import GlobalFunctions
 struct DrawIndirectCount(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_draw_indirect_count: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
-        countBuffer: Buffer,
-        countBufferOffset: DeviceSize,
-        maxDrawCount: UInt32,
+        count_buffer: Buffer,
+        count_buffer_offset: DeviceSize,
+        max_draw_count: UInt32,
         stride: UInt32,
     )
     var _cmd_draw_indexed_indirect_count: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
-        countBuffer: Buffer,
-        countBufferOffset: DeviceSize,
-        maxDrawCount: UInt32,
+        count_buffer: Buffer,
+        count_buffer_offset: DeviceSize,
+        max_draw_count: UInt32,
         stride: UInt32,
     )
 
@@ -90,10 +90,10 @@ struct ShaderInfo(Copyable):
     var _get_shader_info_amd: fn(
         device: Device,
         pipeline: Pipeline,
-        shaderStage: ShaderStageFlagBits,
-        infoType: ShaderInfoTypeAMD,
-        pInfoSize: Ptr[UInt, MutAnyOrigin],
-        pInfo: Ptr[NoneType, MutAnyOrigin],
+        shader_stage: ShaderStageFlagBits,
+        info_type: ShaderInfoTypeAMD,
+        info_size: UInt,
+        p_info: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -119,7 +119,7 @@ struct ShaderInfo(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderInfoAMD.html
         """
         return self._get_shader_info_amd(
-            device, pipeline, shader_stage, info_type, Ptr(to=info_size).bitcast[UInt](), p_info
+            device, pipeline, shader_stage, info_type, Ptr(to=info_size).bitcast[UInt]()[], p_info
         )
 
     fn get_shader_info_amd(
@@ -140,8 +140,8 @@ struct ShaderInfo(Copyable):
             result = self.get_shader_info_amd(
                 device, pipeline, shader_stage, info_type, count, Ptr[NoneType, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_shader_info_amd(
                 device,
                 pipeline,
@@ -157,17 +157,17 @@ struct ShaderInfo(Copyable):
 struct BufferMarker(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_write_buffer_marker_amd: fn(
-        commandBuffer: CommandBuffer,
-        pipelineStage: PipelineStageFlagBits,
-        dstBuffer: Buffer,
-        dstOffset: DeviceSize,
+        command_buffer: CommandBuffer,
+        pipeline_stage: PipelineStageFlagBits,
+        dst_buffer: Buffer,
+        dst_offset: DeviceSize,
         marker: UInt32,
     )
     var _cmd_write_buffer_marker_2_amd: fn(
-        commandBuffer: CommandBuffer,
+        command_buffer: CommandBuffer,
         stage: PipelineStageFlags2,
-        dstBuffer: Buffer,
-        dstOffset: DeviceSize,
+        dst_buffer: Buffer,
+        dst_offset: DeviceSize,
         marker: UInt32,
     )
 
@@ -219,7 +219,7 @@ struct BufferMarker(Copyable):
 struct DisplayNativeHdr(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _set_local_dimming_amd: fn(
-        device: Device, swapChain: SwapchainKHR, localDimmingEnable: Bool32
+        device: Device, swap_chain: SwapchainKHR, local_dimming_enable: Bool32
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -243,7 +243,7 @@ struct DisplayNativeHdr(Copyable):
 
 struct AntiLag(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _anti_lag_update_amd: fn(device: Device, pData: Ptr[AntiLagDataAMD, ImmutAnyOrigin])
+    var _anti_lag_update_amd: fn(device: Device, data: AntiLagDataAMD)
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
         self._dlhandle = global_functions.get_dlhandle()
@@ -259,4 +259,4 @@ struct AntiLag(Copyable):
 
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAntiLagUpdateAMD.html
         """
-        return self._anti_lag_update_amd(device, Ptr(to=data).bitcast[AntiLagDataAMD]())
+        return self._anti_lag_update_amd(device, Ptr(to=data).bitcast[AntiLagDataAMD]()[])

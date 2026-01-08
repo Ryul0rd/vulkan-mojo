@@ -381,12 +381,10 @@ struct Rect2D(Copyable):
     var extent: Extent2D
 
     fn __init__(
-        out self,
-        var offset: Offset2D = zero_init[Offset2D](),
-        var extent: Extent2D = zero_init[Extent2D](),
+        out self, offset: Offset2D = zero_init[Offset2D](), extent: Extent2D = zero_init[Extent2D]()
     ):
-        self.offset = offset^
-        self.extent = extent^
+        self.offset = offset.copy()
+        self.extent = extent.copy()
 
 
 struct ClearRect(Copyable):
@@ -396,11 +394,11 @@ struct ClearRect(Copyable):
 
     fn __init__(
         out self,
-        var rect: Rect2D = zero_init[Rect2D](),
+        rect: Rect2D = zero_init[Rect2D](),
         base_array_layer: UInt32 = zero_init[UInt32](),
         layer_count: UInt32 = zero_init[UInt32](),
     ):
-        self.rect = rect^
+        self.rect = rect.copy()
         self.base_array_layer = base_array_layer
         self.layer_count = layer_count
 
@@ -425,8 +423,8 @@ struct ComponentMapping(Copyable):
 
 
 struct PhysicalDeviceProperties(Copyable):
-    var api_version: Version
-    var driver_version: Version
+    var api_version: UInt32
+    var driver_version: UInt32
     var vendor_id: UInt32
     var device_id: UInt32
     var device_type: PhysicalDeviceType
@@ -437,15 +435,15 @@ struct PhysicalDeviceProperties(Copyable):
 
     fn __init__(
         out self,
-        api_version: Version = zero_init[Version](),
-        driver_version: Version = zero_init[Version](),
+        api_version: UInt32 = zero_init[UInt32](),
+        driver_version: UInt32 = zero_init[UInt32](),
         vendor_id: UInt32 = zero_init[UInt32](),
         device_id: UInt32 = zero_init[UInt32](),
         device_type: PhysicalDeviceType = zero_init[PhysicalDeviceType](),
         device_name: InlineArray[c_char, Int(MAX_PHYSICAL_DEVICE_NAME_SIZE)] = zero_init[InlineArray[c_char, Int(MAX_PHYSICAL_DEVICE_NAME_SIZE)]](),
         pipeline_cache_uuid: InlineArray[UInt8, Int(UUID_SIZE)] = zero_init[InlineArray[UInt8, Int(UUID_SIZE)]](),
-        var limits: PhysicalDeviceLimits = zero_init[PhysicalDeviceLimits](),
-        var sparse_properties: PhysicalDeviceSparseProperties = zero_init[PhysicalDeviceSparseProperties](),
+        limits: PhysicalDeviceLimits = zero_init[PhysicalDeviceLimits](),
+        sparse_properties: PhysicalDeviceSparseProperties = zero_init[PhysicalDeviceSparseProperties](),
     ):
         self.api_version = api_version
         self.driver_version = driver_version
@@ -454,8 +452,8 @@ struct PhysicalDeviceProperties(Copyable):
         self.device_type = device_type
         self.device_name = device_name
         self.pipeline_cache_uuid = pipeline_cache_uuid
-        self.limits = limits^
-        self.sparse_properties = sparse_properties^
+        self.limits = limits.copy()
+        self.sparse_properties = sparse_properties.copy()
 
     fn device_name_slice(self) -> CStringSlice[origin_of(self.device_name)]:
         return CStringSlice[origin_of(self.device_name)](unsafe_from_ptr = self.device_name.unsafe_ptr())
@@ -463,12 +461,12 @@ struct PhysicalDeviceProperties(Copyable):
 
 struct ExtensionProperties(Copyable):
     var extension_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]
-    var spec_version: Version
+    var spec_version: UInt32
 
     fn __init__(
         out self,
         extension_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)] = zero_init[InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]](),
-        spec_version: Version = zero_init[Version](),
+        spec_version: UInt32 = zero_init[UInt32](),
     ):
         self.extension_name = extension_name
         self.spec_version = spec_version
@@ -479,15 +477,15 @@ struct ExtensionProperties(Copyable):
 
 struct LayerProperties(Copyable):
     var layer_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]
-    var spec_version: Version
-    var implementation_version: Version
+    var spec_version: UInt32
+    var implementation_version: UInt32
     var description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
 
     fn __init__(
         out self,
         layer_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)] = zero_init[InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]](),
-        spec_version: Version = zero_init[Version](),
-        implementation_version: Version = zero_init[Version](),
+        spec_version: UInt32 = zero_init[UInt32](),
+        implementation_version: UInt32 = zero_init[UInt32](),
         description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)] = zero_init[InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]](),
     ):
         self.layer_name = layer_name
@@ -506,28 +504,25 @@ struct ApplicationInfo(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
     var p_application_name: CStringSlice[ImmutAnyOrigin]
-    var application_version: Version
+    var application_version: UInt32
     var p_engine_name: CStringSlice[ImmutAnyOrigin]
-    var engine_version: Version
-    var api_version: Version
+    var engine_version: UInt32
+    var api_version: UInt32
 
-    fn __init__[
-        p_application_name_origin: ImmutOrigin = ImmutAnyOrigin,
-        p_engine_name_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        p_application_name: CStringSlice[p_application_name_origin] = zero_init[CStringSlice[p_application_name_origin]](),
-        application_version: Version = zero_init[Version](),
-        p_engine_name: CStringSlice[p_engine_name_origin] = zero_init[CStringSlice[p_engine_name_origin]](),
-        engine_version: Version = zero_init[Version](),
-        api_version: Version = zero_init[Version](),
+        p_application_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
+        application_version: UInt32 = zero_init[UInt32](),
+        p_engine_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
+        engine_version: UInt32 = zero_init[UInt32](),
+        api_version: UInt32 = zero_init[UInt32](),
     ):
         self.s_type = StructureType.APPLICATION_INFO
         self.p_next = p_next
-        self.p_application_name = Ptr(to=p_application_name).bitcast[type_of(self.p_application_name)]()[]
+        self.p_application_name = p_application_name
         self.application_version = application_version
-        self.p_engine_name = Ptr(to=p_engine_name).bitcast[type_of(self.p_engine_name)]()[]
+        self.p_engine_name = p_engine_name
         self.engine_version = engine_version
         self.api_version = api_version
 
@@ -593,19 +588,16 @@ struct DeviceCreateInfo(Copyable):
     var pp_enabled_extension_names: Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin]
     var p_enabled_features: Ptr[PhysicalDeviceFeatures, ImmutAnyOrigin]
 
-    fn __init__[
-        pp_enabled_layer_names_origin: ImmutOrigin = ImmutAnyOrigin,
-        pp_enabled_extension_names_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         flags: DeviceCreateFlags = zero_init[DeviceCreateFlags](),
         queue_create_info_count: UInt32 = zero_init[UInt32](),
         p_queue_create_infos: Ptr[DeviceQueueCreateInfo, ImmutAnyOrigin] = zero_init[Ptr[DeviceQueueCreateInfo, ImmutAnyOrigin]](),
         enabled_layer_count: UInt32 = zero_init[UInt32](),
-        pp_enabled_layer_names: Ptr[CStringSlice[pp_enabled_layer_names_origin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[pp_enabled_layer_names_origin], ImmutAnyOrigin]](),
+        pp_enabled_layer_names: Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin]](),
         enabled_extension_count: UInt32 = zero_init[UInt32](),
-        pp_enabled_extension_names: Ptr[CStringSlice[pp_enabled_extension_names_origin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[pp_enabled_extension_names_origin], ImmutAnyOrigin]](),
+        pp_enabled_extension_names: Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin]](),
         p_enabled_features: Ptr[PhysicalDeviceFeatures, ImmutAnyOrigin] = zero_init[Ptr[PhysicalDeviceFeatures, ImmutAnyOrigin]](),
     ):
         self.s_type = StructureType.DEVICE_CREATE_INFO
@@ -614,9 +606,9 @@ struct DeviceCreateInfo(Copyable):
         self.queue_create_info_count = queue_create_info_count
         self.p_queue_create_infos = p_queue_create_infos
         self.enabled_layer_count = enabled_layer_count
-        self.pp_enabled_layer_names = Ptr(to=pp_enabled_layer_names).bitcast[type_of(self.pp_enabled_layer_names)]()[]
+        self.pp_enabled_layer_names = pp_enabled_layer_names
         self.enabled_extension_count = enabled_extension_count
-        self.pp_enabled_extension_names = Ptr(to=pp_enabled_extension_names).bitcast[type_of(self.pp_enabled_extension_names)]()[]
+        self.pp_enabled_extension_names = pp_enabled_extension_names
         self.p_enabled_features = p_enabled_features
 
 
@@ -630,27 +622,24 @@ struct InstanceCreateInfo(Copyable):
     var enabled_extension_count: UInt32
     var pp_enabled_extension_names: Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin]
 
-    fn __init__[
-        pp_enabled_layer_names_origin: ImmutOrigin = ImmutAnyOrigin,
-        pp_enabled_extension_names_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         flags: InstanceCreateFlags = zero_init[InstanceCreateFlags](),
         p_application_info: Ptr[ApplicationInfo, ImmutAnyOrigin] = zero_init[Ptr[ApplicationInfo, ImmutAnyOrigin]](),
         enabled_layer_count: UInt32 = zero_init[UInt32](),
-        pp_enabled_layer_names: Ptr[CStringSlice[pp_enabled_layer_names_origin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[pp_enabled_layer_names_origin], ImmutAnyOrigin]](),
+        pp_enabled_layer_names: Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin]](),
         enabled_extension_count: UInt32 = zero_init[UInt32](),
-        pp_enabled_extension_names: Ptr[CStringSlice[pp_enabled_extension_names_origin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[pp_enabled_extension_names_origin], ImmutAnyOrigin]](),
+        pp_enabled_extension_names: Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[ImmutAnyOrigin], ImmutAnyOrigin]](),
     ):
         self.s_type = StructureType.INSTANCE_CREATE_INFO
         self.p_next = p_next
         self.flags = flags
         self.p_application_info = p_application_info
         self.enabled_layer_count = enabled_layer_count
-        self.pp_enabled_layer_names = Ptr(to=pp_enabled_layer_names).bitcast[type_of(self.pp_enabled_layer_names)]()[]
+        self.pp_enabled_layer_names = pp_enabled_layer_names
         self.enabled_extension_count = enabled_extension_count
-        self.pp_enabled_extension_names = Ptr(to=pp_enabled_extension_names).bitcast[type_of(self.pp_enabled_extension_names)]()[]
+        self.pp_enabled_extension_names = pp_enabled_extension_names
 
 
 struct QueueFamilyProperties(Copyable):
@@ -664,12 +653,12 @@ struct QueueFamilyProperties(Copyable):
         queue_flags: QueueFlags = zero_init[QueueFlags](),
         queue_count: UInt32 = zero_init[UInt32](),
         timestamp_valid_bits: UInt32 = zero_init[UInt32](),
-        var min_image_transfer_granularity: Extent3D = zero_init[Extent3D](),
+        min_image_transfer_granularity: Extent3D = zero_init[Extent3D](),
     ):
         self.queue_flags = queue_flags
         self.queue_count = queue_count
         self.timestamp_valid_bits = timestamp_valid_bits
-        self.min_image_transfer_granularity = min_image_transfer_granularity^
+        self.min_image_transfer_granularity = min_image_transfer_granularity.copy()
 
 
 struct PhysicalDeviceMemoryProperties(Copyable):
@@ -686,9 +675,9 @@ struct PhysicalDeviceMemoryProperties(Copyable):
         memory_heaps: InlineArray[MemoryHeap, Int(MAX_MEMORY_HEAPS)] = zero_init[InlineArray[MemoryHeap, Int(MAX_MEMORY_HEAPS)]](),
     ):
         self.memory_type_count = memory_type_count
-        self.memory_types = memory_types
+        self.memory_types = memory_types.copy()
         self.memory_heap_count = memory_heap_count
-        self.memory_heaps = memory_heaps
+        self.memory_heaps = memory_heaps.copy()
 
 
 struct MemoryAllocateInfo(Copyable):
@@ -733,11 +722,11 @@ struct SparseImageFormatProperties(Copyable):
     fn __init__(
         out self,
         aspect_mask: ImageAspectFlags = zero_init[ImageAspectFlags](),
-        var image_granularity: Extent3D = zero_init[Extent3D](),
+        image_granularity: Extent3D = zero_init[Extent3D](),
         flags: SparseImageFormatFlags = zero_init[SparseImageFormatFlags](),
     ):
         self.aspect_mask = aspect_mask
-        self.image_granularity = image_granularity^
+        self.image_granularity = image_granularity.copy()
         self.flags = flags
 
 
@@ -750,13 +739,13 @@ struct SparseImageMemoryRequirements(Copyable):
 
     fn __init__(
         out self,
-        var format_properties: SparseImageFormatProperties = zero_init[SparseImageFormatProperties](),
+        format_properties: SparseImageFormatProperties = zero_init[SparseImageFormatProperties](),
         image_mip_tail_first_lod: UInt32 = zero_init[UInt32](),
         image_mip_tail_size: DeviceSize = zero_init[DeviceSize](),
         image_mip_tail_offset: DeviceSize = zero_init[DeviceSize](),
         image_mip_tail_stride: DeviceSize = zero_init[DeviceSize](),
     ):
-        self.format_properties = format_properties^
+        self.format_properties = format_properties.copy()
         self.image_mip_tail_first_lod = image_mip_tail_first_lod
         self.image_mip_tail_size = image_mip_tail_size
         self.image_mip_tail_offset = image_mip_tail_offset
@@ -835,13 +824,13 @@ struct ImageFormatProperties(Copyable):
 
     fn __init__(
         out self,
-        var max_extent: Extent3D = zero_init[Extent3D](),
+        max_extent: Extent3D = zero_init[Extent3D](),
         max_mip_levels: UInt32 = zero_init[UInt32](),
         max_array_layers: UInt32 = zero_init[UInt32](),
         sample_counts: SampleCountFlags = zero_init[SampleCountFlags](),
         max_resource_size: DeviceSize = zero_init[DeviceSize](),
     ):
-        self.max_extent = max_extent^
+        self.max_extent = max_extent.copy()
         self.max_mip_levels = max_mip_levels
         self.max_array_layers = max_array_layers
         self.sample_counts = sample_counts
@@ -1151,7 +1140,7 @@ struct ImageMemoryBarrier(Copyable):
         src_queue_family_index: UInt32 = zero_init[UInt32](),
         dst_queue_family_index: UInt32 = zero_init[UInt32](),
         image: Image = zero_init[Image](),
-        var subresource_range: ImageSubresourceRange = zero_init[ImageSubresourceRange](),
+        subresource_range: ImageSubresourceRange = zero_init[ImageSubresourceRange](),
     ):
         self.s_type = StructureType.IMAGE_MEMORY_BARRIER
         self.p_next = p_next
@@ -1162,7 +1151,7 @@ struct ImageMemoryBarrier(Copyable):
         self.src_queue_family_index = src_queue_family_index
         self.dst_queue_family_index = dst_queue_family_index
         self.image = image
-        self.subresource_range = subresource_range^
+        self.subresource_range = subresource_range.copy()
 
 
 struct ImageCreateInfo(Copyable):
@@ -1188,7 +1177,7 @@ struct ImageCreateInfo(Copyable):
         flags: ImageCreateFlags = zero_init[ImageCreateFlags](),
         image_type: ImageType = zero_init[ImageType](),
         format: Format = zero_init[Format](),
-        var extent: Extent3D = zero_init[Extent3D](),
+        extent: Extent3D = zero_init[Extent3D](),
         mip_levels: UInt32 = zero_init[UInt32](),
         array_layers: UInt32 = zero_init[UInt32](),
         samples: SampleCountFlagBits = zero_init[SampleCountFlagBits](),
@@ -1204,7 +1193,7 @@ struct ImageCreateInfo(Copyable):
         self.flags = flags
         self.image_type = image_type
         self.format = format
-        self.extent = extent^
+        self.extent = extent.copy()
         self.mip_levels = mip_levels
         self.array_layers = array_layers
         self.samples = samples
@@ -1255,8 +1244,8 @@ struct ImageViewCreateInfo(Copyable):
         image: Image = zero_init[Image](),
         view_type: ImageViewType = zero_init[ImageViewType](),
         format: Format = zero_init[Format](),
-        var components: ComponentMapping = zero_init[ComponentMapping](),
-        var subresource_range: ImageSubresourceRange = zero_init[ImageSubresourceRange](),
+        components: ComponentMapping = zero_init[ComponentMapping](),
+        subresource_range: ImageSubresourceRange = zero_init[ImageSubresourceRange](),
     ):
         self.s_type = StructureType.IMAGE_VIEW_CREATE_INFO
         self.p_next = p_next
@@ -1264,8 +1253,8 @@ struct ImageViewCreateInfo(Copyable):
         self.image = image
         self.view_type = view_type
         self.format = format
-        self.components = components^
-        self.subresource_range = subresource_range^
+        self.components = components.copy()
+        self.subresource_range = subresource_range.copy()
 
 
 struct BufferCopy(Copyable):
@@ -1316,16 +1305,16 @@ struct SparseImageMemoryBind(Copyable):
 
     fn __init__(
         out self,
-        var subresource: ImageSubresource = zero_init[ImageSubresource](),
-        var offset: Offset3D = zero_init[Offset3D](),
-        var extent: Extent3D = zero_init[Extent3D](),
+        subresource: ImageSubresource = zero_init[ImageSubresource](),
+        offset: Offset3D = zero_init[Offset3D](),
+        extent: Extent3D = zero_init[Extent3D](),
         memory: DeviceMemory = zero_init[DeviceMemory](),
         memory_offset: DeviceSize = zero_init[DeviceSize](),
         flags: SparseMemoryBindFlags = zero_init[SparseMemoryBindFlags](),
     ):
-        self.subresource = subresource^
-        self.offset = offset^
-        self.extent = extent^
+        self.subresource = subresource.copy()
+        self.offset = offset.copy()
+        self.extent = extent.copy()
         self.memory = memory
         self.memory_offset = memory_offset
         self.flags = flags
@@ -1430,17 +1419,17 @@ struct ImageCopy(Copyable):
 
     fn __init__(
         out self,
-        var src_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
-        var src_offset: Offset3D = zero_init[Offset3D](),
-        var dst_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
-        var dst_offset: Offset3D = zero_init[Offset3D](),
-        var extent: Extent3D = zero_init[Extent3D](),
+        src_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        src_offset: Offset3D = zero_init[Offset3D](),
+        dst_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        dst_offset: Offset3D = zero_init[Offset3D](),
+        extent: Extent3D = zero_init[Extent3D](),
     ):
-        self.src_subresource = src_subresource^
-        self.src_offset = src_offset^
-        self.dst_subresource = dst_subresource^
-        self.dst_offset = dst_offset^
-        self.extent = extent^
+        self.src_subresource = src_subresource.copy()
+        self.src_offset = src_offset.copy()
+        self.dst_subresource = dst_subresource.copy()
+        self.dst_offset = dst_offset.copy()
+        self.extent = extent.copy()
 
 
 struct ImageBlit(Copyable):
@@ -1451,15 +1440,15 @@ struct ImageBlit(Copyable):
 
     fn __init__(
         out self,
-        var src_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        src_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
         src_offsets: InlineArray[Offset3D, Int(2)] = zero_init[InlineArray[Offset3D, Int(2)]](),
-        var dst_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        dst_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
         dst_offsets: InlineArray[Offset3D, Int(2)] = zero_init[InlineArray[Offset3D, Int(2)]](),
     ):
-        self.src_subresource = src_subresource^
-        self.src_offsets = src_offsets
-        self.dst_subresource = dst_subresource^
-        self.dst_offsets = dst_offsets
+        self.src_subresource = src_subresource.copy()
+        self.src_offsets = src_offsets.copy()
+        self.dst_subresource = dst_subresource.copy()
+        self.dst_offsets = dst_offsets.copy()
 
 
 struct BufferImageCopy(Copyable):
@@ -1475,16 +1464,16 @@ struct BufferImageCopy(Copyable):
         buffer_offset: DeviceSize = zero_init[DeviceSize](),
         buffer_row_length: UInt32 = zero_init[UInt32](),
         buffer_image_height: UInt32 = zero_init[UInt32](),
-        var image_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
-        var image_offset: Offset3D = zero_init[Offset3D](),
-        var image_extent: Extent3D = zero_init[Extent3D](),
+        image_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        image_offset: Offset3D = zero_init[Offset3D](),
+        image_extent: Extent3D = zero_init[Extent3D](),
     ):
         self.buffer_offset = buffer_offset
         self.buffer_row_length = buffer_row_length
         self.buffer_image_height = buffer_image_height
-        self.image_subresource = image_subresource^
-        self.image_offset = image_offset^
-        self.image_extent = image_extent^
+        self.image_subresource = image_subresource.copy()
+        self.image_offset = image_offset.copy()
+        self.image_extent = image_extent.copy()
 
 
 struct CopyMemoryIndirectCommandNV(Copyable):
@@ -1516,16 +1505,16 @@ struct CopyMemoryToImageIndirectCommandNV(Copyable):
         src_address: DeviceAddress = zero_init[DeviceAddress](),
         buffer_row_length: UInt32 = zero_init[UInt32](),
         buffer_image_height: UInt32 = zero_init[UInt32](),
-        var image_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
-        var image_offset: Offset3D = zero_init[Offset3D](),
-        var image_extent: Extent3D = zero_init[Extent3D](),
+        image_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        image_offset: Offset3D = zero_init[Offset3D](),
+        image_extent: Extent3D = zero_init[Extent3D](),
     ):
         self.src_address = src_address
         self.buffer_row_length = buffer_row_length
         self.buffer_image_height = buffer_image_height
-        self.image_subresource = image_subresource^
-        self.image_offset = image_offset^
-        self.image_extent = image_extent^
+        self.image_subresource = image_subresource.copy()
+        self.image_offset = image_offset.copy()
+        self.image_extent = image_extent.copy()
 
 
 struct ImageResolve(Copyable):
@@ -1537,17 +1526,17 @@ struct ImageResolve(Copyable):
 
     fn __init__(
         out self,
-        var src_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
-        var src_offset: Offset3D = zero_init[Offset3D](),
-        var dst_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
-        var dst_offset: Offset3D = zero_init[Offset3D](),
-        var extent: Extent3D = zero_init[Extent3D](),
+        src_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        src_offset: Offset3D = zero_init[Offset3D](),
+        dst_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        dst_offset: Offset3D = zero_init[Offset3D](),
+        extent: Extent3D = zero_init[Extent3D](),
     ):
-        self.src_subresource = src_subresource^
-        self.src_offset = src_offset^
-        self.dst_subresource = dst_subresource^
-        self.dst_offset = dst_offset^
-        self.extent = extent^
+        self.src_subresource = src_subresource.copy()
+        self.src_offset = src_offset.copy()
+        self.dst_subresource = dst_subresource.copy()
+        self.dst_offset = dst_offset.copy()
+        self.extent = extent.copy()
 
 
 struct ShaderModuleCreateInfo(Copyable):
@@ -1716,15 +1705,13 @@ struct PipelineShaderStageCreateInfo(Copyable):
     var p_name: CStringSlice[ImmutAnyOrigin]
     var p_specialization_info: Ptr[SpecializationInfo, ImmutAnyOrigin]
 
-    fn __init__[
-        p_name_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         flags: PipelineShaderStageCreateFlags = zero_init[PipelineShaderStageCreateFlags](),
         stage: ShaderStageFlagBits = zero_init[ShaderStageFlagBits](),
         module: ShaderModule = zero_init[ShaderModule](),
-        p_name: CStringSlice[p_name_origin] = zero_init[CStringSlice[p_name_origin]](),
+        p_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
         p_specialization_info: Ptr[SpecializationInfo, ImmutAnyOrigin] = zero_init[Ptr[SpecializationInfo, ImmutAnyOrigin]](),
     ):
         self.s_type = StructureType.PIPELINE_SHADER_STAGE_CREATE_INFO
@@ -1732,7 +1719,7 @@ struct PipelineShaderStageCreateInfo(Copyable):
         self.flags = flags
         self.stage = stage
         self.module = module
-        self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
+        self.p_name = p_name
         self.p_specialization_info = p_specialization_info
 
 
@@ -1749,7 +1736,7 @@ struct ComputePipelineCreateInfo(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         flags: PipelineCreateFlags = zero_init[PipelineCreateFlags](),
-        var stage: PipelineShaderStageCreateInfo = zero_init[PipelineShaderStageCreateInfo](),
+        stage: PipelineShaderStageCreateInfo = zero_init[PipelineShaderStageCreateInfo](),
         layout: PipelineLayout = zero_init[PipelineLayout](),
         base_pipeline_handle: Pipeline = zero_init[Pipeline](),
         base_pipeline_index: Int32 = zero_init[Int32](),
@@ -1757,7 +1744,7 @@ struct ComputePipelineCreateInfo(Copyable):
         self.s_type = StructureType.COMPUTE_PIPELINE_CREATE_INFO
         self.p_next = p_next
         self.flags = flags
-        self.stage = stage^
+        self.stage = stage.copy()
         self.layout = layout
         self.base_pipeline_handle = base_pipeline_handle
         self.base_pipeline_index = base_pipeline_index
@@ -2138,8 +2125,8 @@ struct PipelineDepthStencilStateCreateInfo(Copyable):
         depth_compare_op: CompareOp = zero_init[CompareOp](),
         depth_bounds_test_enable: Bool32 = zero_init[Bool32](),
         stencil_test_enable: Bool32 = zero_init[Bool32](),
-        var front: StencilOpState = zero_init[StencilOpState](),
-        var back: StencilOpState = zero_init[StencilOpState](),
+        front: StencilOpState = zero_init[StencilOpState](),
+        back: StencilOpState = zero_init[StencilOpState](),
         min_depth_bounds: Float32 = zero_init[Float32](),
         max_depth_bounds: Float32 = zero_init[Float32](),
     ):
@@ -2151,8 +2138,8 @@ struct PipelineDepthStencilStateCreateInfo(Copyable):
         self.depth_compare_op = depth_compare_op
         self.depth_bounds_test_enable = depth_bounds_test_enable
         self.stencil_test_enable = stencil_test_enable
-        self.front = front^
-        self.back = back^
+        self.front = front.copy()
+        self.back = back.copy()
         self.min_depth_bounds = min_depth_bounds
         self.max_depth_bounds = max_depth_bounds
 
@@ -2312,14 +2299,14 @@ struct PipelineCacheHeaderVersionSafetyCriticalOne(Copyable):
 
     fn __init__(
         out self,
-        var header_version_one: PipelineCacheHeaderVersionOne = zero_init[PipelineCacheHeaderVersionOne](),
+        header_version_one: PipelineCacheHeaderVersionOne = zero_init[PipelineCacheHeaderVersionOne](),
         validation_version: PipelineCacheValidationVersion = zero_init[PipelineCacheValidationVersion](),
         implementation_data: UInt32 = zero_init[UInt32](),
         pipeline_index_count: UInt32 = zero_init[UInt32](),
         pipeline_index_stride: UInt32 = zero_init[UInt32](),
         pipeline_index_offset: UInt64 = zero_init[UInt64](),
     ):
-        self.header_version_one = header_version_one^
+        self.header_version_one = header_version_one.copy()
         self.validation_version = validation_version
         self.implementation_data = implementation_data
         self.pipeline_index_count = pipeline_index_count
@@ -2676,7 +2663,7 @@ struct RenderPassBeginInfo(Copyable):
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         render_pass: RenderPass = zero_init[RenderPass](),
         framebuffer: Framebuffer = zero_init[Framebuffer](),
-        var render_area: Rect2D = zero_init[Rect2D](),
+        render_area: Rect2D = zero_init[Rect2D](),
         clear_value_count: UInt32 = zero_init[UInt32](),
         p_clear_values: Ptr[ClearValue, ImmutAnyOrigin] = zero_init[Ptr[ClearValue, ImmutAnyOrigin]](),
     ):
@@ -2684,7 +2671,7 @@ struct RenderPassBeginInfo(Copyable):
         self.p_next = p_next
         self.render_pass = render_pass
         self.framebuffer = framebuffer
-        self.render_area = render_area^
+        self.render_area = render_area.copy()
         self.clear_value_count = clear_value_count
         self.p_clear_values = p_clear_values
 
@@ -3610,22 +3597,20 @@ struct DisplayPropertiesKHR(Copyable):
     var plane_reorder_possible: Bool32
     var persistent_content: Bool32
 
-    fn __init__[
-        display_name_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         display: DisplayKHR = zero_init[DisplayKHR](),
-        display_name: CStringSlice[display_name_origin] = zero_init[CStringSlice[display_name_origin]](),
-        var physical_dimensions: Extent2D = zero_init[Extent2D](),
-        var physical_resolution: Extent2D = zero_init[Extent2D](),
+        display_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
+        physical_dimensions: Extent2D = zero_init[Extent2D](),
+        physical_resolution: Extent2D = zero_init[Extent2D](),
         supported_transforms: SurfaceTransformFlagsKHR = zero_init[SurfaceTransformFlagsKHR](),
         plane_reorder_possible: Bool32 = zero_init[Bool32](),
         persistent_content: Bool32 = zero_init[Bool32](),
     ):
         self.display = display
-        self.display_name = Ptr(to=display_name).bitcast[type_of(self.display_name)]()[]
-        self.physical_dimensions = physical_dimensions^
-        self.physical_resolution = physical_resolution^
+        self.display_name = display_name
+        self.physical_dimensions = physical_dimensions.copy()
+        self.physical_resolution = physical_resolution.copy()
         self.supported_transforms = supported_transforms
         self.plane_reorder_possible = plane_reorder_possible
         self.persistent_content = persistent_content
@@ -3650,10 +3635,10 @@ struct DisplayModeParametersKHR(Copyable):
 
     fn __init__(
         out self,
-        var visible_region: Extent2D = zero_init[Extent2D](),
+        visible_region: Extent2D = zero_init[Extent2D](),
         refresh_rate: UInt32 = zero_init[UInt32](),
     ):
-        self.visible_region = visible_region^
+        self.visible_region = visible_region.copy()
         self.refresh_rate = refresh_rate
 
 
@@ -3664,10 +3649,10 @@ struct DisplayModePropertiesKHR(Copyable):
     fn __init__(
         out self,
         display_mode: DisplayModeKHR = zero_init[DisplayModeKHR](),
-        var parameters: DisplayModeParametersKHR = zero_init[DisplayModeParametersKHR](),
+        parameters: DisplayModeParametersKHR = zero_init[DisplayModeParametersKHR](),
     ):
         self.display_mode = display_mode
-        self.parameters = parameters^
+        self.parameters = parameters.copy()
 
 
 struct DisplayModeCreateInfoKHR(Copyable):
@@ -3680,12 +3665,12 @@ struct DisplayModeCreateInfoKHR(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         flags: DisplayModeCreateFlagsKHR = zero_init[DisplayModeCreateFlagsKHR](),
-        var parameters: DisplayModeParametersKHR = zero_init[DisplayModeParametersKHR](),
+        parameters: DisplayModeParametersKHR = zero_init[DisplayModeParametersKHR](),
     ):
         self.s_type = StructureType.DISPLAY_MODE_CREATE_INFO_KHR
         self.p_next = p_next
         self.flags = flags
-        self.parameters = parameters^
+        self.parameters = parameters.copy()
 
 
 struct DisplayPlaneCapabilitiesKHR(Copyable):
@@ -3702,24 +3687,24 @@ struct DisplayPlaneCapabilitiesKHR(Copyable):
     fn __init__(
         out self,
         supported_alpha: DisplayPlaneAlphaFlagsKHR = zero_init[DisplayPlaneAlphaFlagsKHR](),
-        var min_src_position: Offset2D = zero_init[Offset2D](),
-        var max_src_position: Offset2D = zero_init[Offset2D](),
-        var min_src_extent: Extent2D = zero_init[Extent2D](),
-        var max_src_extent: Extent2D = zero_init[Extent2D](),
-        var min_dst_position: Offset2D = zero_init[Offset2D](),
-        var max_dst_position: Offset2D = zero_init[Offset2D](),
-        var min_dst_extent: Extent2D = zero_init[Extent2D](),
-        var max_dst_extent: Extent2D = zero_init[Extent2D](),
+        min_src_position: Offset2D = zero_init[Offset2D](),
+        max_src_position: Offset2D = zero_init[Offset2D](),
+        min_src_extent: Extent2D = zero_init[Extent2D](),
+        max_src_extent: Extent2D = zero_init[Extent2D](),
+        min_dst_position: Offset2D = zero_init[Offset2D](),
+        max_dst_position: Offset2D = zero_init[Offset2D](),
+        min_dst_extent: Extent2D = zero_init[Extent2D](),
+        max_dst_extent: Extent2D = zero_init[Extent2D](),
     ):
         self.supported_alpha = supported_alpha
-        self.min_src_position = min_src_position^
-        self.max_src_position = max_src_position^
-        self.min_src_extent = min_src_extent^
-        self.max_src_extent = max_src_extent^
-        self.min_dst_position = min_dst_position^
-        self.max_dst_position = max_dst_position^
-        self.min_dst_extent = min_dst_extent^
-        self.max_dst_extent = max_dst_extent^
+        self.min_src_position = min_src_position.copy()
+        self.max_src_position = max_src_position.copy()
+        self.min_src_extent = min_src_extent.copy()
+        self.max_src_extent = max_src_extent.copy()
+        self.min_dst_position = min_dst_position.copy()
+        self.max_dst_position = max_dst_position.copy()
+        self.min_dst_extent = min_dst_extent.copy()
+        self.max_dst_extent = max_dst_extent.copy()
 
 
 struct DisplaySurfaceCreateInfoKHR(Copyable):
@@ -3744,7 +3729,7 @@ struct DisplaySurfaceCreateInfoKHR(Copyable):
         transform: SurfaceTransformFlagBitsKHR = zero_init[SurfaceTransformFlagBitsKHR](),
         global_alpha: Float32 = zero_init[Float32](),
         alpha_mode: DisplayPlaneAlphaFlagBitsKHR = zero_init[DisplayPlaneAlphaFlagBitsKHR](),
-        var image_extent: Extent2D = zero_init[Extent2D](),
+        image_extent: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.DISPLAY_SURFACE_CREATE_INFO_KHR
         self.p_next = p_next
@@ -3755,7 +3740,7 @@ struct DisplaySurfaceCreateInfoKHR(Copyable):
         self.transform = transform
         self.global_alpha = global_alpha
         self.alpha_mode = alpha_mode
-        self.image_extent = image_extent^
+        self.image_extent = image_extent.copy()
 
 
 struct DisplaySurfaceStereoCreateInfoNV(Copyable):
@@ -3783,14 +3768,14 @@ struct DisplayPresentInfoKHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var src_rect: Rect2D = zero_init[Rect2D](),
-        var dst_rect: Rect2D = zero_init[Rect2D](),
+        src_rect: Rect2D = zero_init[Rect2D](),
+        dst_rect: Rect2D = zero_init[Rect2D](),
         persistent: Bool32 = zero_init[Bool32](),
     ):
         self.s_type = StructureType.DISPLAY_PRESENT_INFO_KHR
         self.p_next = p_next
-        self.src_rect = src_rect^
-        self.dst_rect = dst_rect^
+        self.src_rect = src_rect.copy()
+        self.dst_rect = dst_rect.copy()
         self.persistent = persistent
 
 
@@ -3810,9 +3795,9 @@ struct SurfaceCapabilitiesKHR(Copyable):
         out self,
         min_image_count: UInt32 = zero_init[UInt32](),
         max_image_count: UInt32 = zero_init[UInt32](),
-        var current_extent: Extent2D = zero_init[Extent2D](),
-        var min_image_extent: Extent2D = zero_init[Extent2D](),
-        var max_image_extent: Extent2D = zero_init[Extent2D](),
+        current_extent: Extent2D = zero_init[Extent2D](),
+        min_image_extent: Extent2D = zero_init[Extent2D](),
+        max_image_extent: Extent2D = zero_init[Extent2D](),
         max_image_array_layers: UInt32 = zero_init[UInt32](),
         supported_transforms: SurfaceTransformFlagsKHR = zero_init[SurfaceTransformFlagsKHR](),
         current_transform: SurfaceTransformFlagBitsKHR = zero_init[SurfaceTransformFlagBitsKHR](),
@@ -3821,9 +3806,9 @@ struct SurfaceCapabilitiesKHR(Copyable):
     ):
         self.min_image_count = min_image_count
         self.max_image_count = max_image_count
-        self.current_extent = current_extent^
-        self.min_image_extent = min_image_extent^
-        self.max_image_extent = max_image_extent^
+        self.current_extent = current_extent.copy()
+        self.min_image_extent = min_image_extent.copy()
+        self.max_image_extent = max_image_extent.copy()
         self.max_image_array_layers = max_image_array_layers
         self.supported_transforms = supported_transforms
         self.current_transform = current_transform
@@ -4070,7 +4055,7 @@ struct SwapchainCreateInfoKHR(Copyable):
         min_image_count: UInt32 = zero_init[UInt32](),
         image_format: Format = zero_init[Format](),
         image_color_space: ColorSpaceKHR = zero_init[ColorSpaceKHR](),
-        var image_extent: Extent2D = zero_init[Extent2D](),
+        image_extent: Extent2D = zero_init[Extent2D](),
         image_array_layers: UInt32 = zero_init[UInt32](),
         image_usage: ImageUsageFlags = zero_init[ImageUsageFlags](),
         image_sharing_mode: SharingMode = zero_init[SharingMode](),
@@ -4089,7 +4074,7 @@ struct SwapchainCreateInfoKHR(Copyable):
         self.min_image_count = min_image_count
         self.image_format = image_format
         self.image_color_space = image_color_space
-        self.image_extent = image_extent^
+        self.image_extent = image_extent.copy()
         self.image_array_layers = image_array_layers
         self.image_usage = image_usage
         self.image_sharing_mode = image_sharing_mode
@@ -4220,19 +4205,16 @@ struct LayerSettingEXT(Copyable):
     var value_count: UInt32
     var p_values: Ptr[NoneType, ImmutAnyOrigin]
 
-    fn __init__[
-        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
-        p_setting_name_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
-        p_layer_name: CStringSlice[p_layer_name_origin] = zero_init[CStringSlice[p_layer_name_origin]](),
-        p_setting_name: CStringSlice[p_setting_name_origin] = zero_init[CStringSlice[p_setting_name_origin]](),
+        p_layer_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
+        p_setting_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
         type: LayerSettingTypeEXT = zero_init[LayerSettingTypeEXT](),
         value_count: UInt32 = zero_init[UInt32](),
         p_values: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
     ):
-        self.p_layer_name = Ptr(to=p_layer_name).bitcast[type_of(self.p_layer_name)]()[]
-        self.p_setting_name = Ptr(to=p_setting_name).bitcast[type_of(self.p_setting_name)]()[]
+        self.p_layer_name = p_layer_name
+        self.p_setting_name = p_setting_name
         self.type = type
         self.value_count = value_count
         self.p_values = p_values
@@ -4284,20 +4266,18 @@ struct DebugMarkerObjectNameInfoEXT(Copyable):
     var object: UInt64
     var p_object_name: CStringSlice[ImmutAnyOrigin]
 
-    fn __init__[
-        p_object_name_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         object_type: DebugReportObjectTypeEXT = zero_init[DebugReportObjectTypeEXT](),
         object: UInt64 = zero_init[UInt64](),
-        p_object_name: CStringSlice[p_object_name_origin] = zero_init[CStringSlice[p_object_name_origin]](),
+        p_object_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
     ):
         self.s_type = StructureType.DEBUG_MARKER_OBJECT_NAME_INFO_EXT
         self.p_next = p_next
         self.object_type = object_type
         self.object = object
-        self.p_object_name = Ptr(to=p_object_name).bitcast[type_of(self.p_object_name)]()[]
+        self.p_object_name = p_object_name
 
 
 struct DebugMarkerObjectTagInfoEXT(Copyable):
@@ -4333,17 +4313,15 @@ struct DebugMarkerMarkerInfoEXT(Copyable):
     var p_marker_name: CStringSlice[ImmutAnyOrigin]
     var color: InlineArray[Float32, Int(4)]
 
-    fn __init__[
-        p_marker_name_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        p_marker_name: CStringSlice[p_marker_name_origin] = zero_init[CStringSlice[p_marker_name_origin]](),
+        p_marker_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
         color: InlineArray[Float32, Int(4)] = zero_init[InlineArray[Float32, Int(4)]](),
     ):
         self.s_type = StructureType.DEBUG_MARKER_MARKER_INFO_EXT
         self.p_next = p_next
-        self.p_marker_name = Ptr(to=p_marker_name).bitcast[type_of(self.p_marker_name)]()[]
+        self.p_marker_name = p_marker_name
         self.color = color
 
 
@@ -4403,12 +4381,12 @@ struct ExternalImageFormatPropertiesNV(Copyable):
 
     fn __init__(
         out self,
-        var image_format_properties: ImageFormatProperties = zero_init[ImageFormatProperties](),
+        image_format_properties: ImageFormatProperties = zero_init[ImageFormatProperties](),
         external_memory_features: ExternalMemoryFeatureFlagsNV = zero_init[ExternalMemoryFeatureFlagsNV](),
         export_from_imported_handle_types: ExternalMemoryHandleTypeFlagsNV = zero_init[ExternalMemoryHandleTypeFlagsNV](),
         compatible_handle_types: ExternalMemoryHandleTypeFlagsNV = zero_init[ExternalMemoryHandleTypeFlagsNV](),
     ):
-        self.image_format_properties = image_format_properties^
+        self.image_format_properties = image_format_properties.copy()
         self.external_memory_features = external_memory_features
         self.export_from_imported_handle_types = export_from_imported_handle_types
         self.compatible_handle_types = compatible_handle_types
@@ -4800,10 +4778,7 @@ struct ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV(Copyable):
     var _packed0: UInt32
 
     fn __init__(
-        out self,
-        geometry_index: UInt32 = zero_init[UInt32](),
-        reserved: UInt32 = zero_init[UInt32](),
-        geometry_flags: UInt32 = zero_init[UInt32](),
+        out self, geometry_index: UInt32 = 0, reserved: UInt32 = 0, geometry_flags: UInt32 = 0
     ):
         self._packed0 = 0
         self.set_geometry_index(geometry_index)
@@ -4878,12 +4853,12 @@ struct ClusterAccelerationStructureBuildTriangleClusterInfoNV(Copyable):
         out self,
         cluster_id: UInt32 = zero_init[UInt32](),
         cluster_flags: ClusterAccelerationStructureClusterFlagsNV = zero_init[ClusterAccelerationStructureClusterFlagsNV](),
-        triangle_count: UInt32 = zero_init[UInt32](),
-        vertex_count: UInt32 = zero_init[UInt32](),
-        position_truncate_bit_count: UInt32 = zero_init[UInt32](),
-        index_type: UInt32 = zero_init[UInt32](),
-        opacity_micromap_index_type: UInt32 = zero_init[UInt32](),
-        var base_geometry_index_and_geometry_flags: ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV = zero_init[ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV](),
+        triangle_count: UInt32 = 0,
+        vertex_count: UInt32 = 0,
+        position_truncate_bit_count: UInt32 = 0,
+        index_type: UInt32 = 0,
+        opacity_micromap_index_type: UInt32 = 0,
+        base_geometry_index_and_geometry_flags: ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV = zero_init[ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV](),
         index_buffer_stride: UInt16 = zero_init[UInt16](),
         vertex_buffer_stride: UInt16 = zero_init[UInt16](),
         geometry_index_and_flags_buffer_stride: UInt16 = zero_init[UInt16](),
@@ -4897,7 +4872,7 @@ struct ClusterAccelerationStructureBuildTriangleClusterInfoNV(Copyable):
         self.cluster_id = cluster_id
         self.cluster_flags = cluster_flags
         self._packed0 = 0
-        self.base_geometry_index_and_geometry_flags = base_geometry_index_and_geometry_flags^
+        self.base_geometry_index_and_geometry_flags = base_geometry_index_and_geometry_flags.copy()
         self.index_buffer_stride = index_buffer_stride
         self.vertex_buffer_stride = vertex_buffer_stride
         self.geometry_index_and_flags_buffer_stride = geometry_index_and_flags_buffer_stride
@@ -4964,12 +4939,12 @@ struct ClusterAccelerationStructureBuildTriangleClusterTemplateInfoNV(Copyable):
         out self,
         cluster_id: UInt32 = zero_init[UInt32](),
         cluster_flags: ClusterAccelerationStructureClusterFlagsNV = zero_init[ClusterAccelerationStructureClusterFlagsNV](),
-        triangle_count: UInt32 = zero_init[UInt32](),
-        vertex_count: UInt32 = zero_init[UInt32](),
-        position_truncate_bit_count: UInt32 = zero_init[UInt32](),
-        index_type: UInt32 = zero_init[UInt32](),
-        opacity_micromap_index_type: UInt32 = zero_init[UInt32](),
-        var base_geometry_index_and_geometry_flags: ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV = zero_init[ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV](),
+        triangle_count: UInt32 = 0,
+        vertex_count: UInt32 = 0,
+        position_truncate_bit_count: UInt32 = 0,
+        index_type: UInt32 = 0,
+        opacity_micromap_index_type: UInt32 = 0,
+        base_geometry_index_and_geometry_flags: ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV = zero_init[ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV](),
         index_buffer_stride: UInt16 = zero_init[UInt16](),
         vertex_buffer_stride: UInt16 = zero_init[UInt16](),
         geometry_index_and_flags_buffer_stride: UInt16 = zero_init[UInt16](),
@@ -4984,7 +4959,7 @@ struct ClusterAccelerationStructureBuildTriangleClusterTemplateInfoNV(Copyable):
         self.cluster_id = cluster_id
         self.cluster_flags = cluster_flags
         self._packed0 = 0
-        self.base_geometry_index_and_geometry_flags = base_geometry_index_and_geometry_flags^
+        self.base_geometry_index_and_geometry_flags = base_geometry_index_and_geometry_flags.copy()
         self.index_buffer_stride = index_buffer_stride
         self.vertex_buffer_stride = vertex_buffer_stride
         self.geometry_index_and_flags_buffer_stride = geometry_index_and_flags_buffer_stride
@@ -5041,15 +5016,15 @@ struct ClusterAccelerationStructureInstantiateClusterInfoNV(Copyable):
     fn __init__(
         out self,
         cluster_id_offset: UInt32 = zero_init[UInt32](),
-        geometry_index_offset: UInt32 = zero_init[UInt32](),
-        reserved: UInt32 = zero_init[UInt32](),
+        geometry_index_offset: UInt32 = 0,
+        reserved: UInt32 = 0,
         cluster_template_address: DeviceAddress = zero_init[DeviceAddress](),
-        var vertex_buffer: StridedDeviceAddressNV = zero_init[StridedDeviceAddressNV](),
+        vertex_buffer: StridedDeviceAddressNV = zero_init[StridedDeviceAddressNV](),
     ):
         self.cluster_id_offset = cluster_id_offset
         self._packed0 = 0
         self.cluster_template_address = cluster_template_address
-        self.vertex_buffer = vertex_buffer^
+        self.vertex_buffer = vertex_buffer.copy()
         self.set_geometry_index_offset(geometry_index_offset)
         self.set_reserved(reserved)
 
@@ -5183,23 +5158,23 @@ struct ClusterAccelerationStructureCommandsInfoNV(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var input: ClusterAccelerationStructureInputInfoNV = zero_init[ClusterAccelerationStructureInputInfoNV](),
+        input: ClusterAccelerationStructureInputInfoNV = zero_init[ClusterAccelerationStructureInputInfoNV](),
         dst_implicit_data: DeviceAddress = zero_init[DeviceAddress](),
         scratch_data: DeviceAddress = zero_init[DeviceAddress](),
-        var dst_addresses_array: StridedDeviceAddressRegionKHR = zero_init[StridedDeviceAddressRegionKHR](),
-        var dst_sizes_array: StridedDeviceAddressRegionKHR = zero_init[StridedDeviceAddressRegionKHR](),
-        var src_infos_array: StridedDeviceAddressRegionKHR = zero_init[StridedDeviceAddressRegionKHR](),
+        dst_addresses_array: StridedDeviceAddressRegionKHR = zero_init[StridedDeviceAddressRegionKHR](),
+        dst_sizes_array: StridedDeviceAddressRegionKHR = zero_init[StridedDeviceAddressRegionKHR](),
+        src_infos_array: StridedDeviceAddressRegionKHR = zero_init[StridedDeviceAddressRegionKHR](),
         src_infos_count: DeviceAddress = zero_init[DeviceAddress](),
         address_resolution_flags: ClusterAccelerationStructureAddressResolutionFlagsNV = zero_init[ClusterAccelerationStructureAddressResolutionFlagsNV](),
     ):
         self.s_type = StructureType.CLUSTER_ACCELERATION_STRUCTURE_COMMANDS_INFO_NV
         self.p_next = p_next
-        self.input = input^
+        self.input = input.copy()
         self.dst_implicit_data = dst_implicit_data
         self.scratch_data = scratch_data
-        self.dst_addresses_array = dst_addresses_array^
-        self.dst_sizes_array = dst_sizes_array^
-        self.src_infos_array = src_infos_array^
+        self.dst_addresses_array = dst_addresses_array.copy()
+        self.dst_sizes_array = dst_sizes_array.copy()
+        self.src_infos_array = src_infos_array.copy()
         self.src_infos_count = src_infos_count
         self.address_resolution_flags = address_resolution_flags
 
@@ -5513,11 +5488,11 @@ struct PhysicalDeviceFeatures2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var features: PhysicalDeviceFeatures = zero_init[PhysicalDeviceFeatures](),
+        features: PhysicalDeviceFeatures = zero_init[PhysicalDeviceFeatures](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_FEATURES_2
         self.p_next = p_next
-        self.features = features^
+        self.features = features.copy()
 
 
 struct PhysicalDeviceProperties2(Copyable):
@@ -5528,11 +5503,11 @@ struct PhysicalDeviceProperties2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var properties: PhysicalDeviceProperties = zero_init[PhysicalDeviceProperties](),
+        properties: PhysicalDeviceProperties = zero_init[PhysicalDeviceProperties](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_PROPERTIES_2
         self.p_next = p_next
-        self.properties = properties^
+        self.properties = properties.copy()
 
 
 struct FormatProperties2(Copyable):
@@ -5543,11 +5518,11 @@ struct FormatProperties2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var format_properties: FormatProperties = zero_init[FormatProperties](),
+        format_properties: FormatProperties = zero_init[FormatProperties](),
     ):
         self.s_type = StructureType.FORMAT_PROPERTIES_2
         self.p_next = p_next
-        self.format_properties = format_properties^
+        self.format_properties = format_properties.copy()
 
 
 struct ImageFormatProperties2(Copyable):
@@ -5558,11 +5533,11 @@ struct ImageFormatProperties2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var image_format_properties: ImageFormatProperties = zero_init[ImageFormatProperties](),
+        image_format_properties: ImageFormatProperties = zero_init[ImageFormatProperties](),
     ):
         self.s_type = StructureType.IMAGE_FORMAT_PROPERTIES_2
         self.p_next = p_next
-        self.image_format_properties = image_format_properties^
+        self.image_format_properties = image_format_properties.copy()
 
 
 struct PhysicalDeviceImageFormatInfo2(Copyable):
@@ -5600,11 +5575,11 @@ struct QueueFamilyProperties2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var queue_family_properties: QueueFamilyProperties = zero_init[QueueFamilyProperties](),
+        queue_family_properties: QueueFamilyProperties = zero_init[QueueFamilyProperties](),
     ):
         self.s_type = StructureType.QUEUE_FAMILY_PROPERTIES_2
         self.p_next = p_next
-        self.queue_family_properties = queue_family_properties^
+        self.queue_family_properties = queue_family_properties.copy()
 
 
 struct PhysicalDeviceMemoryProperties2(Copyable):
@@ -5615,11 +5590,11 @@ struct PhysicalDeviceMemoryProperties2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var memory_properties: PhysicalDeviceMemoryProperties = zero_init[PhysicalDeviceMemoryProperties](),
+        memory_properties: PhysicalDeviceMemoryProperties = zero_init[PhysicalDeviceMemoryProperties](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_MEMORY_PROPERTIES_2
         self.p_next = p_next
-        self.memory_properties = memory_properties^
+        self.memory_properties = memory_properties.copy()
 
 
 struct SparseImageFormatProperties2(Copyable):
@@ -5630,11 +5605,11 @@ struct SparseImageFormatProperties2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var properties: SparseImageFormatProperties = zero_init[SparseImageFormatProperties](),
+        properties: SparseImageFormatProperties = zero_init[SparseImageFormatProperties](),
     ):
         self.s_type = StructureType.SPARSE_IMAGE_FORMAT_PROPERTIES_2
         self.p_next = p_next
-        self.properties = properties^
+        self.properties = properties.copy()
 
 
 struct PhysicalDeviceSparseImageFormatInfo2(Copyable):
@@ -5712,14 +5687,14 @@ struct PhysicalDeviceDriverProperties(Copyable):
         driver_id: DriverId = zero_init[DriverId](),
         driver_name: InlineArray[c_char, Int(MAX_DRIVER_NAME_SIZE)] = zero_init[InlineArray[c_char, Int(MAX_DRIVER_NAME_SIZE)]](),
         driver_info: InlineArray[c_char, Int(MAX_DRIVER_INFO_SIZE)] = zero_init[InlineArray[c_char, Int(MAX_DRIVER_INFO_SIZE)]](),
-        var conformance_version: ConformanceVersion = zero_init[ConformanceVersion](),
+        conformance_version: ConformanceVersion = zero_init[ConformanceVersion](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_DRIVER_PROPERTIES
         self.p_next = p_next
         self.driver_id = driver_id
         self.driver_name = driver_name
         self.driver_info = driver_info
-        self.conformance_version = conformance_version^
+        self.conformance_version = conformance_version.copy()
 
     fn driver_name_slice(self) -> CStringSlice[origin_of(self.driver_name)]:
         return CStringSlice[origin_of(self.driver_name)](unsafe_from_ptr = self.driver_name.unsafe_ptr())
@@ -5766,12 +5741,12 @@ struct RectLayerKHR(Copyable):
 
     fn __init__(
         out self,
-        var offset: Offset2D = zero_init[Offset2D](),
-        var extent: Extent2D = zero_init[Extent2D](),
+        offset: Offset2D = zero_init[Offset2D](),
+        extent: Extent2D = zero_init[Extent2D](),
         layer: UInt32 = zero_init[UInt32](),
     ):
-        self.offset = offset^
-        self.extent = extent^
+        self.offset = offset.copy()
+        self.extent = extent.copy()
         self.layer = layer
 
 
@@ -5832,11 +5807,11 @@ struct ExternalImageFormatProperties(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var external_memory_properties: ExternalMemoryProperties = zero_init[ExternalMemoryProperties](),
+        external_memory_properties: ExternalMemoryProperties = zero_init[ExternalMemoryProperties](),
     ):
         self.s_type = StructureType.EXTERNAL_IMAGE_FORMAT_PROPERTIES
         self.p_next = p_next
-        self.external_memory_properties = external_memory_properties^
+        self.external_memory_properties = external_memory_properties.copy()
 
 
 struct PhysicalDeviceExternalBufferInfo(Copyable):
@@ -5868,11 +5843,11 @@ struct ExternalBufferProperties(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var external_memory_properties: ExternalMemoryProperties = zero_init[ExternalMemoryProperties](),
+        external_memory_properties: ExternalMemoryProperties = zero_init[ExternalMemoryProperties](),
     ):
         self.s_type = StructureType.EXTERNAL_BUFFER_PROPERTIES
         self.p_next = p_next
-        self.external_memory_properties = external_memory_properties^
+        self.external_memory_properties = external_memory_properties.copy()
 
 
 struct PhysicalDeviceIDProperties(Copyable):
@@ -6903,9 +6878,9 @@ struct SurfaceCapabilities2EXT(Copyable):
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
         min_image_count: UInt32 = zero_init[UInt32](),
         max_image_count: UInt32 = zero_init[UInt32](),
-        var current_extent: Extent2D = zero_init[Extent2D](),
-        var min_image_extent: Extent2D = zero_init[Extent2D](),
-        var max_image_extent: Extent2D = zero_init[Extent2D](),
+        current_extent: Extent2D = zero_init[Extent2D](),
+        min_image_extent: Extent2D = zero_init[Extent2D](),
+        max_image_extent: Extent2D = zero_init[Extent2D](),
         max_image_array_layers: UInt32 = zero_init[UInt32](),
         supported_transforms: SurfaceTransformFlagsKHR = zero_init[SurfaceTransformFlagsKHR](),
         current_transform: SurfaceTransformFlagBitsKHR = zero_init[SurfaceTransformFlagBitsKHR](),
@@ -6917,9 +6892,9 @@ struct SurfaceCapabilities2EXT(Copyable):
         self.p_next = p_next
         self.min_image_count = min_image_count
         self.max_image_count = max_image_count
-        self.current_extent = current_extent^
-        self.min_image_extent = min_image_extent^
-        self.max_image_extent = max_image_extent^
+        self.current_extent = current_extent.copy()
+        self.min_image_extent = min_image_extent.copy()
+        self.max_image_extent = max_image_extent.copy()
         self.max_image_array_layers = max_image_array_layers
         self.supported_transforms = supported_transforms
         self.current_transform = current_transform
@@ -7526,10 +7501,10 @@ struct HdrMetadataEXT(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var display_primary_red: XYColorEXT = zero_init[XYColorEXT](),
-        var display_primary_green: XYColorEXT = zero_init[XYColorEXT](),
-        var display_primary_blue: XYColorEXT = zero_init[XYColorEXT](),
-        var white_point: XYColorEXT = zero_init[XYColorEXT](),
+        display_primary_red: XYColorEXT = zero_init[XYColorEXT](),
+        display_primary_green: XYColorEXT = zero_init[XYColorEXT](),
+        display_primary_blue: XYColorEXT = zero_init[XYColorEXT](),
+        white_point: XYColorEXT = zero_init[XYColorEXT](),
         max_luminance: Float32 = zero_init[Float32](),
         min_luminance: Float32 = zero_init[Float32](),
         max_content_light_level: Float32 = zero_init[Float32](),
@@ -7537,10 +7512,10 @@ struct HdrMetadataEXT(Copyable):
     ):
         self.s_type = StructureType.HDR_METADATA_EXT
         self.p_next = p_next
-        self.display_primary_red = display_primary_red^
-        self.display_primary_green = display_primary_green^
-        self.display_primary_blue = display_primary_blue^
-        self.white_point = white_point^
+        self.display_primary_red = display_primary_red.copy()
+        self.display_primary_green = display_primary_green.copy()
+        self.display_primary_blue = display_primary_blue.copy()
+        self.white_point = white_point.copy()
         self.max_luminance = max_luminance
         self.min_luminance = min_luminance
         self.max_content_light_level = max_content_light_level
@@ -7892,11 +7867,11 @@ struct SurfaceCapabilities2KHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var surface_capabilities: SurfaceCapabilitiesKHR = zero_init[SurfaceCapabilitiesKHR](),
+        surface_capabilities: SurfaceCapabilitiesKHR = zero_init[SurfaceCapabilitiesKHR](),
     ):
         self.s_type = StructureType.SURFACE_CAPABILITIES_2_KHR
         self.p_next = p_next
-        self.surface_capabilities = surface_capabilities^
+        self.surface_capabilities = surface_capabilities.copy()
 
 
 struct SurfaceFormat2KHR(Copyable):
@@ -7907,11 +7882,11 @@ struct SurfaceFormat2KHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var surface_format: SurfaceFormatKHR = zero_init[SurfaceFormatKHR](),
+        surface_format: SurfaceFormatKHR = zero_init[SurfaceFormatKHR](),
     ):
         self.s_type = StructureType.SURFACE_FORMAT_2_KHR
         self.p_next = p_next
-        self.surface_format = surface_format^
+        self.surface_format = surface_format.copy()
 
 
 struct DisplayProperties2KHR(Copyable):
@@ -7922,11 +7897,11 @@ struct DisplayProperties2KHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var display_properties: DisplayPropertiesKHR = zero_init[DisplayPropertiesKHR](),
+        display_properties: DisplayPropertiesKHR = zero_init[DisplayPropertiesKHR](),
     ):
         self.s_type = StructureType.DISPLAY_PROPERTIES_2_KHR
         self.p_next = p_next
-        self.display_properties = display_properties^
+        self.display_properties = display_properties.copy()
 
 
 struct DisplayPlaneProperties2KHR(Copyable):
@@ -7937,11 +7912,11 @@ struct DisplayPlaneProperties2KHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var display_plane_properties: DisplayPlanePropertiesKHR = zero_init[DisplayPlanePropertiesKHR](),
+        display_plane_properties: DisplayPlanePropertiesKHR = zero_init[DisplayPlanePropertiesKHR](),
     ):
         self.s_type = StructureType.DISPLAY_PLANE_PROPERTIES_2_KHR
         self.p_next = p_next
-        self.display_plane_properties = display_plane_properties^
+        self.display_plane_properties = display_plane_properties.copy()
 
 
 struct DisplayModeProperties2KHR(Copyable):
@@ -7952,11 +7927,11 @@ struct DisplayModeProperties2KHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var display_mode_properties: DisplayModePropertiesKHR = zero_init[DisplayModePropertiesKHR](),
+        display_mode_properties: DisplayModePropertiesKHR = zero_init[DisplayModePropertiesKHR](),
     ):
         self.s_type = StructureType.DISPLAY_MODE_PROPERTIES_2_KHR
         self.p_next = p_next
-        self.display_mode_properties = display_mode_properties^
+        self.display_mode_properties = display_mode_properties.copy()
 
 
 struct DisplayModeStereoPropertiesNV(Copyable):
@@ -8000,11 +7975,11 @@ struct DisplayPlaneCapabilities2KHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var capabilities: DisplayPlaneCapabilitiesKHR = zero_init[DisplayPlaneCapabilitiesKHR](),
+        capabilities: DisplayPlaneCapabilitiesKHR = zero_init[DisplayPlaneCapabilitiesKHR](),
     ):
         self.s_type = StructureType.DISPLAY_PLANE_CAPABILITIES_2_KHR
         self.p_next = p_next
-        self.capabilities = capabilities^
+        self.capabilities = capabilities.copy()
 
 
 struct SharedPresentSurfaceCapabilitiesKHR(Copyable):
@@ -8171,11 +8146,11 @@ struct MemoryRequirements2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var memory_requirements: MemoryRequirements = zero_init[MemoryRequirements](),
+        memory_requirements: MemoryRequirements = zero_init[MemoryRequirements](),
     ):
         self.s_type = StructureType.MEMORY_REQUIREMENTS_2
         self.p_next = p_next
-        self.memory_requirements = memory_requirements^
+        self.memory_requirements = memory_requirements.copy()
 
 
 struct SparseImageMemoryRequirements2(Copyable):
@@ -8186,11 +8161,11 @@ struct SparseImageMemoryRequirements2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var memory_requirements: SparseImageMemoryRequirements = zero_init[SparseImageMemoryRequirements](),
+        memory_requirements: SparseImageMemoryRequirements = zero_init[SparseImageMemoryRequirements](),
     ):
         self.s_type = StructureType.SPARSE_IMAGE_MEMORY_REQUIREMENTS_2
         self.p_next = p_next
-        self.memory_requirements = memory_requirements^
+        self.memory_requirements = memory_requirements.copy()
 
 
 struct PhysicalDevicePointClippingProperties(Copyable):
@@ -8325,7 +8300,7 @@ struct SamplerYcbcrConversionCreateInfo(Copyable):
         format: Format = zero_init[Format](),
         ycbcr_model: SamplerYcbcrModelConversion = zero_init[SamplerYcbcrModelConversion](),
         ycbcr_range: SamplerYcbcrRange = zero_init[SamplerYcbcrRange](),
-        var components: ComponentMapping = zero_init[ComponentMapping](),
+        components: ComponentMapping = zero_init[ComponentMapping](),
         x_chroma_offset: ChromaLocation = zero_init[ChromaLocation](),
         y_chroma_offset: ChromaLocation = zero_init[ChromaLocation](),
         chroma_filter: Filter = zero_init[Filter](),
@@ -8336,7 +8311,7 @@ struct SamplerYcbcrConversionCreateInfo(Copyable):
         self.format = format
         self.ycbcr_model = ycbcr_model
         self.ycbcr_range = ycbcr_range
-        self.components = components^
+        self.components = components.copy()
         self.x_chroma_offset = x_chroma_offset
         self.y_chroma_offset = y_chroma_offset
         self.chroma_filter = chroma_filter
@@ -8565,14 +8540,14 @@ struct SampleLocationsInfoEXT(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         sample_locations_per_pixel: SampleCountFlagBits = zero_init[SampleCountFlagBits](),
-        var sample_location_grid_size: Extent2D = zero_init[Extent2D](),
+        sample_location_grid_size: Extent2D = zero_init[Extent2D](),
         sample_locations_count: UInt32 = zero_init[UInt32](),
         p_sample_locations: Ptr[SampleLocationEXT, ImmutAnyOrigin] = zero_init[Ptr[SampleLocationEXT, ImmutAnyOrigin]](),
     ):
         self.s_type = StructureType.SAMPLE_LOCATIONS_INFO_EXT
         self.p_next = p_next
         self.sample_locations_per_pixel = sample_locations_per_pixel
-        self.sample_location_grid_size = sample_location_grid_size^
+        self.sample_location_grid_size = sample_location_grid_size.copy()
         self.sample_locations_count = sample_locations_count
         self.p_sample_locations = p_sample_locations
 
@@ -8584,10 +8559,10 @@ struct AttachmentSampleLocationsEXT(Copyable):
     fn __init__(
         out self,
         attachment_index: UInt32 = zero_init[UInt32](),
-        var sample_locations_info: SampleLocationsInfoEXT = zero_init[SampleLocationsInfoEXT](),
+        sample_locations_info: SampleLocationsInfoEXT = zero_init[SampleLocationsInfoEXT](),
     ):
         self.attachment_index = attachment_index
-        self.sample_locations_info = sample_locations_info^
+        self.sample_locations_info = sample_locations_info.copy()
 
 
 struct SubpassSampleLocationsEXT(Copyable):
@@ -8597,10 +8572,10 @@ struct SubpassSampleLocationsEXT(Copyable):
     fn __init__(
         out self,
         subpass_index: UInt32 = zero_init[UInt32](),
-        var sample_locations_info: SampleLocationsInfoEXT = zero_init[SampleLocationsInfoEXT](),
+        sample_locations_info: SampleLocationsInfoEXT = zero_init[SampleLocationsInfoEXT](),
     ):
         self.subpass_index = subpass_index
-        self.sample_locations_info = sample_locations_info^
+        self.sample_locations_info = sample_locations_info.copy()
 
 
 struct RenderPassSampleLocationsBeginInfoEXT(Copyable):
@@ -8637,12 +8612,12 @@ struct PipelineSampleLocationsStateCreateInfoEXT(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         sample_locations_enable: Bool32 = zero_init[Bool32](),
-        var sample_locations_info: SampleLocationsInfoEXT = zero_init[SampleLocationsInfoEXT](),
+        sample_locations_info: SampleLocationsInfoEXT = zero_init[SampleLocationsInfoEXT](),
     ):
         self.s_type = StructureType.PIPELINE_SAMPLE_LOCATIONS_STATE_CREATE_INFO_EXT
         self.p_next = p_next
         self.sample_locations_enable = sample_locations_enable
-        self.sample_locations_info = sample_locations_info^
+        self.sample_locations_info = sample_locations_info.copy()
 
 
 struct PhysicalDeviceSampleLocationsPropertiesEXT(Copyable):
@@ -8658,7 +8633,7 @@ struct PhysicalDeviceSampleLocationsPropertiesEXT(Copyable):
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
         sample_location_sample_counts: SampleCountFlags = zero_init[SampleCountFlags](),
-        var max_sample_location_grid_size: Extent2D = zero_init[Extent2D](),
+        max_sample_location_grid_size: Extent2D = zero_init[Extent2D](),
         sample_location_coordinate_range: InlineArray[Float32, Int(2)] = zero_init[InlineArray[Float32, Int(2)]](),
         sample_location_sub_pixel_bits: UInt32 = zero_init[UInt32](),
         variable_sample_locations: Bool32 = zero_init[Bool32](),
@@ -8666,7 +8641,7 @@ struct PhysicalDeviceSampleLocationsPropertiesEXT(Copyable):
         self.s_type = StructureType.PHYSICAL_DEVICE_SAMPLE_LOCATIONS_PROPERTIES_EXT
         self.p_next = p_next
         self.sample_location_sample_counts = sample_location_sample_counts
-        self.max_sample_location_grid_size = max_sample_location_grid_size^
+        self.max_sample_location_grid_size = max_sample_location_grid_size.copy()
         self.sample_location_coordinate_range = sample_location_coordinate_range
         self.sample_location_sub_pixel_bits = sample_location_sub_pixel_bits
         self.variable_sample_locations = variable_sample_locations
@@ -8680,11 +8655,11 @@ struct MultisamplePropertiesEXT(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var max_sample_location_grid_size: Extent2D = zero_init[Extent2D](),
+        max_sample_location_grid_size: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.MULTISAMPLE_PROPERTIES_EXT
         self.p_next = p_next
-        self.max_sample_location_grid_size = max_sample_location_grid_size^
+        self.max_sample_location_grid_size = max_sample_location_grid_size.copy()
 
 
 struct SamplerReductionModeCreateInfo(Copyable):
@@ -9175,11 +9150,11 @@ struct PhysicalDeviceLayeredApiVulkanPropertiesKHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var properties: PhysicalDeviceProperties2 = zero_init[PhysicalDeviceProperties2](),
+        properties: PhysicalDeviceProperties2 = zero_init[PhysicalDeviceProperties2](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_LAYERED_API_VULKAN_PROPERTIES_KHR
         self.p_next = p_next
-        self.properties = properties^
+        self.properties = properties.copy()
 
 
 struct PhysicalDeviceMaintenance8FeaturesKHR(Copyable):
@@ -9425,7 +9400,7 @@ struct NativeBufferANDROID(Copyable):
         stride: Int32 = zero_init[Int32](),
         format: Int32 = zero_init[Int32](),
         usage: Int32 = zero_init[Int32](),
-        var usage_2: NativeBufferUsage2ANDROID = zero_init[NativeBufferUsage2ANDROID](),
+        usage_2: NativeBufferUsage2ANDROID = zero_init[NativeBufferUsage2ANDROID](),
     ):
         self.s_type = StructureType.NATIVE_BUFFER_ANDROID
         self.p_next = p_next
@@ -9433,7 +9408,7 @@ struct NativeBufferANDROID(Copyable):
         self.stride = stride
         self.format = format
         self.usage = usage
-        self.usage_2 = usage_2^
+        self.usage_2 = usage_2.copy()
 
 
 struct SwapchainImageCreateInfoANDROID(Copyable):
@@ -9500,7 +9475,7 @@ struct ShaderStatisticsInfoAMD(Copyable):
     fn __init__(
         out self,
         shader_stage_mask: ShaderStageFlags = zero_init[ShaderStageFlags](),
-        var resource_usage: ShaderResourceUsageAMD = zero_init[ShaderResourceUsageAMD](),
+        resource_usage: ShaderResourceUsageAMD = zero_init[ShaderResourceUsageAMD](),
         num_physical_vgprs: UInt32 = zero_init[UInt32](),
         num_physical_sgprs: UInt32 = zero_init[UInt32](),
         num_available_vgprs: UInt32 = zero_init[UInt32](),
@@ -9508,7 +9483,7 @@ struct ShaderStatisticsInfoAMD(Copyable):
         compute_work_group_size: InlineArray[UInt32, Int(3)] = zero_init[InlineArray[UInt32, Int(3)]](),
     ):
         self.shader_stage_mask = shader_stage_mask
-        self.resource_usage = resource_usage^
+        self.resource_usage = resource_usage.copy()
         self.num_physical_vgprs = num_physical_vgprs
         self.num_physical_sgprs = num_physical_sgprs
         self.num_available_vgprs = num_available_vgprs
@@ -9571,20 +9546,18 @@ struct DebugUtilsObjectNameInfoEXT(Copyable):
     var object_handle: UInt64
     var p_object_name: CStringSlice[ImmutAnyOrigin]
 
-    fn __init__[
-        p_object_name_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         object_type: ObjectType = zero_init[ObjectType](),
         object_handle: UInt64 = zero_init[UInt64](),
-        p_object_name: CStringSlice[p_object_name_origin] = zero_init[CStringSlice[p_object_name_origin]](),
+        p_object_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
     ):
         self.s_type = StructureType.DEBUG_UTILS_OBJECT_NAME_INFO_EXT
         self.p_next = p_next
         self.object_type = object_type
         self.object_handle = object_handle
-        self.p_object_name = Ptr(to=p_object_name).bitcast[type_of(self.p_object_name)]()[]
+        self.p_object_name = p_object_name
 
 
 struct DebugUtilsObjectTagInfoEXT(Copyable):
@@ -9620,17 +9593,15 @@ struct DebugUtilsLabelEXT(Copyable):
     var p_label_name: CStringSlice[ImmutAnyOrigin]
     var color: InlineArray[Float32, Int(4)]
 
-    fn __init__[
-        p_label_name_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        p_label_name: CStringSlice[p_label_name_origin] = zero_init[CStringSlice[p_label_name_origin]](),
+        p_label_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
         color: InlineArray[Float32, Int(4)] = zero_init[InlineArray[Float32, Int(4)]](),
     ):
         self.s_type = StructureType.DEBUG_UTILS_LABEL_EXT
         self.p_next = p_next
-        self.p_label_name = Ptr(to=p_label_name).bitcast[type_of(self.p_label_name)]()[]
+        self.p_label_name = p_label_name
         self.color = color
 
 
@@ -9675,16 +9646,13 @@ struct DebugUtilsMessengerCallbackDataEXT(Copyable):
     var object_count: UInt32
     var p_objects: Ptr[DebugUtilsObjectNameInfoEXT, ImmutAnyOrigin]
 
-    fn __init__[
-        p_message_id_name_origin: ImmutOrigin = ImmutAnyOrigin,
-        p_message_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         flags: DebugUtilsMessengerCallbackDataFlagsEXT = zero_init[DebugUtilsMessengerCallbackDataFlagsEXT](),
-        p_message_id_name: CStringSlice[p_message_id_name_origin] = zero_init[CStringSlice[p_message_id_name_origin]](),
+        p_message_id_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
         message_id_number: Int32 = zero_init[Int32](),
-        p_message: CStringSlice[p_message_origin] = zero_init[CStringSlice[p_message_origin]](),
+        p_message: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
         queue_label_count: UInt32 = zero_init[UInt32](),
         p_queue_labels: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin] = zero_init[Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]](),
         cmd_buf_label_count: UInt32 = zero_init[UInt32](),
@@ -9695,9 +9663,9 @@ struct DebugUtilsMessengerCallbackDataEXT(Copyable):
         self.s_type = StructureType.DEBUG_UTILS_MESSENGER_CALLBACK_DATA_EXT
         self.p_next = p_next
         self.flags = flags
-        self.p_message_id_name = Ptr(to=p_message_id_name).bitcast[type_of(self.p_message_id_name)]()[]
+        self.p_message_id_name = p_message_id_name
         self.message_id_number = message_id_number
-        self.p_message = Ptr(to=p_message).bitcast[type_of(self.p_message)]()[]
+        self.p_message = p_message
         self.queue_label_count = queue_label_count
         self.p_queue_labels = p_queue_labels
         self.cmd_buf_label_count = cmd_buf_label_count
@@ -10661,7 +10629,7 @@ struct AndroidHardwareBufferFormatPropertiesANDROID(Copyable):
         format: Format = zero_init[Format](),
         external_format: UInt64 = zero_init[UInt64](),
         format_features: FormatFeatureFlags = zero_init[FormatFeatureFlags](),
-        var sampler_ycbcr_conversion_components: ComponentMapping = zero_init[ComponentMapping](),
+        sampler_ycbcr_conversion_components: ComponentMapping = zero_init[ComponentMapping](),
         suggested_ycbcr_model: SamplerYcbcrModelConversion = zero_init[SamplerYcbcrModelConversion](),
         suggested_ycbcr_range: SamplerYcbcrRange = zero_init[SamplerYcbcrRange](),
         suggested_x_chroma_offset: ChromaLocation = zero_init[ChromaLocation](),
@@ -10672,7 +10640,7 @@ struct AndroidHardwareBufferFormatPropertiesANDROID(Copyable):
         self.format = format
         self.external_format = external_format
         self.format_features = format_features
-        self.sampler_ycbcr_conversion_components = sampler_ycbcr_conversion_components^
+        self.sampler_ycbcr_conversion_components = sampler_ycbcr_conversion_components.copy()
         self.suggested_ycbcr_model = suggested_ycbcr_model
         self.suggested_ycbcr_range = suggested_ycbcr_range
         self.suggested_x_chroma_offset = suggested_x_chroma_offset
@@ -11353,13 +11321,13 @@ struct PhysicalDeviceShadingRateImagePropertiesNV(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var shading_rate_texel_size: Extent2D = zero_init[Extent2D](),
+        shading_rate_texel_size: Extent2D = zero_init[Extent2D](),
         shading_rate_palette_size: UInt32 = zero_init[UInt32](),
         shading_rate_max_coarse_samples: UInt32 = zero_init[UInt32](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_SHADING_RATE_IMAGE_PROPERTIES_NV
         self.p_next = p_next
-        self.shading_rate_texel_size = shading_rate_texel_size^
+        self.shading_rate_texel_size = shading_rate_texel_size.copy()
         self.shading_rate_palette_size = shading_rate_palette_size
         self.shading_rate_max_coarse_samples = shading_rate_max_coarse_samples
 
@@ -11873,11 +11841,11 @@ struct GeometryDataNV(Copyable):
 
     fn __init__(
         out self,
-        var triangles: GeometryTrianglesNV = zero_init[GeometryTrianglesNV](),
-        var aabbs: GeometryAABBNV = zero_init[GeometryAABBNV](),
+        triangles: GeometryTrianglesNV = zero_init[GeometryTrianglesNV](),
+        aabbs: GeometryAABBNV = zero_init[GeometryAABBNV](),
     ):
-        self.triangles = triangles^
-        self.aabbs = aabbs^
+        self.triangles = triangles.copy()
+        self.aabbs = aabbs.copy()
 
 
 struct GeometryNV(Copyable):
@@ -11891,13 +11859,13 @@ struct GeometryNV(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         geometry_type: GeometryTypeKHR = zero_init[GeometryTypeKHR](),
-        var geometry: GeometryDataNV = zero_init[GeometryDataNV](),
+        geometry: GeometryDataNV = zero_init[GeometryDataNV](),
         flags: GeometryFlagsKHR = zero_init[GeometryFlagsKHR](),
     ):
         self.s_type = StructureType.GEOMETRY_NV
         self.p_next = p_next
         self.geometry_type = geometry_type
-        self.geometry = geometry^
+        self.geometry = geometry.copy()
         self.flags = flags
 
 
@@ -11938,12 +11906,12 @@ struct AccelerationStructureCreateInfoNV(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         compacted_size: DeviceSize = zero_init[DeviceSize](),
-        var info: AccelerationStructureInfoNV = zero_init[AccelerationStructureInfoNV](),
+        info: AccelerationStructureInfoNV = zero_init[AccelerationStructureInfoNV](),
     ):
         self.s_type = StructureType.ACCELERATION_STRUCTURE_CREATE_INFO_NV
         self.p_next = p_next
         self.compacted_size = compacted_size
-        self.info = info^
+        self.info = info.copy()
 
 
 struct BindAccelerationStructureMemoryInfoNV(Copyable):
@@ -12506,14 +12474,14 @@ struct PhysicalDeviceFragmentDensityMapPropertiesEXT(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var min_fragment_density_texel_size: Extent2D = zero_init[Extent2D](),
-        var max_fragment_density_texel_size: Extent2D = zero_init[Extent2D](),
+        min_fragment_density_texel_size: Extent2D = zero_init[Extent2D](),
+        max_fragment_density_texel_size: Extent2D = zero_init[Extent2D](),
         fragment_density_invocations: Bool32 = zero_init[Bool32](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_PROPERTIES_EXT
         self.p_next = p_next
-        self.min_fragment_density_texel_size = min_fragment_density_texel_size^
-        self.max_fragment_density_texel_size = max_fragment_density_texel_size^
+        self.min_fragment_density_texel_size = min_fragment_density_texel_size.copy()
+        self.max_fragment_density_texel_size = max_fragment_density_texel_size.copy()
         self.fragment_density_invocations = fragment_density_invocations
 
 
@@ -12549,11 +12517,11 @@ struct PhysicalDeviceFragmentDensityMapOffsetPropertiesEXT(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var fragment_density_offset_granularity: Extent2D = zero_init[Extent2D](),
+        fragment_density_offset_granularity: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_PROPERTIES_EXT
         self.p_next = p_next
-        self.fragment_density_offset_granularity = fragment_density_offset_granularity^
+        self.fragment_density_offset_granularity = fragment_density_offset_granularity.copy()
 
 
 struct RenderPassFragmentDensityMapCreateInfoEXT(Copyable):
@@ -12564,11 +12532,11 @@ struct RenderPassFragmentDensityMapCreateInfoEXT(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var fragment_density_map_attachment: AttachmentReference = zero_init[AttachmentReference](),
+        fragment_density_map_attachment: AttachmentReference = zero_init[AttachmentReference](),
     ):
         self.s_type = StructureType.RENDER_PASS_FRAGMENT_DENSITY_MAP_CREATE_INFO_EXT
         self.p_next = p_next
-        self.fragment_density_map_attachment = fragment_density_map_attachment^
+        self.fragment_density_map_attachment = fragment_density_map_attachment.copy()
 
 
 struct RenderPassFragmentDensityMapOffsetEndInfoEXT(Copyable):
@@ -14462,7 +14430,7 @@ struct PhysicalDeviceVulkan12Properties(Copyable):
         driver_id: DriverId = zero_init[DriverId](),
         driver_name: InlineArray[c_char, Int(MAX_DRIVER_NAME_SIZE)] = zero_init[InlineArray[c_char, Int(MAX_DRIVER_NAME_SIZE)]](),
         driver_info: InlineArray[c_char, Int(MAX_DRIVER_INFO_SIZE)] = zero_init[InlineArray[c_char, Int(MAX_DRIVER_INFO_SIZE)]](),
-        var conformance_version: ConformanceVersion = zero_init[ConformanceVersion](),
+        conformance_version: ConformanceVersion = zero_init[ConformanceVersion](),
         denorm_behavior_independence: ShaderFloatControlsIndependence = zero_init[ShaderFloatControlsIndependence](),
         rounding_mode_independence: ShaderFloatControlsIndependence = zero_init[ShaderFloatControlsIndependence](),
         shader_signed_zero_inf_nan_preserve_float_16: Bool32 = zero_init[Bool32](),
@@ -14517,7 +14485,7 @@ struct PhysicalDeviceVulkan12Properties(Copyable):
         self.driver_id = driver_id
         self.driver_name = driver_name
         self.driver_info = driver_info
-        self.conformance_version = conformance_version^
+        self.conformance_version = conformance_version.copy()
         self.denorm_behavior_independence = denorm_behavior_independence
         self.rounding_mode_independence = rounding_mode_independence
         self.shader_signed_zero_inf_nan_preserve_float_16 = shader_signed_zero_inf_nan_preserve_float_16
@@ -15108,12 +15076,12 @@ struct SamplerBorderColorComponentMappingCreateInfoEXT(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var components: ComponentMapping = zero_init[ComponentMapping](),
+        components: ComponentMapping = zero_init[ComponentMapping](),
         srgb: Bool32 = zero_init[Bool32](),
     ):
         self.s_type = StructureType.SAMPLER_BORDER_COLOR_COMPONENT_MAPPING_CREATE_INFO_EXT
         self.p_next = p_next
-        self.components = components^
+        self.components = components.copy()
         self.srgb = srgb
 
 
@@ -15440,14 +15408,14 @@ struct AccelerationStructureInstanceKHR(Copyable):
 
     fn __init__(
         out self,
-        var transform: TransformMatrixKHR = zero_init[TransformMatrixKHR](),
-        instance_custom_index: UInt32 = zero_init[UInt32](),
-        mask: UInt32 = zero_init[UInt32](),
-        instance_shader_binding_table_record_offset: UInt32 = zero_init[UInt32](),
-        flags: GeometryInstanceFlagsKHR = zero_init[GeometryInstanceFlagsKHR](),
+        transform: TransformMatrixKHR = zero_init[TransformMatrixKHR](),
+        instance_custom_index: UInt32 = 0,
+        mask: UInt32 = 0,
+        instance_shader_binding_table_record_offset: UInt32 = 0,
+        flags: UInt32 = 0,
         acceleration_structure_reference: UInt64 = zero_init[UInt64](),
     ):
-        self.transform = transform^
+        self.transform = transform.copy()
         self._packed0 = 0
         self._packed1 = 0
         self.acceleration_structure_reference = acceleration_structure_reference
@@ -15474,11 +15442,11 @@ struct AccelerationStructureInstanceKHR(Copyable):
     fn set_instance_shader_binding_table_record_offset(mut self, new_value: UInt32):
         set_packed_value[width=24, offset=0](self._packed1, new_value)
 
-    fn get_flags(self) -> GeometryInstanceFlagsKHR:
-        return GeometryInstanceFlagsKHR(value = get_packed_value[width=8, offset=24](self._packed1))
+    fn get_flags(self) -> UInt32:
+        return get_packed_value[width=8, offset=24](self._packed1)
 
-    fn set_flags(mut self, new_value: GeometryInstanceFlagsKHR):
-        set_packed_value[width=8, offset=24](self._packed1, new_value.value())
+    fn set_flags(mut self, new_value: UInt32):
+        set_packed_value[width=8, offset=24](self._packed1, new_value)
 
 
 struct AccelerationStructureDeviceAddressInfoKHR(Copyable):
@@ -15887,12 +15855,12 @@ struct CommandBufferInheritanceRenderPassTransformInfoQCOM(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         transform: SurfaceTransformFlagBitsKHR = zero_init[SurfaceTransformFlagBitsKHR](),
-        var render_area: Rect2D = zero_init[Rect2D](),
+        render_area: Rect2D = zero_init[Rect2D](),
     ):
         self.s_type = StructureType.COMMAND_BUFFER_INHERITANCE_RENDER_PASS_TRANSFORM_INFO_QCOM
         self.p_next = p_next
         self.transform = transform
-        self.render_area = render_area^
+        self.render_area = render_area.copy()
 
 
 struct PhysicalDevicePartitionedAccelerationStructureFeaturesNV(Copyable):
@@ -15934,11 +15902,11 @@ struct BuildPartitionedAccelerationStructureIndirectCommandNV(Copyable):
         out self,
         op_type: PartitionedAccelerationStructureOpTypeNV = zero_init[PartitionedAccelerationStructureOpTypeNV](),
         arg_count: UInt32 = zero_init[UInt32](),
-        var arg_data: StridedDeviceAddressNV = zero_init[StridedDeviceAddressNV](),
+        arg_data: StridedDeviceAddressNV = zero_init[StridedDeviceAddressNV](),
     ):
         self.op_type = op_type
         self.arg_count = arg_count
-        self.arg_data = arg_data^
+        self.arg_data = arg_data.copy()
 
 
 struct PartitionedAccelerationStructureFlagsNV(Copyable):
@@ -15969,7 +15937,7 @@ struct PartitionedAccelerationStructureWriteInstanceDataNV(Copyable):
 
     fn __init__(
         out self,
-        var transform: TransformMatrixKHR = zero_init[TransformMatrixKHR](),
+        transform: TransformMatrixKHR = zero_init[TransformMatrixKHR](),
         explicit_aabb: InlineArray[Float32, Int(6)] = zero_init[InlineArray[Float32, Int(6)]](),
         instance_id: UInt32 = zero_init[UInt32](),
         instance_mask: UInt32 = zero_init[UInt32](),
@@ -15979,7 +15947,7 @@ struct PartitionedAccelerationStructureWriteInstanceDataNV(Copyable):
         partition_index: UInt32 = zero_init[UInt32](),
         acceleration_structure: DeviceAddress = zero_init[DeviceAddress](),
     ):
-        self.transform = transform^
+        self.transform = transform.copy()
         self.explicit_aabb = explicit_aabb
         self.instance_id = instance_id
         self.instance_mask = instance_mask
@@ -16077,7 +16045,7 @@ struct BuildPartitionedAccelerationStructureInfoNV(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var input: PartitionedAccelerationStructureInstancesInputNV = zero_init[PartitionedAccelerationStructureInstancesInputNV](),
+        input: PartitionedAccelerationStructureInstancesInputNV = zero_init[PartitionedAccelerationStructureInstancesInputNV](),
         src_acceleration_structure_data: DeviceAddress = zero_init[DeviceAddress](),
         dst_acceleration_structure_data: DeviceAddress = zero_init[DeviceAddress](),
         scratch_data: DeviceAddress = zero_init[DeviceAddress](),
@@ -16086,7 +16054,7 @@ struct BuildPartitionedAccelerationStructureInfoNV(Copyable):
     ):
         self.s_type = StructureType.BUILD_PARTITIONED_ACCELERATION_STRUCTURE_INFO_NV
         self.p_next = p_next
-        self.input = input^
+        self.input = input.copy()
         self.src_acceleration_structure_data = src_acceleration_structure_data
         self.dst_acceleration_structure_data = dst_acceleration_structure_data
         self.scratch_data = scratch_data
@@ -16424,19 +16392,19 @@ struct ImageCopy2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var src_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
-        var src_offset: Offset3D = zero_init[Offset3D](),
-        var dst_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
-        var dst_offset: Offset3D = zero_init[Offset3D](),
-        var extent: Extent3D = zero_init[Extent3D](),
+        src_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        src_offset: Offset3D = zero_init[Offset3D](),
+        dst_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        dst_offset: Offset3D = zero_init[Offset3D](),
+        extent: Extent3D = zero_init[Extent3D](),
     ):
         self.s_type = StructureType.IMAGE_COPY_2
         self.p_next = p_next
-        self.src_subresource = src_subresource^
-        self.src_offset = src_offset^
-        self.dst_subresource = dst_subresource^
-        self.dst_offset = dst_offset^
-        self.extent = extent^
+        self.src_subresource = src_subresource.copy()
+        self.src_offset = src_offset.copy()
+        self.dst_subresource = dst_subresource.copy()
+        self.dst_offset = dst_offset.copy()
+        self.extent = extent.copy()
 
 
 struct ImageBlit2(Copyable):
@@ -16450,17 +16418,17 @@ struct ImageBlit2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var src_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        src_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
         src_offsets: InlineArray[Offset3D, Int(2)] = zero_init[InlineArray[Offset3D, Int(2)]](),
-        var dst_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        dst_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
         dst_offsets: InlineArray[Offset3D, Int(2)] = zero_init[InlineArray[Offset3D, Int(2)]](),
     ):
         self.s_type = StructureType.IMAGE_BLIT_2
         self.p_next = p_next
-        self.src_subresource = src_subresource^
-        self.src_offsets = src_offsets
-        self.dst_subresource = dst_subresource^
-        self.dst_offsets = dst_offsets
+        self.src_subresource = src_subresource.copy()
+        self.src_offsets = src_offsets.copy()
+        self.dst_subresource = dst_subresource.copy()
+        self.dst_offsets = dst_offsets.copy()
 
 
 struct BufferImageCopy2(Copyable):
@@ -16479,18 +16447,18 @@ struct BufferImageCopy2(Copyable):
         buffer_offset: DeviceSize = zero_init[DeviceSize](),
         buffer_row_length: UInt32 = zero_init[UInt32](),
         buffer_image_height: UInt32 = zero_init[UInt32](),
-        var image_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
-        var image_offset: Offset3D = zero_init[Offset3D](),
-        var image_extent: Extent3D = zero_init[Extent3D](),
+        image_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        image_offset: Offset3D = zero_init[Offset3D](),
+        image_extent: Extent3D = zero_init[Extent3D](),
     ):
         self.s_type = StructureType.BUFFER_IMAGE_COPY_2
         self.p_next = p_next
         self.buffer_offset = buffer_offset
         self.buffer_row_length = buffer_row_length
         self.buffer_image_height = buffer_image_height
-        self.image_subresource = image_subresource^
-        self.image_offset = image_offset^
-        self.image_extent = image_extent^
+        self.image_subresource = image_subresource.copy()
+        self.image_offset = image_offset.copy()
+        self.image_extent = image_extent.copy()
 
 
 struct ImageResolve2(Copyable):
@@ -16505,19 +16473,19 @@ struct ImageResolve2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var src_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
-        var src_offset: Offset3D = zero_init[Offset3D](),
-        var dst_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
-        var dst_offset: Offset3D = zero_init[Offset3D](),
-        var extent: Extent3D = zero_init[Extent3D](),
+        src_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        src_offset: Offset3D = zero_init[Offset3D](),
+        dst_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        dst_offset: Offset3D = zero_init[Offset3D](),
+        extent: Extent3D = zero_init[Extent3D](),
     ):
         self.s_type = StructureType.IMAGE_RESOLVE_2
         self.p_next = p_next
-        self.src_subresource = src_subresource^
-        self.src_offset = src_offset^
-        self.dst_subresource = dst_subresource^
-        self.dst_offset = dst_offset^
-        self.extent = extent^
+        self.src_subresource = src_subresource.copy()
+        self.src_offset = src_offset.copy()
+        self.dst_subresource = dst_subresource.copy()
+        self.dst_offset = dst_offset.copy()
+        self.extent = extent.copy()
 
 
 struct CopyBufferInfo2(Copyable):
@@ -16719,12 +16687,12 @@ struct FragmentShadingRateAttachmentInfoKHR(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         p_fragment_shading_rate_attachment: Ptr[AttachmentReference2, ImmutAnyOrigin] = zero_init[Ptr[AttachmentReference2, ImmutAnyOrigin]](),
-        var shading_rate_attachment_texel_size: Extent2D = zero_init[Extent2D](),
+        shading_rate_attachment_texel_size: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.FRAGMENT_SHADING_RATE_ATTACHMENT_INFO_KHR
         self.p_next = p_next
         self.p_fragment_shading_rate_attachment = p_fragment_shading_rate_attachment
-        self.shading_rate_attachment_texel_size = shading_rate_attachment_texel_size^
+        self.shading_rate_attachment_texel_size = shading_rate_attachment_texel_size.copy()
 
 
 struct PipelineFragmentShadingRateStateCreateInfoKHR(Copyable):
@@ -16736,12 +16704,12 @@ struct PipelineFragmentShadingRateStateCreateInfoKHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var fragment_size: Extent2D = zero_init[Extent2D](),
+        fragment_size: Extent2D = zero_init[Extent2D](),
         combiner_ops: InlineArray[FragmentShadingRateCombinerOpKHR, Int(2)] = zero_init[InlineArray[FragmentShadingRateCombinerOpKHR, Int(2)]](),
     ):
         self.s_type = StructureType.PIPELINE_FRAGMENT_SHADING_RATE_STATE_CREATE_INFO_KHR
         self.p_next = p_next
-        self.fragment_size = fragment_size^
+        self.fragment_size = fragment_size.copy()
         self.combiner_ops = combiner_ops
 
 
@@ -16790,13 +16758,13 @@ struct PhysicalDeviceFragmentShadingRatePropertiesKHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var min_fragment_shading_rate_attachment_texel_size: Extent2D = zero_init[Extent2D](),
-        var max_fragment_shading_rate_attachment_texel_size: Extent2D = zero_init[Extent2D](),
+        min_fragment_shading_rate_attachment_texel_size: Extent2D = zero_init[Extent2D](),
+        max_fragment_shading_rate_attachment_texel_size: Extent2D = zero_init[Extent2D](),
         max_fragment_shading_rate_attachment_texel_size_aspect_ratio: UInt32 = zero_init[UInt32](),
         primitive_fragment_shading_rate_with_multiple_viewports: Bool32 = zero_init[Bool32](),
         layered_shading_rate_attachments: Bool32 = zero_init[Bool32](),
         fragment_shading_rate_non_trivial_combiner_ops: Bool32 = zero_init[Bool32](),
-        var max_fragment_size: Extent2D = zero_init[Extent2D](),
+        max_fragment_size: Extent2D = zero_init[Extent2D](),
         max_fragment_size_aspect_ratio: UInt32 = zero_init[UInt32](),
         max_fragment_shading_rate_coverage_samples: UInt32 = zero_init[UInt32](),
         max_fragment_shading_rate_rasterization_samples: SampleCountFlagBits = zero_init[SampleCountFlagBits](),
@@ -16810,13 +16778,13 @@ struct PhysicalDeviceFragmentShadingRatePropertiesKHR(Copyable):
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_FRAGMENT_SHADING_RATE_PROPERTIES_KHR
         self.p_next = p_next
-        self.min_fragment_shading_rate_attachment_texel_size = min_fragment_shading_rate_attachment_texel_size^
-        self.max_fragment_shading_rate_attachment_texel_size = max_fragment_shading_rate_attachment_texel_size^
+        self.min_fragment_shading_rate_attachment_texel_size = min_fragment_shading_rate_attachment_texel_size.copy()
+        self.max_fragment_shading_rate_attachment_texel_size = max_fragment_shading_rate_attachment_texel_size.copy()
         self.max_fragment_shading_rate_attachment_texel_size_aspect_ratio = max_fragment_shading_rate_attachment_texel_size_aspect_ratio
         self.primitive_fragment_shading_rate_with_multiple_viewports = primitive_fragment_shading_rate_with_multiple_viewports
         self.layered_shading_rate_attachments = layered_shading_rate_attachments
         self.fragment_shading_rate_non_trivial_combiner_ops = fragment_shading_rate_non_trivial_combiner_ops
-        self.max_fragment_size = max_fragment_size^
+        self.max_fragment_size = max_fragment_size.copy()
         self.max_fragment_size_aspect_ratio = max_fragment_size_aspect_ratio
         self.max_fragment_shading_rate_coverage_samples = max_fragment_shading_rate_coverage_samples
         self.max_fragment_shading_rate_rasterization_samples = max_fragment_shading_rate_rasterization_samples
@@ -16839,12 +16807,12 @@ struct PhysicalDeviceFragmentShadingRateKHR(Copyable):
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
         sample_counts: SampleCountFlags = zero_init[SampleCountFlags](),
-        var fragment_size: Extent2D = zero_init[Extent2D](),
+        fragment_size: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_FRAGMENT_SHADING_RATE_KHR
         self.p_next = p_next
         self.sample_counts = sample_counts
-        self.fragment_size = fragment_size^
+        self.fragment_size = fragment_size.copy()
 
 
 struct PhysicalDeviceShaderTerminateInvocationFeatures(Copyable):
@@ -17498,8 +17466,8 @@ struct BindIndexBufferIndirectCommandEXT(Copyable):
 struct IndirectCommandsPushConstantTokenEXT(Copyable):
     var update_range: PushConstantRange
 
-    fn __init__(out self, var update_range: PushConstantRange = zero_init[PushConstantRange]()):
-        self.update_range = update_range^
+    fn __init__(out self, update_range: PushConstantRange = zero_init[PushConstantRange]()):
+        self.update_range = update_range.copy()
 
 
 struct IndirectCommandsExecutionSetTokenEXT(Copyable):
@@ -17739,7 +17707,7 @@ struct ImageMemoryBarrier2(Copyable):
         src_queue_family_index: UInt32 = zero_init[UInt32](),
         dst_queue_family_index: UInt32 = zero_init[UInt32](),
         image: Image = zero_init[Image](),
-        var subresource_range: ImageSubresourceRange = zero_init[ImageSubresourceRange](),
+        subresource_range: ImageSubresourceRange = zero_init[ImageSubresourceRange](),
     ):
         self.s_type = StructureType.IMAGE_MEMORY_BARRIER_2
         self.p_next = p_next
@@ -17752,7 +17720,7 @@ struct ImageMemoryBarrier2(Copyable):
         self.src_queue_family_index = src_queue_family_index
         self.dst_queue_family_index = dst_queue_family_index
         self.image = image
-        self.subresource_range = subresource_range^
+        self.subresource_range = subresource_range.copy()
 
 
 struct BufferMemoryBarrier2(Copyable):
@@ -18047,18 +18015,18 @@ struct MemoryToImageCopy(Copyable):
         p_host_pointer: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         memory_row_length: UInt32 = zero_init[UInt32](),
         memory_image_height: UInt32 = zero_init[UInt32](),
-        var image_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
-        var image_offset: Offset3D = zero_init[Offset3D](),
-        var image_extent: Extent3D = zero_init[Extent3D](),
+        image_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        image_offset: Offset3D = zero_init[Offset3D](),
+        image_extent: Extent3D = zero_init[Extent3D](),
     ):
         self.s_type = StructureType.MEMORY_TO_IMAGE_COPY
         self.p_next = p_next
         self.p_host_pointer = p_host_pointer
         self.memory_row_length = memory_row_length
         self.memory_image_height = memory_image_height
-        self.image_subresource = image_subresource^
-        self.image_offset = image_offset^
-        self.image_extent = image_extent^
+        self.image_subresource = image_subresource.copy()
+        self.image_offset = image_offset.copy()
+        self.image_extent = image_extent.copy()
 
 
 struct ImageToMemoryCopy(Copyable):
@@ -18077,18 +18045,18 @@ struct ImageToMemoryCopy(Copyable):
         p_host_pointer: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
         memory_row_length: UInt32 = zero_init[UInt32](),
         memory_image_height: UInt32 = zero_init[UInt32](),
-        var image_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
-        var image_offset: Offset3D = zero_init[Offset3D](),
-        var image_extent: Extent3D = zero_init[Extent3D](),
+        image_subresource: ImageSubresourceLayers = zero_init[ImageSubresourceLayers](),
+        image_offset: Offset3D = zero_init[Offset3D](),
+        image_extent: Extent3D = zero_init[Extent3D](),
     ):
         self.s_type = StructureType.IMAGE_TO_MEMORY_COPY
         self.p_next = p_next
         self.p_host_pointer = p_host_pointer
         self.memory_row_length = memory_row_length
         self.memory_image_height = memory_image_height
-        self.image_subresource = image_subresource^
-        self.image_offset = image_offset^
-        self.image_extent = image_extent^
+        self.image_subresource = image_subresource.copy()
+        self.image_offset = image_offset.copy()
+        self.image_extent = image_extent.copy()
 
 
 struct CopyMemoryToImageInfo(Copyable):
@@ -18192,14 +18160,14 @@ struct HostImageLayoutTransitionInfo(Copyable):
         image: Image = zero_init[Image](),
         old_layout: ImageLayout = zero_init[ImageLayout](),
         new_layout: ImageLayout = zero_init[ImageLayout](),
-        var subresource_range: ImageSubresourceRange = zero_init[ImageSubresourceRange](),
+        subresource_range: ImageSubresourceRange = zero_init[ImageSubresourceRange](),
     ):
         self.s_type = StructureType.HOST_IMAGE_LAYOUT_TRANSITION_INFO
         self.p_next = p_next
         self.image = image
         self.old_layout = old_layout
         self.new_layout = new_layout
-        self.subresource_range = subresource_range^
+        self.subresource_range = subresource_range.copy()
 
 
 struct SubresourceHostMemcpySize(Copyable):
@@ -18714,7 +18682,7 @@ struct VideoFormatPropertiesKHR(Copyable):
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
         format: Format = zero_init[Format](),
-        var component_mapping: ComponentMapping = zero_init[ComponentMapping](),
+        component_mapping: ComponentMapping = zero_init[ComponentMapping](),
         image_create_flags: ImageCreateFlags = zero_init[ImageCreateFlags](),
         image_type: ImageType = zero_init[ImageType](),
         image_tiling: ImageTiling = zero_init[ImageTiling](),
@@ -18723,7 +18691,7 @@ struct VideoFormatPropertiesKHR(Copyable):
         self.s_type = StructureType.VIDEO_FORMAT_PROPERTIES_KHR
         self.p_next = p_next
         self.format = format
-        self.component_mapping = component_mapping^
+        self.component_mapping = component_mapping.copy()
         self.image_create_flags = image_create_flags
         self.image_type = image_type
         self.image_tiling = image_tiling
@@ -18738,11 +18706,11 @@ struct VideoEncodeQuantizationMapCapabilitiesKHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var max_quantization_map_extent: Extent2D = zero_init[Extent2D](),
+        max_quantization_map_extent: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.VIDEO_ENCODE_QUANTIZATION_MAP_CAPABILITIES_KHR
         self.p_next = p_next
-        self.max_quantization_map_extent = max_quantization_map_extent^
+        self.max_quantization_map_extent = max_quantization_map_extent.copy()
 
 
 struct VideoEncodeH264QuantizationMapCapabilitiesKHR(Copyable):
@@ -18807,11 +18775,11 @@ struct VideoFormatQuantizationMapPropertiesKHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var quantization_map_texel_size: Extent2D = zero_init[Extent2D](),
+        quantization_map_texel_size: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.VIDEO_FORMAT_QUANTIZATION_MAP_PROPERTIES_KHR
         self.p_next = p_next
-        self.quantization_map_texel_size = quantization_map_texel_size^
+        self.quantization_map_texel_size = quantization_map_texel_size.copy()
 
 
 struct VideoFormatH265QuantizationMapPropertiesKHR(Copyable):
@@ -18887,24 +18855,24 @@ struct VideoCapabilitiesKHR(Copyable):
         flags: VideoCapabilityFlagsKHR = zero_init[VideoCapabilityFlagsKHR](),
         min_bitstream_buffer_offset_alignment: DeviceSize = zero_init[DeviceSize](),
         min_bitstream_buffer_size_alignment: DeviceSize = zero_init[DeviceSize](),
-        var picture_access_granularity: Extent2D = zero_init[Extent2D](),
-        var min_coded_extent: Extent2D = zero_init[Extent2D](),
-        var max_coded_extent: Extent2D = zero_init[Extent2D](),
+        picture_access_granularity: Extent2D = zero_init[Extent2D](),
+        min_coded_extent: Extent2D = zero_init[Extent2D](),
+        max_coded_extent: Extent2D = zero_init[Extent2D](),
         max_dpb_slots: UInt32 = zero_init[UInt32](),
         max_active_reference_pictures: UInt32 = zero_init[UInt32](),
-        var std_header_version: ExtensionProperties = zero_init[ExtensionProperties](),
+        std_header_version: ExtensionProperties = zero_init[ExtensionProperties](),
     ):
         self.s_type = StructureType.VIDEO_CAPABILITIES_KHR
         self.p_next = p_next
         self.flags = flags
         self.min_bitstream_buffer_offset_alignment = min_bitstream_buffer_offset_alignment
         self.min_bitstream_buffer_size_alignment = min_bitstream_buffer_size_alignment
-        self.picture_access_granularity = picture_access_granularity^
-        self.min_coded_extent = min_coded_extent^
-        self.max_coded_extent = max_coded_extent^
+        self.picture_access_granularity = picture_access_granularity.copy()
+        self.min_coded_extent = min_coded_extent.copy()
+        self.max_coded_extent = max_coded_extent.copy()
         self.max_dpb_slots = max_dpb_slots
         self.max_active_reference_pictures = max_active_reference_pictures
-        self.std_header_version = std_header_version^
+        self.std_header_version = std_header_version.copy()
 
 
 struct VideoSessionMemoryRequirementsKHR(Copyable):
@@ -18917,12 +18885,12 @@ struct VideoSessionMemoryRequirementsKHR(Copyable):
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
         memory_bind_index: UInt32 = zero_init[UInt32](),
-        var memory_requirements: MemoryRequirements = zero_init[MemoryRequirements](),
+        memory_requirements: MemoryRequirements = zero_init[MemoryRequirements](),
     ):
         self.s_type = StructureType.VIDEO_SESSION_MEMORY_REQUIREMENTS_KHR
         self.p_next = p_next
         self.memory_bind_index = memory_bind_index
-        self.memory_requirements = memory_requirements^
+        self.memory_requirements = memory_requirements.copy()
 
 
 struct BindVideoSessionMemoryInfoKHR(Copyable):
@@ -18960,15 +18928,15 @@ struct VideoPictureResourceInfoKHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var coded_offset: Offset2D = zero_init[Offset2D](),
-        var coded_extent: Extent2D = zero_init[Extent2D](),
+        coded_offset: Offset2D = zero_init[Offset2D](),
+        coded_extent: Extent2D = zero_init[Extent2D](),
         base_array_layer: UInt32 = zero_init[UInt32](),
         image_view_binding: ImageView = zero_init[ImageView](),
     ):
         self.s_type = StructureType.VIDEO_PICTURE_RESOURCE_INFO_KHR
         self.p_next = p_next
-        self.coded_offset = coded_offset^
-        self.coded_extent = coded_extent^
+        self.coded_offset = coded_offset.copy()
+        self.coded_extent = coded_extent.copy()
         self.base_array_layer = base_array_layer
         self.image_view_binding = image_view_binding
 
@@ -19040,7 +19008,7 @@ struct VideoDecodeInfoKHR(Copyable):
         src_buffer: Buffer = zero_init[Buffer](),
         src_buffer_offset: DeviceSize = zero_init[DeviceSize](),
         src_buffer_range: DeviceSize = zero_init[DeviceSize](),
-        var dst_picture_resource: VideoPictureResourceInfoKHR = zero_init[VideoPictureResourceInfoKHR](),
+        dst_picture_resource: VideoPictureResourceInfoKHR = zero_init[VideoPictureResourceInfoKHR](),
         p_setup_reference_slot: Ptr[VideoReferenceSlotInfoKHR, ImmutAnyOrigin] = zero_init[Ptr[VideoReferenceSlotInfoKHR, ImmutAnyOrigin]](),
         reference_slot_count: UInt32 = zero_init[UInt32](),
         p_reference_slots: Ptr[VideoReferenceSlotInfoKHR, ImmutAnyOrigin] = zero_init[Ptr[VideoReferenceSlotInfoKHR, ImmutAnyOrigin]](),
@@ -19051,7 +19019,7 @@ struct VideoDecodeInfoKHR(Copyable):
         self.src_buffer = src_buffer
         self.src_buffer_offset = src_buffer_offset
         self.src_buffer_range = src_buffer_range
-        self.dst_picture_resource = dst_picture_resource^
+        self.dst_picture_resource = dst_picture_resource.copy()
         self.p_setup_reference_slot = p_setup_reference_slot
         self.reference_slot_count = reference_slot_count
         self.p_reference_slots = p_reference_slots
@@ -19136,12 +19104,12 @@ struct VideoDecodeH264CapabilitiesKHR(Copyable):
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
         max_level_idc: StdVideoH264LevelIdc = zero_init[StdVideoH264LevelIdc](),
-        var field_offset_granularity: Offset2D = zero_init[Offset2D](),
+        field_offset_granularity: Offset2D = zero_init[Offset2D](),
     ):
         self.s_type = StructureType.VIDEO_DECODE_H264_CAPABILITIES_KHR
         self.p_next = p_next
         self.max_level_idc = max_level_idc
-        self.field_offset_granularity = field_offset_granularity^
+        self.field_offset_granularity = field_offset_granularity.copy()
 
 
 struct VideoDecodeH264SessionParametersAddInfoKHR(Copyable):
@@ -19584,7 +19552,7 @@ struct VideoSessionCreateInfoKHR(Copyable):
         flags: VideoSessionCreateFlagsKHR = zero_init[VideoSessionCreateFlagsKHR](),
         p_video_profile: Ptr[VideoProfileInfoKHR, ImmutAnyOrigin] = zero_init[Ptr[VideoProfileInfoKHR, ImmutAnyOrigin]](),
         picture_format: Format = zero_init[Format](),
-        var max_coded_extent: Extent2D = zero_init[Extent2D](),
+        max_coded_extent: Extent2D = zero_init[Extent2D](),
         reference_picture_format: Format = zero_init[Format](),
         max_dpb_slots: UInt32 = zero_init[UInt32](),
         max_active_reference_pictures: UInt32 = zero_init[UInt32](),
@@ -19596,7 +19564,7 @@ struct VideoSessionCreateInfoKHR(Copyable):
         self.flags = flags
         self.p_video_profile = p_video_profile
         self.picture_format = picture_format
-        self.max_coded_extent = max_coded_extent^
+        self.max_coded_extent = max_coded_extent.copy()
         self.reference_picture_format = reference_picture_format
         self.max_dpb_slots = max_dpb_slots
         self.max_active_reference_pictures = max_active_reference_pictures
@@ -19767,7 +19735,7 @@ struct VideoEncodeInfoKHR(Copyable):
         dst_buffer: Buffer = zero_init[Buffer](),
         dst_buffer_offset: DeviceSize = zero_init[DeviceSize](),
         dst_buffer_range: DeviceSize = zero_init[DeviceSize](),
-        var src_picture_resource: VideoPictureResourceInfoKHR = zero_init[VideoPictureResourceInfoKHR](),
+        src_picture_resource: VideoPictureResourceInfoKHR = zero_init[VideoPictureResourceInfoKHR](),
         p_setup_reference_slot: Ptr[VideoReferenceSlotInfoKHR, ImmutAnyOrigin] = zero_init[Ptr[VideoReferenceSlotInfoKHR, ImmutAnyOrigin]](),
         reference_slot_count: UInt32 = zero_init[UInt32](),
         p_reference_slots: Ptr[VideoReferenceSlotInfoKHR, ImmutAnyOrigin] = zero_init[Ptr[VideoReferenceSlotInfoKHR, ImmutAnyOrigin]](),
@@ -19779,7 +19747,7 @@ struct VideoEncodeInfoKHR(Copyable):
         self.dst_buffer = dst_buffer
         self.dst_buffer_offset = dst_buffer_offset
         self.dst_buffer_range = dst_buffer_range
-        self.src_picture_resource = src_picture_resource^
+        self.src_picture_resource = src_picture_resource.copy()
         self.p_setup_reference_slot = p_setup_reference_slot
         self.reference_slot_count = reference_slot_count
         self.p_reference_slots = p_reference_slots
@@ -19796,12 +19764,12 @@ struct VideoEncodeQuantizationMapInfoKHR(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         quantization_map: ImageView = zero_init[ImageView](),
-        var quantization_map_extent: Extent2D = zero_init[Extent2D](),
+        quantization_map_extent: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.VIDEO_ENCODE_QUANTIZATION_MAP_INFO_KHR
         self.p_next = p_next
         self.quantization_map = quantization_map
-        self.quantization_map_extent = quantization_map_extent^
+        self.quantization_map_extent = quantization_map_extent.copy()
 
 
 struct VideoEncodeQuantizationMapSessionParametersCreateInfoKHR(Copyable):
@@ -19812,11 +19780,11 @@ struct VideoEncodeQuantizationMapSessionParametersCreateInfoKHR(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var quantization_map_texel_size: Extent2D = zero_init[Extent2D](),
+        quantization_map_texel_size: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.VIDEO_ENCODE_QUANTIZATION_MAP_SESSION_PARAMETERS_CREATE_INFO_KHR
         self.p_next = p_next
-        self.quantization_map_texel_size = quantization_map_texel_size^
+        self.quantization_map_texel_size = quantization_map_texel_size.copy()
 
 
 struct PhysicalDeviceVideoEncodeQuantizationMapFeaturesKHR(Copyable):
@@ -19973,7 +19941,7 @@ struct VideoEncodeCapabilitiesKHR(Copyable):
         max_rate_control_layers: UInt32 = zero_init[UInt32](),
         max_bitrate: UInt64 = zero_init[UInt64](),
         max_quality_levels: UInt32 = zero_init[UInt32](),
-        var encode_input_picture_granularity: Extent2D = zero_init[Extent2D](),
+        encode_input_picture_granularity: Extent2D = zero_init[Extent2D](),
         supported_encode_feedback_flags: VideoEncodeFeedbackFlagsKHR = zero_init[VideoEncodeFeedbackFlagsKHR](),
     ):
         self.s_type = StructureType.VIDEO_ENCODE_CAPABILITIES_KHR
@@ -19983,7 +19951,7 @@ struct VideoEncodeCapabilitiesKHR(Copyable):
         self.max_rate_control_layers = max_rate_control_layers
         self.max_bitrate = max_bitrate
         self.max_quality_levels = max_quality_levels
-        self.encode_input_picture_granularity = encode_input_picture_granularity^
+        self.encode_input_picture_granularity = encode_input_picture_granularity.copy()
         self.supported_encode_feedback_flags = supported_encode_feedback_flags
 
 
@@ -20059,7 +20027,7 @@ struct VideoEncodeH264QualityLevelPropertiesKHR(Copyable):
         preferred_idr_period: UInt32 = zero_init[UInt32](),
         preferred_consecutive_b_frame_count: UInt32 = zero_init[UInt32](),
         preferred_temporal_layer_count: UInt32 = zero_init[UInt32](),
-        var preferred_constant_qp: VideoEncodeH264QpKHR = zero_init[VideoEncodeH264QpKHR](),
+        preferred_constant_qp: VideoEncodeH264QpKHR = zero_init[VideoEncodeH264QpKHR](),
         preferred_max_l0_reference_count: UInt32 = zero_init[UInt32](),
         preferred_max_l1_reference_count: UInt32 = zero_init[UInt32](),
         preferred_std_entropy_coding_mode_flag: Bool32 = zero_init[Bool32](),
@@ -20071,7 +20039,7 @@ struct VideoEncodeH264QualityLevelPropertiesKHR(Copyable):
         self.preferred_idr_period = preferred_idr_period
         self.preferred_consecutive_b_frame_count = preferred_consecutive_b_frame_count
         self.preferred_temporal_layer_count = preferred_temporal_layer_count
-        self.preferred_constant_qp = preferred_constant_qp^
+        self.preferred_constant_qp = preferred_constant_qp.copy()
         self.preferred_max_l0_reference_count = preferred_max_l0_reference_count
         self.preferred_max_l1_reference_count = preferred_max_l1_reference_count
         self.preferred_std_entropy_coding_mode_flag = preferred_std_entropy_coding_mode_flag
@@ -20351,20 +20319,20 @@ struct VideoEncodeH264RateControlLayerInfoKHR(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         use_min_qp: Bool32 = zero_init[Bool32](),
-        var min_qp: VideoEncodeH264QpKHR = zero_init[VideoEncodeH264QpKHR](),
+        min_qp: VideoEncodeH264QpKHR = zero_init[VideoEncodeH264QpKHR](),
         use_max_qp: Bool32 = zero_init[Bool32](),
-        var max_qp: VideoEncodeH264QpKHR = zero_init[VideoEncodeH264QpKHR](),
+        max_qp: VideoEncodeH264QpKHR = zero_init[VideoEncodeH264QpKHR](),
         use_max_frame_size: Bool32 = zero_init[Bool32](),
-        var max_frame_size: VideoEncodeH264FrameSizeKHR = zero_init[VideoEncodeH264FrameSizeKHR](),
+        max_frame_size: VideoEncodeH264FrameSizeKHR = zero_init[VideoEncodeH264FrameSizeKHR](),
     ):
         self.s_type = StructureType.VIDEO_ENCODE_H264_RATE_CONTROL_LAYER_INFO_KHR
         self.p_next = p_next
         self.use_min_qp = use_min_qp
-        self.min_qp = min_qp^
+        self.min_qp = min_qp.copy()
         self.use_max_qp = use_max_qp
-        self.max_qp = max_qp^
+        self.max_qp = max_qp.copy()
         self.use_max_frame_size = use_max_frame_size
-        self.max_frame_size = max_frame_size^
+        self.max_frame_size = max_frame_size.copy()
 
 
 struct VideoEncodeH265CapabilitiesKHR(Copyable):
@@ -20393,7 +20361,7 @@ struct VideoEncodeH265CapabilitiesKHR(Copyable):
         flags: VideoEncodeH265CapabilityFlagsKHR = zero_init[VideoEncodeH265CapabilityFlagsKHR](),
         max_level_idc: StdVideoH265LevelIdc = zero_init[StdVideoH265LevelIdc](),
         max_slice_segment_count: UInt32 = zero_init[UInt32](),
-        var max_tiles: Extent2D = zero_init[Extent2D](),
+        max_tiles: Extent2D = zero_init[Extent2D](),
         ctb_sizes: VideoEncodeH265CtbSizeFlagsKHR = zero_init[VideoEncodeH265CtbSizeFlagsKHR](),
         transform_block_sizes: VideoEncodeH265TransformBlockSizeFlagsKHR = zero_init[VideoEncodeH265TransformBlockSizeFlagsKHR](),
         max_p_picture_l0_reference_count: UInt32 = zero_init[UInt32](),
@@ -20412,7 +20380,7 @@ struct VideoEncodeH265CapabilitiesKHR(Copyable):
         self.flags = flags
         self.max_level_idc = max_level_idc
         self.max_slice_segment_count = max_slice_segment_count
-        self.max_tiles = max_tiles^
+        self.max_tiles = max_tiles.copy()
         self.ctb_sizes = ctb_sizes
         self.transform_block_sizes = transform_block_sizes
         self.max_p_picture_l0_reference_count = max_p_picture_l0_reference_count
@@ -20447,7 +20415,7 @@ struct VideoEncodeH265QualityLevelPropertiesKHR(Copyable):
         preferred_idr_period: UInt32 = zero_init[UInt32](),
         preferred_consecutive_b_frame_count: UInt32 = zero_init[UInt32](),
         preferred_sub_layer_count: UInt32 = zero_init[UInt32](),
-        var preferred_constant_qp: VideoEncodeH265QpKHR = zero_init[VideoEncodeH265QpKHR](),
+        preferred_constant_qp: VideoEncodeH265QpKHR = zero_init[VideoEncodeH265QpKHR](),
         preferred_max_l0_reference_count: UInt32 = zero_init[UInt32](),
         preferred_max_l1_reference_count: UInt32 = zero_init[UInt32](),
     ):
@@ -20458,7 +20426,7 @@ struct VideoEncodeH265QualityLevelPropertiesKHR(Copyable):
         self.preferred_idr_period = preferred_idr_period
         self.preferred_consecutive_b_frame_count = preferred_consecutive_b_frame_count
         self.preferred_sub_layer_count = preferred_sub_layer_count
-        self.preferred_constant_qp = preferred_constant_qp^
+        self.preferred_constant_qp = preferred_constant_qp.copy()
         self.preferred_max_l0_reference_count = preferred_max_l0_reference_count
         self.preferred_max_l1_reference_count = preferred_max_l1_reference_count
 
@@ -20722,20 +20690,20 @@ struct VideoEncodeH265RateControlLayerInfoKHR(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         use_min_qp: Bool32 = zero_init[Bool32](),
-        var min_qp: VideoEncodeH265QpKHR = zero_init[VideoEncodeH265QpKHR](),
+        min_qp: VideoEncodeH265QpKHR = zero_init[VideoEncodeH265QpKHR](),
         use_max_qp: Bool32 = zero_init[Bool32](),
-        var max_qp: VideoEncodeH265QpKHR = zero_init[VideoEncodeH265QpKHR](),
+        max_qp: VideoEncodeH265QpKHR = zero_init[VideoEncodeH265QpKHR](),
         use_max_frame_size: Bool32 = zero_init[Bool32](),
-        var max_frame_size: VideoEncodeH265FrameSizeKHR = zero_init[VideoEncodeH265FrameSizeKHR](),
+        max_frame_size: VideoEncodeH265FrameSizeKHR = zero_init[VideoEncodeH265FrameSizeKHR](),
     ):
         self.s_type = StructureType.VIDEO_ENCODE_H265_RATE_CONTROL_LAYER_INFO_KHR
         self.p_next = p_next
         self.use_min_qp = use_min_qp
-        self.min_qp = min_qp^
+        self.min_qp = min_qp.copy()
         self.use_max_qp = use_max_qp
-        self.max_qp = max_qp^
+        self.max_qp = max_qp.copy()
         self.use_max_frame_size = use_max_frame_size
-        self.max_frame_size = max_frame_size^
+        self.max_frame_size = max_frame_size.copy()
 
 
 struct VideoEncodeH265ProfileInfoKHR(Copyable):
@@ -20801,10 +20769,10 @@ struct VideoEncodeAV1CapabilitiesKHR(Copyable):
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
         flags: VideoEncodeAV1CapabilityFlagsKHR = zero_init[VideoEncodeAV1CapabilityFlagsKHR](),
         max_level: StdVideoAV1Level = zero_init[StdVideoAV1Level](),
-        var coded_picture_alignment: Extent2D = zero_init[Extent2D](),
-        var max_tiles: Extent2D = zero_init[Extent2D](),
-        var min_tile_size: Extent2D = zero_init[Extent2D](),
-        var max_tile_size: Extent2D = zero_init[Extent2D](),
+        coded_picture_alignment: Extent2D = zero_init[Extent2D](),
+        max_tiles: Extent2D = zero_init[Extent2D](),
+        min_tile_size: Extent2D = zero_init[Extent2D](),
+        max_tile_size: Extent2D = zero_init[Extent2D](),
         superblock_sizes: VideoEncodeAV1SuperblockSizeFlagsKHR = zero_init[VideoEncodeAV1SuperblockSizeFlagsKHR](),
         max_single_reference_count: UInt32 = zero_init[UInt32](),
         single_reference_name_mask: UInt32 = zero_init[UInt32](),
@@ -20828,10 +20796,10 @@ struct VideoEncodeAV1CapabilitiesKHR(Copyable):
         self.p_next = p_next
         self.flags = flags
         self.max_level = max_level
-        self.coded_picture_alignment = coded_picture_alignment^
-        self.max_tiles = max_tiles^
-        self.min_tile_size = min_tile_size^
-        self.max_tile_size = max_tile_size^
+        self.coded_picture_alignment = coded_picture_alignment.copy()
+        self.max_tiles = max_tiles.copy()
+        self.min_tile_size = min_tile_size.copy()
+        self.max_tile_size = max_tile_size.copy()
         self.superblock_sizes = superblock_sizes
         self.max_single_reference_count = max_single_reference_count
         self.single_reference_name_mask = single_reference_name_mask
@@ -20879,7 +20847,7 @@ struct VideoEncodeAV1QualityLevelPropertiesKHR(Copyable):
         preferred_key_frame_period: UInt32 = zero_init[UInt32](),
         preferred_consecutive_bipredictive_frame_count: UInt32 = zero_init[UInt32](),
         preferred_temporal_layer_count: UInt32 = zero_init[UInt32](),
-        var preferred_constant_q_index: VideoEncodeAV1QIndexKHR = zero_init[VideoEncodeAV1QIndexKHR](),
+        preferred_constant_q_index: VideoEncodeAV1QIndexKHR = zero_init[VideoEncodeAV1QIndexKHR](),
         preferred_max_single_reference_count: UInt32 = zero_init[UInt32](),
         preferred_single_reference_name_mask: UInt32 = zero_init[UInt32](),
         preferred_max_unidirectional_compound_reference_count: UInt32 = zero_init[UInt32](),
@@ -20897,7 +20865,7 @@ struct VideoEncodeAV1QualityLevelPropertiesKHR(Copyable):
         self.preferred_key_frame_period = preferred_key_frame_period
         self.preferred_consecutive_bipredictive_frame_count = preferred_consecutive_bipredictive_frame_count
         self.preferred_temporal_layer_count = preferred_temporal_layer_count
-        self.preferred_constant_q_index = preferred_constant_q_index^
+        self.preferred_constant_q_index = preferred_constant_q_index.copy()
         self.preferred_max_single_reference_count = preferred_max_single_reference_count
         self.preferred_single_reference_name_mask = preferred_single_reference_name_mask
         self.preferred_max_unidirectional_compound_reference_count = preferred_max_unidirectional_compound_reference_count
@@ -21126,20 +21094,20 @@ struct VideoEncodeAV1RateControlLayerInfoKHR(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         use_min_q_index: Bool32 = zero_init[Bool32](),
-        var min_q_index: VideoEncodeAV1QIndexKHR = zero_init[VideoEncodeAV1QIndexKHR](),
+        min_q_index: VideoEncodeAV1QIndexKHR = zero_init[VideoEncodeAV1QIndexKHR](),
         use_max_q_index: Bool32 = zero_init[Bool32](),
-        var max_q_index: VideoEncodeAV1QIndexKHR = zero_init[VideoEncodeAV1QIndexKHR](),
+        max_q_index: VideoEncodeAV1QIndexKHR = zero_init[VideoEncodeAV1QIndexKHR](),
         use_max_frame_size: Bool32 = zero_init[Bool32](),
-        var max_frame_size: VideoEncodeAV1FrameSizeKHR = zero_init[VideoEncodeAV1FrameSizeKHR](),
+        max_frame_size: VideoEncodeAV1FrameSizeKHR = zero_init[VideoEncodeAV1FrameSizeKHR](),
     ):
         self.s_type = StructureType.VIDEO_ENCODE_AV1_RATE_CONTROL_LAYER_INFO_KHR
         self.p_next = p_next
         self.use_min_q_index = use_min_q_index
-        self.min_q_index = min_q_index^
+        self.min_q_index = min_q_index.copy()
         self.use_max_q_index = use_max_q_index
-        self.max_q_index = max_q_index^
+        self.max_q_index = max_q_index.copy()
         self.use_max_frame_size = use_max_frame_size
-        self.max_frame_size = max_frame_size^
+        self.max_frame_size = max_frame_size.copy()
 
 
 struct PhysicalDeviceInheritedViewportScissorFeaturesNV(Copyable):
@@ -21373,18 +21341,16 @@ struct CuFunctionCreateInfoNVX(Copyable):
     var module: CuModuleNVX
     var p_name: CStringSlice[ImmutAnyOrigin]
 
-    fn __init__[
-        p_name_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         module: CuModuleNVX = zero_init[CuModuleNVX](),
-        p_name: CStringSlice[p_name_origin] = zero_init[CStringSlice[p_name_origin]](),
+        p_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
     ):
         self.s_type = StructureType.CU_FUNCTION_CREATE_INFO_NVX
         self.p_next = p_next
         self.module = module
-        self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
+        self.p_name = p_name
 
 
 struct CuLaunchInfoNVX(Copyable):
@@ -22075,16 +22041,16 @@ struct AccelerationStructureSRTMotionInstanceNV(Copyable):
 
     fn __init__(
         out self,
-        var transform_t0: SRTDataNV = zero_init[SRTDataNV](),
-        var transform_t1: SRTDataNV = zero_init[SRTDataNV](),
-        instance_custom_index: UInt32 = zero_init[UInt32](),
-        mask: UInt32 = zero_init[UInt32](),
-        instance_shader_binding_table_record_offset: UInt32 = zero_init[UInt32](),
-        flags: GeometryInstanceFlagsKHR = zero_init[GeometryInstanceFlagsKHR](),
+        transform_t0: SRTDataNV = zero_init[SRTDataNV](),
+        transform_t1: SRTDataNV = zero_init[SRTDataNV](),
+        instance_custom_index: UInt32 = 0,
+        mask: UInt32 = 0,
+        instance_shader_binding_table_record_offset: UInt32 = 0,
+        flags: UInt32 = 0,
         acceleration_structure_reference: UInt64 = zero_init[UInt64](),
     ):
-        self.transform_t0 = transform_t0^
-        self.transform_t1 = transform_t1^
+        self.transform_t0 = transform_t0.copy()
+        self.transform_t1 = transform_t1.copy()
         self._packed0 = 0
         self._packed1 = 0
         self.acceleration_structure_reference = acceleration_structure_reference
@@ -22111,11 +22077,11 @@ struct AccelerationStructureSRTMotionInstanceNV(Copyable):
     fn set_instance_shader_binding_table_record_offset(mut self, new_value: UInt32):
         set_packed_value[width=24, offset=0](self._packed1, new_value)
 
-    fn get_flags(self) -> GeometryInstanceFlagsKHR:
-        return GeometryInstanceFlagsKHR(value = get_packed_value[width=8, offset=24](self._packed1))
+    fn get_flags(self) -> UInt32:
+        return get_packed_value[width=8, offset=24](self._packed1)
 
-    fn set_flags(mut self, new_value: GeometryInstanceFlagsKHR):
-        set_packed_value[width=8, offset=24](self._packed1, new_value.value())
+    fn set_flags(mut self, new_value: UInt32):
+        set_packed_value[width=8, offset=24](self._packed1, new_value)
 
 
 struct AccelerationStructureMatrixMotionInstanceNV(Copyable):
@@ -22127,16 +22093,16 @@ struct AccelerationStructureMatrixMotionInstanceNV(Copyable):
 
     fn __init__(
         out self,
-        var transform_t0: TransformMatrixKHR = zero_init[TransformMatrixKHR](),
-        var transform_t1: TransformMatrixKHR = zero_init[TransformMatrixKHR](),
-        instance_custom_index: UInt32 = zero_init[UInt32](),
-        mask: UInt32 = zero_init[UInt32](),
-        instance_shader_binding_table_record_offset: UInt32 = zero_init[UInt32](),
-        flags: GeometryInstanceFlagsKHR = zero_init[GeometryInstanceFlagsKHR](),
+        transform_t0: TransformMatrixKHR = zero_init[TransformMatrixKHR](),
+        transform_t1: TransformMatrixKHR = zero_init[TransformMatrixKHR](),
+        instance_custom_index: UInt32 = 0,
+        mask: UInt32 = 0,
+        instance_shader_binding_table_record_offset: UInt32 = 0,
+        flags: UInt32 = 0,
         acceleration_structure_reference: UInt64 = zero_init[UInt64](),
     ):
-        self.transform_t0 = transform_t0^
-        self.transform_t1 = transform_t1^
+        self.transform_t0 = transform_t0.copy()
+        self.transform_t1 = transform_t1.copy()
         self._packed0 = 0
         self._packed1 = 0
         self.acceleration_structure_reference = acceleration_structure_reference
@@ -22163,11 +22129,11 @@ struct AccelerationStructureMatrixMotionInstanceNV(Copyable):
     fn set_instance_shader_binding_table_record_offset(mut self, new_value: UInt32):
         set_packed_value[width=24, offset=0](self._packed1, new_value)
 
-    fn get_flags(self) -> GeometryInstanceFlagsKHR:
-        return GeometryInstanceFlagsKHR(value = get_packed_value[width=8, offset=24](self._packed1))
+    fn get_flags(self) -> UInt32:
+        return get_packed_value[width=8, offset=24](self._packed1)
 
-    fn set_flags(mut self, new_value: GeometryInstanceFlagsKHR):
-        set_packed_value[width=8, offset=24](self._packed1, new_value.value())
+    fn set_flags(mut self, new_value: UInt32):
+        set_packed_value[width=8, offset=24](self._packed1, new_value)
 
 
 struct AccelerationStructureMotionInstanceNV(Copyable):
@@ -22296,8 +22262,8 @@ struct BufferCollectionPropertiesFUCHSIA(Copyable):
         create_info_index: UInt32 = zero_init[UInt32](),
         sysmem_pixel_format: UInt64 = zero_init[UInt64](),
         format_features: FormatFeatureFlags = zero_init[FormatFeatureFlags](),
-        var sysmem_color_space_index: SysmemColorSpaceFUCHSIA = zero_init[SysmemColorSpaceFUCHSIA](),
-        var sampler_ycbcr_conversion_components: ComponentMapping = zero_init[ComponentMapping](),
+        sysmem_color_space_index: SysmemColorSpaceFUCHSIA = zero_init[SysmemColorSpaceFUCHSIA](),
+        sampler_ycbcr_conversion_components: ComponentMapping = zero_init[ComponentMapping](),
         suggested_ycbcr_model: SamplerYcbcrModelConversion = zero_init[SamplerYcbcrModelConversion](),
         suggested_ycbcr_range: SamplerYcbcrRange = zero_init[SamplerYcbcrRange](),
         suggested_x_chroma_offset: ChromaLocation = zero_init[ChromaLocation](),
@@ -22310,8 +22276,8 @@ struct BufferCollectionPropertiesFUCHSIA(Copyable):
         self.create_info_index = create_info_index
         self.sysmem_pixel_format = sysmem_pixel_format
         self.format_features = format_features
-        self.sysmem_color_space_index = sysmem_color_space_index^
-        self.sampler_ycbcr_conversion_components = sampler_ycbcr_conversion_components^
+        self.sysmem_color_space_index = sysmem_color_space_index.copy()
+        self.sampler_ycbcr_conversion_components = sampler_ycbcr_conversion_components.copy()
         self.suggested_ycbcr_model = suggested_ycbcr_model
         self.suggested_ycbcr_range = suggested_ycbcr_range
         self.suggested_x_chroma_offset = suggested_x_chroma_offset
@@ -22328,15 +22294,15 @@ struct BufferConstraintsInfoFUCHSIA(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var create_info: BufferCreateInfo = zero_init[BufferCreateInfo](),
+        create_info: BufferCreateInfo = zero_init[BufferCreateInfo](),
         required_format_features: FormatFeatureFlags = zero_init[FormatFeatureFlags](),
-        var buffer_collection_constraints: BufferCollectionConstraintsInfoFUCHSIA = zero_init[BufferCollectionConstraintsInfoFUCHSIA](),
+        buffer_collection_constraints: BufferCollectionConstraintsInfoFUCHSIA = zero_init[BufferCollectionConstraintsInfoFUCHSIA](),
     ):
         self.s_type = StructureType.BUFFER_CONSTRAINTS_INFO_FUCHSIA
         self.p_next = p_next
-        self.create_info = create_info^
+        self.create_info = create_info.copy()
         self.required_format_features = required_format_features
-        self.buffer_collection_constraints = buffer_collection_constraints^
+        self.buffer_collection_constraints = buffer_collection_constraints.copy()
 
 
 struct SysmemColorSpaceFUCHSIA(Copyable):
@@ -22367,7 +22333,7 @@ struct ImageFormatConstraintsInfoFUCHSIA(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var image_create_info: ImageCreateInfo = zero_init[ImageCreateInfo](),
+        image_create_info: ImageCreateInfo = zero_init[ImageCreateInfo](),
         required_format_features: FormatFeatureFlags = zero_init[FormatFeatureFlags](),
         flags: ImageFormatConstraintsFlagsFUCHSIA = zero_init[ImageFormatConstraintsFlagsFUCHSIA](),
         sysmem_pixel_format: UInt64 = zero_init[UInt64](),
@@ -22376,7 +22342,7 @@ struct ImageFormatConstraintsInfoFUCHSIA(Copyable):
     ):
         self.s_type = StructureType.IMAGE_FORMAT_CONSTRAINTS_INFO_FUCHSIA
         self.p_next = p_next
-        self.image_create_info = image_create_info^
+        self.image_create_info = image_create_info.copy()
         self.required_format_features = required_format_features
         self.flags = flags
         self.sysmem_pixel_format = sysmem_pixel_format
@@ -22397,14 +22363,14 @@ struct ImageConstraintsInfoFUCHSIA(Copyable):
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         format_constraints_count: UInt32 = zero_init[UInt32](),
         p_format_constraints: Ptr[ImageFormatConstraintsInfoFUCHSIA, ImmutAnyOrigin] = zero_init[Ptr[ImageFormatConstraintsInfoFUCHSIA, ImmutAnyOrigin]](),
-        var buffer_collection_constraints: BufferCollectionConstraintsInfoFUCHSIA = zero_init[BufferCollectionConstraintsInfoFUCHSIA](),
+        buffer_collection_constraints: BufferCollectionConstraintsInfoFUCHSIA = zero_init[BufferCollectionConstraintsInfoFUCHSIA](),
         flags: ImageConstraintsInfoFlagsFUCHSIA = zero_init[ImageConstraintsInfoFlagsFUCHSIA](),
     ):
         self.s_type = StructureType.IMAGE_CONSTRAINTS_INFO_FUCHSIA
         self.p_next = p_next
         self.format_constraints_count = format_constraints_count
         self.p_format_constraints = p_format_constraints
-        self.buffer_collection_constraints = buffer_collection_constraints^
+        self.buffer_collection_constraints = buffer_collection_constraints.copy()
         self.flags = flags
 
 
@@ -22459,18 +22425,16 @@ struct CudaFunctionCreateInfoNV(Copyable):
     var module: CudaModuleNV
     var p_name: CStringSlice[ImmutAnyOrigin]
 
-    fn __init__[
-        p_name_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         module: CudaModuleNV = zero_init[CudaModuleNV](),
-        p_name: CStringSlice[p_name_origin] = zero_init[CStringSlice[p_name_origin]](),
+        p_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
     ):
         self.s_type = StructureType.CUDA_FUNCTION_CREATE_INFO_NV
         self.p_next = p_next
         self.module = module
-        self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
+        self.p_name = p_name
 
 
 struct CudaLaunchInfoNV(Copyable):
@@ -22609,7 +22573,7 @@ struct AndroidHardwareBufferFormatProperties2ANDROID(Copyable):
         format: Format = zero_init[Format](),
         external_format: UInt64 = zero_init[UInt64](),
         format_features: FormatFeatureFlags2 = zero_init[FormatFeatureFlags2](),
-        var sampler_ycbcr_conversion_components: ComponentMapping = zero_init[ComponentMapping](),
+        sampler_ycbcr_conversion_components: ComponentMapping = zero_init[ComponentMapping](),
         suggested_ycbcr_model: SamplerYcbcrModelConversion = zero_init[SamplerYcbcrModelConversion](),
         suggested_ycbcr_range: SamplerYcbcrRange = zero_init[SamplerYcbcrRange](),
         suggested_x_chroma_offset: ChromaLocation = zero_init[ChromaLocation](),
@@ -22620,7 +22584,7 @@ struct AndroidHardwareBufferFormatProperties2ANDROID(Copyable):
         self.format = format
         self.external_format = external_format
         self.format_features = format_features
-        self.sampler_ycbcr_conversion_components = sampler_ycbcr_conversion_components^
+        self.sampler_ycbcr_conversion_components = sampler_ycbcr_conversion_components.copy()
         self.suggested_ycbcr_model = suggested_ycbcr_model
         self.suggested_ycbcr_range = suggested_ycbcr_range
         self.suggested_x_chroma_offset = suggested_x_chroma_offset
@@ -22670,7 +22634,7 @@ struct RenderingInfo(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         flags: RenderingFlags = zero_init[RenderingFlags](),
-        var render_area: Rect2D = zero_init[Rect2D](),
+        render_area: Rect2D = zero_init[Rect2D](),
         layer_count: UInt32 = zero_init[UInt32](),
         view_mask: UInt32 = zero_init[UInt32](),
         color_attachment_count: UInt32 = zero_init[UInt32](),
@@ -22681,7 +22645,7 @@ struct RenderingInfo(Copyable):
         self.s_type = StructureType.RENDERING_INFO
         self.p_next = p_next
         self.flags = flags
-        self.render_area = render_area^
+        self.render_area = render_area.copy()
         self.layer_count = layer_count
         self.view_mask = view_mask
         self.color_attachment_count = color_attachment_count
@@ -22749,13 +22713,13 @@ struct RenderingFragmentShadingRateAttachmentInfoKHR(Copyable):
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         image_view: ImageView = zero_init[ImageView](),
         image_layout: ImageLayout = zero_init[ImageLayout](),
-        var shading_rate_attachment_texel_size: Extent2D = zero_init[Extent2D](),
+        shading_rate_attachment_texel_size: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.RENDERING_FRAGMENT_SHADING_RATE_ATTACHMENT_INFO_KHR
         self.p_next = p_next
         self.image_view = image_view
         self.image_layout = image_layout
-        self.shading_rate_attachment_texel_size = shading_rate_attachment_texel_size^
+        self.shading_rate_attachment_texel_size = shading_rate_attachment_texel_size.copy()
 
 
 struct RenderingFragmentDensityMapAttachmentInfoEXT(Copyable):
@@ -23264,11 +23228,11 @@ struct ImageSubresource2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var image_subresource: ImageSubresource = zero_init[ImageSubresource](),
+        image_subresource: ImageSubresource = zero_init[ImageSubresource](),
     ):
         self.s_type = StructureType.IMAGE_SUBRESOURCE_2
         self.p_next = p_next
-        self.image_subresource = image_subresource^
+        self.image_subresource = image_subresource.copy()
 
 
 struct SubresourceLayout2(Copyable):
@@ -23279,11 +23243,11 @@ struct SubresourceLayout2(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var subresource_layout: SubresourceLayout = zero_init[SubresourceLayout](),
+        subresource_layout: SubresourceLayout = zero_init[SubresourceLayout](),
     ):
         self.s_type = StructureType.SUBRESOURCE_LAYOUT_2
         self.p_next = p_next
-        self.subresource_layout = subresource_layout^
+        self.subresource_layout = subresource_layout.copy()
 
 
 struct RenderPassCreationControlEXT(Copyable):
@@ -24097,14 +24061,14 @@ struct ImageViewSampleWeightCreateInfoQCOM(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var filter_center: Offset2D = zero_init[Offset2D](),
-        var filter_size: Extent2D = zero_init[Extent2D](),
+        filter_center: Offset2D = zero_init[Offset2D](),
+        filter_size: Extent2D = zero_init[Extent2D](),
         num_phases: UInt32 = zero_init[UInt32](),
     ):
         self.s_type = StructureType.IMAGE_VIEW_SAMPLE_WEIGHT_CREATE_INFO_QCOM
         self.p_next = p_next
-        self.filter_center = filter_center^
-        self.filter_size = filter_size^
+        self.filter_center = filter_center.copy()
+        self.filter_size = filter_size.copy()
         self.num_phases = num_phases
 
 
@@ -24141,16 +24105,16 @@ struct PhysicalDeviceImageProcessingPropertiesQCOM(Copyable):
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
         max_weight_filter_phases: UInt32 = zero_init[UInt32](),
-        var max_weight_filter_dimension: Extent2D = zero_init[Extent2D](),
-        var max_block_match_region: Extent2D = zero_init[Extent2D](),
-        var max_box_filter_block_size: Extent2D = zero_init[Extent2D](),
+        max_weight_filter_dimension: Extent2D = zero_init[Extent2D](),
+        max_block_match_region: Extent2D = zero_init[Extent2D](),
+        max_box_filter_block_size: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_IMAGE_PROCESSING_PROPERTIES_QCOM
         self.p_next = p_next
         self.max_weight_filter_phases = max_weight_filter_phases
-        self.max_weight_filter_dimension = max_weight_filter_dimension^
-        self.max_block_match_region = max_block_match_region^
-        self.max_box_filter_block_size = max_box_filter_block_size^
+        self.max_weight_filter_dimension = max_weight_filter_dimension.copy()
+        self.max_block_match_region = max_block_match_region.copy()
+        self.max_box_filter_block_size = max_box_filter_block_size.copy()
 
 
 struct PhysicalDeviceTilePropertiesFeaturesQCOM(Copyable):
@@ -24178,15 +24142,15 @@ struct TilePropertiesQCOM(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var tile_size: Extent3D = zero_init[Extent3D](),
-        var apron_size: Extent2D = zero_init[Extent2D](),
-        var origin: Offset2D = zero_init[Offset2D](),
+        tile_size: Extent3D = zero_init[Extent3D](),
+        apron_size: Extent2D = zero_init[Extent2D](),
+        origin: Offset2D = zero_init[Offset2D](),
     ):
         self.s_type = StructureType.TILE_PROPERTIES_QCOM
         self.p_next = p_next
-        self.tile_size = tile_size^
-        self.apron_size = apron_size^
-        self.origin = origin^
+        self.tile_size = tile_size.copy()
+        self.apron_size = apron_size.copy()
+        self.origin = origin.copy()
 
 
 struct TileMemoryBindInfoQCOM(Copyable):
@@ -24583,13 +24547,13 @@ struct DeviceFaultVendorBinaryHeaderVersionOneEXT(Copyable):
     var header_version: DeviceFaultVendorBinaryHeaderVersionEXT
     var vendor_id: UInt32
     var device_id: UInt32
-    var driver_version: Version
+    var driver_version: UInt32
     var pipeline_cache_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
     var application_name_offset: UInt32
-    var application_version: Version
+    var application_version: UInt32
     var engine_name_offset: UInt32
-    var engine_version: Version
-    var api_version: Version
+    var engine_version: UInt32
+    var api_version: UInt32
 
     fn __init__(
         out self,
@@ -24597,13 +24561,13 @@ struct DeviceFaultVendorBinaryHeaderVersionOneEXT(Copyable):
         header_version: DeviceFaultVendorBinaryHeaderVersionEXT = zero_init[DeviceFaultVendorBinaryHeaderVersionEXT](),
         vendor_id: UInt32 = zero_init[UInt32](),
         device_id: UInt32 = zero_init[UInt32](),
-        driver_version: Version = zero_init[Version](),
+        driver_version: UInt32 = zero_init[UInt32](),
         pipeline_cache_uuid: InlineArray[UInt8, Int(UUID_SIZE)] = zero_init[InlineArray[UInt8, Int(UUID_SIZE)]](),
         application_name_offset: UInt32 = zero_init[UInt32](),
-        application_version: Version = zero_init[Version](),
+        application_version: UInt32 = zero_init[UInt32](),
         engine_name_offset: UInt32 = zero_init[UInt32](),
-        engine_version: Version = zero_init[Version](),
-        api_version: Version = zero_init[Version](),
+        engine_version: UInt32 = zero_init[UInt32](),
+        api_version: UInt32 = zero_init[UInt32](),
     ):
         self.header_size = header_size
         self.header_version = header_version
@@ -24829,16 +24793,16 @@ struct SurfacePresentScalingCapabilitiesKHR(Copyable):
         supported_present_scaling: PresentScalingFlagsKHR = zero_init[PresentScalingFlagsKHR](),
         supported_present_gravity_x: PresentGravityFlagsKHR = zero_init[PresentGravityFlagsKHR](),
         supported_present_gravity_y: PresentGravityFlagsKHR = zero_init[PresentGravityFlagsKHR](),
-        var min_scaled_image_extent: Extent2D = zero_init[Extent2D](),
-        var max_scaled_image_extent: Extent2D = zero_init[Extent2D](),
+        min_scaled_image_extent: Extent2D = zero_init[Extent2D](),
+        max_scaled_image_extent: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.SURFACE_PRESENT_SCALING_CAPABILITIES_KHR
         self.p_next = p_next
         self.supported_present_scaling = supported_present_scaling
         self.supported_present_gravity_x = supported_present_gravity_x
         self.supported_present_gravity_y = supported_present_gravity_y
-        self.min_scaled_image_extent = min_scaled_image_extent^
-        self.max_scaled_image_extent = max_scaled_image_extent^
+        self.min_scaled_image_extent = min_scaled_image_extent.copy()
+        self.max_scaled_image_extent = max_scaled_image_extent.copy()
 
 
 struct SurfacePresentModeCompatibilityKHR(Copyable):
@@ -25277,13 +25241,13 @@ struct PhysicalDeviceShaderObjectPropertiesEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutAnyOrigin]
     var shader_binary_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
-    var shader_binary_version: Version
+    var shader_binary_version: UInt32
 
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
         shader_binary_uuid: InlineArray[UInt8, Int(UUID_SIZE)] = zero_init[InlineArray[UInt8, Int(UUID_SIZE)]](),
-        shader_binary_version: Version = zero_init[Version](),
+        shader_binary_version: UInt32 = zero_init[UInt32](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_SHADER_OBJECT_PROPERTIES_EXT
         self.p_next = p_next
@@ -25307,9 +25271,7 @@ struct ShaderCreateInfoEXT(Copyable):
     var p_push_constant_ranges: Ptr[PushConstantRange, ImmutAnyOrigin]
     var p_specialization_info: Ptr[SpecializationInfo, ImmutAnyOrigin]
 
-    fn __init__[
-        p_name_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         flags: ShaderCreateFlagsEXT = zero_init[ShaderCreateFlagsEXT](),
@@ -25318,7 +25280,7 @@ struct ShaderCreateInfoEXT(Copyable):
         code_type: ShaderCodeTypeEXT = zero_init[ShaderCodeTypeEXT](),
         code_size: UInt = zero_init[UInt](),
         p_code: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        p_name: CStringSlice[p_name_origin] = zero_init[CStringSlice[p_name_origin]](),
+        p_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
         set_layout_count: UInt32 = zero_init[UInt32](),
         p_set_layouts: Ptr[DescriptorSetLayout, ImmutAnyOrigin] = zero_init[Ptr[DescriptorSetLayout, ImmutAnyOrigin]](),
         push_constant_range_count: UInt32 = zero_init[UInt32](),
@@ -25333,7 +25295,7 @@ struct ShaderCreateInfoEXT(Copyable):
         self.code_type = code_type
         self.code_size = code_size
         self.p_code = p_code
-        self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
+        self.p_name = p_name
         self.set_layout_count = set_layout_count
         self.p_set_layouts = p_set_layouts
         self.push_constant_range_count = push_constant_range_count
@@ -25436,7 +25398,7 @@ struct ScreenBufferFormatPropertiesQNX(Copyable):
         external_format: UInt64 = zero_init[UInt64](),
         screen_usage: UInt64 = zero_init[UInt64](),
         format_features: FormatFeatureFlags = zero_init[FormatFeatureFlags](),
-        var sampler_ycbcr_conversion_components: ComponentMapping = zero_init[ComponentMapping](),
+        sampler_ycbcr_conversion_components: ComponentMapping = zero_init[ComponentMapping](),
         suggested_ycbcr_model: SamplerYcbcrModelConversion = zero_init[SamplerYcbcrModelConversion](),
         suggested_ycbcr_range: SamplerYcbcrRange = zero_init[SamplerYcbcrRange](),
         suggested_x_chroma_offset: ChromaLocation = zero_init[ChromaLocation](),
@@ -25448,7 +25410,7 @@ struct ScreenBufferFormatPropertiesQNX(Copyable):
         self.external_format = external_format
         self.screen_usage = screen_usage
         self.format_features = format_features
-        self.sampler_ycbcr_conversion_components = sampler_ycbcr_conversion_components^
+        self.sampler_ycbcr_conversion_components = sampler_ycbcr_conversion_components.copy()
         self.suggested_ycbcr_model = suggested_ycbcr_model
         self.suggested_ycbcr_range = suggested_ycbcr_range
         self.suggested_x_chroma_offset = suggested_x_chroma_offset
@@ -25647,17 +25609,15 @@ struct PipelineShaderStageNodeCreateInfoAMDX(Copyable):
     var p_name: CStringSlice[ImmutAnyOrigin]
     var index: UInt32
 
-    fn __init__[
-        p_name_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        p_name: CStringSlice[p_name_origin] = zero_init[CStringSlice[p_name_origin]](),
+        p_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
         index: UInt32 = zero_init[UInt32](),
     ):
         self.s_type = StructureType.PIPELINE_SHADER_STAGE_NODE_CREATE_INFO_AMDX
         self.p_next = p_next
-        self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
+        self.p_name = p_name
         self.index = index
 
 
@@ -26130,11 +26090,11 @@ struct PhysicalDeviceImageProcessing2PropertiesQCOM(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var max_block_match_window: Extent2D = zero_init[Extent2D](),
+        max_block_match_window: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_IMAGE_PROCESSING_2_PROPERTIES_QCOM
         self.p_next = p_next
-        self.max_block_match_window = max_block_match_window^
+        self.max_block_match_window = max_block_match_window.copy()
 
 
 struct SamplerBlockMatchWindowCreateInfoQCOM(Copyable):
@@ -26146,12 +26106,12 @@ struct SamplerBlockMatchWindowCreateInfoQCOM(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var window_extent: Extent2D = zero_init[Extent2D](),
+        window_extent: Extent2D = zero_init[Extent2D](),
         window_compare_mode: BlockMatchWindowCompareModeQCOM = zero_init[BlockMatchWindowCompareModeQCOM](),
     ):
         self.s_type = StructureType.SAMPLER_BLOCK_MATCH_WINDOW_CREATE_INFO_QCOM
         self.p_next = p_next
-        self.window_extent = window_extent^
+        self.window_extent = window_extent.copy()
         self.window_compare_mode = window_compare_mode
 
 
@@ -26563,12 +26523,12 @@ struct PhysicalDeviceRenderPassStripedPropertiesARM(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
-        var render_pass_stripe_granularity: Extent2D = zero_init[Extent2D](),
+        render_pass_stripe_granularity: Extent2D = zero_init[Extent2D](),
         max_render_pass_stripes: UInt32 = zero_init[UInt32](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_RENDER_PASS_STRIPED_PROPERTIES_ARM
         self.p_next = p_next
-        self.render_pass_stripe_granularity = render_pass_stripe_granularity^
+        self.render_pass_stripe_granularity = render_pass_stripe_granularity.copy()
         self.max_render_pass_stripes = max_render_pass_stripes
 
 
@@ -26580,11 +26540,11 @@ struct RenderPassStripeInfoARM(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var stripe_area: Rect2D = zero_init[Rect2D](),
+        stripe_area: Rect2D = zero_init[Rect2D](),
     ):
         self.s_type = StructureType.RENDER_PASS_STRIPE_INFO_ARM
         self.p_next = p_next
-        self.stripe_area = stripe_area^
+        self.stripe_area = stripe_area.copy()
 
 
 struct RenderPassStripeBeginInfoARM(Copyable):
@@ -27354,15 +27314,15 @@ struct PhysicalDeviceTileShadingPropertiesQCOM(Copyable):
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
         max_apron_size: UInt32 = zero_init[UInt32](),
         prefer_non_coherent: Bool32 = zero_init[Bool32](),
-        var tile_granularity: Extent2D = zero_init[Extent2D](),
-        var max_tile_shading_rate: Extent2D = zero_init[Extent2D](),
+        tile_granularity: Extent2D = zero_init[Extent2D](),
+        max_tile_shading_rate: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_TILE_SHADING_PROPERTIES_QCOM
         self.p_next = p_next
         self.max_apron_size = max_apron_size
         self.prefer_non_coherent = prefer_non_coherent
-        self.tile_granularity = tile_granularity^
-        self.max_tile_shading_rate = max_tile_shading_rate^
+        self.tile_granularity = tile_granularity.copy()
+        self.max_tile_shading_rate = max_tile_shading_rate.copy()
 
 
 struct RenderPassTileShadingCreateInfoQCOM(Copyable):
@@ -27375,12 +27335,12 @@ struct RenderPassTileShadingCreateInfoQCOM(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         flags: TileShadingRenderPassFlagsQCOM = zero_init[TileShadingRenderPassFlagsQCOM](),
-        var tile_apron_size: Extent2D = zero_init[Extent2D](),
+        tile_apron_size: Extent2D = zero_init[Extent2D](),
     ):
         self.s_type = StructureType.RENDER_PASS_TILE_SHADING_CREATE_INFO_QCOM
         self.p_next = p_next
         self.flags = flags
-        self.tile_apron_size = tile_apron_size^
+        self.tile_apron_size = tile_apron_size.copy()
 
 
 struct PerTileBeginInfoQCOM(Copyable):
@@ -28060,11 +28020,11 @@ struct ExternalTensorPropertiesARM(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var external_memory_properties: ExternalMemoryProperties = zero_init[ExternalMemoryProperties](),
+        external_memory_properties: ExternalMemoryProperties = zero_init[ExternalMemoryProperties](),
     ):
         self.s_type = StructureType.EXTERNAL_TENSOR_PROPERTIES_ARM
         self.p_next = p_next
-        self.external_memory_properties = external_memory_properties^
+        self.external_memory_properties = external_memory_properties.copy()
 
 
 struct ExternalMemoryTensorCreateInfoARM(Copyable):
@@ -28210,16 +28170,14 @@ struct DataGraphPipelineCompilerControlCreateInfoARM(Copyable):
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
     var p_vendor_options: CStringSlice[ImmutAnyOrigin]
 
-    fn __init__[
-        p_vendor_options_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        p_vendor_options: CStringSlice[p_vendor_options_origin] = zero_init[CStringSlice[p_vendor_options_origin]](),
+        p_vendor_options: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
     ):
         self.s_type = StructureType.DATA_GRAPH_PIPELINE_COMPILER_CONTROL_CREATE_INFO_ARM
         self.p_next = p_next
-        self.p_vendor_options = Ptr(to=p_vendor_options).bitcast[type_of(self.p_vendor_options)]()[]
+        self.p_vendor_options = p_vendor_options
 
 
 struct DataGraphPipelineCreateInfoARM(Copyable):
@@ -28255,13 +28213,11 @@ struct DataGraphPipelineShaderModuleCreateInfoARM(Copyable):
     var constant_count: UInt32
     var p_constants: Ptr[DataGraphPipelineConstantARM, ImmutAnyOrigin]
 
-    fn __init__[
-        p_name_origin: ImmutOrigin = ImmutAnyOrigin,
-    ](
+    fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         module: ShaderModule = zero_init[ShaderModule](),
-        p_name: CStringSlice[p_name_origin] = zero_init[CStringSlice[p_name_origin]](),
+        p_name: CStringSlice[ImmutAnyOrigin] = zero_init[CStringSlice[ImmutAnyOrigin]](),
         p_specialization_info: Ptr[SpecializationInfo, ImmutAnyOrigin] = zero_init[Ptr[SpecializationInfo, ImmutAnyOrigin]](),
         constant_count: UInt32 = zero_init[UInt32](),
         p_constants: Ptr[DataGraphPipelineConstantARM, ImmutAnyOrigin] = zero_init[Ptr[DataGraphPipelineConstantARM, ImmutAnyOrigin]](),
@@ -28269,7 +28225,7 @@ struct DataGraphPipelineShaderModuleCreateInfoARM(Copyable):
         self.s_type = StructureType.DATA_GRAPH_PIPELINE_SHADER_MODULE_CREATE_INFO_ARM
         self.p_next = p_next
         self.module = module
-        self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
+        self.p_name = p_name
         self.p_specialization_info = p_specialization_info
         self.constant_count = constant_count
         self.p_constants = p_constants
@@ -28465,13 +28421,13 @@ struct PhysicalDeviceDataGraphProcessingEngineARM(Copyable):
 struct PhysicalDeviceDataGraphOperationSupportARM(Copyable):
     var operation_type: PhysicalDeviceDataGraphOperationTypeARM
     var name: InlineArray[c_char, Int(MAX_PHYSICAL_DEVICE_DATA_GRAPH_OPERATION_SET_NAME_SIZE_ARM)]
-    var version: Version
+    var version: UInt32
 
     fn __init__(
         out self,
         operation_type: PhysicalDeviceDataGraphOperationTypeARM = zero_init[PhysicalDeviceDataGraphOperationTypeARM](),
         name: InlineArray[c_char, Int(MAX_PHYSICAL_DEVICE_DATA_GRAPH_OPERATION_SET_NAME_SIZE_ARM)] = zero_init[InlineArray[c_char, Int(MAX_PHYSICAL_DEVICE_DATA_GRAPH_OPERATION_SET_NAME_SIZE_ARM)]](),
-        version: Version = zero_init[Version](),
+        version: UInt32 = zero_init[UInt32](),
     ):
         self.operation_type = operation_type
         self.name = name
@@ -28490,13 +28446,13 @@ struct QueueFamilyDataGraphPropertiesARM(Copyable):
     fn __init__(
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
-        var engine: PhysicalDeviceDataGraphProcessingEngineARM = zero_init[PhysicalDeviceDataGraphProcessingEngineARM](),
-        var operation: PhysicalDeviceDataGraphOperationSupportARM = zero_init[PhysicalDeviceDataGraphOperationSupportARM](),
+        engine: PhysicalDeviceDataGraphProcessingEngineARM = zero_init[PhysicalDeviceDataGraphProcessingEngineARM](),
+        operation: PhysicalDeviceDataGraphOperationSupportARM = zero_init[PhysicalDeviceDataGraphOperationSupportARM](),
     ):
         self.s_type = StructureType.QUEUE_FAMILY_DATA_GRAPH_PROPERTIES_ARM
         self.p_next = p_next
-        self.engine = engine^
-        self.operation = operation^
+        self.engine = engine.copy()
+        self.operation = operation.copy()
 
 
 struct PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM(Copyable):

@@ -6,13 +6,13 @@ from vk.core_functions import GlobalFunctions
 struct TileShading(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_dispatch_tile_qcom: fn(
-        commandBuffer: CommandBuffer, pDispatchTileInfo: Ptr[DispatchTileInfoQCOM, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, dispatch_tile_info: DispatchTileInfoQCOM
     )
     var _cmd_begin_per_tile_execution_qcom: fn(
-        commandBuffer: CommandBuffer, pPerTileBeginInfo: Ptr[PerTileBeginInfoQCOM, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, per_tile_begin_info: PerTileBeginInfoQCOM
     )
     var _cmd_end_per_tile_execution_qcom: fn(
-        commandBuffer: CommandBuffer, pPerTileEndInfo: Ptr[PerTileEndInfoQCOM, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, per_tile_end_info: PerTileEndInfoQCOM
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -38,7 +38,7 @@ struct TileShading(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchTileQCOM.html
         """
         return self._cmd_dispatch_tile_qcom(
-            command_buffer, Ptr(to=dispatch_tile_info).bitcast[DispatchTileInfoQCOM]()
+            command_buffer, Ptr(to=dispatch_tile_info).bitcast[DispatchTileInfoQCOM]()[]
         )
 
     fn cmd_begin_per_tile_execution_qcom(
@@ -49,7 +49,7 @@ struct TileShading(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginPerTileExecutionQCOM.html
         """
         return self._cmd_begin_per_tile_execution_qcom(
-            command_buffer, Ptr(to=per_tile_begin_info).bitcast[PerTileBeginInfoQCOM]()
+            command_buffer, Ptr(to=per_tile_begin_info).bitcast[PerTileBeginInfoQCOM]()[]
         )
 
     fn cmd_end_per_tile_execution_qcom(
@@ -60,7 +60,7 @@ struct TileShading(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndPerTileExecutionQCOM.html
         """
         return self._cmd_end_per_tile_execution_qcom(
-            command_buffer, Ptr(to=per_tile_end_info).bitcast[PerTileEndInfoQCOM]()
+            command_buffer, Ptr(to=per_tile_end_info).bitcast[PerTileEndInfoQCOM]()[]
         )
 
 
@@ -69,13 +69,11 @@ struct TileProperties(Copyable):
     var _get_framebuffer_tile_properties_qcom: fn(
         device: Device,
         framebuffer: Framebuffer,
-        pPropertiesCount: Ptr[UInt32, MutAnyOrigin],
-        pProperties: Ptr[TilePropertiesQCOM, MutAnyOrigin],
+        properties_count: UInt32,
+        p_properties: Ptr[TilePropertiesQCOM, MutAnyOrigin],
     ) -> Result
     var _get_dynamic_rendering_tile_properties_qcom: fn(
-        device: Device,
-        pRenderingInfo: Ptr[RenderingInfo, ImmutAnyOrigin],
-        pProperties: Ptr[TilePropertiesQCOM, MutAnyOrigin],
+        device: Device, rendering_info: RenderingInfo, properties: TilePropertiesQCOM
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -102,7 +100,7 @@ struct TileProperties(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFramebufferTilePropertiesQCOM.html
         """
         return self._get_framebuffer_tile_properties_qcom(
-            device, framebuffer, Ptr(to=properties_count).bitcast[UInt32](), p_properties
+            device, framebuffer, Ptr(to=properties_count).bitcast[UInt32]()[], p_properties
         )
 
     fn get_framebuffer_tile_properties_qcom(
@@ -119,8 +117,8 @@ struct TileProperties(Copyable):
             result = self.get_framebuffer_tile_properties_qcom(
                 device, framebuffer, count, Ptr[TilePropertiesQCOM, MutAnyOrigin]()
             )
-        if result == Result.SUCCESS and count > 0:
-            list.reserve(Int(count))
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
             result = self.get_framebuffer_tile_properties_qcom(
                 device, framebuffer, count, list.unsafe_ptr()
             )
@@ -136,16 +134,16 @@ struct TileProperties(Copyable):
         """
         return self._get_dynamic_rendering_tile_properties_qcom(
             device,
-            Ptr(to=rendering_info).bitcast[RenderingInfo](),
-            Ptr(to=properties).bitcast[TilePropertiesQCOM](),
+            Ptr(to=rendering_info).bitcast[RenderingInfo]()[],
+            Ptr(to=properties).bitcast[TilePropertiesQCOM]()[],
         )
 
 
 struct TileMemoryHeap(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_bind_tile_memory_qcom: fn(
-        commandBuffer: CommandBuffer,
-        pTileMemoryBindInfo: Ptr[TileMemoryBindInfoQCOM, ImmutAnyOrigin],
+        command_buffer: CommandBuffer,
+        p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, ImmutAnyOrigin],
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:

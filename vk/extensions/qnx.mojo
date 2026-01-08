@@ -7,12 +7,12 @@ struct ScreenSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_screen_surface_qnx: fn(
         instance: Instance,
-        pCreateInfo: Ptr[ScreenSurfaceCreateInfoQNX, ImmutAnyOrigin],
-        pAllocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        pSurface: Ptr[SurfaceKHR, MutAnyOrigin],
+        create_info: ScreenSurfaceCreateInfoQNX,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        surface: SurfaceKHR,
     ) -> Result
     var _get_physical_device_screen_presentation_support_qnx: fn(
-        physicalDevice: PhysicalDevice, queueFamilyIndex: UInt32, window: screen_window_t
+        physical_device: PhysicalDevice, queue_family_index: UInt32, window: screen_window_t
     ) -> Bool32
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
@@ -40,9 +40,9 @@ struct ScreenSurface(Copyable):
         """
         return self._create_screen_surface_qnx(
             instance,
-            Ptr(to=create_info).bitcast[ScreenSurfaceCreateInfoQNX](),
+            Ptr(to=create_info).bitcast[ScreenSurfaceCreateInfoQNX]()[],
             p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            Ptr(to=surface).bitcast[SurfaceKHR]()[],
         )
 
     fn get_physical_device_screen_presentation_support_qnx(
@@ -60,9 +60,7 @@ struct ScreenSurface(Copyable):
 struct ExternalMemoryScreenBuffer(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_screen_buffer_properties_qnx: fn(
-        device: Device,
-        buffer: screen_buffer_t,
-        pProperties: Ptr[ScreenBufferPropertiesQNX, MutAnyOrigin],
+        device: Device, buffer: screen_buffer_t, properties: ScreenBufferPropertiesQNX
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -82,5 +80,5 @@ struct ExternalMemoryScreenBuffer(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetScreenBufferPropertiesQNX.html
         """
         return self._get_screen_buffer_properties_qnx(
-            device, buffer, Ptr(to=properties).bitcast[ScreenBufferPropertiesQNX]()
+            device, buffer, Ptr(to=properties).bitcast[ScreenBufferPropertiesQNX]()[]
         )

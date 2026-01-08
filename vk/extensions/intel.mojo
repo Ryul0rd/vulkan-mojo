@@ -6,24 +6,22 @@ from vk.core_functions import GlobalFunctions
 struct PerformanceQuery(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _initialize_performance_api_intel: fn(
-        device: Device, pInitializeInfo: Ptr[InitializePerformanceApiInfoINTEL, ImmutAnyOrigin]
+        device: Device, initialize_info: InitializePerformanceApiInfoINTEL
     ) -> Result
     var _uninitialize_performance_api_intel: fn(device: Device)
     var _cmd_set_performance_marker_intel: fn(
-        commandBuffer: CommandBuffer, pMarkerInfo: Ptr[PerformanceMarkerInfoINTEL, ImmutAnyOrigin]
+        command_buffer: CommandBuffer, marker_info: PerformanceMarkerInfoINTEL
     ) -> Result
     var _cmd_set_performance_stream_marker_intel: fn(
-        commandBuffer: CommandBuffer,
-        pMarkerInfo: Ptr[PerformanceStreamMarkerInfoINTEL, ImmutAnyOrigin],
+        command_buffer: CommandBuffer, marker_info: PerformanceStreamMarkerInfoINTEL
     ) -> Result
     var _cmd_set_performance_override_intel: fn(
-        commandBuffer: CommandBuffer,
-        pOverrideInfo: Ptr[PerformanceOverrideInfoINTEL, ImmutAnyOrigin],
+        command_buffer: CommandBuffer, override_info: PerformanceOverrideInfoINTEL
     ) -> Result
     var _acquire_performance_configuration_intel: fn(
         device: Device,
-        pAcquireInfo: Ptr[PerformanceConfigurationAcquireInfoINTEL, ImmutAnyOrigin],
-        pConfiguration: Ptr[PerformanceConfigurationINTEL, MutAnyOrigin],
+        acquire_info: PerformanceConfigurationAcquireInfoINTEL,
+        configuration: PerformanceConfigurationINTEL,
     ) -> Result
     var _release_performance_configuration_intel: fn(
         device: Device, configuration: PerformanceConfigurationINTEL
@@ -32,9 +30,7 @@ struct PerformanceQuery(Copyable):
         queue: Queue, configuration: PerformanceConfigurationINTEL
     ) -> Result
     var _get_performance_parameter_intel: fn(
-        device: Device,
-        parameter: PerformanceParameterTypeINTEL,
-        pValue: Ptr[PerformanceValueINTEL, MutAnyOrigin],
+        device: Device, parameter: PerformanceParameterTypeINTEL, value: PerformanceValueINTEL
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
@@ -78,7 +74,7 @@ struct PerformanceQuery(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkInitializePerformanceApiINTEL.html
         """
         return self._initialize_performance_api_intel(
-            device, Ptr(to=initialize_info).bitcast[InitializePerformanceApiInfoINTEL]()
+            device, Ptr(to=initialize_info).bitcast[InitializePerformanceApiInfoINTEL]()[]
         )
 
     fn uninitialize_performance_api_intel(self, device: Device):
@@ -96,7 +92,7 @@ struct PerformanceQuery(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPerformanceMarkerINTEL.html
         """
         return self._cmd_set_performance_marker_intel(
-            command_buffer, Ptr(to=marker_info).bitcast[PerformanceMarkerInfoINTEL]()
+            command_buffer, Ptr(to=marker_info).bitcast[PerformanceMarkerInfoINTEL]()[]
         )
 
     fn cmd_set_performance_stream_marker_intel(
@@ -107,7 +103,7 @@ struct PerformanceQuery(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPerformanceStreamMarkerINTEL.html
         """
         return self._cmd_set_performance_stream_marker_intel(
-            command_buffer, Ptr(to=marker_info).bitcast[PerformanceStreamMarkerInfoINTEL]()
+            command_buffer, Ptr(to=marker_info).bitcast[PerformanceStreamMarkerInfoINTEL]()[]
         )
 
     fn cmd_set_performance_override_intel(
@@ -118,7 +114,7 @@ struct PerformanceQuery(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPerformanceOverrideINTEL.html
         """
         return self._cmd_set_performance_override_intel(
-            command_buffer, Ptr(to=override_info).bitcast[PerformanceOverrideInfoINTEL]()
+            command_buffer, Ptr(to=override_info).bitcast[PerformanceOverrideInfoINTEL]()[]
         )
 
     fn acquire_performance_configuration_intel(
@@ -133,8 +129,8 @@ struct PerformanceQuery(Copyable):
         """
         return self._acquire_performance_configuration_intel(
             device,
-            Ptr(to=acquire_info).bitcast[PerformanceConfigurationAcquireInfoINTEL](),
-            Ptr(to=configuration).bitcast[PerformanceConfigurationINTEL](),
+            Ptr(to=acquire_info).bitcast[PerformanceConfigurationAcquireInfoINTEL]()[],
+            Ptr(to=configuration).bitcast[PerformanceConfigurationINTEL]()[],
         )
 
     fn release_performance_configuration_intel(
@@ -166,5 +162,5 @@ struct PerformanceQuery(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPerformanceParameterINTEL.html
         """
         return self._get_performance_parameter_intel(
-            device, parameter, Ptr(to=value).bitcast[PerformanceValueINTEL]()
+            device, parameter, Ptr(to=value).bitcast[PerformanceValueINTEL]()[]
         )
