@@ -1069,10 +1069,17 @@ def lower_type(
         ptr_level -= 1
         const = const[1:]
 
+    # dumb hack but I don't want to do another big refactor
+    ptr_origin_kind: Literal["external", "any", "named"] = origin_kind
+    ptr_origin_name: Optional[str] = origin_name
+    if base_name == "CStringSlice" and ptr_level > 0:
+        ptr_origin_kind = "any"
+        ptr_origin_name = None
+
     ptr_origins: List[OriginLIR] = []
     for i in range(ptr_level):
         pointee_is_const = const[i] 
-        ptr_origins.append(OriginLIR(mut=not pointee_is_const, kind=origin_kind, name=origin_name))
+        ptr_origins.append(OriginLIR(mut=not pointee_is_const, kind=ptr_origin_kind, name=ptr_origin_name))
     
     return TypeLIR(
         name = base_name,

@@ -601,9 +601,9 @@ struct DeviceCreateInfo(Copyable):
         queue_create_info_count: UInt32 = zero_init[UInt32](),
         p_queue_create_infos: Ptr[DeviceQueueCreateInfo, ImmutAnyOrigin] = zero_init[Ptr[DeviceQueueCreateInfo, ImmutAnyOrigin]](),
         enabled_layer_count: UInt32 = zero_init[UInt32](),
-        pp_enabled_layer_names: Ptr[CStringSlice[pp_enabled_layer_names_origin], pp_enabled_layer_names_origin] = zero_init[Ptr[CStringSlice[pp_enabled_layer_names_origin], pp_enabled_layer_names_origin]](),
+        pp_enabled_layer_names: Ptr[CStringSlice[pp_enabled_layer_names_origin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[pp_enabled_layer_names_origin], ImmutAnyOrigin]](),
         enabled_extension_count: UInt32 = zero_init[UInt32](),
-        pp_enabled_extension_names: Ptr[CStringSlice[pp_enabled_extension_names_origin], pp_enabled_extension_names_origin] = zero_init[Ptr[CStringSlice[pp_enabled_extension_names_origin], pp_enabled_extension_names_origin]](),
+        pp_enabled_extension_names: Ptr[CStringSlice[pp_enabled_extension_names_origin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[pp_enabled_extension_names_origin], ImmutAnyOrigin]](),
         p_enabled_features: Ptr[PhysicalDeviceFeatures, ImmutAnyOrigin] = zero_init[Ptr[PhysicalDeviceFeatures, ImmutAnyOrigin]](),
     ):
         self.s_type = StructureType.DEVICE_CREATE_INFO
@@ -637,9 +637,9 @@ struct InstanceCreateInfo(Copyable):
         flags: InstanceCreateFlags = zero_init[InstanceCreateFlags](),
         p_application_info: Ptr[ApplicationInfo, ImmutAnyOrigin] = zero_init[Ptr[ApplicationInfo, ImmutAnyOrigin]](),
         enabled_layer_count: UInt32 = zero_init[UInt32](),
-        pp_enabled_layer_names: Ptr[CStringSlice[pp_enabled_layer_names_origin], pp_enabled_layer_names_origin] = zero_init[Ptr[CStringSlice[pp_enabled_layer_names_origin], pp_enabled_layer_names_origin]](),
+        pp_enabled_layer_names: Ptr[CStringSlice[pp_enabled_layer_names_origin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[pp_enabled_layer_names_origin], ImmutAnyOrigin]](),
         enabled_extension_count: UInt32 = zero_init[UInt32](),
-        pp_enabled_extension_names: Ptr[CStringSlice[pp_enabled_extension_names_origin], pp_enabled_extension_names_origin] = zero_init[Ptr[CStringSlice[pp_enabled_extension_names_origin], pp_enabled_extension_names_origin]](),
+        pp_enabled_extension_names: Ptr[CStringSlice[pp_enabled_extension_names_origin], ImmutAnyOrigin] = zero_init[Ptr[CStringSlice[pp_enabled_extension_names_origin], ImmutAnyOrigin]](),
     ):
         self.s_type = StructureType.INSTANCE_CREATE_INFO
         self.p_next = p_next
