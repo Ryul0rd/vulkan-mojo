@@ -1718,7 +1718,7 @@ def emit_flags(files: Dict[str, str], flags: List[FlagsLIR | TypeAliasLIR]):
             f"struct {flag.name}(Equatable):\n"
             f"    var _value: {underlying}\n"
             f"\n"
-            f"    @implicit"
+            f"    @implicit\n"
             f"    fn __init__(out self, *bits: {flag.flag_bits.name}):\n"
             f"        self._value = 0\n"
             f"        for bit in bits:\n"

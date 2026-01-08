@@ -36,7 +36,8 @@ comptime PresentGravityFlagsEXT = PresentGravityFlagsKHR
 struct FramebufferCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: FramebufferCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: FramebufferCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -96,7 +97,8 @@ struct FramebufferCreateFlagBits(Equatable):
 struct QueryPoolCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: QueryPoolCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: QueryPoolCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -156,7 +158,8 @@ struct QueryPoolCreateFlagBits(Equatable):
 struct RenderPassCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: RenderPassCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: RenderPassCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -216,7 +219,8 @@ struct RenderPassCreateFlagBits(Equatable):
 struct SamplerCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SamplerCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: SamplerCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -276,7 +280,8 @@ struct SamplerCreateFlagBits(Equatable):
 struct PipelineLayoutCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineLayoutCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineLayoutCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -336,7 +341,8 @@ struct PipelineLayoutCreateFlagBits(Equatable):
 struct PipelineCacheCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineCacheCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineCacheCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -396,7 +402,8 @@ struct PipelineCacheCreateFlagBits(Equatable):
 struct PipelineDepthStencilStateCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineDepthStencilStateCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineDepthStencilStateCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -456,7 +463,8 @@ struct PipelineDepthStencilStateCreateFlagBits(Equatable):
 struct PipelineDynamicStateCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineDynamicStateCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineDynamicStateCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -516,7 +524,8 @@ struct PipelineDynamicStateCreateFlagBits(Equatable):
 struct PipelineColorBlendStateCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineColorBlendStateCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineColorBlendStateCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -576,7 +585,8 @@ struct PipelineColorBlendStateCreateFlagBits(Equatable):
 struct PipelineMultisampleStateCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineMultisampleStateCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineMultisampleStateCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -636,7 +646,8 @@ struct PipelineMultisampleStateCreateFlagBits(Equatable):
 struct PipelineRasterizationStateCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineRasterizationStateCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineRasterizationStateCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -696,7 +707,8 @@ struct PipelineRasterizationStateCreateFlagBits(Equatable):
 struct PipelineViewportStateCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineViewportStateCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineViewportStateCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -756,7 +768,8 @@ struct PipelineViewportStateCreateFlagBits(Equatable):
 struct PipelineTessellationStateCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineTessellationStateCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineTessellationStateCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -816,7 +829,8 @@ struct PipelineTessellationStateCreateFlagBits(Equatable):
 struct PipelineInputAssemblyStateCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineInputAssemblyStateCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineInputAssemblyStateCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -876,7 +890,8 @@ struct PipelineInputAssemblyStateCreateFlagBits(Equatable):
 struct PipelineVertexInputStateCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineVertexInputStateCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineVertexInputStateCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -936,7 +951,8 @@ struct PipelineVertexInputStateCreateFlagBits(Equatable):
 struct PipelineShaderStageCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineShaderStageCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineShaderStageCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -996,7 +1012,8 @@ struct PipelineShaderStageCreateFlagBits(Equatable):
 struct DescriptorSetLayoutCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DescriptorSetLayoutCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: DescriptorSetLayoutCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1056,7 +1073,8 @@ struct DescriptorSetLayoutCreateFlagBits(Equatable):
 struct BufferViewCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: BufferViewCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: BufferViewCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1116,7 +1134,8 @@ struct BufferViewCreateFlagBits(Equatable):
 struct InstanceCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: InstanceCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: InstanceCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1176,7 +1195,8 @@ struct InstanceCreateFlagBits(Equatable):
 struct DeviceCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DeviceCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: DeviceCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1236,7 +1256,8 @@ struct DeviceCreateFlagBits(Equatable):
 struct DeviceQueueCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DeviceQueueCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: DeviceQueueCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1296,7 +1317,8 @@ struct DeviceQueueCreateFlagBits(Equatable):
 struct QueueFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: QueueFlagBits):
+    @implicit
+    fn __init__(out self, *bits: QueueFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1366,7 +1388,8 @@ struct QueueFlagBits(Equatable):
 struct MemoryPropertyFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: MemoryPropertyFlagBits):
+    @implicit
+    fn __init__(out self, *bits: MemoryPropertyFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1438,7 +1461,8 @@ struct MemoryPropertyFlagBits(Equatable):
 struct MemoryHeapFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: MemoryHeapFlagBits):
+    @implicit
+    fn __init__(out self, *bits: MemoryHeapFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1502,7 +1526,8 @@ struct MemoryHeapFlagBits(Equatable):
 struct AccessFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: AccessFlagBits):
+    @implicit
+    fn __init__(out self, *bits: AccessFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1598,7 +1623,8 @@ struct AccessFlagBits(Equatable):
 struct BufferUsageFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: BufferUsageFlagBits):
+    @implicit
+    fn __init__(out self, *bits: BufferUsageFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1678,7 +1704,8 @@ struct BufferUsageFlagBits(Equatable):
 struct BufferCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: BufferCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: BufferCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1746,7 +1773,8 @@ struct BufferCreateFlagBits(Equatable):
 struct ShaderStageFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ShaderStageFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ShaderStageFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1824,7 +1852,8 @@ struct ShaderStageFlagBits(Equatable):
 struct ImageUsageFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ImageUsageFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ImageUsageFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1902,7 +1931,8 @@ struct ImageUsageFlagBits(Equatable):
 struct ImageCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ImageCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ImageCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -1974,7 +2004,8 @@ struct ImageCreateFlagBits(Equatable):
 struct ImageViewCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ImageViewCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ImageViewCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2034,7 +2065,8 @@ struct ImageViewCreateFlagBits(Equatable):
 struct PipelineCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2102,7 +2134,8 @@ struct PipelineCreateFlagBits(Equatable):
 struct ColorComponentFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ColorComponentFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ColorComponentFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2172,7 +2205,8 @@ struct ColorComponentFlagBits(Equatable):
 struct FenceCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: FenceCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: FenceCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2236,7 +2270,8 @@ struct FenceCreateFlagBits(Equatable):
 struct SemaphoreCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SemaphoreCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: SemaphoreCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2296,7 +2331,8 @@ struct SemaphoreCreateFlagBits(Equatable):
 struct FormatFeatureFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: FormatFeatureFlagBits):
+    @implicit
+    fn __init__(out self, *bits: FormatFeatureFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2384,7 +2420,8 @@ struct FormatFeatureFlagBits(Equatable):
 struct QueryControlFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: QueryControlFlagBits):
+    @implicit
+    fn __init__(out self, *bits: QueryControlFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2448,7 +2485,8 @@ struct QueryControlFlagBits(Equatable):
 struct QueryResultFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: QueryResultFlagBits):
+    @implicit
+    fn __init__(out self, *bits: QueryResultFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2518,7 +2556,8 @@ struct QueryResultFlagBits(Equatable):
 struct ShaderModuleCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ShaderModuleCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ShaderModuleCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2578,7 +2617,8 @@ struct ShaderModuleCreateFlagBits(Equatable):
 struct EventCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: EventCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: EventCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2638,7 +2678,8 @@ struct EventCreateFlagBits(Equatable):
 struct CommandPoolCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: CommandPoolCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: CommandPoolCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2704,7 +2745,8 @@ struct CommandPoolCreateFlagBits(Equatable):
 struct CommandPoolResetFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: CommandPoolResetFlagBits):
+    @implicit
+    fn __init__(out self, *bits: CommandPoolResetFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2768,7 +2810,8 @@ struct CommandPoolResetFlagBits(Equatable):
 struct CommandBufferResetFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: CommandBufferResetFlagBits):
+    @implicit
+    fn __init__(out self, *bits: CommandBufferResetFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2832,7 +2875,8 @@ struct CommandBufferResetFlagBits(Equatable):
 struct CommandBufferUsageFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: CommandBufferUsageFlagBits):
+    @implicit
+    fn __init__(out self, *bits: CommandBufferUsageFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2900,7 +2944,8 @@ struct CommandBufferUsageFlagBits(Equatable):
 struct QueryPipelineStatisticFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: QueryPipelineStatisticFlagBits):
+    @implicit
+    fn __init__(out self, *bits: QueryPipelineStatisticFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -2984,7 +3029,8 @@ struct QueryPipelineStatisticFlagBits(Equatable):
 struct MemoryMapFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: MemoryMapFlagBits):
+    @implicit
+    fn __init__(out self, *bits: MemoryMapFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3044,7 +3090,8 @@ struct MemoryMapFlagBits(Equatable):
 struct MemoryUnmapFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: MemoryUnmapFlagBits):
+    @implicit
+    fn __init__(out self, *bits: MemoryUnmapFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3104,7 +3151,8 @@ struct MemoryUnmapFlagBits(Equatable):
 struct ImageAspectFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ImageAspectFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ImageAspectFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3174,7 +3222,8 @@ struct ImageAspectFlagBits(Equatable):
 struct SparseMemoryBindFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SparseMemoryBindFlagBits):
+    @implicit
+    fn __init__(out self, *bits: SparseMemoryBindFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3238,7 +3287,8 @@ struct SparseMemoryBindFlagBits(Equatable):
 struct SparseImageFormatFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SparseImageFormatFlagBits):
+    @implicit
+    fn __init__(out self, *bits: SparseImageFormatFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3306,7 +3356,8 @@ struct SparseImageFormatFlagBits(Equatable):
 struct SubpassDescriptionFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SubpassDescriptionFlagBits):
+    @implicit
+    fn __init__(out self, *bits: SubpassDescriptionFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3366,7 +3417,8 @@ struct SubpassDescriptionFlagBits(Equatable):
 struct PipelineStageFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineStageFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineStageFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3462,7 +3514,8 @@ struct PipelineStageFlagBits(Equatable):
 struct SampleCountFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SampleCountFlagBits):
+    @implicit
+    fn __init__(out self, *bits: SampleCountFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3538,7 +3591,8 @@ struct SampleCountFlagBits(Equatable):
 struct AttachmentDescriptionFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: AttachmentDescriptionFlagBits):
+    @implicit
+    fn __init__(out self, *bits: AttachmentDescriptionFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3602,7 +3656,8 @@ struct AttachmentDescriptionFlagBits(Equatable):
 struct StencilFaceFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: StencilFaceFlagBits):
+    @implicit
+    fn __init__(out self, *bits: StencilFaceFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3670,7 +3725,8 @@ struct StencilFaceFlagBits(Equatable):
 struct CullModeFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: CullModeFlagBits):
+    @implicit
+    fn __init__(out self, *bits: CullModeFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3740,7 +3796,8 @@ struct CullModeFlagBits(Equatable):
 struct DescriptorPoolCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DescriptorPoolCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: DescriptorPoolCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3804,7 +3861,8 @@ struct DescriptorPoolCreateFlagBits(Equatable):
 struct DescriptorPoolResetFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DescriptorPoolResetFlagBits):
+    @implicit
+    fn __init__(out self, *bits: DescriptorPoolResetFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3864,7 +3922,8 @@ struct DescriptorPoolResetFlagBits(Equatable):
 struct DependencyFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DependencyFlagBits):
+    @implicit
+    fn __init__(out self, *bits: DependencyFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -3928,7 +3987,8 @@ struct DependencyFlagBits(Equatable):
 struct SubgroupFeatureFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SubgroupFeatureFlagBits):
+    @implicit
+    fn __init__(out self, *bits: SubgroupFeatureFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4006,7 +4066,8 @@ struct SubgroupFeatureFlagBits(Equatable):
 struct IndirectCommandsLayoutUsageFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: IndirectCommandsLayoutUsageFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: IndirectCommandsLayoutUsageFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4074,7 +4135,8 @@ struct IndirectCommandsLayoutUsageFlagBitsNV(Equatable):
 struct IndirectStateFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: IndirectStateFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: IndirectStateFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4138,7 +4200,8 @@ struct IndirectStateFlagBitsNV(Equatable):
 struct GeometryFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: GeometryFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: GeometryFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4204,7 +4267,8 @@ struct GeometryFlagBitsKHR(Equatable):
 struct GeometryInstanceFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: GeometryInstanceFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: GeometryInstanceFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4274,7 +4338,8 @@ struct GeometryInstanceFlagBitsKHR(Equatable):
 struct ClusterAccelerationStructureGeometryFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ClusterAccelerationStructureGeometryFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: ClusterAccelerationStructureGeometryFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4342,7 +4407,8 @@ struct ClusterAccelerationStructureGeometryFlagBitsNV(Equatable):
 struct ClusterAccelerationStructureClusterFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ClusterAccelerationStructureClusterFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: ClusterAccelerationStructureClusterFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4406,7 +4472,8 @@ struct ClusterAccelerationStructureClusterFlagBitsNV(Equatable):
 struct ClusterAccelerationStructureAddressResolutionFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ClusterAccelerationStructureAddressResolutionFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: ClusterAccelerationStructureAddressResolutionFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4482,7 +4549,8 @@ struct ClusterAccelerationStructureAddressResolutionFlagBitsNV(Equatable):
 struct BuildAccelerationStructureFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: BuildAccelerationStructureFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: BuildAccelerationStructureFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4554,7 +4622,8 @@ struct BuildAccelerationStructureFlagBitsKHR(Equatable):
 struct PrivateDataSlotCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PrivateDataSlotCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PrivateDataSlotCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4614,7 +4683,8 @@ struct PrivateDataSlotCreateFlagBits(Equatable):
 struct AccelerationStructureCreateFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: AccelerationStructureCreateFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: AccelerationStructureCreateFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4678,7 +4748,8 @@ struct AccelerationStructureCreateFlagBitsKHR(Equatable):
 struct DescriptorUpdateTemplateCreateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DescriptorUpdateTemplateCreateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: DescriptorUpdateTemplateCreateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4738,7 +4809,8 @@ struct DescriptorUpdateTemplateCreateFlagBits(Equatable):
 struct PipelineCreationFeedbackFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineCreationFeedbackFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PipelineCreationFeedbackFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4806,7 +4878,8 @@ struct PipelineCreationFeedbackFlagBits(Equatable):
 struct PerformanceCounterDescriptionFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PerformanceCounterDescriptionFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: PerformanceCounterDescriptionFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4872,7 +4945,8 @@ struct PerformanceCounterDescriptionFlagBitsKHR(Equatable):
 struct AcquireProfilingLockFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: AcquireProfilingLockFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: AcquireProfilingLockFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4932,7 +5006,8 @@ struct AcquireProfilingLockFlagBitsKHR(Equatable):
 struct SemaphoreWaitFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SemaphoreWaitFlagBits):
+    @implicit
+    fn __init__(out self, *bits: SemaphoreWaitFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -4996,7 +5071,8 @@ struct SemaphoreWaitFlagBits(Equatable):
 struct PipelineCompilerControlFlagsAMD(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineCompilerControlFlagBitsAMD):
+    @implicit
+    fn __init__(out self, *bits: PipelineCompilerControlFlagBitsAMD):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -5056,7 +5132,8 @@ struct PipelineCompilerControlFlagBitsAMD(Equatable):
 struct ShaderCorePropertiesFlagsAMD(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ShaderCorePropertiesFlagBitsAMD):
+    @implicit
+    fn __init__(out self, *bits: ShaderCorePropertiesFlagBitsAMD):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -5116,7 +5193,8 @@ struct ShaderCorePropertiesFlagBitsAMD(Equatable):
 struct DeviceDiagnosticsConfigFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DeviceDiagnosticsConfigFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: DeviceDiagnosticsConfigFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -5186,7 +5264,8 @@ struct DeviceDiagnosticsConfigFlagBitsNV(Equatable):
 struct RefreshObjectFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: RefreshObjectFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: RefreshObjectFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -5246,7 +5325,8 @@ struct RefreshObjectFlagBitsKHR(Equatable):
 struct AccessFlags2(Equatable):
     var _value: UInt64
 
-    @implicit    fn __init__(out self, *bits: AccessFlagBits2):
+    @implicit
+    fn __init__(out self, *bits: AccessFlagBits2):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -5350,7 +5430,8 @@ struct AccessFlagBits2(Equatable):
 struct PipelineStageFlags2(Equatable):
     var _value: UInt64
 
-    @implicit    fn __init__(out self, *bits: PipelineStageFlagBits2):
+    @implicit
+    fn __init__(out self, *bits: PipelineStageFlagBits2):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -5462,7 +5543,8 @@ struct PipelineStageFlagBits2(Equatable):
 struct AccelerationStructureMotionInfoFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: AccelerationStructureMotionInfoFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: AccelerationStructureMotionInfoFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -5522,7 +5604,8 @@ struct AccelerationStructureMotionInfoFlagBitsNV(Equatable):
 struct AccelerationStructureMotionInstanceFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: AccelerationStructureMotionInstanceFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: AccelerationStructureMotionInstanceFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -5582,7 +5665,8 @@ struct AccelerationStructureMotionInstanceFlagBitsNV(Equatable):
 struct FormatFeatureFlags2(Equatable):
     var _value: UInt64
 
-    @implicit    fn __init__(out self, *bits: FormatFeatureFlagBits2):
+    @implicit
+    fn __init__(out self, *bits: FormatFeatureFlagBits2):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -5696,7 +5780,8 @@ struct FormatFeatureFlagBits2(Equatable):
 struct RenderingFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: RenderingFlagBits):
+    @implicit
+    fn __init__(out self, *bits: RenderingFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -5764,7 +5849,8 @@ struct RenderingFlagBits(Equatable):
 struct MemoryDecompressionMethodFlagsNV(Equatable):
     var _value: UInt64
 
-    @implicit    fn __init__(out self, *bits: MemoryDecompressionMethodFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: MemoryDecompressionMethodFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -5828,7 +5914,8 @@ struct MemoryDecompressionMethodFlagBitsNV(Equatable):
 struct BuildMicromapFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: BuildMicromapFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: BuildMicromapFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -5896,7 +5983,8 @@ struct BuildMicromapFlagBitsEXT(Equatable):
 struct MicromapCreateFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: MicromapCreateFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: MicromapCreateFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -5960,7 +6048,8 @@ struct MicromapCreateFlagBitsEXT(Equatable):
 struct IndirectCommandsLayoutUsageFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: IndirectCommandsLayoutUsageFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: IndirectCommandsLayoutUsageFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6026,7 +6115,8 @@ struct IndirectCommandsLayoutUsageFlagBitsEXT(Equatable):
 struct IndirectCommandsInputModeFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: IndirectCommandsInputModeFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: IndirectCommandsInputModeFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6092,7 +6182,8 @@ struct IndirectCommandsInputModeFlagBitsEXT(Equatable):
 struct DirectDriverLoadingFlagsLUNARG(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DirectDriverLoadingFlagBitsLUNARG):
+    @implicit
+    fn __init__(out self, *bits: DirectDriverLoadingFlagBitsLUNARG):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6152,7 +6243,8 @@ struct DirectDriverLoadingFlagBitsLUNARG(Equatable):
 struct PipelineCreateFlags2(Equatable):
     var _value: UInt64
 
-    @implicit    fn __init__(out self, *bits: PipelineCreateFlagBits2):
+    @implicit
+    fn __init__(out self, *bits: PipelineCreateFlagBits2):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6232,7 +6324,8 @@ struct PipelineCreateFlagBits2(Equatable):
 struct BufferUsageFlags2(Equatable):
     var _value: UInt64
 
-    @implicit    fn __init__(out self, *bits: BufferUsageFlagBits2):
+    @implicit
+    fn __init__(out self, *bits: BufferUsageFlagBits2):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6312,7 +6405,8 @@ struct BufferUsageFlagBits2(Equatable):
 struct TensorCreateFlagsARM(Equatable):
     var _value: UInt64
 
-    @implicit    fn __init__(out self, *bits: TensorCreateFlagBitsARM):
+    @implicit
+    fn __init__(out self, *bits: TensorCreateFlagBitsARM):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6378,7 +6472,8 @@ struct TensorCreateFlagBitsARM(Equatable):
 struct TensorUsageFlagsARM(Equatable):
     var _value: UInt64
 
-    @implicit    fn __init__(out self, *bits: TensorUsageFlagBitsARM):
+    @implicit
+    fn __init__(out self, *bits: TensorUsageFlagBitsARM):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6448,7 +6543,8 @@ struct TensorUsageFlagBitsARM(Equatable):
 struct TensorViewCreateFlagsARM(Equatable):
     var _value: UInt64
 
-    @implicit    fn __init__(out self, *bits: TensorViewCreateFlagBitsARM):
+    @implicit
+    fn __init__(out self, *bits: TensorViewCreateFlagBitsARM):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6508,7 +6604,8 @@ struct TensorViewCreateFlagBitsARM(Equatable):
 struct DataGraphPipelineSessionCreateFlagsARM(Equatable):
     var _value: UInt64
 
-    @implicit    fn __init__(out self, *bits: DataGraphPipelineSessionCreateFlagBitsARM):
+    @implicit
+    fn __init__(out self, *bits: DataGraphPipelineSessionCreateFlagBitsARM):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6572,7 +6669,8 @@ struct DataGraphPipelineSessionCreateFlagBitsARM(Equatable):
 struct DataGraphPipelineDispatchFlagsARM(Equatable):
     var _value: UInt64
 
-    @implicit    fn __init__(out self, *bits: DataGraphPipelineDispatchFlagBitsARM):
+    @implicit
+    fn __init__(out self, *bits: DataGraphPipelineDispatchFlagBitsARM):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6632,7 +6730,8 @@ struct DataGraphPipelineDispatchFlagBitsARM(Equatable):
 struct VideoEncodeRgbModelConversionFlagsVALVE(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeRgbModelConversionFlagBitsVALVE):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeRgbModelConversionFlagBitsVALVE):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6704,7 +6803,8 @@ struct VideoEncodeRgbModelConversionFlagBitsVALVE(Equatable):
 struct VideoEncodeRgbRangeCompressionFlagsVALVE(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeRgbRangeCompressionFlagBitsVALVE):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeRgbRangeCompressionFlagBitsVALVE):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6770,7 +6870,8 @@ struct VideoEncodeRgbRangeCompressionFlagBitsVALVE(Equatable):
 struct VideoEncodeRgbChromaOffsetFlagsVALVE(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeRgbChromaOffsetFlagBitsVALVE):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeRgbChromaOffsetFlagBitsVALVE):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6836,7 +6937,8 @@ struct VideoEncodeRgbChromaOffsetFlagBitsVALVE(Equatable):
 struct CompositeAlphaFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: CompositeAlphaFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: CompositeAlphaFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6906,7 +7008,8 @@ struct CompositeAlphaFlagBitsKHR(Equatable):
 struct DisplayPlaneAlphaFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DisplayPlaneAlphaFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: DisplayPlaneAlphaFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6976,7 +7079,8 @@ struct DisplayPlaneAlphaFlagBitsKHR(Equatable):
 struct SurfaceTransformFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SurfaceTransformFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: SurfaceTransformFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7056,7 +7160,8 @@ struct SurfaceTransformFlagBitsKHR(Equatable):
 struct SwapchainCreateFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SwapchainCreateFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: SwapchainCreateFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7116,7 +7221,8 @@ struct SwapchainCreateFlagBitsKHR(Equatable):
 struct DisplayModeCreateFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DisplayModeCreateFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: DisplayModeCreateFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7176,7 +7282,8 @@ struct DisplayModeCreateFlagBitsKHR(Equatable):
 struct DisplaySurfaceCreateFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DisplaySurfaceCreateFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: DisplaySurfaceCreateFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7236,7 +7343,8 @@ struct DisplaySurfaceCreateFlagBitsKHR(Equatable):
 struct AndroidSurfaceCreateFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: AndroidSurfaceCreateFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: AndroidSurfaceCreateFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7296,7 +7404,8 @@ struct AndroidSurfaceCreateFlagBitsKHR(Equatable):
 struct ViSurfaceCreateFlagsNN(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ViSurfaceCreateFlagBitsNN):
+    @implicit
+    fn __init__(out self, *bits: ViSurfaceCreateFlagBitsNN):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7356,7 +7465,8 @@ struct ViSurfaceCreateFlagBitsNN(Equatable):
 struct WaylandSurfaceCreateFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: WaylandSurfaceCreateFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: WaylandSurfaceCreateFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7416,7 +7526,8 @@ struct WaylandSurfaceCreateFlagBitsKHR(Equatable):
 struct Win32SurfaceCreateFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: Win32SurfaceCreateFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: Win32SurfaceCreateFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7476,7 +7587,8 @@ struct Win32SurfaceCreateFlagBitsKHR(Equatable):
 struct XlibSurfaceCreateFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: XlibSurfaceCreateFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: XlibSurfaceCreateFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7536,7 +7648,8 @@ struct XlibSurfaceCreateFlagBitsKHR(Equatable):
 struct XcbSurfaceCreateFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: XcbSurfaceCreateFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: XcbSurfaceCreateFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7596,7 +7709,8 @@ struct XcbSurfaceCreateFlagBitsKHR(Equatable):
 struct DirectFBSurfaceCreateFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DirectFBSurfaceCreateFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: DirectFBSurfaceCreateFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7656,7 +7770,8 @@ struct DirectFBSurfaceCreateFlagBitsEXT(Equatable):
 struct IOSSurfaceCreateFlagsMVK(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: IOSSurfaceCreateFlagBitsMVK):
+    @implicit
+    fn __init__(out self, *bits: IOSSurfaceCreateFlagBitsMVK):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7716,7 +7831,8 @@ struct IOSSurfaceCreateFlagBitsMVK(Equatable):
 struct MacOSSurfaceCreateFlagsMVK(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: MacOSSurfaceCreateFlagBitsMVK):
+    @implicit
+    fn __init__(out self, *bits: MacOSSurfaceCreateFlagBitsMVK):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7776,7 +7892,8 @@ struct MacOSSurfaceCreateFlagBitsMVK(Equatable):
 struct MetalSurfaceCreateFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: MetalSurfaceCreateFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: MetalSurfaceCreateFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7836,7 +7953,8 @@ struct MetalSurfaceCreateFlagBitsEXT(Equatable):
 struct ImagePipeSurfaceCreateFlagsFUCHSIA(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ImagePipeSurfaceCreateFlagBitsFUCHSIA):
+    @implicit
+    fn __init__(out self, *bits: ImagePipeSurfaceCreateFlagBitsFUCHSIA):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7896,7 +8014,8 @@ struct ImagePipeSurfaceCreateFlagBitsFUCHSIA(Equatable):
 struct StreamDescriptorSurfaceCreateFlagsGGP(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: StreamDescriptorSurfaceCreateFlagBitsGGP):
+    @implicit
+    fn __init__(out self, *bits: StreamDescriptorSurfaceCreateFlagBitsGGP):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -7956,7 +8075,8 @@ struct StreamDescriptorSurfaceCreateFlagBitsGGP(Equatable):
 struct HeadlessSurfaceCreateFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: HeadlessSurfaceCreateFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: HeadlessSurfaceCreateFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8016,7 +8136,8 @@ struct HeadlessSurfaceCreateFlagBitsEXT(Equatable):
 struct ScreenSurfaceCreateFlagsQNX(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ScreenSurfaceCreateFlagBitsQNX):
+    @implicit
+    fn __init__(out self, *bits: ScreenSurfaceCreateFlagBitsQNX):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8076,7 +8197,8 @@ struct ScreenSurfaceCreateFlagBitsQNX(Equatable):
 struct PeerMemoryFeatureFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PeerMemoryFeatureFlagBits):
+    @implicit
+    fn __init__(out self, *bits: PeerMemoryFeatureFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8146,7 +8268,8 @@ struct PeerMemoryFeatureFlagBits(Equatable):
 struct MemoryAllocateFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: MemoryAllocateFlagBits):
+    @implicit
+    fn __init__(out self, *bits: MemoryAllocateFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8210,7 +8333,8 @@ struct MemoryAllocateFlagBits(Equatable):
 struct DeviceGroupPresentModeFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DeviceGroupPresentModeFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: DeviceGroupPresentModeFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8280,7 +8404,8 @@ struct DeviceGroupPresentModeFlagBitsKHR(Equatable):
 struct DebugReportFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DebugReportFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: DebugReportFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8352,7 +8477,8 @@ struct DebugReportFlagBitsEXT(Equatable):
 struct CommandPoolTrimFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: CommandPoolTrimFlagBits):
+    @implicit
+    fn __init__(out self, *bits: CommandPoolTrimFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8412,7 +8538,8 @@ struct CommandPoolTrimFlagBits(Equatable):
 struct ExternalMemoryHandleTypeFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ExternalMemoryHandleTypeFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: ExternalMemoryHandleTypeFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8482,7 +8609,8 @@ struct ExternalMemoryHandleTypeFlagBitsNV(Equatable):
 struct ClusterAccelerationStructureIndexFormatFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ClusterAccelerationStructureIndexFormatFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: ClusterAccelerationStructureIndexFormatFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8550,7 +8678,8 @@ struct ClusterAccelerationStructureIndexFormatFlagBitsNV(Equatable):
 struct ExternalMemoryFeatureFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ExternalMemoryFeatureFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: ExternalMemoryFeatureFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8618,7 +8747,8 @@ struct ExternalMemoryFeatureFlagBitsNV(Equatable):
 struct ExternalMemoryHandleTypeFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ExternalMemoryHandleTypeFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ExternalMemoryHandleTypeFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8694,7 +8824,8 @@ struct ExternalMemoryHandleTypeFlagBits(Equatable):
 struct ExternalMemoryFeatureFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ExternalMemoryFeatureFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ExternalMemoryFeatureFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8762,7 +8893,8 @@ struct ExternalMemoryFeatureFlagBits(Equatable):
 struct ExternalSemaphoreHandleTypeFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ExternalSemaphoreHandleTypeFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ExternalSemaphoreHandleTypeFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8834,7 +8966,8 @@ struct ExternalSemaphoreHandleTypeFlagBits(Equatable):
 struct ExternalSemaphoreFeatureFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ExternalSemaphoreFeatureFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ExternalSemaphoreFeatureFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8900,7 +9033,8 @@ struct ExternalSemaphoreFeatureFlagBits(Equatable):
 struct SemaphoreImportFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SemaphoreImportFlagBits):
+    @implicit
+    fn __init__(out self, *bits: SemaphoreImportFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -8964,7 +9098,8 @@ struct SemaphoreImportFlagBits(Equatable):
 struct ExternalFenceHandleTypeFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ExternalFenceHandleTypeFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ExternalFenceHandleTypeFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9034,7 +9169,8 @@ struct ExternalFenceHandleTypeFlagBits(Equatable):
 struct ExternalFenceFeatureFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ExternalFenceFeatureFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ExternalFenceFeatureFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9100,7 +9236,8 @@ struct ExternalFenceFeatureFlagBits(Equatable):
 struct FenceImportFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: FenceImportFlagBits):
+    @implicit
+    fn __init__(out self, *bits: FenceImportFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9164,7 +9301,8 @@ struct FenceImportFlagBits(Equatable):
 struct SurfaceCounterFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SurfaceCounterFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: SurfaceCounterFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9228,7 +9366,8 @@ struct SurfaceCounterFlagBitsEXT(Equatable):
 struct PipelineViewportSwizzleStateCreateFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineViewportSwizzleStateCreateFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: PipelineViewportSwizzleStateCreateFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9288,7 +9427,8 @@ struct PipelineViewportSwizzleStateCreateFlagBitsNV(Equatable):
 struct PipelineDiscardRectangleStateCreateFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineDiscardRectangleStateCreateFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: PipelineDiscardRectangleStateCreateFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9348,7 +9488,8 @@ struct PipelineDiscardRectangleStateCreateFlagBitsEXT(Equatable):
 struct PipelineCoverageToColorStateCreateFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineCoverageToColorStateCreateFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: PipelineCoverageToColorStateCreateFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9408,7 +9549,8 @@ struct PipelineCoverageToColorStateCreateFlagBitsNV(Equatable):
 struct PipelineCoverageModulationStateCreateFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineCoverageModulationStateCreateFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: PipelineCoverageModulationStateCreateFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9468,7 +9610,8 @@ struct PipelineCoverageModulationStateCreateFlagBitsNV(Equatable):
 struct PipelineCoverageReductionStateCreateFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineCoverageReductionStateCreateFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: PipelineCoverageReductionStateCreateFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9528,7 +9671,8 @@ struct PipelineCoverageReductionStateCreateFlagBitsNV(Equatable):
 struct ValidationCacheCreateFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ValidationCacheCreateFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: ValidationCacheCreateFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9588,7 +9732,8 @@ struct ValidationCacheCreateFlagBitsEXT(Equatable):
 struct DebugUtilsMessageSeverityFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DebugUtilsMessageSeverityFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: DebugUtilsMessageSeverityFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9658,7 +9803,8 @@ struct DebugUtilsMessageSeverityFlagBitsEXT(Equatable):
 struct DebugUtilsMessageTypeFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DebugUtilsMessageTypeFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: DebugUtilsMessageTypeFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9726,7 +9872,8 @@ struct DebugUtilsMessageTypeFlagBitsEXT(Equatable):
 struct DebugUtilsMessengerCreateFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DebugUtilsMessengerCreateFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: DebugUtilsMessengerCreateFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9786,7 +9933,8 @@ struct DebugUtilsMessengerCreateFlagBitsEXT(Equatable):
 struct DebugUtilsMessengerCallbackDataFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DebugUtilsMessengerCallbackDataFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: DebugUtilsMessengerCallbackDataFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9846,7 +9994,8 @@ struct DebugUtilsMessengerCallbackDataFlagBitsEXT(Equatable):
 struct DeviceMemoryReportFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DeviceMemoryReportFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: DeviceMemoryReportFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9906,7 +10055,8 @@ struct DeviceMemoryReportFlagBitsEXT(Equatable):
 struct PipelineRasterizationConservativeStateCreateFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineRasterizationConservativeStateCreateFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: PipelineRasterizationConservativeStateCreateFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -9966,7 +10116,8 @@ struct PipelineRasterizationConservativeStateCreateFlagBitsEXT(Equatable):
 struct DescriptorBindingFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DescriptorBindingFlagBits):
+    @implicit
+    fn __init__(out self, *bits: DescriptorBindingFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10036,7 +10187,8 @@ struct DescriptorBindingFlagBits(Equatable):
 struct ConditionalRenderingFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ConditionalRenderingFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: ConditionalRenderingFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10100,7 +10252,8 @@ struct ConditionalRenderingFlagBitsEXT(Equatable):
 struct ResolveModeFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ResolveModeFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ResolveModeFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10172,7 +10325,8 @@ struct ResolveModeFlagBits(Equatable):
 struct PipelineRasterizationStateStreamCreateFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineRasterizationStateStreamCreateFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: PipelineRasterizationStateStreamCreateFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10232,7 +10386,8 @@ struct PipelineRasterizationStateStreamCreateFlagBitsEXT(Equatable):
 struct PipelineRasterizationDepthClipStateCreateFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PipelineRasterizationDepthClipStateCreateFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: PipelineRasterizationDepthClipStateCreateFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10292,7 +10447,8 @@ struct PipelineRasterizationDepthClipStateCreateFlagBitsEXT(Equatable):
 struct SwapchainImageUsageFlagsANDROID(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SwapchainImageUsageFlagBitsANDROID):
+    @implicit
+    fn __init__(out self, *bits: SwapchainImageUsageFlagBitsANDROID):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10356,7 +10512,8 @@ struct SwapchainImageUsageFlagBitsANDROID(Equatable):
 struct ToolPurposeFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ToolPurposeFlagBits):
+    @implicit
+    fn __init__(out self, *bits: ToolPurposeFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10428,7 +10585,8 @@ struct ToolPurposeFlagBits(Equatable):
 struct SubmitFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SubmitFlagBits):
+    @implicit
+    fn __init__(out self, *bits: SubmitFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10492,7 +10650,8 @@ struct SubmitFlagBits(Equatable):
 struct ImageFormatConstraintsFlagsFUCHSIA(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ImageFormatConstraintsFlagBitsFUCHSIA):
+    @implicit
+    fn __init__(out self, *bits: ImageFormatConstraintsFlagBitsFUCHSIA):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10552,7 +10711,8 @@ struct ImageFormatConstraintsFlagBitsFUCHSIA(Equatable):
 struct HostImageCopyFlags(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: HostImageCopyFlagBits):
+    @implicit
+    fn __init__(out self, *bits: HostImageCopyFlagBits):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10616,7 +10776,8 @@ struct HostImageCopyFlagBits(Equatable):
 struct PartitionedAccelerationStructureInstanceFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PartitionedAccelerationStructureInstanceFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: PartitionedAccelerationStructureInstanceFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10688,7 +10849,8 @@ struct PartitionedAccelerationStructureInstanceFlagBitsNV(Equatable):
 struct ImageConstraintsInfoFlagsFUCHSIA(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ImageConstraintsInfoFlagBitsFUCHSIA):
+    @implicit
+    fn __init__(out self, *bits: ImageConstraintsInfoFlagBitsFUCHSIA):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10760,7 +10922,8 @@ struct ImageConstraintsInfoFlagBitsFUCHSIA(Equatable):
 struct GraphicsPipelineLibraryFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: GraphicsPipelineLibraryFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: GraphicsPipelineLibraryFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10830,7 +10993,8 @@ struct GraphicsPipelineLibraryFlagBitsEXT(Equatable):
 struct ImageCompressionFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ImageCompressionFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: ImageCompressionFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -10900,7 +11064,8 @@ struct ImageCompressionFlagBitsEXT(Equatable):
 struct ImageCompressionFixedRateFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ImageCompressionFixedRateFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: ImageCompressionFixedRateFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11012,7 +11177,8 @@ struct ImageCompressionFixedRateFlagBitsEXT(Equatable):
 struct ExportMetalObjectTypeFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ExportMetalObjectTypeFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: ExportMetalObjectTypeFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11086,7 +11252,8 @@ struct ExportMetalObjectTypeFlagBitsEXT(Equatable):
 struct DeviceAddressBindingFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: DeviceAddressBindingFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: DeviceAddressBindingFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11150,7 +11317,8 @@ struct DeviceAddressBindingFlagBitsEXT(Equatable):
 struct OpticalFlowGridSizeFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: OpticalFlowGridSizeFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: OpticalFlowGridSizeFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11222,7 +11390,8 @@ struct OpticalFlowGridSizeFlagBitsNV(Equatable):
 struct OpticalFlowUsageFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: OpticalFlowUsageFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: OpticalFlowUsageFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11296,7 +11465,8 @@ struct OpticalFlowUsageFlagBitsNV(Equatable):
 struct OpticalFlowSessionCreateFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: OpticalFlowSessionCreateFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: OpticalFlowSessionCreateFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11368,7 +11538,8 @@ struct OpticalFlowSessionCreateFlagBitsNV(Equatable):
 struct OpticalFlowExecuteFlagsNV(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: OpticalFlowExecuteFlagBitsNV):
+    @implicit
+    fn __init__(out self, *bits: OpticalFlowExecuteFlagBitsNV):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11432,7 +11603,8 @@ struct OpticalFlowExecuteFlagBitsNV(Equatable):
 struct FrameBoundaryFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: FrameBoundaryFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: FrameBoundaryFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11496,7 +11668,8 @@ struct FrameBoundaryFlagBitsEXT(Equatable):
 struct PresentScalingFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PresentScalingFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: PresentScalingFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11564,7 +11737,8 @@ struct PresentScalingFlagBitsKHR(Equatable):
 struct PresentGravityFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: PresentGravityFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: PresentGravityFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11632,7 +11806,8 @@ struct PresentGravityFlagBitsKHR(Equatable):
 struct ShaderCreateFlagsEXT(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: ShaderCreateFlagBitsEXT):
+    @implicit
+    fn __init__(out self, *bits: ShaderCreateFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11696,7 +11871,8 @@ struct ShaderCreateFlagBitsEXT(Equatable):
 struct TileShadingRenderPassFlagsQCOM(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: TileShadingRenderPassFlagBitsQCOM):
+    @implicit
+    fn __init__(out self, *bits: TileShadingRenderPassFlagBitsQCOM):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11762,7 +11938,8 @@ struct TileShadingRenderPassFlagBitsQCOM(Equatable):
 struct PhysicalDeviceSchedulingControlsFlagsARM(Equatable):
     var _value: UInt64
 
-    @implicit    fn __init__(out self, *bits: PhysicalDeviceSchedulingControlsFlagBitsARM):
+    @implicit
+    fn __init__(out self, *bits: PhysicalDeviceSchedulingControlsFlagBitsARM):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11826,7 +12003,8 @@ struct PhysicalDeviceSchedulingControlsFlagBitsARM(Equatable):
 struct SurfaceCreateFlagsOHOS(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: SurfaceCreateFlagBitsOHOS):
+    @implicit
+    fn __init__(out self, *bits: SurfaceCreateFlagBitsOHOS):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11886,7 +12064,8 @@ struct SurfaceCreateFlagBitsOHOS(Equatable):
 struct VideoCodecOperationFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoCodecOperationFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoCodecOperationFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -11950,7 +12129,8 @@ struct VideoCodecOperationFlagBitsKHR(Equatable):
 struct VideoCapabilityFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoCapabilityFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoCapabilityFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12016,7 +12196,8 @@ struct VideoCapabilityFlagBitsKHR(Equatable):
 struct VideoSessionCreateFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoSessionCreateFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoSessionCreateFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12080,7 +12261,8 @@ struct VideoSessionCreateFlagBitsKHR(Equatable):
 struct VideoSessionParametersCreateFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoSessionParametersCreateFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoSessionParametersCreateFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12140,7 +12322,8 @@ struct VideoSessionParametersCreateFlagBitsKHR(Equatable):
 struct VideoBeginCodingFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoBeginCodingFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoBeginCodingFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12200,7 +12383,8 @@ struct VideoBeginCodingFlagBitsKHR(Equatable):
 struct VideoEndCodingFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEndCodingFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEndCodingFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12260,7 +12444,8 @@ struct VideoEndCodingFlagBitsKHR(Equatable):
 struct VideoCodingControlFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoCodingControlFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoCodingControlFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12324,7 +12509,8 @@ struct VideoCodingControlFlagBitsKHR(Equatable):
 struct VideoDecodeUsageFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoDecodeUsageFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoDecodeUsageFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12394,7 +12580,8 @@ struct VideoDecodeUsageFlagBitsKHR(Equatable):
 struct VideoDecodeCapabilityFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoDecodeCapabilityFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoDecodeCapabilityFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12460,7 +12647,8 @@ struct VideoDecodeCapabilityFlagBitsKHR(Equatable):
 struct VideoDecodeFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoDecodeFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoDecodeFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12520,7 +12708,8 @@ struct VideoDecodeFlagBitsKHR(Equatable):
 struct VideoDecodeH264PictureLayoutFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoDecodeH264PictureLayoutFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoDecodeH264PictureLayoutFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12588,7 +12777,8 @@ struct VideoDecodeH264PictureLayoutFlagBitsKHR(Equatable):
 struct VideoEncodeFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12648,7 +12838,8 @@ struct VideoEncodeFlagBitsKHR(Equatable):
 struct VideoEncodeUsageFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeUsageFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeUsageFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12720,7 +12911,8 @@ struct VideoEncodeUsageFlagBitsKHR(Equatable):
 struct VideoEncodeContentFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeContentFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeContentFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12790,7 +12982,8 @@ struct VideoEncodeContentFlagBitsKHR(Equatable):
 struct VideoEncodeCapabilityFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeCapabilityFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeCapabilityFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12856,7 +13049,8 @@ struct VideoEncodeCapabilityFlagBitsKHR(Equatable):
 struct VideoEncodeFeedbackFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeFeedbackFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeFeedbackFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12924,7 +13118,8 @@ struct VideoEncodeFeedbackFlagBitsKHR(Equatable):
 struct VideoEncodeRateControlFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeRateControlFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeRateControlFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -12984,7 +13179,8 @@ struct VideoEncodeRateControlFlagBitsKHR(Equatable):
 struct VideoEncodeRateControlModeFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeRateControlModeFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeRateControlModeFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -13054,7 +13250,8 @@ struct VideoEncodeRateControlModeFlagBitsKHR(Equatable):
 struct VideoEncodeIntraRefreshModeFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeIntraRefreshModeFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeIntraRefreshModeFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -13126,7 +13323,8 @@ struct VideoEncodeIntraRefreshModeFlagBitsKHR(Equatable):
 struct VideoChromaSubsamplingFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoChromaSubsamplingFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoChromaSubsamplingFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -13198,7 +13396,8 @@ struct VideoChromaSubsamplingFlagBitsKHR(Equatable):
 struct VideoComponentBitDepthFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoComponentBitDepthFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoComponentBitDepthFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -13268,7 +13467,8 @@ struct VideoComponentBitDepthFlagBitsKHR(Equatable):
 struct VideoEncodeH264CapabilityFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeH264CapabilityFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeH264CapabilityFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -13348,7 +13548,8 @@ struct VideoEncodeH264CapabilityFlagBitsKHR(Equatable):
 struct VideoEncodeH264StdFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeH264StdFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeH264StdFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -13450,7 +13651,8 @@ struct VideoEncodeH264StdFlagBitsKHR(Equatable):
 struct VideoEncodeH264RateControlFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeH264RateControlFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeH264RateControlFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -13522,7 +13724,8 @@ struct VideoEncodeH264RateControlFlagBitsKHR(Equatable):
 struct VideoEncodeH265CapabilityFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeH265CapabilityFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeH265CapabilityFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -13604,7 +13807,8 @@ struct VideoEncodeH265CapabilityFlagBitsKHR(Equatable):
 struct VideoEncodeH265StdFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeH265StdFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeH265StdFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -13708,7 +13912,8 @@ struct VideoEncodeH265StdFlagBitsKHR(Equatable):
 struct VideoEncodeH265RateControlFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeH265RateControlFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeH265RateControlFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -13780,7 +13985,8 @@ struct VideoEncodeH265RateControlFlagBitsKHR(Equatable):
 struct VideoEncodeH265CtbSizeFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeH265CtbSizeFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeH265CtbSizeFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -13848,7 +14054,8 @@ struct VideoEncodeH265CtbSizeFlagBitsKHR(Equatable):
 struct VideoEncodeH265TransformBlockSizeFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeH265TransformBlockSizeFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeH265TransformBlockSizeFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -13918,7 +14125,8 @@ struct VideoEncodeH265TransformBlockSizeFlagBitsKHR(Equatable):
 struct VideoEncodeAV1CapabilityFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeAV1CapabilityFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeAV1CapabilityFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -13990,7 +14198,8 @@ struct VideoEncodeAV1CapabilityFlagBitsKHR(Equatable):
 struct VideoEncodeAV1StdFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeAV1StdFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeAV1StdFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -14060,7 +14269,8 @@ struct VideoEncodeAV1StdFlagBitsKHR(Equatable):
 struct VideoEncodeAV1RateControlFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeAV1RateControlFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeAV1RateControlFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -14130,7 +14340,8 @@ struct VideoEncodeAV1RateControlFlagBitsKHR(Equatable):
 struct VideoEncodeAV1SuperblockSizeFlagsKHR(Equatable):
     var _value: UInt32
 
-    @implicit    fn __init__(out self, *bits: VideoEncodeAV1SuperblockSizeFlagBitsKHR):
+    @implicit
+    fn __init__(out self, *bits: VideoEncodeAV1SuperblockSizeFlagBitsKHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -14196,7 +14407,8 @@ struct VideoEncodeAV1SuperblockSizeFlagBitsKHR(Equatable):
 struct AccessFlags3KHR(Equatable):
     var _value: UInt64
 
-    @implicit    fn __init__(out self, *bits: AccessFlagBits3KHR):
+    @implicit
+    fn __init__(out self, *bits: AccessFlagBits3KHR):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
