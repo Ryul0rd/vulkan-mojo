@@ -1273,12 +1273,16 @@ def lower_structs(structs_hir: List[StructHIR | TypeAliasHIR]) -> List[StructLIR
 
         physical_fields: List[StructPhysicalFieldLIR] = []
         for member in struct.members:
+            is_version = member.name.lower().endswith("version") and member.type.name == "uint32_t"
             if member.name in packing_info_by_member:
                 packing_info = packing_info_by_member[member.name]
                 if not packing_info.first_group_member:
                     continue
                 field_name = f"_packed{packing_info.group_index}"
                 field_type_lir = TypeLIR("UInt32")
+            elif is_version:
+                field_name = pascal_to_snake(member.name)
+                field_type_lir = TypeLIR("Version")
             else:
                 field_name = pascal_to_snake(member.name)
                 field_type_lir = lower_type(member.type, origin_kind="any")
@@ -1288,12 +1292,16 @@ def lower_structs(structs_hir: List[StructHIR | TypeAliasHIR]) -> List[StructLIR
         for member in struct.members:
             name = pascal_to_snake(member.name)
             is_string = member.type.name == "char" and member.type.ptr_level > 0
+            is_version = member.name.lower().endswith("version") and member.type.name == "uint32_t"
             if member.name in packing_info_by_member:
                 type = TypeLIR("UInt32")
                 bitcast_to_type = None
             elif is_string:
                 type = lower_type(member.type, origin_kind="named", origin_name=f"{name}_origin")
                 bitcast_to_type = lower_type(member.type, origin_kind="any")
+            elif is_version:
+                type = TypeLIR("Version")
+                bitcast_to_type = None
             else:
                 type = lower_type(member.type, origin_kind="any")
                 bitcast_to_type = None

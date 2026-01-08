@@ -423,8 +423,8 @@ struct ComponentMapping(Copyable):
 
 
 struct PhysicalDeviceProperties(Copyable):
-    var api_version: UInt32
-    var driver_version: UInt32
+    var api_version: Version
+    var driver_version: Version
     var vendor_id: UInt32
     var device_id: UInt32
     var device_type: PhysicalDeviceType
@@ -435,8 +435,8 @@ struct PhysicalDeviceProperties(Copyable):
 
     fn __init__(
         out self,
-        api_version: UInt32 = zero_init[UInt32](),
-        driver_version: UInt32 = zero_init[UInt32](),
+        api_version: Version = zero_init[Version](),
+        driver_version: Version = zero_init[Version](),
         vendor_id: UInt32 = zero_init[UInt32](),
         device_id: UInt32 = zero_init[UInt32](),
         device_type: PhysicalDeviceType = zero_init[PhysicalDeviceType](),
@@ -461,12 +461,12 @@ struct PhysicalDeviceProperties(Copyable):
 
 struct ExtensionProperties(Copyable):
     var extension_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]
-    var spec_version: UInt32
+    var spec_version: Version
 
     fn __init__(
         out self,
         extension_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)] = zero_init[InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]](),
-        spec_version: UInt32 = zero_init[UInt32](),
+        spec_version: Version = zero_init[Version](),
     ):
         self.extension_name = extension_name
         self.spec_version = spec_version
@@ -477,15 +477,15 @@ struct ExtensionProperties(Copyable):
 
 struct LayerProperties(Copyable):
     var layer_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]
-    var spec_version: UInt32
-    var implementation_version: UInt32
+    var spec_version: Version
+    var implementation_version: Version
     var description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
 
     fn __init__(
         out self,
         layer_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)] = zero_init[InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]](),
-        spec_version: UInt32 = zero_init[UInt32](),
-        implementation_version: UInt32 = zero_init[UInt32](),
+        spec_version: Version = zero_init[Version](),
+        implementation_version: Version = zero_init[Version](),
         description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)] = zero_init[InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]](),
     ):
         self.layer_name = layer_name
@@ -504,10 +504,10 @@ struct ApplicationInfo(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutAnyOrigin]
     var p_application_name: CStringSlice[ImmutAnyOrigin]
-    var application_version: UInt32
+    var application_version: Version
     var p_engine_name: CStringSlice[ImmutAnyOrigin]
-    var engine_version: UInt32
-    var api_version: UInt32
+    var engine_version: Version
+    var api_version: Version
 
     fn __init__[
         p_application_name_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -516,10 +516,10 @@ struct ApplicationInfo(Copyable):
         out self,
         p_next: Ptr[NoneType, ImmutAnyOrigin] = zero_init[Ptr[NoneType, ImmutAnyOrigin]](),
         p_application_name: CStringSlice[p_application_name_origin] = zero_init[CStringSlice[p_application_name_origin]](),
-        application_version: UInt32 = zero_init[UInt32](),
+        application_version: Version = zero_init[Version](),
         p_engine_name: CStringSlice[p_engine_name_origin] = zero_init[CStringSlice[p_engine_name_origin]](),
-        engine_version: UInt32 = zero_init[UInt32](),
-        api_version: UInt32 = zero_init[UInt32](),
+        engine_version: Version = zero_init[Version](),
+        api_version: Version = zero_init[Version](),
     ):
         self.s_type = StructureType.APPLICATION_INFO
         self.p_next = p_next
@@ -24562,13 +24562,13 @@ struct DeviceFaultVendorBinaryHeaderVersionOneEXT(Copyable):
     var header_version: DeviceFaultVendorBinaryHeaderVersionEXT
     var vendor_id: UInt32
     var device_id: UInt32
-    var driver_version: UInt32
+    var driver_version: Version
     var pipeline_cache_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
     var application_name_offset: UInt32
-    var application_version: UInt32
+    var application_version: Version
     var engine_name_offset: UInt32
-    var engine_version: UInt32
-    var api_version: UInt32
+    var engine_version: Version
+    var api_version: Version
 
     fn __init__(
         out self,
@@ -24576,13 +24576,13 @@ struct DeviceFaultVendorBinaryHeaderVersionOneEXT(Copyable):
         header_version: DeviceFaultVendorBinaryHeaderVersionEXT = zero_init[DeviceFaultVendorBinaryHeaderVersionEXT](),
         vendor_id: UInt32 = zero_init[UInt32](),
         device_id: UInt32 = zero_init[UInt32](),
-        driver_version: UInt32 = zero_init[UInt32](),
+        driver_version: Version = zero_init[Version](),
         pipeline_cache_uuid: InlineArray[UInt8, Int(UUID_SIZE)] = zero_init[InlineArray[UInt8, Int(UUID_SIZE)]](),
         application_name_offset: UInt32 = zero_init[UInt32](),
-        application_version: UInt32 = zero_init[UInt32](),
+        application_version: Version = zero_init[Version](),
         engine_name_offset: UInt32 = zero_init[UInt32](),
-        engine_version: UInt32 = zero_init[UInt32](),
-        api_version: UInt32 = zero_init[UInt32](),
+        engine_version: Version = zero_init[Version](),
+        api_version: Version = zero_init[Version](),
     ):
         self.header_size = header_size
         self.header_version = header_version
@@ -25256,13 +25256,13 @@ struct PhysicalDeviceShaderObjectPropertiesEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutAnyOrigin]
     var shader_binary_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
-    var shader_binary_version: UInt32
+    var shader_binary_version: Version
 
     fn __init__(
         out self,
         p_next: Ptr[NoneType, MutAnyOrigin] = zero_init[Ptr[NoneType, MutAnyOrigin]](),
         shader_binary_uuid: InlineArray[UInt8, Int(UUID_SIZE)] = zero_init[InlineArray[UInt8, Int(UUID_SIZE)]](),
-        shader_binary_version: UInt32 = zero_init[UInt32](),
+        shader_binary_version: Version = zero_init[Version](),
     ):
         self.s_type = StructureType.PHYSICAL_DEVICE_SHADER_OBJECT_PROPERTIES_EXT
         self.p_next = p_next
@@ -28436,13 +28436,13 @@ struct PhysicalDeviceDataGraphProcessingEngineARM(Copyable):
 struct PhysicalDeviceDataGraphOperationSupportARM(Copyable):
     var operation_type: PhysicalDeviceDataGraphOperationTypeARM
     var name: InlineArray[c_char, Int(MAX_PHYSICAL_DEVICE_DATA_GRAPH_OPERATION_SET_NAME_SIZE_ARM)]
-    var version: UInt32
+    var version: Version
 
     fn __init__(
         out self,
         operation_type: PhysicalDeviceDataGraphOperationTypeARM = zero_init[PhysicalDeviceDataGraphOperationTypeARM](),
         name: InlineArray[c_char, Int(MAX_PHYSICAL_DEVICE_DATA_GRAPH_OPERATION_SET_NAME_SIZE_ARM)] = zero_init[InlineArray[c_char, Int(MAX_PHYSICAL_DEVICE_DATA_GRAPH_OPERATION_SET_NAME_SIZE_ARM)]](),
-        version: UInt32 = zero_init[UInt32](),
+        version: Version = zero_init[Version](),
     ):
         self.operation_type = operation_type
         self.name = name
