@@ -336,6 +336,7 @@ class StructPhysicalFieldLIR:
 class StructLogicalFieldLIR:
     name: str
     type: TypeLIR
+    bitcast_to_type: Optional[TypeLIR]
     init_kind: Literal["arg", "packed_arg", "fixed"]
     fixed_init_expr: Optional[str] = None
     needs_copy: bool = False
@@ -1285,6 +1286,17 @@ def lower_structs(structs_hir: List[StructHIR | TypeAliasHIR]) -> List[StructLIR
 
         logical_fields: List[StructLogicalFieldLIR] = []
         for member in struct.members:
+            name = pascal_to_snake(member.name)
+            is_string = member.type.name == "char" and member.type.ptr_level > 0
+            if member.name in packing_info_by_member:
+                type = TypeLIR("UInt32")
+                bitcast_to_type = None
+            elif is_string:
+                type = lower_type(member.type, origin_kind="named", origin_name=f"{name}_origin")
+                bitcast_to_type = lower_type(member.type, origin_kind="any")
+            else:
+                type = lower_type(member.type, origin_kind="any")
+                bitcast_to_type = None
             fixed_init_expr: Optional[str] = None
             if member.type.name == "VkStructureType" and member.value is not None:
                 prefix = pascal_to_snake(strip_extension_suffix(member.type.name) + "_").upper()
@@ -1306,8 +1318,9 @@ def lower_structs(structs_hir: List[StructHIR | TypeAliasHIR]) -> List[StructLIR
                 and member.type.ptr_level == 0
             )
             logical_fields.append(StructLogicalFieldLIR(
-                name = pascal_to_snake(member.name),
-                type = TypeLIR("UInt32") if member.name in packing_info_by_member else lower_type(member.type, origin_kind="any"),
+                name = name,
+                type = type,
+                bitcast_to_type = bitcast_to_type,
                 init_kind = init_kind,
                 fixed_init_expr = fixed_init_expr,
                 needs_copy = needs_copy,
@@ -1873,19 +1886,34 @@ def emit_structs(files: Dict[str, str], structs: List[StructLIR | TypeAliasLIR])
                 init_args.append(f"{field.name}: {emit_type(field.type)} = zero_init[{emit_type(field.type)}]()")
             if field.init_kind == "packed_arg":
                 init_args.append(f"{field.name}: UInt32 = 0")
+        init_params: List[str] = []
+        for field in struct.logical_fields:
+            if field.type.origin is None or field.type.origin.kind != "named":
+                continue
+            if field.type.origin.mut:
+                init_params.append(f"{field.type.origin.name}: MutOrigin = MutAnyOrigin")
+            else:
+                init_params.append(f"{field.type.origin.name}: ImmutOrigin = ImmutAnyOrigin")
+        
         parts.append("\n")
         parts.append(emit_fn_like(
             "fn __init__",
             init_args,
             ":",
+            params = init_params,
             base_indent_level = 1,
         ))
         for field in struct.logical_fields:
             if field.init_kind == "fixed":
                 parts.append(f"        self.{field.name} = {field.fixed_init_expr}\n")
             if field.init_kind == "arg":
-                copy_part = ".copy()" if field.needs_copy else ""
-                parts.append(f"        self.{field.name} = {field.name}{copy_part}\n")
+                if field.needs_copy:
+                    rhs = f"{field.name}.copy()"
+                elif field.bitcast_to_type is not None:
+                    rhs = f"Ptr(to={field.name}).bitcast[{emit_type(field.bitcast_to_type)}]()[]"
+                else:
+                    rhs = field.name
+                parts.append(f"        self.{field.name} = {rhs}\n")
             if field.init_kind == "packed_arg":
                 packing_info = assert_type(StructFieldPackingInfoLIR, field.packing_info)
                 if packing_info.first_group_member:
@@ -1949,7 +1977,7 @@ def emit_unions(files: Dict[str, str], unions: List[UnionLIR]):
         if union_name not in UNION_NAME_TO_ALIGN_TYPE:
             raise KeyError(f"Missing align-type mapping for union {union_name!r}")
         align_type = UNION_NAME_TO_ALIGN_TYPE[union_name]
-        unique_member_type_names = list({emit_type(member_type) for member_type in union.member_types})
+        unique_member_type_names = list(dict.fromkeys(emit_type(member_type) for member_type in union.member_types))
         parts.append("".join((
             "\n\n",
             f"struct {union_name}(ImplicitlyCopyable):\n",
