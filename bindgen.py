@@ -43,19 +43,19 @@ def main():
             f.write(content)
 
 
-# ----------------
-# Registry
-# ----------------
-
-
 @dataclass
 class Registry:
     tags: List[RegistryTag]
     types: List[RegistryType]
-    enums: List[RegistryEnum]
+    enums: List[RegistryEnumDefinition]
     commands: List[RegistryCommand]
     features: List[RegistryFeature]
     extensions: List[RegistryExtension]
+
+
+# --------------------------------
+# Registry Tags
+# --------------------------------
 
 
 @dataclass
@@ -75,6 +75,11 @@ def parse_tags(xml_registry: Element) -> List[RegistryTag]:
             contact=tag_el.attrib["contact"],
         ))
     return tags
+
+
+# --------------------------------
+# Registry Types
+# --------------------------------
 
 
 @dataclass
@@ -205,6 +210,11 @@ def parse_types(xml_registry: Element) -> List[RegistryType]:
     return types
 
 
+# --------------------------------
+# Registry Enums
+# --------------------------------
+
+
 @dataclass
 class RegistryEnumDefinition:
     name: str
@@ -234,8 +244,58 @@ class RegistryEnumeratorAlias:
 RegistryEnumerator = RegistryValueEnumerator | RegistryBitposEnumerator | RegistryEnumeratorAlias
 
 
-def parse_enums():
-    pass
+def parse_enums(xml_registry: Element) -> List[RegistryEnumDefinition]:
+    """Parse all <enums> blocks from the Vulkan registry.
+
+    This extracts both regular enumerations (type="enum") and bitmask flags
+    (type="bitmask"), including their enumerator values, bitpos definitions,
+    and aliases.
+
+    Args:
+        xml_registry: The root <registry> element of vk.xml.
+
+    Returns:
+        A list of RegistryEnumDefinition objects, one for each enum/bitmask
+        type found in the registry.
+    """
+    enums: List[RegistryEnumDefinition] = []
+    for enums_el in xml_registry.findall("enums"):
+        enums_type = enums_el.attrib.get("type")
+        # Skip constant blocks (API Constants) - they're not enum types
+        if enums_type not in ("enum", "bitmask"):
+            continue
+        name = assert_type(str, enums_el.attrib.get("name"))
+        bitwidth_attr = enums_el.attrib.get("bitwidth")
+        bitwidth: Literal[32, 64] = 64 if bitwidth_attr == "64" else 32
+        values: List[RegistryEnumerator] = []
+        for enum_el in enums_el.findall("enum"):
+            enum_name = assert_type(str, enum_el.attrib.get("name"))
+            if "alias" in enum_el.attrib:
+                alias = assert_type(str, enum_el.attrib.get("alias"))
+                values.append(RegistryEnumeratorAlias(name=enum_name, alias=alias))
+            elif "bitpos" in enum_el.attrib:
+                bitpos = int(enum_el.attrib["bitpos"])
+                values.append(RegistryBitposEnumerator(name=enum_name, bitpos=bitpos))
+            elif "value" in enum_el.attrib:
+                value_str = enum_el.attrib["value"]
+                # Handle hex values like "0x00000003"
+                if value_str.startswith("0x") or value_str.startswith("-0x"):
+                    value = int(value_str, 16)
+                else:
+                    value = int(value_str)
+                values.append(RegistryValueEnumerator(name=enum_name, value=value))
+        enums.append(RegistryEnumDefinition(
+            name=name,
+            type=enums_type,
+            bitwidth=bitwidth,
+            values=values,
+        ))
+    return enums
+
+
+# --------------------------------
+# Registry Commands
+# --------------------------------
 
 
 @dataclass
@@ -271,6 +331,11 @@ def parse_commands(xml_registry: Element) -> List[RegistryCommand]:
     return commands
 
 
+# --------------------------------
+# Registry Features / Extensions
+# --------------------------------
+
+
 @dataclass
 class RegistryRequiredFeature:
     name: str
@@ -296,25 +361,25 @@ class RegistryRequiredOffsetEnum:
     dir: int # 1 or -1
 
 
-# @dataclass
-# class RegistryRequiredBitposEnum:
-#     name: str
-#     extends: str
-#     bitpos: int
+@dataclass
+class RegistryRequiredBitposEnum:
+    name: str
+    extends: str
+    bitpos: int
 
 
-# @dataclass
-# class RegistryRequiredValueEnum:
-#     name: str
-#     extends: str
-#     value: int
+@dataclass
+class RegistryRequiredValueEnum:
+    name: str
+    extends: str
+    value: int
 
 
-# @dataclass
-# class RegistryRequiredEnumAlias:
-#     name: str
-#     extends: str
-#     alias: str
+@dataclass
+class RegistryRequiredEnumAlias:
+    name: str
+    extends: str
+    alias: str
 
 
 RegistryRequirement = (
@@ -322,9 +387,9 @@ RegistryRequirement = (
     | RegistryRequiredType
     | RegistryRequiredCommand 
     | RegistryRequiredOffsetEnum
-    # | RegistryRequiredBitposEnum
-    # | RegistryRequiredValueEnum
-    # | RegistryRequiredEnumAlias
+    | RegistryRequiredBitposEnum
+    | RegistryRequiredValueEnum
+    | RegistryRequiredEnumAlias
 )
 
 
@@ -358,14 +423,17 @@ def parse_features(xml_registry: Element) -> List[RegistryFeature]:
                 requires.append(RegistryRequiredCommand(cmd_name))
             for enum_el in require_el.findall("enum"):
                 enum_name = assert_type(str, enum_el.attrib.get("name"))
-                # Many extension enums are simple "value" additions or aliases.
-                # This bindgen currently only models bitpos/offset additions.
-                if "bitpos" in enum_el.attrib:
-                    extends = assert_type(str, enum_el.attrib.get("extends"))
+                extends = enum_el.attrib.get("extends")
+                # Only enum additions that extend an existing enum type are requirements
+                if extends is None:
+                    continue
+                if "alias" in enum_el.attrib:
+                    alias = assert_type(str, enum_el.attrib.get("alias"))
+                    requires.append(RegistryRequiredEnumAlias(enum_name, extends, alias))
+                elif "bitpos" in enum_el.attrib:
                     bitpos = int(enum_el.attrib["bitpos"])
                     requires.append(RegistryRequiredBitposEnum(enum_name, extends, bitpos))
                 elif "offset" in enum_el.attrib:
-                    extends = assert_type(str, enum_el.attrib.get("extends"))
                     offset = int(enum_el.attrib["offset"])
                     extnumber = int(assert_type(str, enum_el.attrib.get("extnumber")))
                     dir_attr = enum_el.attrib.get("dir")
@@ -373,6 +441,13 @@ def parse_features(xml_registry: Element) -> List[RegistryFeature]:
                     requires.append(
                         RegistryRequiredOffsetEnum(enum_name, extends, offset, extnumber, dir_val)
                     )
+                elif "value" in enum_el.attrib:
+                    value_str = enum_el.attrib["value"]
+                    if value_str.startswith("0x") or value_str.startswith("-0x"):
+                        value = int(value_str, 16)
+                    else:
+                        value = int(value_str)
+                    requires.append(RegistryRequiredValueEnum(enum_name, extends, value))
         features.append(RegistryFeature(name, number, depends, api, requires))
     return features
 
@@ -408,26 +483,36 @@ def parse_extensions(xml_registry: Element) -> List[RegistryExtension]:
                 requires.append(RegistryRequiredCommand(cmd_name))
             for enum_el in require_el.findall("enum"):
                 enum_name = assert_type(str, enum_el.attrib.get("name"))
-                # Many extension enums are simple "value" additions or aliases.
-                # This bindgen currently only models bitpos/offset additions.
-                if "bitpos" in enum_el.attrib:
-                    extends = assert_type(str, enum_el.attrib.get("extends"))
+                extends = enum_el.attrib.get("extends")
+                # Only enum additions that extend an existing enum type are requirements
+                if extends is None:
+                    continue
+                if "alias" in enum_el.attrib:
+                    alias = assert_type(str, enum_el.attrib.get("alias"))
+                    requires.append(RegistryRequiredEnumAlias(enum_name, extends, alias))
+                elif "bitpos" in enum_el.attrib:
                     bitpos = int(enum_el.attrib["bitpos"])
                     requires.append(RegistryRequiredBitposEnum(enum_name, extends, bitpos))
                 elif "offset" in enum_el.attrib:
-                    extends = assert_type(str, enum_el.attrib.get("extends"))
                     offset = int(enum_el.attrib["offset"])
                     extnumber = int(enum_el.attrib.get("extnumber", str(number)))
                     dir_attr = enum_el.attrib.get("dir")
                     dir_val = -1 if dir_attr == "-" else 1
                     requires.append(RegistryRequiredOffsetEnum(enum_name, extends, offset, extnumber, dir_val))
+                elif "value" in enum_el.attrib:
+                    value_str = enum_el.attrib["value"]
+                    if value_str.startswith("0x") or value_str.startswith("-0x"):
+                        value = int(value_str, 16)
+                    else:
+                        value = int(value_str)
+                    requires.append(RegistryRequiredValueEnum(enum_name, extends, value))
         extensions.append(RegistryExtension(name, number, ext_type, requires))
     return extensions
 
 
-# ----------------
+# --------------------------------
 # Types
-# ----------------
+# --------------------------------
 
 
 MojoOriginLiteral = Literal["MutOrigin.external", "ImmutOrigin.external", "MutAnyOrigin", "ImmutAnyOrigin"]
@@ -522,9 +607,9 @@ def assert_type(t: Type[T], value: Any) -> T:
     return value
 
 
-# ----------------
+# --------------------------------
 # Structs
-# ----------------
+# --------------------------------
 
 
 @dataclass
@@ -793,24 +878,24 @@ def bind_structs(files: Dict[str, str], registry: Registry):
     files["structs.mojo"] = "".join(parts)
 
 
-# ----------------
+# --------------------------------
 # Constants
-# ----------------
+# --------------------------------
 
 
-# ----------------
+# --------------------------------
 # Basetypes
-# ----------------
+# --------------------------------
 
 
-# ----------------
+# --------------------------------
 # External Types
-# ----------------
+# --------------------------------
 
 
-# ----------------
+# --------------------------------
 # Funcpointers
-# ----------------
+# --------------------------------
 
 
 @dataclass
@@ -876,9 +961,9 @@ def bind_funcpointers(files: Dict[str, str], registry: Registry):
     files["fn_types"] = "".join(parts) # TODO: change this file to `funcpointers.mojo`
 
 
-# ----------------
+# --------------------------------
 # Unions
-# ----------------
+# --------------------------------
 
 
 @dataclass
@@ -980,9 +1065,9 @@ def bind_unions(files: Dict[str, str], registry: Registry):
     files["unions"] = "".join(parts)
 
 
-# ----------------
+# --------------------------------
 # Enums
-# ----------------
+# --------------------------------
 
 
 @dataclass
@@ -1097,19 +1182,19 @@ def bind_enums(files: Dict[str, str], registry: Registry):
     files["structs.mojo"] = "".join(parts)
 
 
-# ----------------
+# --------------------------------
 # Bitsets / Flags
-# ----------------
+# --------------------------------
 
 
-# ----------------
+# --------------------------------
 # Handles
-# ----------------
+# --------------------------------
 
 
-# ----------------
+# --------------------------------
 # Commands
-# ----------------
+# --------------------------------
 
 
 def registry_command_to_mojo_command_name(registry_command: RegistryCommand) -> str:
@@ -1250,9 +1335,9 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
         files[f"extensions/{tag}.mojo"] = "".join(extension_parts)
 
 
-# ----------------
+# --------------------------------
 # Misc / Utils
-# ----------------
+# --------------------------------
 
 
 @dataclass
