@@ -14,6 +14,7 @@ def main():
     registry = Registry(
         tags=parse_tags(xml_registry),
         types=parse_types(xml_registry),
+        constants=parse_constants(xml_registry),
         enums=parse_enums(xml_registry),
         commands=parse_commands(xml_registry),
         features=parse_features(xml_registry),
@@ -25,7 +26,7 @@ def main():
     bind_funcpointers(files, registry)
     bind_unions(files, registry)
     bind_enums(files, registry)
-    # emit_constants(files, lower_constants(parse_constants(registry)))
+    bind_constants(files, registry)
     # emit_basetypes(files, lower_basetypes(parse_basetypes(registry)))
     # emit_external_types(files, lower_external_types(parse_external_types(registry)))
     # emit_enums(files, lower_enums(parse_enums(registry)))
@@ -48,6 +49,7 @@ def main():
 class Registry:
     tags: List[RegistryTag]
     types: List[RegistryType]
+    constants: List[RegistryConstant]
     enums: List[RegistryEnumDefinition]
     commands: List[RegistryCommand]
     features: List[RegistryFeature]
@@ -213,6 +215,41 @@ def parse_types(xml_registry: Element) -> List[RegistryType]:
 
 
 # --------------------------------
+# Registry Constants
+# --------------------------------
+
+
+@dataclass
+class RegistryConstant:
+    """A constant from the API Constants section of vk.xml."""
+    name: str
+    type: str
+    value: str
+    comment: Optional[str]
+
+
+def parse_constants(xml_registry: Element) -> List[RegistryConstant]:
+    """Parse the API Constants section from vk.xml.
+    
+    Args:
+        xml_registry: The root <registry> element of vk.xml.
+        
+    Returns:
+        A list of RegistryConstant objects.
+    """
+    enums_el = assert_type(Element, xml_registry.find("enums[@name='API Constants']"))
+    return [
+        RegistryConstant(
+            name=assert_type(str, enum_el.attrib.get("name")),
+            type=assert_type(str, enum_el.attrib.get("type")),
+            value=assert_type(str, enum_el.attrib.get("value")),
+            comment=enum_el.attrib.get("comment"),
+        )
+        for enum_el in enums_el.findall("enum")
+    ]
+
+
+# --------------------------------
 # Registry Enums
 # --------------------------------
 
@@ -275,12 +312,13 @@ def parse_enums(xml_registry: Element) -> List[RegistryEnumDefinition]:
         values: List[RegistryEnumerator] = []
         for enum_el in enums_el.findall("enum"):
             enum_name = assert_type(str, enum_el.attrib.get("name"))
+            comment = enum_el.attrib.get("comment", "")
             if "alias" in enum_el.attrib:
                 alias = assert_type(str, enum_el.attrib.get("alias"))
-                values.append(RegistryEnumeratorAlias(name=enum_name, alias=alias))
+                values.append(RegistryEnumeratorAlias(name=enum_name, alias=alias, comment=comment))
             elif "bitpos" in enum_el.attrib:
                 bitpos = int(enum_el.attrib["bitpos"])
-                values.append(RegistryBitposEnumerator(name=enum_name, bitpos=bitpos))
+                values.append(RegistryBitposEnumerator(name=enum_name, bitpos=bitpos, comment=comment))
             elif "value" in enum_el.attrib:
                 value_str = enum_el.attrib["value"]
                 # Handle hex values like "0x00000003"
@@ -288,7 +326,7 @@ def parse_enums(xml_registry: Element) -> List[RegistryEnumDefinition]:
                     value = int(value_str, 16)
                 else:
                     value = int(value_str)
-                values.append(RegistryValueEnumerator(name=enum_name, value=value))
+                values.append(RegistryValueEnumerator(name=enum_name, value=value, comment=comment))
         enums.append(RegistryEnumDefinition(
             name=name,
             type=enums_type,
@@ -886,6 +924,49 @@ def bind_structs(files: Dict[str, str], registry: Registry):
 # --------------------------------
 # Constants
 # --------------------------------
+
+
+@dataclass
+class MojoConstant:
+    """A lowered Mojo constant."""
+    name: str
+    type: str
+    value: str
+    comment: Optional[str]
+
+    def __str__(self) -> str:
+        comment_part = f" # {self.comment}" if self.comment is not None else ""
+        return f"comptime {self.name}: {self.type} = {self.value}{comment_part}\n"
+
+
+def bind_constants(files: Dict[str, str], registry: Registry):
+    """Generate Mojo constants file from parsed API constants."""
+    # Lower constants
+    constants: List[MojoConstant] = []
+    for constant in registry.constants:
+        name = constant.name.removeprefix("VK_")
+        type = c_type_name_to_mojo(constant.type)
+        value = constant.value
+        match = re.match(r'^\(~(\d+)([UL]*)\)$', value)
+        if match:
+            num = match.group(1)
+            suffix = match.group(2)
+            mojo_type = "UInt64" if "L" in suffix else "UInt32"
+            value = f"~{mojo_type}({num})"
+        elif constant.type == "float":
+            value = value.rstrip("F")
+        constants.append(MojoConstant(
+            name=name,
+            type=type,
+            value=value,
+            comment=constant.comment,
+        ))
+    
+    # Emission
+    parts: List[str] = []
+    for constant in constants:
+        parts.append(str(constant))
+    files["constants.mojo"] = "".join(parts)
 
 
 # --------------------------------
