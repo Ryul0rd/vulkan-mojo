@@ -24,6 +24,7 @@ def main():
     bind_structs(files, registry)
     bind_funcpointers(files, registry)
     bind_unions(files, registry)
+    bind_enums(files, registry)
     # emit_constants(files, lower_constants(parse_constants(registry)))
     # emit_basetypes(files, lower_basetypes(parse_basetypes(registry)))
     # emit_external_types(files, lower_external_types(parse_external_types(registry)))
@@ -154,7 +155,8 @@ def parse_types(xml_registry: Element) -> List[RegistryType]:
         if category is None:
             continue
         if "alias" in type_el.attrib:
-            name = assert_type(str, type_el.findtext("name"))
+            # For aliases, the name is in the 'name' attribute, not a child element
+            name = assert_type(str, type_el.attrib.get("name"))
             types.append(RegistryAlias(
                 category=category,
                 name=name,
@@ -172,14 +174,14 @@ def parse_types(xml_registry: Element) -> List[RegistryType]:
                 name=name,
             ))
         elif category == "enum":
-            name = assert_type(str, type_el.findtext("name"))
+            name = assert_type(str, type_el.attrib.get("name"))
             types.append(RegistryEnum(name=name))
         elif category == "bitmask":
             api = type_el.attrib.get("api") or "vulkan"
             if api not in ("vulkan", "vulkansc"):
                 raise ValueError("Unexpected value")
             # "bitvalues" is an old name for "requires"
-            requires = assert_type(str, type_el.attrib.get("requires") or type_el.attrib.get("bitvalues"))
+            requires = type_el.attrib.get("requires") or type_el.attrib.get("bitvalues")
             type = type_el.findtext("type")
             if type not in ("VkFlags", "VkFlags64"):
                 raise ValueError("Unexpected value")
@@ -227,18 +229,21 @@ class RegistryEnumDefinition:
 class RegistryValueEnumerator:
     name: str
     value: int
+    comment: str
 
 
 @dataclass
 class RegistryBitposEnumerator:
     name: str
     bitpos: int
+    comment: str
 
 
 @dataclass
 class RegistryEnumeratorAlias:
     name: str
     alias: str
+    comment: str
 
 
 RegistryEnumerator = RegistryValueEnumerator | RegistryBitposEnumerator | RegistryEnumeratorAlias
@@ -1160,6 +1165,32 @@ def extension_enum_value(extnumber: int, offset: int, direction: int) -> int:
     return value * direction
 
 
+def strip_enum_value_prefix(enum_name: str, value_name: str, tags: List[RegistryTag]) -> str:
+    """Convert a Vulkan enum value name to a Mojo-friendly constant name.
+    
+    Examples:
+        VkResult, VK_SUCCESS -> SUCCESS
+        VkFormat, VK_FORMAT_R8G8B8A8_UNORM -> R8G8B8A8_UNORM
+        VkAccessFlagBits2, VK_ACCESS_2_NONE -> NONE
+        VkDebugReportFlagBitsEXT, VK_DEBUG_REPORT_INFORMATION_BIT_EXT -> INFORMATION_BIT
+    """
+    # calculate prefix
+    # VkResult -> VK_RESULT_, VkFormat -> VK_FORMAT_, VkAccessFlagBits2 -> VK_ACCESS_
+    tag_names = sorted([tag.name for tag in tags], key=lambda tag: len(tag), reverse=True)
+    base_name = enum_name
+    for tag in tag_names:
+        if base_name.endswith(tag):
+            base_name = base_name.removesuffix(tag)
+            break
+    base_name = base_name.removesuffix("FlagBits").replace("FlagBits2", "2")
+    prefix = pascal_to_snake(base_name).upper() + "_"
+    
+    # Strip the prefix from the value name
+    prefix = prefix if value_name.startswith(prefix) else "VK_"
+    result = value_name.removeprefix(prefix)
+    return result
+
+
 def bind_enums(files: Dict[str, str], registry: Registry):
     # collect type aliases
     aliases: List[MojoTypeAlias] = []
@@ -1170,16 +1201,83 @@ def bind_enums(files: Dict[str, str], registry: Registry):
                 alias=c_type_name_to_mojo(registry_type.alias),
             ))
 
-    enums: List[MojoEnum] = []
+    # Build a map of enum name -> list of additional enumerators from features/extensions
+    additional_values: Dict[str, List[RegistryEnumerator]] = defaultdict(list)
+    for feature in registry.features:
+        for req in feature.requires:
+            if isinstance(req, RegistryRequiredOffsetEnum):
+                value = extension_enum_value(req.extnumber, req.offset, req.dir)
+                additional_values[req.extends].append(RegistryValueEnumerator(name=req.name, value=value))
+            elif isinstance(req, RegistryRequiredBitposEnum):
+                additional_values[req.extends].append(RegistryBitposEnumerator(name=req.name, bitpos=req.bitpos))
+            elif isinstance(req, RegistryRequiredValueEnum):
+                additional_values[req.extends].append(RegistryValueEnumerator(name=req.name, value=req.value))
+            elif isinstance(req, RegistryRequiredEnumAlias):
+                additional_values[req.extends].append(RegistryEnumeratorAlias(name=req.name, alias=req.alias))
+    for extension in registry.extensions:
+        for req in extension.requires:
+            if isinstance(req, RegistryRequiredOffsetEnum):
+                value = extension_enum_value(req.extnumber, req.offset, req.dir)
+                additional_values[req.extends].append(RegistryValueEnumerator(name=req.name, value=value))
+            elif isinstance(req, RegistryRequiredBitposEnum):
+                additional_values[req.extends].append(RegistryBitposEnumerator(name=req.name, bitpos=req.bitpos))
+            elif isinstance(req, RegistryRequiredValueEnum):
+                additional_values[req.extends].append(RegistryValueEnumerator(name=req.name, value=req.value))
+            elif isinstance(req, RegistryRequiredEnumAlias):
+                additional_values[req.extends].append(RegistryEnumeratorAlias(name=req.name, alias=req.alias))
 
-    # emission
+    enums: List[MojoEnum] = []
+    for enum_def in registry.enums:
+        if not enum_def.type == "enum":
+            continue
+        
+        # Collect all non-alias values and resolve aliases
+        all_enumerators = list(enum_def.values) + additional_values.get(enum_def.name, [])
+        name_to_value: Dict[str, int] = {}
+        for enumerator in all_enumerators:
+            if isinstance(enumerator, RegistryValueEnumerator):
+                name_to_value[enumerator.name] = enumerator.value
+            elif isinstance(enumerator, RegistryBitposEnumerator):
+                name_to_value[enumerator.name] = 1 << enumerator.bitpos
+        
+        aliases_to_resolve = [e for e in all_enumerators if isinstance(e, RegistryEnumeratorAlias)]
+        aliases_by_name = {e.name: e for e in all_enumerators if isinstance(e, RegistryEnumeratorAlias)}
+        for alias_to_resolve in aliases_to_resolve:
+            alias = alias_to_resolve
+            while alias.alias not in name_to_value:
+                alias = aliases_by_name[alias.alias]
+            name_to_value[alias_to_resolve.name] = name_to_value[alias.alias]
+        
+        mojo_values: List[MojoEnumValue] = []
+        for enumerator in all_enumerators:
+            value = name_to_value[enumerator.name]
+            stripped_name = strip_enum_value_prefix(enum_def.name, enumerator.name, registry.tags)
+            result_error_message: Optional[str] = None
+            if enum_def.name == "VkResult":
+                result_error_message = f"{enumerator.name}: {enumerator.comment}"
+            mojo_values.append(MojoEnumValue(
+                name=stripped_name,
+                value=value,
+                result_error_message=result_error_message,
+            ))
+        
+        # Sort by value for consistent output
+        mojo_values.sort(key=lambda v: (v.value >= 0, abs(v.value), v.name))
+        underlying_type: Literal["Int32", "Int64"] = "Int64" if enum_def.bitwidth == 64 else "Int32"
+        enums.append(MojoEnum(
+            name=c_type_name_to_mojo(enum_def.name),
+            underlying_type=underlying_type,
+            values=mojo_values,
+        ))
+
+    # Emission
     parts: List[str] = []
     for alias in aliases:
         parts.append(str(alias))
     for enum in enums:
         parts.append("\n\n")
         parts.append(str(enum))
-    files["structs.mojo"] = "".join(parts)
+    files["enums.mojo"] = "".join(parts)
 
 
 # --------------------------------
@@ -1427,7 +1525,8 @@ def parse_declarator(declarator: str) -> ParsedDeclarator:
 
     type: MojoType = MojoBaseType(c_type_name_to_mojo(base_name))
     for i in range(ptr_level):
-        type = MojoPointerType(pointee_type=type, origin=MojoExternalOrigin(mut=not pointee_is_const[i]))
+        origin: MojoOriginLiteral = "MutOrigin.external" if not pointee_is_const[i] else "ImmutOrigin.external"
+        type = MojoPointerType(pointee_type=type, origin=origin)
     for dim in array_dims:
         type = MojoArrayType(element_type=type, length=dim.removeprefix("VK_"))
     
