@@ -266,21 +266,21 @@ class RegistryEnumDefinition:
 class RegistryValueEnumerator:
     name: str
     value: int
-    comment: str
+    comment: Optional[str]
 
 
 @dataclass
 class RegistryBitposEnumerator:
     name: str
     bitpos: int
-    comment: str
+    comment: Optional[str]
 
 
 @dataclass
 class RegistryEnumeratorAlias:
     name: str
     alias: str
-    comment: str
+    comment: Optional[str]
 
 
 RegistryEnumerator = RegistryValueEnumerator | RegistryBitposEnumerator | RegistryEnumeratorAlias
@@ -312,7 +312,7 @@ def parse_enums(xml_registry: Element) -> List[RegistryEnumDefinition]:
         values: List[RegistryEnumerator] = []
         for enum_el in enums_el.findall("enum"):
             enum_name = assert_type(str, enum_el.attrib.get("name"))
-            comment = enum_el.attrib.get("comment", "")
+            comment = enum_el.attrib.get("comment")  # None if not present
             if "alias" in enum_el.attrib:
                 alias = assert_type(str, enum_el.attrib.get("alias"))
                 values.append(RegistryEnumeratorAlias(name=enum_name, alias=alias, comment=comment))
@@ -402,6 +402,7 @@ class RegistryRequiredOffsetEnum:
     offset: int
     extnumber: int
     dir: int # 1 or -1
+    comment: Optional[str]
 
 
 @dataclass
@@ -409,6 +410,7 @@ class RegistryRequiredBitposEnum:
     name: str
     extends: str
     bitpos: int
+    comment: Optional[str]
 
 
 @dataclass
@@ -416,6 +418,7 @@ class RegistryRequiredValueEnum:
     name: str
     extends: str
     value: int
+    comment: Optional[str]
 
 
 @dataclass
@@ -423,6 +426,7 @@ class RegistryRequiredEnumAlias:
     name: str
     extends: str
     alias: str
+    comment: Optional[str]
 
 
 RegistryRequirement = (
@@ -470,27 +474,26 @@ def parse_features(xml_registry: Element) -> List[RegistryFeature]:
                 # Only enum additions that extend an existing enum type are requirements
                 if extends is None:
                     continue
+                comment = enum_el.attrib.get("comment")
                 if "alias" in enum_el.attrib:
                     alias = assert_type(str, enum_el.attrib.get("alias"))
-                    requires.append(RegistryRequiredEnumAlias(enum_name, extends, alias))
+                    requires.append(RegistryRequiredEnumAlias(enum_name, extends, alias, comment))
                 elif "bitpos" in enum_el.attrib:
                     bitpos = int(enum_el.attrib["bitpos"])
-                    requires.append(RegistryRequiredBitposEnum(enum_name, extends, bitpos))
+                    requires.append(RegistryRequiredBitposEnum(enum_name, extends, bitpos, comment))
                 elif "offset" in enum_el.attrib:
                     offset = int(enum_el.attrib["offset"])
                     extnumber = int(assert_type(str, enum_el.attrib.get("extnumber")))
                     dir_attr = enum_el.attrib.get("dir")
                     dir_val = -1 if dir_attr == "-" else 1
-                    requires.append(
-                        RegistryRequiredOffsetEnum(enum_name, extends, offset, extnumber, dir_val)
-                    )
+                    requires.append(RegistryRequiredOffsetEnum(enum_name, extends, offset, extnumber, dir_val, comment))
                 elif "value" in enum_el.attrib:
                     value_str = enum_el.attrib["value"]
                     if value_str.startswith("0x") or value_str.startswith("-0x"):
                         value = int(value_str, 16)
                     else:
                         value = int(value_str)
-                    requires.append(RegistryRequiredValueEnum(enum_name, extends, value))
+                    requires.append(RegistryRequiredValueEnum(enum_name, extends, value, comment))
         features.append(RegistryFeature(name, number, depends, api, requires))
     return features
 
@@ -530,25 +533,26 @@ def parse_extensions(xml_registry: Element) -> List[RegistryExtension]:
                 # Only enum additions that extend an existing enum type are requirements
                 if extends is None:
                     continue
+                comment = enum_el.attrib.get("comment")
                 if "alias" in enum_el.attrib:
                     alias = assert_type(str, enum_el.attrib.get("alias"))
-                    requires.append(RegistryRequiredEnumAlias(enum_name, extends, alias))
+                    requires.append(RegistryRequiredEnumAlias(enum_name, extends, alias, comment))
                 elif "bitpos" in enum_el.attrib:
                     bitpos = int(enum_el.attrib["bitpos"])
-                    requires.append(RegistryRequiredBitposEnum(enum_name, extends, bitpos))
+                    requires.append(RegistryRequiredBitposEnum(enum_name, extends, bitpos, comment))
                 elif "offset" in enum_el.attrib:
                     offset = int(enum_el.attrib["offset"])
                     extnumber = int(enum_el.attrib.get("extnumber", str(number)))
                     dir_attr = enum_el.attrib.get("dir")
                     dir_val = -1 if dir_attr == "-" else 1
-                    requires.append(RegistryRequiredOffsetEnum(enum_name, extends, offset, extnumber, dir_val))
+                    requires.append(RegistryRequiredOffsetEnum(enum_name, extends, offset, extnumber, dir_val, comment))
                 elif "value" in enum_el.attrib:
                     value_str = enum_el.attrib["value"]
                     if value_str.startswith("0x") or value_str.startswith("-0x"):
                         value = int(value_str, 16)
                     else:
                         value = int(value_str)
-                    requires.append(RegistryRequiredValueEnum(enum_name, extends, value))
+                    requires.append(RegistryRequiredValueEnum(enum_name, extends, value, comment))
         extensions.append(RegistryExtension(name, number, ext_type, requires))
     return extensions
 
@@ -1288,24 +1292,32 @@ def bind_enums(files: Dict[str, str], registry: Registry):
         for req in feature.requires:
             if isinstance(req, RegistryRequiredOffsetEnum):
                 value = extension_enum_value(req.extnumber, req.offset, req.dir)
-                additional_values[req.extends].append(RegistryValueEnumerator(name=req.name, value=value))
+                additional_value = RegistryValueEnumerator(name=req.name, value=value, comment=req.comment)
+                additional_values[req.extends].append(additional_value)
             elif isinstance(req, RegistryRequiredBitposEnum):
-                additional_values[req.extends].append(RegistryBitposEnumerator(name=req.name, bitpos=req.bitpos))
+                additional_value = RegistryBitposEnumerator(name=req.name, bitpos=req.bitpos, comment=req.comment)
+                additional_values[req.extends].append(additional_value)
             elif isinstance(req, RegistryRequiredValueEnum):
-                additional_values[req.extends].append(RegistryValueEnumerator(name=req.name, value=req.value))
+                additional_value = RegistryValueEnumerator(name=req.name, value=req.value, comment=req.comment)
+                additional_values[req.extends].append(additional_value)
             elif isinstance(req, RegistryRequiredEnumAlias):
-                additional_values[req.extends].append(RegistryEnumeratorAlias(name=req.name, alias=req.alias))
+                additional_value = RegistryEnumeratorAlias(name=req.name, alias=req.alias, comment=req.comment)
+                additional_values[req.extends].append(additional_value)
     for extension in registry.extensions:
         for req in extension.requires:
             if isinstance(req, RegistryRequiredOffsetEnum):
                 value = extension_enum_value(req.extnumber, req.offset, req.dir)
-                additional_values[req.extends].append(RegistryValueEnumerator(name=req.name, value=value))
+                additional_value = RegistryValueEnumerator(name=req.name, value=value, comment=req.comment)
+                additional_values[req.extends].append(additional_value)
             elif isinstance(req, RegistryRequiredBitposEnum):
-                additional_values[req.extends].append(RegistryBitposEnumerator(name=req.name, bitpos=req.bitpos))
+                additional_value = RegistryBitposEnumerator(name=req.name, bitpos=req.bitpos, comment=req.comment)
+                additional_values[req.extends].append(additional_value)
             elif isinstance(req, RegistryRequiredValueEnum):
-                additional_values[req.extends].append(RegistryValueEnumerator(name=req.name, value=req.value))
+                additional_value = RegistryValueEnumerator(name=req.name, value=req.value, comment=req.comment)
+                additional_values[req.extends].append(additional_value)
             elif isinstance(req, RegistryRequiredEnumAlias):
-                additional_values[req.extends].append(RegistryEnumeratorAlias(name=req.name, alias=req.alias))
+                additional_value = RegistryEnumeratorAlias(name=req.name, alias=req.alias, comment=req.comment)
+                additional_values[req.extends].append(additional_value)
 
     enums: List[MojoEnum] = []
     for enum_def in registry.enums:
@@ -1339,6 +1351,7 @@ def bind_enums(files: Dict[str, str], registry: Registry):
             mojo_values.append(MojoEnumValue(
                 name=stripped_name,
                 value=value,
+                comment=enumerator.comment,
                 result_error_message=result_error_message,
             ))
         
