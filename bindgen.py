@@ -23,10 +23,12 @@ def main():
     files: Dict[str, str] = {}
 
     bind_structs(files, registry)
+    bind_constants(files, registry)
     bind_funcpointers(files, registry)
     bind_unions(files, registry)
     bind_enums(files, registry)
-    bind_constants(files, registry)
+    bind_core_commands(files, registry)
+    bind_extension_commands(files, registry)
     # emit_basetypes(files, lower_basetypes(parse_basetypes(registry)))
     # emit_external_types(files, lower_external_types(parse_external_types(registry)))
     # emit_enums(files, lower_enums(parse_enums(registry)))
@@ -352,7 +354,9 @@ class RegistryCommand:
 class RegistryCommandParam:
     name: str
     type: str
+    text: str
     optional: bool
+    len: Optional[str]
 
 
 def parse_commands(xml_registry: Element) -> List[RegistryCommand]:
@@ -368,8 +372,10 @@ def parse_commands(xml_registry: Element) -> List[RegistryCommand]:
         for param_el in command_el.findall("param"):
             param_type = assert_type(str, param_el.findtext("type"))
             param_name = assert_type(str, param_el.findtext("name"))
+            param_text = "".join(param_el.itertext()).strip()
             optional = param_el.attrib.get("optional") == "true"
-            params.append(RegistryCommandParam(param_name, param_type, optional))
+            param_len = param_el.attrib.get("len")
+            params.append(RegistryCommandParam(param_name, param_type, param_text, optional, param_len))
         commands.append(RegistryCommand(name, return_type, params))
     return commands
 
@@ -717,9 +723,8 @@ class MojoMethod:
         if len(self.docstring_lines) != 0:
             parts.append('        """')
             for line in self.docstring_lines:
-                parts.append(line)
-                parts.append("\n")
-            parts.append('        """')
+                parts.append(f"        {line}\n")
+            parts.append('"""\n')
         for line in self.body_lines:
             parts.append(f"        {line}\n")
         return "".join(parts)
@@ -1389,6 +1394,49 @@ def bind_enums(files: Dict[str, str], registry: Registry):
 # --------------------------------
 
 
+VkLevel = Literal["global", "instance", "device"]
+
+
+@dataclass
+class Version:
+    major: int
+    minor: int
+
+
+@dataclass
+class AddedCommands:
+    level: VkLevel
+    version: Version
+    commands: List[RegistryCommand]
+
+
+@dataclass
+class AddedCommandGroups:
+    level: VkLevel
+    version: Version
+    dependencies: List[Version]
+    commands: List[Tuple[Version, RegistryCommand]]
+
+
+def gather_new_commands_per_version() -> List[AddedCommands]:
+    pass
+
+
+def gather_addition_groups_per_version() -> List[AddedCommandGroups]:
+    pass
+
+
+def classify_command_level(registry_command: RegistryCommand) -> VkLevel:
+    if len(registry_command.params) == 0:
+        raise ValueError("Expected some params on this command!")
+    first_param_type = registry_command.params[0].type
+    if first_param_type in ("VkInstance", "VkPhysicalDevice") or registry_command.name == "get_instance_proc_addr":
+        return "instance"
+    elif first_param_type in ("VkDevice", "VkQueue", "VkCommandBuffer"):
+        return "device"
+    return "global"
+
+
 def registry_command_to_mojo_command_name(registry_command: RegistryCommand) -> str:
     return pascal_to_snake(registry_command.name.removeprefix("vk"))
 
@@ -1403,7 +1451,11 @@ def registry_command_to_mojo_fn_type(registry_command: RegistryCommand) -> MojoF
     return MojoFnType(return_type, arguments)
 
 
-def registry_command_to_mojo_method(registry_command: RegistryCommand) -> MojoMethod:
+def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_added: Optional[Version]=None) -> List[MojoMethod]:
+    # TODO: for correct body line emission, this function needs to know where the fn pointer lives.
+    # This is directly in the struct for extensions but is inside an addition struct for core.
+    # We're going to use version_added for this
+    methods: List[MojoMethod] = []
     native_name = registry_command.name
     name = registry_command_to_mojo_command_name(registry_command)
     return_type = parse_c_type(registry_command.return_type)
@@ -1414,19 +1466,20 @@ def registry_command_to_mojo_method(registry_command: RegistryCommand) -> MojoMe
         arguments.append(MojoArgument(arg_name, arg_type))
     body_lines: List[str] = []
     docstring_lines = [
-        f'        """See official vulkan docs for details.\n'
-        f'\n'
-        f'        https://registry.khronos.org/vulkan/specs/latest/man/html/{native_name}.html\n'
-        f'        """\n'
+        f'See official vulkan docs for details.',
+        f'',
+        f'https://registry.khronos.org/vulkan/specs/latest/man/html/{native_name}.html',
     ]
-    return MojoMethod(
+    methods.append(MojoMethod(
         name=name,
         return_type=return_type,
         self_ref_kind="ref",
         arguments=arguments,
         body_lines=body_lines,
         docstring_lines=docstring_lines,
-    )
+    ))
+    # TODO: add enumerate 2 call helpers
+    return methods
 
 
 def bind_core_commands(files: Dict[str, str], registry: Registry):
@@ -1434,7 +1487,6 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
 
     # core command loaders
     core_command_loaders: List[MojoStruct] = []
-    
     core_command_addition_loaders: List[MojoStruct] = []
 
     # core command loader emission
@@ -1508,7 +1560,7 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
                 name = registry_command_to_mojo_command_name(required_command),
                 type = registry_command_to_mojo_fn_type(required_command),
             ))
-            methods.append(registry_command_to_mojo_method(required_command))
+            methods.extend(registry_command_to_mojo_methods(required_command))
         extension_loaders_by_tag[tag].append(MojoStruct(name, traits, fields, methods))
 
     # emission
