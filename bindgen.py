@@ -32,15 +32,6 @@ def main():
     bind_external_types(files, registry)
     bind_core_commands(files, registry)
     bind_extension_commands(files, registry)
-    # emit_basetypes(files, lower_basetypes(parse_basetypes(registry)))
-    # emit_external_types(files, lower_external_types(parse_external_types(registry)))
-    # emit_enums(files, lower_enums(parse_enums(registry)))
-    # emit_flags(files, lower_flags(parse_flags(registry)))
-    # emit_handles(files, lower_handles(parse_handles(registry)))
-    # emit_fn_types(files, lower_fn_types(parse_fn_types(registry)))
-    # emit_structs(files, lower_structs(parse_structs(registry)))
-    # emit_unions(files, lower_unions(parse_unions(registry)))
-    # emit_command_loaders(files, lower_commands(parse_commands(registry)))
 
     OUTPUT_ROOT = "vk"
     for rel_path, content in files.items():
@@ -1084,7 +1075,7 @@ def bind_funcpointers(files: Dict[str, str], registry: Registry):
     for funcpointer in funcpointers:
         parts.append("\n\n")
         parts.append(str(funcpointer))
-    files["fn_types"] = "".join(parts) # TODO: change this file to `funcpointers.mojo`
+    files["fn_types.mojo"] = "".join(parts) # TODO: change this file to `funcpointers.mojo`
 
 
 # --------------------------------
@@ -1188,7 +1179,7 @@ def bind_unions(files: Dict[str, str], registry: Registry):
     for union in unions:
         parts.append("\n\n")
         parts.append(str(union))
-    files["unions"] = "".join(parts)
+    files["unions.mojo"] = "".join(parts)
 
 
 # --------------------------------
