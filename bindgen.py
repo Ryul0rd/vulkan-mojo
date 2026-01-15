@@ -29,6 +29,7 @@ def main():
     bind_enums(files, registry)
     bind_flags(files, registry)
     bind_handles(files, registry)
+    bind_external_types(files, registry)
     bind_core_commands(files, registry)
     bind_extension_commands(files, registry)
     # emit_basetypes(files, lower_basetypes(parse_basetypes(registry)))
@@ -988,11 +989,6 @@ def bind_constants(files: Dict[str, str], registry: Registry):
 
 
 # --------------------------------
-# External Types
-# --------------------------------
-
-
-# --------------------------------
 # Funcpointers
 # --------------------------------
 
@@ -1248,8 +1244,8 @@ class MojoEnum:
 class MojoEnumValue:
     name: str
     value: int
-    comment: Optional[str]
-    result_error_message: Optional[str]
+    comment: Optional[str] = None
+    result_error_message: Optional[str] = None
 
 
 def extension_enum_value(extnumber: int, offset: int, direction: int) -> int:
@@ -1593,6 +1589,262 @@ def bind_flags(files: Dict[str, str], registry: Registry):
         parts.append("\n\n")
         parts.append(str(flagbits))
     files["flags.mojo"] = "".join(parts)
+
+
+# --------------------------------
+# External Types
+# --------------------------------
+
+
+@dataclass
+class MojoOpaqueExternalType:
+    name: str
+
+    def __str__(self) -> str:
+        return (
+            f"struct {self.name}:\n"
+            f"    pass\n"
+        )
+
+
+@dataclass
+class MojoWrapperExternalType:
+    name: str
+    underlying_type: str
+
+    def __str__(self) -> str:
+        return (
+            f'@register_passable("trivial")\n'
+            f"struct {self.name}:\n"
+            f"    var _value: {self.underlying_type}\n"
+            f"\n"
+            f"    fn __init__(out self, *, value: {self.underlying_type}):\n"
+            f"        self._value = value\n"
+            f"\n"
+            f"    fn value(self) -> {self.underlying_type}:\n"
+            f"        return self._value\n"
+        )
+
+
+MojoExternalType = MojoOpaqueExternalType | MojoWrapperExternalType | MojoEnum
+
+
+def bind_external_types(files: Dict[str, str], registry: Registry):
+    """Generate Mojo external types file.
+    
+    External types are platform-specific types and video codec types that
+    are referenced by Vulkan but defined externally. These are hardcoded
+    because parsing them from vk.xml is overly complex.
+    """
+    EXTERNAL_TYPES: List[MojoExternalType] = [
+        # Platform types
+        # Xlib / Xrandr
+        MojoOpaqueExternalType("Display"),
+        MojoWrapperExternalType("VisualID", "UInt32"),
+        MojoWrapperExternalType("Window", "UInt32"),
+        MojoWrapperExternalType("RROutput", "UInt32"),
+        # Wayland
+        MojoOpaqueExternalType("wl_display"),
+        MojoOpaqueExternalType("wl_surface"),
+        # Win32
+        MojoWrapperExternalType("HINSTANCE", "UInt"),
+        MojoWrapperExternalType("HWND", "UInt"),
+        MojoWrapperExternalType("HMONITOR", "UInt"),
+        MojoWrapperExternalType("HANDLE", "UInt"),
+        MojoOpaqueExternalType("SECURITY_ATTRIBUTES"),
+        MojoWrapperExternalType("DWORD", "UInt32"),
+        MojoWrapperExternalType("LPCWSTR", "UInt"),
+        # XCB
+        MojoOpaqueExternalType("xcb_connection_t"),
+        MojoWrapperExternalType("xcb_visualid_t", "UInt32"),
+        MojoWrapperExternalType("xcb_window_t", "UInt32"),
+        # DirectFB
+        MojoOpaqueExternalType("IDirectFB"),
+        MojoOpaqueExternalType("IDirectFBSurface"),
+        # Fuchsia (Zircon)
+        MojoWrapperExternalType("zx_handle_t", "UInt32"),
+        # OpenHarmony / OHOS (WSI)
+        MojoOpaqueExternalType("OHNativeWindow"),
+        # Google Games Platform (GGP)
+        MojoWrapperExternalType("GgpStreamDescriptor", "UInt32"),
+        MojoWrapperExternalType("GgpFrameToken", "UInt32"),
+        # QNX Screen
+        MojoWrapperExternalType("screen_context_t", "UInt"),
+        MojoWrapperExternalType("screen_window_t", "UInt"),
+        MojoWrapperExternalType("screen_buffer_t", "UInt"),
+        # NVIDIA SciSync / SciBuf
+        MojoWrapperExternalType("NvSciSyncAttrList", "UInt"),
+        MojoWrapperExternalType("NvSciSyncObj", "UInt"),
+        MojoOpaqueExternalType("NvSciSyncFence"),
+        MojoWrapperExternalType("NvSciBufAttrList", "UInt"),
+        MojoWrapperExternalType("NvSciBufObj", "UInt"),
+        # Android NDK
+        MojoOpaqueExternalType("ANativeWindow"),
+        MojoOpaqueExternalType("AHardwareBuffer"),
+        # Apple CoreAnimation / Metal / IOSurface (non-ObjC paths are opaque)
+        MojoOpaqueExternalType("CAMetalLayer"),
+        MojoWrapperExternalType("MTLDevice_id", "UInt"),
+        MojoWrapperExternalType("MTLCommandQueue_id", "UInt"),
+        MojoWrapperExternalType("MTLBuffer_id", "UInt"),
+        MojoWrapperExternalType("MTLTexture_id", "UInt"),
+        MojoWrapperExternalType("MTLSharedEvent_id", "UInt"),
+        MojoWrapperExternalType("IOSurfaceRef", "UInt"),
+        # Video encoding types
+        # H.264
+        MojoEnum("StdVideoH264ProfileIdc", [
+            ("BASELINE", 66),
+            ("MAIN", 77),
+            ("HIGH", 100),
+            ("HIGH_444_PREDICTIVE", 244),
+            ("INVALID", 0x7FFFFFFF),
+        ]),
+        MojoExternalEnum("StdVideoH264LevelIdc", [
+            ("LEVEL_1_0", 0),
+            ("LEVEL_1_1", 1),
+            ("LEVEL_1_2", 2),
+            ("LEVEL_1_3", 3),
+            ("LEVEL_2_0", 4),
+            ("LEVEL_2_1", 5),
+            ("LEVEL_2_2", 6),
+            ("LEVEL_3_0", 7),
+            ("LEVEL_3_1", 8),
+            ("LEVEL_3_2", 9),
+            ("LEVEL_4_0", 10),
+            ("LEVEL_4_1", 11),
+            ("LEVEL_4_2", 12),
+            ("LEVEL_5_0", 13),
+            ("LEVEL_5_1", 14),
+            ("LEVEL_5_2", 15),
+            ("LEVEL_6_0", 16),
+            ("LEVEL_6_1", 17),
+            ("LEVEL_6_2", 18),
+            ("INVALID", 0x7FFFFFFF),
+        ]),
+        MojoOpaqueExternalType("StdVideoH264SequenceParameterSet"),
+        MojoOpaqueExternalType("StdVideoH264PictureParameterSet"),
+        MojoOpaqueExternalType("StdVideoEncodeH264SliceHeader"),
+        MojoOpaqueExternalType("StdVideoEncodeH264PictureInfo"),
+        MojoOpaqueExternalType("StdVideoDecodeH264PictureInfo"),
+        MojoOpaqueExternalType("StdVideoEncodeH264ReferenceInfo"),
+        MojoOpaqueExternalType("StdVideoDecodeH264ReferenceInfo"),
+        # H.265/HEVC
+        MojoExternalEnum("StdVideoH265ProfileIdc", [
+            ("MAIN", 1),
+            ("MAIN_10", 2),
+            ("MAIN_STILL_PICTURE", 3),
+            ("FORMAT_RANGE_EXTENSIONS", 4),
+            ("SCC_EXTENSIONS", 9),
+            ("INVALID", 0x7FFFFFFF),
+        ]),
+        MojoExternalEnum("StdVideoH265LevelIdc", [
+            ("LEVEL_1_0", 0),
+            ("LEVEL_2_0", 1),
+            ("LEVEL_2_1", 2),
+            ("LEVEL_3_0", 3),
+            ("LEVEL_3_1", 4),
+            ("LEVEL_4_0", 5),
+            ("LEVEL_4_1", 6),
+            ("LEVEL_5_0", 7),
+            ("LEVEL_5_1", 8),
+            ("LEVEL_5_2", 9),
+            ("LEVEL_6_0", 10),
+            ("LEVEL_6_1", 11),
+            ("LEVEL_6_2", 12),
+            ("INVALID", 0x7FFFFFFF),
+        ]),
+        MojoOpaqueExternalType("StdVideoH265VideoParameterSet"),
+        MojoOpaqueExternalType("StdVideoH265SequenceParameterSet"),
+        MojoOpaqueExternalType("StdVideoH265PictureParameterSet"),
+        MojoOpaqueExternalType("StdVideoEncodeH265SliceSegmentHeader"),
+        MojoOpaqueExternalType("StdVideoEncodeH265PictureInfo"),
+        MojoOpaqueExternalType("StdVideoDecodeH265PictureInfo"),
+        MojoOpaqueExternalType("StdVideoEncodeH265ReferenceInfo"),
+        MojoOpaqueExternalType("StdVideoDecodeH265ReferenceInfo"),
+        # AV1
+        MojoExternalEnum("StdVideoAV1Profile", [
+            ("MAIN", 0),
+            ("HIGH", 1),
+            ("PROFESSIONAL", 2),
+            ("INVALID", 0x7FFFFFFF),
+        ]),
+        MojoExternalEnum("StdVideoAV1Level", [
+            ("LEVEL_2_0", 0),
+            ("LEVEL_2_1", 1),
+            ("LEVEL_2_2", 2),
+            ("LEVEL_2_3", 3),
+            ("LEVEL_3_0", 4),
+            ("LEVEL_3_1", 5),
+            ("LEVEL_3_2", 6),
+            ("LEVEL_3_3", 7),
+            ("LEVEL_4_0", 8),
+            ("LEVEL_4_1", 9),
+            ("LEVEL_4_2", 10),
+            ("LEVEL_4_3", 11),
+            ("LEVEL_5_0", 12),
+            ("LEVEL_5_1", 13),
+            ("LEVEL_5_2", 14),
+            ("LEVEL_5_3", 15),
+            ("LEVEL_6_0", 16),
+            ("LEVEL_6_1", 17),
+            ("LEVEL_6_2", 18),
+            ("LEVEL_6_3", 19),
+            ("LEVEL_7_0", 20),
+            ("LEVEL_7_1", 21),
+            ("LEVEL_7_2", 22),
+            ("LEVEL_7_3", 23),
+            ("INVALID", 0x7FFFFFFF),
+        ]),
+        MojoOpaqueExternalType("StdVideoAV1SequenceHeader"),
+        MojoOpaqueExternalType("StdVideoAV1TimingInfo"),
+        MojoOpaqueExternalType("StdVideoAV1ColorConfig"),
+        MojoOpaqueExternalType("StdVideoAV1TileInfo"),
+        MojoOpaqueExternalType("StdVideoAV1Quantization"),
+        MojoOpaqueExternalType("StdVideoAV1Segmentation"),
+        MojoOpaqueExternalType("StdVideoAV1LoopFilter"),
+        MojoOpaqueExternalType("StdVideoAV1CDEF"),
+        MojoOpaqueExternalType("StdVideoAV1LoopRestoration"),
+        MojoOpaqueExternalType("StdVideoAV1FilmGrain"),
+        MojoOpaqueExternalType("StdVideoEncodeAV1PictureInfo"),
+        MojoOpaqueExternalType("StdVideoDecodeAV1PictureInfo"),
+        MojoOpaqueExternalType("StdVideoEncodeAV1ExtensionHeader"),
+        MojoOpaqueExternalType("StdVideoEncodeAV1DecoderModelInfo"),
+        MojoOpaqueExternalType("StdVideoEncodeAV1OperatingPointInfo"),
+        MojoOpaqueExternalType("StdVideoEncodeAV1ReferenceInfo"),
+        MojoOpaqueExternalType("StdVideoDecodeAV1ReferenceInfo"),
+        # VP9
+        MojoExternalEnum("StdVideoVP9Profile", [
+            ("PROFILE_0", 0),
+            ("PROFILE_1", 1),
+            ("PROFILE_2", 2),
+            ("PROFILE_3", 3),
+            ("INVALID", 0x7FFFFFFF),
+        ]),
+        MojoExternalEnum("StdVideoVP9Level", [
+            ("LEVEL_1_0", 0),
+            ("LEVEL_1_1", 1),
+            ("LEVEL_2_0", 2),
+            ("LEVEL_2_1", 3),
+            ("LEVEL_3_0", 4),
+            ("LEVEL_3_1", 5),
+            ("LEVEL_4_0", 6),
+            ("LEVEL_4_1", 7),
+            ("LEVEL_5_0", 8),
+            ("LEVEL_5_1", 9),
+            ("LEVEL_5_2", 10),
+            ("LEVEL_6_0", 11),
+            ("LEVEL_6_1", 12),
+            ("LEVEL_6_2", 13),
+            ("INVALID", 0x7FFFFFFF),
+        ]),
+        MojoOpaqueExternalType("StdVideoDecodeVP9PictureInfo"),
+    ]
+
+    # emission
+    parts: List[str] = []
+    for external_type in EXTERNAL_TYPES:
+        parts.append("\n\n")
+        parts.append(str(external_type))
+    files["external_types.mojo"] = "".join(parts)
 
 
 # --------------------------------
