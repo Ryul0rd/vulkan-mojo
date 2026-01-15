@@ -721,10 +721,10 @@ class MojoMethod:
             base_indent_level=1,
         ))
         if len(self.docstring_lines) != 0:
-            parts.append('        """')
-            for line in self.docstring_lines:
+            parts.append(f'        """{self.docstring_lines[0]}\n')
+            for line in self.docstring_lines[1:]:
                 parts.append(f"        {line}\n")
-            parts.append('"""\n')
+            parts.append('        """\n')
         for line in self.body_lines:
             parts.append(f"        {line}\n")
         return "".join(parts)
@@ -748,9 +748,11 @@ class MojoMethod:
 class MojoArgument:
     name: str
     type: MojoType
+    mut: bool = False
 
     def __str__(self) -> str:
-        return f"{self.name}: {self.type}"
+        mut_part = "mut " if self.mut else ""
+        return f"{mut_part}{self.name}: {self.type}"
 
 
 @dataclass
@@ -1534,22 +1536,82 @@ def registry_command_to_mojo_fn_type(registry_command: RegistryCommand) -> MojoF
 
 
 def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_added: Optional[Version]=None) -> List[MojoMethod]:
-    # TODO: for correct body line emission, this function needs to know where the fn pointer lives.
-    # This is directly in the struct for extensions but is inside an addition struct for core.
-    # We're going to use version_added for this
+    """Convert a registry command to Mojo method(s).
+    
+    This function generates wrapper methods that:
+    - Convert single pointers to structs/primitives to by-value parameters
+    - Add 'mut' modifier for output parameters
+    - Generate proper bitcast conversions in the method body
+    - Keep double pointers and array pointers as Ptr types
+    - Convert const char* to CStringSlice[ImmutAnyOrigin]
+    
+    Args:
+        registry_command: The Vulkan command from the registry
+        version_added: If provided, indicates this is a core command added in the given
+                      version, and the body should call through self._vX_Y.method_name.
+                      If None, assumes extension command calling self.method_name directly.
+    """
     methods: List[MojoMethod] = []
     native_name = registry_command.name
     name = registry_command_to_mojo_command_name(registry_command)
     return_type = parse_c_type(registry_command.return_type)
+    
     arguments: List[MojoArgument] = []
+    call_args: List[str] = []
     for param in registry_command.params:
-        arg_name = pascal_to_snake(param.name)
-        arg_type = parse_c_type(param.type)
-        arguments.append(MojoArgument(arg_name, arg_type))
-    body_lines: List[str] = []
+        decl = parse_declarator(param.text)
+        arg_name = pascal_to_snake(decl.name)
+        parsed_type = decl.type
+
+        is_const_char_ptr = (
+            isinstance(parsed_type, MojoPointerType)
+            and parsed_type.origin == "ImmutOrigin.external"
+            and isinstance(parsed_type.pointee_type, MojoBaseType)
+            and parsed_type.pointee_type.name == "c_char"
+        )
+        is_void_ptr = (
+            isinstance(parsed_type, MojoPointerType)
+            and isinstance(parsed_type.pointee_type, MojoBaseType)
+            and parsed_type.pointee_type.name == "NoneType"
+        )
+        should_strip_ptr = (
+            isinstance(parsed_type, MojoPointerType)
+            and not is_void_ptr
+            and param.len is None
+            and not param.optional
+        )
+        if is_const_char_ptr:
+            argument = MojoArgument(arg_name, MojoBaseType("CStringSlice", ["ImmutAnyOrigin"]))
+            call_arg = arg_name
+        elif should_strip_ptr:
+            parsed_type = assert_type(MojoPointerType, parsed_type)
+            argument = MojoArgument(arg_name, parsed_type.pointee_type, mut=parsed_type.origin == "MutOrigin.external")
+            call_arg = f"Ptr(to={arg_name}).bitcast[{parsed_type.pointee_type}]()[]"
+        elif isinstance(parsed_type, MojoPointerType):
+            new_origin: MojoOriginLiteral = "MutAnyOrigin" if parsed_type.origin == "MutOrigin.external" else "ImmutAnyOrigin"
+            argument = MojoArgument(arg_name, MojoPointerType(parsed_type.pointee_type, new_origin))
+            call_arg = arg_name
+        else:
+            argument = MojoArgument(arg_name, parsed_type)
+            call_arg = arg_name
+        arguments.append(argument)
+        call_args.append(call_arg)
+    
+    if version_added is not None:
+        version_field = f"_v{version_added.major}_{version_added.minor}"
+        call_target = f"self.{version_field}.{name}"
+    else:
+        call_target = f"self.{name}"
+    body_lines = emit_fn_like(
+        f"return {call_target}",
+        call_args,
+        suffix="",
+        base_indent_level=0,
+    ).rstrip("\n").split("\n")
+
     docstring_lines = [
-        f'See official vulkan docs for details.',
-        f'',
+        'See official vulkan docs for details.',
+        '',
         f'https://registry.khronos.org/vulkan/specs/latest/man/html/{native_name}.html',
     ]
     methods.append(MojoMethod(
@@ -1560,7 +1622,9 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         body_lines=body_lines,
         docstring_lines=docstring_lines,
     ))
-    # TODO: add enumerate 2 call helpers
+    
+    # TODO: Add 2 call enumerate pattern
+
     return methods
 
 
