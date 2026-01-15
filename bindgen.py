@@ -1456,7 +1456,13 @@ def collect_commands_by_version(registry: Registry) -> List[VersionCommands]:
             if not isinstance(req, RegistryRequiredCommand):
                 continue
             command = commands_by_name[req.name]
-            level = classify_command_level(command)
+            first_param_type = command.params[0].type
+            if first_param_type in ("VkInstance", "VkPhysicalDevice") or command.name == "get_instance_proc_addr":
+                level =  "instance"
+            elif first_param_type in ("VkDevice", "VkQueue", "VkCommandBuffer"):
+                level =  "device"
+            else:
+                level = "global"
             version_level_commands[(version, level)].append(command)
     
     results: List[VersionCommands] = []
@@ -1508,17 +1514,6 @@ def collect_cumulative_commands_by_version(registry: Registry) -> List[Cumulativ
     
     results.sort(key=lambda c: (c.version.major, c.version.minor, c.level))
     return results
-
-
-def classify_command_level(registry_command: RegistryCommand) -> VkLevel:
-    if len(registry_command.params) == 0:
-        raise ValueError("Expected some params on this command!")
-    first_param_type = registry_command.params[0].type
-    if first_param_type in ("VkInstance", "VkPhysicalDevice") or registry_command.name == "get_instance_proc_addr":
-        return "instance"
-    elif first_param_type in ("VkDevice", "VkQueue", "VkCommandBuffer"):
-        return "device"
-    return "global"
 
 
 def registry_command_to_mojo_command_name(registry_command: RegistryCommand) -> str:
