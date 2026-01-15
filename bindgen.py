@@ -27,6 +27,7 @@ def main():
     bind_funcpointers(files, registry)
     bind_unions(files, registry)
     bind_enums(files, registry)
+    bind_handles(files, registry)
     bind_core_commands(files, registry)
     bind_extension_commands(files, registry)
     # emit_basetypes(files, lower_basetypes(parse_basetypes(registry)))
@@ -1389,6 +1390,70 @@ def bind_enums(files: Dict[str, str], registry: Registry):
 # --------------------------------
 # Handles
 # --------------------------------
+
+
+@dataclass
+class MojoHandle:
+    name: str
+    underlying_type: Literal["UInt", "UInt64"]
+
+    def __str__(self) -> str:
+        return (
+            f'@register_passable("trivial")\n'
+            f"struct {self.name}(Equatable, Writable):\n"
+            f"    var _value: {self.underlying_type}\n"
+            f"    comptime NULL = Self(value = 0)\n"
+            f"\n"
+            f"    fn __init__(out self, *, value: {self.underlying_type}):\n"
+            f"        self._value = value\n"
+            f"\n"
+            f"    fn value(self) -> {self.underlying_type}:\n"
+            f"        return self._value\n"
+            f"\n"
+            f"    fn __eq__(self, other: Self) -> Bool:\n"
+            f"        return self._value == other._value\n"
+            f"\n"
+            f"    fn __bool__(self) -> Bool:\n"
+            f"        return self._value != 0\n"
+            f"\n"
+            f"    fn __str__(self) -> String:\n"
+            f"        return hex(self._value)\n"
+            f"\n"
+            f"    fn write_to(self, mut writer: Some[Writer]):\n"
+            f"        writer.write(String(self))\n"
+        )
+
+
+def bind_handles(files: Dict[str, str], registry: Registry):
+    # lower aliases
+    aliases: List[MojoTypeAlias] = []
+    for registry_type in registry.types:
+        if not isinstance(registry_type, RegistryAlias) or registry_type.category != "handle":
+            continue
+        aliases.append(MojoTypeAlias(
+            name=c_type_name_to_mojo(registry_type.name),
+            alias=c_type_name_to_mojo(registry_type.alias),
+        ))
+
+    # lower handles
+    handles: List[MojoHandle] = []
+    for registry_type in registry.types:
+        if not isinstance(registry_type, RegistryHandle):
+            continue
+        underlying_type: Literal["UInt", "UInt64"] = "UInt" if registry_type.type == "VK_DEFINE_HANDLE" else "UInt64"
+        handles.append(MojoHandle(
+            name=c_type_name_to_mojo(registry_type.name),
+            underlying_type=underlying_type,
+        ))
+
+    # emission
+    parts: List[str] = []
+    for alias in aliases:
+        parts.append(str(alias))
+    for handle in handles:
+        parts.append("\n\n")
+        parts.append(str(handle))
+    files["handles.mojo"] = "".join(parts)
 
 
 # --------------------------------
