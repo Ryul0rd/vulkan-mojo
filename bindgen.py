@@ -22,6 +22,7 @@ def main():
     )
     files: Dict[str, str] = {}
 
+    bind_basetypes(files, registry)
     bind_structs(files, registry)
     bind_constants(files, registry)
     bind_funcpointers(files, registry)
@@ -986,6 +987,37 @@ def bind_constants(files: Dict[str, str], registry: Registry):
 # --------------------------------
 # Basetypes
 # --------------------------------
+
+
+@dataclass
+class MojoBasetypeAlias:
+    """A lowered Mojo basetype alias."""
+    name: str
+    type: MojoType
+
+    def __str__(self) -> str:
+        return f"comptime {self.name} = {self.type}\n"
+
+
+def bind_basetypes(files: Dict[str, str], registry: Registry):
+    """Generate Mojo basetypes file.
+    
+    Basetypes are hardcoded because parsing them from vk.xml is overly complex
+    and there are only a few of them.
+    """
+    # Hardcoded basetypes - these map Vulkan base types to their underlying types
+    basetypes: List[MojoBasetypeAlias] = [
+        MojoBasetypeAlias("SampleMask", MojoBaseType("UInt32")),
+        MojoBasetypeAlias("DeviceSize", MojoBaseType("UInt64")),
+        MojoBasetypeAlias("DeviceAddress", MojoBaseType("UInt64")),
+        MojoBasetypeAlias("RemoteAddressNV", MojoPointerType(MojoBaseType("NoneType"), "MutOrigin.external")),
+    ]
+    
+    # Emission
+    parts: List[str] = []
+    for basetype in basetypes:
+        parts.append(str(basetype))
+    files["basetypes.mojo"] = "".join(parts)
 
 
 # --------------------------------
