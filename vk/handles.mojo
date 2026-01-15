@@ -1,3 +1,6 @@
+comptime DescriptorUpdateTemplateKHR = DescriptorUpdateTemplate
+comptime SamplerYcbcrConversionKHR = SamplerYcbcrConversion
+comptime PrivateDataSlotEXT = PrivateDataSlot
 
 
 @register_passable("trivial")
