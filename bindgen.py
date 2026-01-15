@@ -1092,7 +1092,6 @@ class MojoUnion:
     def __str__(self) -> str:
         parts: List[str] = []
         parts.append("".join((
-            f"\n\n",
             f"struct {self.name}(ImplicitlyCopyable):\n",
             f"    comptime _size = max(\n",
             *(f"        size_of[{member.type}](),\n" for member in self.members),
