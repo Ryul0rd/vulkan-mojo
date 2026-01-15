@@ -1431,20 +1431,10 @@ class CumulativeVersionCommands:
     commands: List[Tuple[Version, RegistryCommand]]
 
 
-def collect_commands_by_version(registry: Registry) -> List[VersionCommands]:
-    """Collect commands introduced in each Vulkan core version, grouped by level.
-    
-    Parses the registry features to determine which commands were introduced
-    in each API version (1.0, 1.1, 1.2, etc.) and classifies them by their
-    dispatch level (global, instance, device).
-    
-    Args:
-        registry: The parsed Vulkan registry containing features and commands.
-        
-    Returns:
-        A list of VersionCommands, one for each (version, level) combination
-        that introduces new commands. Sorted by version then level.
-    """
+def collect_commands_by_version(
+    registry: Registry,
+) -> Tuple[List[VersionCommands], List[CumulativeVersionCommands]]:
+    # version commands
     commands_by_name = {command.name: command for command in registry.commands}
     version_level_commands: Dict[Tuple[Version, VkLevel], List[RegistryCommand]] = defaultdict(list)
     for feature in registry.features:
@@ -1465,39 +1455,18 @@ def collect_commands_by_version(registry: Registry) -> List[VersionCommands]:
                 level = "global"
             version_level_commands[(version, level)].append(command)
     
-    results: List[VersionCommands] = []
+    version_commands: List[VersionCommands] = []
     for (version, level), commands in sorted(version_level_commands.items()):
-        results.append(VersionCommands(
-            level=level,
-            version=version,
-            commands=commands,
-        ))
-    return results
+        version_commands.append(VersionCommands(level, version, commands))
 
-
-def collect_cumulative_commands_by_version(registry: Registry) -> List[CumulativeVersionCommands]:
-    """Collect cumulative commands available at each version, grouped by level.
-    
-    For each API version and dispatch level, collects all commands available
-    up to that version (including commands from prior versions) along with
-    the list of version dependencies needed to access those commands.
-    
-    Args:
-        registry: The parsed Vulkan registry containing features and commands.
-        
-    Returns:
-        A list of CumulativeVersionCommands, one for each (version, level)
-        combination. Each entry contains all commands available at that version
-        along with their introduction version, and a list of version dependencies.
-    """
-    version_commands = collect_commands_by_version(registry)
+    # cumulative version commands
     version_commands_by_level: Dict[VkLevel, List[VersionCommands]] = defaultdict(list)
     for vc in version_commands:
         version_commands_by_level[vc.level].append(vc)
     for level in version_commands_by_level:
         version_commands_by_level[level].sort(key=lambda vc: (vc.version.major, vc.version.minor))
     
-    results: List[CumulativeVersionCommands] = []
+    cumulative_version_commands: List[CumulativeVersionCommands] = []
     for level, version_commands_list in version_commands_by_level.items():
         cumulative_commands: List[Tuple[Version, RegistryCommand]] = []
         seen_versions: List[Version] = []
@@ -1505,15 +1474,15 @@ def collect_cumulative_commands_by_version(registry: Registry) -> List[Cumulativ
             for command in vc.commands:
                 cumulative_commands.append((vc.version, command))
             seen_versions.append(vc.version)
-            results.append(CumulativeVersionCommands(
+            cumulative_version_commands.append(CumulativeVersionCommands(
                 level=level,
                 version=vc.version,
                 dependencies=list(seen_versions),
                 commands=list(cumulative_commands),
             ))
-    
-    results.sort(key=lambda c: (c.version.major, c.version.minor, c.level))
-    return results
+    cumulative_version_commands.sort(key=lambda c: (c.version.major, c.version.minor, c.level))
+
+    return version_commands, cumulative_version_commands
 
 
 def registry_command_to_mojo_command_name(registry_command: RegistryCommand) -> str:
@@ -1624,7 +1593,7 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
 
 
 def bind_core_commands(files: Dict[str, str], registry: Registry):
-    version_commands = collect_commands_by_version(registry)
+    version_commands, cumulative_commands = collect_commands_by_version(registry)
     core_command_addition_loaders: List[MojoStruct] = []
     for vc in version_commands:
         version_suffix = f"{vc.version.major}_{vc.version.minor}"
@@ -1682,7 +1651,6 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             methods=[init_method],
         ))
 
-    cumulative_commands = collect_cumulative_commands_by_version(registry)
     core_command_loaders: List[MojoStruct] = []
     for cvc in cumulative_commands:
         version_suffix = f"{cvc.version.major}_{cvc.version.minor}"
