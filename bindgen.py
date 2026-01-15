@@ -605,7 +605,7 @@ class MojoArrayType:
     length: str
 
     def __str__(self) -> str:
-        return f"InlineArray[{self.element_type}, {self.length}]"
+        return f"InlineArray[{self.element_type}, Int({self.length})]"
 
 
 @dataclass
@@ -719,7 +719,7 @@ class MojoMethod:
         self_arg = "self" if self.self_ref_kind == "ref" else f"{self.self_ref_kind} self"
         raises_part = " raises" if self.raises else ""
         return_part = "" if returns_none else f" -> {self.return_type}"
-        suffix = f"{raises_part}{return_part}:\n"
+        suffix = f"{raises_part}{return_part}:"
         parts.append(emit_fn_like(
             f"fn {self.name}",
             [self_arg] + [str(arg) for arg in self.arguments],
@@ -917,8 +917,8 @@ def bind_structs(files: Dict[str, str], registry: Registry):
     # emission
     parts: List[str] = []
     parts.append(
-        # "from sys.ffi import CStringSlice, c_char\n"
-        # "from .constants import *\n"
+        "from sys.ffi import CStringSlice, c_char\n"
+        "from .constants import *\n"
         # "from .basetypes import *\n"
         # "from .external_types import *\n"
         # "from .enums import *\n"
@@ -2304,7 +2304,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
         fields: List[MojoField] = [MojoField("_dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"]))]
         for dep_version in cvc.dependencies:
             dep_suffix = f"{dep_version.major}_{dep_version.minor}"
-            addition_type = MojoBaseType(f"{level_name}FunctionsV{dep_suffix}Addition")
+            addition_type = MojoBaseType(f"{level_name}FunctionsV{dep_suffix}Additions")
             fields.append(MojoField(f"_v{dep_suffix}", addition_type))
         
         if cvc.level == "global":
@@ -2312,7 +2312,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             init_body_lines = ['self._dlhandle = ArcPointer(OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL))']
             for dep_version in cvc.dependencies:
                 dep_suffix = f"{dep_version.major}_{dep_version.minor}"
-                addition_type = f"{level_name}Functions{dep_suffix}Addition"
+                addition_type = f"{level_name}Functions{dep_suffix}Additions"
                 init_body_lines.append(f"self._v{dep_suffix} = {addition_type}(dlhandle)")
         else:
             init_arguments = [
@@ -2322,7 +2322,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             init_body_lines = ["self._dlhandle = dlhandle"]
             for dep_version in cvc.dependencies:
                 dep_suffix = f"{dep_version.major}_{dep_version.minor}"
-                addition_type = f"{level_name}FunctionsV{dep_suffix}Addition"
+                addition_type = f"{level_name}FunctionsV{dep_suffix}Additions"
                 init_body_lines.append(f"self._v{dep_suffix} = {addition_type}(dlhandle, {cvc.level})")
         
         methods: List[MojoMethod] = []
@@ -2369,10 +2369,10 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
         "    fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:\n"
         "        ...\n"
     )
-    for loader in core_command_addition_loaders:
+    for loader in core_command_loaders:
         core_loader_parts.append("\n\n")
         core_loader_parts.append(str(loader))
-    for loader in core_command_loaders:
+    for loader in core_command_addition_loaders:
         core_loader_parts.append("\n\n")
         core_loader_parts.append(str(loader))
     files["core_functions.mojo"] = "".join(core_loader_parts)
