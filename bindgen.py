@@ -1586,8 +1586,50 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         body_lines=body_lines,
         docstring_lines=docstring_lines,
     ))
-    
-    # TODO: Add 2 call enumerate pattern
+
+    # two call pattern helper method
+    if len(registry_command.params) < 2:
+        return methods
+    count_param = registry_command.params[-2]
+    count_arg_type = parse_c_type(count_param.text)
+    data_param = registry_command.params[-1]
+    data_arg_type = parse_c_type(data_param.text)
+    follows_2_call_pattern = (
+        # return type is right
+        isinstance(return_type, MojoBaseType)
+        and return_type.name in ("Result", "NoneType")
+        # count param is right
+        and isinstance(count_arg_type, MojoPointerType)
+        and count_arg_type.origin == "MutOrigin.external"
+        and isinstance(count_arg_type.pointee_type, MojoBaseType)
+        and count_arg_type.pointee_type.name in ("UInt32", "UInt")
+        # data param is right
+        and isinstance(data_arg_type, MojoPointerType)
+        and data_arg_type.origin == "MutOrigin.external"
+        and data_param.optional
+        and data_param.len == count_param.name
+    )
+    if not follows_2_call_pattern:
+        return methods
+    returns_result = registry_command.return_type == "VkResult"
+    element_type = assert_type(MojoPointerType, data_arg_type).pointee_type
+    if element_type == MojoBaseType("NoneType"):
+        element_type = MojoBaseType("UInt8")
+    if returns_result:
+        two_call_return_type = MojoBaseType("ListResult", parameters=[str(element_type)])
+    else:
+        two_call_return_type = MojoBaseType("List", parameters=[str(element_type)])
+
+    two_call_body_lines: List[str] = []
+
+    methods.append(MojoMethod(
+        name=name,
+        return_type=two_call_return_type,
+        self_ref_kind="ref",
+        arguments=arguments[:-2],
+        body_lines=two_call_body_lines,
+        docstring_lines=docstring_lines,
+    ))
 
     return methods
 
