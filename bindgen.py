@@ -123,6 +123,7 @@ class RegistryStructMember:
     text: str
     optional: List[bool]
     len: Optional[str]
+    comment: Optional[str]
 
 
 @dataclass
@@ -202,6 +203,7 @@ def parse_types(xml_registry: Element) -> List[RegistryType]:
                     text="".join(member_el.itertext()).strip(),
                     optional=optional,
                     len=member_el.attrib.get("len"),
+                    comment=member_el.findtext("comment"),
                 ))
             types.append(RegistryStruct(name=name, members=struct_members))
         elif category == "funcpointer":
