@@ -10486,7 +10486,7 @@ struct SwapchainImageUsageFlagsANDROID(Equatable):
     fn is_superset(self, other: SwapchainImageUsageFlagsANDROID) -> Bool:
         return self & other == other
 
-    comptime VK_SWAPCHAIN_IMAGE_USAGE_SHARED_BIT_ANDROID = Self(value = SwapchainImageUsageFlagBitsANDROID.VK_SWAPCHAIN_IMAGE_USAGE_SHARED_BIT_ANDROID.value())
+    comptime SHARED = Self(value = SwapchainImageUsageFlagBitsANDROID.SHARED.value())
 
 
 @register_passable("trivial")
@@ -10505,7 +10505,7 @@ struct SwapchainImageUsageFlagBitsANDROID(Equatable):
     fn __or__(self, other: Self) -> SwapchainImageUsageFlagsANDROID:
         return SwapchainImageUsageFlagsANDROID(value = self._value | other._value)
 
-    comptime VK_SWAPCHAIN_IMAGE_USAGE_SHARED_BIT_ANDROID = Self(value = 1 << 0)
+    comptime SHARED = Self(value = 1 << 0)
 
 
 @register_passable("trivial")
