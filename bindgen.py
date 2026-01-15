@@ -10,12 +10,14 @@ import re
 
 def main():
     xml_registry = ElementTree.parse("vk.xml").getroot()
+    commands, command_aliases = parse_commands(xml_registry)
     registry = Registry(
         tags=parse_tags(xml_registry),
         types=parse_types(xml_registry),
         constants=parse_constants(xml_registry),
         enums=parse_enums(xml_registry),
-        commands=parse_commands(xml_registry),
+        commands=commands,
+        command_aliases=command_aliases,
         features=parse_features(xml_registry),
         extensions=parse_extensions(xml_registry),
     )
@@ -48,6 +50,7 @@ class Registry:
     constants: List[RegistryConstant]
     enums: List[RegistryEnumDefinition]
     commands: List[RegistryCommand]
+    command_aliases: List[RegistryCommandAlias]
     features: List[RegistryFeature]
     extensions: List[RegistryExtension]
 
@@ -353,11 +356,21 @@ class RegistryCommandParam:
     len: Optional[str]
 
 
-def parse_commands(xml_registry: Element) -> List[RegistryCommand]:
+@dataclass
+class RegistryCommandAlias:
+    name: str
+    alias: str
+
+
+def parse_commands(xml_registry: Element) -> Tuple[List[RegistryCommand], List[RegistryCommandAlias]]:
     commands_el = assert_type(Element, xml_registry.find("commands"))
     commands: List[RegistryCommand] = []
+    command_aliases: List[RegistryCommandAlias] = []
     for command_el in commands_el.findall("command"):
         if "alias" in command_el.attrib:
+            alias_name = assert_type(str, command_el.attrib.get("name"))
+            alias_target = assert_type(str, command_el.attrib.get("alias"))
+            command_aliases.append(RegistryCommandAlias(alias_name, alias_target))
             continue
         proto_el = assert_type(Element, command_el.find("proto"))
         return_type = assert_type(str, proto_el.findtext("type"))
@@ -371,7 +384,7 @@ def parse_commands(xml_registry: Element) -> List[RegistryCommand]:
             param_len = param_el.attrib.get("len")
             params.append(RegistryCommandParam(param_name, param_type, param_text, optional, param_len))
         commands.append(RegistryCommand(name, return_type, params))
-    return commands
+    return commands, command_aliases
 
 
 # --------------------------------
@@ -2368,6 +2381,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
 def bind_extension_commands(files: Dict[str, str], registry: Registry):
     # lowering
     commands_by_name = {command.name: command for command in registry.commands}
+    command_alias_map = {alias.name: alias.alias for alias in registry.command_aliases}
     extension_loaders_by_tag: Dict[str, List[MojoStruct]] = defaultdict(list)
     for extension in registry.extensions:
         if extension.type is None:
@@ -2377,8 +2391,10 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
         for requirement in extension.requires:
             if not isinstance(requirement, RegistryRequiredCommand):
                 continue
-            required_command = commands_by_name[requirement.name]
-            required_commands.append(required_command)
+            resolved_name = requirement.name
+            while resolved_name in command_alias_map:
+                resolved_name = command_alias_map[resolved_name]
+            required_commands.append(commands_by_name[resolved_name])
 
         # names look like "VK_TAG_foo_bar"
         tag = extension.name.split("_")[1].lower()
