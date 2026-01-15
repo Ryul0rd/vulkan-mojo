@@ -1043,9 +1043,9 @@ def bind_funcpointers(files: Dict[str, str], registry: Registry):
     # lower funcpointers
     funcpointers: List[MojoFuncpointer] = []
     fp_re = re.compile(
-        r"""^typedef\s
-            ((?P<ret>.+)\n)?
-            \(VKAPI_PTR\s\*(?P<name>[A-Za-z_][A-Za-z0-9_]*)\)
+        r"""^typedef\s+
+            (?P<ret>.+?)\s*
+            \(VKAPI_PTR\s+\*(?P<name>[A-Za-z_][A-Za-z0-9_]*)\)
             \((?P<args>.*?)\);$
         """,
         re.S | re.X,
@@ -1955,7 +1955,7 @@ def bind_handles(files: Dict[str, str], registry: Registry):
 VkLevel = Literal["global", "instance", "device"]
 
 
-@dataclass
+@dataclass(frozen=True, order=True)
 class Version:
     major: int
     minor: int
