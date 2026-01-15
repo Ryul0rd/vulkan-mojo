@@ -1624,9 +1624,122 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
 
 
 def bind_core_commands(files: Dict[str, str], registry: Registry):
-    # core command loaders
-    core_command_loaders: List[MojoStruct] = []
+    version_commands = collect_commands_by_version(registry)
     core_command_addition_loaders: List[MojoStruct] = []
+    for vc in version_commands:
+        version_suffix = f"{vc.version.major}_{vc.version.minor}"
+        level_name = vc.level.capitalize()
+        struct_name = f"{level_name}FunctionsV{version_suffix}Additions"
+        
+        fields: List[MojoField] = []
+        for command in vc.commands:
+            fields.append(MojoField(
+                name=registry_command_to_mojo_command_name(command),
+                type=registry_command_to_mojo_fn_type(command),
+            ))
+        
+        if vc.level == "global":
+            init_arguments = [MojoArgument("dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"]))]
+            init_body_lines: List[str] = []
+            for command in vc.commands:
+                mojo_name = registry_command_to_mojo_command_name(command)
+                init_body_lines.extend((
+                    f'self.{mojo_name} = dlhandle[].get_function['
+                    f'    {registry_command_to_mojo_fn_type(command)}'
+                    f']("{command.name}")'
+                ))
+        else:
+            handle_type = "Instance" if vc.level == "instance" else "Device"
+            init_arguments = [
+                MojoArgument("dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"])),
+                MojoArgument(vc.level, MojoBaseType(handle_type)),
+            ]
+            init_body_lines = [
+                f'var get_{vc.level}_proc_addr = dlhandle[].get_function[',
+                f'    fn({vc.level}: {handle_type}, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction',
+                f']("vkGet{handle_type}ProcAddr")',
+            ]
+            for command in vc.commands:
+                mojo_name = registry_command_to_mojo_command_name(command)
+                init_body_lines.extend((
+                    f'self.{mojo_name} = get_{vc.level}_proc_addr('
+                    f'    {vc.level}, "{command.name}".unsafe_cstr_ptr()'
+                    f').bitcast[type_of(self.{mojo_name})]()',
+                ))
+        
+        init_method = MojoMethod(
+            name="__init__",
+            return_type=MojoBaseType("NoneType"),
+            self_ref_kind="out",
+            arguments=init_arguments,
+            body_lines=init_body_lines,
+            docstring_lines=[],
+        )
+        core_command_addition_loaders.append(MojoStruct(
+            name=struct_name,
+            traits=["Copyable"],
+            fields=fields,
+            methods=[init_method],
+        ))
+
+    cumulative_commands = collect_cumulative_commands_by_version(registry)
+    core_command_loaders: List[MojoStruct] = []
+    for cvc in cumulative_commands:
+        version_suffix = f"{cvc.version.major}_{cvc.version.minor}"
+        level_name = cvc.level.capitalize()
+        struct_name = f"{level_name}Functions{version_suffix}"
+        
+        fields: List[MojoField] = [MojoField("_dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"]))]
+        for dep_version in cvc.dependencies:
+            dep_suffix = f"{dep_version.major}_{dep_version.minor}"
+            addition_type = MojoBaseType(f"{level_name}FunctionsV{dep_suffix}Addition")
+            fields.append(MojoField(f"_v{dep_suffix}", addition_type))
+        
+        if cvc.level == "global":
+            init_arguments = []
+            init_body_lines = ['self._dlhandle = ArcPointer(OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL))']
+            for dep_version in cvc.dependencies:
+                dep_suffix = f"{dep_version.major}_{dep_version.minor}"
+                addition_type = f"{level_name}Functions{dep_suffix}Addition"
+                init_body_lines.append(f"self._v{dep_suffix} = {addition_type}(dlhandle)")
+        else:
+            init_arguments = [
+                MojoArgument("dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"])),
+                MojoArgument(cvc.level, MojoBaseType(cvc.level.capitalize())),
+            ]
+            init_body_lines = ["self._dlhandle = dlhandle"]
+            for dep_version in cvc.dependencies:
+                dep_suffix = f"{dep_version.major}_{dep_version.minor}"
+                addition_type = f"{level_name}FunctionsV{dep_suffix}Addition"
+                init_body_lines.append(f"self._v{dep_suffix} = {addition_type}(dlhandle, {cvc.level})")
+        
+        methods: List[MojoMethod] = []
+        methods.append(MojoMethod(
+            name="__init__",
+            return_type=MojoBaseType("NoneType"),
+            self_ref_kind="out",
+            arguments=init_arguments,
+            body_lines=init_body_lines,
+            docstring_lines=[],
+        ))
+        if cvc.level == "global":
+            methods.append(MojoMethod(
+                name="get_dlhandle",
+                return_type=MojoBaseType("ArcPointer", ["OwnedDLHandle"]),
+                self_ref_kind="ref",
+                arguments=[],
+                body_lines=["return self._dlhandle"],
+                docstring_lines=[],
+            ))
+        for version_added, command in cvc.commands:
+            methods.extend(registry_command_to_mojo_methods(command, version_added))
+        
+        core_command_loaders.append(MojoStruct(
+            name=struct_name,
+            traits=["Copyable"],
+            fields=fields,
+            methods=methods,
+        ))
 
     # core command loader emission
     core_loader_parts: List[str] = []
@@ -1642,12 +1755,12 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
         "\n\n"
         "trait GlobalFunctions:\n"
         "    fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:\n"
-        "        ...\n" # these are real elipses that get emitted. TODO: Remove comment
+        "        ...\n"
     )
-    for loader in core_command_loaders:
+    for loader in core_command_addition_loaders:
         core_loader_parts.append("\n\n")
         core_loader_parts.append(str(loader))
-    for loader in core_command_addition_loaders:
+    for loader in core_command_loaders:
         core_loader_parts.append("\n\n")
         core_loader_parts.append(str(loader))
     files["core_functions.mojo"] = "".join(core_loader_parts)
