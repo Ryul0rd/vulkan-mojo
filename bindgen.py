@@ -27,6 +27,7 @@ def main():
     bind_funcpointers(files, registry)
     bind_unions(files, registry)
     bind_enums(files, registry)
+    bind_flags(files, registry)
     bind_handles(files, registry)
     bind_core_commands(files, registry)
     bind_extension_commands(files, registry)
@@ -306,7 +307,6 @@ def parse_enums(xml_registry: Element) -> List[RegistryEnumDefinition]:
     enums: List[RegistryEnumDefinition] = []
     for enums_el in xml_registry.findall("enums"):
         enums_type = enums_el.attrib.get("type")
-        # Skip constant blocks (API Constants) - they're not enum types
         if enums_type not in ("enum", "bitmask"):
             continue
         name = assert_type(str, enums_el.attrib.get("name"))
@@ -314,8 +314,10 @@ def parse_enums(xml_registry: Element) -> List[RegistryEnumDefinition]:
         bitwidth: Literal[32, 64] = 64 if bitwidth_attr == "64" else 32
         values: List[RegistryEnumerator] = []
         for enum_el in enums_el.findall("enum"):
+            if enum_el.attrib.get("deprecated") is not None:
+                continue
             enum_name = assert_type(str, enum_el.attrib.get("name"))
-            comment = enum_el.attrib.get("comment")  # None if not present
+            comment = enum_el.attrib.get("comment")
             if "alias" in enum_el.attrib:
                 alias = assert_type(str, enum_el.attrib.get("alias"))
                 values.append(RegistryEnumeratorAlias(name=enum_name, alias=alias, comment=comment))
@@ -324,7 +326,6 @@ def parse_enums(xml_registry: Element) -> List[RegistryEnumDefinition]:
                 values.append(RegistryBitposEnumerator(name=enum_name, bitpos=bitpos, comment=comment))
             elif "value" in enum_el.attrib:
                 value_str = enum_el.attrib["value"]
-                # Handle hex values like "0x00000003"
                 if value_str.startswith("0x") or value_str.startswith("-0x"):
                     value = int(value_str, 16)
                 else:
@@ -1385,6 +1386,213 @@ def bind_enums(files: Dict[str, str], registry: Registry):
 # --------------------------------
 # Bitsets / Flags
 # --------------------------------
+
+
+@dataclass
+class MojoFlags:
+    """A Mojo flags type (e.g., FramebufferCreateFlags)."""
+    name: str
+    bits_name: str
+    underlying_type: Literal["UInt32", "UInt64"]
+    values: List[MojoFlagValue]
+
+    def __str__(self) -> str:
+        parts: List[str] = []
+        parts.append(
+            f'@register_passable("trivial")\n'
+            f"struct {self.name}(Equatable):\n"
+            f"    var _value: {self.underlying_type}\n"
+            f"\n"
+            f"    @implicit\n"
+            f"    fn __init__(out self, *bits: {self.bits_name}):\n"
+            f"        self._value = 0\n"
+            f"        for bit in bits:\n"
+            f"            self._value |= bit.value()\n"
+            f"\n"
+            f"    fn __init__(out self, *, value: {self.underlying_type}):\n"
+            f"        self._value = value\n"
+            f"\n"
+            f"    fn value(self) -> {self.underlying_type}:\n"
+            f"        return self._value\n"
+            f"\n"
+            f"    fn __bool__(self) -> Bool:\n"
+            f"        return Bool(self._value)\n"
+            f"\n"
+            f"    fn __eq__(self, other: Self) -> Bool:\n"
+            f"        return self._value == other._value\n"
+            f"\n"
+            f"    fn __or__(self, other: {self.name}) -> Self:\n"
+            f"        return Self(value = self.value() | other.value())\n"
+            f"\n"
+            f"    fn __ror__(self, other: {self.name}) -> Self:\n"
+            f"        return Self(value = self.value() | other.value())\n"
+            f"\n"
+            f"    fn __and__(self, other: {self.name}) -> Self:\n"
+            f"        return Self(value = self.value() & other.value())\n"
+            f"\n"
+            f"    fn __rand__(self, other: {self.name}) -> Self:\n"
+            f"        return Self(value = self.value() & other.value())\n"
+            f"\n"
+            f"    fn __contains__(self, bit: {self.bits_name}) -> Bool:\n"
+            f"        return Bool(self.value() & bit.value())\n"
+            f"\n"
+            f"    fn is_subset(self, other: {self.name}) -> Bool:\n"
+            f"        return self & other == self\n"
+            f"\n"
+            f"    fn is_superset(self, other: {self.name}) -> Bool:\n"
+            f"        return self & other == other\n"
+        )
+        if self.values:
+            parts.append("\n")
+            for value in self.values:
+                parts.append(f"    comptime {value.name} = Self(value = {self.bits_name}.{value.name}.value())\n")
+        return "".join(parts)
+
+
+@dataclass
+class MojoFlagBits:
+    """A Mojo flag bits type (e.g., FramebufferCreateFlagBits)."""
+    name: str
+    flags_name: str
+    underlying_type: Literal["UInt32", "UInt64"]
+    values: List[MojoFlagValue]
+
+    def __str__(self) -> str:
+        parts: List[str] = []
+        parts.append(
+            f'@register_passable("trivial")\n'
+            f"struct {self.name}(Equatable):\n"
+            f"    var _value: {self.underlying_type}\n"
+            f"\n"
+            f"    fn __init__(out self, *, value: {self.underlying_type}):\n"
+            f"        self._value = value\n"
+            f"\n"
+            f"    fn value(self) -> {self.underlying_type}:\n"
+            f"        return self._value\n"
+            f"\n"
+            f"    fn __eq__(self, other: Self) -> Bool:\n"
+            f"        return self._value == other._value\n"
+            f"\n"
+            f"    fn __or__(self, other: Self) -> {self.flags_name}:\n"
+            f"        return {self.flags_name}(value = self._value | other._value)\n"
+        )
+        if self.values:
+            parts.append("\n")
+            for value in self.values:
+                parts.append(f"    comptime {value.name} = Self(value = {value})\n")
+        return "".join(parts)
+
+
+@dataclass
+class MojoFlagValue:
+    name: str
+    value_kind: Literal["value", "bitpos"]
+    value: int
+
+    def __str__(self) -> str:
+        if self.value_kind == "bitpos":
+            return f"1 << {self.value}"
+        return str(self.value)
+
+
+def flag_bit_mojo_name(enum_name: str, value_name: str, tags: List[RegistryTag]) -> str:
+    """Convert a Vulkan flag bits value name to a Mojo-friendly constant name.
+    
+    Examples:
+        VkFramebufferCreateFlagBits, VK_FRAMEBUFFER_CREATE_IMAGELESS_BIT -> IMAGELESS
+        VkAccessFlagBits2, VK_ACCESS_2_NONE -> NONE
+        VkAccessFlagBits2, VK_ACCESS_2_INDIRECT_COMMAND_READ_BIT -> INDIRECT_COMMAND_READ
+        VkSampleCountFlagBits, VK_SAMPLE_COUNT_1_BIT -> N_1
+        VkIndirectCommandsLayoutUsageFlagBitsNV, VK_INDIRECT_COMMANDS_LAYOUT_USAGE_EXPLICIT_PREPROCESS_BIT_NV -> EXPLICIT_PREPROCESS
+        VkClusterAccelerationStructureClusterFlagBitsNV, VK_CLUSTER_ACCELERATION_STRUCTURE_CLUSTER_ALLOW_DISABLE_OPACITY_MICROMAPS_BIT_NV -> ALLOW_DISABLE_OPACITY_MICROMAPS
+        VkAccessFlagBits3KHR, VK_ACCESS_3_NONE_KHR -> NONE
+    """
+    tag_names = sorted([tag.name for tag in tags], key=lambda tag: len(tag), reverse=True)
+    prefix = enum_name
+    enum_tag: Optional[str] = None
+    for tag in tag_names:
+        if prefix.endswith(tag):
+            enum_tag = tag
+            prefix = prefix.removesuffix(tag)
+            break
+    prefix = re.sub(r'FlagBits(\d+)$', r'\1', prefix)
+    prefix = prefix.removesuffix("FlagBits")
+    prefix = pascal_to_snake(prefix).upper() + "_"
+
+    result = value_name.removeprefix(prefix)
+    result = result.removesuffix(f"_{enum_tag}")
+    result = result.removesuffix("_BIT")
+    if result and result[0].isdigit():
+        result = "N_" + result
+    
+    return result
+
+
+def bind_flags(files: Dict[str, str], registry: Registry):
+    """Generate Mojo flags file from parsed bitmask types."""
+    flags_aliases: List[MojoTypeAlias] = []
+    for registry_type in registry.types:
+        if isinstance(registry_type, RegistryAlias) and registry_type.category == "bitmask":
+            flags_aliases.append(MojoTypeAlias(
+                name=c_type_name_to_mojo(registry_type.name),
+                alias=c_type_name_to_mojo(registry_type.alias),
+            ))
+
+    enum_defs_by_name = {enum_def.name: enum_def for enum_def in registry.enums}
+    flags_list: List[MojoFlags] = []
+    flagbits_list: List[MojoFlagBits] = []
+    for registry_type in registry.types:
+        if not isinstance(registry_type, RegistryBitmask):
+            continue
+        if registry_type.api != "vulkan":
+            continue
+        
+        bitmask = registry_type
+        flags_native_name = bitmask.name
+        flags_mojo_name = c_type_name_to_mojo(flags_native_name)
+        flags_underlying_type = "UInt64" if bitmask.type == "VkFlags64" else "UInt32"
+        
+        bits_native_name = flags_native_name.replace("Flags", "FlagBits")
+        if bitmask.requires is not None and bitmask.requires != bits_native_name:
+            raise ValueError("Unexpected value for bitmask.requires")
+        bits_mojo_name = c_type_name_to_mojo(bits_native_name)
+        
+        base_values: List[RegistryEnumerator] = []
+        if bits_native_name in enum_defs_by_name:
+            base_values = enum_defs_by_name[bits_native_name].values
+        
+        mojo_values: List[MojoFlagValue] = []
+        for enumerator in base_values:
+            value_name = flag_bit_mojo_name(bits_native_name, enumerator.name, registry.tags)
+            if isinstance(enumerator, RegistryValueEnumerator):
+                mojo_values.append(MojoFlagValue(value_name, "value", enumerator.value))
+            elif isinstance(enumerator, RegistryBitposEnumerator):
+                mojo_values.append(MojoFlagValue(value_name, "bitpos", enumerator.bitpos))
+        mojo_values.sort(key=lambda v: (v.value_kind == "bitpos", v.value))
+        
+        flags_list.append(MojoFlags(
+            name=flags_mojo_name,
+            bits_name=bits_mojo_name,
+            underlying_type=flags_underlying_type,
+            values=mojo_values,
+        ))
+        flagbits_list.append(MojoFlagBits(
+            name=bits_mojo_name,
+            flags_name=flags_mojo_name,
+            underlying_type=flags_underlying_type,
+            values=mojo_values,
+        ))
+
+    # Emission
+    parts: List[str] = []
+    for alias in flags_aliases:
+        parts.append(str(alias))
+    for flags, flagbits in zip(flags_list, flagbits_list):
+        parts.append("\n\n")
+        parts.append(str(flags))
+        parts.append("\n\n")
+        parts.append(str(flagbits))
+    files["flags.mojo"] = "".join(parts)
 
 
 # --------------------------------
