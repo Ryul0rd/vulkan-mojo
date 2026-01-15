@@ -1404,26 +1404,108 @@ class Version:
 
 
 @dataclass
-class AddedCommands:
+class VersionCommands:
+    """Commands introduced in a specific Vulkan version at a specific level.
+    
+    Represents the set of commands that were newly added in a particular API
+    version (e.g., 1.1, 1.2) for a given dispatch level (global, instance, device).
+    """
     level: VkLevel
     version: Version
     commands: List[RegistryCommand]
 
 
 @dataclass
-class AddedCommandGroups:
+class CumulativeVersionCommands:
+    """Cumulative set of commands available at a specific version and level.
+    
+    Represents all commands available up to and including the specified version
+    for a given dispatch level, along with version dependencies and the version
+    each command was introduced in.
+    """
     level: VkLevel
     version: Version
     dependencies: List[Version]
     commands: List[Tuple[Version, RegistryCommand]]
 
 
-def gather_new_commands_per_version() -> List[AddedCommands]:
-    pass
+def collect_commands_by_version(registry: Registry) -> List[VersionCommands]:
+    """Collect commands introduced in each Vulkan core version, grouped by level.
+    
+    Parses the registry features to determine which commands were introduced
+    in each API version (1.0, 1.1, 1.2, etc.) and classifies them by their
+    dispatch level (global, instance, device).
+    
+    Args:
+        registry: The parsed Vulkan registry containing features and commands.
+        
+    Returns:
+        A list of VersionCommands, one for each (version, level) combination
+        that introduces new commands. Sorted by version then level.
+    """
+    commands_by_name = {command.name: command for command in registry.commands}
+    version_level_commands: Dict[Tuple[Version, VkLevel], List[RegistryCommand]] = defaultdict(list)
+    for feature in registry.features:
+        if "vulkan" not in feature.api:
+            continue
+        version_parts = feature.number.split(".")
+        version = Version(int(version_parts[0]), int(version_parts[1]))
+        for req in feature.requires:
+            if not isinstance(req, RegistryRequiredCommand):
+                continue
+            command = commands_by_name[req.name]
+            level = classify_command_level(command)
+            version_level_commands[(version, level)].append(command)
+    
+    results: List[VersionCommands] = []
+    for (version, level), commands in sorted(version_level_commands.items()):
+        results.append(VersionCommands(
+            level=level,
+            version=version,
+            commands=commands,
+        ))
+    return results
 
 
-def gather_addition_groups_per_version() -> List[AddedCommandGroups]:
-    pass
+def collect_cumulative_commands_by_version(registry: Registry) -> List[CumulativeVersionCommands]:
+    """Collect cumulative commands available at each version, grouped by level.
+    
+    For each API version and dispatch level, collects all commands available
+    up to that version (including commands from prior versions) along with
+    the list of version dependencies needed to access those commands.
+    
+    Args:
+        registry: The parsed Vulkan registry containing features and commands.
+        
+    Returns:
+        A list of CumulativeVersionCommands, one for each (version, level)
+        combination. Each entry contains all commands available at that version
+        along with their introduction version, and a list of version dependencies.
+    """
+    version_commands = collect_commands_by_version(registry)
+    version_commands_by_level: Dict[VkLevel, List[VersionCommands]] = defaultdict(list)
+    for vc in version_commands:
+        version_commands_by_level[vc.level].append(vc)
+    for level in version_commands_by_level:
+        version_commands_by_level[level].sort(key=lambda vc: (vc.version.major, vc.version.minor))
+    
+    results: List[CumulativeVersionCommands] = []
+    for level, version_commands_list in version_commands_by_level.items():
+        cumulative_commands: List[Tuple[Version, RegistryCommand]] = []
+        seen_versions: List[Version] = []
+        for vc in version_commands_list:
+            for command in vc.commands:
+                cumulative_commands.append((vc.version, command))
+            seen_versions.append(vc.version)
+            results.append(CumulativeVersionCommands(
+                level=level,
+                version=vc.version,
+                dependencies=list(seen_versions),
+                commands=list(cumulative_commands),
+            ))
+    
+    results.sort(key=lambda c: (c.version.major, c.version.minor, c.level))
+    return results
 
 
 def classify_command_level(registry_command: RegistryCommand) -> VkLevel:
@@ -1483,8 +1565,6 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
 
 
 def bind_core_commands(files: Dict[str, str], registry: Registry):
-    commands_by_name = {command.name: command for command in registry.commands}
-
     # core command loaders
     core_command_loaders: List[MojoStruct] = []
     core_command_addition_loaders: List[MojoStruct] = []
