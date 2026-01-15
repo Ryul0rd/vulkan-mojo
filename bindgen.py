@@ -1615,12 +1615,55 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
     element_type = assert_type(MojoPointerType, data_arg_type).pointee_type
     if element_type == MojoBaseType("NoneType"):
         element_type = MojoBaseType("UInt8")
+    element_type_str = str(element_type)
     if returns_result:
-        two_call_return_type = MojoBaseType("ListResult", parameters=[str(element_type)])
+        two_call_return_type = MojoBaseType("ListResult", parameters=[element_type_str])
     else:
-        two_call_return_type = MojoBaseType("List", parameters=[str(element_type)])
+        two_call_return_type = MojoBaseType("List", parameters=[element_type_str])
 
+    base_call_arg_names = [arg.name for arg in arguments[:-2]]
     two_call_body_lines: List[str] = []
+    two_call_body_lines.append(f"var list = List[{element_type_str}]()")
+    two_call_body_lines.append("var count: UInt32 = 0")
+    
+    if returns_result:
+        two_call_body_lines.append("var result = Result.INCOMPLETE")
+        two_call_body_lines.append("while result == Result.INCOMPLETE:")
+        first_call_lines = emit_fn_like(
+            f"result = self.{name}",
+            base_call_arg_names + ["count", f"Ptr[{element_type_str}, MutOrigin.external]()"],
+            suffix="",
+            base_indent_level=1,
+        ).rstrip("\n").split("\n")
+        two_call_body_lines.extend(first_call_lines)
+        two_call_body_lines.append("    if result == Result.SUCCESS:")
+        two_call_body_lines.append("        list.reserve(Int(count))")
+        second_call = emit_fn_like(
+            f"result = self.{name}",
+            base_call_arg_names + ["count", "list.unsafe_ptr()"],
+            suffix="",
+            base_indent_level=1,
+        ).rstrip("\n").split("\n")
+        two_call_body_lines.extend(second_call)
+        two_call_body_lines.append("list._len = Int(count)")
+        two_call_body_lines.append("return ListResult(list^, result)")
+    else:
+        first_call_lines = emit_fn_like(
+            f"self.{name}",
+            base_call_arg_names + ["count", f"Ptr[{element_type_str}, MutAnyOrigin]()"],
+            suffix="",
+            base_indent_level=0,
+        ).rstrip("\n").split("\n")
+        two_call_body_lines.extend(first_call_lines)
+        two_call_body_lines.append("list.reserve(Int(count))")
+        second_call = emit_fn_like(
+            f"self.{name}",
+            base_call_arg_names + ["count", "list.unsafe_ptr()"],
+            suffix="",
+        ).rstrip("\n").split("\n")
+        two_call_body_lines.extend(second_call)
+        two_call_body_lines.append("list._len = Int(count)")
+        two_call_body_lines.append("return list^")
 
     methods.append(MojoMethod(
         name=name,
