@@ -793,7 +793,10 @@ def parse_members(members: List[RegistryStructMember]) -> Tuple[List[MojoPhysica
     packed_active = False
 
     for member in members:
-        decl = parse_declarator(member.text)
+        text = member.text
+        if member.comment is not None:
+            text = member.text.removesuffix(member.comment)
+        decl = parse_declarator(text)
         field_name = pascal_to_snake(decl.name)
 
         if decl.bit_width is None:
