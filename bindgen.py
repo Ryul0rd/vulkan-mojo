@@ -1,12 +1,11 @@
 from __future__ import annotations
-from typing import Dict, List, Set, Tuple, Optional, TypeVar, Literal, Any, Type, Iterable
+from typing import Dict, List, Tuple, Optional, TypeVar, Literal, Any, Type, Iterable
 from dataclasses import dataclass, field
 from collections import defaultdict
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 import os
 import re
-from copy import deepcopy
 
 
 def main():
