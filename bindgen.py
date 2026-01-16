@@ -736,7 +736,7 @@ class MojoMethod:
         self_arg = "self" if self.self_ref_kind == "ref" else f"{self.self_ref_kind} self"
         raises_part = " raises" if self.raises else ""
         return_part = "" if returns_none else f" -> {self.return_type}"
-        suffix = f"{raises_part}{return_part}:"
+        suffix = f"{raises_part}{return_part}:\n"
         parts.append(emit_fn_like(
             f"fn {self.name}",
             [self_arg] + [str(arg) for arg in self.arguments],
@@ -2303,13 +2303,17 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
         
         if vc.level == "global":
             init_arguments = [MojoArgument("dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"]))]
-            init_body_lines: List[str] = []
+            init_body_lines = [
+                f'var get_instance_proc_addr = dlhandle[].get_function[',
+                f'    fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction',
+                f']("vkGetInstanceProcAddr")',
+            ]
             for command in vc.commands:
                 mojo_name = command_to_mojo_name(command)
                 init_body_lines.extend((
-                    f'self.{mojo_name} = dlhandle[].get_function['
-                    f'    {command_to_mojo_fn_type(command)}'
-                    f']("{command.name}")'
+                    f'self.{mojo_name} = Ptr(to=get_instance_proc_addr(',
+                    f'    Instance.NULL, "{command.name}".as_c_string_slice()',
+                    f')).bitcast[type_of(self.{mojo_name})]()[]',
                 ))
         else:
             handle_type = "Instance" if vc.level == "instance" else "Device"
@@ -2319,15 +2323,15 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             ]
             init_body_lines = [
                 f'var get_{vc.level}_proc_addr = dlhandle[].get_function[',
-                f'    fn({vc.level}: {handle_type}, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction',
+                f'    fn({vc.level}: {handle_type}, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction',
                 f']("vkGet{handle_type}ProcAddr")',
             ]
             for command in vc.commands:
                 mojo_name = command_to_mojo_name(command)
                 init_body_lines.extend((
-                    f'self.{mojo_name} = get_{vc.level}_proc_addr('
-                    f'    {vc.level}, "{command.name}".unsafe_cstr_ptr()'
-                    f').bitcast[type_of(self.{mojo_name})]()',
+                    f'self.{mojo_name} = Ptr(to=get_{vc.level}_proc_addr(',
+                    f'    {vc.level}, "{command.name}".as_c_string_slice()',
+                    f')).bitcast[type_of(self.{mojo_name})]()[]',
                 ))
         
         init_method = MojoMethod(
