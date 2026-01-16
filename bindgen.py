@@ -1347,6 +1347,8 @@ def strip_enum_value_prefix(enum_name: str, value_name: str, tags: List[Registry
     # Strip the prefix from the value name
     prefix = prefix if value_name.startswith(prefix) else "VK_"
     result = value_name.removeprefix(prefix)
+    if result and result[0].isdigit():
+        result = "N_" + result
     return result
 
 
