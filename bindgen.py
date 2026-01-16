@@ -2279,11 +2279,13 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
 
 def bind_core_commands(files: Dict[str, str], registry: Registry):
     version_commands, cumulative_commands = collect_commands_by_version(registry)
+    version_commands.sort(key=lambda x: ({"global": 0, "instance": 1, "device": 2}[x.level], x.version))
+    cumulative_commands.sort(key=lambda x: ({"global": 0, "instance": 1, "device": 2}[x.level], x.version))
     core_command_addition_loaders: List[MojoStruct] = []
     for vc in version_commands:
         version_suffix = f"{vc.version.major}_{vc.version.minor}"
         level_name = vc.level.capitalize()
-        struct_name = f"{level_name}FunctionsV{version_suffix}Additions"
+        struct_name = f"{level_name}FunctionsAdditionsV{version_suffix}"
         
         fields: List[MojoField] = []
         for command in vc.commands:
@@ -2340,12 +2342,12 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
     for cvc in cumulative_commands:
         version_suffix = f"{cvc.version.major}_{cvc.version.minor}"
         level_name = cvc.level.capitalize()
-        struct_name = f"{level_name}Functions{version_suffix}"
+        struct_name = f"{level_name}FunctionsV{version_suffix}"
         
         fields: List[MojoField] = [MojoField("_dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"]))]
         for dep_version in cvc.dependencies:
             dep_suffix = f"{dep_version.major}_{dep_version.minor}"
-            addition_type = MojoBaseType(f"{level_name}FunctionsV{dep_suffix}Additions")
+            addition_type = MojoBaseType(f"{level_name}FunctionsAdditionsV{dep_suffix}")
             fields.append(MojoField(f"_v{dep_suffix}", addition_type))
         
         if cvc.level == "global":
@@ -2353,8 +2355,8 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             init_body_lines = ['self._dlhandle = ArcPointer(OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL))']
             for dep_version in cvc.dependencies:
                 dep_suffix = f"{dep_version.major}_{dep_version.minor}"
-                addition_type = f"{level_name}Functions{dep_suffix}Additions"
-                init_body_lines.append(f"self._v{dep_suffix} = {addition_type}(dlhandle)")
+                addition_type = f"{level_name}FunctionsAdditionsV{dep_suffix}"
+                init_body_lines.append(f"self._v{dep_suffix} = {addition_type}(self._dlhandle)")
         else:
             init_arguments = [
                 MojoArgument("dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"])),
@@ -2363,7 +2365,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             init_body_lines = ["self._dlhandle = dlhandle"]
             for dep_version in cvc.dependencies:
                 dep_suffix = f"{dep_version.major}_{dep_version.minor}"
-                addition_type = f"{level_name}FunctionsV{dep_suffix}Additions"
+                addition_type = f"{level_name}FunctionsAdditionsV{dep_suffix}"
                 init_body_lines.append(f"self._v{dep_suffix} = {addition_type}(dlhandle, {cvc.level})")
         
         methods: List[MojoMethod] = []
@@ -2374,6 +2376,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             arguments=init_arguments,
             body_lines=init_body_lines,
             docstring_lines=[],
+            raises=cvc.level == "global"
         ))
         if cvc.level == "global":
             methods.append(MojoMethod(
@@ -2389,7 +2392,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
         
         core_command_loaders.append(MojoStruct(
             name=struct_name,
-            traits=["Copyable"],
+            traits=["GlobalFunctions", "Movable"] if cvc.level == "global" else ["Copyable"],
             fields=fields,
             methods=methods,
         ))
