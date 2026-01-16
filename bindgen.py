@@ -199,6 +199,9 @@ def parse_types(xml_registry: Element) -> List[RegistryType]:
             name = type_el.attrib["name"]
             struct_members: List[RegistryStructMember] = []
             for member_el in type_el.findall("member"):
+                api = member_el.attrib.get("api")
+                if api and "vulkan" not in api.split(","):
+                    continue
                 optional = [s == "true" for s in (member_el.get("optional") or "").split(",")]
                 comment = member_el.findtext("comment")
                 if comment is not None:
@@ -948,7 +951,7 @@ def bind_structs(files: Dict[str, str], registry: Registry):
         # "from .handles import *\n"
         # "from .fn_types import *\n"
         # "from .unions import *\n"
-        # "from .misc import *\n"
+        "from .misc import *\n"
         "\n\n"
         "comptime Ptr = UnsafePointer\n"
         "\n\n"
