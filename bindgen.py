@@ -1129,25 +1129,34 @@ class MojoUnion:
     members: List[MojoUnionMember]
 
     def __str__(self) -> str:
+        unique_types: List[MojoType] = []
+        seen_type_strings: Set[str] = set()
+        for member in self.members:
+            type_str = str(member.type)
+            if type_str not in seen_type_strings:
+                seen_type_strings.add(type_str)
+                unique_types.append(member.type)
+
         parts: List[str] = []
         parts.append("".join((
             f"struct {self.name}(ImplicitlyCopyable):\n",
             f"    comptime _size = max(\n",
-            *(f"        size_of[{member.type}](),\n" for member in self.members),
+            *(f"        size_of[{type}](),\n" for type in unique_types),
             f"    )\n",
             f"    comptime _AlignType = {self.align_type}\n",
             f"    comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]\n",
             f"    var _value: Self._InnerType\n",
         )))
-        for member in self.members:
+
+        for type in unique_types:
             parts.append(
                 f"\n"
-                f"    fn __init__(out self, {member.name}: {member.type}):\n"
+                f"    fn __init__(out self, value: {type}):\n"
                 f"        self._value = zero_init[Self._InnerType]()\n"
                 f"        memcpy(\n"
                 f"            dest = Ptr(to=self._value).bitcast[Byte](),\n"
-                f"            src = Ptr(to={member.name}).bitcast[Byte](),\n"
-                f"            count = size_of[{member.type}](),\n"
+                f"            src = Ptr(to=value).bitcast[Byte](),\n"
+                f"            count = size_of[{type}](),\n"
                 f"        )\n"
             )
         return "".join(parts)
