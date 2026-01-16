@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Dict, List, Tuple, Optional, TypeVar, Literal, Any, Type, Iterable
+from typing import Dict, List, Tuple, Set, Optional, TypeVar, Literal, Any, Type, Iterable
 from dataclasses import dataclass, field
 from collections import defaultdict
 from xml.etree import ElementTree
@@ -116,6 +116,7 @@ class RegistryBitmask:
 class RegistryStruct:
     name: str
     members: List[RegistryStructMember]
+    returned_only: bool
 
 
 @dataclass
@@ -199,13 +200,17 @@ def parse_types(xml_registry: Element) -> List[RegistryType]:
             struct_members: List[RegistryStructMember] = []
             for member_el in type_el.findall("member"):
                 optional = [s == "true" for s in (member_el.get("optional") or "").split(",")]
+                comment = member_el.findtext("comment")
+                if comment is not None:
+                    comment = comment.strip()
                 struct_members.append(RegistryStructMember(
                     text="".join(member_el.itertext()).strip(),
                     optional=optional,
                     len=member_el.attrib.get("len"),
-                    comment=member_el.findtext("comment"),
+                    comment=comment,
                 ))
-            types.append(RegistryStruct(name=name, members=struct_members))
+            returned_only = type_el.attrib.get("returnedonly") == "true"
+            types.append(RegistryStruct(name, struct_members, returned_only))
         elif category == "funcpointer":
             types.append(RegistryFuncpointer("".join(type_el.itertext())))
         elif category == "union":
@@ -795,7 +800,7 @@ def parse_members(members: List[RegistryStructMember]) -> Tuple[List[MojoPhysica
     for member in members:
         text = member.text
         if member.comment is not None:
-            text = member.text.removesuffix(member.comment)
+            text = text.removesuffix(member.comment)
         decl = parse_declarator(text)
         field_name = pascal_to_snake(decl.name)
 
@@ -864,6 +869,13 @@ def bind_structs(files: Dict[str, str], registry: Registry):
         ))
 
     # lower structs
+    struct_names: Set[str] = set()
+    for registry_type in registry.types:
+        if isinstance(registry_type, RegistryStruct):
+            struct_names.add(c_type_name_to_mojo(registry_type.name))
+        elif isinstance(registry_type, RegistryAlias) and registry_type.category == "struct":
+            struct_names.add(c_type_name_to_mojo(registry_type.name))
+
     structs: List[MojoStruct] = []
     for registry_type in registry.types:
         if not isinstance(registry_type, RegistryStruct):
@@ -874,7 +886,12 @@ def bind_structs(files: Dict[str, str], registry: Registry):
         fields = [MojoField(field.name, field.type) for field in physical_fields]
         init_body_lines: List[str] = []
         for field in physical_fields:
-            init_value = "0" if field.packed else field.name
+            if field.packed:
+                init_value = "0"
+            elif isinstance(field.type, MojoBaseType) and field.type.name in struct_names:
+                init_value = f"{field.name}.copy()"
+            else:
+                init_value = field.name
             init_body_lines.append(f"self.{field.name} = {init_value}")
         for field in logical_fields:
             if field.packing_data is not None:
