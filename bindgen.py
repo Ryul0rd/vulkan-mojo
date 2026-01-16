@@ -629,7 +629,6 @@ class MojoFnType:
             "fn",
             [str(arg) for arg in self.args],
             suffix="" if returns_none else f" -> {self.return_type}",
-            no_one_liner=True,
         )
 
 
@@ -694,7 +693,8 @@ class MojoStruct:
         traits_part = "" if len(self.traits) == 0 else f"({', '.join(self.traits)})"
         parts.append(f"struct {self.name}{traits_part}:\n")
         for field in self.fields:
-            parts.append(f"    {field}\n")
+            field_lines = str(field).split("\n")
+            parts.extend(f"    {line}\n" for line in field_lines)
         for method in self.methods:
             parts.append("\n")
             parts.append(str(method))
@@ -707,6 +707,13 @@ class MojoField:
     type: MojoType
 
     def __str__(self) -> str:
+        if isinstance(self.type, MojoFnType):
+            returns_none = isinstance(self.type.return_type, MojoBaseType) and self.type.return_type.name == "NoneType"
+            return emit_fn_like(
+                f"var {self.name}: fn",
+                [str(arg) for arg in self.type.args],
+                suffix="" if returns_none else f" -> {self.type.return_type}",
+            )
         return f"var {self.name}: {self.type}"
 
 
@@ -2658,7 +2665,6 @@ def emit_fn_like(
     suffix: str = "",
     parameters: Iterable[str] = (),
     base_indent_level: int = 0,
-    no_one_liner: bool = False,
 ) -> str:
     """
     Format and emit a function-like declaration or signature string with
@@ -2691,9 +2697,6 @@ def emit_fn_like(
         base_indent_level:
             Indentation level (in logical indents, not spaces) applied to the
             first line of output.
-        no_one_liner:
-            If True, forces multi-line formatting even when the entire
-            signature would fit on a single line.
 
     Returns:
         A formatted string representing the function-like declaration,
@@ -2711,8 +2714,8 @@ def emit_fn_like(
 
     # everything on one line
     one_liner = f"{base_indent}{prefix}{params_joined}({args_joined}){suffix}"
-    if len(one_liner) <= MAX_LINE_LENGTH and not no_one_liner:
-        return one_liner + "\n"
+    if len(one_liner) <= MAX_LINE_LENGTH:
+        return one_liner
     
     # args on their own line(s)
     args_line = f"{inner_indent}{args_joined}"
@@ -2727,7 +2730,7 @@ def emit_fn_like(
             *arg_lines,
             f"{base_indent}){suffix}",
         ]
-        return "".join([line + "\n" for line in lines])
+        return "\n".join(lines)
     
     # params on their own line(s)
     params_line = f"{inner_indent}{params_joined}"
@@ -2742,7 +2745,7 @@ def emit_fn_like(
         *arg_lines,
         f"{base_indent}){suffix}",
     ]
-    return "".join([line + "\n" for line in lines])
+    return "\n".join(lines)
 
 
 if __name__ == "__main__":
