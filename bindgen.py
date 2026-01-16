@@ -917,6 +917,24 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                 body_lines=init_body_lines,
                 docstring_lines=[],
             ))
+        # getter for char array
+        for field in physical_fields:
+            is_array_string = (
+                isinstance(field.type, MojoArrayType)
+                and isinstance(field.type.element_type, MojoBaseType)
+                and field.type.element_type.name == "c_char"
+            )
+            if is_array_string:
+                methods.append(MojoMethod(
+                    name=f"{field.name}_slice",
+                    return_type=MojoBaseType("CStringSlice", [f"origin_of(self.{field.name})"]),
+                    self_ref_kind="ref",
+                    arguments=[],
+                    body_lines=[
+                        f"return CStringSlice[origin_of(self.{field.name})](unsafe_from_ptr = self.{field.name}.unsafe_ptr())"
+                    ],
+                    docstring_lines=[],
+                ))
         # getters and setters for packed fields
         for field in logical_fields:
             if field.packing_data is None:
