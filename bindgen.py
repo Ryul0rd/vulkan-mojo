@@ -1416,9 +1416,13 @@ def bind_enums(files: Dict[str, str], registry: Registry):
             name_to_value[alias_to_resolve.name] = name_to_value[alias.alias]
         
         mojo_values: List[MojoEnumValue] = []
+        seen_names: Set[str] = set()
         for enumerator in all_enumerators:
             value = name_to_value[enumerator.name]
             stripped_name = strip_enum_value_prefix(enum_def.name, enumerator.name, registry.tags)
+            if stripped_name in seen_names:
+                continue
+            seen_names.add(stripped_name)
             result_error_message: Optional[str] = None
             if enum_def.name == "VkResult":
                 result_error_message = f"{enumerator.name}: {enumerator.comment}"
