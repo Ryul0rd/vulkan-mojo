@@ -901,14 +901,15 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                 init_body_lines.append(f"self.set_{field.name}({field.name})")
         arguments = [MojoArgument(field.name, field.type) for field in logical_fields]
         methods: List[MojoMethod] = []
-        methods.append(MojoMethod(
-            name="__init__",
-            return_type=MojoBaseType("NoneType"),
-            self_ref_kind="out",
-            arguments=arguments,
-            body_lines=init_body_lines,
-            docstring_lines=[],
-        ))
+        if not registry_struct.returned_only:
+            methods.append(MojoMethod(
+                name="__init__",
+                return_type=MojoBaseType("NoneType"),
+                self_ref_kind="out",
+                arguments=arguments,
+                body_lines=init_body_lines,
+                docstring_lines=[],
+            ))
         # getters and setters for packed fields
         for field in logical_fields:
             if field.packing_data is None:

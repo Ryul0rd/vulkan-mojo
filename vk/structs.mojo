@@ -397,40 +397,10 @@ struct PhysicalDeviceProperties(Copyable):
     var limits: PhysicalDeviceLimits
     var sparse_properties: PhysicalDeviceSparseProperties
 
-    fn __init__(
-        out self,
-        api_version: UInt32,
-        driver_version: UInt32,
-        vendor_id: UInt32,
-        device_id: UInt32,
-        device_type: PhysicalDeviceType,
-        device_name: InlineArray[c_char, Int(MAX_PHYSICAL_DEVICE_NAME_SIZE)],
-        pipeline_cache_uuid: InlineArray[UInt8, Int(UUID_SIZE)],
-        limits: PhysicalDeviceLimits,
-        sparse_properties: PhysicalDeviceSparseProperties,
-    ):
-        self.api_version = api_version
-        self.driver_version = driver_version
-        self.vendor_id = vendor_id
-        self.device_id = device_id
-        self.device_type = device_type
-        self.device_name = device_name
-        self.pipeline_cache_uuid = pipeline_cache_uuid
-        self.limits = limits.copy()
-        self.sparse_properties = sparse_properties.copy()
-
 
 struct ExtensionProperties(Copyable):
     var extension_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]
     var spec_version: UInt32
-
-    fn __init__(
-        out self,
-        extension_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)],
-        spec_version: UInt32,
-    ):
-        self.extension_name = extension_name
-        self.spec_version = spec_version
 
 
 struct LayerProperties(Copyable):
@@ -438,18 +408,6 @@ struct LayerProperties(Copyable):
     var spec_version: UInt32
     var implementation_version: UInt32
     var description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
-
-    fn __init__(
-        out self,
-        layer_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)],
-        spec_version: UInt32,
-        implementation_version: UInt32,
-        description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)],
-    ):
-        self.layer_name = layer_name
-        self.spec_version = spec_version
-        self.implementation_version = implementation_version
-        self.description = description
 
 
 struct ApplicationInfo(Copyable):
@@ -604,36 +562,12 @@ struct QueueFamilyProperties(Copyable):
     var timestamp_valid_bits: UInt32
     var min_image_transfer_granularity: Extent3D
 
-    fn __init__(
-        out self,
-        queue_flags: QueueFlags,
-        queue_count: UInt32,
-        timestamp_valid_bits: UInt32,
-        min_image_transfer_granularity: Extent3D,
-    ):
-        self.queue_flags = queue_flags
-        self.queue_count = queue_count
-        self.timestamp_valid_bits = timestamp_valid_bits
-        self.min_image_transfer_granularity = min_image_transfer_granularity.copy()
-
 
 struct PhysicalDeviceMemoryProperties(Copyable):
     var memory_type_count: UInt32
     var memory_types: InlineArray[MemoryType, Int(MAX_MEMORY_TYPES)]
     var memory_heap_count: UInt32
     var memory_heaps: InlineArray[MemoryHeap, Int(MAX_MEMORY_HEAPS)]
-
-    fn __init__(
-        out self,
-        memory_type_count: UInt32,
-        memory_types: InlineArray[MemoryType, Int(MAX_MEMORY_TYPES)],
-        memory_heap_count: UInt32,
-        memory_heaps: InlineArray[MemoryHeap, Int(MAX_MEMORY_HEAPS)],
-    ):
-        self.memory_type_count = memory_type_count
-        self.memory_types = memory_types
-        self.memory_heap_count = memory_heap_count
-        self.memory_heaps = memory_heaps
 
 
 struct MemoryAllocateInfo(Copyable):
@@ -660,26 +594,11 @@ struct MemoryRequirements(Copyable):
     var alignment: DeviceSize
     var memory_type_bits: UInt32
 
-    fn __init__(out self, size: DeviceSize, alignment: DeviceSize, memory_type_bits: UInt32):
-        self.size = size
-        self.alignment = alignment
-        self.memory_type_bits = memory_type_bits
-
 
 struct SparseImageFormatProperties(Copyable):
     var aspect_mask: ImageAspectFlags
     var image_granularity: Extent3D
     var flags: SparseImageFormatFlags
-
-    fn __init__(
-        out self,
-        aspect_mask: ImageAspectFlags,
-        image_granularity: Extent3D,
-        flags: SparseImageFormatFlags,
-    ):
-        self.aspect_mask = aspect_mask
-        self.image_granularity = image_granularity.copy()
-        self.flags = flags
 
 
 struct SparseImageMemoryRequirements(Copyable):
@@ -689,37 +608,15 @@ struct SparseImageMemoryRequirements(Copyable):
     var image_mip_tail_offset: DeviceSize
     var image_mip_tail_stride: DeviceSize
 
-    fn __init__(
-        out self,
-        format_properties: SparseImageFormatProperties,
-        image_mip_tail_first_lod: UInt32,
-        image_mip_tail_size: DeviceSize,
-        image_mip_tail_offset: DeviceSize,
-        image_mip_tail_stride: DeviceSize,
-    ):
-        self.format_properties = format_properties.copy()
-        self.image_mip_tail_first_lod = image_mip_tail_first_lod
-        self.image_mip_tail_size = image_mip_tail_size
-        self.image_mip_tail_offset = image_mip_tail_offset
-        self.image_mip_tail_stride = image_mip_tail_stride
-
 
 struct MemoryType(Copyable):
     var property_flags: MemoryPropertyFlags
     var heap_index: UInt32
 
-    fn __init__(out self, property_flags: MemoryPropertyFlags, heap_index: UInt32):
-        self.property_flags = property_flags
-        self.heap_index = heap_index
-
 
 struct MemoryHeap(Copyable):
     var size: DeviceSize
     var flags: MemoryHeapFlags
-
-    fn __init__(out self, size: DeviceSize, flags: MemoryHeapFlags):
-        self.size = size
-        self.flags = flags
 
 
 struct MappedMemoryRange(Copyable):
@@ -749,16 +646,6 @@ struct FormatProperties(Copyable):
     var optimal_tiling_features: FormatFeatureFlags
     var buffer_features: FormatFeatureFlags
 
-    fn __init__(
-        out self,
-        linear_tiling_features: FormatFeatureFlags,
-        optimal_tiling_features: FormatFeatureFlags,
-        buffer_features: FormatFeatureFlags,
-    ):
-        self.linear_tiling_features = linear_tiling_features
-        self.optimal_tiling_features = optimal_tiling_features
-        self.buffer_features = buffer_features
-
 
 struct ImageFormatProperties(Copyable):
     var max_extent: Extent3D
@@ -766,20 +653,6 @@ struct ImageFormatProperties(Copyable):
     var max_array_layers: UInt32
     var sample_counts: SampleCountFlags
     var max_resource_size: DeviceSize
-
-    fn __init__(
-        out self,
-        max_extent: Extent3D,
-        max_mip_levels: UInt32,
-        max_array_layers: UInt32,
-        sample_counts: SampleCountFlags,
-        max_resource_size: DeviceSize,
-    ):
-        self.max_extent = max_extent.copy()
-        self.max_mip_levels = max_mip_levels
-        self.max_array_layers = max_array_layers
-        self.sample_counts = sample_counts
-        self.max_resource_size = max_resource_size
 
 
 struct DescriptorBufferInfo(Copyable):
@@ -2981,20 +2854,6 @@ struct PhysicalDeviceSparseProperties(Copyable):
     var residency_aligned_mip_size: Bool32
     var residency_non_resident_strict: Bool32
 
-    fn __init__(
-        out self,
-        residency_standard_2d_block_shape: Bool32,
-        residency_standard_2d_multisample_block_shape: Bool32,
-        residency_standard_3d_block_shape: Bool32,
-        residency_aligned_mip_size: Bool32,
-        residency_non_resident_strict: Bool32,
-    ):
-        self.residency_standard_2d_block_shape = residency_standard_2d_block_shape
-        self.residency_standard_2d_multisample_block_shape = residency_standard_2d_multisample_block_shape
-        self.residency_standard_3d_block_shape = residency_standard_3d_block_shape
-        self.residency_aligned_mip_size = residency_aligned_mip_size
-        self.residency_non_resident_strict = residency_non_resident_strict
-
 
 struct PhysicalDeviceLimits(Copyable):
     var max_image_dimension_1d: UInt32
@@ -3103,222 +2962,6 @@ struct PhysicalDeviceLimits(Copyable):
     var optimal_buffer_copy_offset_alignment: DeviceSize
     var optimal_buffer_copy_row_pitch_alignment: DeviceSize
     var non_coherent_atom_size: DeviceSize
-
-    fn __init__(
-        out self,
-        max_image_dimension_1d: UInt32,
-        max_image_dimension_2d: UInt32,
-        max_image_dimension_3d: UInt32,
-        max_image_dimension_cube: UInt32,
-        max_image_array_layers: UInt32,
-        max_texel_buffer_elements: UInt32,
-        max_uniform_buffer_range: UInt32,
-        max_storage_buffer_range: UInt32,
-        max_push_constants_size: UInt32,
-        max_memory_allocation_count: UInt32,
-        max_sampler_allocation_count: UInt32,
-        buffer_image_granularity: DeviceSize,
-        sparse_address_space_size: DeviceSize,
-        max_bound_descriptor_sets: UInt32,
-        max_per_stage_descriptor_samplers: UInt32,
-        max_per_stage_descriptor_uniform_buffers: UInt32,
-        max_per_stage_descriptor_storage_buffers: UInt32,
-        max_per_stage_descriptor_sampled_images: UInt32,
-        max_per_stage_descriptor_storage_images: UInt32,
-        max_per_stage_descriptor_input_attachments: UInt32,
-        max_per_stage_resources: UInt32,
-        max_descriptor_set_samplers: UInt32,
-        max_descriptor_set_uniform_buffers: UInt32,
-        max_descriptor_set_uniform_buffers_dynamic: UInt32,
-        max_descriptor_set_storage_buffers: UInt32,
-        max_descriptor_set_storage_buffers_dynamic: UInt32,
-        max_descriptor_set_sampled_images: UInt32,
-        max_descriptor_set_storage_images: UInt32,
-        max_descriptor_set_input_attachments: UInt32,
-        max_vertex_input_attributes: UInt32,
-        max_vertex_input_bindings: UInt32,
-        max_vertex_input_attribute_offset: UInt32,
-        max_vertex_input_binding_stride: UInt32,
-        max_vertex_output_components: UInt32,
-        max_tessellation_generation_level: UInt32,
-        max_tessellation_patch_size: UInt32,
-        max_tessellation_control_per_vertex_input_components: UInt32,
-        max_tessellation_control_per_vertex_output_components: UInt32,
-        max_tessellation_control_per_patch_output_components: UInt32,
-        max_tessellation_control_total_output_components: UInt32,
-        max_tessellation_evaluation_input_components: UInt32,
-        max_tessellation_evaluation_output_components: UInt32,
-        max_geometry_shader_invocations: UInt32,
-        max_geometry_input_components: UInt32,
-        max_geometry_output_components: UInt32,
-        max_geometry_output_vertices: UInt32,
-        max_geometry_total_output_components: UInt32,
-        max_fragment_input_components: UInt32,
-        max_fragment_output_attachments: UInt32,
-        max_fragment_dual_src_attachments: UInt32,
-        max_fragment_combined_output_resources: UInt32,
-        max_compute_shared_memory_size: UInt32,
-        max_compute_work_group_count: InlineArray[UInt32, Int(3)],
-        max_compute_work_group_invocations: UInt32,
-        max_compute_work_group_size: InlineArray[UInt32, Int(3)],
-        sub_pixel_precision_bits: UInt32,
-        sub_texel_precision_bits: UInt32,
-        mipmap_precision_bits: UInt32,
-        max_draw_indexed_index_value: UInt32,
-        max_draw_indirect_count: UInt32,
-        max_sampler_lod_bias: Float32,
-        max_sampler_anisotropy: Float32,
-        max_viewports: UInt32,
-        max_viewport_dimensions: InlineArray[UInt32, Int(2)],
-        viewport_bounds_range: InlineArray[Float32, Int(2)],
-        viewport_sub_pixel_bits: UInt32,
-        min_memory_map_alignment: UInt,
-        min_texel_buffer_offset_alignment: DeviceSize,
-        min_uniform_buffer_offset_alignment: DeviceSize,
-        min_storage_buffer_offset_alignment: DeviceSize,
-        min_texel_offset: Int32,
-        max_texel_offset: UInt32,
-        min_texel_gather_offset: Int32,
-        max_texel_gather_offset: UInt32,
-        min_interpolation_offset: Float32,
-        max_interpolation_offset: Float32,
-        sub_pixel_interpolation_offset_bits: UInt32,
-        max_framebuffer_width: UInt32,
-        max_framebuffer_height: UInt32,
-        max_framebuffer_layers: UInt32,
-        framebuffer_color_sample_counts: SampleCountFlags,
-        framebuffer_depth_sample_counts: SampleCountFlags,
-        framebuffer_stencil_sample_counts: SampleCountFlags,
-        framebuffer_no_attachments_sample_counts: SampleCountFlags,
-        max_color_attachments: UInt32,
-        sampled_image_color_sample_counts: SampleCountFlags,
-        sampled_image_integer_sample_counts: SampleCountFlags,
-        sampled_image_depth_sample_counts: SampleCountFlags,
-        sampled_image_stencil_sample_counts: SampleCountFlags,
-        storage_image_sample_counts: SampleCountFlags,
-        max_sample_mask_words: UInt32,
-        timestamp_compute_and_graphics: Bool32,
-        timestamp_period: Float32,
-        max_clip_distances: UInt32,
-        max_cull_distances: UInt32,
-        max_combined_clip_and_cull_distances: UInt32,
-        discrete_queue_priorities: UInt32,
-        point_size_range: InlineArray[Float32, Int(2)],
-        line_width_range: InlineArray[Float32, Int(2)],
-        point_size_granularity: Float32,
-        line_width_granularity: Float32,
-        strict_lines: Bool32,
-        standard_sample_locations: Bool32,
-        optimal_buffer_copy_offset_alignment: DeviceSize,
-        optimal_buffer_copy_row_pitch_alignment: DeviceSize,
-        non_coherent_atom_size: DeviceSize,
-    ):
-        self.max_image_dimension_1d = max_image_dimension_1d
-        self.max_image_dimension_2d = max_image_dimension_2d
-        self.max_image_dimension_3d = max_image_dimension_3d
-        self.max_image_dimension_cube = max_image_dimension_cube
-        self.max_image_array_layers = max_image_array_layers
-        self.max_texel_buffer_elements = max_texel_buffer_elements
-        self.max_uniform_buffer_range = max_uniform_buffer_range
-        self.max_storage_buffer_range = max_storage_buffer_range
-        self.max_push_constants_size = max_push_constants_size
-        self.max_memory_allocation_count = max_memory_allocation_count
-        self.max_sampler_allocation_count = max_sampler_allocation_count
-        self.buffer_image_granularity = buffer_image_granularity
-        self.sparse_address_space_size = sparse_address_space_size
-        self.max_bound_descriptor_sets = max_bound_descriptor_sets
-        self.max_per_stage_descriptor_samplers = max_per_stage_descriptor_samplers
-        self.max_per_stage_descriptor_uniform_buffers = max_per_stage_descriptor_uniform_buffers
-        self.max_per_stage_descriptor_storage_buffers = max_per_stage_descriptor_storage_buffers
-        self.max_per_stage_descriptor_sampled_images = max_per_stage_descriptor_sampled_images
-        self.max_per_stage_descriptor_storage_images = max_per_stage_descriptor_storage_images
-        self.max_per_stage_descriptor_input_attachments = max_per_stage_descriptor_input_attachments
-        self.max_per_stage_resources = max_per_stage_resources
-        self.max_descriptor_set_samplers = max_descriptor_set_samplers
-        self.max_descriptor_set_uniform_buffers = max_descriptor_set_uniform_buffers
-        self.max_descriptor_set_uniform_buffers_dynamic = max_descriptor_set_uniform_buffers_dynamic
-        self.max_descriptor_set_storage_buffers = max_descriptor_set_storage_buffers
-        self.max_descriptor_set_storage_buffers_dynamic = max_descriptor_set_storage_buffers_dynamic
-        self.max_descriptor_set_sampled_images = max_descriptor_set_sampled_images
-        self.max_descriptor_set_storage_images = max_descriptor_set_storage_images
-        self.max_descriptor_set_input_attachments = max_descriptor_set_input_attachments
-        self.max_vertex_input_attributes = max_vertex_input_attributes
-        self.max_vertex_input_bindings = max_vertex_input_bindings
-        self.max_vertex_input_attribute_offset = max_vertex_input_attribute_offset
-        self.max_vertex_input_binding_stride = max_vertex_input_binding_stride
-        self.max_vertex_output_components = max_vertex_output_components
-        self.max_tessellation_generation_level = max_tessellation_generation_level
-        self.max_tessellation_patch_size = max_tessellation_patch_size
-        self.max_tessellation_control_per_vertex_input_components = max_tessellation_control_per_vertex_input_components
-        self.max_tessellation_control_per_vertex_output_components = max_tessellation_control_per_vertex_output_components
-        self.max_tessellation_control_per_patch_output_components = max_tessellation_control_per_patch_output_components
-        self.max_tessellation_control_total_output_components = max_tessellation_control_total_output_components
-        self.max_tessellation_evaluation_input_components = max_tessellation_evaluation_input_components
-        self.max_tessellation_evaluation_output_components = max_tessellation_evaluation_output_components
-        self.max_geometry_shader_invocations = max_geometry_shader_invocations
-        self.max_geometry_input_components = max_geometry_input_components
-        self.max_geometry_output_components = max_geometry_output_components
-        self.max_geometry_output_vertices = max_geometry_output_vertices
-        self.max_geometry_total_output_components = max_geometry_total_output_components
-        self.max_fragment_input_components = max_fragment_input_components
-        self.max_fragment_output_attachments = max_fragment_output_attachments
-        self.max_fragment_dual_src_attachments = max_fragment_dual_src_attachments
-        self.max_fragment_combined_output_resources = max_fragment_combined_output_resources
-        self.max_compute_shared_memory_size = max_compute_shared_memory_size
-        self.max_compute_work_group_count = max_compute_work_group_count
-        self.max_compute_work_group_invocations = max_compute_work_group_invocations
-        self.max_compute_work_group_size = max_compute_work_group_size
-        self.sub_pixel_precision_bits = sub_pixel_precision_bits
-        self.sub_texel_precision_bits = sub_texel_precision_bits
-        self.mipmap_precision_bits = mipmap_precision_bits
-        self.max_draw_indexed_index_value = max_draw_indexed_index_value
-        self.max_draw_indirect_count = max_draw_indirect_count
-        self.max_sampler_lod_bias = max_sampler_lod_bias
-        self.max_sampler_anisotropy = max_sampler_anisotropy
-        self.max_viewports = max_viewports
-        self.max_viewport_dimensions = max_viewport_dimensions
-        self.viewport_bounds_range = viewport_bounds_range
-        self.viewport_sub_pixel_bits = viewport_sub_pixel_bits
-        self.min_memory_map_alignment = min_memory_map_alignment
-        self.min_texel_buffer_offset_alignment = min_texel_buffer_offset_alignment
-        self.min_uniform_buffer_offset_alignment = min_uniform_buffer_offset_alignment
-        self.min_storage_buffer_offset_alignment = min_storage_buffer_offset_alignment
-        self.min_texel_offset = min_texel_offset
-        self.max_texel_offset = max_texel_offset
-        self.min_texel_gather_offset = min_texel_gather_offset
-        self.max_texel_gather_offset = max_texel_gather_offset
-        self.min_interpolation_offset = min_interpolation_offset
-        self.max_interpolation_offset = max_interpolation_offset
-        self.sub_pixel_interpolation_offset_bits = sub_pixel_interpolation_offset_bits
-        self.max_framebuffer_width = max_framebuffer_width
-        self.max_framebuffer_height = max_framebuffer_height
-        self.max_framebuffer_layers = max_framebuffer_layers
-        self.framebuffer_color_sample_counts = framebuffer_color_sample_counts
-        self.framebuffer_depth_sample_counts = framebuffer_depth_sample_counts
-        self.framebuffer_stencil_sample_counts = framebuffer_stencil_sample_counts
-        self.framebuffer_no_attachments_sample_counts = framebuffer_no_attachments_sample_counts
-        self.max_color_attachments = max_color_attachments
-        self.sampled_image_color_sample_counts = sampled_image_color_sample_counts
-        self.sampled_image_integer_sample_counts = sampled_image_integer_sample_counts
-        self.sampled_image_depth_sample_counts = sampled_image_depth_sample_counts
-        self.sampled_image_stencil_sample_counts = sampled_image_stencil_sample_counts
-        self.storage_image_sample_counts = storage_image_sample_counts
-        self.max_sample_mask_words = max_sample_mask_words
-        self.timestamp_compute_and_graphics = timestamp_compute_and_graphics
-        self.timestamp_period = timestamp_period
-        self.max_clip_distances = max_clip_distances
-        self.max_cull_distances = max_cull_distances
-        self.max_combined_clip_and_cull_distances = max_combined_clip_and_cull_distances
-        self.discrete_queue_priorities = discrete_queue_priorities
-        self.point_size_range = point_size_range
-        self.line_width_range = line_width_range
-        self.point_size_granularity = point_size_granularity
-        self.line_width_granularity = line_width_granularity
-        self.strict_lines = strict_lines
-        self.standard_sample_locations = standard_sample_locations
-        self.optimal_buffer_copy_offset_alignment = optimal_buffer_copy_offset_alignment
-        self.optimal_buffer_copy_row_pitch_alignment = optimal_buffer_copy_row_pitch_alignment
-        self.non_coherent_atom_size = non_coherent_atom_size
 
 
 struct SemaphoreCreateInfo(Copyable):
@@ -3511,32 +3154,10 @@ struct DisplayPropertiesKHR(Copyable):
     var plane_reorder_possible: Bool32
     var persistent_content: Bool32
 
-    fn __init__(
-        out self,
-        display: DisplayKHR,
-        display_name: Ptr[c_char, ImmutOrigin.external],
-        physical_dimensions: Extent2D,
-        physical_resolution: Extent2D,
-        supported_transforms: SurfaceTransformFlagsKHR,
-        plane_reorder_possible: Bool32,
-        persistent_content: Bool32,
-    ):
-        self.display = display
-        self.display_name = display_name
-        self.physical_dimensions = physical_dimensions.copy()
-        self.physical_resolution = physical_resolution.copy()
-        self.supported_transforms = supported_transforms
-        self.plane_reorder_possible = plane_reorder_possible
-        self.persistent_content = persistent_content
-
 
 struct DisplayPlanePropertiesKHR(Copyable):
     var current_display: DisplayKHR
     var current_stack_index: UInt32
-
-    fn __init__(out self, current_display: DisplayKHR, current_stack_index: UInt32):
-        self.current_display = current_display
-        self.current_stack_index = current_stack_index
 
 
 struct DisplayModeParametersKHR(Copyable):
@@ -3551,10 +3172,6 @@ struct DisplayModeParametersKHR(Copyable):
 struct DisplayModePropertiesKHR(Copyable):
     var display_mode: DisplayModeKHR
     var parameters: DisplayModeParametersKHR
-
-    fn __init__(out self, display_mode: DisplayModeKHR, parameters: DisplayModeParametersKHR):
-        self.display_mode = display_mode
-        self.parameters = parameters.copy()
 
 
 struct DisplayModeCreateInfoKHR(Copyable):
@@ -3586,28 +3203,6 @@ struct DisplayPlaneCapabilitiesKHR(Copyable):
     var max_dst_position: Offset2D
     var min_dst_extent: Extent2D
     var max_dst_extent: Extent2D
-
-    fn __init__(
-        out self,
-        supported_alpha: DisplayPlaneAlphaFlagsKHR,
-        min_src_position: Offset2D,
-        max_src_position: Offset2D,
-        min_src_extent: Extent2D,
-        max_src_extent: Extent2D,
-        min_dst_position: Offset2D,
-        max_dst_position: Offset2D,
-        min_dst_extent: Extent2D,
-        max_dst_extent: Extent2D,
-    ):
-        self.supported_alpha = supported_alpha
-        self.min_src_position = min_src_position.copy()
-        self.max_src_position = max_src_position.copy()
-        self.min_src_extent = min_src_extent.copy()
-        self.max_src_extent = max_src_extent.copy()
-        self.min_dst_position = min_dst_position.copy()
-        self.max_dst_position = max_dst_position.copy()
-        self.min_dst_extent = min_dst_extent.copy()
-        self.max_dst_extent = max_dst_extent.copy()
 
 
 struct DisplaySurfaceCreateInfoKHR(Copyable):
@@ -3696,30 +3291,6 @@ struct SurfaceCapabilitiesKHR(Copyable):
     var current_transform: SurfaceTransformFlagBitsKHR
     var supported_composite_alpha: CompositeAlphaFlagsKHR
     var supported_usage_flags: ImageUsageFlags
-
-    fn __init__(
-        out self,
-        min_image_count: UInt32,
-        max_image_count: UInt32,
-        current_extent: Extent2D,
-        min_image_extent: Extent2D,
-        max_image_extent: Extent2D,
-        max_image_array_layers: UInt32,
-        supported_transforms: SurfaceTransformFlagsKHR,
-        current_transform: SurfaceTransformFlagBitsKHR,
-        supported_composite_alpha: CompositeAlphaFlagsKHR,
-        supported_usage_flags: ImageUsageFlags,
-    ):
-        self.min_image_count = min_image_count
-        self.max_image_count = max_image_count
-        self.current_extent = current_extent.copy()
-        self.min_image_extent = min_image_extent.copy()
-        self.max_image_extent = max_image_extent.copy()
-        self.max_image_array_layers = max_image_array_layers
-        self.supported_transforms = supported_transforms
-        self.current_transform = current_transform
-        self.supported_composite_alpha = supported_composite_alpha
-        self.supported_usage_flags = supported_usage_flags
 
 
 struct AndroidSurfaceCreateInfoKHR(Copyable):
@@ -3933,10 +3504,6 @@ struct ScreenSurfaceCreateInfoQNX(Copyable):
 struct SurfaceFormatKHR(Copyable):
     var format: Format
     var color_space: ColorSpaceKHR
-
-    fn __init__(out self, format: Format, color_space: ColorSpaceKHR):
-        self.format = format
-        self.color_space = color_space
 
 
 struct SwapchainCreateInfoKHR(Copyable):
@@ -4305,18 +3872,6 @@ struct ExternalImageFormatPropertiesNV(Copyable):
     var export_from_imported_handle_types: ExternalMemoryHandleTypeFlagsNV
     var compatible_handle_types: ExternalMemoryHandleTypeFlagsNV
 
-    fn __init__(
-        out self,
-        image_format_properties: ImageFormatProperties,
-        external_memory_features: ExternalMemoryFeatureFlagsNV,
-        export_from_imported_handle_types: ExternalMemoryHandleTypeFlagsNV,
-        compatible_handle_types: ExternalMemoryHandleTypeFlagsNV,
-    ):
-        self.image_format_properties = image_format_properties.copy()
-        self.external_memory_features = external_memory_features
-        self.export_from_imported_handle_types = export_from_imported_handle_types
-        self.compatible_handle_types = compatible_handle_types
-
 
 struct ExternalMemoryImageCreateInfoNV(Copyable):
     var s_type: StructureType
@@ -4610,32 +4165,6 @@ struct PhysicalDeviceDeviceGeneratedCommandsPropertiesNV(Copyable):
     var min_sequences_index_buffer_offset_alignment: UInt32
     var min_indirect_commands_buffer_offset_alignment: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_graphics_shader_group_count: UInt32,
-        max_indirect_sequence_count: UInt32,
-        max_indirect_commands_token_count: UInt32,
-        max_indirect_commands_stream_count: UInt32,
-        max_indirect_commands_token_offset: UInt32,
-        max_indirect_commands_stream_stride: UInt32,
-        min_sequences_count_buffer_offset_alignment: UInt32,
-        min_sequences_index_buffer_offset_alignment: UInt32,
-        min_indirect_commands_buffer_offset_alignment: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_graphics_shader_group_count = max_graphics_shader_group_count
-        self.max_indirect_sequence_count = max_indirect_sequence_count
-        self.max_indirect_commands_token_count = max_indirect_commands_token_count
-        self.max_indirect_commands_stream_count = max_indirect_commands_stream_count
-        self.max_indirect_commands_token_offset = max_indirect_commands_token_offset
-        self.max_indirect_commands_stream_stride = max_indirect_commands_stream_stride
-        self.min_sequences_count_buffer_offset_alignment = min_sequences_count_buffer_offset_alignment
-        self.min_sequences_index_buffer_offset_alignment = min_sequences_index_buffer_offset_alignment
-        self.min_indirect_commands_buffer_offset_alignment = min_indirect_commands_buffer_offset_alignment
-
 
 struct PhysicalDeviceClusterAccelerationStructureFeaturesNV(Copyable):
     var s_type: StructureType
@@ -4664,30 +4193,6 @@ struct PhysicalDeviceClusterAccelerationStructurePropertiesNV(Copyable):
     var cluster_bottom_level_byte_alignment: UInt32
     var cluster_template_bounds_byte_alignment: UInt32
     var max_cluster_geometry_index: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_vertices_per_cluster: UInt32,
-        max_triangles_per_cluster: UInt32,
-        cluster_scratch_byte_alignment: UInt32,
-        cluster_byte_alignment: UInt32,
-        cluster_template_byte_alignment: UInt32,
-        cluster_bottom_level_byte_alignment: UInt32,
-        cluster_template_bounds_byte_alignment: UInt32,
-        max_cluster_geometry_index: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_vertices_per_cluster = max_vertices_per_cluster
-        self.max_triangles_per_cluster = max_triangles_per_cluster
-        self.cluster_scratch_byte_alignment = cluster_scratch_byte_alignment
-        self.cluster_byte_alignment = cluster_byte_alignment
-        self.cluster_template_byte_alignment = cluster_template_byte_alignment
-        self.cluster_bottom_level_byte_alignment = cluster_bottom_level_byte_alignment
-        self.cluster_template_bounds_byte_alignment = cluster_template_bounds_byte_alignment
-        self.max_cluster_geometry_index = max_cluster_geometry_index
 
 
 struct StridedDeviceAddressNV(Copyable):
@@ -5128,16 +4633,6 @@ struct PhysicalDeviceMultiDrawPropertiesEXT(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_multi_draw_count: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_multi_draw_count: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_multi_draw_count = max_multi_draw_count
-
 
 struct GraphicsShaderGroupCreateInfoNV(Copyable):
     var s_type: StructureType
@@ -5441,47 +4936,17 @@ struct PhysicalDeviceProperties2(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var properties: PhysicalDeviceProperties
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        properties: PhysicalDeviceProperties,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.properties = properties.copy()
-
 
 struct FormatProperties2(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var format_properties: FormatProperties
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        format_properties: FormatProperties,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.format_properties = format_properties.copy()
-
 
 struct ImageFormatProperties2(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var image_format_properties: ImageFormatProperties
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        image_format_properties: ImageFormatProperties,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.image_format_properties = image_format_properties.copy()
 
 
 struct PhysicalDeviceImageFormatInfo2(Copyable):
@@ -5517,47 +4982,17 @@ struct QueueFamilyProperties2(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var queue_family_properties: QueueFamilyProperties
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        queue_family_properties: QueueFamilyProperties,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.queue_family_properties = queue_family_properties.copy()
-
 
 struct PhysicalDeviceMemoryProperties2(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var memory_properties: PhysicalDeviceMemoryProperties
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        memory_properties: PhysicalDeviceMemoryProperties,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.memory_properties = memory_properties.copy()
-
 
 struct SparseImageFormatProperties2(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var properties: SparseImageFormatProperties
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        properties: SparseImageFormatProperties,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.properties = properties.copy()
 
 
 struct PhysicalDeviceSparseImageFormatInfo2(Copyable):
@@ -5593,16 +5028,6 @@ struct PhysicalDevicePushDescriptorProperties(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_push_descriptors: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_push_descriptors: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_push_descriptors = max_push_descriptors
-
 
 struct ConformanceVersion(Copyable):
     var major: UInt8
@@ -5624,22 +5049,6 @@ struct PhysicalDeviceDriverProperties(Copyable):
     var driver_name: InlineArray[c_char, Int(MAX_DRIVER_NAME_SIZE)]
     var driver_info: InlineArray[c_char, Int(MAX_DRIVER_INFO_SIZE)]
     var conformance_version: ConformanceVersion
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        driver_id: DriverId,
-        driver_name: InlineArray[c_char, Int(MAX_DRIVER_NAME_SIZE)],
-        driver_info: InlineArray[c_char, Int(MAX_DRIVER_INFO_SIZE)],
-        conformance_version: ConformanceVersion,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.driver_id = driver_id
-        self.driver_name = driver_name
-        self.driver_info = driver_info
-        self.conformance_version = conformance_version.copy()
 
 
 struct PresentRegionsKHR(Copyable):
@@ -5707,16 +5116,6 @@ struct ExternalMemoryProperties(Copyable):
     var export_from_imported_handle_types: ExternalMemoryHandleTypeFlags
     var compatible_handle_types: ExternalMemoryHandleTypeFlags
 
-    fn __init__(
-        out self,
-        external_memory_features: ExternalMemoryFeatureFlags,
-        export_from_imported_handle_types: ExternalMemoryHandleTypeFlags,
-        compatible_handle_types: ExternalMemoryHandleTypeFlags,
-    ):
-        self.external_memory_features = external_memory_features
-        self.export_from_imported_handle_types = export_from_imported_handle_types
-        self.compatible_handle_types = compatible_handle_types
-
 
 struct PhysicalDeviceExternalImageFormatInfo(Copyable):
     var s_type: StructureType
@@ -5738,16 +5137,6 @@ struct ExternalImageFormatProperties(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var external_memory_properties: ExternalMemoryProperties
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        external_memory_properties: ExternalMemoryProperties,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.external_memory_properties = external_memory_properties.copy()
 
 
 struct PhysicalDeviceExternalBufferInfo(Copyable):
@@ -5777,16 +5166,6 @@ struct ExternalBufferProperties(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var external_memory_properties: ExternalMemoryProperties
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        external_memory_properties: ExternalMemoryProperties,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.external_memory_properties = external_memory_properties.copy()
-
 
 struct PhysicalDeviceIDProperties(Copyable):
     var s_type: StructureType
@@ -5796,24 +5175,6 @@ struct PhysicalDeviceIDProperties(Copyable):
     var device_luid: InlineArray[UInt8, Int(LUID_SIZE)]
     var device_node_mask: UInt32
     var device_luid_valid: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        device_uuid: InlineArray[UInt8, Int(UUID_SIZE)],
-        driver_uuid: InlineArray[UInt8, Int(UUID_SIZE)],
-        device_luid: InlineArray[UInt8, Int(LUID_SIZE)],
-        device_node_mask: UInt32,
-        device_luid_valid: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.device_uuid = device_uuid
-        self.driver_uuid = driver_uuid
-        self.device_luid = device_luid
-        self.device_node_mask = device_node_mask
-        self.device_luid_valid = device_luid_valid
 
 
 struct ExternalMemoryImageCreateInfo(Copyable):
@@ -5932,16 +5293,6 @@ struct MemoryZirconHandlePropertiesFUCHSIA(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var memory_type_bits: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        memory_type_bits: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.memory_type_bits = memory_type_bits
-
 
 struct MemoryGetZirconHandleInfoFUCHSIA(Copyable):
     var s_type: StructureType
@@ -5966,16 +5317,6 @@ struct MemoryWin32HandlePropertiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var memory_type_bits: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        memory_type_bits: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.memory_type_bits = memory_type_bits
 
 
 struct MemoryGetWin32HandleInfoKHR(Copyable):
@@ -6020,16 +5361,6 @@ struct MemoryFdPropertiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var memory_type_bits: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        memory_type_bits: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.memory_type_bits = memory_type_bits
 
 
 struct MemoryGetFdInfoKHR(Copyable):
@@ -6109,16 +5440,6 @@ struct MemoryMetalHandlePropertiesEXT(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var memory_type_bits: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        memory_type_bits: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.memory_type_bits = memory_type_bits
-
 
 struct MemoryGetMetalHandleInfoEXT(Copyable):
     var s_type: StructureType
@@ -6161,20 +5482,6 @@ struct ExternalSemaphoreProperties(Copyable):
     var export_from_imported_handle_types: ExternalSemaphoreHandleTypeFlags
     var compatible_handle_types: ExternalSemaphoreHandleTypeFlags
     var external_semaphore_features: ExternalSemaphoreFeatureFlags
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        export_from_imported_handle_types: ExternalSemaphoreHandleTypeFlags,
-        compatible_handle_types: ExternalSemaphoreHandleTypeFlags,
-        external_semaphore_features: ExternalSemaphoreFeatureFlags,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.export_from_imported_handle_types = export_from_imported_handle_types
-        self.compatible_handle_types = compatible_handle_types
-        self.external_semaphore_features = external_semaphore_features
 
 
 struct ExportSemaphoreCreateInfo(Copyable):
@@ -6397,20 +5704,6 @@ struct ExternalFenceProperties(Copyable):
     var export_from_imported_handle_types: ExternalFenceHandleTypeFlags
     var compatible_handle_types: ExternalFenceHandleTypeFlags
     var external_fence_features: ExternalFenceFeatureFlags
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        export_from_imported_handle_types: ExternalFenceHandleTypeFlags,
-        compatible_handle_types: ExternalFenceHandleTypeFlags,
-        external_fence_features: ExternalFenceFeatureFlags,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.export_from_imported_handle_types = export_from_imported_handle_types
-        self.compatible_handle_types = compatible_handle_types
-        self.external_fence_features = external_fence_features
 
 
 struct ExportFenceCreateInfo(Copyable):
@@ -6804,18 +6097,6 @@ struct PhysicalDeviceMultiviewProperties(Copyable):
     var max_multiview_view_count: UInt32
     var max_multiview_instance_index: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_multiview_view_count: UInt32,
-        max_multiview_instance_index: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_multiview_view_count = max_multiview_view_count
-        self.max_multiview_instance_index = max_multiview_instance_index
-
 
 struct RenderPassMultiviewCreateInfo(Copyable):
     var s_type: StructureType
@@ -6862,36 +6143,6 @@ struct SurfaceCapabilities2EXT(Copyable):
     var supported_composite_alpha: CompositeAlphaFlagsKHR
     var supported_usage_flags: ImageUsageFlags
     var supported_surface_counters: SurfaceCounterFlagsEXT
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        min_image_count: UInt32,
-        max_image_count: UInt32,
-        current_extent: Extent2D,
-        min_image_extent: Extent2D,
-        max_image_extent: Extent2D,
-        max_image_array_layers: UInt32,
-        supported_transforms: SurfaceTransformFlagsKHR,
-        current_transform: SurfaceTransformFlagBitsKHR,
-        supported_composite_alpha: CompositeAlphaFlagsKHR,
-        supported_usage_flags: ImageUsageFlags,
-        supported_surface_counters: SurfaceCounterFlagsEXT,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.min_image_count = min_image_count
-        self.max_image_count = max_image_count
-        self.current_extent = current_extent.copy()
-        self.min_image_extent = min_image_extent.copy()
-        self.max_image_extent = max_image_extent.copy()
-        self.max_image_array_layers = max_image_array_layers
-        self.supported_transforms = supported_transforms
-        self.current_transform = current_transform
-        self.supported_composite_alpha = supported_composite_alpha
-        self.supported_usage_flags = supported_usage_flags
-        self.supported_surface_counters = supported_surface_counters
 
 
 struct DisplayPowerInfoEXT(Copyable):
@@ -6964,20 +6215,6 @@ struct PhysicalDeviceGroupProperties(Copyable):
     var physical_device_count: UInt32
     var physical_devices: InlineArray[PhysicalDevice, Int(MAX_DEVICE_GROUP_SIZE)]
     var subset_allocation: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        physical_device_count: UInt32,
-        physical_devices: InlineArray[PhysicalDevice, Int(MAX_DEVICE_GROUP_SIZE)],
-        subset_allocation: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.physical_device_count = physical_device_count
-        self.physical_devices = physical_devices
-        self.subset_allocation = subset_allocation
 
 
 struct MemoryAllocateFlagsInfo(Copyable):
@@ -7180,18 +6417,6 @@ struct DeviceGroupPresentCapabilitiesKHR(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var present_mask: InlineArray[UInt32, Int(MAX_DEVICE_GROUP_SIZE)]
     var modes: DeviceGroupPresentModeFlagsKHR
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        present_mask: InlineArray[UInt32, Int(MAX_DEVICE_GROUP_SIZE)],
-        modes: DeviceGroupPresentModeFlagsKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.present_mask = present_mask
-        self.modes = modes
 
 
 struct ImageSwapchainCreateInfoKHR(Copyable):
@@ -7567,16 +6792,6 @@ struct DisplayNativeHdrSurfaceCapabilitiesAMD(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var local_dimming_support: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        local_dimming_support: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.local_dimming_support = local_dimming_support
-
 
 struct SwapchainDisplayNativeHdrCreateInfoAMD(Copyable):
     var s_type: StructureType
@@ -7597,9 +6812,6 @@ struct SwapchainDisplayNativeHdrCreateInfoAMD(Copyable):
 struct RefreshCycleDurationGOOGLE(Copyable):
     var refresh_duration: UInt64
 
-    fn __init__(out self, refresh_duration: UInt64):
-        self.refresh_duration = refresh_duration
-
 
 struct PastPresentationTimingGOOGLE(Copyable):
     var present_id: UInt32
@@ -7607,20 +6819,6 @@ struct PastPresentationTimingGOOGLE(Copyable):
     var actual_present_time: UInt64
     var earliest_present_time: UInt64
     var present_margin: UInt64
-
-    fn __init__(
-        out self,
-        present_id: UInt32,
-        desired_present_time: UInt64,
-        actual_present_time: UInt64,
-        earliest_present_time: UInt64,
-        present_margin: UInt64,
-    ):
-        self.present_id = present_id
-        self.desired_present_time = desired_present_time
-        self.actual_present_time = actual_present_time
-        self.earliest_present_time = earliest_present_time
-        self.present_margin = present_margin
 
 
 struct PresentTimesInfoGOOGLE(Copyable):
@@ -7785,16 +6983,6 @@ struct PhysicalDeviceDiscardRectanglePropertiesEXT(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_discard_rectangles: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_discard_rectangles: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_discard_rectangles = max_discard_rectangles
-
 
 struct PipelineDiscardRectangleStateCreateInfoEXT(Copyable):
     var s_type: StructureType
@@ -7825,16 +7013,6 @@ struct PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var per_view_position_all_components: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        per_view_position_all_components: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.per_view_position_all_components = per_view_position_all_components
 
 
 struct InputAttachmentAspectReference(Copyable):
@@ -7890,31 +7068,11 @@ struct SurfaceCapabilities2KHR(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var surface_capabilities: SurfaceCapabilitiesKHR
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        surface_capabilities: SurfaceCapabilitiesKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.surface_capabilities = surface_capabilities.copy()
-
 
 struct SurfaceFormat2KHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var surface_format: SurfaceFormatKHR
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        surface_format: SurfaceFormatKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.surface_format = surface_format.copy()
 
 
 struct DisplayProperties2KHR(Copyable):
@@ -7922,31 +7080,11 @@ struct DisplayProperties2KHR(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var display_properties: DisplayPropertiesKHR
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        display_properties: DisplayPropertiesKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.display_properties = display_properties.copy()
-
 
 struct DisplayPlaneProperties2KHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var display_plane_properties: DisplayPlanePropertiesKHR
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        display_plane_properties: DisplayPlanePropertiesKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.display_plane_properties = display_plane_properties.copy()
 
 
 struct DisplayModeProperties2KHR(Copyable):
@@ -7954,31 +7092,11 @@ struct DisplayModeProperties2KHR(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var display_mode_properties: DisplayModePropertiesKHR
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        display_mode_properties: DisplayModePropertiesKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.display_mode_properties = display_mode_properties.copy()
-
 
 struct DisplayModeStereoPropertiesNV(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutOrigin.external]
     var hdmi_3d_supported: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, ImmutOrigin.external],
-        hdmi_3d_supported: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.hdmi_3d_supported = hdmi_3d_supported
 
 
 struct DisplayPlaneInfo2KHR(Copyable):
@@ -8005,31 +7123,11 @@ struct DisplayPlaneCapabilities2KHR(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var capabilities: DisplayPlaneCapabilitiesKHR
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        capabilities: DisplayPlaneCapabilitiesKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.capabilities = capabilities.copy()
-
 
 struct SharedPresentSurfaceCapabilitiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var shared_present_supported_usage_flags: ImageUsageFlags
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        shared_present_supported_usage_flags: ImageUsageFlags,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.shared_present_supported_usage_flags = shared_present_supported_usage_flags
 
 
 struct PhysicalDevice16BitStorageFeatures(Copyable):
@@ -8064,22 +7162,6 @@ struct PhysicalDeviceSubgroupProperties(Copyable):
     var supported_stages: ShaderStageFlags
     var supported_operations: SubgroupFeatureFlags
     var quad_operations_in_all_stages: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        subgroup_size: UInt32,
-        supported_stages: ShaderStageFlags,
-        supported_operations: SubgroupFeatureFlags,
-        quad_operations_in_all_stages: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.subgroup_size = subgroup_size
-        self.supported_stages = supported_stages
-        self.supported_operations = supported_operations
-        self.quad_operations_in_all_stages = quad_operations_in_all_stages
 
 
 struct PhysicalDeviceShaderSubgroupExtendedTypesFeatures(Copyable):
@@ -8177,31 +7259,11 @@ struct MemoryRequirements2(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var memory_requirements: MemoryRequirements
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        memory_requirements: MemoryRequirements,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.memory_requirements = memory_requirements.copy()
-
 
 struct SparseImageMemoryRequirements2(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var memory_requirements: SparseImageMemoryRequirements
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        memory_requirements: SparseImageMemoryRequirements,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.memory_requirements = memory_requirements.copy()
 
 
 struct PhysicalDevicePointClippingProperties(Copyable):
@@ -8209,34 +7271,12 @@ struct PhysicalDevicePointClippingProperties(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var point_clipping_behavior: PointClippingBehavior
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        point_clipping_behavior: PointClippingBehavior,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.point_clipping_behavior = point_clipping_behavior
-
 
 struct MemoryDedicatedRequirements(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var prefers_dedicated_allocation: Bool32
     var requires_dedicated_allocation: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        prefers_dedicated_allocation: Bool32,
-        requires_dedicated_allocation: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.prefers_dedicated_allocation = prefers_dedicated_allocation
-        self.requires_dedicated_allocation = requires_dedicated_allocation
 
 
 struct MemoryDedicatedAllocateInfo(Copyable):
@@ -8415,31 +7455,11 @@ struct SamplerYcbcrConversionImageFormatProperties(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var combined_image_sampler_descriptor_count: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        combined_image_sampler_descriptor_count: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.combined_image_sampler_descriptor_count = combined_image_sampler_descriptor_count
-
 
 struct TextureLODGatherFormatPropertiesAMD(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var supports_texture_gather_lod_bias_amd: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        supports_texture_gather_lod_bias_amd: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.supports_texture_gather_lod_bias_amd = supports_texture_gather_lod_bias_amd
 
 
 struct ConditionalRenderingBeginInfoEXT(Copyable):
@@ -8501,16 +7521,6 @@ struct PhysicalDeviceProtectedMemoryProperties(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var protected_no_fault: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        protected_no_fault: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.protected_no_fault = protected_no_fault
-
 
 struct DeviceQueueInfo2(Copyable):
     var s_type: StructureType
@@ -8561,18 +7571,6 @@ struct PhysicalDeviceSamplerFilterMinmaxProperties(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var filter_minmax_single_component_formats: Bool32
     var filter_minmax_image_component_mapping: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        filter_minmax_single_component_formats: Bool32,
-        filter_minmax_image_component_mapping: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.filter_minmax_single_component_formats = filter_minmax_single_component_formats
-        self.filter_minmax_image_component_mapping = filter_minmax_image_component_mapping
 
 
 struct SampleLocationEXT(Copyable):
@@ -8680,39 +7678,11 @@ struct PhysicalDeviceSampleLocationsPropertiesEXT(Copyable):
     var sample_location_sub_pixel_bits: UInt32
     var variable_sample_locations: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        sample_location_sample_counts: SampleCountFlags,
-        max_sample_location_grid_size: Extent2D,
-        sample_location_coordinate_range: InlineArray[Float32, Int(2)],
-        sample_location_sub_pixel_bits: UInt32,
-        variable_sample_locations: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.sample_location_sample_counts = sample_location_sample_counts
-        self.max_sample_location_grid_size = max_sample_location_grid_size.copy()
-        self.sample_location_coordinate_range = sample_location_coordinate_range
-        self.sample_location_sub_pixel_bits = sample_location_sub_pixel_bits
-        self.variable_sample_locations = variable_sample_locations
-
 
 struct MultisamplePropertiesEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_sample_location_grid_size: Extent2D
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_sample_location_grid_size: Extent2D,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_sample_location_grid_size = max_sample_location_grid_size.copy()
 
 
 struct SamplerReductionModeCreateInfo(Copyable):
@@ -8773,26 +7743,6 @@ struct PhysicalDeviceBlendOperationAdvancedPropertiesEXT(Copyable):
     var advanced_blend_correlated_overlap: Bool32
     var advanced_blend_all_operations: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        advanced_blend_max_color_attachments: UInt32,
-        advanced_blend_independent_blend: Bool32,
-        advanced_blend_non_premultiplied_src_color: Bool32,
-        advanced_blend_non_premultiplied_dst_color: Bool32,
-        advanced_blend_correlated_overlap: Bool32,
-        advanced_blend_all_operations: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.advanced_blend_max_color_attachments = advanced_blend_max_color_attachments
-        self.advanced_blend_independent_blend = advanced_blend_independent_blend
-        self.advanced_blend_non_premultiplied_src_color = advanced_blend_non_premultiplied_src_color
-        self.advanced_blend_non_premultiplied_dst_color = advanced_blend_non_premultiplied_dst_color
-        self.advanced_blend_correlated_overlap = advanced_blend_correlated_overlap
-        self.advanced_blend_all_operations = advanced_blend_all_operations
-
 
 struct PipelineColorBlendAdvancedStateCreateInfoEXT(Copyable):
     var s_type: StructureType
@@ -8843,24 +7793,6 @@ struct PhysicalDeviceInlineUniformBlockProperties(Copyable):
     var max_per_stage_descriptor_update_after_bind_inline_uniform_blocks: UInt32
     var max_descriptor_set_inline_uniform_blocks: UInt32
     var max_descriptor_set_update_after_bind_inline_uniform_blocks: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_inline_uniform_block_size: UInt32,
-        max_per_stage_descriptor_inline_uniform_blocks: UInt32,
-        max_per_stage_descriptor_update_after_bind_inline_uniform_blocks: UInt32,
-        max_descriptor_set_inline_uniform_blocks: UInt32,
-        max_descriptor_set_update_after_bind_inline_uniform_blocks: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_inline_uniform_block_size = max_inline_uniform_block_size
-        self.max_per_stage_descriptor_inline_uniform_blocks = max_per_stage_descriptor_inline_uniform_blocks
-        self.max_per_stage_descriptor_update_after_bind_inline_uniform_blocks = max_per_stage_descriptor_update_after_bind_inline_uniform_blocks
-        self.max_descriptor_set_inline_uniform_blocks = max_descriptor_set_inline_uniform_blocks
-        self.max_descriptor_set_update_after_bind_inline_uniform_blocks = max_descriptor_set_update_after_bind_inline_uniform_blocks
 
 
 struct WriteDescriptorSetInlineUniformBlock(Copyable):
@@ -8989,18 +7921,6 @@ struct PhysicalDeviceMaintenance3Properties(Copyable):
     var max_per_set_descriptors: UInt32
     var max_memory_allocation_size: DeviceSize
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_per_set_descriptors: UInt32,
-        max_memory_allocation_size: DeviceSize,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_per_set_descriptors = max_per_set_descriptors
-        self.max_memory_allocation_size = max_memory_allocation_size
-
 
 struct PhysicalDeviceMaintenance4Features(Copyable):
     var s_type: StructureType
@@ -9022,16 +7942,6 @@ struct PhysicalDeviceMaintenance4Properties(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_buffer_size: DeviceSize
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_buffer_size: DeviceSize,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_buffer_size = max_buffer_size
 
 
 struct PhysicalDeviceMaintenance5Features(Copyable):
@@ -9060,26 +7970,6 @@ struct PhysicalDeviceMaintenance5Properties(Copyable):
     var non_strict_single_pixel_wide_lines_use_parallelogram: Bool32
     var non_strict_wide_lines_use_parallelogram: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        early_fragment_multisample_coverage_after_sample_counting: Bool32,
-        early_fragment_sample_mask_test_before_sample_counting: Bool32,
-        depth_stencil_swizzle_one_support: Bool32,
-        polygon_mode_point_size: Bool32,
-        non_strict_single_pixel_wide_lines_use_parallelogram: Bool32,
-        non_strict_wide_lines_use_parallelogram: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.early_fragment_multisample_coverage_after_sample_counting = early_fragment_multisample_coverage_after_sample_counting
-        self.early_fragment_sample_mask_test_before_sample_counting = early_fragment_sample_mask_test_before_sample_counting
-        self.depth_stencil_swizzle_one_support = depth_stencil_swizzle_one_support
-        self.polygon_mode_point_size = polygon_mode_point_size
-        self.non_strict_single_pixel_wide_lines_use_parallelogram = non_strict_single_pixel_wide_lines_use_parallelogram
-        self.non_strict_wide_lines_use_parallelogram = non_strict_wide_lines_use_parallelogram
-
 
 struct PhysicalDeviceMaintenance6Features(Copyable):
     var s_type: StructureType
@@ -9103,20 +7993,6 @@ struct PhysicalDeviceMaintenance6Properties(Copyable):
     var block_texel_view_compatible_multiple_layers: Bool32
     var max_combined_image_sampler_descriptor_count: UInt32
     var fragment_shading_rate_clamp_combiner_inputs: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        block_texel_view_compatible_multiple_layers: Bool32,
-        max_combined_image_sampler_descriptor_count: UInt32,
-        fragment_shading_rate_clamp_combiner_inputs: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.block_texel_view_compatible_multiple_layers = block_texel_view_compatible_multiple_layers
-        self.max_combined_image_sampler_descriptor_count = max_combined_image_sampler_descriptor_count
-        self.fragment_shading_rate_clamp_combiner_inputs = fragment_shading_rate_clamp_combiner_inputs
 
 
 struct PhysicalDeviceMaintenance7FeaturesKHR(Copyable):
@@ -9147,30 +8023,6 @@ struct PhysicalDeviceMaintenance7PropertiesKHR(Copyable):
     var max_descriptor_set_update_after_bind_total_storage_buffers_dynamic: UInt32
     var max_descriptor_set_update_after_bind_total_buffers_dynamic: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        robust_fragment_shading_rate_attachment_access: Bool32,
-        separate_depth_stencil_attachment_access: Bool32,
-        max_descriptor_set_total_uniform_buffers_dynamic: UInt32,
-        max_descriptor_set_total_storage_buffers_dynamic: UInt32,
-        max_descriptor_set_total_buffers_dynamic: UInt32,
-        max_descriptor_set_update_after_bind_total_uniform_buffers_dynamic: UInt32,
-        max_descriptor_set_update_after_bind_total_storage_buffers_dynamic: UInt32,
-        max_descriptor_set_update_after_bind_total_buffers_dynamic: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.robust_fragment_shading_rate_attachment_access = robust_fragment_shading_rate_attachment_access
-        self.separate_depth_stencil_attachment_access = separate_depth_stencil_attachment_access
-        self.max_descriptor_set_total_uniform_buffers_dynamic = max_descriptor_set_total_uniform_buffers_dynamic
-        self.max_descriptor_set_total_storage_buffers_dynamic = max_descriptor_set_total_storage_buffers_dynamic
-        self.max_descriptor_set_total_buffers_dynamic = max_descriptor_set_total_buffers_dynamic
-        self.max_descriptor_set_update_after_bind_total_uniform_buffers_dynamic = max_descriptor_set_update_after_bind_total_uniform_buffers_dynamic
-        self.max_descriptor_set_update_after_bind_total_storage_buffers_dynamic = max_descriptor_set_update_after_bind_total_storage_buffers_dynamic
-        self.max_descriptor_set_update_after_bind_total_buffers_dynamic = max_descriptor_set_update_after_bind_total_buffers_dynamic
-
 
 struct PhysicalDeviceLayeredApiPropertiesListKHR(Copyable):
     var s_type: StructureType
@@ -9199,37 +8051,11 @@ struct PhysicalDeviceLayeredApiPropertiesKHR(Copyable):
     var layered_api: PhysicalDeviceLayeredApiKHR
     var device_name: InlineArray[c_char, Int(MAX_PHYSICAL_DEVICE_NAME_SIZE)]
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        vendor_id: UInt32,
-        device_id: UInt32,
-        layered_api: PhysicalDeviceLayeredApiKHR,
-        device_name: InlineArray[c_char, Int(MAX_PHYSICAL_DEVICE_NAME_SIZE)],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.vendor_id = vendor_id
-        self.device_id = device_id
-        self.layered_api = layered_api
-        self.device_name = device_name
-
 
 struct PhysicalDeviceLayeredApiVulkanPropertiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var properties: PhysicalDeviceProperties2
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        properties: PhysicalDeviceProperties2,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.properties = properties.copy()
 
 
 struct PhysicalDeviceMaintenance8FeaturesKHR(Copyable):
@@ -9270,33 +8096,11 @@ struct PhysicalDeviceMaintenance9PropertiesKHR(Copyable):
     var image_2d_view_of_3d_sparse: Bool32
     var default_vertex_attribute_value: DefaultVertexAttributeValueKHR
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        image_2d_view_of_3d_sparse: Bool32,
-        default_vertex_attribute_value: DefaultVertexAttributeValueKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.image_2d_view_of_3d_sparse = image_2d_view_of_3d_sparse
-        self.default_vertex_attribute_value = default_vertex_attribute_value
-
 
 struct QueueFamilyOwnershipTransferPropertiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var optimal_image_transfer_to_queue_families: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        optimal_image_transfer_to_queue_families: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.optimal_image_transfer_to_queue_families = optimal_image_transfer_to_queue_families
 
 
 struct RenderingAreaInfo(Copyable):
@@ -9331,16 +8135,6 @@ struct DescriptorSetLayoutSupport(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var supported: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        supported: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.supported = supported
 
 
 struct PhysicalDeviceShaderDrawParametersFeatures(Copyable):
@@ -9398,48 +8192,6 @@ struct PhysicalDeviceFloatControlsProperties(Copyable):
     var shader_rounding_mode_rtz_float_16: Bool32
     var shader_rounding_mode_rtz_float_32: Bool32
     var shader_rounding_mode_rtz_float_64: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        denorm_behavior_independence: ShaderFloatControlsIndependence,
-        rounding_mode_independence: ShaderFloatControlsIndependence,
-        shader_signed_zero_inf_nan_preserve_float_16: Bool32,
-        shader_signed_zero_inf_nan_preserve_float_32: Bool32,
-        shader_signed_zero_inf_nan_preserve_float_64: Bool32,
-        shader_denorm_preserve_float_16: Bool32,
-        shader_denorm_preserve_float_32: Bool32,
-        shader_denorm_preserve_float_64: Bool32,
-        shader_denorm_flush_to_zero_float_16: Bool32,
-        shader_denorm_flush_to_zero_float_32: Bool32,
-        shader_denorm_flush_to_zero_float_64: Bool32,
-        shader_rounding_mode_rte_float_16: Bool32,
-        shader_rounding_mode_rte_float_32: Bool32,
-        shader_rounding_mode_rte_float_64: Bool32,
-        shader_rounding_mode_rtz_float_16: Bool32,
-        shader_rounding_mode_rtz_float_32: Bool32,
-        shader_rounding_mode_rtz_float_64: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.denorm_behavior_independence = denorm_behavior_independence
-        self.rounding_mode_independence = rounding_mode_independence
-        self.shader_signed_zero_inf_nan_preserve_float_16 = shader_signed_zero_inf_nan_preserve_float_16
-        self.shader_signed_zero_inf_nan_preserve_float_32 = shader_signed_zero_inf_nan_preserve_float_32
-        self.shader_signed_zero_inf_nan_preserve_float_64 = shader_signed_zero_inf_nan_preserve_float_64
-        self.shader_denorm_preserve_float_16 = shader_denorm_preserve_float_16
-        self.shader_denorm_preserve_float_32 = shader_denorm_preserve_float_32
-        self.shader_denorm_preserve_float_64 = shader_denorm_preserve_float_64
-        self.shader_denorm_flush_to_zero_float_16 = shader_denorm_flush_to_zero_float_16
-        self.shader_denorm_flush_to_zero_float_32 = shader_denorm_flush_to_zero_float_32
-        self.shader_denorm_flush_to_zero_float_64 = shader_denorm_flush_to_zero_float_64
-        self.shader_rounding_mode_rte_float_16 = shader_rounding_mode_rte_float_16
-        self.shader_rounding_mode_rte_float_32 = shader_rounding_mode_rte_float_32
-        self.shader_rounding_mode_rte_float_64 = shader_rounding_mode_rte_float_64
-        self.shader_rounding_mode_rtz_float_16 = shader_rounding_mode_rtz_float_16
-        self.shader_rounding_mode_rtz_float_32 = shader_rounding_mode_rtz_float_32
-        self.shader_rounding_mode_rtz_float_64 = shader_rounding_mode_rtz_float_64
 
 
 struct PhysicalDeviceHostQueryResetFeatures(Copyable):
@@ -9516,16 +8268,6 @@ struct PhysicalDevicePresentationPropertiesANDROID(Copyable):
     var p_next: Ptr[NoneType, ImmutOrigin.external]
     var shared_image: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, ImmutOrigin.external],
-        shared_image: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.shared_image = shared_image
-
 
 struct ShaderResourceUsageAMD(Copyable):
     var num_used_vgprs: UInt32
@@ -9533,20 +8275,6 @@ struct ShaderResourceUsageAMD(Copyable):
     var lds_size_per_local_work_group: UInt32
     var lds_usage_size_in_bytes: UInt
     var scratch_mem_usage_in_bytes: UInt
-
-    fn __init__(
-        out self,
-        num_used_vgprs: UInt32,
-        num_used_sgprs: UInt32,
-        lds_size_per_local_work_group: UInt32,
-        lds_usage_size_in_bytes: UInt,
-        scratch_mem_usage_in_bytes: UInt,
-    ):
-        self.num_used_vgprs = num_used_vgprs
-        self.num_used_sgprs = num_used_sgprs
-        self.lds_size_per_local_work_group = lds_size_per_local_work_group
-        self.lds_usage_size_in_bytes = lds_usage_size_in_bytes
-        self.scratch_mem_usage_in_bytes = scratch_mem_usage_in_bytes
 
 
 struct ShaderStatisticsInfoAMD(Copyable):
@@ -9557,24 +8285,6 @@ struct ShaderStatisticsInfoAMD(Copyable):
     var num_available_vgprs: UInt32
     var num_available_sgprs: UInt32
     var compute_work_group_size: InlineArray[UInt32, Int(3)]
-
-    fn __init__(
-        out self,
-        shader_stage_mask: ShaderStageFlags,
-        resource_usage: ShaderResourceUsageAMD,
-        num_physical_vgprs: UInt32,
-        num_physical_sgprs: UInt32,
-        num_available_vgprs: UInt32,
-        num_available_sgprs: UInt32,
-        compute_work_group_size: InlineArray[UInt32, Int(3)],
-    ):
-        self.shader_stage_mask = shader_stage_mask
-        self.resource_usage = resource_usage.copy()
-        self.num_physical_vgprs = num_physical_vgprs
-        self.num_physical_sgprs = num_physical_sgprs
-        self.num_available_vgprs = num_available_vgprs
-        self.num_available_sgprs = num_available_sgprs
-        self.compute_work_group_size = compute_work_group_size
 
 
 struct DeviceQueueGlobalPriorityCreateInfo(Copyable):
@@ -9614,18 +8324,6 @@ struct QueueFamilyGlobalPriorityProperties(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var priority_count: UInt32
     var priorities: InlineArray[QueueGlobalPriority, Int(MAX_GLOBAL_PRIORITY_SIZE)]
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        priority_count: UInt32,
-        priorities: InlineArray[QueueGlobalPriority, Int(MAX_GLOBAL_PRIORITY_SIZE)],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.priority_count = priority_count
-        self.priorities = priorities
 
 
 struct DebugUtilsObjectNameInfoEXT(Copyable):
@@ -9817,28 +8515,6 @@ struct DeviceMemoryReportCallbackDataEXT(Copyable):
     var object_handle: UInt64
     var heap_index: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        flags: DeviceMemoryReportFlagsEXT,
-        type: DeviceMemoryReportEventTypeEXT,
-        memory_object_id: UInt64,
-        size: DeviceSize,
-        object_type: ObjectType,
-        object_handle: UInt64,
-        heap_index: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.flags = flags
-        self.type = type
-        self.memory_object_id = memory_object_id
-        self.size = size
-        self.object_type = object_type
-        self.object_handle = object_handle
-        self.heap_index = heap_index
-
 
 struct ImportMemoryHostPointerInfoEXT(Copyable):
     var s_type: StructureType
@@ -9864,31 +8540,11 @@ struct MemoryHostPointerPropertiesEXT(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var memory_type_bits: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        memory_type_bits: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.memory_type_bits = memory_type_bits
-
 
 struct PhysicalDeviceExternalMemoryHostPropertiesEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var min_imported_host_pointer_alignment: DeviceSize
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        min_imported_host_pointer_alignment: DeviceSize,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.min_imported_host_pointer_alignment = min_imported_host_pointer_alignment
 
 
 struct PhysicalDeviceConservativeRasterizationPropertiesEXT(Copyable):
@@ -9903,32 +8559,6 @@ struct PhysicalDeviceConservativeRasterizationPropertiesEXT(Copyable):
     var degenerate_lines_rasterized: Bool32
     var fully_covered_fragment_shader_input_variable: Bool32
     var conservative_rasterization_post_depth_coverage: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        primitive_overestimation_size: Float32,
-        max_extra_primitive_overestimation_size: Float32,
-        extra_primitive_overestimation_size_granularity: Float32,
-        primitive_underestimation: Bool32,
-        conservative_point_and_line_rasterization: Bool32,
-        degenerate_triangles_rasterized: Bool32,
-        degenerate_lines_rasterized: Bool32,
-        fully_covered_fragment_shader_input_variable: Bool32,
-        conservative_rasterization_post_depth_coverage: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.primitive_overestimation_size = primitive_overestimation_size
-        self.max_extra_primitive_overestimation_size = max_extra_primitive_overestimation_size
-        self.extra_primitive_overestimation_size_granularity = extra_primitive_overestimation_size_granularity
-        self.primitive_underestimation = primitive_underestimation
-        self.conservative_point_and_line_rasterization = conservative_point_and_line_rasterization
-        self.degenerate_triangles_rasterized = degenerate_triangles_rasterized
-        self.degenerate_lines_rasterized = degenerate_lines_rasterized
-        self.fully_covered_fragment_shader_input_variable = fully_covered_fragment_shader_input_variable
-        self.conservative_rasterization_post_depth_coverage = conservative_rasterization_post_depth_coverage
 
 
 struct CalibratedTimestampInfoKHR(Copyable):
@@ -9965,60 +8595,12 @@ struct PhysicalDeviceShaderCorePropertiesAMD(Copyable):
     var max_vgpr_allocation: UInt32
     var vgpr_allocation_granularity: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        shader_engine_count: UInt32,
-        shader_arrays_per_engine_count: UInt32,
-        compute_units_per_shader_array: UInt32,
-        simd_per_compute_unit: UInt32,
-        wavefronts_per_simd: UInt32,
-        wavefront_size: UInt32,
-        sgprs_per_simd: UInt32,
-        min_sgpr_allocation: UInt32,
-        max_sgpr_allocation: UInt32,
-        sgpr_allocation_granularity: UInt32,
-        vgprs_per_simd: UInt32,
-        min_vgpr_allocation: UInt32,
-        max_vgpr_allocation: UInt32,
-        vgpr_allocation_granularity: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.shader_engine_count = shader_engine_count
-        self.shader_arrays_per_engine_count = shader_arrays_per_engine_count
-        self.compute_units_per_shader_array = compute_units_per_shader_array
-        self.simd_per_compute_unit = simd_per_compute_unit
-        self.wavefronts_per_simd = wavefronts_per_simd
-        self.wavefront_size = wavefront_size
-        self.sgprs_per_simd = sgprs_per_simd
-        self.min_sgpr_allocation = min_sgpr_allocation
-        self.max_sgpr_allocation = max_sgpr_allocation
-        self.sgpr_allocation_granularity = sgpr_allocation_granularity
-        self.vgprs_per_simd = vgprs_per_simd
-        self.min_vgpr_allocation = min_vgpr_allocation
-        self.max_vgpr_allocation = max_vgpr_allocation
-        self.vgpr_allocation_granularity = vgpr_allocation_granularity
-
 
 struct PhysicalDeviceShaderCoreProperties2AMD(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var shader_core_features: ShaderCorePropertiesFlagsAMD
     var active_compute_unit_count: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        shader_core_features: ShaderCorePropertiesFlagsAMD,
-        active_compute_unit_count: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.shader_core_features = shader_core_features
-        self.active_compute_unit_count = active_compute_unit_count
 
 
 struct PipelineRasterizationConservativeStateCreateInfoEXT(Copyable):
@@ -10143,60 +8725,6 @@ struct PhysicalDeviceDescriptorIndexingProperties(Copyable):
     var max_descriptor_set_update_after_bind_storage_images: UInt32
     var max_descriptor_set_update_after_bind_input_attachments: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_update_after_bind_descriptors_in_all_pools: UInt32,
-        shader_uniform_buffer_array_non_uniform_indexing_native: Bool32,
-        shader_sampled_image_array_non_uniform_indexing_native: Bool32,
-        shader_storage_buffer_array_non_uniform_indexing_native: Bool32,
-        shader_storage_image_array_non_uniform_indexing_native: Bool32,
-        shader_input_attachment_array_non_uniform_indexing_native: Bool32,
-        robust_buffer_access_update_after_bind: Bool32,
-        quad_divergent_implicit_lod: Bool32,
-        max_per_stage_descriptor_update_after_bind_samplers: UInt32,
-        max_per_stage_descriptor_update_after_bind_uniform_buffers: UInt32,
-        max_per_stage_descriptor_update_after_bind_storage_buffers: UInt32,
-        max_per_stage_descriptor_update_after_bind_sampled_images: UInt32,
-        max_per_stage_descriptor_update_after_bind_storage_images: UInt32,
-        max_per_stage_descriptor_update_after_bind_input_attachments: UInt32,
-        max_per_stage_update_after_bind_resources: UInt32,
-        max_descriptor_set_update_after_bind_samplers: UInt32,
-        max_descriptor_set_update_after_bind_uniform_buffers: UInt32,
-        max_descriptor_set_update_after_bind_uniform_buffers_dynamic: UInt32,
-        max_descriptor_set_update_after_bind_storage_buffers: UInt32,
-        max_descriptor_set_update_after_bind_storage_buffers_dynamic: UInt32,
-        max_descriptor_set_update_after_bind_sampled_images: UInt32,
-        max_descriptor_set_update_after_bind_storage_images: UInt32,
-        max_descriptor_set_update_after_bind_input_attachments: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_update_after_bind_descriptors_in_all_pools = max_update_after_bind_descriptors_in_all_pools
-        self.shader_uniform_buffer_array_non_uniform_indexing_native = shader_uniform_buffer_array_non_uniform_indexing_native
-        self.shader_sampled_image_array_non_uniform_indexing_native = shader_sampled_image_array_non_uniform_indexing_native
-        self.shader_storage_buffer_array_non_uniform_indexing_native = shader_storage_buffer_array_non_uniform_indexing_native
-        self.shader_storage_image_array_non_uniform_indexing_native = shader_storage_image_array_non_uniform_indexing_native
-        self.shader_input_attachment_array_non_uniform_indexing_native = shader_input_attachment_array_non_uniform_indexing_native
-        self.robust_buffer_access_update_after_bind = robust_buffer_access_update_after_bind
-        self.quad_divergent_implicit_lod = quad_divergent_implicit_lod
-        self.max_per_stage_descriptor_update_after_bind_samplers = max_per_stage_descriptor_update_after_bind_samplers
-        self.max_per_stage_descriptor_update_after_bind_uniform_buffers = max_per_stage_descriptor_update_after_bind_uniform_buffers
-        self.max_per_stage_descriptor_update_after_bind_storage_buffers = max_per_stage_descriptor_update_after_bind_storage_buffers
-        self.max_per_stage_descriptor_update_after_bind_sampled_images = max_per_stage_descriptor_update_after_bind_sampled_images
-        self.max_per_stage_descriptor_update_after_bind_storage_images = max_per_stage_descriptor_update_after_bind_storage_images
-        self.max_per_stage_descriptor_update_after_bind_input_attachments = max_per_stage_descriptor_update_after_bind_input_attachments
-        self.max_per_stage_update_after_bind_resources = max_per_stage_update_after_bind_resources
-        self.max_descriptor_set_update_after_bind_samplers = max_descriptor_set_update_after_bind_samplers
-        self.max_descriptor_set_update_after_bind_uniform_buffers = max_descriptor_set_update_after_bind_uniform_buffers
-        self.max_descriptor_set_update_after_bind_uniform_buffers_dynamic = max_descriptor_set_update_after_bind_uniform_buffers_dynamic
-        self.max_descriptor_set_update_after_bind_storage_buffers = max_descriptor_set_update_after_bind_storage_buffers
-        self.max_descriptor_set_update_after_bind_storage_buffers_dynamic = max_descriptor_set_update_after_bind_storage_buffers_dynamic
-        self.max_descriptor_set_update_after_bind_sampled_images = max_descriptor_set_update_after_bind_sampled_images
-        self.max_descriptor_set_update_after_bind_storage_images = max_descriptor_set_update_after_bind_storage_images
-        self.max_descriptor_set_update_after_bind_input_attachments = max_descriptor_set_update_after_bind_input_attachments
-
 
 struct DescriptorSetLayoutBindingFlagsCreateInfo(Copyable):
     var s_type: StructureType
@@ -10240,16 +8768,6 @@ struct DescriptorSetVariableDescriptorCountLayoutSupport(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_variable_descriptor_count: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_variable_descriptor_count: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_variable_descriptor_count = max_variable_descriptor_count
 
 
 struct AttachmentDescription2(Copyable):
@@ -10483,16 +9001,6 @@ struct PhysicalDeviceTimelineSemaphoreProperties(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_timeline_semaphore_value_difference: UInt64
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_timeline_semaphore_value_difference: UInt64,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_timeline_semaphore_value_difference = max_timeline_semaphore_value_difference
-
 
 struct SemaphoreTypeCreateInfo(Copyable):
     var s_type: StructureType
@@ -10615,34 +9123,12 @@ struct PhysicalDeviceVertexAttributeDivisorPropertiesEXT(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_vertex_attrib_divisor: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_vertex_attrib_divisor: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_vertex_attrib_divisor = max_vertex_attrib_divisor
-
 
 struct PhysicalDeviceVertexAttributeDivisorProperties(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_vertex_attrib_divisor: UInt32
     var supports_non_zero_first_instance: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_vertex_attrib_divisor: UInt32,
-        supports_non_zero_first_instance: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_vertex_attrib_divisor = max_vertex_attrib_divisor
-        self.supports_non_zero_first_instance = supports_non_zero_first_instance
 
 
 struct PhysicalDevicePCIBusInfoPropertiesEXT(Copyable):
@@ -10652,22 +9138,6 @@ struct PhysicalDevicePCIBusInfoPropertiesEXT(Copyable):
     var pci_bus: UInt32
     var pci_device: UInt32
     var pci_function: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        pci_domain: UInt32,
-        pci_bus: UInt32,
-        pci_device: UInt32,
-        pci_function: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.pci_domain = pci_domain
-        self.pci_bus = pci_bus
-        self.pci_device = pci_device
-        self.pci_function = pci_function
 
 
 struct ImportAndroidHardwareBufferInfoANDROID(Copyable):
@@ -10691,34 +9161,12 @@ struct AndroidHardwareBufferUsageANDROID(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var android_hardware_buffer_usage: UInt64
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        android_hardware_buffer_usage: UInt64,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.android_hardware_buffer_usage = android_hardware_buffer_usage
-
 
 struct AndroidHardwareBufferPropertiesANDROID(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var allocation_size: DeviceSize
     var memory_type_bits: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        allocation_size: DeviceSize,
-        memory_type_bits: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.allocation_size = allocation_size
-        self.memory_type_bits = memory_type_bits
 
 
 struct MemoryGetAndroidHardwareBufferInfoANDROID(Copyable):
@@ -10748,30 +9196,6 @@ struct AndroidHardwareBufferFormatPropertiesANDROID(Copyable):
     var suggested_ycbcr_range: SamplerYcbcrRange
     var suggested_x_chroma_offset: ChromaLocation
     var suggested_y_chroma_offset: ChromaLocation
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        format: Format,
-        external_format: UInt64,
-        format_features: FormatFeatureFlags,
-        sampler_ycbcr_conversion_components: ComponentMapping,
-        suggested_ycbcr_model: SamplerYcbcrModelConversion,
-        suggested_ycbcr_range: SamplerYcbcrRange,
-        suggested_x_chroma_offset: ChromaLocation,
-        suggested_y_chroma_offset: ChromaLocation,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.format = format
-        self.external_format = external_format
-        self.format_features = format_features
-        self.sampler_ycbcr_conversion_components = sampler_ycbcr_conversion_components.copy()
-        self.suggested_ycbcr_model = suggested_ycbcr_model
-        self.suggested_ycbcr_range = suggested_ycbcr_range
-        self.suggested_x_chroma_offset = suggested_x_chroma_offset
-        self.suggested_y_chroma_offset = suggested_y_chroma_offset
 
 
 struct CommandBufferInheritanceConditionalRenderingInfoEXT(Copyable):
@@ -11010,34 +9434,12 @@ struct QueueFamilyCheckpointPropertiesNV(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var checkpoint_execution_stage_mask: PipelineStageFlags
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        checkpoint_execution_stage_mask: PipelineStageFlags,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.checkpoint_execution_stage_mask = checkpoint_execution_stage_mask
-
 
 struct CheckpointDataNV(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var stage: PipelineStageFlagBits
     var p_checkpoint_marker: Ptr[NoneType, MutOrigin.external]
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        stage: PipelineStageFlagBits,
-        p_checkpoint_marker: Ptr[NoneType, MutOrigin.external],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.stage = stage
-        self.p_checkpoint_marker = p_checkpoint_marker
 
 
 struct PhysicalDeviceDepthStencilResolveProperties(Copyable):
@@ -11047,22 +9449,6 @@ struct PhysicalDeviceDepthStencilResolveProperties(Copyable):
     var supported_stencil_resolve_modes: ResolveModeFlags
     var independent_resolve_none: Bool32
     var independent_resolve: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        supported_depth_resolve_modes: ResolveModeFlags,
-        supported_stencil_resolve_modes: ResolveModeFlags,
-        independent_resolve_none: Bool32,
-        independent_resolve: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.supported_depth_resolve_modes = supported_depth_resolve_modes
-        self.supported_stencil_resolve_modes = supported_stencil_resolve_modes
-        self.independent_resolve_none = independent_resolve_none
-        self.independent_resolve = independent_resolve
 
 
 struct SubpassDescriptionDepthStencilResolve(Copyable):
@@ -11151,34 +9537,6 @@ struct PhysicalDeviceTransformFeedbackPropertiesEXT(Copyable):
     var transform_feedback_streams_lines_triangles: Bool32
     var transform_feedback_rasterization_stream_select: Bool32
     var transform_feedback_draw: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_transform_feedback_streams: UInt32,
-        max_transform_feedback_buffers: UInt32,
-        max_transform_feedback_buffer_size: DeviceSize,
-        max_transform_feedback_stream_data_size: UInt32,
-        max_transform_feedback_buffer_data_size: UInt32,
-        max_transform_feedback_buffer_data_stride: UInt32,
-        transform_feedback_queries: Bool32,
-        transform_feedback_streams_lines_triangles: Bool32,
-        transform_feedback_rasterization_stream_select: Bool32,
-        transform_feedback_draw: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_transform_feedback_streams = max_transform_feedback_streams
-        self.max_transform_feedback_buffers = max_transform_feedback_buffers
-        self.max_transform_feedback_buffer_size = max_transform_feedback_buffer_size
-        self.max_transform_feedback_stream_data_size = max_transform_feedback_stream_data_size
-        self.max_transform_feedback_buffer_data_size = max_transform_feedback_buffer_data_size
-        self.max_transform_feedback_buffer_data_stride = max_transform_feedback_buffer_data_stride
-        self.transform_feedback_queries = transform_feedback_queries
-        self.transform_feedback_streams_lines_triangles = transform_feedback_streams_lines_triangles
-        self.transform_feedback_rasterization_stream_select = transform_feedback_rasterization_stream_select
-        self.transform_feedback_draw = transform_feedback_draw
 
 
 struct PipelineRasterizationStateStreamCreateInfoEXT(Copyable):
@@ -11307,16 +9665,6 @@ struct PhysicalDeviceComputeShaderDerivativesPropertiesKHR(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var mesh_and_task_shader_derivatives: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        mesh_and_task_shader_derivatives: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.mesh_and_task_shader_derivatives = mesh_and_task_shader_derivatives
-
 
 struct PhysicalDeviceShaderImageFootprintFeaturesNV(Copyable):
     var s_type: StructureType
@@ -11371,16 +9719,6 @@ struct PhysicalDeviceCopyMemoryIndirectPropertiesNV(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var supported_queues: QueueFlags
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        supported_queues: QueueFlags,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.supported_queues = supported_queues
-
 
 struct PhysicalDeviceMemoryDecompressionFeaturesNV(Copyable):
     var s_type: StructureType
@@ -11403,18 +9741,6 @@ struct PhysicalDeviceMemoryDecompressionPropertiesNV(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var decompression_methods: MemoryDecompressionMethodFlagsNV
     var max_decompression_indirect_count: UInt64
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        decompression_methods: MemoryDecompressionMethodFlagsNV,
-        max_decompression_indirect_count: UInt64,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.decompression_methods = decompression_methods
-        self.max_decompression_indirect_count = max_decompression_indirect_count
 
 
 struct ShadingRatePaletteNV(Copyable):
@@ -11477,20 +9803,6 @@ struct PhysicalDeviceShadingRateImagePropertiesNV(Copyable):
     var shading_rate_texel_size: Extent2D
     var shading_rate_palette_size: UInt32
     var shading_rate_max_coarse_samples: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        shading_rate_texel_size: Extent2D,
-        shading_rate_palette_size: UInt32,
-        shading_rate_max_coarse_samples: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.shading_rate_texel_size = shading_rate_texel_size.copy()
-        self.shading_rate_palette_size = shading_rate_palette_size
-        self.shading_rate_max_coarse_samples = shading_rate_max_coarse_samples
 
 
 struct PhysicalDeviceInvocationMaskFeaturesHUAWEI(Copyable):
@@ -11597,40 +9909,6 @@ struct PhysicalDeviceMeshShaderPropertiesNV(Copyable):
     var mesh_output_per_vertex_granularity: UInt32
     var mesh_output_per_primitive_granularity: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_draw_mesh_tasks_count: UInt32,
-        max_task_work_group_invocations: UInt32,
-        max_task_work_group_size: InlineArray[UInt32, Int(3)],
-        max_task_total_memory_size: UInt32,
-        max_task_output_count: UInt32,
-        max_mesh_work_group_invocations: UInt32,
-        max_mesh_work_group_size: InlineArray[UInt32, Int(3)],
-        max_mesh_total_memory_size: UInt32,
-        max_mesh_output_vertices: UInt32,
-        max_mesh_output_primitives: UInt32,
-        max_mesh_multiview_view_count: UInt32,
-        mesh_output_per_vertex_granularity: UInt32,
-        mesh_output_per_primitive_granularity: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_draw_mesh_tasks_count = max_draw_mesh_tasks_count
-        self.max_task_work_group_invocations = max_task_work_group_invocations
-        self.max_task_work_group_size = max_task_work_group_size
-        self.max_task_total_memory_size = max_task_total_memory_size
-        self.max_task_output_count = max_task_output_count
-        self.max_mesh_work_group_invocations = max_mesh_work_group_invocations
-        self.max_mesh_work_group_size = max_mesh_work_group_size
-        self.max_mesh_total_memory_size = max_mesh_total_memory_size
-        self.max_mesh_output_vertices = max_mesh_output_vertices
-        self.max_mesh_output_primitives = max_mesh_output_primitives
-        self.max_mesh_multiview_view_count = max_mesh_multiview_view_count
-        self.mesh_output_per_vertex_granularity = mesh_output_per_vertex_granularity
-        self.mesh_output_per_primitive_granularity = mesh_output_per_primitive_granularity
-
 
 struct DrawMeshTasksIndirectCommandNV(Copyable):
     var task_count: UInt32
@@ -11700,70 +9978,6 @@ struct PhysicalDeviceMeshShaderPropertiesEXT(Copyable):
     var prefers_local_invocation_primitive_output: Bool32
     var prefers_compact_vertex_output: Bool32
     var prefers_compact_primitive_output: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_task_work_group_total_count: UInt32,
-        max_task_work_group_count: InlineArray[UInt32, Int(3)],
-        max_task_work_group_invocations: UInt32,
-        max_task_work_group_size: InlineArray[UInt32, Int(3)],
-        max_task_payload_size: UInt32,
-        max_task_shared_memory_size: UInt32,
-        max_task_payload_and_shared_memory_size: UInt32,
-        max_mesh_work_group_total_count: UInt32,
-        max_mesh_work_group_count: InlineArray[UInt32, Int(3)],
-        max_mesh_work_group_invocations: UInt32,
-        max_mesh_work_group_size: InlineArray[UInt32, Int(3)],
-        max_mesh_shared_memory_size: UInt32,
-        max_mesh_payload_and_shared_memory_size: UInt32,
-        max_mesh_output_memory_size: UInt32,
-        max_mesh_payload_and_output_memory_size: UInt32,
-        max_mesh_output_components: UInt32,
-        max_mesh_output_vertices: UInt32,
-        max_mesh_output_primitives: UInt32,
-        max_mesh_output_layers: UInt32,
-        max_mesh_multiview_view_count: UInt32,
-        mesh_output_per_vertex_granularity: UInt32,
-        mesh_output_per_primitive_granularity: UInt32,
-        max_preferred_task_work_group_invocations: UInt32,
-        max_preferred_mesh_work_group_invocations: UInt32,
-        prefers_local_invocation_vertex_output: Bool32,
-        prefers_local_invocation_primitive_output: Bool32,
-        prefers_compact_vertex_output: Bool32,
-        prefers_compact_primitive_output: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_task_work_group_total_count = max_task_work_group_total_count
-        self.max_task_work_group_count = max_task_work_group_count
-        self.max_task_work_group_invocations = max_task_work_group_invocations
-        self.max_task_work_group_size = max_task_work_group_size
-        self.max_task_payload_size = max_task_payload_size
-        self.max_task_shared_memory_size = max_task_shared_memory_size
-        self.max_task_payload_and_shared_memory_size = max_task_payload_and_shared_memory_size
-        self.max_mesh_work_group_total_count = max_mesh_work_group_total_count
-        self.max_mesh_work_group_count = max_mesh_work_group_count
-        self.max_mesh_work_group_invocations = max_mesh_work_group_invocations
-        self.max_mesh_work_group_size = max_mesh_work_group_size
-        self.max_mesh_shared_memory_size = max_mesh_shared_memory_size
-        self.max_mesh_payload_and_shared_memory_size = max_mesh_payload_and_shared_memory_size
-        self.max_mesh_output_memory_size = max_mesh_output_memory_size
-        self.max_mesh_payload_and_output_memory_size = max_mesh_payload_and_output_memory_size
-        self.max_mesh_output_components = max_mesh_output_components
-        self.max_mesh_output_vertices = max_mesh_output_vertices
-        self.max_mesh_output_primitives = max_mesh_output_primitives
-        self.max_mesh_output_layers = max_mesh_output_layers
-        self.max_mesh_multiview_view_count = max_mesh_multiview_view_count
-        self.mesh_output_per_vertex_granularity = mesh_output_per_vertex_granularity
-        self.mesh_output_per_primitive_granularity = mesh_output_per_primitive_granularity
-        self.max_preferred_task_work_group_invocations = max_preferred_task_work_group_invocations
-        self.max_preferred_mesh_work_group_invocations = max_preferred_mesh_work_group_invocations
-        self.prefers_local_invocation_vertex_output = prefers_local_invocation_vertex_output
-        self.prefers_local_invocation_primitive_output = prefers_local_invocation_primitive_output
-        self.prefers_compact_vertex_output = prefers_compact_vertex_output
-        self.prefers_compact_primitive_output = prefers_compact_primitive_output
 
 
 struct DrawMeshTasksIndirectCommandEXT(Copyable):
@@ -12243,30 +10457,6 @@ struct PhysicalDeviceAccelerationStructurePropertiesKHR(Copyable):
     var max_descriptor_set_update_after_bind_acceleration_structures: UInt32
     var min_acceleration_structure_scratch_offset_alignment: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_geometry_count: UInt64,
-        max_instance_count: UInt64,
-        max_primitive_count: UInt64,
-        max_per_stage_descriptor_acceleration_structures: UInt32,
-        max_per_stage_descriptor_update_after_bind_acceleration_structures: UInt32,
-        max_descriptor_set_acceleration_structures: UInt32,
-        max_descriptor_set_update_after_bind_acceleration_structures: UInt32,
-        min_acceleration_structure_scratch_offset_alignment: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_geometry_count = max_geometry_count
-        self.max_instance_count = max_instance_count
-        self.max_primitive_count = max_primitive_count
-        self.max_per_stage_descriptor_acceleration_structures = max_per_stage_descriptor_acceleration_structures
-        self.max_per_stage_descriptor_update_after_bind_acceleration_structures = max_per_stage_descriptor_update_after_bind_acceleration_structures
-        self.max_descriptor_set_acceleration_structures = max_descriptor_set_acceleration_structures
-        self.max_descriptor_set_update_after_bind_acceleration_structures = max_descriptor_set_update_after_bind_acceleration_structures
-        self.min_acceleration_structure_scratch_offset_alignment = min_acceleration_structure_scratch_offset_alignment
-
 
 struct PhysicalDeviceRayTracingPipelinePropertiesKHR(Copyable):
     var s_type: StructureType
@@ -12280,30 +10470,6 @@ struct PhysicalDeviceRayTracingPipelinePropertiesKHR(Copyable):
     var shader_group_handle_alignment: UInt32
     var max_ray_hit_attribute_size: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        shader_group_handle_size: UInt32,
-        max_ray_recursion_depth: UInt32,
-        max_shader_group_stride: UInt32,
-        shader_group_base_alignment: UInt32,
-        shader_group_handle_capture_replay_size: UInt32,
-        max_ray_dispatch_invocation_count: UInt32,
-        shader_group_handle_alignment: UInt32,
-        max_ray_hit_attribute_size: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.shader_group_handle_size = shader_group_handle_size
-        self.max_ray_recursion_depth = max_ray_recursion_depth
-        self.max_shader_group_stride = max_shader_group_stride
-        self.shader_group_base_alignment = shader_group_base_alignment
-        self.shader_group_handle_capture_replay_size = shader_group_handle_capture_replay_size
-        self.max_ray_dispatch_invocation_count = max_ray_dispatch_invocation_count
-        self.shader_group_handle_alignment = shader_group_handle_alignment
-        self.max_ray_hit_attribute_size = max_ray_hit_attribute_size
-
 
 struct PhysicalDeviceRayTracingPropertiesNV(Copyable):
     var s_type: StructureType
@@ -12316,30 +10482,6 @@ struct PhysicalDeviceRayTracingPropertiesNV(Copyable):
     var max_instance_count: UInt64
     var max_triangle_count: UInt64
     var max_descriptor_set_acceleration_structures: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        shader_group_handle_size: UInt32,
-        max_recursion_depth: UInt32,
-        max_shader_group_stride: UInt32,
-        shader_group_base_alignment: UInt32,
-        max_geometry_count: UInt64,
-        max_instance_count: UInt64,
-        max_triangle_count: UInt64,
-        max_descriptor_set_acceleration_structures: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.shader_group_handle_size = shader_group_handle_size
-        self.max_recursion_depth = max_recursion_depth
-        self.max_shader_group_stride = max_shader_group_stride
-        self.shader_group_base_alignment = shader_group_base_alignment
-        self.max_geometry_count = max_geometry_count
-        self.max_instance_count = max_instance_count
-        self.max_triangle_count = max_triangle_count
-        self.max_descriptor_set_acceleration_structures = max_descriptor_set_acceleration_structures
 
 
 struct StridedDeviceAddressRegionKHR(Copyable):
@@ -12438,33 +10580,11 @@ struct DrmFormatModifierPropertiesListEXT(Copyable):
     var drm_format_modifier_count: UInt32
     var p_drm_format_modifier_properties: Ptr[DrmFormatModifierPropertiesEXT, MutOrigin.external]
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        drm_format_modifier_count: UInt32,
-        p_drm_format_modifier_properties: Ptr[DrmFormatModifierPropertiesEXT, MutOrigin.external],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.drm_format_modifier_count = drm_format_modifier_count
-        self.p_drm_format_modifier_properties = p_drm_format_modifier_properties
-
 
 struct DrmFormatModifierPropertiesEXT(Copyable):
     var drm_format_modifier: UInt64
     var drm_format_modifier_plane_count: UInt32
     var drm_format_modifier_tiling_features: FormatFeatureFlags
-
-    fn __init__(
-        out self,
-        drm_format_modifier: UInt64,
-        drm_format_modifier_plane_count: UInt32,
-        drm_format_modifier_tiling_features: FormatFeatureFlags,
-    ):
-        self.drm_format_modifier = drm_format_modifier
-        self.drm_format_modifier_plane_count = drm_format_modifier_plane_count
-        self.drm_format_modifier_tiling_features = drm_format_modifier_tiling_features
 
 
 struct PhysicalDeviceImageDrmFormatModifierInfoEXT(Copyable):
@@ -12537,16 +10657,6 @@ struct ImageDrmFormatModifierPropertiesEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var drm_format_modifier: UInt64
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        drm_format_modifier: UInt64,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.drm_format_modifier = drm_format_modifier
 
 
 struct ImageStencilUsageCreateInfo(Copyable):
@@ -12642,20 +10752,6 @@ struct PhysicalDeviceFragmentDensityMapPropertiesEXT(Copyable):
     var max_fragment_density_texel_size: Extent2D
     var fragment_density_invocations: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        min_fragment_density_texel_size: Extent2D,
-        max_fragment_density_texel_size: Extent2D,
-        fragment_density_invocations: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.min_fragment_density_texel_size = min_fragment_density_texel_size.copy()
-        self.max_fragment_density_texel_size = max_fragment_density_texel_size.copy()
-        self.fragment_density_invocations = fragment_density_invocations
-
 
 struct PhysicalDeviceFragmentDensityMap2PropertiesEXT(Copyable):
     var s_type: StructureType
@@ -12665,37 +10761,11 @@ struct PhysicalDeviceFragmentDensityMap2PropertiesEXT(Copyable):
     var max_subsampled_array_layers: UInt32
     var max_descriptor_set_subsampled_samplers: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        subsampled_loads: Bool32,
-        subsampled_coarse_reconstruction_early_access: Bool32,
-        max_subsampled_array_layers: UInt32,
-        max_descriptor_set_subsampled_samplers: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.subsampled_loads = subsampled_loads
-        self.subsampled_coarse_reconstruction_early_access = subsampled_coarse_reconstruction_early_access
-        self.max_subsampled_array_layers = max_subsampled_array_layers
-        self.max_descriptor_set_subsampled_samplers = max_descriptor_set_subsampled_samplers
-
 
 struct PhysicalDeviceFragmentDensityMapOffsetPropertiesEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var fragment_density_offset_granularity: Extent2D
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        fragment_density_offset_granularity: Extent2D,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.fragment_density_offset_granularity = fragment_density_offset_granularity.copy()
 
 
 struct RenderPassFragmentDensityMapCreateInfoEXT(Copyable):
@@ -12754,16 +10824,6 @@ struct SurfaceProtectedCapabilitiesKHR(Copyable):
     var p_next: Ptr[NoneType, ImmutOrigin.external]
     var supports_protected: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, ImmutOrigin.external],
-        supports_protected: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.supports_protected = supports_protected
-
 
 struct PhysicalDeviceUniformBufferStandardLayoutFeatures(Copyable):
     var s_type: StructureType
@@ -12821,18 +10881,6 @@ struct PhysicalDeviceMemoryBudgetPropertiesEXT(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var heap_budget: InlineArray[DeviceSize, Int(MAX_MEMORY_HEAPS)]
     var heap_usage: InlineArray[DeviceSize, Int(MAX_MEMORY_HEAPS)]
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        heap_budget: InlineArray[DeviceSize, Int(MAX_MEMORY_HEAPS)],
-        heap_usage: InlineArray[DeviceSize, Int(MAX_MEMORY_HEAPS)],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.heap_budget = heap_budget
-        self.heap_usage = heap_usage
 
 
 struct PhysicalDeviceMemoryPriorityFeaturesEXT(Copyable):
@@ -12994,18 +11042,6 @@ struct FilterCubicImageViewImageFormatPropertiesEXT(Copyable):
     var filter_cubic: Bool32
     var filter_cubic_minmax: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        filter_cubic: Bool32,
-        filter_cubic_minmax: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.filter_cubic = filter_cubic
-        self.filter_cubic_minmax = filter_cubic_minmax
-
 
 struct PhysicalDeviceImagelessFramebufferFeatures(Copyable):
     var s_type: StructureType
@@ -13135,16 +11171,6 @@ struct PhysicalDeviceCooperativeMatrixPropertiesNV(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var cooperative_matrix_supported_stages: ShaderStageFlags
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        cooperative_matrix_supported_stages: ShaderStageFlags,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.cooperative_matrix_supported_stages = cooperative_matrix_supported_stages
-
 
 struct CooperativeMatrixPropertiesNV(Copyable):
     var s_type: StructureType
@@ -13157,30 +11183,6 @@ struct CooperativeMatrixPropertiesNV(Copyable):
     var c_type: ComponentTypeNV
     var d_type: ComponentTypeNV
     var scope: ScopeNV
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        m_size: UInt32,
-        n_size: UInt32,
-        k_size: UInt32,
-        a_type: ComponentTypeNV,
-        b_type: ComponentTypeNV,
-        c_type: ComponentTypeNV,
-        d_type: ComponentTypeNV,
-        scope: ScopeNV,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.m_size = m_size
-        self.n_size = n_size
-        self.k_size = k_size
-        self.a_type = a_type
-        self.b_type = b_type
-        self.c_type = c_type
-        self.d_type = d_type
-        self.scope = scope
 
 
 struct PhysicalDeviceYcbcrImageArraysFeaturesEXT(Copyable):
@@ -13227,18 +11229,6 @@ struct ImageViewAddressPropertiesNVX(Copyable):
     var device_address: DeviceAddress
     var size: DeviceSize
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        device_address: DeviceAddress,
-        size: DeviceSize,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.device_address = device_address
-        self.size = size
-
 
 struct PresentFrameTokenGGP(Copyable):
     var s_type: StructureType
@@ -13259,10 +11249,6 @@ struct PresentFrameTokenGGP(Copyable):
 struct PipelineCreationFeedback(Copyable):
     var flags: PipelineCreationFeedbackFlags
     var duration: UInt64
-
-    fn __init__(out self, flags: PipelineCreationFeedbackFlags, duration: UInt64):
-        self.flags = flags
-        self.duration = duration
 
 
 struct PipelineCreationFeedbackCreateInfo(Copyable):
@@ -13324,16 +11310,6 @@ struct SurfaceCapabilitiesFullScreenExclusiveEXT(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var full_screen_exclusive_supported: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        full_screen_exclusive_supported: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.full_screen_exclusive_supported = full_screen_exclusive_supported
-
 
 struct PhysicalDevicePresentBarrierFeaturesNV(Copyable):
     var s_type: StructureType
@@ -13355,16 +11331,6 @@ struct SurfaceCapabilitiesPresentBarrierNV(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var present_barrier_supported: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        present_barrier_supported: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.present_barrier_supported = present_barrier_supported
 
 
 struct SwapchainPresentBarrierCreateInfoNV(Copyable):
@@ -13407,16 +11373,6 @@ struct PhysicalDevicePerformanceQueryPropertiesKHR(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var allow_command_buffer_query_copies: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        allow_command_buffer_query_copies: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.allow_command_buffer_query_copies = allow_command_buffer_query_copies
-
 
 struct PerformanceCounterKHR(Copyable):
     var s_type: StructureType
@@ -13426,22 +11382,6 @@ struct PerformanceCounterKHR(Copyable):
     var storage: PerformanceCounterStorageKHR
     var uuid: InlineArray[UInt8, Int(UUID_SIZE)]
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        unit: PerformanceCounterUnitKHR,
-        scope: PerformanceCounterScopeKHR,
-        storage: PerformanceCounterStorageKHR,
-        uuid: InlineArray[UInt8, Int(UUID_SIZE)],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.unit = unit
-        self.scope = scope
-        self.storage = storage
-        self.uuid = uuid
-
 
 struct PerformanceCounterDescriptionKHR(Copyable):
     var s_type: StructureType
@@ -13450,22 +11390,6 @@ struct PerformanceCounterDescriptionKHR(Copyable):
     var name: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
     var category: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
     var description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        flags: PerformanceCounterDescriptionFlagsKHR,
-        name: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)],
-        category: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)],
-        description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.flags = flags
-        self.name = name
-        self.category = category
-        self.description = description
 
 
 struct QueryPoolPerformanceCreateInfoKHR(Copyable):
@@ -13600,22 +11524,6 @@ struct FramebufferMixedSamplesCombinationNV(Copyable):
     var depth_stencil_samples: SampleCountFlags
     var color_samples: SampleCountFlags
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        coverage_reduction_mode: CoverageReductionModeNV,
-        rasterization_samples: SampleCountFlagBits,
-        depth_stencil_samples: SampleCountFlags,
-        color_samples: SampleCountFlags,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.coverage_reduction_mode = coverage_reduction_mode
-        self.rasterization_samples = rasterization_samples
-        self.depth_stencil_samples = depth_stencil_samples
-        self.color_samples = color_samples
-
 
 struct PhysicalDeviceShaderIntegerFunctions2FeaturesINTEL(Copyable):
     var s_type: StructureType
@@ -13636,10 +11544,6 @@ struct PhysicalDeviceShaderIntegerFunctions2FeaturesINTEL(Copyable):
 struct PerformanceValueINTEL(Copyable):
     var type: PerformanceValueTypeINTEL
     var data: PerformanceValueDataINTEL
-
-    fn __init__(out self, type: PerformanceValueTypeINTEL, data: PerformanceValueDataINTEL):
-        self.type = type
-        self.data = data
 
 
 struct InitializePerformanceApiInfoINTEL(Copyable):
@@ -13778,18 +11682,6 @@ struct PhysicalDeviceShaderSMBuiltinsPropertiesNV(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var shader_sm_count: UInt32
     var shader_warps_per_sm: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        shader_sm_count: UInt32,
-        shader_warps_per_sm: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.shader_sm_count = shader_sm_count
-        self.shader_warps_per_sm = shader_warps_per_sm
 
 
 struct PhysicalDeviceShaderSMBuiltinsFeaturesNV(Copyable):
@@ -13940,22 +11832,6 @@ struct PipelineExecutablePropertiesKHR(Copyable):
     var description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
     var subgroup_size: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        stages: ShaderStageFlags,
-        name: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)],
-        description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)],
-        subgroup_size: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.stages = stages
-        self.name = name
-        self.description = description
-        self.subgroup_size = subgroup_size
-
 
 struct PipelineExecutableInfoKHR(Copyable):
     var s_type: StructureType
@@ -13984,22 +11860,6 @@ struct PipelineExecutableStatisticKHR(Copyable):
     var format: PipelineExecutableStatisticFormatKHR
     var value: PipelineExecutableStatisticValueKHR
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        name: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)],
-        description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)],
-        format: PipelineExecutableStatisticFormatKHR,
-        value: PipelineExecutableStatisticValueKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.name = name
-        self.description = description
-        self.format = format
-        self.value = value
-
 
 struct PipelineExecutableInternalRepresentationKHR(Copyable):
     var s_type: StructureType
@@ -14009,24 +11869,6 @@ struct PipelineExecutableInternalRepresentationKHR(Copyable):
     var is_text: Bool32
     var data_size: UInt
     var p_data: Ptr[NoneType, MutOrigin.external]
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        name: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)],
-        description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)],
-        is_text: Bool32,
-        data_size: UInt,
-        p_data: Ptr[NoneType, MutOrigin.external],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.name = name
-        self.description = description
-        self.is_text = is_text
-        self.data_size = data_size
-        self.p_data = p_data
 
 
 struct PhysicalDeviceShaderDemoteToHelperInvocationFeatures(Copyable):
@@ -14069,22 +11911,6 @@ struct PhysicalDeviceTexelBufferAlignmentProperties(Copyable):
     var uniform_texel_buffer_offset_alignment_bytes: DeviceSize
     var uniform_texel_buffer_offset_single_texel_alignment: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        storage_texel_buffer_offset_alignment_bytes: DeviceSize,
-        storage_texel_buffer_offset_single_texel_alignment: Bool32,
-        uniform_texel_buffer_offset_alignment_bytes: DeviceSize,
-        uniform_texel_buffer_offset_single_texel_alignment: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.storage_texel_buffer_offset_alignment_bytes = storage_texel_buffer_offset_alignment_bytes
-        self.storage_texel_buffer_offset_single_texel_alignment = storage_texel_buffer_offset_single_texel_alignment
-        self.uniform_texel_buffer_offset_alignment_bytes = uniform_texel_buffer_offset_alignment_bytes
-        self.uniform_texel_buffer_offset_single_texel_alignment = uniform_texel_buffer_offset_single_texel_alignment
-
 
 struct PhysicalDeviceSubgroupSizeControlFeatures(Copyable):
     var s_type: StructureType
@@ -14112,22 +11938,6 @@ struct PhysicalDeviceSubgroupSizeControlProperties(Copyable):
     var max_subgroup_size: UInt32
     var max_compute_workgroup_subgroups: UInt32
     var required_subgroup_size_stages: ShaderStageFlags
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        min_subgroup_size: UInt32,
-        max_subgroup_size: UInt32,
-        max_compute_workgroup_subgroups: UInt32,
-        required_subgroup_size_stages: ShaderStageFlags,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.min_subgroup_size = min_subgroup_size
-        self.max_subgroup_size = max_subgroup_size
-        self.max_compute_workgroup_subgroups = max_compute_workgroup_subgroups
-        self.required_subgroup_size_stages = required_subgroup_size_stages
 
 
 struct PipelineShaderStageRequiredSubgroupSizeCreateInfo(Copyable):
@@ -14170,16 +11980,6 @@ struct PhysicalDeviceSubpassShadingPropertiesHUAWEI(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_subpass_shading_workgroup_size_aspect_ratio: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_subpass_shading_workgroup_size_aspect_ratio: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_subpass_shading_workgroup_size_aspect_ratio = max_subpass_shading_workgroup_size_aspect_ratio
-
 
 struct PhysicalDeviceClusterCullingShaderPropertiesHUAWEI(Copyable):
     var s_type: StructureType
@@ -14188,22 +11988,6 @@ struct PhysicalDeviceClusterCullingShaderPropertiesHUAWEI(Copyable):
     var max_work_group_size: InlineArray[UInt32, Int(3)]
     var max_output_cluster_count: UInt32
     var indirect_buffer_offset_alignment: DeviceSize
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_work_group_count: InlineArray[UInt32, Int(3)],
-        max_work_group_size: InlineArray[UInt32, Int(3)],
-        max_output_cluster_count: UInt32,
-        indirect_buffer_offset_alignment: DeviceSize,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_work_group_count = max_work_group_count
-        self.max_work_group_size = max_work_group_size
-        self.max_output_cluster_count = max_output_cluster_count
-        self.indirect_buffer_offset_alignment = indirect_buffer_offset_alignment
 
 
 struct MemoryOpaqueCaptureAddressAllocateInfo(Copyable):
@@ -14273,16 +12057,6 @@ struct PhysicalDeviceLineRasterizationProperties(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var line_sub_pixel_precision_bits: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        line_sub_pixel_precision_bits: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.line_sub_pixel_precision_bits = line_sub_pixel_precision_bits
 
 
 struct PipelineRasterizationLineStateCreateInfo(Copyable):
@@ -14393,44 +12167,6 @@ struct PhysicalDeviceVulkan11Properties(Copyable):
     var protected_no_fault: Bool32
     var max_per_set_descriptors: UInt32
     var max_memory_allocation_size: DeviceSize
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        device_uuid: InlineArray[UInt8, Int(UUID_SIZE)],
-        driver_uuid: InlineArray[UInt8, Int(UUID_SIZE)],
-        device_luid: InlineArray[UInt8, Int(LUID_SIZE)],
-        device_node_mask: UInt32,
-        device_luid_valid: Bool32,
-        subgroup_size: UInt32,
-        subgroup_supported_stages: ShaderStageFlags,
-        subgroup_supported_operations: SubgroupFeatureFlags,
-        subgroup_quad_operations_in_all_stages: Bool32,
-        point_clipping_behavior: PointClippingBehavior,
-        max_multiview_view_count: UInt32,
-        max_multiview_instance_index: UInt32,
-        protected_no_fault: Bool32,
-        max_per_set_descriptors: UInt32,
-        max_memory_allocation_size: DeviceSize,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.device_uuid = device_uuid
-        self.driver_uuid = driver_uuid
-        self.device_luid = device_luid
-        self.device_node_mask = device_node_mask
-        self.device_luid_valid = device_luid_valid
-        self.subgroup_size = subgroup_size
-        self.subgroup_supported_stages = subgroup_supported_stages
-        self.subgroup_supported_operations = subgroup_supported_operations
-        self.subgroup_quad_operations_in_all_stages = subgroup_quad_operations_in_all_stages
-        self.point_clipping_behavior = point_clipping_behavior
-        self.max_multiview_view_count = max_multiview_view_count
-        self.max_multiview_instance_index = max_multiview_instance_index
-        self.protected_no_fault = protected_no_fault
-        self.max_per_set_descriptors = max_per_set_descriptors
-        self.max_memory_allocation_size = max_memory_allocation_size
 
 
 struct PhysicalDeviceVulkan12Features(Copyable):
@@ -14643,118 +12379,6 @@ struct PhysicalDeviceVulkan12Properties(Copyable):
     var max_timeline_semaphore_value_difference: UInt64
     var framebuffer_integer_color_sample_counts: SampleCountFlags
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        driver_id: DriverId,
-        driver_name: InlineArray[c_char, Int(MAX_DRIVER_NAME_SIZE)],
-        driver_info: InlineArray[c_char, Int(MAX_DRIVER_INFO_SIZE)],
-        conformance_version: ConformanceVersion,
-        denorm_behavior_independence: ShaderFloatControlsIndependence,
-        rounding_mode_independence: ShaderFloatControlsIndependence,
-        shader_signed_zero_inf_nan_preserve_float_16: Bool32,
-        shader_signed_zero_inf_nan_preserve_float_32: Bool32,
-        shader_signed_zero_inf_nan_preserve_float_64: Bool32,
-        shader_denorm_preserve_float_16: Bool32,
-        shader_denorm_preserve_float_32: Bool32,
-        shader_denorm_preserve_float_64: Bool32,
-        shader_denorm_flush_to_zero_float_16: Bool32,
-        shader_denorm_flush_to_zero_float_32: Bool32,
-        shader_denorm_flush_to_zero_float_64: Bool32,
-        shader_rounding_mode_rte_float_16: Bool32,
-        shader_rounding_mode_rte_float_32: Bool32,
-        shader_rounding_mode_rte_float_64: Bool32,
-        shader_rounding_mode_rtz_float_16: Bool32,
-        shader_rounding_mode_rtz_float_32: Bool32,
-        shader_rounding_mode_rtz_float_64: Bool32,
-        max_update_after_bind_descriptors_in_all_pools: UInt32,
-        shader_uniform_buffer_array_non_uniform_indexing_native: Bool32,
-        shader_sampled_image_array_non_uniform_indexing_native: Bool32,
-        shader_storage_buffer_array_non_uniform_indexing_native: Bool32,
-        shader_storage_image_array_non_uniform_indexing_native: Bool32,
-        shader_input_attachment_array_non_uniform_indexing_native: Bool32,
-        robust_buffer_access_update_after_bind: Bool32,
-        quad_divergent_implicit_lod: Bool32,
-        max_per_stage_descriptor_update_after_bind_samplers: UInt32,
-        max_per_stage_descriptor_update_after_bind_uniform_buffers: UInt32,
-        max_per_stage_descriptor_update_after_bind_storage_buffers: UInt32,
-        max_per_stage_descriptor_update_after_bind_sampled_images: UInt32,
-        max_per_stage_descriptor_update_after_bind_storage_images: UInt32,
-        max_per_stage_descriptor_update_after_bind_input_attachments: UInt32,
-        max_per_stage_update_after_bind_resources: UInt32,
-        max_descriptor_set_update_after_bind_samplers: UInt32,
-        max_descriptor_set_update_after_bind_uniform_buffers: UInt32,
-        max_descriptor_set_update_after_bind_uniform_buffers_dynamic: UInt32,
-        max_descriptor_set_update_after_bind_storage_buffers: UInt32,
-        max_descriptor_set_update_after_bind_storage_buffers_dynamic: UInt32,
-        max_descriptor_set_update_after_bind_sampled_images: UInt32,
-        max_descriptor_set_update_after_bind_storage_images: UInt32,
-        max_descriptor_set_update_after_bind_input_attachments: UInt32,
-        supported_depth_resolve_modes: ResolveModeFlags,
-        supported_stencil_resolve_modes: ResolveModeFlags,
-        independent_resolve_none: Bool32,
-        independent_resolve: Bool32,
-        filter_minmax_single_component_formats: Bool32,
-        filter_minmax_image_component_mapping: Bool32,
-        max_timeline_semaphore_value_difference: UInt64,
-        framebuffer_integer_color_sample_counts: SampleCountFlags,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.driver_id = driver_id
-        self.driver_name = driver_name
-        self.driver_info = driver_info
-        self.conformance_version = conformance_version.copy()
-        self.denorm_behavior_independence = denorm_behavior_independence
-        self.rounding_mode_independence = rounding_mode_independence
-        self.shader_signed_zero_inf_nan_preserve_float_16 = shader_signed_zero_inf_nan_preserve_float_16
-        self.shader_signed_zero_inf_nan_preserve_float_32 = shader_signed_zero_inf_nan_preserve_float_32
-        self.shader_signed_zero_inf_nan_preserve_float_64 = shader_signed_zero_inf_nan_preserve_float_64
-        self.shader_denorm_preserve_float_16 = shader_denorm_preserve_float_16
-        self.shader_denorm_preserve_float_32 = shader_denorm_preserve_float_32
-        self.shader_denorm_preserve_float_64 = shader_denorm_preserve_float_64
-        self.shader_denorm_flush_to_zero_float_16 = shader_denorm_flush_to_zero_float_16
-        self.shader_denorm_flush_to_zero_float_32 = shader_denorm_flush_to_zero_float_32
-        self.shader_denorm_flush_to_zero_float_64 = shader_denorm_flush_to_zero_float_64
-        self.shader_rounding_mode_rte_float_16 = shader_rounding_mode_rte_float_16
-        self.shader_rounding_mode_rte_float_32 = shader_rounding_mode_rte_float_32
-        self.shader_rounding_mode_rte_float_64 = shader_rounding_mode_rte_float_64
-        self.shader_rounding_mode_rtz_float_16 = shader_rounding_mode_rtz_float_16
-        self.shader_rounding_mode_rtz_float_32 = shader_rounding_mode_rtz_float_32
-        self.shader_rounding_mode_rtz_float_64 = shader_rounding_mode_rtz_float_64
-        self.max_update_after_bind_descriptors_in_all_pools = max_update_after_bind_descriptors_in_all_pools
-        self.shader_uniform_buffer_array_non_uniform_indexing_native = shader_uniform_buffer_array_non_uniform_indexing_native
-        self.shader_sampled_image_array_non_uniform_indexing_native = shader_sampled_image_array_non_uniform_indexing_native
-        self.shader_storage_buffer_array_non_uniform_indexing_native = shader_storage_buffer_array_non_uniform_indexing_native
-        self.shader_storage_image_array_non_uniform_indexing_native = shader_storage_image_array_non_uniform_indexing_native
-        self.shader_input_attachment_array_non_uniform_indexing_native = shader_input_attachment_array_non_uniform_indexing_native
-        self.robust_buffer_access_update_after_bind = robust_buffer_access_update_after_bind
-        self.quad_divergent_implicit_lod = quad_divergent_implicit_lod
-        self.max_per_stage_descriptor_update_after_bind_samplers = max_per_stage_descriptor_update_after_bind_samplers
-        self.max_per_stage_descriptor_update_after_bind_uniform_buffers = max_per_stage_descriptor_update_after_bind_uniform_buffers
-        self.max_per_stage_descriptor_update_after_bind_storage_buffers = max_per_stage_descriptor_update_after_bind_storage_buffers
-        self.max_per_stage_descriptor_update_after_bind_sampled_images = max_per_stage_descriptor_update_after_bind_sampled_images
-        self.max_per_stage_descriptor_update_after_bind_storage_images = max_per_stage_descriptor_update_after_bind_storage_images
-        self.max_per_stage_descriptor_update_after_bind_input_attachments = max_per_stage_descriptor_update_after_bind_input_attachments
-        self.max_per_stage_update_after_bind_resources = max_per_stage_update_after_bind_resources
-        self.max_descriptor_set_update_after_bind_samplers = max_descriptor_set_update_after_bind_samplers
-        self.max_descriptor_set_update_after_bind_uniform_buffers = max_descriptor_set_update_after_bind_uniform_buffers
-        self.max_descriptor_set_update_after_bind_uniform_buffers_dynamic = max_descriptor_set_update_after_bind_uniform_buffers_dynamic
-        self.max_descriptor_set_update_after_bind_storage_buffers = max_descriptor_set_update_after_bind_storage_buffers
-        self.max_descriptor_set_update_after_bind_storage_buffers_dynamic = max_descriptor_set_update_after_bind_storage_buffers_dynamic
-        self.max_descriptor_set_update_after_bind_sampled_images = max_descriptor_set_update_after_bind_sampled_images
-        self.max_descriptor_set_update_after_bind_storage_images = max_descriptor_set_update_after_bind_storage_images
-        self.max_descriptor_set_update_after_bind_input_attachments = max_descriptor_set_update_after_bind_input_attachments
-        self.supported_depth_resolve_modes = supported_depth_resolve_modes
-        self.supported_stencil_resolve_modes = supported_stencil_resolve_modes
-        self.independent_resolve_none = independent_resolve_none
-        self.independent_resolve = independent_resolve
-        self.filter_minmax_single_component_formats = filter_minmax_single_component_formats
-        self.filter_minmax_image_component_mapping = filter_minmax_image_component_mapping
-        self.max_timeline_semaphore_value_difference = max_timeline_semaphore_value_difference
-        self.framebuffer_integer_color_sample_counts = framebuffer_integer_color_sample_counts
-
 
 struct PhysicalDeviceVulkan13Features(Copyable):
     var s_type: StructureType
@@ -14863,104 +12487,6 @@ struct PhysicalDeviceVulkan13Properties(Copyable):
     var uniform_texel_buffer_offset_single_texel_alignment: Bool32
     var max_buffer_size: DeviceSize
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        min_subgroup_size: UInt32,
-        max_subgroup_size: UInt32,
-        max_compute_workgroup_subgroups: UInt32,
-        required_subgroup_size_stages: ShaderStageFlags,
-        max_inline_uniform_block_size: UInt32,
-        max_per_stage_descriptor_inline_uniform_blocks: UInt32,
-        max_per_stage_descriptor_update_after_bind_inline_uniform_blocks: UInt32,
-        max_descriptor_set_inline_uniform_blocks: UInt32,
-        max_descriptor_set_update_after_bind_inline_uniform_blocks: UInt32,
-        max_inline_uniform_total_size: UInt32,
-        integer_dot_product_8_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_8_bit_signed_accelerated: Bool32,
-        integer_dot_product_8_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_4_x_8_bit_packed_unsigned_accelerated: Bool32,
-        integer_dot_product_4_x_8_bit_packed_signed_accelerated: Bool32,
-        integer_dot_product_4_x_8_bit_packed_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_16_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_16_bit_signed_accelerated: Bool32,
-        integer_dot_product_16_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_32_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_32_bit_signed_accelerated: Bool32,
-        integer_dot_product_32_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_64_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_64_bit_signed_accelerated: Bool32,
-        integer_dot_product_64_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_8_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_8_bit_signed_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_8_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_4_x_8_bit_packed_unsigned_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_4_x_8_bit_packed_signed_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_4_x_8_bit_packed_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_16_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_16_bit_signed_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_16_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_32_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_32_bit_signed_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_32_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_64_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_64_bit_signed_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_64_bit_mixed_signedness_accelerated: Bool32,
-        storage_texel_buffer_offset_alignment_bytes: DeviceSize,
-        storage_texel_buffer_offset_single_texel_alignment: Bool32,
-        uniform_texel_buffer_offset_alignment_bytes: DeviceSize,
-        uniform_texel_buffer_offset_single_texel_alignment: Bool32,
-        max_buffer_size: DeviceSize,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.min_subgroup_size = min_subgroup_size
-        self.max_subgroup_size = max_subgroup_size
-        self.max_compute_workgroup_subgroups = max_compute_workgroup_subgroups
-        self.required_subgroup_size_stages = required_subgroup_size_stages
-        self.max_inline_uniform_block_size = max_inline_uniform_block_size
-        self.max_per_stage_descriptor_inline_uniform_blocks = max_per_stage_descriptor_inline_uniform_blocks
-        self.max_per_stage_descriptor_update_after_bind_inline_uniform_blocks = max_per_stage_descriptor_update_after_bind_inline_uniform_blocks
-        self.max_descriptor_set_inline_uniform_blocks = max_descriptor_set_inline_uniform_blocks
-        self.max_descriptor_set_update_after_bind_inline_uniform_blocks = max_descriptor_set_update_after_bind_inline_uniform_blocks
-        self.max_inline_uniform_total_size = max_inline_uniform_total_size
-        self.integer_dot_product_8_bit_unsigned_accelerated = integer_dot_product_8_bit_unsigned_accelerated
-        self.integer_dot_product_8_bit_signed_accelerated = integer_dot_product_8_bit_signed_accelerated
-        self.integer_dot_product_8_bit_mixed_signedness_accelerated = integer_dot_product_8_bit_mixed_signedness_accelerated
-        self.integer_dot_product_4_x_8_bit_packed_unsigned_accelerated = integer_dot_product_4_x_8_bit_packed_unsigned_accelerated
-        self.integer_dot_product_4_x_8_bit_packed_signed_accelerated = integer_dot_product_4_x_8_bit_packed_signed_accelerated
-        self.integer_dot_product_4_x_8_bit_packed_mixed_signedness_accelerated = integer_dot_product_4_x_8_bit_packed_mixed_signedness_accelerated
-        self.integer_dot_product_16_bit_unsigned_accelerated = integer_dot_product_16_bit_unsigned_accelerated
-        self.integer_dot_product_16_bit_signed_accelerated = integer_dot_product_16_bit_signed_accelerated
-        self.integer_dot_product_16_bit_mixed_signedness_accelerated = integer_dot_product_16_bit_mixed_signedness_accelerated
-        self.integer_dot_product_32_bit_unsigned_accelerated = integer_dot_product_32_bit_unsigned_accelerated
-        self.integer_dot_product_32_bit_signed_accelerated = integer_dot_product_32_bit_signed_accelerated
-        self.integer_dot_product_32_bit_mixed_signedness_accelerated = integer_dot_product_32_bit_mixed_signedness_accelerated
-        self.integer_dot_product_64_bit_unsigned_accelerated = integer_dot_product_64_bit_unsigned_accelerated
-        self.integer_dot_product_64_bit_signed_accelerated = integer_dot_product_64_bit_signed_accelerated
-        self.integer_dot_product_64_bit_mixed_signedness_accelerated = integer_dot_product_64_bit_mixed_signedness_accelerated
-        self.integer_dot_product_accumulating_saturating_8_bit_unsigned_accelerated = integer_dot_product_accumulating_saturating_8_bit_unsigned_accelerated
-        self.integer_dot_product_accumulating_saturating_8_bit_signed_accelerated = integer_dot_product_accumulating_saturating_8_bit_signed_accelerated
-        self.integer_dot_product_accumulating_saturating_8_bit_mixed_signedness_accelerated = integer_dot_product_accumulating_saturating_8_bit_mixed_signedness_accelerated
-        self.integer_dot_product_accumulating_saturating_4_x_8_bit_packed_unsigned_accelerated = integer_dot_product_accumulating_saturating_4_x_8_bit_packed_unsigned_accelerated
-        self.integer_dot_product_accumulating_saturating_4_x_8_bit_packed_signed_accelerated = integer_dot_product_accumulating_saturating_4_x_8_bit_packed_signed_accelerated
-        self.integer_dot_product_accumulating_saturating_4_x_8_bit_packed_mixed_signedness_accelerated = integer_dot_product_accumulating_saturating_4_x_8_bit_packed_mixed_signedness_accelerated
-        self.integer_dot_product_accumulating_saturating_16_bit_unsigned_accelerated = integer_dot_product_accumulating_saturating_16_bit_unsigned_accelerated
-        self.integer_dot_product_accumulating_saturating_16_bit_signed_accelerated = integer_dot_product_accumulating_saturating_16_bit_signed_accelerated
-        self.integer_dot_product_accumulating_saturating_16_bit_mixed_signedness_accelerated = integer_dot_product_accumulating_saturating_16_bit_mixed_signedness_accelerated
-        self.integer_dot_product_accumulating_saturating_32_bit_unsigned_accelerated = integer_dot_product_accumulating_saturating_32_bit_unsigned_accelerated
-        self.integer_dot_product_accumulating_saturating_32_bit_signed_accelerated = integer_dot_product_accumulating_saturating_32_bit_signed_accelerated
-        self.integer_dot_product_accumulating_saturating_32_bit_mixed_signedness_accelerated = integer_dot_product_accumulating_saturating_32_bit_mixed_signedness_accelerated
-        self.integer_dot_product_accumulating_saturating_64_bit_unsigned_accelerated = integer_dot_product_accumulating_saturating_64_bit_unsigned_accelerated
-        self.integer_dot_product_accumulating_saturating_64_bit_signed_accelerated = integer_dot_product_accumulating_saturating_64_bit_signed_accelerated
-        self.integer_dot_product_accumulating_saturating_64_bit_mixed_signedness_accelerated = integer_dot_product_accumulating_saturating_64_bit_mixed_signedness_accelerated
-        self.storage_texel_buffer_offset_alignment_bytes = storage_texel_buffer_offset_alignment_bytes
-        self.storage_texel_buffer_offset_single_texel_alignment = storage_texel_buffer_offset_single_texel_alignment
-        self.uniform_texel_buffer_offset_alignment_bytes = uniform_texel_buffer_offset_alignment_bytes
-        self.uniform_texel_buffer_offset_single_texel_alignment = uniform_texel_buffer_offset_single_texel_alignment
-        self.max_buffer_size = max_buffer_size
-
 
 struct PhysicalDeviceVulkan14Features(Copyable):
     var s_type: StructureType
@@ -15067,64 +12593,6 @@ struct PhysicalDeviceVulkan14Properties(Copyable):
     var optimal_tiling_layout_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
     var identical_memory_type_requirements: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        line_sub_pixel_precision_bits: UInt32,
-        max_vertex_attrib_divisor: UInt32,
-        supports_non_zero_first_instance: Bool32,
-        max_push_descriptors: UInt32,
-        dynamic_rendering_local_read_depth_stencil_attachments: Bool32,
-        dynamic_rendering_local_read_multisampled_attachments: Bool32,
-        early_fragment_multisample_coverage_after_sample_counting: Bool32,
-        early_fragment_sample_mask_test_before_sample_counting: Bool32,
-        depth_stencil_swizzle_one_support: Bool32,
-        polygon_mode_point_size: Bool32,
-        non_strict_single_pixel_wide_lines_use_parallelogram: Bool32,
-        non_strict_wide_lines_use_parallelogram: Bool32,
-        block_texel_view_compatible_multiple_layers: Bool32,
-        max_combined_image_sampler_descriptor_count: UInt32,
-        fragment_shading_rate_clamp_combiner_inputs: Bool32,
-        default_robustness_storage_buffers: PipelineRobustnessBufferBehavior,
-        default_robustness_uniform_buffers: PipelineRobustnessBufferBehavior,
-        default_robustness_vertex_inputs: PipelineRobustnessBufferBehavior,
-        default_robustness_images: PipelineRobustnessImageBehavior,
-        copy_src_layout_count: UInt32,
-        p_copy_src_layouts: Ptr[ImageLayout, MutOrigin.external],
-        copy_dst_layout_count: UInt32,
-        p_copy_dst_layouts: Ptr[ImageLayout, MutOrigin.external],
-        optimal_tiling_layout_uuid: InlineArray[UInt8, Int(UUID_SIZE)],
-        identical_memory_type_requirements: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.line_sub_pixel_precision_bits = line_sub_pixel_precision_bits
-        self.max_vertex_attrib_divisor = max_vertex_attrib_divisor
-        self.supports_non_zero_first_instance = supports_non_zero_first_instance
-        self.max_push_descriptors = max_push_descriptors
-        self.dynamic_rendering_local_read_depth_stencil_attachments = dynamic_rendering_local_read_depth_stencil_attachments
-        self.dynamic_rendering_local_read_multisampled_attachments = dynamic_rendering_local_read_multisampled_attachments
-        self.early_fragment_multisample_coverage_after_sample_counting = early_fragment_multisample_coverage_after_sample_counting
-        self.early_fragment_sample_mask_test_before_sample_counting = early_fragment_sample_mask_test_before_sample_counting
-        self.depth_stencil_swizzle_one_support = depth_stencil_swizzle_one_support
-        self.polygon_mode_point_size = polygon_mode_point_size
-        self.non_strict_single_pixel_wide_lines_use_parallelogram = non_strict_single_pixel_wide_lines_use_parallelogram
-        self.non_strict_wide_lines_use_parallelogram = non_strict_wide_lines_use_parallelogram
-        self.block_texel_view_compatible_multiple_layers = block_texel_view_compatible_multiple_layers
-        self.max_combined_image_sampler_descriptor_count = max_combined_image_sampler_descriptor_count
-        self.fragment_shading_rate_clamp_combiner_inputs = fragment_shading_rate_clamp_combiner_inputs
-        self.default_robustness_storage_buffers = default_robustness_storage_buffers
-        self.default_robustness_uniform_buffers = default_robustness_uniform_buffers
-        self.default_robustness_vertex_inputs = default_robustness_vertex_inputs
-        self.default_robustness_images = default_robustness_images
-        self.copy_src_layout_count = copy_src_layout_count
-        self.p_copy_src_layouts = p_copy_src_layouts
-        self.copy_dst_layout_count = copy_dst_layout_count
-        self.p_copy_dst_layouts = p_copy_dst_layouts
-        self.optimal_tiling_layout_uuid = optimal_tiling_layout_uuid
-        self.identical_memory_type_requirements = identical_memory_type_requirements
-
 
 struct PipelineCompilerControlCreateInfoAMD(Copyable):
     var s_type: StructureType
@@ -15164,18 +12632,6 @@ struct FaultData(Copyable):
     var fault_level: FaultLevel
     var fault_type: FaultType
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        fault_level: FaultLevel,
-        fault_type: FaultType,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.fault_level = fault_level
-        self.fault_type = fault_type
-
 
 struct FaultCallbackInfo(Copyable):
     var s_type: StructureType
@@ -15208,24 +12664,6 @@ struct PhysicalDeviceToolProperties(Copyable):
     var description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
     var layer: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)],
-        version: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)],
-        purposes: ToolPurposeFlags,
-        description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)],
-        layer: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.name = name
-        self.version = version
-        self.purposes = purposes
-        self.description = description
-        self.layer = layer
-
 
 struct SamplerCustomBorderColorCreateInfoEXT(Copyable):
     var s_type: StructureType
@@ -15250,16 +12688,6 @@ struct PhysicalDeviceCustomBorderColorPropertiesEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_custom_border_color_samplers: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_custom_border_color_samplers: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_custom_border_color_samplers = max_custom_border_color_samplers
 
 
 struct PhysicalDeviceCustomBorderColorFeaturesEXT(Copyable):
@@ -15987,16 +13415,6 @@ struct PhysicalDeviceExtendedDynamicState3PropertiesEXT(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var dynamic_primitive_topology_unrestricted: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        dynamic_primitive_topology_unrestricted: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.dynamic_primitive_topology_unrestricted = dynamic_primitive_topology_unrestricted
-
 
 struct ColorBlendEquationEXT(Copyable):
     var src_color_blend_factor: BlendFactor
@@ -16116,16 +13534,6 @@ struct PhysicalDevicePartitionedAccelerationStructurePropertiesNV(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_partition_count: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_partition_count: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_partition_count = max_partition_count
 
 
 struct BuildPartitionedAccelerationStructureIndirectCommandNV(Copyable):
@@ -16413,18 +13821,6 @@ struct PhysicalDeviceRobustness2PropertiesKHR(Copyable):
     var robust_storage_buffer_access_size_alignment: DeviceSize
     var robust_uniform_buffer_access_size_alignment: DeviceSize
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        robust_storage_buffer_access_size_alignment: DeviceSize,
-        robust_uniform_buffer_access_size_alignment: DeviceSize,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.robust_storage_buffer_access_size_alignment = robust_storage_buffer_access_size_alignment
-        self.robust_uniform_buffer_access_size_alignment = robust_uniform_buffer_access_size_alignment
-
 
 struct PhysicalDeviceImageRobustnessFeatures(Copyable):
     var s_type: StructureType
@@ -16529,16 +13925,6 @@ struct PhysicalDevicePortabilitySubsetPropertiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var min_vertex_input_binding_stride_alignment: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        min_vertex_input_binding_stride_alignment: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.min_vertex_input_binding_stride_alignment = min_vertex_input_binding_stride_alignment
 
 
 struct PhysicalDevice4444FormatsFeaturesEXT(Copyable):
@@ -17022,66 +14408,12 @@ struct PhysicalDeviceFragmentShadingRatePropertiesKHR(Copyable):
     var fragment_shading_rate_with_custom_sample_locations: Bool32
     var fragment_shading_rate_strict_multiply_combiner: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        min_fragment_shading_rate_attachment_texel_size: Extent2D,
-        max_fragment_shading_rate_attachment_texel_size: Extent2D,
-        max_fragment_shading_rate_attachment_texel_size_aspect_ratio: UInt32,
-        primitive_fragment_shading_rate_with_multiple_viewports: Bool32,
-        layered_shading_rate_attachments: Bool32,
-        fragment_shading_rate_non_trivial_combiner_ops: Bool32,
-        max_fragment_size: Extent2D,
-        max_fragment_size_aspect_ratio: UInt32,
-        max_fragment_shading_rate_coverage_samples: UInt32,
-        max_fragment_shading_rate_rasterization_samples: SampleCountFlagBits,
-        fragment_shading_rate_with_shader_depth_stencil_writes: Bool32,
-        fragment_shading_rate_with_sample_mask: Bool32,
-        fragment_shading_rate_with_shader_sample_mask: Bool32,
-        fragment_shading_rate_with_conservative_rasterization: Bool32,
-        fragment_shading_rate_with_fragment_shader_interlock: Bool32,
-        fragment_shading_rate_with_custom_sample_locations: Bool32,
-        fragment_shading_rate_strict_multiply_combiner: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.min_fragment_shading_rate_attachment_texel_size = min_fragment_shading_rate_attachment_texel_size.copy()
-        self.max_fragment_shading_rate_attachment_texel_size = max_fragment_shading_rate_attachment_texel_size.copy()
-        self.max_fragment_shading_rate_attachment_texel_size_aspect_ratio = max_fragment_shading_rate_attachment_texel_size_aspect_ratio
-        self.primitive_fragment_shading_rate_with_multiple_viewports = primitive_fragment_shading_rate_with_multiple_viewports
-        self.layered_shading_rate_attachments = layered_shading_rate_attachments
-        self.fragment_shading_rate_non_trivial_combiner_ops = fragment_shading_rate_non_trivial_combiner_ops
-        self.max_fragment_size = max_fragment_size.copy()
-        self.max_fragment_size_aspect_ratio = max_fragment_size_aspect_ratio
-        self.max_fragment_shading_rate_coverage_samples = max_fragment_shading_rate_coverage_samples
-        self.max_fragment_shading_rate_rasterization_samples = max_fragment_shading_rate_rasterization_samples
-        self.fragment_shading_rate_with_shader_depth_stencil_writes = fragment_shading_rate_with_shader_depth_stencil_writes
-        self.fragment_shading_rate_with_sample_mask = fragment_shading_rate_with_sample_mask
-        self.fragment_shading_rate_with_shader_sample_mask = fragment_shading_rate_with_shader_sample_mask
-        self.fragment_shading_rate_with_conservative_rasterization = fragment_shading_rate_with_conservative_rasterization
-        self.fragment_shading_rate_with_fragment_shader_interlock = fragment_shading_rate_with_fragment_shader_interlock
-        self.fragment_shading_rate_with_custom_sample_locations = fragment_shading_rate_with_custom_sample_locations
-        self.fragment_shading_rate_strict_multiply_combiner = fragment_shading_rate_strict_multiply_combiner
-
 
 struct PhysicalDeviceFragmentShadingRateKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var sample_counts: SampleCountFlags
     var fragment_size: Extent2D
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        sample_counts: SampleCountFlags,
-        fragment_size: Extent2D,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.sample_counts = sample_counts
-        self.fragment_size = fragment_size.copy()
 
 
 struct PhysicalDeviceShaderTerminateInvocationFeatures(Copyable):
@@ -17127,16 +14459,6 @@ struct PhysicalDeviceFragmentShadingRateEnumsPropertiesNV(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_fragment_shading_rate_invocation_count: SampleCountFlagBits
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_fragment_shading_rate_invocation_count: SampleCountFlagBits,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_fragment_shading_rate_invocation_count = max_fragment_shading_rate_invocation_count
-
 
 struct PipelineFragmentShadingRateEnumStateCreateInfoNV(Copyable):
     var s_type: StructureType
@@ -17166,20 +14488,6 @@ struct AccelerationStructureBuildSizesInfoKHR(Copyable):
     var acceleration_structure_size: DeviceSize
     var update_scratch_size: DeviceSize
     var build_scratch_size: DeviceSize
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, ImmutOrigin.external],
-        acceleration_structure_size: DeviceSize,
-        update_scratch_size: DeviceSize,
-        build_scratch_size: DeviceSize,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.acceleration_structure_size = acceleration_structure_size
-        self.update_scratch_size = update_scratch_size
-        self.build_scratch_size = build_scratch_size
 
 
 struct PhysicalDeviceImage2DViewOf3DFeaturesEXT(Copyable):
@@ -17253,16 +14561,6 @@ struct PhysicalDeviceLegacyVertexAttributesPropertiesEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var native_unaligned_performance: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        native_unaligned_performance: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.native_unaligned_performance = native_unaligned_performance
 
 
 struct PhysicalDeviceMutableDescriptorTypeFeaturesEXT(Copyable):
@@ -17379,38 +14677,6 @@ struct PhysicalDeviceDeviceGeneratedCommandsPropertiesEXT(Copyable):
     var supported_indirect_commands_shader_stages_shader_binding: ShaderStageFlags
     var device_generated_commands_transform_feedback: Bool32
     var device_generated_commands_multi_draw_indirect_count: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_indirect_pipeline_count: UInt32,
-        max_indirect_shader_object_count: UInt32,
-        max_indirect_sequence_count: UInt32,
-        max_indirect_commands_token_count: UInt32,
-        max_indirect_commands_token_offset: UInt32,
-        max_indirect_commands_indirect_stride: UInt32,
-        supported_indirect_commands_input_modes: IndirectCommandsInputModeFlagsEXT,
-        supported_indirect_commands_shader_stages: ShaderStageFlags,
-        supported_indirect_commands_shader_stages_pipeline_binding: ShaderStageFlags,
-        supported_indirect_commands_shader_stages_shader_binding: ShaderStageFlags,
-        device_generated_commands_transform_feedback: Bool32,
-        device_generated_commands_multi_draw_indirect_count: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_indirect_pipeline_count = max_indirect_pipeline_count
-        self.max_indirect_shader_object_count = max_indirect_shader_object_count
-        self.max_indirect_sequence_count = max_indirect_sequence_count
-        self.max_indirect_commands_token_count = max_indirect_commands_token_count
-        self.max_indirect_commands_token_offset = max_indirect_commands_token_offset
-        self.max_indirect_commands_indirect_stride = max_indirect_commands_indirect_stride
-        self.supported_indirect_commands_input_modes = supported_indirect_commands_input_modes
-        self.supported_indirect_commands_shader_stages = supported_indirect_commands_shader_stages
-        self.supported_indirect_commands_shader_stages_pipeline_binding = supported_indirect_commands_shader_stages_pipeline_binding
-        self.supported_indirect_commands_shader_stages_shader_binding = supported_indirect_commands_shader_stages_shader_binding
-        self.device_generated_commands_transform_feedback = device_generated_commands_transform_feedback
-        self.device_generated_commands_multi_draw_indirect_count = device_generated_commands_multi_draw_indirect_count
 
 
 struct GeneratedCommandsPipelineInfoEXT(Copyable):
@@ -18186,34 +15452,12 @@ struct QueueFamilyCheckpointProperties2NV(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var checkpoint_execution_stage_mask: PipelineStageFlags2
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        checkpoint_execution_stage_mask: PipelineStageFlags2,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.checkpoint_execution_stage_mask = checkpoint_execution_stage_mask
-
 
 struct CheckpointData2NV(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var stage: PipelineStageFlags2
     var p_checkpoint_marker: Ptr[NoneType, MutOrigin.external]
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        stage: PipelineStageFlags2,
-        p_checkpoint_marker: Ptr[NoneType, MutOrigin.external],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.stage = stage
-        self.p_checkpoint_marker = p_checkpoint_marker
 
 
 struct PhysicalDeviceSynchronization2Features(Copyable):
@@ -18480,31 +15724,12 @@ struct SubresourceHostMemcpySize(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var size: DeviceSize
 
-    fn __init__(
-        out self, s_type: StructureType, p_next: Ptr[NoneType, MutOrigin.external], size: DeviceSize
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.size = size
-
 
 struct HostImageCopyDevicePerformanceQuery(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var optimal_device_access: Bool32
     var identical_memory_layout: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        optimal_device_access: Bool32,
-        identical_memory_layout: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.optimal_device_access = optimal_device_access
-        self.identical_memory_layout = identical_memory_layout
 
 
 struct PhysicalDeviceVulkanSC10Properties(Copyable):
@@ -18528,50 +15753,6 @@ struct PhysicalDeviceVulkanSC10Properties(Copyable):
     var max_callback_fault_count: UInt32
     var max_command_pool_command_buffers: UInt32
     var max_command_buffer_size: DeviceSize
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        device_no_dynamic_host_allocations: Bool32,
-        device_destroy_frees_memory: Bool32,
-        command_pool_multiple_command_buffers_recording: Bool32,
-        command_pool_reset_command_buffer: Bool32,
-        command_buffer_simultaneous_use: Bool32,
-        secondary_command_buffer_null_or_imageless_framebuffer: Bool32,
-        recycle_descriptor_set_memory: Bool32,
-        recycle_pipeline_memory: Bool32,
-        max_render_pass_subpasses: UInt32,
-        max_render_pass_dependencies: UInt32,
-        max_subpass_input_attachments: UInt32,
-        max_subpass_preserve_attachments: UInt32,
-        max_framebuffer_attachments: UInt32,
-        max_descriptor_set_layout_bindings: UInt32,
-        max_query_fault_count: UInt32,
-        max_callback_fault_count: UInt32,
-        max_command_pool_command_buffers: UInt32,
-        max_command_buffer_size: DeviceSize,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.device_no_dynamic_host_allocations = device_no_dynamic_host_allocations
-        self.device_destroy_frees_memory = device_destroy_frees_memory
-        self.command_pool_multiple_command_buffers_recording = command_pool_multiple_command_buffers_recording
-        self.command_pool_reset_command_buffer = command_pool_reset_command_buffer
-        self.command_buffer_simultaneous_use = command_buffer_simultaneous_use
-        self.secondary_command_buffer_null_or_imageless_framebuffer = secondary_command_buffer_null_or_imageless_framebuffer
-        self.recycle_descriptor_set_memory = recycle_descriptor_set_memory
-        self.recycle_pipeline_memory = recycle_pipeline_memory
-        self.max_render_pass_subpasses = max_render_pass_subpasses
-        self.max_render_pass_dependencies = max_render_pass_dependencies
-        self.max_subpass_input_attachments = max_subpass_input_attachments
-        self.max_subpass_preserve_attachments = max_subpass_preserve_attachments
-        self.max_framebuffer_attachments = max_framebuffer_attachments
-        self.max_descriptor_set_layout_bindings = max_descriptor_set_layout_bindings
-        self.max_query_fault_count = max_query_fault_count
-        self.max_callback_fault_count = max_callback_fault_count
-        self.max_command_pool_command_buffers = max_command_pool_command_buffers
-        self.max_command_buffer_size = max_command_buffer_size
 
 
 struct PipelinePoolSize(Copyable):
@@ -18755,20 +15936,6 @@ struct CommandPoolMemoryConsumption(Copyable):
     var command_pool_reserved_size: DeviceSize
     var command_buffer_allocated: DeviceSize
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        command_pool_allocated: DeviceSize,
-        command_pool_reserved_size: DeviceSize,
-        command_buffer_allocated: DeviceSize,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.command_pool_allocated = command_pool_allocated
-        self.command_pool_reserved_size = command_pool_reserved_size
-        self.command_buffer_allocated = command_buffer_allocated
-
 
 struct PhysicalDeviceVulkanSC10Features(Copyable):
     var s_type: StructureType
@@ -18877,13 +16044,6 @@ struct SubpassResolvePerformanceQueryEXT(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var optimal: Bool32
 
-    fn __init__(
-        out self, s_type: StructureType, p_next: Ptr[NoneType, MutOrigin.external], optimal: Bool32
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.optimal = optimal
-
 
 struct MultisampledRenderToSingleSampledInfoEXT(Copyable):
     var s_type: StructureType
@@ -18925,31 +16085,11 @@ struct QueueFamilyVideoPropertiesKHR(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var video_codec_operations: VideoCodecOperationFlagsKHR
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        video_codec_operations: VideoCodecOperationFlagsKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.video_codec_operations = video_codec_operations
-
 
 struct QueueFamilyQueryResultStatusPropertiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var query_result_status_support: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        query_result_status_support: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.query_result_status_support = query_result_status_support
 
 
 struct VideoProfileListInfoKHR(Copyable):
@@ -18997,41 +16137,11 @@ struct VideoFormatPropertiesKHR(Copyable):
     var image_tiling: ImageTiling
     var image_usage_flags: ImageUsageFlags
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        format: Format,
-        component_mapping: ComponentMapping,
-        image_create_flags: ImageCreateFlags,
-        image_type: ImageType,
-        image_tiling: ImageTiling,
-        image_usage_flags: ImageUsageFlags,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.format = format
-        self.component_mapping = component_mapping.copy()
-        self.image_create_flags = image_create_flags
-        self.image_type = image_type
-        self.image_tiling = image_tiling
-        self.image_usage_flags = image_usage_flags
-
 
 struct VideoEncodeQuantizationMapCapabilitiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_quantization_map_extent: Extent2D
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_quantization_map_extent: Extent2D,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_quantization_map_extent = max_quantization_map_extent.copy()
 
 
 struct VideoEncodeH264QuantizationMapCapabilitiesKHR(Copyable):
@@ -19040,36 +16150,12 @@ struct VideoEncodeH264QuantizationMapCapabilitiesKHR(Copyable):
     var min_qp_delta: Int32
     var max_qp_delta: Int32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        min_qp_delta: Int32,
-        max_qp_delta: Int32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.min_qp_delta = min_qp_delta
-        self.max_qp_delta = max_qp_delta
-
 
 struct VideoEncodeH265QuantizationMapCapabilitiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var min_qp_delta: Int32
     var max_qp_delta: Int32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        min_qp_delta: Int32,
-        max_qp_delta: Int32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.min_qp_delta = min_qp_delta
-        self.max_qp_delta = max_qp_delta
 
 
 struct VideoEncodeAV1QuantizationMapCapabilitiesKHR(Copyable):
@@ -19078,33 +16164,11 @@ struct VideoEncodeAV1QuantizationMapCapabilitiesKHR(Copyable):
     var min_q_index_delta: Int32
     var max_q_index_delta: Int32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        min_q_index_delta: Int32,
-        max_q_index_delta: Int32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.min_q_index_delta = min_q_index_delta
-        self.max_q_index_delta = max_q_index_delta
-
 
 struct VideoFormatQuantizationMapPropertiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var quantization_map_texel_size: Extent2D
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        quantization_map_texel_size: Extent2D,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.quantization_map_texel_size = quantization_map_texel_size.copy()
 
 
 struct VideoFormatH265QuantizationMapPropertiesKHR(Copyable):
@@ -19112,31 +16176,11 @@ struct VideoFormatH265QuantizationMapPropertiesKHR(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var compatible_ctb_sizes: VideoEncodeH265CtbSizeFlagsKHR
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        compatible_ctb_sizes: VideoEncodeH265CtbSizeFlagsKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.compatible_ctb_sizes = compatible_ctb_sizes
-
 
 struct VideoFormatAV1QuantizationMapPropertiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var compatible_superblock_sizes: VideoEncodeAV1SuperblockSizeFlagsKHR
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        compatible_superblock_sizes: VideoEncodeAV1SuperblockSizeFlagsKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.compatible_superblock_sizes = compatible_superblock_sizes
 
 
 struct VideoProfileInfoKHR(Copyable):
@@ -19177,50 +16221,12 @@ struct VideoCapabilitiesKHR(Copyable):
     var max_active_reference_pictures: UInt32
     var std_header_version: ExtensionProperties
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        flags: VideoCapabilityFlagsKHR,
-        min_bitstream_buffer_offset_alignment: DeviceSize,
-        min_bitstream_buffer_size_alignment: DeviceSize,
-        picture_access_granularity: Extent2D,
-        min_coded_extent: Extent2D,
-        max_coded_extent: Extent2D,
-        max_dpb_slots: UInt32,
-        max_active_reference_pictures: UInt32,
-        std_header_version: ExtensionProperties,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.flags = flags
-        self.min_bitstream_buffer_offset_alignment = min_bitstream_buffer_offset_alignment
-        self.min_bitstream_buffer_size_alignment = min_bitstream_buffer_size_alignment
-        self.picture_access_granularity = picture_access_granularity.copy()
-        self.min_coded_extent = min_coded_extent.copy()
-        self.max_coded_extent = max_coded_extent.copy()
-        self.max_dpb_slots = max_dpb_slots
-        self.max_active_reference_pictures = max_active_reference_pictures
-        self.std_header_version = std_header_version.copy()
-
 
 struct VideoSessionMemoryRequirementsKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var memory_bind_index: UInt32
     var memory_requirements: MemoryRequirements
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        memory_bind_index: UInt32,
-        memory_requirements: MemoryRequirements,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.memory_bind_index = memory_bind_index
-        self.memory_requirements = memory_requirements.copy()
 
 
 struct BindVideoSessionMemoryInfoKHR(Copyable):
@@ -19296,16 +16302,6 @@ struct VideoDecodeCapabilitiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var flags: VideoDecodeCapabilityFlagsKHR
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        flags: VideoDecodeCapabilityFlagsKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.flags = flags
 
 
 struct VideoDecodeUsageInfoKHR(Copyable):
@@ -19440,18 +16436,6 @@ struct VideoDecodeH264CapabilitiesKHR(Copyable):
     var max_level_idc: StdVideoH264LevelIdc
     var field_offset_granularity: Offset2D
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_level_idc: StdVideoH264LevelIdc,
-        field_offset_granularity: Offset2D,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_level_idc = max_level_idc
-        self.field_offset_granularity = field_offset_granularity.copy()
-
 
 struct VideoDecodeH264SessionParametersAddInfoKHR(Copyable):
     var s_type: StructureType
@@ -19577,16 +16561,6 @@ struct VideoDecodeH265CapabilitiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_level_idc: StdVideoH265LevelIdc
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_level_idc: StdVideoH265LevelIdc,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_level_idc = max_level_idc
 
 
 struct VideoDecodeH265SessionParametersAddInfoKHR(Copyable):
@@ -19742,16 +16716,6 @@ struct VideoDecodeVP9CapabilitiesKHR(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_level: StdVideoVP9Level
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_level: StdVideoVP9Level,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_level = max_level
-
 
 struct VideoDecodeVP9PictureInfoKHR(Copyable):
     var s_type: StructureType
@@ -19804,16 +16768,6 @@ struct VideoDecodeAV1CapabilitiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_level: StdVideoAV1Level
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_level: StdVideoAV1Level,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_level = max_level
 
 
 struct VideoDecodeAV1SessionParametersCreateInfoKHR(Copyable):
@@ -19993,16 +16947,6 @@ struct VideoEncodeSessionParametersFeedbackInfoKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var has_overrides: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        has_overrides: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.has_overrides = has_overrides
 
 
 struct VideoBeginCodingInfoKHR(Copyable):
@@ -20235,18 +17179,6 @@ struct VideoEncodeQualityLevelPropertiesKHR(Copyable):
     var preferred_rate_control_mode: VideoEncodeRateControlModeFlagBitsKHR
     var preferred_rate_control_layer_count: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        preferred_rate_control_mode: VideoEncodeRateControlModeFlagBitsKHR,
-        preferred_rate_control_layer_count: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.preferred_rate_control_mode = preferred_rate_control_mode
-        self.preferred_rate_control_layer_count = preferred_rate_control_layer_count
-
 
 struct VideoEncodeRateControlInfoKHR(Copyable):
     var s_type: StructureType
@@ -20315,28 +17247,6 @@ struct VideoEncodeCapabilitiesKHR(Copyable):
     var encode_input_picture_granularity: Extent2D
     var supported_encode_feedback_flags: VideoEncodeFeedbackFlagsKHR
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        flags: VideoEncodeCapabilityFlagsKHR,
-        rate_control_modes: VideoEncodeRateControlModeFlagsKHR,
-        max_rate_control_layers: UInt32,
-        max_bitrate: UInt64,
-        max_quality_levels: UInt32,
-        encode_input_picture_granularity: Extent2D,
-        supported_encode_feedback_flags: VideoEncodeFeedbackFlagsKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.flags = flags
-        self.rate_control_modes = rate_control_modes
-        self.max_rate_control_layers = max_rate_control_layers
-        self.max_bitrate = max_bitrate
-        self.max_quality_levels = max_quality_levels
-        self.encode_input_picture_granularity = encode_input_picture_granularity.copy()
-        self.supported_encode_feedback_flags = supported_encode_feedback_flags
-
 
 struct VideoEncodeH264CapabilitiesKHR(Copyable):
     var s_type: StructureType
@@ -20355,40 +17265,6 @@ struct VideoEncodeH264CapabilitiesKHR(Copyable):
     var requires_gop_remaining_frames: Bool32
     var std_syntax_flags: VideoEncodeH264StdFlagsKHR
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        flags: VideoEncodeH264CapabilityFlagsKHR,
-        max_level_idc: StdVideoH264LevelIdc,
-        max_slice_count: UInt32,
-        max_p_picture_l0_reference_count: UInt32,
-        max_b_picture_l0_reference_count: UInt32,
-        max_l1_reference_count: UInt32,
-        max_temporal_layer_count: UInt32,
-        expect_dyadic_temporal_layer_pattern: Bool32,
-        min_qp: Int32,
-        max_qp: Int32,
-        prefers_gop_remaining_frames: Bool32,
-        requires_gop_remaining_frames: Bool32,
-        std_syntax_flags: VideoEncodeH264StdFlagsKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.flags = flags
-        self.max_level_idc = max_level_idc
-        self.max_slice_count = max_slice_count
-        self.max_p_picture_l0_reference_count = max_p_picture_l0_reference_count
-        self.max_b_picture_l0_reference_count = max_b_picture_l0_reference_count
-        self.max_l1_reference_count = max_l1_reference_count
-        self.max_temporal_layer_count = max_temporal_layer_count
-        self.expect_dyadic_temporal_layer_pattern = expect_dyadic_temporal_layer_pattern
-        self.min_qp = min_qp
-        self.max_qp = max_qp
-        self.prefers_gop_remaining_frames = prefers_gop_remaining_frames
-        self.requires_gop_remaining_frames = requires_gop_remaining_frames
-        self.std_syntax_flags = std_syntax_flags
-
 
 struct VideoEncodeH264QualityLevelPropertiesKHR(Copyable):
     var s_type: StructureType
@@ -20402,32 +17278,6 @@ struct VideoEncodeH264QualityLevelPropertiesKHR(Copyable):
     var preferred_max_l0_reference_count: UInt32
     var preferred_max_l1_reference_count: UInt32
     var preferred_std_entropy_coding_mode_flag: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        preferred_rate_control_flags: VideoEncodeH264RateControlFlagsKHR,
-        preferred_gop_frame_count: UInt32,
-        preferred_idr_period: UInt32,
-        preferred_consecutive_b_frame_count: UInt32,
-        preferred_temporal_layer_count: UInt32,
-        preferred_constant_qp: VideoEncodeH264QpKHR,
-        preferred_max_l0_reference_count: UInt32,
-        preferred_max_l1_reference_count: UInt32,
-        preferred_std_entropy_coding_mode_flag: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.preferred_rate_control_flags = preferred_rate_control_flags
-        self.preferred_gop_frame_count = preferred_gop_frame_count
-        self.preferred_idr_period = preferred_idr_period
-        self.preferred_consecutive_b_frame_count = preferred_consecutive_b_frame_count
-        self.preferred_temporal_layer_count = preferred_temporal_layer_count
-        self.preferred_constant_qp = preferred_constant_qp.copy()
-        self.preferred_max_l0_reference_count = preferred_max_l0_reference_count
-        self.preferred_max_l1_reference_count = preferred_max_l1_reference_count
-        self.preferred_std_entropy_coding_mode_flag = preferred_std_entropy_coding_mode_flag
 
 
 struct VideoEncodeH264SessionCreateInfoKHR(Copyable):
@@ -20526,18 +17376,6 @@ struct VideoEncodeH264SessionParametersFeedbackInfoKHR(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var has_std_sps_overrides: Bool32
     var has_std_pps_overrides: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        has_std_sps_overrides: Bool32,
-        has_std_pps_overrides: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.has_std_sps_overrides = has_std_sps_overrides
-        self.has_std_pps_overrides = has_std_pps_overrides
 
 
 struct VideoEncodeH264DpbSlotInfoKHR(Copyable):
@@ -20742,46 +17580,6 @@ struct VideoEncodeH265CapabilitiesKHR(Copyable):
     var requires_gop_remaining_frames: Bool32
     var std_syntax_flags: VideoEncodeH265StdFlagsKHR
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        flags: VideoEncodeH265CapabilityFlagsKHR,
-        max_level_idc: StdVideoH265LevelIdc,
-        max_slice_segment_count: UInt32,
-        max_tiles: Extent2D,
-        ctb_sizes: VideoEncodeH265CtbSizeFlagsKHR,
-        transform_block_sizes: VideoEncodeH265TransformBlockSizeFlagsKHR,
-        max_p_picture_l0_reference_count: UInt32,
-        max_b_picture_l0_reference_count: UInt32,
-        max_l1_reference_count: UInt32,
-        max_sub_layer_count: UInt32,
-        expect_dyadic_temporal_sub_layer_pattern: Bool32,
-        min_qp: Int32,
-        max_qp: Int32,
-        prefers_gop_remaining_frames: Bool32,
-        requires_gop_remaining_frames: Bool32,
-        std_syntax_flags: VideoEncodeH265StdFlagsKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.flags = flags
-        self.max_level_idc = max_level_idc
-        self.max_slice_segment_count = max_slice_segment_count
-        self.max_tiles = max_tiles.copy()
-        self.ctb_sizes = ctb_sizes
-        self.transform_block_sizes = transform_block_sizes
-        self.max_p_picture_l0_reference_count = max_p_picture_l0_reference_count
-        self.max_b_picture_l0_reference_count = max_b_picture_l0_reference_count
-        self.max_l1_reference_count = max_l1_reference_count
-        self.max_sub_layer_count = max_sub_layer_count
-        self.expect_dyadic_temporal_sub_layer_pattern = expect_dyadic_temporal_sub_layer_pattern
-        self.min_qp = min_qp
-        self.max_qp = max_qp
-        self.prefers_gop_remaining_frames = prefers_gop_remaining_frames
-        self.requires_gop_remaining_frames = requires_gop_remaining_frames
-        self.std_syntax_flags = std_syntax_flags
-
 
 struct VideoEncodeH265QualityLevelPropertiesKHR(Copyable):
     var s_type: StructureType
@@ -20794,30 +17592,6 @@ struct VideoEncodeH265QualityLevelPropertiesKHR(Copyable):
     var preferred_constant_qp: VideoEncodeH265QpKHR
     var preferred_max_l0_reference_count: UInt32
     var preferred_max_l1_reference_count: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        preferred_rate_control_flags: VideoEncodeH265RateControlFlagsKHR,
-        preferred_gop_frame_count: UInt32,
-        preferred_idr_period: UInt32,
-        preferred_consecutive_b_frame_count: UInt32,
-        preferred_sub_layer_count: UInt32,
-        preferred_constant_qp: VideoEncodeH265QpKHR,
-        preferred_max_l0_reference_count: UInt32,
-        preferred_max_l1_reference_count: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.preferred_rate_control_flags = preferred_rate_control_flags
-        self.preferred_gop_frame_count = preferred_gop_frame_count
-        self.preferred_idr_period = preferred_idr_period
-        self.preferred_consecutive_b_frame_count = preferred_consecutive_b_frame_count
-        self.preferred_sub_layer_count = preferred_sub_layer_count
-        self.preferred_constant_qp = preferred_constant_qp.copy()
-        self.preferred_max_l0_reference_count = preferred_max_l0_reference_count
-        self.preferred_max_l1_reference_count = preferred_max_l1_reference_count
 
 
 struct VideoEncodeH265SessionCreateInfoKHR(Copyable):
@@ -20932,20 +17706,6 @@ struct VideoEncodeH265SessionParametersFeedbackInfoKHR(Copyable):
     var has_std_vps_overrides: Bool32
     var has_std_sps_overrides: Bool32
     var has_std_pps_overrides: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        has_std_vps_overrides: Bool32,
-        has_std_sps_overrides: Bool32,
-        has_std_pps_overrides: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.has_std_vps_overrides = has_std_vps_overrides
-        self.has_std_sps_overrides = has_std_sps_overrides
-        self.has_std_pps_overrides = has_std_pps_overrides
 
 
 struct VideoEncodeH265PictureInfoKHR(Copyable):
@@ -21155,62 +17915,6 @@ struct VideoEncodeAV1CapabilitiesKHR(Copyable):
     var requires_gop_remaining_frames: Bool32
     var std_syntax_flags: VideoEncodeAV1StdFlagsKHR
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        flags: VideoEncodeAV1CapabilityFlagsKHR,
-        max_level: StdVideoAV1Level,
-        coded_picture_alignment: Extent2D,
-        max_tiles: Extent2D,
-        min_tile_size: Extent2D,
-        max_tile_size: Extent2D,
-        superblock_sizes: VideoEncodeAV1SuperblockSizeFlagsKHR,
-        max_single_reference_count: UInt32,
-        single_reference_name_mask: UInt32,
-        max_unidirectional_compound_reference_count: UInt32,
-        max_unidirectional_compound_group_1_reference_count: UInt32,
-        unidirectional_compound_reference_name_mask: UInt32,
-        max_bidirectional_compound_reference_count: UInt32,
-        max_bidirectional_compound_group_1_reference_count: UInt32,
-        max_bidirectional_compound_group_2_reference_count: UInt32,
-        bidirectional_compound_reference_name_mask: UInt32,
-        max_temporal_layer_count: UInt32,
-        max_spatial_layer_count: UInt32,
-        max_operating_points: UInt32,
-        min_q_index: UInt32,
-        max_q_index: UInt32,
-        prefers_gop_remaining_frames: Bool32,
-        requires_gop_remaining_frames: Bool32,
-        std_syntax_flags: VideoEncodeAV1StdFlagsKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.flags = flags
-        self.max_level = max_level
-        self.coded_picture_alignment = coded_picture_alignment.copy()
-        self.max_tiles = max_tiles.copy()
-        self.min_tile_size = min_tile_size.copy()
-        self.max_tile_size = max_tile_size.copy()
-        self.superblock_sizes = superblock_sizes
-        self.max_single_reference_count = max_single_reference_count
-        self.single_reference_name_mask = single_reference_name_mask
-        self.max_unidirectional_compound_reference_count = max_unidirectional_compound_reference_count
-        self.max_unidirectional_compound_group_1_reference_count = max_unidirectional_compound_group_1_reference_count
-        self.unidirectional_compound_reference_name_mask = unidirectional_compound_reference_name_mask
-        self.max_bidirectional_compound_reference_count = max_bidirectional_compound_reference_count
-        self.max_bidirectional_compound_group_1_reference_count = max_bidirectional_compound_group_1_reference_count
-        self.max_bidirectional_compound_group_2_reference_count = max_bidirectional_compound_group_2_reference_count
-        self.bidirectional_compound_reference_name_mask = bidirectional_compound_reference_name_mask
-        self.max_temporal_layer_count = max_temporal_layer_count
-        self.max_spatial_layer_count = max_spatial_layer_count
-        self.max_operating_points = max_operating_points
-        self.min_q_index = min_q_index
-        self.max_q_index = max_q_index
-        self.prefers_gop_remaining_frames = prefers_gop_remaining_frames
-        self.requires_gop_remaining_frames = requires_gop_remaining_frames
-        self.std_syntax_flags = std_syntax_flags
-
 
 struct VideoEncodeAV1QualityLevelPropertiesKHR(Copyable):
     var s_type: StructureType
@@ -21230,44 +17934,6 @@ struct VideoEncodeAV1QualityLevelPropertiesKHR(Copyable):
     var preferred_max_bidirectional_compound_group_1_reference_count: UInt32
     var preferred_max_bidirectional_compound_group_2_reference_count: UInt32
     var preferred_bidirectional_compound_reference_name_mask: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        preferred_rate_control_flags: VideoEncodeAV1RateControlFlagsKHR,
-        preferred_gop_frame_count: UInt32,
-        preferred_key_frame_period: UInt32,
-        preferred_consecutive_bipredictive_frame_count: UInt32,
-        preferred_temporal_layer_count: UInt32,
-        preferred_constant_q_index: VideoEncodeAV1QIndexKHR,
-        preferred_max_single_reference_count: UInt32,
-        preferred_single_reference_name_mask: UInt32,
-        preferred_max_unidirectional_compound_reference_count: UInt32,
-        preferred_max_unidirectional_compound_group_1_reference_count: UInt32,
-        preferred_unidirectional_compound_reference_name_mask: UInt32,
-        preferred_max_bidirectional_compound_reference_count: UInt32,
-        preferred_max_bidirectional_compound_group_1_reference_count: UInt32,
-        preferred_max_bidirectional_compound_group_2_reference_count: UInt32,
-        preferred_bidirectional_compound_reference_name_mask: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.preferred_rate_control_flags = preferred_rate_control_flags
-        self.preferred_gop_frame_count = preferred_gop_frame_count
-        self.preferred_key_frame_period = preferred_key_frame_period
-        self.preferred_consecutive_bipredictive_frame_count = preferred_consecutive_bipredictive_frame_count
-        self.preferred_temporal_layer_count = preferred_temporal_layer_count
-        self.preferred_constant_q_index = preferred_constant_q_index.copy()
-        self.preferred_max_single_reference_count = preferred_max_single_reference_count
-        self.preferred_single_reference_name_mask = preferred_single_reference_name_mask
-        self.preferred_max_unidirectional_compound_reference_count = preferred_max_unidirectional_compound_reference_count
-        self.preferred_max_unidirectional_compound_group_1_reference_count = preferred_max_unidirectional_compound_group_1_reference_count
-        self.preferred_unidirectional_compound_reference_name_mask = preferred_unidirectional_compound_reference_name_mask
-        self.preferred_max_bidirectional_compound_reference_count = preferred_max_bidirectional_compound_reference_count
-        self.preferred_max_bidirectional_compound_group_1_reference_count = preferred_max_bidirectional_compound_group_1_reference_count
-        self.preferred_max_bidirectional_compound_group_2_reference_count = preferred_max_bidirectional_compound_group_2_reference_count
-        self.preferred_bidirectional_compound_reference_name_mask = preferred_bidirectional_compound_reference_name_mask
 
 
 struct PhysicalDeviceVideoEncodeAV1FeaturesKHR(Copyable):
@@ -21588,18 +18254,6 @@ struct PhysicalDeviceProvokingVertexPropertiesEXT(Copyable):
     var provoking_vertex_mode_per_pipeline: Bool32
     var transform_feedback_preserves_triangle_fan_provoking_vertex: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        provoking_vertex_mode_per_pipeline: Bool32,
-        transform_feedback_preserves_triangle_fan_provoking_vertex: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.provoking_vertex_mode_per_pipeline = provoking_vertex_mode_per_pipeline
-        self.transform_feedback_preserves_triangle_fan_provoking_vertex = transform_feedback_preserves_triangle_fan_provoking_vertex
-
 
 struct PipelineRasterizationProvokingVertexStateCreateInfoEXT(Copyable):
     var s_type: StructureType
@@ -21625,24 +18279,6 @@ struct VideoEncodeIntraRefreshCapabilitiesKHR(Copyable):
     var max_intra_refresh_active_reference_pictures: UInt32
     var partition_independent_intra_refresh_regions: Bool32
     var non_rectangular_intra_refresh_regions: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        intra_refresh_modes: VideoEncodeIntraRefreshModeFlagsKHR,
-        max_intra_refresh_cycle_duration: UInt32,
-        max_intra_refresh_active_reference_pictures: UInt32,
-        partition_independent_intra_refresh_regions: Bool32,
-        non_rectangular_intra_refresh_regions: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.intra_refresh_modes = intra_refresh_modes
-        self.max_intra_refresh_cycle_duration = max_intra_refresh_cycle_duration
-        self.max_intra_refresh_active_reference_pictures = max_intra_refresh_active_reference_pictures
-        self.partition_independent_intra_refresh_regions = partition_independent_intra_refresh_regions
-        self.non_rectangular_intra_refresh_regions = non_rectangular_intra_refresh_regions
 
 
 struct VideoEncodeSessionIntraRefreshCreateInfoKHR(Copyable):
@@ -21877,95 +18513,11 @@ struct PhysicalDeviceDescriptorBufferPropertiesEXT(Copyable):
     var resource_descriptor_buffer_address_space_size: DeviceSize
     var descriptor_buffer_address_space_size: DeviceSize
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        combined_image_sampler_descriptor_single_array: Bool32,
-        bufferless_push_descriptors: Bool32,
-        allow_sampler_image_view_post_submit_creation: Bool32,
-        descriptor_buffer_offset_alignment: DeviceSize,
-        max_descriptor_buffer_bindings: UInt32,
-        max_resource_descriptor_buffer_bindings: UInt32,
-        max_sampler_descriptor_buffer_bindings: UInt32,
-        max_embedded_immutable_sampler_bindings: UInt32,
-        max_embedded_immutable_samplers: UInt32,
-        buffer_capture_replay_descriptor_data_size: UInt,
-        image_capture_replay_descriptor_data_size: UInt,
-        image_view_capture_replay_descriptor_data_size: UInt,
-        sampler_capture_replay_descriptor_data_size: UInt,
-        acceleration_structure_capture_replay_descriptor_data_size: UInt,
-        sampler_descriptor_size: UInt,
-        combined_image_sampler_descriptor_size: UInt,
-        sampled_image_descriptor_size: UInt,
-        storage_image_descriptor_size: UInt,
-        uniform_texel_buffer_descriptor_size: UInt,
-        robust_uniform_texel_buffer_descriptor_size: UInt,
-        storage_texel_buffer_descriptor_size: UInt,
-        robust_storage_texel_buffer_descriptor_size: UInt,
-        uniform_buffer_descriptor_size: UInt,
-        robust_uniform_buffer_descriptor_size: UInt,
-        storage_buffer_descriptor_size: UInt,
-        robust_storage_buffer_descriptor_size: UInt,
-        input_attachment_descriptor_size: UInt,
-        acceleration_structure_descriptor_size: UInt,
-        max_sampler_descriptor_buffer_range: DeviceSize,
-        max_resource_descriptor_buffer_range: DeviceSize,
-        sampler_descriptor_buffer_address_space_size: DeviceSize,
-        resource_descriptor_buffer_address_space_size: DeviceSize,
-        descriptor_buffer_address_space_size: DeviceSize,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.combined_image_sampler_descriptor_single_array = combined_image_sampler_descriptor_single_array
-        self.bufferless_push_descriptors = bufferless_push_descriptors
-        self.allow_sampler_image_view_post_submit_creation = allow_sampler_image_view_post_submit_creation
-        self.descriptor_buffer_offset_alignment = descriptor_buffer_offset_alignment
-        self.max_descriptor_buffer_bindings = max_descriptor_buffer_bindings
-        self.max_resource_descriptor_buffer_bindings = max_resource_descriptor_buffer_bindings
-        self.max_sampler_descriptor_buffer_bindings = max_sampler_descriptor_buffer_bindings
-        self.max_embedded_immutable_sampler_bindings = max_embedded_immutable_sampler_bindings
-        self.max_embedded_immutable_samplers = max_embedded_immutable_samplers
-        self.buffer_capture_replay_descriptor_data_size = buffer_capture_replay_descriptor_data_size
-        self.image_capture_replay_descriptor_data_size = image_capture_replay_descriptor_data_size
-        self.image_view_capture_replay_descriptor_data_size = image_view_capture_replay_descriptor_data_size
-        self.sampler_capture_replay_descriptor_data_size = sampler_capture_replay_descriptor_data_size
-        self.acceleration_structure_capture_replay_descriptor_data_size = acceleration_structure_capture_replay_descriptor_data_size
-        self.sampler_descriptor_size = sampler_descriptor_size
-        self.combined_image_sampler_descriptor_size = combined_image_sampler_descriptor_size
-        self.sampled_image_descriptor_size = sampled_image_descriptor_size
-        self.storage_image_descriptor_size = storage_image_descriptor_size
-        self.uniform_texel_buffer_descriptor_size = uniform_texel_buffer_descriptor_size
-        self.robust_uniform_texel_buffer_descriptor_size = robust_uniform_texel_buffer_descriptor_size
-        self.storage_texel_buffer_descriptor_size = storage_texel_buffer_descriptor_size
-        self.robust_storage_texel_buffer_descriptor_size = robust_storage_texel_buffer_descriptor_size
-        self.uniform_buffer_descriptor_size = uniform_buffer_descriptor_size
-        self.robust_uniform_buffer_descriptor_size = robust_uniform_buffer_descriptor_size
-        self.storage_buffer_descriptor_size = storage_buffer_descriptor_size
-        self.robust_storage_buffer_descriptor_size = robust_storage_buffer_descriptor_size
-        self.input_attachment_descriptor_size = input_attachment_descriptor_size
-        self.acceleration_structure_descriptor_size = acceleration_structure_descriptor_size
-        self.max_sampler_descriptor_buffer_range = max_sampler_descriptor_buffer_range
-        self.max_resource_descriptor_buffer_range = max_resource_descriptor_buffer_range
-        self.sampler_descriptor_buffer_address_space_size = sampler_descriptor_buffer_address_space_size
-        self.resource_descriptor_buffer_address_space_size = resource_descriptor_buffer_address_space_size
-        self.descriptor_buffer_address_space_size = descriptor_buffer_address_space_size
-
 
 struct PhysicalDeviceDescriptorBufferDensityMapPropertiesEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var combined_image_sampler_density_map_descriptor_size: UInt
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        combined_image_sampler_density_map_descriptor_size: UInt,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.combined_image_sampler_density_map_descriptor_size = combined_image_sampler_density_map_descriptor_size
 
 
 struct DescriptorAddressInfoEXT(Copyable):
@@ -22184,74 +18736,6 @@ struct PhysicalDeviceShaderIntegerDotProductProperties(Copyable):
     var integer_dot_product_accumulating_saturating_64_bit_signed_accelerated: Bool32
     var integer_dot_product_accumulating_saturating_64_bit_mixed_signedness_accelerated: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        integer_dot_product_8_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_8_bit_signed_accelerated: Bool32,
-        integer_dot_product_8_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_4_x_8_bit_packed_unsigned_accelerated: Bool32,
-        integer_dot_product_4_x_8_bit_packed_signed_accelerated: Bool32,
-        integer_dot_product_4_x_8_bit_packed_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_16_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_16_bit_signed_accelerated: Bool32,
-        integer_dot_product_16_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_32_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_32_bit_signed_accelerated: Bool32,
-        integer_dot_product_32_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_64_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_64_bit_signed_accelerated: Bool32,
-        integer_dot_product_64_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_8_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_8_bit_signed_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_8_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_4_x_8_bit_packed_unsigned_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_4_x_8_bit_packed_signed_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_4_x_8_bit_packed_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_16_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_16_bit_signed_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_16_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_32_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_32_bit_signed_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_32_bit_mixed_signedness_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_64_bit_unsigned_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_64_bit_signed_accelerated: Bool32,
-        integer_dot_product_accumulating_saturating_64_bit_mixed_signedness_accelerated: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.integer_dot_product_8_bit_unsigned_accelerated = integer_dot_product_8_bit_unsigned_accelerated
-        self.integer_dot_product_8_bit_signed_accelerated = integer_dot_product_8_bit_signed_accelerated
-        self.integer_dot_product_8_bit_mixed_signedness_accelerated = integer_dot_product_8_bit_mixed_signedness_accelerated
-        self.integer_dot_product_4_x_8_bit_packed_unsigned_accelerated = integer_dot_product_4_x_8_bit_packed_unsigned_accelerated
-        self.integer_dot_product_4_x_8_bit_packed_signed_accelerated = integer_dot_product_4_x_8_bit_packed_signed_accelerated
-        self.integer_dot_product_4_x_8_bit_packed_mixed_signedness_accelerated = integer_dot_product_4_x_8_bit_packed_mixed_signedness_accelerated
-        self.integer_dot_product_16_bit_unsigned_accelerated = integer_dot_product_16_bit_unsigned_accelerated
-        self.integer_dot_product_16_bit_signed_accelerated = integer_dot_product_16_bit_signed_accelerated
-        self.integer_dot_product_16_bit_mixed_signedness_accelerated = integer_dot_product_16_bit_mixed_signedness_accelerated
-        self.integer_dot_product_32_bit_unsigned_accelerated = integer_dot_product_32_bit_unsigned_accelerated
-        self.integer_dot_product_32_bit_signed_accelerated = integer_dot_product_32_bit_signed_accelerated
-        self.integer_dot_product_32_bit_mixed_signedness_accelerated = integer_dot_product_32_bit_mixed_signedness_accelerated
-        self.integer_dot_product_64_bit_unsigned_accelerated = integer_dot_product_64_bit_unsigned_accelerated
-        self.integer_dot_product_64_bit_signed_accelerated = integer_dot_product_64_bit_signed_accelerated
-        self.integer_dot_product_64_bit_mixed_signedness_accelerated = integer_dot_product_64_bit_mixed_signedness_accelerated
-        self.integer_dot_product_accumulating_saturating_8_bit_unsigned_accelerated = integer_dot_product_accumulating_saturating_8_bit_unsigned_accelerated
-        self.integer_dot_product_accumulating_saturating_8_bit_signed_accelerated = integer_dot_product_accumulating_saturating_8_bit_signed_accelerated
-        self.integer_dot_product_accumulating_saturating_8_bit_mixed_signedness_accelerated = integer_dot_product_accumulating_saturating_8_bit_mixed_signedness_accelerated
-        self.integer_dot_product_accumulating_saturating_4_x_8_bit_packed_unsigned_accelerated = integer_dot_product_accumulating_saturating_4_x_8_bit_packed_unsigned_accelerated
-        self.integer_dot_product_accumulating_saturating_4_x_8_bit_packed_signed_accelerated = integer_dot_product_accumulating_saturating_4_x_8_bit_packed_signed_accelerated
-        self.integer_dot_product_accumulating_saturating_4_x_8_bit_packed_mixed_signedness_accelerated = integer_dot_product_accumulating_saturating_4_x_8_bit_packed_mixed_signedness_accelerated
-        self.integer_dot_product_accumulating_saturating_16_bit_unsigned_accelerated = integer_dot_product_accumulating_saturating_16_bit_unsigned_accelerated
-        self.integer_dot_product_accumulating_saturating_16_bit_signed_accelerated = integer_dot_product_accumulating_saturating_16_bit_signed_accelerated
-        self.integer_dot_product_accumulating_saturating_16_bit_mixed_signedness_accelerated = integer_dot_product_accumulating_saturating_16_bit_mixed_signedness_accelerated
-        self.integer_dot_product_accumulating_saturating_32_bit_unsigned_accelerated = integer_dot_product_accumulating_saturating_32_bit_unsigned_accelerated
-        self.integer_dot_product_accumulating_saturating_32_bit_signed_accelerated = integer_dot_product_accumulating_saturating_32_bit_signed_accelerated
-        self.integer_dot_product_accumulating_saturating_32_bit_mixed_signedness_accelerated = integer_dot_product_accumulating_saturating_32_bit_mixed_signedness_accelerated
-        self.integer_dot_product_accumulating_saturating_64_bit_unsigned_accelerated = integer_dot_product_accumulating_saturating_64_bit_unsigned_accelerated
-        self.integer_dot_product_accumulating_saturating_64_bit_signed_accelerated = integer_dot_product_accumulating_saturating_64_bit_signed_accelerated
-        self.integer_dot_product_accumulating_saturating_64_bit_mixed_signedness_accelerated = integer_dot_product_accumulating_saturating_64_bit_mixed_signedness_accelerated
-
 
 struct PhysicalDeviceDrmPropertiesEXT(Copyable):
     var s_type: StructureType
@@ -22262,26 +18746,6 @@ struct PhysicalDeviceDrmPropertiesEXT(Copyable):
     var primary_minor: Int64
     var render_major: Int64
     var render_minor: Int64
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        has_primary: Bool32,
-        has_render: Bool32,
-        primary_major: Int64,
-        primary_minor: Int64,
-        render_major: Int64,
-        render_minor: Int64,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.has_primary = has_primary
-        self.has_render = has_render
-        self.primary_major = primary_major
-        self.primary_minor = primary_minor
-        self.render_major = render_major
-        self.render_minor = render_minor
 
 
 struct PhysicalDeviceFragmentShaderBarycentricFeaturesKHR(Copyable):
@@ -22304,16 +18768,6 @@ struct PhysicalDeviceFragmentShaderBarycentricPropertiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var tri_strip_vertex_order_independent_of_provoking_vertex: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        tri_strip_vertex_order_independent_of_provoking_vertex: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.tri_strip_vertex_order_independent_of_provoking_vertex = tri_strip_vertex_order_independent_of_provoking_vertex
 
 
 struct PhysicalDeviceRayTracingMotionBlurFeaturesNV(Copyable):
@@ -22687,36 +19141,6 @@ struct BufferCollectionPropertiesFUCHSIA(Copyable):
     var suggested_x_chroma_offset: ChromaLocation
     var suggested_y_chroma_offset: ChromaLocation
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        memory_type_bits: UInt32,
-        buffer_count: UInt32,
-        create_info_index: UInt32,
-        sysmem_pixel_format: UInt64,
-        format_features: FormatFeatureFlags,
-        sysmem_color_space_index: SysmemColorSpaceFUCHSIA,
-        sampler_ycbcr_conversion_components: ComponentMapping,
-        suggested_ycbcr_model: SamplerYcbcrModelConversion,
-        suggested_ycbcr_range: SamplerYcbcrRange,
-        suggested_x_chroma_offset: ChromaLocation,
-        suggested_y_chroma_offset: ChromaLocation,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.memory_type_bits = memory_type_bits
-        self.buffer_count = buffer_count
-        self.create_info_index = create_info_index
-        self.sysmem_pixel_format = sysmem_pixel_format
-        self.format_features = format_features
-        self.sysmem_color_space_index = sysmem_color_space_index.copy()
-        self.sampler_ycbcr_conversion_components = sampler_ycbcr_conversion_components.copy()
-        self.suggested_ycbcr_model = suggested_ycbcr_model
-        self.suggested_ycbcr_range = suggested_ycbcr_range
-        self.suggested_x_chroma_offset = suggested_x_chroma_offset
-        self.suggested_y_chroma_offset = suggested_y_chroma_offset
-
 
 struct BufferConstraintsInfoFUCHSIA(Copyable):
     var s_type: StructureType
@@ -22950,20 +19374,6 @@ struct FormatProperties3(Copyable):
     var optimal_tiling_features: FormatFeatureFlags2
     var buffer_features: FormatFeatureFlags2
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        linear_tiling_features: FormatFeatureFlags2,
-        optimal_tiling_features: FormatFeatureFlags2,
-        buffer_features: FormatFeatureFlags2,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.linear_tiling_features = linear_tiling_features
-        self.optimal_tiling_features = optimal_tiling_features
-        self.buffer_features = buffer_features
-
 
 struct DrmFormatModifierPropertiesList2EXT(Copyable):
     var s_type: StructureType
@@ -22971,33 +19381,11 @@ struct DrmFormatModifierPropertiesList2EXT(Copyable):
     var drm_format_modifier_count: UInt32
     var p_drm_format_modifier_properties: Ptr[DrmFormatModifierProperties2EXT, MutOrigin.external]
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        drm_format_modifier_count: UInt32,
-        p_drm_format_modifier_properties: Ptr[DrmFormatModifierProperties2EXT, MutOrigin.external],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.drm_format_modifier_count = drm_format_modifier_count
-        self.p_drm_format_modifier_properties = p_drm_format_modifier_properties
-
 
 struct DrmFormatModifierProperties2EXT(Copyable):
     var drm_format_modifier: UInt64
     var drm_format_modifier_plane_count: UInt32
     var drm_format_modifier_tiling_features: FormatFeatureFlags2
-
-    fn __init__(
-        out self,
-        drm_format_modifier: UInt64,
-        drm_format_modifier_plane_count: UInt32,
-        drm_format_modifier_tiling_features: FormatFeatureFlags2,
-    ):
-        self.drm_format_modifier = drm_format_modifier
-        self.drm_format_modifier_plane_count = drm_format_modifier_plane_count
-        self.drm_format_modifier_tiling_features = drm_format_modifier_tiling_features
 
 
 struct AndroidHardwareBufferFormatProperties2ANDROID(Copyable):
@@ -23011,30 +19399,6 @@ struct AndroidHardwareBufferFormatProperties2ANDROID(Copyable):
     var suggested_ycbcr_range: SamplerYcbcrRange
     var suggested_x_chroma_offset: ChromaLocation
     var suggested_y_chroma_offset: ChromaLocation
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        format: Format,
-        external_format: UInt64,
-        format_features: FormatFeatureFlags2,
-        sampler_ycbcr_conversion_components: ComponentMapping,
-        suggested_ycbcr_model: SamplerYcbcrModelConversion,
-        suggested_ycbcr_range: SamplerYcbcrRange,
-        suggested_x_chroma_offset: ChromaLocation,
-        suggested_y_chroma_offset: ChromaLocation,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.format = format
-        self.external_format = external_format
-        self.format_features = format_features
-        self.sampler_ycbcr_conversion_components = sampler_ycbcr_conversion_components.copy()
-        self.suggested_ycbcr_model = suggested_ycbcr_model
-        self.suggested_ycbcr_range = suggested_ycbcr_range
-        self.suggested_x_chroma_offset = suggested_x_chroma_offset
-        self.suggested_y_chroma_offset = suggested_y_chroma_offset
 
 
 struct PipelineRenderingCreateInfo(Copyable):
@@ -23404,42 +19768,12 @@ struct PhysicalDevicePipelineBinaryPropertiesKHR(Copyable):
     var pipeline_binary_precompiled_internal_cache: Bool32
     var pipeline_binary_compressed_data: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        pipeline_binary_internal_cache: Bool32,
-        pipeline_binary_internal_cache_control: Bool32,
-        pipeline_binary_prefers_internal_cache: Bool32,
-        pipeline_binary_precompiled_internal_cache: Bool32,
-        pipeline_binary_compressed_data: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.pipeline_binary_internal_cache = pipeline_binary_internal_cache
-        self.pipeline_binary_internal_cache_control = pipeline_binary_internal_cache_control
-        self.pipeline_binary_prefers_internal_cache = pipeline_binary_prefers_internal_cache
-        self.pipeline_binary_precompiled_internal_cache = pipeline_binary_precompiled_internal_cache
-        self.pipeline_binary_compressed_data = pipeline_binary_compressed_data
-
 
 struct PhysicalDeviceGraphicsPipelineLibraryPropertiesEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var graphics_pipeline_library_fast_linking: Bool32
     var graphics_pipeline_library_independent_interpolation_decoration: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        graphics_pipeline_library_fast_linking: Bool32,
-        graphics_pipeline_library_independent_interpolation_decoration: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.graphics_pipeline_library_fast_linking = graphics_pipeline_library_fast_linking
-        self.graphics_pipeline_library_independent_interpolation_decoration = graphics_pipeline_library_independent_interpolation_decoration
 
 
 struct GraphicsPipelineLibraryCreateInfoEXT(Copyable):
@@ -23539,16 +19873,6 @@ struct PhysicalDeviceNestedCommandBufferPropertiesEXT(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_command_buffer_nesting_level: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_command_buffer_nesting_level: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_command_buffer_nesting_level = max_command_buffer_nesting_level
-
 
 struct PhysicalDeviceShaderModuleIdentifierFeaturesEXT(Copyable):
     var s_type: StructureType
@@ -23570,16 +19894,6 @@ struct PhysicalDeviceShaderModuleIdentifierPropertiesEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var shader_module_identifier_algorithm_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        shader_module_identifier_algorithm_uuid: InlineArray[UInt8, Int(UUID_SIZE)],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.shader_module_identifier_algorithm_uuid = shader_module_identifier_algorithm_uuid
 
 
 struct PipelineShaderStageModuleIdentifierCreateInfoEXT(Copyable):
@@ -23606,18 +19920,6 @@ struct ShaderModuleIdentifierEXT(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var identifier_size: UInt32
     var identifier: InlineArray[UInt8, Int(MAX_SHADER_MODULE_IDENTIFIER_SIZE_EXT)]
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        identifier_size: UInt32,
-        identifier: InlineArray[UInt8, Int(MAX_SHADER_MODULE_IDENTIFIER_SIZE_EXT)],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.identifier_size = identifier_size
-        self.identifier = identifier
 
 
 struct ImageCompressionControlEXT(Copyable):
@@ -23664,18 +19966,6 @@ struct ImageCompressionPropertiesEXT(Copyable):
     var image_compression_flags: ImageCompressionFlagsEXT
     var image_compression_fixed_rate_flags: ImageCompressionFixedRateFlagsEXT
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        image_compression_flags: ImageCompressionFlagsEXT,
-        image_compression_fixed_rate_flags: ImageCompressionFixedRateFlagsEXT,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.image_compression_flags = image_compression_flags
-        self.image_compression_fixed_rate_flags = image_compression_fixed_rate_flags
-
 
 struct PhysicalDeviceImageCompressionControlSwapchainFeaturesEXT(Copyable):
     var s_type: StructureType
@@ -23714,16 +20004,6 @@ struct SubresourceLayout2(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var subresource_layout: SubresourceLayout
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        subresource_layout: SubresourceLayout,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.subresource_layout = subresource_layout.copy()
-
 
 struct RenderPassCreationControlEXT(Copyable):
     var s_type: StructureType
@@ -23743,9 +20023,6 @@ struct RenderPassCreationControlEXT(Copyable):
 
 struct RenderPassCreationFeedbackInfoEXT(Copyable):
     var post_merge_subpass_count: UInt32
-
-    fn __init__(out self, post_merge_subpass_count: UInt32):
-        self.post_merge_subpass_count = post_merge_subpass_count
 
 
 struct RenderPassCreationFeedbackCreateInfoEXT(Copyable):
@@ -23768,16 +20045,6 @@ struct RenderPassSubpassFeedbackInfoEXT(Copyable):
     var subpass_merge_status: SubpassMergeStatusEXT
     var description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
     var post_merge_index: UInt32
-
-    fn __init__(
-        out self,
-        subpass_merge_status: SubpassMergeStatusEXT,
-        description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)],
-        post_merge_index: UInt32,
-    ):
-        self.subpass_merge_status = subpass_merge_status
-        self.description = description
-        self.post_merge_index = post_merge_index
 
 
 struct RenderPassSubpassFeedbackCreateInfoEXT(Copyable):
@@ -24043,18 +20310,6 @@ struct PhysicalDeviceOpacityMicromapPropertiesEXT(Copyable):
     var max_opacity_2_state_subdivision_level: UInt32
     var max_opacity_4_state_subdivision_level: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_opacity_2_state_subdivision_level: UInt32,
-        max_opacity_4_state_subdivision_level: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_opacity_2_state_subdivision_level = max_opacity_2_state_subdivision_level
-        self.max_opacity_4_state_subdivision_level = max_opacity_4_state_subdivision_level
-
 
 struct AccelerationStructureTrianglesOpacityMicromapEXT(Copyable):
     var s_type: StructureType
@@ -24113,16 +20368,6 @@ struct PhysicalDeviceDisplacementMicromapPropertiesNV(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_displacement_micromap_subdivision_level: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_displacement_micromap_subdivision_level: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_displacement_micromap_subdivision_level = max_displacement_micromap_subdivision_level
 
 
 struct AccelerationStructureTrianglesDisplacementMicromapNV(Copyable):
@@ -24190,16 +20435,6 @@ struct PipelinePropertiesIdentifierEXT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var pipeline_identifier: InlineArray[UInt8, Int(UUID_SIZE)]
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        pipeline_identifier: InlineArray[UInt8, Int(UUID_SIZE)],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.pipeline_identifier = pipeline_identifier
 
 
 struct PhysicalDevicePipelinePropertiesFeaturesEXT(Copyable):
@@ -24530,22 +20765,6 @@ struct PhysicalDevicePipelineRobustnessProperties(Copyable):
     var default_robustness_vertex_inputs: PipelineRobustnessBufferBehavior
     var default_robustness_images: PipelineRobustnessImageBehavior
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        default_robustness_storage_buffers: PipelineRobustnessBufferBehavior,
-        default_robustness_uniform_buffers: PipelineRobustnessBufferBehavior,
-        default_robustness_vertex_inputs: PipelineRobustnessBufferBehavior,
-        default_robustness_images: PipelineRobustnessImageBehavior,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.default_robustness_storage_buffers = default_robustness_storage_buffers
-        self.default_robustness_uniform_buffers = default_robustness_uniform_buffers
-        self.default_robustness_vertex_inputs = default_robustness_vertex_inputs
-        self.default_robustness_images = default_robustness_images
-
 
 struct ImageViewSampleWeightCreateInfoQCOM(Copyable):
     var s_type: StructureType
@@ -24598,22 +20817,6 @@ struct PhysicalDeviceImageProcessingPropertiesQCOM(Copyable):
     var max_weight_filter_dimension: Extent2D
     var max_block_match_region: Extent2D
     var max_box_filter_block_size: Extent2D
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_weight_filter_phases: UInt32,
-        max_weight_filter_dimension: Extent2D,
-        max_block_match_region: Extent2D,
-        max_box_filter_block_size: Extent2D,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_weight_filter_phases = max_weight_filter_phases
-        self.max_weight_filter_dimension = max_weight_filter_dimension.copy()
-        self.max_block_match_region = max_block_match_region.copy()
-        self.max_box_filter_block_size = max_box_filter_block_size.copy()
 
 
 struct PhysicalDeviceTilePropertiesFeaturesQCOM(Copyable):
@@ -24809,36 +21012,6 @@ struct PhysicalDeviceOpticalFlowPropertiesNV(Copyable):
     var max_height: UInt32
     var max_num_regions_of_interest: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        supported_output_grid_sizes: OpticalFlowGridSizeFlagsNV,
-        supported_hint_grid_sizes: OpticalFlowGridSizeFlagsNV,
-        hint_supported: Bool32,
-        cost_supported: Bool32,
-        bidirectional_flow_supported: Bool32,
-        global_flow_supported: Bool32,
-        min_width: UInt32,
-        min_height: UInt32,
-        max_width: UInt32,
-        max_height: UInt32,
-        max_num_regions_of_interest: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.supported_output_grid_sizes = supported_output_grid_sizes
-        self.supported_hint_grid_sizes = supported_hint_grid_sizes
-        self.hint_supported = hint_supported
-        self.cost_supported = cost_supported
-        self.bidirectional_flow_supported = bidirectional_flow_supported
-        self.global_flow_supported = global_flow_supported
-        self.min_width = min_width
-        self.min_height = min_height
-        self.max_width = max_width
-        self.max_height = max_height
-        self.max_num_regions_of_interest = max_num_regions_of_interest
-
 
 struct OpticalFlowImageFormatInfoNV(Copyable):
     var s_type: StructureType
@@ -24860,13 +21033,6 @@ struct OpticalFlowImageFormatPropertiesNV(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, ImmutOrigin.external]
     var format: Format
-
-    fn __init__(
-        out self, s_type: StructureType, p_next: Ptr[NoneType, ImmutOrigin.external], format: Format
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.format = format
 
 
 struct OpticalFlowSessionCreateInfoNV(Copyable):
@@ -25034,22 +21200,6 @@ struct DeviceFaultInfoEXT(Copyable):
     var p_vendor_infos: Ptr[DeviceFaultVendorInfoEXT, MutOrigin.external]
     var p_vendor_binary_data: Ptr[NoneType, MutOrigin.external]
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)],
-        p_address_infos: Ptr[DeviceFaultAddressInfoEXT, MutOrigin.external],
-        p_vendor_infos: Ptr[DeviceFaultVendorInfoEXT, MutOrigin.external],
-        p_vendor_binary_data: Ptr[NoneType, MutOrigin.external],
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.description = description
-        self.p_address_infos = p_address_infos
-        self.p_vendor_infos = p_vendor_infos
-        self.p_vendor_binary_data = p_vendor_binary_data
-
 
 struct DeviceFaultVendorBinaryHeaderVersionOneEXT(Copyable):
     var header_size: UInt32
@@ -25176,20 +21326,6 @@ struct PhysicalDeviceShaderCoreBuiltinsPropertiesARM(Copyable):
     var shader_core_mask: UInt64
     var shader_core_count: UInt32
     var shader_warps_per_core: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        shader_core_mask: UInt64,
-        shader_core_count: UInt32,
-        shader_warps_per_core: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.shader_core_mask = shader_core_mask
-        self.shader_core_count = shader_core_count
-        self.shader_warps_per_core = shader_warps_per_core
 
 
 struct PhysicalDeviceShaderCoreBuiltinsFeaturesARM(Copyable):
@@ -25506,16 +21642,6 @@ struct PhysicalDeviceRayTracingInvocationReorderPropertiesNV(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var ray_tracing_invocation_reorder_reordering_hint: RayTracingInvocationReorderModeNV
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        ray_tracing_invocation_reorder_reordering_hint: RayTracingInvocationReorderModeNV,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.ray_tracing_invocation_reorder_reordering_hint = ray_tracing_invocation_reorder_reordering_hint
-
 
 struct PhysicalDeviceExtendedSparseAddressSpaceFeaturesNV(Copyable):
     var s_type: StructureType
@@ -25539,20 +21665,6 @@ struct PhysicalDeviceExtendedSparseAddressSpacePropertiesNV(Copyable):
     var extended_sparse_address_space_size: DeviceSize
     var extended_sparse_image_usage_flags: ImageUsageFlags
     var extended_sparse_buffer_usage_flags: BufferUsageFlags
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        extended_sparse_address_space_size: DeviceSize,
-        extended_sparse_image_usage_flags: ImageUsageFlags,
-        extended_sparse_buffer_usage_flags: BufferUsageFlags,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.extended_sparse_address_space_size = extended_sparse_address_space_size
-        self.extended_sparse_image_usage_flags = extended_sparse_image_usage_flags
-        self.extended_sparse_buffer_usage_flags = extended_sparse_buffer_usage_flags
 
 
 struct DirectDriverLoadingInfoLUNARG(Copyable):
@@ -25653,20 +21765,6 @@ struct PhysicalDeviceShaderCorePropertiesARM(Copyable):
     var pixel_rate: UInt32
     var texel_rate: UInt32
     var fma_rate: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        pixel_rate: UInt32,
-        texel_rate: UInt32,
-        fma_rate: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.pixel_rate = pixel_rate
-        self.texel_rate = texel_rate
-        self.fma_rate = fma_rate
 
 
 struct PhysicalDeviceMultiviewPerViewRenderAreasFeaturesQCOM(Copyable):
@@ -25786,18 +21884,6 @@ struct PhysicalDeviceShaderObjectPropertiesEXT(Copyable):
     var shader_binary_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
     var shader_binary_version: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        shader_binary_uuid: InlineArray[UInt8, Int(UUID_SIZE)],
-        shader_binary_version: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.shader_binary_uuid = shader_binary_uuid
-        self.shader_binary_version = shader_binary_version
-
 
 struct ShaderCreateInfoEXT(Copyable):
     var s_type: StructureType
@@ -25877,20 +21963,6 @@ struct PhysicalDeviceShaderTileImagePropertiesEXT(Copyable):
     var shader_tile_image_read_sample_from_pixel_rate_invocation: Bool32
     var shader_tile_image_read_from_helper_invocation: Bool32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        shader_tile_image_coherent_read_accelerated: Bool32,
-        shader_tile_image_read_sample_from_pixel_rate_invocation: Bool32,
-        shader_tile_image_read_from_helper_invocation: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.shader_tile_image_coherent_read_accelerated = shader_tile_image_coherent_read_accelerated
-        self.shader_tile_image_read_sample_from_pixel_rate_invocation = shader_tile_image_read_sample_from_pixel_rate_invocation
-        self.shader_tile_image_read_from_helper_invocation = shader_tile_image_read_from_helper_invocation
-
 
 struct ImportScreenBufferInfoQNX(Copyable):
     var s_type: StructureType
@@ -25914,18 +21986,6 @@ struct ScreenBufferPropertiesQNX(Copyable):
     var allocation_size: DeviceSize
     var memory_type_bits: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        allocation_size: DeviceSize,
-        memory_type_bits: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.allocation_size = allocation_size
-        self.memory_type_bits = memory_type_bits
-
 
 struct ScreenBufferFormatPropertiesQNX(Copyable):
     var s_type: StructureType
@@ -25939,32 +21999,6 @@ struct ScreenBufferFormatPropertiesQNX(Copyable):
     var suggested_ycbcr_range: SamplerYcbcrRange
     var suggested_x_chroma_offset: ChromaLocation
     var suggested_y_chroma_offset: ChromaLocation
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        format: Format,
-        external_format: UInt64,
-        screen_usage: UInt64,
-        format_features: FormatFeatureFlags,
-        sampler_ycbcr_conversion_components: ComponentMapping,
-        suggested_ycbcr_model: SamplerYcbcrModelConversion,
-        suggested_ycbcr_range: SamplerYcbcrRange,
-        suggested_x_chroma_offset: ChromaLocation,
-        suggested_y_chroma_offset: ChromaLocation,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.format = format
-        self.external_format = external_format
-        self.screen_usage = screen_usage
-        self.format_features = format_features
-        self.sampler_ycbcr_conversion_components = sampler_ycbcr_conversion_components.copy()
-        self.suggested_ycbcr_model = suggested_ycbcr_model
-        self.suggested_ycbcr_range = suggested_ycbcr_range
-        self.suggested_x_chroma_offset = suggested_x_chroma_offset
-        self.suggested_y_chroma_offset = suggested_y_chroma_offset
 
 
 struct ExternalFormatQNX(Copyable):
@@ -26031,47 +22065,11 @@ struct CooperativeMatrixPropertiesKHR(Copyable):
     var saturating_accumulation: Bool32
     var scope: ScopeKHR
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        m_size: UInt32,
-        n_size: UInt32,
-        k_size: UInt32,
-        a_type: ComponentTypeKHR,
-        b_type: ComponentTypeKHR,
-        c_type: ComponentTypeKHR,
-        result_type: ComponentTypeKHR,
-        saturating_accumulation: Bool32,
-        scope: ScopeKHR,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.m_size = m_size
-        self.n_size = n_size
-        self.k_size = k_size
-        self.a_type = a_type
-        self.b_type = b_type
-        self.c_type = c_type
-        self.result_type = result_type
-        self.saturating_accumulation = saturating_accumulation
-        self.scope = scope
-
 
 struct PhysicalDeviceCooperativeMatrixPropertiesKHR(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var cooperative_matrix_supported_stages: ShaderStageFlags
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        cooperative_matrix_supported_stages: ShaderStageFlags,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.cooperative_matrix_supported_stages = cooperative_matrix_supported_stages
 
 
 struct PhysicalDeviceShaderEnqueuePropertiesAMDX(Copyable):
@@ -26084,28 +22082,6 @@ struct PhysicalDeviceShaderEnqueuePropertiesAMDX(Copyable):
     var execution_graph_dispatch_address_alignment: UInt32
     var max_execution_graph_workgroup_count: InlineArray[UInt32, Int(3)]
     var max_execution_graph_workgroups: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_execution_graph_depth: UInt32,
-        max_execution_graph_shader_output_nodes: UInt32,
-        max_execution_graph_shader_payload_size: UInt32,
-        max_execution_graph_shader_payload_count: UInt32,
-        execution_graph_dispatch_address_alignment: UInt32,
-        max_execution_graph_workgroup_count: InlineArray[UInt32, Int(3)],
-        max_execution_graph_workgroups: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_execution_graph_depth = max_execution_graph_depth
-        self.max_execution_graph_shader_output_nodes = max_execution_graph_shader_output_nodes
-        self.max_execution_graph_shader_payload_size = max_execution_graph_shader_payload_size
-        self.max_execution_graph_shader_payload_count = max_execution_graph_shader_payload_count
-        self.execution_graph_dispatch_address_alignment = execution_graph_dispatch_address_alignment
-        self.max_execution_graph_workgroup_count = max_execution_graph_workgroup_count
-        self.max_execution_graph_workgroups = max_execution_graph_workgroups
 
 
 struct PhysicalDeviceShaderEnqueueFeaturesAMDX(Copyable):
@@ -26660,16 +22636,6 @@ struct PhysicalDeviceImageProcessing2PropertiesQCOM(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_block_match_window: Extent2D
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_block_match_window: Extent2D,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_block_match_window = max_block_match_window.copy()
-
 
 struct SamplerBlockMatchWindowCreateInfoQCOM(Copyable):
     var s_type: StructureType
@@ -26710,16 +22676,6 @@ struct PhysicalDeviceLayeredDriverPropertiesMSFT(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var underlying_api: LayeredDriverUnderlyingApiMSFT
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        underlying_api: LayeredDriverUnderlyingApiMSFT,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.underlying_api = underlying_api
 
 
 struct PhysicalDevicePerStageDescriptorSetFeaturesNV(Copyable):
@@ -26764,35 +22720,11 @@ struct PhysicalDeviceExternalFormatResolvePropertiesANDROID(Copyable):
     var external_format_resolve_chroma_offset_x: ChromaLocation
     var external_format_resolve_chroma_offset_y: ChromaLocation
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        null_color_attachment_with_external_format_resolve: Bool32,
-        external_format_resolve_chroma_offset_x: ChromaLocation,
-        external_format_resolve_chroma_offset_y: ChromaLocation,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.null_color_attachment_with_external_format_resolve = null_color_attachment_with_external_format_resolve
-        self.external_format_resolve_chroma_offset_x = external_format_resolve_chroma_offset_x
-        self.external_format_resolve_chroma_offset_y = external_format_resolve_chroma_offset_y
-
 
 struct AndroidHardwareBufferFormatResolvePropertiesANDROID(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var color_attachment_format: Format
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        color_attachment_format: Format,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.color_attachment_format = color_attachment_format
 
 
 struct LatencySleepModeInfoNV(Copyable):
@@ -26892,42 +22824,6 @@ struct LatencyTimingsFrameReportNV(Copyable):
     var gpu_render_start_time_us: UInt64
     var gpu_render_end_time_us: UInt64
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, ImmutOrigin.external],
-        present_id: UInt64,
-        input_sample_time_us: UInt64,
-        sim_start_time_us: UInt64,
-        sim_end_time_us: UInt64,
-        render_submit_start_time_us: UInt64,
-        render_submit_end_time_us: UInt64,
-        present_start_time_us: UInt64,
-        present_end_time_us: UInt64,
-        driver_start_time_us: UInt64,
-        driver_end_time_us: UInt64,
-        os_render_queue_start_time_us: UInt64,
-        os_render_queue_end_time_us: UInt64,
-        gpu_render_start_time_us: UInt64,
-        gpu_render_end_time_us: UInt64,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.present_id = present_id
-        self.input_sample_time_us = input_sample_time_us
-        self.sim_start_time_us = sim_start_time_us
-        self.sim_end_time_us = sim_end_time_us
-        self.render_submit_start_time_us = render_submit_start_time_us
-        self.render_submit_end_time_us = render_submit_end_time_us
-        self.present_start_time_us = present_start_time_us
-        self.present_end_time_us = present_end_time_us
-        self.driver_start_time_us = driver_start_time_us
-        self.driver_end_time_us = driver_end_time_us
-        self.os_render_queue_start_time_us = os_render_queue_start_time_us
-        self.os_render_queue_end_time_us = os_render_queue_end_time_us
-        self.gpu_render_start_time_us = gpu_render_start_time_us
-        self.gpu_render_end_time_us = gpu_render_end_time_us
-
 
 struct OutOfBandQueueTypeInfoNV(Copyable):
     var s_type: StructureType
@@ -27018,18 +22914,6 @@ struct PhysicalDeviceCudaKernelLaunchPropertiesNV(Copyable):
     var compute_capability_minor: UInt32
     var compute_capability_major: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        compute_capability_minor: UInt32,
-        compute_capability_major: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.compute_capability_minor = compute_capability_minor
-        self.compute_capability_major = compute_capability_major
-
 
 struct DeviceQueueShaderCoreControlCreateInfoARM(Copyable):
     var s_type: StructureType
@@ -27067,16 +22951,6 @@ struct PhysicalDeviceSchedulingControlsPropertiesARM(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var scheduling_controls_flags: PhysicalDeviceSchedulingControlsFlagsARM
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        scheduling_controls_flags: PhysicalDeviceSchedulingControlsFlagsARM,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.scheduling_controls_flags = scheduling_controls_flags
 
 
 struct PhysicalDeviceRelaxedLineRasterizationFeaturesIMG(Copyable):
@@ -27116,18 +22990,6 @@ struct PhysicalDeviceRenderPassStripedPropertiesARM(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var render_pass_stripe_granularity: Extent2D
     var max_render_pass_stripes: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        render_pass_stripe_granularity: Extent2D,
-        max_render_pass_stripes: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.render_pass_stripe_granularity = render_pass_stripe_granularity.copy()
-        self.max_render_pass_stripes = max_render_pass_stripes
 
 
 struct RenderPassStripeInfoARM(Copyable):
@@ -27386,16 +23248,6 @@ struct PhysicalDeviceMapMemoryPlacedPropertiesEXT(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var min_placed_memory_map_alignment: DeviceSize
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        min_placed_memory_map_alignment: DeviceSize,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.min_placed_memory_map_alignment = min_placed_memory_map_alignment
-
 
 struct MemoryMapPlacedInfoEXT(Copyable):
     var s_type: StructureType
@@ -27487,16 +23339,6 @@ struct PhysicalDeviceImageAlignmentControlPropertiesMESA(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var supported_image_alignment_mask: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        supported_image_alignment_mask: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.supported_image_alignment_mask = supported_image_alignment_mask
 
 
 struct ImageAlignmentControlCreateInfoMESA(Copyable):
@@ -27597,20 +23439,6 @@ struct PhysicalDeviceCooperativeMatrix2PropertiesNV(Copyable):
     var cooperative_matrix_flexible_dimensions_max_dimension: UInt32
     var cooperative_matrix_workgroup_scope_reserved_shared_memory: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        cooperative_matrix_workgroup_scope_max_workgroup_size: UInt32,
-        cooperative_matrix_flexible_dimensions_max_dimension: UInt32,
-        cooperative_matrix_workgroup_scope_reserved_shared_memory: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.cooperative_matrix_workgroup_scope_max_workgroup_size = cooperative_matrix_workgroup_scope_max_workgroup_size
-        self.cooperative_matrix_flexible_dimensions_max_dimension = cooperative_matrix_flexible_dimensions_max_dimension
-        self.cooperative_matrix_workgroup_scope_reserved_shared_memory = cooperative_matrix_workgroup_scope_reserved_shared_memory
-
 
 struct CooperativeMatrixFlexibleDimensionsPropertiesNV(Copyable):
     var s_type: StructureType
@@ -27625,34 +23453,6 @@ struct CooperativeMatrixFlexibleDimensionsPropertiesNV(Copyable):
     var saturating_accumulation: Bool32
     var scope: ScopeKHR
     var workgroup_invocations: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        m_granularity: UInt32,
-        n_granularity: UInt32,
-        k_granularity: UInt32,
-        a_type: ComponentTypeKHR,
-        b_type: ComponentTypeKHR,
-        c_type: ComponentTypeKHR,
-        result_type: ComponentTypeKHR,
-        saturating_accumulation: Bool32,
-        scope: ScopeKHR,
-        workgroup_invocations: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.m_granularity = m_granularity
-        self.n_granularity = n_granularity
-        self.k_granularity = k_granularity
-        self.a_type = a_type
-        self.b_type = b_type
-        self.c_type = c_type
-        self.result_type = result_type
-        self.saturating_accumulation = saturating_accumulation
-        self.scope = scope
-        self.workgroup_invocations = workgroup_invocations
 
 
 struct PhysicalDeviceHdrVividFeaturesHUAWEI(Copyable):
@@ -27811,22 +23611,6 @@ struct PhysicalDeviceCooperativeVectorPropertiesNV(Copyable):
     var cooperative_vector_training_float_32_accumulation: Bool32
     var max_cooperative_vector_components: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        cooperative_vector_supported_stages: ShaderStageFlags,
-        cooperative_vector_training_float_16_accumulation: Bool32,
-        cooperative_vector_training_float_32_accumulation: Bool32,
-        max_cooperative_vector_components: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.cooperative_vector_supported_stages = cooperative_vector_supported_stages
-        self.cooperative_vector_training_float_16_accumulation = cooperative_vector_training_float_16_accumulation
-        self.cooperative_vector_training_float_32_accumulation = cooperative_vector_training_float_32_accumulation
-        self.max_cooperative_vector_components = max_cooperative_vector_components
-
 
 struct ConvertCooperativeVectorMatrixInfoNV(Copyable):
     var s_type: StructureType
@@ -27940,22 +23724,6 @@ struct PhysicalDeviceTileShadingPropertiesQCOM(Copyable):
     var tile_granularity: Extent2D
     var max_tile_shading_rate: Extent2D
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_apron_size: UInt32,
-        prefer_non_coherent: Bool32,
-        tile_granularity: Extent2D,
-        max_tile_shading_rate: Extent2D,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_apron_size = max_apron_size
-        self.prefer_non_coherent = prefer_non_coherent
-        self.tile_granularity = tile_granularity.copy()
-        self.max_tile_shading_rate = max_tile_shading_rate.copy()
-
 
 struct RenderPassTileShadingCreateInfoQCOM(Copyable):
     var s_type: StructureType
@@ -28008,31 +23776,11 @@ struct PhysicalDeviceFragmentDensityMapLayeredPropertiesVALVE(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var max_fragment_density_map_layers: UInt32
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_fragment_density_map_layers: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_fragment_density_map_layers = max_fragment_density_map_layers
-
 
 struct PhysicalDeviceFragmentDensityMapLayeredFeaturesVALVE(Copyable):
     var s_type: StructureType
     var p_next: Ptr[NoneType, MutOrigin.external]
     var fragment_density_map_layered: Bool32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        fragment_density_map_layered: Bool32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.fragment_density_map_layered = fragment_density_map_layered
 
 
 struct PipelineFragmentDensityMapLayeredCreateInfoVALVE(Copyable):
@@ -28139,18 +23887,6 @@ struct PhysicalDeviceExternalComputeQueuePropertiesNV(Copyable):
     var p_next: Ptr[NoneType, MutOrigin.external]
     var external_data_size: UInt32
     var max_external_queues: UInt32
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        external_data_size: UInt32,
-        max_external_queues: UInt32,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.external_data_size = external_data_size
-        self.max_external_queues = max_external_queues
 
 
 struct PhysicalDeviceFormatPackFeaturesARM(Copyable):
@@ -28313,18 +24049,6 @@ struct TensorFormatPropertiesARM(Copyable):
     var optimal_tiling_tensor_features: FormatFeatureFlags2
     var linear_tiling_tensor_features: FormatFeatureFlags2
 
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, ImmutOrigin.external],
-        optimal_tiling_tensor_features: FormatFeatureFlags2,
-        linear_tiling_tensor_features: FormatFeatureFlags2,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.optimal_tiling_tensor_features = optimal_tiling_tensor_features
-        self.linear_tiling_tensor_features = linear_tiling_tensor_features
-
 
 struct PhysicalDeviceTensorPropertiesARM(Copyable):
     var s_type: StructureType
@@ -28342,40 +24066,6 @@ struct PhysicalDeviceTensorPropertiesARM(Copyable):
     var max_per_stage_descriptor_update_after_bind_storage_tensors: UInt32
     var shader_storage_tensor_array_non_uniform_indexing_native: Bool32
     var shader_tensor_supported_stages: ShaderStageFlags
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        max_tensor_dimension_count: UInt32,
-        max_tensor_elements: UInt64,
-        max_per_dimension_tensor_elements: UInt64,
-        max_tensor_stride: Int64,
-        max_tensor_size: UInt64,
-        max_tensor_shader_access_array_length: UInt32,
-        max_tensor_shader_access_size: UInt32,
-        max_descriptor_set_storage_tensors: UInt32,
-        max_per_stage_descriptor_set_storage_tensors: UInt32,
-        max_descriptor_set_update_after_bind_storage_tensors: UInt32,
-        max_per_stage_descriptor_update_after_bind_storage_tensors: UInt32,
-        shader_storage_tensor_array_non_uniform_indexing_native: Bool32,
-        shader_tensor_supported_stages: ShaderStageFlags,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.max_tensor_dimension_count = max_tensor_dimension_count
-        self.max_tensor_elements = max_tensor_elements
-        self.max_per_dimension_tensor_elements = max_per_dimension_tensor_elements
-        self.max_tensor_stride = max_tensor_stride
-        self.max_tensor_size = max_tensor_size
-        self.max_tensor_shader_access_array_length = max_tensor_shader_access_array_length
-        self.max_tensor_shader_access_size = max_tensor_shader_access_size
-        self.max_descriptor_set_storage_tensors = max_descriptor_set_storage_tensors
-        self.max_per_stage_descriptor_set_storage_tensors = max_per_stage_descriptor_set_storage_tensors
-        self.max_descriptor_set_update_after_bind_storage_tensors = max_descriptor_set_update_after_bind_storage_tensors
-        self.max_per_stage_descriptor_update_after_bind_storage_tensors = max_per_stage_descriptor_update_after_bind_storage_tensors
-        self.shader_storage_tensor_array_non_uniform_indexing_native = shader_storage_tensor_array_non_uniform_indexing_native
-        self.shader_tensor_supported_stages = shader_tensor_supported_stages
 
 
 struct TensorMemoryBarrierARM(Copyable):
@@ -29240,22 +24930,6 @@ struct VideoEncodeRgbConversionCapabilitiesVALVE(Copyable):
     var rgb_ranges: VideoEncodeRgbRangeCompressionFlagsVALVE
     var x_chroma_offsets: VideoEncodeRgbChromaOffsetFlagsVALVE
     var y_chroma_offsets: VideoEncodeRgbChromaOffsetFlagsVALVE
-
-    fn __init__(
-        out self,
-        s_type: StructureType,
-        p_next: Ptr[NoneType, MutOrigin.external],
-        rgb_models: VideoEncodeRgbModelConversionFlagsVALVE,
-        rgb_ranges: VideoEncodeRgbRangeCompressionFlagsVALVE,
-        x_chroma_offsets: VideoEncodeRgbChromaOffsetFlagsVALVE,
-        y_chroma_offsets: VideoEncodeRgbChromaOffsetFlagsVALVE,
-    ):
-        self.s_type = s_type
-        self.p_next = p_next
-        self.rgb_models = rgb_models
-        self.rgb_ranges = rgb_ranges
-        self.x_chroma_offsets = x_chroma_offsets
-        self.y_chroma_offsets = y_chroma_offsets
 
 
 struct VideoEncodeProfileRgbConversionInfoVALVE(Copyable):
