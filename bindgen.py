@@ -2147,6 +2147,10 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         )
         if should_strip_ptr:
             parsed_type = assert_type(MojoPointerType, parsed_type)
+            if arg_name.startswith("p_"):
+                arg_name = arg_name[2:]
+            elif arg_name.startswith("pp_"):
+                arg_name = arg_name[1:]
             argument = MojoArgument(arg_name, parsed_type.pointee_type, mut=parsed_type.origin == "MutAnyOrigin")
             call_arg = f"Ptr(to={arg_name}).bitcast[{parsed_type.pointee_type}]()"
         elif isinstance(parsed_type, MojoPointerType):
@@ -2219,7 +2223,7 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
     else:
         two_call_return_type = MojoBaseType("List", parameters=[element_type_str])
 
-    base_call_arg_names = [arg.name for arg in arguments[:-2]]
+    base_call_args = call_args[:-2]
     two_call_body_lines: List[str] = []
     two_call_body_lines.append(f"var list = List[{element_type_str}]()")
     two_call_body_lines.append("var count: UInt32 = 0")
@@ -2229,7 +2233,7 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         two_call_body_lines.append("while result == Result.INCOMPLETE:")
         first_call_lines = emit_fn_like(
             f"result = self.{name}",
-            base_call_arg_names + ["count", f"Ptr[{element_type_str}, MutOrigin.external]()"],
+            base_call_args + ["count", f"Ptr[{element_type_str}, MutOrigin.external]()"],
             suffix="",
             base_indent_level=1,
         ).rstrip("\n").split("\n")
@@ -2238,7 +2242,7 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         two_call_body_lines.append("        list.reserve(Int(count))")
         second_call = emit_fn_like(
             f"result = self.{name}",
-            base_call_arg_names + ["count", "list.unsafe_ptr()"],
+            base_call_args + ["count", "list.unsafe_ptr()"],
             suffix="",
             base_indent_level=1,
         ).rstrip("\n").split("\n")
@@ -2248,7 +2252,7 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
     else:
         first_call_lines = emit_fn_like(
             f"self.{name}",
-            base_call_arg_names + ["count", f"Ptr[{element_type_str}, MutAnyOrigin]()"],
+            base_call_args + ["count", f"Ptr[{element_type_str}, MutAnyOrigin]()"],
             suffix="",
             base_indent_level=0,
         ).rstrip("\n").split("\n")
@@ -2256,7 +2260,7 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         two_call_body_lines.append("list.reserve(Int(count))")
         second_call = emit_fn_like(
             f"self.{name}",
-            base_call_arg_names + ["count", "list.unsafe_ptr()"],
+            base_call_args + ["count", "list.unsafe_ptr()"],
             suffix="",
         ).rstrip("\n").split("\n")
         two_call_body_lines.extend(second_call)

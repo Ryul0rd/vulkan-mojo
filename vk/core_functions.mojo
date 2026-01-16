@@ -27,24 +27,24 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
 
     fn create_instance(
         self,
-        p_create_info: InstanceCreateInfo,
+        create_info: InstanceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_instance: Instance,
+        mut instance: Instance,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
         return self._v1_0.create_instance(
-            Ptr(to=p_create_info).bitcast[InstanceCreateInfo](),
+            Ptr(to=create_info).bitcast[InstanceCreateInfo](),
             p_allocator,
-            Ptr(to=p_instance).bitcast[Instance](),
+            Ptr(to=instance).bitcast[Instance](),
         )
 
     fn enumerate_instance_extension_properties(
         self,
         p_layer_name: CStringSlice[ImmutAnyOrigin],
-        mut p_property_count: UInt32,
+        mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -52,18 +52,18 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            p_layer_name, Ptr(to=p_property_count).bitcast[UInt32](), p_properties
+            p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn enumerate_instance_layer_properties(
-        self, mut p_property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         return self._v1_0.enumerate_instance_layer_properties(
-            Ptr(to=p_property_count).bitcast[UInt32](), p_properties
+            Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
 
@@ -82,24 +82,24 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
 
     fn create_instance(
         self,
-        p_create_info: InstanceCreateInfo,
+        create_info: InstanceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_instance: Instance,
+        mut instance: Instance,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
         return self._v1_0.create_instance(
-            Ptr(to=p_create_info).bitcast[InstanceCreateInfo](),
+            Ptr(to=create_info).bitcast[InstanceCreateInfo](),
             p_allocator,
-            Ptr(to=p_instance).bitcast[Instance](),
+            Ptr(to=instance).bitcast[Instance](),
         )
 
     fn enumerate_instance_extension_properties(
         self,
         p_layer_name: CStringSlice[ImmutAnyOrigin],
-        mut p_property_count: UInt32,
+        mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -107,26 +107,26 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            p_layer_name, Ptr(to=p_property_count).bitcast[UInt32](), p_properties
+            p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn enumerate_instance_layer_properties(
-        self, mut p_property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
         return self._v1_0.enumerate_instance_layer_properties(
-            Ptr(to=p_property_count).bitcast[UInt32](), p_properties
+            Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
-    fn enumerate_instance_version(self, mut p_api_version: UInt32) -> Result:
+    fn enumerate_instance_version(self, mut api_version: UInt32) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
         """
-        return self._v1_1.enumerate_instance_version(Ptr(to=p_api_version).bitcast[UInt32]())
+        return self._v1_1.enumerate_instance_version(Ptr(to=api_version).bitcast[UInt32]())
 
 
 struct InstanceFunctionsV1_0(Copyable):
@@ -149,7 +149,7 @@ struct InstanceFunctionsV1_0(Copyable):
     fn enumerate_physical_devices(
         self,
         instance: Instance,
-        mut p_physical_device_count: UInt32,
+        mut physical_device_count: UInt32,
         p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -157,32 +157,32 @@ struct InstanceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
-            instance, Ptr(to=p_physical_device_count).bitcast[UInt32](), p_physical_devices
+            instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
         )
 
     fn get_physical_device_features(
-        self, physical_device: PhysicalDevice, mut p_features: PhysicalDeviceFeatures
+        self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
         """
         return self._v1_0.get_physical_device_features(
-            physical_device, Ptr(to=p_features).bitcast[PhysicalDeviceFeatures]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()
         )
 
     fn get_physical_device_format_properties(
         self,
         physical_device: PhysicalDevice,
         format: Format,
-        mut p_format_properties: FormatProperties,
+        mut format_properties: FormatProperties,
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
         """
         return self._v1_0.get_physical_device_format_properties(
-            physical_device, format, Ptr(to=p_format_properties).bitcast[FormatProperties]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()
         )
 
     fn get_physical_device_image_format_properties(
@@ -193,7 +193,7 @@ struct InstanceFunctionsV1_0(Copyable):
         tiling: ImageTiling,
         usage: ImageUsageFlags,
         flags: ImageCreateFlags,
-        mut p_image_format_properties: ImageFormatProperties,
+        mut image_format_properties: ImageFormatProperties,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -206,24 +206,24 @@ struct InstanceFunctionsV1_0(Copyable):
             tiling,
             usage,
             flags,
-            Ptr(to=p_image_format_properties).bitcast[ImageFormatProperties](),
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties](),
         )
 
     fn get_physical_device_properties(
-        self, physical_device: PhysicalDevice, mut p_properties: PhysicalDeviceProperties
+        self, physical_device: PhysicalDevice, mut properties: PhysicalDeviceProperties
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
         """
         return self._v1_0.get_physical_device_properties(
-            physical_device, Ptr(to=p_properties).bitcast[PhysicalDeviceProperties]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()
         )
 
     fn get_physical_device_queue_family_properties(
         self,
         physical_device: PhysicalDevice,
-        mut p_queue_family_property_count: UInt32,
+        mut queue_family_property_count: UInt32,
         p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -232,21 +232,19 @@ struct InstanceFunctionsV1_0(Copyable):
         """
         return self._v1_0.get_physical_device_queue_family_properties(
             physical_device,
-            Ptr(to=p_queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32](),
             p_queue_family_properties,
         )
 
     fn get_physical_device_memory_properties(
-        self,
-        physical_device: PhysicalDevice,
-        mut p_memory_properties: PhysicalDeviceMemoryProperties,
+        self, physical_device: PhysicalDevice, mut memory_properties: PhysicalDeviceMemoryProperties
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
         """
         return self._v1_0.get_physical_device_memory_properties(
-            physical_device, Ptr(to=p_memory_properties).bitcast[PhysicalDeviceMemoryProperties]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()
         )
 
     fn get_instance_proc_addr(
@@ -261,9 +259,9 @@ struct InstanceFunctionsV1_0(Copyable):
     fn create_device(
         self,
         physical_device: PhysicalDevice,
-        p_create_info: DeviceCreateInfo,
+        create_info: DeviceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_device: Device,
+        mut device: Device,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -271,16 +269,16 @@ struct InstanceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_device(
             physical_device,
-            Ptr(to=p_create_info).bitcast[DeviceCreateInfo](),
+            Ptr(to=create_info).bitcast[DeviceCreateInfo](),
             p_allocator,
-            Ptr(to=p_device).bitcast[Device](),
+            Ptr(to=device).bitcast[Device](),
         )
 
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
         p_layer_name: CStringSlice[ImmutAnyOrigin],
-        mut p_property_count: UInt32,
+        mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -288,13 +286,13 @@ struct InstanceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
-            physical_device, p_layer_name, Ptr(to=p_property_count).bitcast[UInt32](), p_properties
+            physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn enumerate_device_layer_properties(
         self,
         physical_device: PhysicalDevice,
-        mut p_property_count: UInt32,
+        mut property_count: UInt32,
         p_properties: Ptr[LayerProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -302,7 +300,7 @@ struct InstanceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
-            physical_device, Ptr(to=p_property_count).bitcast[UInt32](), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn get_physical_device_sparse_image_format_properties(
@@ -313,7 +311,7 @@ struct InstanceFunctionsV1_0(Copyable):
         samples: SampleCountFlagBits,
         usage: ImageUsageFlags,
         tiling: ImageTiling,
-        mut p_property_count: UInt32,
+        mut property_count: UInt32,
         p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -327,7 +325,7 @@ struct InstanceFunctionsV1_0(Copyable):
             samples,
             usage,
             tiling,
-            Ptr(to=p_property_count).bitcast[UInt32](),
+            Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
 
@@ -354,7 +352,7 @@ struct InstanceFunctionsV1_1(Copyable):
     fn enumerate_physical_devices(
         self,
         instance: Instance,
-        mut p_physical_device_count: UInt32,
+        mut physical_device_count: UInt32,
         p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -362,32 +360,32 @@ struct InstanceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
-            instance, Ptr(to=p_physical_device_count).bitcast[UInt32](), p_physical_devices
+            instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
         )
 
     fn get_physical_device_features(
-        self, physical_device: PhysicalDevice, mut p_features: PhysicalDeviceFeatures
+        self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
         """
         return self._v1_0.get_physical_device_features(
-            physical_device, Ptr(to=p_features).bitcast[PhysicalDeviceFeatures]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()
         )
 
     fn get_physical_device_format_properties(
         self,
         physical_device: PhysicalDevice,
         format: Format,
-        mut p_format_properties: FormatProperties,
+        mut format_properties: FormatProperties,
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
         """
         return self._v1_0.get_physical_device_format_properties(
-            physical_device, format, Ptr(to=p_format_properties).bitcast[FormatProperties]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()
         )
 
     fn get_physical_device_image_format_properties(
@@ -398,7 +396,7 @@ struct InstanceFunctionsV1_1(Copyable):
         tiling: ImageTiling,
         usage: ImageUsageFlags,
         flags: ImageCreateFlags,
-        mut p_image_format_properties: ImageFormatProperties,
+        mut image_format_properties: ImageFormatProperties,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -411,24 +409,24 @@ struct InstanceFunctionsV1_1(Copyable):
             tiling,
             usage,
             flags,
-            Ptr(to=p_image_format_properties).bitcast[ImageFormatProperties](),
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties](),
         )
 
     fn get_physical_device_properties(
-        self, physical_device: PhysicalDevice, mut p_properties: PhysicalDeviceProperties
+        self, physical_device: PhysicalDevice, mut properties: PhysicalDeviceProperties
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
         """
         return self._v1_0.get_physical_device_properties(
-            physical_device, Ptr(to=p_properties).bitcast[PhysicalDeviceProperties]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()
         )
 
     fn get_physical_device_queue_family_properties(
         self,
         physical_device: PhysicalDevice,
-        mut p_queue_family_property_count: UInt32,
+        mut queue_family_property_count: UInt32,
         p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -437,21 +435,19 @@ struct InstanceFunctionsV1_1(Copyable):
         """
         return self._v1_0.get_physical_device_queue_family_properties(
             physical_device,
-            Ptr(to=p_queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32](),
             p_queue_family_properties,
         )
 
     fn get_physical_device_memory_properties(
-        self,
-        physical_device: PhysicalDevice,
-        mut p_memory_properties: PhysicalDeviceMemoryProperties,
+        self, physical_device: PhysicalDevice, mut memory_properties: PhysicalDeviceMemoryProperties
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
         """
         return self._v1_0.get_physical_device_memory_properties(
-            physical_device, Ptr(to=p_memory_properties).bitcast[PhysicalDeviceMemoryProperties]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()
         )
 
     fn get_instance_proc_addr(
@@ -466,9 +462,9 @@ struct InstanceFunctionsV1_1(Copyable):
     fn create_device(
         self,
         physical_device: PhysicalDevice,
-        p_create_info: DeviceCreateInfo,
+        create_info: DeviceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_device: Device,
+        mut device: Device,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -476,16 +472,16 @@ struct InstanceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_device(
             physical_device,
-            Ptr(to=p_create_info).bitcast[DeviceCreateInfo](),
+            Ptr(to=create_info).bitcast[DeviceCreateInfo](),
             p_allocator,
-            Ptr(to=p_device).bitcast[Device](),
+            Ptr(to=device).bitcast[Device](),
         )
 
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
         p_layer_name: CStringSlice[ImmutAnyOrigin],
-        mut p_property_count: UInt32,
+        mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -493,13 +489,13 @@ struct InstanceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
-            physical_device, p_layer_name, Ptr(to=p_property_count).bitcast[UInt32](), p_properties
+            physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn enumerate_device_layer_properties(
         self,
         physical_device: PhysicalDevice,
-        mut p_property_count: UInt32,
+        mut property_count: UInt32,
         p_properties: Ptr[LayerProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -507,7 +503,7 @@ struct InstanceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
-            physical_device, Ptr(to=p_property_count).bitcast[UInt32](), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn get_physical_device_sparse_image_format_properties(
@@ -518,7 +514,7 @@ struct InstanceFunctionsV1_1(Copyable):
         samples: SampleCountFlagBits,
         usage: ImageUsageFlags,
         tiling: ImageTiling,
-        mut p_property_count: UInt32,
+        mut property_count: UInt32,
         p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -532,14 +528,14 @@ struct InstanceFunctionsV1_1(Copyable):
             samples,
             usage,
             tiling,
-            Ptr(to=p_property_count).bitcast[UInt32](),
+            Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
 
     fn enumerate_physical_device_groups(
         self,
         instance: Instance,
-        mut p_physical_device_group_count: UInt32,
+        mut physical_device_group_count: UInt32,
         p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -548,51 +544,51 @@ struct InstanceFunctionsV1_1(Copyable):
         """
         return self._v1_1.enumerate_physical_device_groups(
             instance,
-            Ptr(to=p_physical_device_group_count).bitcast[UInt32](),
+            Ptr(to=physical_device_group_count).bitcast[UInt32](),
             p_physical_device_group_properties,
         )
 
     fn get_physical_device_features_2(
-        self, physical_device: PhysicalDevice, mut p_features: PhysicalDeviceFeatures2
+        self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures2
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
         """
         return self._v1_1.get_physical_device_features_2(
-            physical_device, Ptr(to=p_features).bitcast[PhysicalDeviceFeatures2]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()
         )
 
     fn get_physical_device_properties_2(
-        self, physical_device: PhysicalDevice, mut p_properties: PhysicalDeviceProperties2
+        self, physical_device: PhysicalDevice, mut properties: PhysicalDeviceProperties2
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
         """
         return self._v1_1.get_physical_device_properties_2(
-            physical_device, Ptr(to=p_properties).bitcast[PhysicalDeviceProperties2]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()
         )
 
     fn get_physical_device_format_properties_2(
         self,
         physical_device: PhysicalDevice,
         format: Format,
-        mut p_format_properties: FormatProperties2,
+        mut format_properties: FormatProperties2,
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
         """
         return self._v1_1.get_physical_device_format_properties_2(
-            physical_device, format, Ptr(to=p_format_properties).bitcast[FormatProperties2]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()
         )
 
     fn get_physical_device_image_format_properties_2(
         self,
         physical_device: PhysicalDevice,
-        p_image_format_info: PhysicalDeviceImageFormatInfo2,
-        mut p_image_format_properties: ImageFormatProperties2,
+        image_format_info: PhysicalDeviceImageFormatInfo2,
+        mut image_format_properties: ImageFormatProperties2,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -600,14 +596,14 @@ struct InstanceFunctionsV1_1(Copyable):
         """
         return self._v1_1.get_physical_device_image_format_properties_2(
             physical_device,
-            Ptr(to=p_image_format_info).bitcast[PhysicalDeviceImageFormatInfo2](),
-            Ptr(to=p_image_format_properties).bitcast[ImageFormatProperties2](),
+            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2](),
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2](),
         )
 
     fn get_physical_device_queue_family_properties_2(
         self,
         physical_device: PhysicalDevice,
-        mut p_queue_family_property_count: UInt32,
+        mut queue_family_property_count: UInt32,
         p_queue_family_properties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -616,28 +612,28 @@ struct InstanceFunctionsV1_1(Copyable):
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
             physical_device,
-            Ptr(to=p_queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32](),
             p_queue_family_properties,
         )
 
     fn get_physical_device_memory_properties_2(
         self,
         physical_device: PhysicalDevice,
-        mut p_memory_properties: PhysicalDeviceMemoryProperties2,
+        mut memory_properties: PhysicalDeviceMemoryProperties2,
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
         """
         return self._v1_1.get_physical_device_memory_properties_2(
-            physical_device, Ptr(to=p_memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()
         )
 
     fn get_physical_device_sparse_image_format_properties_2(
         self,
         physical_device: PhysicalDevice,
-        p_format_info: PhysicalDeviceSparseImageFormatInfo2,
-        mut p_property_count: UInt32,
+        format_info: PhysicalDeviceSparseImageFormatInfo2,
+        mut property_count: UInt32,
         p_properties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -646,16 +642,16 @@ struct InstanceFunctionsV1_1(Copyable):
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
             physical_device,
-            Ptr(to=p_format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2](),
-            Ptr(to=p_property_count).bitcast[UInt32](),
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2](),
+            Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
 
     fn get_physical_device_external_buffer_properties(
         self,
         physical_device: PhysicalDevice,
-        p_external_buffer_info: PhysicalDeviceExternalBufferInfo,
-        mut p_external_buffer_properties: ExternalBufferProperties,
+        external_buffer_info: PhysicalDeviceExternalBufferInfo,
+        mut external_buffer_properties: ExternalBufferProperties,
     ):
         """See official vulkan docs for details.
         
@@ -663,15 +659,15 @@ struct InstanceFunctionsV1_1(Copyable):
         """
         return self._v1_1.get_physical_device_external_buffer_properties(
             physical_device,
-            Ptr(to=p_external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo](),
-            Ptr(to=p_external_buffer_properties).bitcast[ExternalBufferProperties](),
+            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo](),
+            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties](),
         )
 
     fn get_physical_device_external_fence_properties(
         self,
         physical_device: PhysicalDevice,
-        p_external_fence_info: PhysicalDeviceExternalFenceInfo,
-        mut p_external_fence_properties: ExternalFenceProperties,
+        external_fence_info: PhysicalDeviceExternalFenceInfo,
+        mut external_fence_properties: ExternalFenceProperties,
     ):
         """See official vulkan docs for details.
         
@@ -679,15 +675,15 @@ struct InstanceFunctionsV1_1(Copyable):
         """
         return self._v1_1.get_physical_device_external_fence_properties(
             physical_device,
-            Ptr(to=p_external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo](),
-            Ptr(to=p_external_fence_properties).bitcast[ExternalFenceProperties](),
+            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo](),
+            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties](),
         )
 
     fn get_physical_device_external_semaphore_properties(
         self,
         physical_device: PhysicalDevice,
-        p_external_semaphore_info: PhysicalDeviceExternalSemaphoreInfo,
-        mut p_external_semaphore_properties: ExternalSemaphoreProperties,
+        external_semaphore_info: PhysicalDeviceExternalSemaphoreInfo,
+        mut external_semaphore_properties: ExternalSemaphoreProperties,
     ):
         """See official vulkan docs for details.
         
@@ -695,8 +691,8 @@ struct InstanceFunctionsV1_1(Copyable):
         """
         return self._v1_1.get_physical_device_external_semaphore_properties(
             physical_device,
-            Ptr(to=p_external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo](),
-            Ptr(to=p_external_semaphore_properties).bitcast[ExternalSemaphoreProperties](),
+            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo](),
+            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties](),
         )
 
 
@@ -724,7 +720,7 @@ struct InstanceFunctionsV1_3(Copyable):
     fn enumerate_physical_devices(
         self,
         instance: Instance,
-        mut p_physical_device_count: UInt32,
+        mut physical_device_count: UInt32,
         p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -732,32 +728,32 @@ struct InstanceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
-            instance, Ptr(to=p_physical_device_count).bitcast[UInt32](), p_physical_devices
+            instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
         )
 
     fn get_physical_device_features(
-        self, physical_device: PhysicalDevice, mut p_features: PhysicalDeviceFeatures
+        self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
         """
         return self._v1_0.get_physical_device_features(
-            physical_device, Ptr(to=p_features).bitcast[PhysicalDeviceFeatures]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()
         )
 
     fn get_physical_device_format_properties(
         self,
         physical_device: PhysicalDevice,
         format: Format,
-        mut p_format_properties: FormatProperties,
+        mut format_properties: FormatProperties,
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
         """
         return self._v1_0.get_physical_device_format_properties(
-            physical_device, format, Ptr(to=p_format_properties).bitcast[FormatProperties]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()
         )
 
     fn get_physical_device_image_format_properties(
@@ -768,7 +764,7 @@ struct InstanceFunctionsV1_3(Copyable):
         tiling: ImageTiling,
         usage: ImageUsageFlags,
         flags: ImageCreateFlags,
-        mut p_image_format_properties: ImageFormatProperties,
+        mut image_format_properties: ImageFormatProperties,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -781,24 +777,24 @@ struct InstanceFunctionsV1_3(Copyable):
             tiling,
             usage,
             flags,
-            Ptr(to=p_image_format_properties).bitcast[ImageFormatProperties](),
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties](),
         )
 
     fn get_physical_device_properties(
-        self, physical_device: PhysicalDevice, mut p_properties: PhysicalDeviceProperties
+        self, physical_device: PhysicalDevice, mut properties: PhysicalDeviceProperties
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
         """
         return self._v1_0.get_physical_device_properties(
-            physical_device, Ptr(to=p_properties).bitcast[PhysicalDeviceProperties]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()
         )
 
     fn get_physical_device_queue_family_properties(
         self,
         physical_device: PhysicalDevice,
-        mut p_queue_family_property_count: UInt32,
+        mut queue_family_property_count: UInt32,
         p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -807,21 +803,19 @@ struct InstanceFunctionsV1_3(Copyable):
         """
         return self._v1_0.get_physical_device_queue_family_properties(
             physical_device,
-            Ptr(to=p_queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32](),
             p_queue_family_properties,
         )
 
     fn get_physical_device_memory_properties(
-        self,
-        physical_device: PhysicalDevice,
-        mut p_memory_properties: PhysicalDeviceMemoryProperties,
+        self, physical_device: PhysicalDevice, mut memory_properties: PhysicalDeviceMemoryProperties
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
         """
         return self._v1_0.get_physical_device_memory_properties(
-            physical_device, Ptr(to=p_memory_properties).bitcast[PhysicalDeviceMemoryProperties]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()
         )
 
     fn get_instance_proc_addr(
@@ -836,9 +830,9 @@ struct InstanceFunctionsV1_3(Copyable):
     fn create_device(
         self,
         physical_device: PhysicalDevice,
-        p_create_info: DeviceCreateInfo,
+        create_info: DeviceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_device: Device,
+        mut device: Device,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -846,16 +840,16 @@ struct InstanceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_device(
             physical_device,
-            Ptr(to=p_create_info).bitcast[DeviceCreateInfo](),
+            Ptr(to=create_info).bitcast[DeviceCreateInfo](),
             p_allocator,
-            Ptr(to=p_device).bitcast[Device](),
+            Ptr(to=device).bitcast[Device](),
         )
 
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
         p_layer_name: CStringSlice[ImmutAnyOrigin],
-        mut p_property_count: UInt32,
+        mut property_count: UInt32,
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -863,13 +857,13 @@ struct InstanceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
-            physical_device, p_layer_name, Ptr(to=p_property_count).bitcast[UInt32](), p_properties
+            physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn enumerate_device_layer_properties(
         self,
         physical_device: PhysicalDevice,
-        mut p_property_count: UInt32,
+        mut property_count: UInt32,
         p_properties: Ptr[LayerProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -877,7 +871,7 @@ struct InstanceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
-            physical_device, Ptr(to=p_property_count).bitcast[UInt32](), p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
 
     fn get_physical_device_sparse_image_format_properties(
@@ -888,7 +882,7 @@ struct InstanceFunctionsV1_3(Copyable):
         samples: SampleCountFlagBits,
         usage: ImageUsageFlags,
         tiling: ImageTiling,
-        mut p_property_count: UInt32,
+        mut property_count: UInt32,
         p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -902,14 +896,14 @@ struct InstanceFunctionsV1_3(Copyable):
             samples,
             usage,
             tiling,
-            Ptr(to=p_property_count).bitcast[UInt32](),
+            Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
 
     fn enumerate_physical_device_groups(
         self,
         instance: Instance,
-        mut p_physical_device_group_count: UInt32,
+        mut physical_device_group_count: UInt32,
         p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -918,51 +912,51 @@ struct InstanceFunctionsV1_3(Copyable):
         """
         return self._v1_1.enumerate_physical_device_groups(
             instance,
-            Ptr(to=p_physical_device_group_count).bitcast[UInt32](),
+            Ptr(to=physical_device_group_count).bitcast[UInt32](),
             p_physical_device_group_properties,
         )
 
     fn get_physical_device_features_2(
-        self, physical_device: PhysicalDevice, mut p_features: PhysicalDeviceFeatures2
+        self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures2
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
         """
         return self._v1_1.get_physical_device_features_2(
-            physical_device, Ptr(to=p_features).bitcast[PhysicalDeviceFeatures2]()
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()
         )
 
     fn get_physical_device_properties_2(
-        self, physical_device: PhysicalDevice, mut p_properties: PhysicalDeviceProperties2
+        self, physical_device: PhysicalDevice, mut properties: PhysicalDeviceProperties2
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
         """
         return self._v1_1.get_physical_device_properties_2(
-            physical_device, Ptr(to=p_properties).bitcast[PhysicalDeviceProperties2]()
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()
         )
 
     fn get_physical_device_format_properties_2(
         self,
         physical_device: PhysicalDevice,
         format: Format,
-        mut p_format_properties: FormatProperties2,
+        mut format_properties: FormatProperties2,
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
         """
         return self._v1_1.get_physical_device_format_properties_2(
-            physical_device, format, Ptr(to=p_format_properties).bitcast[FormatProperties2]()
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()
         )
 
     fn get_physical_device_image_format_properties_2(
         self,
         physical_device: PhysicalDevice,
-        p_image_format_info: PhysicalDeviceImageFormatInfo2,
-        mut p_image_format_properties: ImageFormatProperties2,
+        image_format_info: PhysicalDeviceImageFormatInfo2,
+        mut image_format_properties: ImageFormatProperties2,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -970,14 +964,14 @@ struct InstanceFunctionsV1_3(Copyable):
         """
         return self._v1_1.get_physical_device_image_format_properties_2(
             physical_device,
-            Ptr(to=p_image_format_info).bitcast[PhysicalDeviceImageFormatInfo2](),
-            Ptr(to=p_image_format_properties).bitcast[ImageFormatProperties2](),
+            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2](),
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2](),
         )
 
     fn get_physical_device_queue_family_properties_2(
         self,
         physical_device: PhysicalDevice,
-        mut p_queue_family_property_count: UInt32,
+        mut queue_family_property_count: UInt32,
         p_queue_family_properties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -986,28 +980,28 @@ struct InstanceFunctionsV1_3(Copyable):
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
             physical_device,
-            Ptr(to=p_queue_family_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_property_count).bitcast[UInt32](),
             p_queue_family_properties,
         )
 
     fn get_physical_device_memory_properties_2(
         self,
         physical_device: PhysicalDevice,
-        mut p_memory_properties: PhysicalDeviceMemoryProperties2,
+        mut memory_properties: PhysicalDeviceMemoryProperties2,
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
         """
         return self._v1_1.get_physical_device_memory_properties_2(
-            physical_device, Ptr(to=p_memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()
         )
 
     fn get_physical_device_sparse_image_format_properties_2(
         self,
         physical_device: PhysicalDevice,
-        p_format_info: PhysicalDeviceSparseImageFormatInfo2,
-        mut p_property_count: UInt32,
+        format_info: PhysicalDeviceSparseImageFormatInfo2,
+        mut property_count: UInt32,
         p_properties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -1016,16 +1010,16 @@ struct InstanceFunctionsV1_3(Copyable):
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
             physical_device,
-            Ptr(to=p_format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2](),
-            Ptr(to=p_property_count).bitcast[UInt32](),
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2](),
+            Ptr(to=property_count).bitcast[UInt32](),
             p_properties,
         )
 
     fn get_physical_device_external_buffer_properties(
         self,
         physical_device: PhysicalDevice,
-        p_external_buffer_info: PhysicalDeviceExternalBufferInfo,
-        mut p_external_buffer_properties: ExternalBufferProperties,
+        external_buffer_info: PhysicalDeviceExternalBufferInfo,
+        mut external_buffer_properties: ExternalBufferProperties,
     ):
         """See official vulkan docs for details.
         
@@ -1033,15 +1027,15 @@ struct InstanceFunctionsV1_3(Copyable):
         """
         return self._v1_1.get_physical_device_external_buffer_properties(
             physical_device,
-            Ptr(to=p_external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo](),
-            Ptr(to=p_external_buffer_properties).bitcast[ExternalBufferProperties](),
+            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo](),
+            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties](),
         )
 
     fn get_physical_device_external_fence_properties(
         self,
         physical_device: PhysicalDevice,
-        p_external_fence_info: PhysicalDeviceExternalFenceInfo,
-        mut p_external_fence_properties: ExternalFenceProperties,
+        external_fence_info: PhysicalDeviceExternalFenceInfo,
+        mut external_fence_properties: ExternalFenceProperties,
     ):
         """See official vulkan docs for details.
         
@@ -1049,15 +1043,15 @@ struct InstanceFunctionsV1_3(Copyable):
         """
         return self._v1_1.get_physical_device_external_fence_properties(
             physical_device,
-            Ptr(to=p_external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo](),
-            Ptr(to=p_external_fence_properties).bitcast[ExternalFenceProperties](),
+            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo](),
+            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties](),
         )
 
     fn get_physical_device_external_semaphore_properties(
         self,
         physical_device: PhysicalDevice,
-        p_external_semaphore_info: PhysicalDeviceExternalSemaphoreInfo,
-        mut p_external_semaphore_properties: ExternalSemaphoreProperties,
+        external_semaphore_info: PhysicalDeviceExternalSemaphoreInfo,
+        mut external_semaphore_properties: ExternalSemaphoreProperties,
     ):
         """See official vulkan docs for details.
         
@@ -1065,14 +1059,14 @@ struct InstanceFunctionsV1_3(Copyable):
         """
         return self._v1_1.get_physical_device_external_semaphore_properties(
             physical_device,
-            Ptr(to=p_external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo](),
-            Ptr(to=p_external_semaphore_properties).bitcast[ExternalSemaphoreProperties](),
+            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo](),
+            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties](),
         )
 
     fn get_physical_device_tool_properties(
         self,
         physical_device: PhysicalDevice,
-        mut p_tool_count: UInt32,
+        mut tool_count: UInt32,
         p_tool_properties: Ptr[PhysicalDeviceToolProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -1080,7 +1074,7 @@ struct InstanceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
         """
         return self._v1_3.get_physical_device_tool_properties(
-            physical_device, Ptr(to=p_tool_count).bitcast[UInt32](), p_tool_properties
+            physical_device, Ptr(to=tool_count).bitcast[UInt32](), p_tool_properties
         )
 
 
@@ -1109,14 +1103,14 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.destroy_device(device, p_allocator)
 
     fn get_device_queue(
-        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut p_queue: Queue
+        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut queue: Queue
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(
-            device, queue_family_index, queue_index, Ptr(to=p_queue).bitcast[Queue]()
+            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()
         )
 
     fn queue_submit(
@@ -1149,9 +1143,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn allocate_memory(
         self,
         device: Device,
-        p_allocate_info: MemoryAllocateInfo,
+        allocate_info: MemoryAllocateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_memory: DeviceMemory,
+        mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1159,9 +1153,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.allocate_memory(
             device,
-            Ptr(to=p_allocate_info).bitcast[MemoryAllocateInfo](),
+            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo](),
             p_allocator,
-            Ptr(to=p_memory).bitcast[DeviceMemory](),
+            Ptr(to=memory).bitcast[DeviceMemory](),
         )
 
     fn free_memory(
@@ -1183,14 +1177,14 @@ struct DeviceFunctionsV1_0(Copyable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        mut pp_data: Ptr[NoneType, MutAnyOrigin],
+        mut p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
         return self._v1_0.map_memory(
-            device, memory, offset, size, flags, Ptr(to=pp_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()
+            device, memory, offset, size, flags, Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()
         )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
@@ -1225,14 +1219,14 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
 
     fn get_device_memory_commitment(
-        self, device: Device, memory: DeviceMemory, mut p_committed_memory_in_bytes: DeviceSize
+        self, device: Device, memory: DeviceMemory, mut committed_memory_in_bytes: DeviceSize
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
-            device, memory, Ptr(to=p_committed_memory_in_bytes).bitcast[DeviceSize]()
+            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()
         )
 
     fn bind_buffer_memory(
@@ -1254,32 +1248,32 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
     fn get_buffer_memory_requirements(
-        self, device: Device, buffer: Buffer, mut p_memory_requirements: MemoryRequirements
+        self, device: Device, buffer: Buffer, mut memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
-            device, buffer, Ptr(to=p_memory_requirements).bitcast[MemoryRequirements]()
+            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
         )
 
     fn get_image_memory_requirements(
-        self, device: Device, image: Image, mut p_memory_requirements: MemoryRequirements
+        self, device: Device, image: Image, mut memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(
-            device, image, Ptr(to=p_memory_requirements).bitcast[MemoryRequirements]()
+            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
         )
 
     fn get_image_sparse_memory_requirements(
         self,
         device: Device,
         image: Image,
-        mut p_sparse_memory_requirement_count: UInt32,
+        mut sparse_memory_requirement_count: UInt32,
         p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -1289,7 +1283,7 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.get_image_sparse_memory_requirements(
             device,
             image,
-            Ptr(to=p_sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
 
@@ -1309,9 +1303,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_fence(
         self,
         device: Device,
-        p_create_info: FenceCreateInfo,
+        create_info: FenceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_fence: Fence,
+        mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1319,9 +1313,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_fence(
             device,
-            Ptr(to=p_create_info).bitcast[FenceCreateInfo](),
+            Ptr(to=create_info).bitcast[FenceCreateInfo](),
             p_allocator,
-            Ptr(to=p_fence).bitcast[Fence](),
+            Ptr(to=fence).bitcast[Fence](),
         )
 
     fn destroy_fence(
@@ -1366,9 +1360,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_semaphore(
         self,
         device: Device,
-        p_create_info: SemaphoreCreateInfo,
+        create_info: SemaphoreCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_semaphore: Semaphore,
+        mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1376,9 +1370,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_semaphore(
             device,
-            Ptr(to=p_create_info).bitcast[SemaphoreCreateInfo](),
+            Ptr(to=create_info).bitcast[SemaphoreCreateInfo](),
             p_allocator,
-            Ptr(to=p_semaphore).bitcast[Semaphore](),
+            Ptr(to=semaphore).bitcast[Semaphore](),
         )
 
     fn destroy_semaphore(
@@ -1396,9 +1390,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_event(
         self,
         device: Device,
-        p_create_info: EventCreateInfo,
+        create_info: EventCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_event: Event,
+        mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1406,9 +1400,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_event(
             device,
-            Ptr(to=p_create_info).bitcast[EventCreateInfo](),
+            Ptr(to=create_info).bitcast[EventCreateInfo](),
             p_allocator,
-            Ptr(to=p_event).bitcast[Event](),
+            Ptr(to=event).bitcast[Event](),
         )
 
     fn destroy_event(
@@ -1444,9 +1438,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_query_pool(
         self,
         device: Device,
-        p_create_info: QueryPoolCreateInfo,
+        create_info: QueryPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_query_pool: QueryPool,
+        mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1454,9 +1448,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_query_pool(
             device,
-            Ptr(to=p_create_info).bitcast[QueryPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[QueryPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_query_pool).bitcast[QueryPool](),
+            Ptr(to=query_pool).bitcast[QueryPool](),
         )
 
     fn destroy_query_pool(
@@ -1493,9 +1487,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_buffer(
         self,
         device: Device,
-        p_create_info: BufferCreateInfo,
+        create_info: BufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_buffer: Buffer,
+        mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1503,9 +1497,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_buffer(
             device,
-            Ptr(to=p_create_info).bitcast[BufferCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferCreateInfo](),
             p_allocator,
-            Ptr(to=p_buffer).bitcast[Buffer](),
+            Ptr(to=buffer).bitcast[Buffer](),
         )
 
     fn destroy_buffer(
@@ -1520,9 +1514,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_buffer_view(
         self,
         device: Device,
-        p_create_info: BufferViewCreateInfo,
+        create_info: BufferViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_view: BufferView,
+        mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1530,9 +1524,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_buffer_view(
             device,
-            Ptr(to=p_create_info).bitcast[BufferViewCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferViewCreateInfo](),
             p_allocator,
-            Ptr(to=p_view).bitcast[BufferView](),
+            Ptr(to=view).bitcast[BufferView](),
         )
 
     fn destroy_buffer_view(
@@ -1550,9 +1544,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_image(
         self,
         device: Device,
-        p_create_info: ImageCreateInfo,
+        create_info: ImageCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_image: Image,
+        mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1560,9 +1554,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_image(
             device,
-            Ptr(to=p_create_info).bitcast[ImageCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageCreateInfo](),
             p_allocator,
-            Ptr(to=p_image).bitcast[Image](),
+            Ptr(to=image).bitcast[Image](),
         )
 
     fn destroy_image(
@@ -1578,8 +1572,8 @@ struct DeviceFunctionsV1_0(Copyable):
         self,
         device: Device,
         image: Image,
-        p_subresource: ImageSubresource,
-        mut p_layout: SubresourceLayout,
+        subresource: ImageSubresource,
+        mut layout: SubresourceLayout,
     ):
         """See official vulkan docs for details.
         
@@ -1588,16 +1582,16 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.get_image_subresource_layout(
             device,
             image,
-            Ptr(to=p_subresource).bitcast[ImageSubresource](),
-            Ptr(to=p_layout).bitcast[SubresourceLayout](),
+            Ptr(to=subresource).bitcast[ImageSubresource](),
+            Ptr(to=layout).bitcast[SubresourceLayout](),
         )
 
     fn create_image_view(
         self,
         device: Device,
-        p_create_info: ImageViewCreateInfo,
+        create_info: ImageViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_view: ImageView,
+        mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1605,9 +1599,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_image_view(
             device,
-            Ptr(to=p_create_info).bitcast[ImageViewCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageViewCreateInfo](),
             p_allocator,
-            Ptr(to=p_view).bitcast[ImageView](),
+            Ptr(to=view).bitcast[ImageView](),
         )
 
     fn destroy_image_view(
@@ -1625,9 +1619,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_shader_module(
         self,
         device: Device,
-        p_create_info: ShaderModuleCreateInfo,
+        create_info: ShaderModuleCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_shader_module: ShaderModule,
+        mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1635,9 +1629,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_shader_module(
             device,
-            Ptr(to=p_create_info).bitcast[ShaderModuleCreateInfo](),
+            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo](),
             p_allocator,
-            Ptr(to=p_shader_module).bitcast[ShaderModule](),
+            Ptr(to=shader_module).bitcast[ShaderModule](),
         )
 
     fn destroy_shader_module(
@@ -1655,9 +1649,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_pipeline_cache(
         self,
         device: Device,
-        p_create_info: PipelineCacheCreateInfo,
+        create_info: PipelineCacheCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_pipeline_cache: PipelineCache,
+        mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1665,9 +1659,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_pipeline_cache(
             device,
-            Ptr(to=p_create_info).bitcast[PipelineCacheCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo](),
             p_allocator,
-            Ptr(to=p_pipeline_cache).bitcast[PipelineCache](),
+            Ptr(to=pipeline_cache).bitcast[PipelineCache](),
         )
 
     fn destroy_pipeline_cache(
@@ -1686,7 +1680,7 @@ struct DeviceFunctionsV1_0(Copyable):
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        mut p_data_size: UInt,
+        mut data_size: UInt,
         p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -1694,7 +1688,7 @@ struct DeviceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         return self._v1_0.get_pipeline_cache_data(
-            device, pipeline_cache, Ptr(to=p_data_size).bitcast[UInt](), p_data
+            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
         )
 
     fn merge_pipeline_caches(
@@ -1759,9 +1753,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_pipeline_layout(
         self,
         device: Device,
-        p_create_info: PipelineLayoutCreateInfo,
+        create_info: PipelineLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_pipeline_layout: PipelineLayout,
+        mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1769,9 +1763,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_pipeline_layout(
             device,
-            Ptr(to=p_create_info).bitcast[PipelineLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo](),
             p_allocator,
-            Ptr(to=p_pipeline_layout).bitcast[PipelineLayout](),
+            Ptr(to=pipeline_layout).bitcast[PipelineLayout](),
         )
 
     fn destroy_pipeline_layout(
@@ -1789,9 +1783,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_sampler(
         self,
         device: Device,
-        p_create_info: SamplerCreateInfo,
+        create_info: SamplerCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_sampler: Sampler,
+        mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1799,9 +1793,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_sampler(
             device,
-            Ptr(to=p_create_info).bitcast[SamplerCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerCreateInfo](),
             p_allocator,
-            Ptr(to=p_sampler).bitcast[Sampler](),
+            Ptr(to=sampler).bitcast[Sampler](),
         )
 
     fn destroy_sampler(
@@ -1819,9 +1813,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_descriptor_set_layout(
         self,
         device: Device,
-        p_create_info: DescriptorSetLayoutCreateInfo,
+        create_info: DescriptorSetLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_set_layout: DescriptorSetLayout,
+        mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1829,9 +1823,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_descriptor_set_layout(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
             p_allocator,
-            Ptr(to=p_set_layout).bitcast[DescriptorSetLayout](),
+            Ptr(to=set_layout).bitcast[DescriptorSetLayout](),
         )
 
     fn destroy_descriptor_set_layout(
@@ -1849,9 +1843,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_descriptor_pool(
         self,
         device: Device,
-        p_create_info: DescriptorPoolCreateInfo,
+        create_info: DescriptorPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_descriptor_pool: DescriptorPool,
+        mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1859,9 +1853,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_descriptor_pool(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_descriptor_pool).bitcast[DescriptorPool](),
+            Ptr(to=descriptor_pool).bitcast[DescriptorPool](),
         )
 
     fn destroy_descriptor_pool(
@@ -1888,7 +1882,7 @@ struct DeviceFunctionsV1_0(Copyable):
     fn allocate_descriptor_sets(
         self,
         device: Device,
-        p_allocate_info: DescriptorSetAllocateInfo,
+        allocate_info: DescriptorSetAllocateInfo,
         p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -1896,7 +1890,7 @@ struct DeviceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
         return self._v1_0.allocate_descriptor_sets(
-            device, Ptr(to=p_allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
+            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
         )
 
     fn free_descriptor_sets(
@@ -1933,9 +1927,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_framebuffer(
         self,
         device: Device,
-        p_create_info: FramebufferCreateInfo,
+        create_info: FramebufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_framebuffer: Framebuffer,
+        mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1943,9 +1937,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_framebuffer(
             device,
-            Ptr(to=p_create_info).bitcast[FramebufferCreateInfo](),
+            Ptr(to=create_info).bitcast[FramebufferCreateInfo](),
             p_allocator,
-            Ptr(to=p_framebuffer).bitcast[Framebuffer](),
+            Ptr(to=framebuffer).bitcast[Framebuffer](),
         )
 
     fn destroy_framebuffer(
@@ -1963,9 +1957,9 @@ struct DeviceFunctionsV1_0(Copyable):
     fn create_render_pass(
         self,
         device: Device,
-        p_create_info: RenderPassCreateInfo,
+        create_info: RenderPassCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_render_pass: RenderPass,
+        mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1973,9 +1967,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_render_pass(
             device,
-            Ptr(to=p_create_info).bitcast[RenderPassCreateInfo](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo](),
             p_allocator,
-            Ptr(to=p_render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass](),
         )
 
     fn destroy_render_pass(
@@ -1991,22 +1985,22 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
     fn get_render_area_granularity(
-        self, device: Device, render_pass: RenderPass, mut p_granularity: Extent2D
+        self, device: Device, render_pass: RenderPass, mut granularity: Extent2D
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(
-            device, render_pass, Ptr(to=p_granularity).bitcast[Extent2D]()
+            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()
         )
 
     fn create_command_pool(
         self,
         device: Device,
-        p_create_info: CommandPoolCreateInfo,
+        create_info: CommandPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_command_pool: CommandPool,
+        mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -2014,9 +2008,9 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.create_command_pool(
             device,
-            Ptr(to=p_create_info).bitcast[CommandPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[CommandPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_command_pool).bitcast[CommandPool](),
+            Ptr(to=command_pool).bitcast[CommandPool](),
         )
 
     fn destroy_command_pool(
@@ -2043,7 +2037,7 @@ struct DeviceFunctionsV1_0(Copyable):
     fn allocate_command_buffers(
         self,
         device: Device,
-        p_allocate_info: CommandBufferAllocateInfo,
+        allocate_info: CommandBufferAllocateInfo,
         p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -2051,7 +2045,7 @@ struct DeviceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
         return self._v1_0.allocate_command_buffers(
-            device, Ptr(to=p_allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
+            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
         )
 
     fn free_command_buffers(
@@ -2070,14 +2064,14 @@ struct DeviceFunctionsV1_0(Copyable):
         )
 
     fn begin_command_buffer(
-        self, command_buffer: CommandBuffer, p_begin_info: CommandBufferBeginInfo
+        self, command_buffer: CommandBuffer, begin_info: CommandBufferBeginInfo
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(
-            command_buffer, Ptr(to=p_begin_info).bitcast[CommandBufferBeginInfo]()
+            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()
         )
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
@@ -2470,7 +2464,7 @@ struct DeviceFunctionsV1_0(Copyable):
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
-        p_color: ClearColorValue,
+        color: ClearColorValue,
         range_count: UInt32,
         p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
     ):
@@ -2482,7 +2476,7 @@ struct DeviceFunctionsV1_0(Copyable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=p_color).bitcast[ClearColorValue](),
+            Ptr(to=color).bitcast[ClearColorValue](),
             range_count,
             p_ranges,
         )
@@ -2492,7 +2486,7 @@ struct DeviceFunctionsV1_0(Copyable):
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
-        p_depth_stencil: ClearDepthStencilValue,
+        depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
         p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
     ):
@@ -2504,7 +2498,7 @@ struct DeviceFunctionsV1_0(Copyable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=p_depth_stencil).bitcast[ClearDepthStencilValue](),
+            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue](),
             range_count,
             p_ranges,
         )
@@ -2712,7 +2706,7 @@ struct DeviceFunctionsV1_0(Copyable):
     fn cmd_begin_render_pass(
         self,
         command_buffer: CommandBuffer,
-        p_render_pass_begin: RenderPassBeginInfo,
+        render_pass_begin: RenderPassBeginInfo,
         contents: SubpassContents,
     ):
         """See official vulkan docs for details.
@@ -2720,7 +2714,7 @@ struct DeviceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
         return self._v1_0.cmd_begin_render_pass(
-            command_buffer, Ptr(to=p_render_pass_begin).bitcast[RenderPassBeginInfo](), contents
+            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](), contents
         )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
@@ -2777,14 +2771,14 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.destroy_device(device, p_allocator)
 
     fn get_device_queue(
-        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut p_queue: Queue
+        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut queue: Queue
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(
-            device, queue_family_index, queue_index, Ptr(to=p_queue).bitcast[Queue]()
+            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()
         )
 
     fn queue_submit(
@@ -2817,9 +2811,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn allocate_memory(
         self,
         device: Device,
-        p_allocate_info: MemoryAllocateInfo,
+        allocate_info: MemoryAllocateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_memory: DeviceMemory,
+        mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -2827,9 +2821,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.allocate_memory(
             device,
-            Ptr(to=p_allocate_info).bitcast[MemoryAllocateInfo](),
+            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo](),
             p_allocator,
-            Ptr(to=p_memory).bitcast[DeviceMemory](),
+            Ptr(to=memory).bitcast[DeviceMemory](),
         )
 
     fn free_memory(
@@ -2851,14 +2845,14 @@ struct DeviceFunctionsV1_1(Copyable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        mut pp_data: Ptr[NoneType, MutAnyOrigin],
+        mut p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
         return self._v1_0.map_memory(
-            device, memory, offset, size, flags, Ptr(to=pp_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()
+            device, memory, offset, size, flags, Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()
         )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
@@ -2893,14 +2887,14 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
 
     fn get_device_memory_commitment(
-        self, device: Device, memory: DeviceMemory, mut p_committed_memory_in_bytes: DeviceSize
+        self, device: Device, memory: DeviceMemory, mut committed_memory_in_bytes: DeviceSize
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
-            device, memory, Ptr(to=p_committed_memory_in_bytes).bitcast[DeviceSize]()
+            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()
         )
 
     fn bind_buffer_memory(
@@ -2922,32 +2916,32 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
     fn get_buffer_memory_requirements(
-        self, device: Device, buffer: Buffer, mut p_memory_requirements: MemoryRequirements
+        self, device: Device, buffer: Buffer, mut memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
-            device, buffer, Ptr(to=p_memory_requirements).bitcast[MemoryRequirements]()
+            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
         )
 
     fn get_image_memory_requirements(
-        self, device: Device, image: Image, mut p_memory_requirements: MemoryRequirements
+        self, device: Device, image: Image, mut memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(
-            device, image, Ptr(to=p_memory_requirements).bitcast[MemoryRequirements]()
+            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
         )
 
     fn get_image_sparse_memory_requirements(
         self,
         device: Device,
         image: Image,
-        mut p_sparse_memory_requirement_count: UInt32,
+        mut sparse_memory_requirement_count: UInt32,
         p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -2957,7 +2951,7 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.get_image_sparse_memory_requirements(
             device,
             image,
-            Ptr(to=p_sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
 
@@ -2977,9 +2971,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_fence(
         self,
         device: Device,
-        p_create_info: FenceCreateInfo,
+        create_info: FenceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_fence: Fence,
+        mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -2987,9 +2981,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_fence(
             device,
-            Ptr(to=p_create_info).bitcast[FenceCreateInfo](),
+            Ptr(to=create_info).bitcast[FenceCreateInfo](),
             p_allocator,
-            Ptr(to=p_fence).bitcast[Fence](),
+            Ptr(to=fence).bitcast[Fence](),
         )
 
     fn destroy_fence(
@@ -3034,9 +3028,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_semaphore(
         self,
         device: Device,
-        p_create_info: SemaphoreCreateInfo,
+        create_info: SemaphoreCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_semaphore: Semaphore,
+        mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3044,9 +3038,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_semaphore(
             device,
-            Ptr(to=p_create_info).bitcast[SemaphoreCreateInfo](),
+            Ptr(to=create_info).bitcast[SemaphoreCreateInfo](),
             p_allocator,
-            Ptr(to=p_semaphore).bitcast[Semaphore](),
+            Ptr(to=semaphore).bitcast[Semaphore](),
         )
 
     fn destroy_semaphore(
@@ -3064,9 +3058,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_event(
         self,
         device: Device,
-        p_create_info: EventCreateInfo,
+        create_info: EventCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_event: Event,
+        mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3074,9 +3068,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_event(
             device,
-            Ptr(to=p_create_info).bitcast[EventCreateInfo](),
+            Ptr(to=create_info).bitcast[EventCreateInfo](),
             p_allocator,
-            Ptr(to=p_event).bitcast[Event](),
+            Ptr(to=event).bitcast[Event](),
         )
 
     fn destroy_event(
@@ -3112,9 +3106,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_query_pool(
         self,
         device: Device,
-        p_create_info: QueryPoolCreateInfo,
+        create_info: QueryPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_query_pool: QueryPool,
+        mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3122,9 +3116,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_query_pool(
             device,
-            Ptr(to=p_create_info).bitcast[QueryPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[QueryPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_query_pool).bitcast[QueryPool](),
+            Ptr(to=query_pool).bitcast[QueryPool](),
         )
 
     fn destroy_query_pool(
@@ -3161,9 +3155,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_buffer(
         self,
         device: Device,
-        p_create_info: BufferCreateInfo,
+        create_info: BufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_buffer: Buffer,
+        mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3171,9 +3165,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_buffer(
             device,
-            Ptr(to=p_create_info).bitcast[BufferCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferCreateInfo](),
             p_allocator,
-            Ptr(to=p_buffer).bitcast[Buffer](),
+            Ptr(to=buffer).bitcast[Buffer](),
         )
 
     fn destroy_buffer(
@@ -3188,9 +3182,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_buffer_view(
         self,
         device: Device,
-        p_create_info: BufferViewCreateInfo,
+        create_info: BufferViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_view: BufferView,
+        mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3198,9 +3192,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_buffer_view(
             device,
-            Ptr(to=p_create_info).bitcast[BufferViewCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferViewCreateInfo](),
             p_allocator,
-            Ptr(to=p_view).bitcast[BufferView](),
+            Ptr(to=view).bitcast[BufferView](),
         )
 
     fn destroy_buffer_view(
@@ -3218,9 +3212,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_image(
         self,
         device: Device,
-        p_create_info: ImageCreateInfo,
+        create_info: ImageCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_image: Image,
+        mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3228,9 +3222,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_image(
             device,
-            Ptr(to=p_create_info).bitcast[ImageCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageCreateInfo](),
             p_allocator,
-            Ptr(to=p_image).bitcast[Image](),
+            Ptr(to=image).bitcast[Image](),
         )
 
     fn destroy_image(
@@ -3246,8 +3240,8 @@ struct DeviceFunctionsV1_1(Copyable):
         self,
         device: Device,
         image: Image,
-        p_subresource: ImageSubresource,
-        mut p_layout: SubresourceLayout,
+        subresource: ImageSubresource,
+        mut layout: SubresourceLayout,
     ):
         """See official vulkan docs for details.
         
@@ -3256,16 +3250,16 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.get_image_subresource_layout(
             device,
             image,
-            Ptr(to=p_subresource).bitcast[ImageSubresource](),
-            Ptr(to=p_layout).bitcast[SubresourceLayout](),
+            Ptr(to=subresource).bitcast[ImageSubresource](),
+            Ptr(to=layout).bitcast[SubresourceLayout](),
         )
 
     fn create_image_view(
         self,
         device: Device,
-        p_create_info: ImageViewCreateInfo,
+        create_info: ImageViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_view: ImageView,
+        mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3273,9 +3267,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_image_view(
             device,
-            Ptr(to=p_create_info).bitcast[ImageViewCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageViewCreateInfo](),
             p_allocator,
-            Ptr(to=p_view).bitcast[ImageView](),
+            Ptr(to=view).bitcast[ImageView](),
         )
 
     fn destroy_image_view(
@@ -3293,9 +3287,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_shader_module(
         self,
         device: Device,
-        p_create_info: ShaderModuleCreateInfo,
+        create_info: ShaderModuleCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_shader_module: ShaderModule,
+        mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3303,9 +3297,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_shader_module(
             device,
-            Ptr(to=p_create_info).bitcast[ShaderModuleCreateInfo](),
+            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo](),
             p_allocator,
-            Ptr(to=p_shader_module).bitcast[ShaderModule](),
+            Ptr(to=shader_module).bitcast[ShaderModule](),
         )
 
     fn destroy_shader_module(
@@ -3323,9 +3317,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_pipeline_cache(
         self,
         device: Device,
-        p_create_info: PipelineCacheCreateInfo,
+        create_info: PipelineCacheCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_pipeline_cache: PipelineCache,
+        mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3333,9 +3327,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_pipeline_cache(
             device,
-            Ptr(to=p_create_info).bitcast[PipelineCacheCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo](),
             p_allocator,
-            Ptr(to=p_pipeline_cache).bitcast[PipelineCache](),
+            Ptr(to=pipeline_cache).bitcast[PipelineCache](),
         )
 
     fn destroy_pipeline_cache(
@@ -3354,7 +3348,7 @@ struct DeviceFunctionsV1_1(Copyable):
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        mut p_data_size: UInt,
+        mut data_size: UInt,
         p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -3362,7 +3356,7 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         return self._v1_0.get_pipeline_cache_data(
-            device, pipeline_cache, Ptr(to=p_data_size).bitcast[UInt](), p_data
+            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
         )
 
     fn merge_pipeline_caches(
@@ -3427,9 +3421,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_pipeline_layout(
         self,
         device: Device,
-        p_create_info: PipelineLayoutCreateInfo,
+        create_info: PipelineLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_pipeline_layout: PipelineLayout,
+        mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3437,9 +3431,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_pipeline_layout(
             device,
-            Ptr(to=p_create_info).bitcast[PipelineLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo](),
             p_allocator,
-            Ptr(to=p_pipeline_layout).bitcast[PipelineLayout](),
+            Ptr(to=pipeline_layout).bitcast[PipelineLayout](),
         )
 
     fn destroy_pipeline_layout(
@@ -3457,9 +3451,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_sampler(
         self,
         device: Device,
-        p_create_info: SamplerCreateInfo,
+        create_info: SamplerCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_sampler: Sampler,
+        mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3467,9 +3461,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_sampler(
             device,
-            Ptr(to=p_create_info).bitcast[SamplerCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerCreateInfo](),
             p_allocator,
-            Ptr(to=p_sampler).bitcast[Sampler](),
+            Ptr(to=sampler).bitcast[Sampler](),
         )
 
     fn destroy_sampler(
@@ -3487,9 +3481,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_descriptor_set_layout(
         self,
         device: Device,
-        p_create_info: DescriptorSetLayoutCreateInfo,
+        create_info: DescriptorSetLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_set_layout: DescriptorSetLayout,
+        mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3497,9 +3491,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_descriptor_set_layout(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
             p_allocator,
-            Ptr(to=p_set_layout).bitcast[DescriptorSetLayout](),
+            Ptr(to=set_layout).bitcast[DescriptorSetLayout](),
         )
 
     fn destroy_descriptor_set_layout(
@@ -3517,9 +3511,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_descriptor_pool(
         self,
         device: Device,
-        p_create_info: DescriptorPoolCreateInfo,
+        create_info: DescriptorPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_descriptor_pool: DescriptorPool,
+        mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3527,9 +3521,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_descriptor_pool(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_descriptor_pool).bitcast[DescriptorPool](),
+            Ptr(to=descriptor_pool).bitcast[DescriptorPool](),
         )
 
     fn destroy_descriptor_pool(
@@ -3556,7 +3550,7 @@ struct DeviceFunctionsV1_1(Copyable):
     fn allocate_descriptor_sets(
         self,
         device: Device,
-        p_allocate_info: DescriptorSetAllocateInfo,
+        allocate_info: DescriptorSetAllocateInfo,
         p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -3564,7 +3558,7 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
         return self._v1_0.allocate_descriptor_sets(
-            device, Ptr(to=p_allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
+            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
         )
 
     fn free_descriptor_sets(
@@ -3601,9 +3595,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_framebuffer(
         self,
         device: Device,
-        p_create_info: FramebufferCreateInfo,
+        create_info: FramebufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_framebuffer: Framebuffer,
+        mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3611,9 +3605,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_framebuffer(
             device,
-            Ptr(to=p_create_info).bitcast[FramebufferCreateInfo](),
+            Ptr(to=create_info).bitcast[FramebufferCreateInfo](),
             p_allocator,
-            Ptr(to=p_framebuffer).bitcast[Framebuffer](),
+            Ptr(to=framebuffer).bitcast[Framebuffer](),
         )
 
     fn destroy_framebuffer(
@@ -3631,9 +3625,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_render_pass(
         self,
         device: Device,
-        p_create_info: RenderPassCreateInfo,
+        create_info: RenderPassCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_render_pass: RenderPass,
+        mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3641,9 +3635,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_render_pass(
             device,
-            Ptr(to=p_create_info).bitcast[RenderPassCreateInfo](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo](),
             p_allocator,
-            Ptr(to=p_render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass](),
         )
 
     fn destroy_render_pass(
@@ -3659,22 +3653,22 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
     fn get_render_area_granularity(
-        self, device: Device, render_pass: RenderPass, mut p_granularity: Extent2D
+        self, device: Device, render_pass: RenderPass, mut granularity: Extent2D
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(
-            device, render_pass, Ptr(to=p_granularity).bitcast[Extent2D]()
+            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()
         )
 
     fn create_command_pool(
         self,
         device: Device,
-        p_create_info: CommandPoolCreateInfo,
+        create_info: CommandPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_command_pool: CommandPool,
+        mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3682,9 +3676,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.create_command_pool(
             device,
-            Ptr(to=p_create_info).bitcast[CommandPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[CommandPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_command_pool).bitcast[CommandPool](),
+            Ptr(to=command_pool).bitcast[CommandPool](),
         )
 
     fn destroy_command_pool(
@@ -3711,7 +3705,7 @@ struct DeviceFunctionsV1_1(Copyable):
     fn allocate_command_buffers(
         self,
         device: Device,
-        p_allocate_info: CommandBufferAllocateInfo,
+        allocate_info: CommandBufferAllocateInfo,
         p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -3719,7 +3713,7 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
         return self._v1_0.allocate_command_buffers(
-            device, Ptr(to=p_allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
+            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
         )
 
     fn free_command_buffers(
@@ -3738,14 +3732,14 @@ struct DeviceFunctionsV1_1(Copyable):
         )
 
     fn begin_command_buffer(
-        self, command_buffer: CommandBuffer, p_begin_info: CommandBufferBeginInfo
+        self, command_buffer: CommandBuffer, begin_info: CommandBufferBeginInfo
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(
-            command_buffer, Ptr(to=p_begin_info).bitcast[CommandBufferBeginInfo]()
+            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()
         )
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
@@ -4138,7 +4132,7 @@ struct DeviceFunctionsV1_1(Copyable):
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
-        p_color: ClearColorValue,
+        color: ClearColorValue,
         range_count: UInt32,
         p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
     ):
@@ -4150,7 +4144,7 @@ struct DeviceFunctionsV1_1(Copyable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=p_color).bitcast[ClearColorValue](),
+            Ptr(to=color).bitcast[ClearColorValue](),
             range_count,
             p_ranges,
         )
@@ -4160,7 +4154,7 @@ struct DeviceFunctionsV1_1(Copyable):
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
-        p_depth_stencil: ClearDepthStencilValue,
+        depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
         p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
     ):
@@ -4172,7 +4166,7 @@ struct DeviceFunctionsV1_1(Copyable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=p_depth_stencil).bitcast[ClearDepthStencilValue](),
+            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue](),
             range_count,
             p_ranges,
         )
@@ -4380,7 +4374,7 @@ struct DeviceFunctionsV1_1(Copyable):
     fn cmd_begin_render_pass(
         self,
         command_buffer: CommandBuffer,
-        p_render_pass_begin: RenderPassBeginInfo,
+        render_pass_begin: RenderPassBeginInfo,
         contents: SubpassContents,
     ):
         """See official vulkan docs for details.
@@ -4388,7 +4382,7 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
         return self._v1_0.cmd_begin_render_pass(
-            command_buffer, Ptr(to=p_render_pass_begin).bitcast[RenderPassBeginInfo](), contents
+            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](), contents
         )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
@@ -4447,7 +4441,7 @@ struct DeviceFunctionsV1_1(Copyable):
         heap_index: UInt32,
         local_device_index: UInt32,
         remote_device_index: UInt32,
-        mut p_peer_memory_features: PeerMemoryFeatureFlags,
+        mut peer_memory_features: PeerMemoryFeatureFlags,
     ):
         """See official vulkan docs for details.
         
@@ -4458,7 +4452,7 @@ struct DeviceFunctionsV1_1(Copyable):
             heap_index,
             local_device_index,
             remote_device_index,
-            Ptr(to=p_peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
+            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
         )
 
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
@@ -4495,8 +4489,8 @@ struct DeviceFunctionsV1_1(Copyable):
     fn get_image_memory_requirements_2(
         self,
         device: Device,
-        p_info: ImageMemoryRequirementsInfo2,
-        mut p_memory_requirements: MemoryRequirements2,
+        info: ImageMemoryRequirementsInfo2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -4504,15 +4498,15 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_1.get_image_memory_requirements_2(
             device,
-            Ptr(to=p_info).bitcast[ImageMemoryRequirementsInfo2](),
-            Ptr(to=p_memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_buffer_memory_requirements_2(
         self,
         device: Device,
-        p_info: BufferMemoryRequirementsInfo2,
-        mut p_memory_requirements: MemoryRequirements2,
+        info: BufferMemoryRequirementsInfo2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -4520,15 +4514,15 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_1.get_buffer_memory_requirements_2(
             device,
-            Ptr(to=p_info).bitcast[BufferMemoryRequirementsInfo2](),
-            Ptr(to=p_memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_image_sparse_memory_requirements_2(
         self,
         device: Device,
-        p_info: ImageSparseMemoryRequirementsInfo2,
-        mut p_sparse_memory_requirement_count: UInt32,
+        info: ImageSparseMemoryRequirementsInfo2,
+        mut sparse_memory_requirement_count: UInt32,
         p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -4537,8 +4531,8 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
             device,
-            Ptr(to=p_info).bitcast[ImageSparseMemoryRequirementsInfo2](),
-            Ptr(to=p_sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
 
@@ -4551,23 +4545,21 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_1.trim_command_pool(device, command_pool, flags)
 
-    fn get_device_queue_2(
-        self, device: Device, p_queue_info: DeviceQueueInfo2, mut p_queue: Queue
-    ):
+    fn get_device_queue_2(self, device: Device, queue_info: DeviceQueueInfo2, mut queue: Queue):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
         """
         return self._v1_1.get_device_queue_2(
-            device, Ptr(to=p_queue_info).bitcast[DeviceQueueInfo2](), Ptr(to=p_queue).bitcast[Queue]()
+            device, Ptr(to=queue_info).bitcast[DeviceQueueInfo2](), Ptr(to=queue).bitcast[Queue]()
         )
 
     fn create_sampler_ycbcr_conversion(
         self,
         device: Device,
-        p_create_info: SamplerYcbcrConversionCreateInfo,
+        create_info: SamplerYcbcrConversionCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_ycbcr_conversion: SamplerYcbcrConversion,
+        mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4575,9 +4567,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
             device,
-            Ptr(to=p_create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
             p_allocator,
-            Ptr(to=p_ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
+            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
         )
 
     fn destroy_sampler_ycbcr_conversion(
@@ -4595,9 +4587,9 @@ struct DeviceFunctionsV1_1(Copyable):
     fn create_descriptor_update_template(
         self,
         device: Device,
-        p_create_info: DescriptorUpdateTemplateCreateInfo,
+        create_info: DescriptorUpdateTemplateCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_descriptor_update_template: DescriptorUpdateTemplate,
+        mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4605,9 +4597,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_1.create_descriptor_update_template(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
             p_allocator,
-            Ptr(to=p_descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
+            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
         )
 
     fn destroy_descriptor_update_template(
@@ -4642,8 +4634,8 @@ struct DeviceFunctionsV1_1(Copyable):
     fn get_descriptor_set_layout_support(
         self,
         device: Device,
-        p_create_info: DescriptorSetLayoutCreateInfo,
-        mut p_support: DescriptorSetLayoutSupport,
+        create_info: DescriptorSetLayoutCreateInfo,
+        mut support: DescriptorSetLayoutSupport,
     ):
         """See official vulkan docs for details.
         
@@ -4651,8 +4643,8 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_1.get_descriptor_set_layout_support(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorSetLayoutCreateInfo](),
-            Ptr(to=p_support).bitcast[DescriptorSetLayoutSupport](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=support).bitcast[DescriptorSetLayoutSupport](),
         )
 
 
@@ -4685,14 +4677,14 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.destroy_device(device, p_allocator)
 
     fn get_device_queue(
-        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut p_queue: Queue
+        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut queue: Queue
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(
-            device, queue_family_index, queue_index, Ptr(to=p_queue).bitcast[Queue]()
+            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()
         )
 
     fn queue_submit(
@@ -4725,9 +4717,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn allocate_memory(
         self,
         device: Device,
-        p_allocate_info: MemoryAllocateInfo,
+        allocate_info: MemoryAllocateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_memory: DeviceMemory,
+        mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4735,9 +4727,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.allocate_memory(
             device,
-            Ptr(to=p_allocate_info).bitcast[MemoryAllocateInfo](),
+            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo](),
             p_allocator,
-            Ptr(to=p_memory).bitcast[DeviceMemory](),
+            Ptr(to=memory).bitcast[DeviceMemory](),
         )
 
     fn free_memory(
@@ -4759,14 +4751,14 @@ struct DeviceFunctionsV1_2(Copyable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        mut pp_data: Ptr[NoneType, MutAnyOrigin],
+        mut p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
         return self._v1_0.map_memory(
-            device, memory, offset, size, flags, Ptr(to=pp_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()
+            device, memory, offset, size, flags, Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()
         )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
@@ -4801,14 +4793,14 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
 
     fn get_device_memory_commitment(
-        self, device: Device, memory: DeviceMemory, mut p_committed_memory_in_bytes: DeviceSize
+        self, device: Device, memory: DeviceMemory, mut committed_memory_in_bytes: DeviceSize
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
-            device, memory, Ptr(to=p_committed_memory_in_bytes).bitcast[DeviceSize]()
+            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()
         )
 
     fn bind_buffer_memory(
@@ -4830,32 +4822,32 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
     fn get_buffer_memory_requirements(
-        self, device: Device, buffer: Buffer, mut p_memory_requirements: MemoryRequirements
+        self, device: Device, buffer: Buffer, mut memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
-            device, buffer, Ptr(to=p_memory_requirements).bitcast[MemoryRequirements]()
+            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
         )
 
     fn get_image_memory_requirements(
-        self, device: Device, image: Image, mut p_memory_requirements: MemoryRequirements
+        self, device: Device, image: Image, mut memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(
-            device, image, Ptr(to=p_memory_requirements).bitcast[MemoryRequirements]()
+            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
         )
 
     fn get_image_sparse_memory_requirements(
         self,
         device: Device,
         image: Image,
-        mut p_sparse_memory_requirement_count: UInt32,
+        mut sparse_memory_requirement_count: UInt32,
         p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -4865,7 +4857,7 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.get_image_sparse_memory_requirements(
             device,
             image,
-            Ptr(to=p_sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
 
@@ -4885,9 +4877,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_fence(
         self,
         device: Device,
-        p_create_info: FenceCreateInfo,
+        create_info: FenceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_fence: Fence,
+        mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4895,9 +4887,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_fence(
             device,
-            Ptr(to=p_create_info).bitcast[FenceCreateInfo](),
+            Ptr(to=create_info).bitcast[FenceCreateInfo](),
             p_allocator,
-            Ptr(to=p_fence).bitcast[Fence](),
+            Ptr(to=fence).bitcast[Fence](),
         )
 
     fn destroy_fence(
@@ -4942,9 +4934,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_semaphore(
         self,
         device: Device,
-        p_create_info: SemaphoreCreateInfo,
+        create_info: SemaphoreCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_semaphore: Semaphore,
+        mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4952,9 +4944,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_semaphore(
             device,
-            Ptr(to=p_create_info).bitcast[SemaphoreCreateInfo](),
+            Ptr(to=create_info).bitcast[SemaphoreCreateInfo](),
             p_allocator,
-            Ptr(to=p_semaphore).bitcast[Semaphore](),
+            Ptr(to=semaphore).bitcast[Semaphore](),
         )
 
     fn destroy_semaphore(
@@ -4972,9 +4964,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_event(
         self,
         device: Device,
-        p_create_info: EventCreateInfo,
+        create_info: EventCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_event: Event,
+        mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4982,9 +4974,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_event(
             device,
-            Ptr(to=p_create_info).bitcast[EventCreateInfo](),
+            Ptr(to=create_info).bitcast[EventCreateInfo](),
             p_allocator,
-            Ptr(to=p_event).bitcast[Event](),
+            Ptr(to=event).bitcast[Event](),
         )
 
     fn destroy_event(
@@ -5020,9 +5012,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_query_pool(
         self,
         device: Device,
-        p_create_info: QueryPoolCreateInfo,
+        create_info: QueryPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_query_pool: QueryPool,
+        mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5030,9 +5022,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_query_pool(
             device,
-            Ptr(to=p_create_info).bitcast[QueryPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[QueryPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_query_pool).bitcast[QueryPool](),
+            Ptr(to=query_pool).bitcast[QueryPool](),
         )
 
     fn destroy_query_pool(
@@ -5069,9 +5061,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_buffer(
         self,
         device: Device,
-        p_create_info: BufferCreateInfo,
+        create_info: BufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_buffer: Buffer,
+        mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5079,9 +5071,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_buffer(
             device,
-            Ptr(to=p_create_info).bitcast[BufferCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferCreateInfo](),
             p_allocator,
-            Ptr(to=p_buffer).bitcast[Buffer](),
+            Ptr(to=buffer).bitcast[Buffer](),
         )
 
     fn destroy_buffer(
@@ -5096,9 +5088,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_buffer_view(
         self,
         device: Device,
-        p_create_info: BufferViewCreateInfo,
+        create_info: BufferViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_view: BufferView,
+        mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5106,9 +5098,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_buffer_view(
             device,
-            Ptr(to=p_create_info).bitcast[BufferViewCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferViewCreateInfo](),
             p_allocator,
-            Ptr(to=p_view).bitcast[BufferView](),
+            Ptr(to=view).bitcast[BufferView](),
         )
 
     fn destroy_buffer_view(
@@ -5126,9 +5118,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_image(
         self,
         device: Device,
-        p_create_info: ImageCreateInfo,
+        create_info: ImageCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_image: Image,
+        mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5136,9 +5128,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_image(
             device,
-            Ptr(to=p_create_info).bitcast[ImageCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageCreateInfo](),
             p_allocator,
-            Ptr(to=p_image).bitcast[Image](),
+            Ptr(to=image).bitcast[Image](),
         )
 
     fn destroy_image(
@@ -5154,8 +5146,8 @@ struct DeviceFunctionsV1_2(Copyable):
         self,
         device: Device,
         image: Image,
-        p_subresource: ImageSubresource,
-        mut p_layout: SubresourceLayout,
+        subresource: ImageSubresource,
+        mut layout: SubresourceLayout,
     ):
         """See official vulkan docs for details.
         
@@ -5164,16 +5156,16 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.get_image_subresource_layout(
             device,
             image,
-            Ptr(to=p_subresource).bitcast[ImageSubresource](),
-            Ptr(to=p_layout).bitcast[SubresourceLayout](),
+            Ptr(to=subresource).bitcast[ImageSubresource](),
+            Ptr(to=layout).bitcast[SubresourceLayout](),
         )
 
     fn create_image_view(
         self,
         device: Device,
-        p_create_info: ImageViewCreateInfo,
+        create_info: ImageViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_view: ImageView,
+        mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5181,9 +5173,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_image_view(
             device,
-            Ptr(to=p_create_info).bitcast[ImageViewCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageViewCreateInfo](),
             p_allocator,
-            Ptr(to=p_view).bitcast[ImageView](),
+            Ptr(to=view).bitcast[ImageView](),
         )
 
     fn destroy_image_view(
@@ -5201,9 +5193,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_shader_module(
         self,
         device: Device,
-        p_create_info: ShaderModuleCreateInfo,
+        create_info: ShaderModuleCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_shader_module: ShaderModule,
+        mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5211,9 +5203,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_shader_module(
             device,
-            Ptr(to=p_create_info).bitcast[ShaderModuleCreateInfo](),
+            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo](),
             p_allocator,
-            Ptr(to=p_shader_module).bitcast[ShaderModule](),
+            Ptr(to=shader_module).bitcast[ShaderModule](),
         )
 
     fn destroy_shader_module(
@@ -5231,9 +5223,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_pipeline_cache(
         self,
         device: Device,
-        p_create_info: PipelineCacheCreateInfo,
+        create_info: PipelineCacheCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_pipeline_cache: PipelineCache,
+        mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5241,9 +5233,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_pipeline_cache(
             device,
-            Ptr(to=p_create_info).bitcast[PipelineCacheCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo](),
             p_allocator,
-            Ptr(to=p_pipeline_cache).bitcast[PipelineCache](),
+            Ptr(to=pipeline_cache).bitcast[PipelineCache](),
         )
 
     fn destroy_pipeline_cache(
@@ -5262,7 +5254,7 @@ struct DeviceFunctionsV1_2(Copyable):
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        mut p_data_size: UInt,
+        mut data_size: UInt,
         p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -5270,7 +5262,7 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         return self._v1_0.get_pipeline_cache_data(
-            device, pipeline_cache, Ptr(to=p_data_size).bitcast[UInt](), p_data
+            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
         )
 
     fn merge_pipeline_caches(
@@ -5335,9 +5327,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_pipeline_layout(
         self,
         device: Device,
-        p_create_info: PipelineLayoutCreateInfo,
+        create_info: PipelineLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_pipeline_layout: PipelineLayout,
+        mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5345,9 +5337,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_pipeline_layout(
             device,
-            Ptr(to=p_create_info).bitcast[PipelineLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo](),
             p_allocator,
-            Ptr(to=p_pipeline_layout).bitcast[PipelineLayout](),
+            Ptr(to=pipeline_layout).bitcast[PipelineLayout](),
         )
 
     fn destroy_pipeline_layout(
@@ -5365,9 +5357,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_sampler(
         self,
         device: Device,
-        p_create_info: SamplerCreateInfo,
+        create_info: SamplerCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_sampler: Sampler,
+        mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5375,9 +5367,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_sampler(
             device,
-            Ptr(to=p_create_info).bitcast[SamplerCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerCreateInfo](),
             p_allocator,
-            Ptr(to=p_sampler).bitcast[Sampler](),
+            Ptr(to=sampler).bitcast[Sampler](),
         )
 
     fn destroy_sampler(
@@ -5395,9 +5387,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_descriptor_set_layout(
         self,
         device: Device,
-        p_create_info: DescriptorSetLayoutCreateInfo,
+        create_info: DescriptorSetLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_set_layout: DescriptorSetLayout,
+        mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5405,9 +5397,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_descriptor_set_layout(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
             p_allocator,
-            Ptr(to=p_set_layout).bitcast[DescriptorSetLayout](),
+            Ptr(to=set_layout).bitcast[DescriptorSetLayout](),
         )
 
     fn destroy_descriptor_set_layout(
@@ -5425,9 +5417,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_descriptor_pool(
         self,
         device: Device,
-        p_create_info: DescriptorPoolCreateInfo,
+        create_info: DescriptorPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_descriptor_pool: DescriptorPool,
+        mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5435,9 +5427,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_descriptor_pool(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_descriptor_pool).bitcast[DescriptorPool](),
+            Ptr(to=descriptor_pool).bitcast[DescriptorPool](),
         )
 
     fn destroy_descriptor_pool(
@@ -5464,7 +5456,7 @@ struct DeviceFunctionsV1_2(Copyable):
     fn allocate_descriptor_sets(
         self,
         device: Device,
-        p_allocate_info: DescriptorSetAllocateInfo,
+        allocate_info: DescriptorSetAllocateInfo,
         p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -5472,7 +5464,7 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
         return self._v1_0.allocate_descriptor_sets(
-            device, Ptr(to=p_allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
+            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
         )
 
     fn free_descriptor_sets(
@@ -5509,9 +5501,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_framebuffer(
         self,
         device: Device,
-        p_create_info: FramebufferCreateInfo,
+        create_info: FramebufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_framebuffer: Framebuffer,
+        mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5519,9 +5511,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_framebuffer(
             device,
-            Ptr(to=p_create_info).bitcast[FramebufferCreateInfo](),
+            Ptr(to=create_info).bitcast[FramebufferCreateInfo](),
             p_allocator,
-            Ptr(to=p_framebuffer).bitcast[Framebuffer](),
+            Ptr(to=framebuffer).bitcast[Framebuffer](),
         )
 
     fn destroy_framebuffer(
@@ -5539,9 +5531,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_render_pass(
         self,
         device: Device,
-        p_create_info: RenderPassCreateInfo,
+        create_info: RenderPassCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_render_pass: RenderPass,
+        mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5549,9 +5541,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_render_pass(
             device,
-            Ptr(to=p_create_info).bitcast[RenderPassCreateInfo](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo](),
             p_allocator,
-            Ptr(to=p_render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass](),
         )
 
     fn destroy_render_pass(
@@ -5567,22 +5559,22 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
     fn get_render_area_granularity(
-        self, device: Device, render_pass: RenderPass, mut p_granularity: Extent2D
+        self, device: Device, render_pass: RenderPass, mut granularity: Extent2D
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(
-            device, render_pass, Ptr(to=p_granularity).bitcast[Extent2D]()
+            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()
         )
 
     fn create_command_pool(
         self,
         device: Device,
-        p_create_info: CommandPoolCreateInfo,
+        create_info: CommandPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_command_pool: CommandPool,
+        mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5590,9 +5582,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.create_command_pool(
             device,
-            Ptr(to=p_create_info).bitcast[CommandPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[CommandPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_command_pool).bitcast[CommandPool](),
+            Ptr(to=command_pool).bitcast[CommandPool](),
         )
 
     fn destroy_command_pool(
@@ -5619,7 +5611,7 @@ struct DeviceFunctionsV1_2(Copyable):
     fn allocate_command_buffers(
         self,
         device: Device,
-        p_allocate_info: CommandBufferAllocateInfo,
+        allocate_info: CommandBufferAllocateInfo,
         p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -5627,7 +5619,7 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
         return self._v1_0.allocate_command_buffers(
-            device, Ptr(to=p_allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
+            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
         )
 
     fn free_command_buffers(
@@ -5646,14 +5638,14 @@ struct DeviceFunctionsV1_2(Copyable):
         )
 
     fn begin_command_buffer(
-        self, command_buffer: CommandBuffer, p_begin_info: CommandBufferBeginInfo
+        self, command_buffer: CommandBuffer, begin_info: CommandBufferBeginInfo
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(
-            command_buffer, Ptr(to=p_begin_info).bitcast[CommandBufferBeginInfo]()
+            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()
         )
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
@@ -6046,7 +6038,7 @@ struct DeviceFunctionsV1_2(Copyable):
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
-        p_color: ClearColorValue,
+        color: ClearColorValue,
         range_count: UInt32,
         p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
     ):
@@ -6058,7 +6050,7 @@ struct DeviceFunctionsV1_2(Copyable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=p_color).bitcast[ClearColorValue](),
+            Ptr(to=color).bitcast[ClearColorValue](),
             range_count,
             p_ranges,
         )
@@ -6068,7 +6060,7 @@ struct DeviceFunctionsV1_2(Copyable):
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
-        p_depth_stencil: ClearDepthStencilValue,
+        depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
         p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
     ):
@@ -6080,7 +6072,7 @@ struct DeviceFunctionsV1_2(Copyable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=p_depth_stencil).bitcast[ClearDepthStencilValue](),
+            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue](),
             range_count,
             p_ranges,
         )
@@ -6288,7 +6280,7 @@ struct DeviceFunctionsV1_2(Copyable):
     fn cmd_begin_render_pass(
         self,
         command_buffer: CommandBuffer,
-        p_render_pass_begin: RenderPassBeginInfo,
+        render_pass_begin: RenderPassBeginInfo,
         contents: SubpassContents,
     ):
         """See official vulkan docs for details.
@@ -6296,7 +6288,7 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
         return self._v1_0.cmd_begin_render_pass(
-            command_buffer, Ptr(to=p_render_pass_begin).bitcast[RenderPassBeginInfo](), contents
+            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](), contents
         )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
@@ -6355,7 +6347,7 @@ struct DeviceFunctionsV1_2(Copyable):
         heap_index: UInt32,
         local_device_index: UInt32,
         remote_device_index: UInt32,
-        mut p_peer_memory_features: PeerMemoryFeatureFlags,
+        mut peer_memory_features: PeerMemoryFeatureFlags,
     ):
         """See official vulkan docs for details.
         
@@ -6366,7 +6358,7 @@ struct DeviceFunctionsV1_2(Copyable):
             heap_index,
             local_device_index,
             remote_device_index,
-            Ptr(to=p_peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
+            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
         )
 
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
@@ -6403,8 +6395,8 @@ struct DeviceFunctionsV1_2(Copyable):
     fn get_image_memory_requirements_2(
         self,
         device: Device,
-        p_info: ImageMemoryRequirementsInfo2,
-        mut p_memory_requirements: MemoryRequirements2,
+        info: ImageMemoryRequirementsInfo2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -6412,15 +6404,15 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_1.get_image_memory_requirements_2(
             device,
-            Ptr(to=p_info).bitcast[ImageMemoryRequirementsInfo2](),
-            Ptr(to=p_memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_buffer_memory_requirements_2(
         self,
         device: Device,
-        p_info: BufferMemoryRequirementsInfo2,
-        mut p_memory_requirements: MemoryRequirements2,
+        info: BufferMemoryRequirementsInfo2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -6428,15 +6420,15 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_1.get_buffer_memory_requirements_2(
             device,
-            Ptr(to=p_info).bitcast[BufferMemoryRequirementsInfo2](),
-            Ptr(to=p_memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_image_sparse_memory_requirements_2(
         self,
         device: Device,
-        p_info: ImageSparseMemoryRequirementsInfo2,
-        mut p_sparse_memory_requirement_count: UInt32,
+        info: ImageSparseMemoryRequirementsInfo2,
+        mut sparse_memory_requirement_count: UInt32,
         p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -6445,8 +6437,8 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
             device,
-            Ptr(to=p_info).bitcast[ImageSparseMemoryRequirementsInfo2](),
-            Ptr(to=p_sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
 
@@ -6459,23 +6451,21 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_1.trim_command_pool(device, command_pool, flags)
 
-    fn get_device_queue_2(
-        self, device: Device, p_queue_info: DeviceQueueInfo2, mut p_queue: Queue
-    ):
+    fn get_device_queue_2(self, device: Device, queue_info: DeviceQueueInfo2, mut queue: Queue):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
         """
         return self._v1_1.get_device_queue_2(
-            device, Ptr(to=p_queue_info).bitcast[DeviceQueueInfo2](), Ptr(to=p_queue).bitcast[Queue]()
+            device, Ptr(to=queue_info).bitcast[DeviceQueueInfo2](), Ptr(to=queue).bitcast[Queue]()
         )
 
     fn create_sampler_ycbcr_conversion(
         self,
         device: Device,
-        p_create_info: SamplerYcbcrConversionCreateInfo,
+        create_info: SamplerYcbcrConversionCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_ycbcr_conversion: SamplerYcbcrConversion,
+        mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -6483,9 +6473,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
             device,
-            Ptr(to=p_create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
             p_allocator,
-            Ptr(to=p_ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
+            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
         )
 
     fn destroy_sampler_ycbcr_conversion(
@@ -6503,9 +6493,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_descriptor_update_template(
         self,
         device: Device,
-        p_create_info: DescriptorUpdateTemplateCreateInfo,
+        create_info: DescriptorUpdateTemplateCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_descriptor_update_template: DescriptorUpdateTemplate,
+        mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -6513,9 +6503,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_1.create_descriptor_update_template(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
             p_allocator,
-            Ptr(to=p_descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
+            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
         )
 
     fn destroy_descriptor_update_template(
@@ -6550,8 +6540,8 @@ struct DeviceFunctionsV1_2(Copyable):
     fn get_descriptor_set_layout_support(
         self,
         device: Device,
-        p_create_info: DescriptorSetLayoutCreateInfo,
-        mut p_support: DescriptorSetLayoutSupport,
+        create_info: DescriptorSetLayoutCreateInfo,
+        mut support: DescriptorSetLayoutSupport,
     ):
         """See official vulkan docs for details.
         
@@ -6559,8 +6549,8 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_1.get_descriptor_set_layout_support(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorSetLayoutCreateInfo](),
-            Ptr(to=p_support).bitcast[DescriptorSetLayoutSupport](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=support).bitcast[DescriptorSetLayoutSupport](),
         )
 
     fn cmd_draw_indirect_count(
@@ -6602,9 +6592,9 @@ struct DeviceFunctionsV1_2(Copyable):
     fn create_render_pass_2(
         self,
         device: Device,
-        p_create_info: RenderPassCreateInfo2,
+        create_info: RenderPassCreateInfo2,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_render_pass: RenderPass,
+        mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -6612,16 +6602,16 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_2.create_render_pass_2(
             device,
-            Ptr(to=p_create_info).bitcast[RenderPassCreateInfo2](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo2](),
             p_allocator,
-            Ptr(to=p_render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass](),
         )
 
     fn cmd_begin_render_pass_2(
         self,
         command_buffer: CommandBuffer,
-        p_render_pass_begin: RenderPassBeginInfo,
-        p_subpass_begin_info: SubpassBeginInfo,
+        render_pass_begin: RenderPassBeginInfo,
+        subpass_begin_info: SubpassBeginInfo,
     ):
         """See official vulkan docs for details.
         
@@ -6629,15 +6619,15 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_2.cmd_begin_render_pass_2(
             command_buffer,
-            Ptr(to=p_render_pass_begin).bitcast[RenderPassBeginInfo](),
-            Ptr(to=p_subpass_begin_info).bitcast[SubpassBeginInfo](),
+            Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](),
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
         )
 
     fn cmd_next_subpass_2(
         self,
         command_buffer: CommandBuffer,
-        p_subpass_begin_info: SubpassBeginInfo,
-        p_subpass_end_info: SubpassEndInfo,
+        subpass_begin_info: SubpassBeginInfo,
+        subpass_end_info: SubpassEndInfo,
     ):
         """See official vulkan docs for details.
         
@@ -6645,19 +6635,19 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_2.cmd_next_subpass_2(
             command_buffer,
-            Ptr(to=p_subpass_begin_info).bitcast[SubpassBeginInfo](),
-            Ptr(to=p_subpass_end_info).bitcast[SubpassEndInfo](),
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
+            Ptr(to=subpass_end_info).bitcast[SubpassEndInfo](),
         )
 
     fn cmd_end_render_pass_2(
-        self, command_buffer: CommandBuffer, p_subpass_end_info: SubpassEndInfo
+        self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass2.html
         """
         return self._v1_2.cmd_end_render_pass_2(
-            command_buffer, Ptr(to=p_subpass_end_info).bitcast[SubpassEndInfo]()
+            command_buffer, Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()
         )
 
     fn reset_query_pool(
@@ -6670,61 +6660,59 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_2.reset_query_pool(device, query_pool, first_query, query_count)
 
     fn get_semaphore_counter_value(
-        self, device: Device, semaphore: Semaphore, mut p_value: UInt64
+        self, device: Device, semaphore: Semaphore, mut value: UInt64
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreCounterValue.html
         """
-        return self._v1_2.get_semaphore_counter_value(device, semaphore, Ptr(to=p_value).bitcast[UInt64]())
+        return self._v1_2.get_semaphore_counter_value(device, semaphore, Ptr(to=value).bitcast[UInt64]())
 
     fn wait_semaphores(
-        self, device: Device, p_wait_info: SemaphoreWaitInfo, timeout: UInt64
+        self, device: Device, wait_info: SemaphoreWaitInfo, timeout: UInt64
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitSemaphores.html
         """
-        return self._v1_2.wait_semaphores(device, Ptr(to=p_wait_info).bitcast[SemaphoreWaitInfo](), timeout)
+        return self._v1_2.wait_semaphores(device, Ptr(to=wait_info).bitcast[SemaphoreWaitInfo](), timeout)
 
-    fn signal_semaphore(self, device: Device, p_signal_info: SemaphoreSignalInfo) -> Result:
+    fn signal_semaphore(self, device: Device, signal_info: SemaphoreSignalInfo) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSignalSemaphore.html
         """
-        return self._v1_2.signal_semaphore(device, Ptr(to=p_signal_info).bitcast[SemaphoreSignalInfo]())
+        return self._v1_2.signal_semaphore(device, Ptr(to=signal_info).bitcast[SemaphoreSignalInfo]())
 
     fn get_buffer_device_address(
-        self, device: Device, p_info: BufferDeviceAddressInfo
+        self, device: Device, info: BufferDeviceAddressInfo
     ) -> DeviceAddress:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
-        return self._v1_2.get_buffer_device_address(
-            device, Ptr(to=p_info).bitcast[BufferDeviceAddressInfo]()
-        )
+        return self._v1_2.get_buffer_device_address(device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]())
 
     fn get_buffer_opaque_capture_address(
-        self, device: Device, p_info: BufferDeviceAddressInfo
+        self, device: Device, info: BufferDeviceAddressInfo
     ) -> UInt64:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureAddress.html
         """
         return self._v1_2.get_buffer_opaque_capture_address(
-            device, Ptr(to=p_info).bitcast[BufferDeviceAddressInfo]()
+            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
         )
 
     fn get_device_memory_opaque_capture_address(
-        self, device: Device, p_info: DeviceMemoryOpaqueCaptureAddressInfo
+        self, device: Device, info: DeviceMemoryOpaqueCaptureAddressInfo
     ) -> UInt64:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryOpaqueCaptureAddress.html
         """
         return self._v1_2.get_device_memory_opaque_capture_address(
-            device, Ptr(to=p_info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()
+            device, Ptr(to=info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()
         )
 
 
@@ -6759,14 +6747,14 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.destroy_device(device, p_allocator)
 
     fn get_device_queue(
-        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut p_queue: Queue
+        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut queue: Queue
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(
-            device, queue_family_index, queue_index, Ptr(to=p_queue).bitcast[Queue]()
+            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()
         )
 
     fn queue_submit(
@@ -6799,9 +6787,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn allocate_memory(
         self,
         device: Device,
-        p_allocate_info: MemoryAllocateInfo,
+        allocate_info: MemoryAllocateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_memory: DeviceMemory,
+        mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -6809,9 +6797,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.allocate_memory(
             device,
-            Ptr(to=p_allocate_info).bitcast[MemoryAllocateInfo](),
+            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo](),
             p_allocator,
-            Ptr(to=p_memory).bitcast[DeviceMemory](),
+            Ptr(to=memory).bitcast[DeviceMemory](),
         )
 
     fn free_memory(
@@ -6833,14 +6821,14 @@ struct DeviceFunctionsV1_3(Copyable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        mut pp_data: Ptr[NoneType, MutAnyOrigin],
+        mut p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
         return self._v1_0.map_memory(
-            device, memory, offset, size, flags, Ptr(to=pp_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()
+            device, memory, offset, size, flags, Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()
         )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
@@ -6875,14 +6863,14 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
 
     fn get_device_memory_commitment(
-        self, device: Device, memory: DeviceMemory, mut p_committed_memory_in_bytes: DeviceSize
+        self, device: Device, memory: DeviceMemory, mut committed_memory_in_bytes: DeviceSize
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
-            device, memory, Ptr(to=p_committed_memory_in_bytes).bitcast[DeviceSize]()
+            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()
         )
 
     fn bind_buffer_memory(
@@ -6904,32 +6892,32 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
     fn get_buffer_memory_requirements(
-        self, device: Device, buffer: Buffer, mut p_memory_requirements: MemoryRequirements
+        self, device: Device, buffer: Buffer, mut memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
-            device, buffer, Ptr(to=p_memory_requirements).bitcast[MemoryRequirements]()
+            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
         )
 
     fn get_image_memory_requirements(
-        self, device: Device, image: Image, mut p_memory_requirements: MemoryRequirements
+        self, device: Device, image: Image, mut memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(
-            device, image, Ptr(to=p_memory_requirements).bitcast[MemoryRequirements]()
+            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
         )
 
     fn get_image_sparse_memory_requirements(
         self,
         device: Device,
         image: Image,
-        mut p_sparse_memory_requirement_count: UInt32,
+        mut sparse_memory_requirement_count: UInt32,
         p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -6939,7 +6927,7 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.get_image_sparse_memory_requirements(
             device,
             image,
-            Ptr(to=p_sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
 
@@ -6959,9 +6947,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_fence(
         self,
         device: Device,
-        p_create_info: FenceCreateInfo,
+        create_info: FenceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_fence: Fence,
+        mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -6969,9 +6957,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_fence(
             device,
-            Ptr(to=p_create_info).bitcast[FenceCreateInfo](),
+            Ptr(to=create_info).bitcast[FenceCreateInfo](),
             p_allocator,
-            Ptr(to=p_fence).bitcast[Fence](),
+            Ptr(to=fence).bitcast[Fence](),
         )
 
     fn destroy_fence(
@@ -7016,9 +7004,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_semaphore(
         self,
         device: Device,
-        p_create_info: SemaphoreCreateInfo,
+        create_info: SemaphoreCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_semaphore: Semaphore,
+        mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7026,9 +7014,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_semaphore(
             device,
-            Ptr(to=p_create_info).bitcast[SemaphoreCreateInfo](),
+            Ptr(to=create_info).bitcast[SemaphoreCreateInfo](),
             p_allocator,
-            Ptr(to=p_semaphore).bitcast[Semaphore](),
+            Ptr(to=semaphore).bitcast[Semaphore](),
         )
 
     fn destroy_semaphore(
@@ -7046,9 +7034,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_event(
         self,
         device: Device,
-        p_create_info: EventCreateInfo,
+        create_info: EventCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_event: Event,
+        mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7056,9 +7044,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_event(
             device,
-            Ptr(to=p_create_info).bitcast[EventCreateInfo](),
+            Ptr(to=create_info).bitcast[EventCreateInfo](),
             p_allocator,
-            Ptr(to=p_event).bitcast[Event](),
+            Ptr(to=event).bitcast[Event](),
         )
 
     fn destroy_event(
@@ -7094,9 +7082,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_query_pool(
         self,
         device: Device,
-        p_create_info: QueryPoolCreateInfo,
+        create_info: QueryPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_query_pool: QueryPool,
+        mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7104,9 +7092,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_query_pool(
             device,
-            Ptr(to=p_create_info).bitcast[QueryPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[QueryPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_query_pool).bitcast[QueryPool](),
+            Ptr(to=query_pool).bitcast[QueryPool](),
         )
 
     fn destroy_query_pool(
@@ -7143,9 +7131,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_buffer(
         self,
         device: Device,
-        p_create_info: BufferCreateInfo,
+        create_info: BufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_buffer: Buffer,
+        mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7153,9 +7141,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_buffer(
             device,
-            Ptr(to=p_create_info).bitcast[BufferCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferCreateInfo](),
             p_allocator,
-            Ptr(to=p_buffer).bitcast[Buffer](),
+            Ptr(to=buffer).bitcast[Buffer](),
         )
 
     fn destroy_buffer(
@@ -7170,9 +7158,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_buffer_view(
         self,
         device: Device,
-        p_create_info: BufferViewCreateInfo,
+        create_info: BufferViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_view: BufferView,
+        mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7180,9 +7168,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_buffer_view(
             device,
-            Ptr(to=p_create_info).bitcast[BufferViewCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferViewCreateInfo](),
             p_allocator,
-            Ptr(to=p_view).bitcast[BufferView](),
+            Ptr(to=view).bitcast[BufferView](),
         )
 
     fn destroy_buffer_view(
@@ -7200,9 +7188,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_image(
         self,
         device: Device,
-        p_create_info: ImageCreateInfo,
+        create_info: ImageCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_image: Image,
+        mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7210,9 +7198,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_image(
             device,
-            Ptr(to=p_create_info).bitcast[ImageCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageCreateInfo](),
             p_allocator,
-            Ptr(to=p_image).bitcast[Image](),
+            Ptr(to=image).bitcast[Image](),
         )
 
     fn destroy_image(
@@ -7228,8 +7216,8 @@ struct DeviceFunctionsV1_3(Copyable):
         self,
         device: Device,
         image: Image,
-        p_subresource: ImageSubresource,
-        mut p_layout: SubresourceLayout,
+        subresource: ImageSubresource,
+        mut layout: SubresourceLayout,
     ):
         """See official vulkan docs for details.
         
@@ -7238,16 +7226,16 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.get_image_subresource_layout(
             device,
             image,
-            Ptr(to=p_subresource).bitcast[ImageSubresource](),
-            Ptr(to=p_layout).bitcast[SubresourceLayout](),
+            Ptr(to=subresource).bitcast[ImageSubresource](),
+            Ptr(to=layout).bitcast[SubresourceLayout](),
         )
 
     fn create_image_view(
         self,
         device: Device,
-        p_create_info: ImageViewCreateInfo,
+        create_info: ImageViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_view: ImageView,
+        mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7255,9 +7243,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_image_view(
             device,
-            Ptr(to=p_create_info).bitcast[ImageViewCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageViewCreateInfo](),
             p_allocator,
-            Ptr(to=p_view).bitcast[ImageView](),
+            Ptr(to=view).bitcast[ImageView](),
         )
 
     fn destroy_image_view(
@@ -7275,9 +7263,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_shader_module(
         self,
         device: Device,
-        p_create_info: ShaderModuleCreateInfo,
+        create_info: ShaderModuleCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_shader_module: ShaderModule,
+        mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7285,9 +7273,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_shader_module(
             device,
-            Ptr(to=p_create_info).bitcast[ShaderModuleCreateInfo](),
+            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo](),
             p_allocator,
-            Ptr(to=p_shader_module).bitcast[ShaderModule](),
+            Ptr(to=shader_module).bitcast[ShaderModule](),
         )
 
     fn destroy_shader_module(
@@ -7305,9 +7293,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_pipeline_cache(
         self,
         device: Device,
-        p_create_info: PipelineCacheCreateInfo,
+        create_info: PipelineCacheCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_pipeline_cache: PipelineCache,
+        mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7315,9 +7303,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_pipeline_cache(
             device,
-            Ptr(to=p_create_info).bitcast[PipelineCacheCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo](),
             p_allocator,
-            Ptr(to=p_pipeline_cache).bitcast[PipelineCache](),
+            Ptr(to=pipeline_cache).bitcast[PipelineCache](),
         )
 
     fn destroy_pipeline_cache(
@@ -7336,7 +7324,7 @@ struct DeviceFunctionsV1_3(Copyable):
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        mut p_data_size: UInt,
+        mut data_size: UInt,
         p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -7344,7 +7332,7 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         return self._v1_0.get_pipeline_cache_data(
-            device, pipeline_cache, Ptr(to=p_data_size).bitcast[UInt](), p_data
+            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
         )
 
     fn merge_pipeline_caches(
@@ -7409,9 +7397,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_pipeline_layout(
         self,
         device: Device,
-        p_create_info: PipelineLayoutCreateInfo,
+        create_info: PipelineLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_pipeline_layout: PipelineLayout,
+        mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7419,9 +7407,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_pipeline_layout(
             device,
-            Ptr(to=p_create_info).bitcast[PipelineLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo](),
             p_allocator,
-            Ptr(to=p_pipeline_layout).bitcast[PipelineLayout](),
+            Ptr(to=pipeline_layout).bitcast[PipelineLayout](),
         )
 
     fn destroy_pipeline_layout(
@@ -7439,9 +7427,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_sampler(
         self,
         device: Device,
-        p_create_info: SamplerCreateInfo,
+        create_info: SamplerCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_sampler: Sampler,
+        mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7449,9 +7437,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_sampler(
             device,
-            Ptr(to=p_create_info).bitcast[SamplerCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerCreateInfo](),
             p_allocator,
-            Ptr(to=p_sampler).bitcast[Sampler](),
+            Ptr(to=sampler).bitcast[Sampler](),
         )
 
     fn destroy_sampler(
@@ -7469,9 +7457,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_descriptor_set_layout(
         self,
         device: Device,
-        p_create_info: DescriptorSetLayoutCreateInfo,
+        create_info: DescriptorSetLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_set_layout: DescriptorSetLayout,
+        mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7479,9 +7467,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_descriptor_set_layout(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
             p_allocator,
-            Ptr(to=p_set_layout).bitcast[DescriptorSetLayout](),
+            Ptr(to=set_layout).bitcast[DescriptorSetLayout](),
         )
 
     fn destroy_descriptor_set_layout(
@@ -7499,9 +7487,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_descriptor_pool(
         self,
         device: Device,
-        p_create_info: DescriptorPoolCreateInfo,
+        create_info: DescriptorPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_descriptor_pool: DescriptorPool,
+        mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7509,9 +7497,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_descriptor_pool(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_descriptor_pool).bitcast[DescriptorPool](),
+            Ptr(to=descriptor_pool).bitcast[DescriptorPool](),
         )
 
     fn destroy_descriptor_pool(
@@ -7538,7 +7526,7 @@ struct DeviceFunctionsV1_3(Copyable):
     fn allocate_descriptor_sets(
         self,
         device: Device,
-        p_allocate_info: DescriptorSetAllocateInfo,
+        allocate_info: DescriptorSetAllocateInfo,
         p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -7546,7 +7534,7 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
         return self._v1_0.allocate_descriptor_sets(
-            device, Ptr(to=p_allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
+            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
         )
 
     fn free_descriptor_sets(
@@ -7583,9 +7571,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_framebuffer(
         self,
         device: Device,
-        p_create_info: FramebufferCreateInfo,
+        create_info: FramebufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_framebuffer: Framebuffer,
+        mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7593,9 +7581,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_framebuffer(
             device,
-            Ptr(to=p_create_info).bitcast[FramebufferCreateInfo](),
+            Ptr(to=create_info).bitcast[FramebufferCreateInfo](),
             p_allocator,
-            Ptr(to=p_framebuffer).bitcast[Framebuffer](),
+            Ptr(to=framebuffer).bitcast[Framebuffer](),
         )
 
     fn destroy_framebuffer(
@@ -7613,9 +7601,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_render_pass(
         self,
         device: Device,
-        p_create_info: RenderPassCreateInfo,
+        create_info: RenderPassCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_render_pass: RenderPass,
+        mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7623,9 +7611,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_render_pass(
             device,
-            Ptr(to=p_create_info).bitcast[RenderPassCreateInfo](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo](),
             p_allocator,
-            Ptr(to=p_render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass](),
         )
 
     fn destroy_render_pass(
@@ -7641,22 +7629,22 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
     fn get_render_area_granularity(
-        self, device: Device, render_pass: RenderPass, mut p_granularity: Extent2D
+        self, device: Device, render_pass: RenderPass, mut granularity: Extent2D
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(
-            device, render_pass, Ptr(to=p_granularity).bitcast[Extent2D]()
+            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()
         )
 
     fn create_command_pool(
         self,
         device: Device,
-        p_create_info: CommandPoolCreateInfo,
+        create_info: CommandPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_command_pool: CommandPool,
+        mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7664,9 +7652,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.create_command_pool(
             device,
-            Ptr(to=p_create_info).bitcast[CommandPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[CommandPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_command_pool).bitcast[CommandPool](),
+            Ptr(to=command_pool).bitcast[CommandPool](),
         )
 
     fn destroy_command_pool(
@@ -7693,7 +7681,7 @@ struct DeviceFunctionsV1_3(Copyable):
     fn allocate_command_buffers(
         self,
         device: Device,
-        p_allocate_info: CommandBufferAllocateInfo,
+        allocate_info: CommandBufferAllocateInfo,
         p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -7701,7 +7689,7 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
         return self._v1_0.allocate_command_buffers(
-            device, Ptr(to=p_allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
+            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
         )
 
     fn free_command_buffers(
@@ -7720,14 +7708,14 @@ struct DeviceFunctionsV1_3(Copyable):
         )
 
     fn begin_command_buffer(
-        self, command_buffer: CommandBuffer, p_begin_info: CommandBufferBeginInfo
+        self, command_buffer: CommandBuffer, begin_info: CommandBufferBeginInfo
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(
-            command_buffer, Ptr(to=p_begin_info).bitcast[CommandBufferBeginInfo]()
+            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()
         )
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
@@ -8120,7 +8108,7 @@ struct DeviceFunctionsV1_3(Copyable):
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
-        p_color: ClearColorValue,
+        color: ClearColorValue,
         range_count: UInt32,
         p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
     ):
@@ -8132,7 +8120,7 @@ struct DeviceFunctionsV1_3(Copyable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=p_color).bitcast[ClearColorValue](),
+            Ptr(to=color).bitcast[ClearColorValue](),
             range_count,
             p_ranges,
         )
@@ -8142,7 +8130,7 @@ struct DeviceFunctionsV1_3(Copyable):
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
-        p_depth_stencil: ClearDepthStencilValue,
+        depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
         p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
     ):
@@ -8154,7 +8142,7 @@ struct DeviceFunctionsV1_3(Copyable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=p_depth_stencil).bitcast[ClearDepthStencilValue](),
+            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue](),
             range_count,
             p_ranges,
         )
@@ -8362,7 +8350,7 @@ struct DeviceFunctionsV1_3(Copyable):
     fn cmd_begin_render_pass(
         self,
         command_buffer: CommandBuffer,
-        p_render_pass_begin: RenderPassBeginInfo,
+        render_pass_begin: RenderPassBeginInfo,
         contents: SubpassContents,
     ):
         """See official vulkan docs for details.
@@ -8370,7 +8358,7 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
         return self._v1_0.cmd_begin_render_pass(
-            command_buffer, Ptr(to=p_render_pass_begin).bitcast[RenderPassBeginInfo](), contents
+            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](), contents
         )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
@@ -8429,7 +8417,7 @@ struct DeviceFunctionsV1_3(Copyable):
         heap_index: UInt32,
         local_device_index: UInt32,
         remote_device_index: UInt32,
-        mut p_peer_memory_features: PeerMemoryFeatureFlags,
+        mut peer_memory_features: PeerMemoryFeatureFlags,
     ):
         """See official vulkan docs for details.
         
@@ -8440,7 +8428,7 @@ struct DeviceFunctionsV1_3(Copyable):
             heap_index,
             local_device_index,
             remote_device_index,
-            Ptr(to=p_peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
+            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
         )
 
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
@@ -8477,8 +8465,8 @@ struct DeviceFunctionsV1_3(Copyable):
     fn get_image_memory_requirements_2(
         self,
         device: Device,
-        p_info: ImageMemoryRequirementsInfo2,
-        mut p_memory_requirements: MemoryRequirements2,
+        info: ImageMemoryRequirementsInfo2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -8486,15 +8474,15 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_1.get_image_memory_requirements_2(
             device,
-            Ptr(to=p_info).bitcast[ImageMemoryRequirementsInfo2](),
-            Ptr(to=p_memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_buffer_memory_requirements_2(
         self,
         device: Device,
-        p_info: BufferMemoryRequirementsInfo2,
-        mut p_memory_requirements: MemoryRequirements2,
+        info: BufferMemoryRequirementsInfo2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -8502,15 +8490,15 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_1.get_buffer_memory_requirements_2(
             device,
-            Ptr(to=p_info).bitcast[BufferMemoryRequirementsInfo2](),
-            Ptr(to=p_memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_image_sparse_memory_requirements_2(
         self,
         device: Device,
-        p_info: ImageSparseMemoryRequirementsInfo2,
-        mut p_sparse_memory_requirement_count: UInt32,
+        info: ImageSparseMemoryRequirementsInfo2,
+        mut sparse_memory_requirement_count: UInt32,
         p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -8519,8 +8507,8 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
             device,
-            Ptr(to=p_info).bitcast[ImageSparseMemoryRequirementsInfo2](),
-            Ptr(to=p_sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
 
@@ -8533,23 +8521,21 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_1.trim_command_pool(device, command_pool, flags)
 
-    fn get_device_queue_2(
-        self, device: Device, p_queue_info: DeviceQueueInfo2, mut p_queue: Queue
-    ):
+    fn get_device_queue_2(self, device: Device, queue_info: DeviceQueueInfo2, mut queue: Queue):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
         """
         return self._v1_1.get_device_queue_2(
-            device, Ptr(to=p_queue_info).bitcast[DeviceQueueInfo2](), Ptr(to=p_queue).bitcast[Queue]()
+            device, Ptr(to=queue_info).bitcast[DeviceQueueInfo2](), Ptr(to=queue).bitcast[Queue]()
         )
 
     fn create_sampler_ycbcr_conversion(
         self,
         device: Device,
-        p_create_info: SamplerYcbcrConversionCreateInfo,
+        create_info: SamplerYcbcrConversionCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_ycbcr_conversion: SamplerYcbcrConversion,
+        mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -8557,9 +8543,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
             device,
-            Ptr(to=p_create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
             p_allocator,
-            Ptr(to=p_ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
+            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
         )
 
     fn destroy_sampler_ycbcr_conversion(
@@ -8577,9 +8563,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_descriptor_update_template(
         self,
         device: Device,
-        p_create_info: DescriptorUpdateTemplateCreateInfo,
+        create_info: DescriptorUpdateTemplateCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_descriptor_update_template: DescriptorUpdateTemplate,
+        mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -8587,9 +8573,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_1.create_descriptor_update_template(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
             p_allocator,
-            Ptr(to=p_descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
+            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
         )
 
     fn destroy_descriptor_update_template(
@@ -8624,8 +8610,8 @@ struct DeviceFunctionsV1_3(Copyable):
     fn get_descriptor_set_layout_support(
         self,
         device: Device,
-        p_create_info: DescriptorSetLayoutCreateInfo,
-        mut p_support: DescriptorSetLayoutSupport,
+        create_info: DescriptorSetLayoutCreateInfo,
+        mut support: DescriptorSetLayoutSupport,
     ):
         """See official vulkan docs for details.
         
@@ -8633,8 +8619,8 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_1.get_descriptor_set_layout_support(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorSetLayoutCreateInfo](),
-            Ptr(to=p_support).bitcast[DescriptorSetLayoutSupport](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=support).bitcast[DescriptorSetLayoutSupport](),
         )
 
     fn cmd_draw_indirect_count(
@@ -8676,9 +8662,9 @@ struct DeviceFunctionsV1_3(Copyable):
     fn create_render_pass_2(
         self,
         device: Device,
-        p_create_info: RenderPassCreateInfo2,
+        create_info: RenderPassCreateInfo2,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_render_pass: RenderPass,
+        mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -8686,16 +8672,16 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_2.create_render_pass_2(
             device,
-            Ptr(to=p_create_info).bitcast[RenderPassCreateInfo2](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo2](),
             p_allocator,
-            Ptr(to=p_render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass](),
         )
 
     fn cmd_begin_render_pass_2(
         self,
         command_buffer: CommandBuffer,
-        p_render_pass_begin: RenderPassBeginInfo,
-        p_subpass_begin_info: SubpassBeginInfo,
+        render_pass_begin: RenderPassBeginInfo,
+        subpass_begin_info: SubpassBeginInfo,
     ):
         """See official vulkan docs for details.
         
@@ -8703,15 +8689,15 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_2.cmd_begin_render_pass_2(
             command_buffer,
-            Ptr(to=p_render_pass_begin).bitcast[RenderPassBeginInfo](),
-            Ptr(to=p_subpass_begin_info).bitcast[SubpassBeginInfo](),
+            Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](),
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
         )
 
     fn cmd_next_subpass_2(
         self,
         command_buffer: CommandBuffer,
-        p_subpass_begin_info: SubpassBeginInfo,
-        p_subpass_end_info: SubpassEndInfo,
+        subpass_begin_info: SubpassBeginInfo,
+        subpass_end_info: SubpassEndInfo,
     ):
         """See official vulkan docs for details.
         
@@ -8719,19 +8705,19 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_2.cmd_next_subpass_2(
             command_buffer,
-            Ptr(to=p_subpass_begin_info).bitcast[SubpassBeginInfo](),
-            Ptr(to=p_subpass_end_info).bitcast[SubpassEndInfo](),
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
+            Ptr(to=subpass_end_info).bitcast[SubpassEndInfo](),
         )
 
     fn cmd_end_render_pass_2(
-        self, command_buffer: CommandBuffer, p_subpass_end_info: SubpassEndInfo
+        self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass2.html
         """
         return self._v1_2.cmd_end_render_pass_2(
-            command_buffer, Ptr(to=p_subpass_end_info).bitcast[SubpassEndInfo]()
+            command_buffer, Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()
         )
 
     fn reset_query_pool(
@@ -8744,69 +8730,67 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_2.reset_query_pool(device, query_pool, first_query, query_count)
 
     fn get_semaphore_counter_value(
-        self, device: Device, semaphore: Semaphore, mut p_value: UInt64
+        self, device: Device, semaphore: Semaphore, mut value: UInt64
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreCounterValue.html
         """
-        return self._v1_2.get_semaphore_counter_value(device, semaphore, Ptr(to=p_value).bitcast[UInt64]())
+        return self._v1_2.get_semaphore_counter_value(device, semaphore, Ptr(to=value).bitcast[UInt64]())
 
     fn wait_semaphores(
-        self, device: Device, p_wait_info: SemaphoreWaitInfo, timeout: UInt64
+        self, device: Device, wait_info: SemaphoreWaitInfo, timeout: UInt64
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitSemaphores.html
         """
-        return self._v1_2.wait_semaphores(device, Ptr(to=p_wait_info).bitcast[SemaphoreWaitInfo](), timeout)
+        return self._v1_2.wait_semaphores(device, Ptr(to=wait_info).bitcast[SemaphoreWaitInfo](), timeout)
 
-    fn signal_semaphore(self, device: Device, p_signal_info: SemaphoreSignalInfo) -> Result:
+    fn signal_semaphore(self, device: Device, signal_info: SemaphoreSignalInfo) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSignalSemaphore.html
         """
-        return self._v1_2.signal_semaphore(device, Ptr(to=p_signal_info).bitcast[SemaphoreSignalInfo]())
+        return self._v1_2.signal_semaphore(device, Ptr(to=signal_info).bitcast[SemaphoreSignalInfo]())
 
     fn get_buffer_device_address(
-        self, device: Device, p_info: BufferDeviceAddressInfo
+        self, device: Device, info: BufferDeviceAddressInfo
     ) -> DeviceAddress:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
-        return self._v1_2.get_buffer_device_address(
-            device, Ptr(to=p_info).bitcast[BufferDeviceAddressInfo]()
-        )
+        return self._v1_2.get_buffer_device_address(device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]())
 
     fn get_buffer_opaque_capture_address(
-        self, device: Device, p_info: BufferDeviceAddressInfo
+        self, device: Device, info: BufferDeviceAddressInfo
     ) -> UInt64:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureAddress.html
         """
         return self._v1_2.get_buffer_opaque_capture_address(
-            device, Ptr(to=p_info).bitcast[BufferDeviceAddressInfo]()
+            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
         )
 
     fn get_device_memory_opaque_capture_address(
-        self, device: Device, p_info: DeviceMemoryOpaqueCaptureAddressInfo
+        self, device: Device, info: DeviceMemoryOpaqueCaptureAddressInfo
     ) -> UInt64:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryOpaqueCaptureAddress.html
         """
         return self._v1_2.get_device_memory_opaque_capture_address(
-            device, Ptr(to=p_info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()
+            device, Ptr(to=info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()
         )
 
     fn create_private_data_slot(
         self,
         device: Device,
-        p_create_info: PrivateDataSlotCreateInfo,
+        create_info: PrivateDataSlotCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_private_data_slot: PrivateDataSlot,
+        mut private_data_slot: PrivateDataSlot,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -8814,9 +8798,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_3.create_private_data_slot(
             device,
-            Ptr(to=p_create_info).bitcast[PrivateDataSlotCreateInfo](),
+            Ptr(to=create_info).bitcast[PrivateDataSlotCreateInfo](),
             p_allocator,
-            Ptr(to=p_private_data_slot).bitcast[PrivateDataSlot](),
+            Ptr(to=private_data_slot).bitcast[PrivateDataSlot](),
         )
 
     fn destroy_private_data_slot(
@@ -8851,25 +8835,25 @@ struct DeviceFunctionsV1_3(Copyable):
         object_type: ObjectType,
         object_handle: UInt64,
         private_data_slot: PrivateDataSlot,
-        mut p_data: UInt64,
+        mut data: UInt64,
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPrivateData.html
         """
         return self._v1_3.get_private_data(
-            device, object_type, object_handle, private_data_slot, Ptr(to=p_data).bitcast[UInt64]()
+            device, object_type, object_handle, private_data_slot, Ptr(to=data).bitcast[UInt64]()
         )
 
     fn cmd_set_event_2(
-        self, command_buffer: CommandBuffer, event: Event, p_dependency_info: DependencyInfo
+        self, command_buffer: CommandBuffer, event: Event, dependency_info: DependencyInfo
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetEvent2.html
         """
         return self._v1_3.cmd_set_event_2(
-            command_buffer, event, Ptr(to=p_dependency_info).bitcast[DependencyInfo]()
+            command_buffer, event, Ptr(to=dependency_info).bitcast[DependencyInfo]()
         )
 
     fn cmd_reset_event_2(
@@ -8895,14 +8879,14 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_3.cmd_wait_events_2(command_buffer, event_count, p_events, p_dependency_infos)
 
     fn cmd_pipeline_barrier_2(
-        self, command_buffer: CommandBuffer, p_dependency_info: DependencyInfo
+        self, command_buffer: CommandBuffer, dependency_info: DependencyInfo
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPipelineBarrier2.html
         """
         return self._v1_3.cmd_pipeline_barrier_2(
-            command_buffer, Ptr(to=p_dependency_info).bitcast[DependencyInfo]()
+            command_buffer, Ptr(to=dependency_info).bitcast[DependencyInfo]()
         )
 
     fn cmd_write_timestamp_2(
@@ -8931,73 +8915,73 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_3.queue_submit_2(queue, submit_count, p_submits, fence)
 
-    fn cmd_copy_buffer_2(self, command_buffer: CommandBuffer, p_copy_buffer_info: CopyBufferInfo2):
+    fn cmd_copy_buffer_2(self, command_buffer: CommandBuffer, copy_buffer_info: CopyBufferInfo2):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer2.html
         """
         return self._v1_3.cmd_copy_buffer_2(
-            command_buffer, Ptr(to=p_copy_buffer_info).bitcast[CopyBufferInfo2]()
+            command_buffer, Ptr(to=copy_buffer_info).bitcast[CopyBufferInfo2]()
         )
 
-    fn cmd_copy_image_2(self, command_buffer: CommandBuffer, p_copy_image_info: CopyImageInfo2):
+    fn cmd_copy_image_2(self, command_buffer: CommandBuffer, copy_image_info: CopyImageInfo2):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImage2.html
         """
         return self._v1_3.cmd_copy_image_2(
-            command_buffer, Ptr(to=p_copy_image_info).bitcast[CopyImageInfo2]()
+            command_buffer, Ptr(to=copy_image_info).bitcast[CopyImageInfo2]()
         )
 
     fn cmd_copy_buffer_to_image_2(
-        self, command_buffer: CommandBuffer, p_copy_buffer_to_image_info: CopyBufferToImageInfo2
+        self, command_buffer: CommandBuffer, copy_buffer_to_image_info: CopyBufferToImageInfo2
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage2.html
         """
         return self._v1_3.cmd_copy_buffer_to_image_2(
-            command_buffer, Ptr(to=p_copy_buffer_to_image_info).bitcast[CopyBufferToImageInfo2]()
+            command_buffer, Ptr(to=copy_buffer_to_image_info).bitcast[CopyBufferToImageInfo2]()
         )
 
     fn cmd_copy_image_to_buffer_2(
-        self, command_buffer: CommandBuffer, p_copy_image_to_buffer_info: CopyImageToBufferInfo2
+        self, command_buffer: CommandBuffer, copy_image_to_buffer_info: CopyImageToBufferInfo2
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer2.html
         """
         return self._v1_3.cmd_copy_image_to_buffer_2(
-            command_buffer, Ptr(to=p_copy_image_to_buffer_info).bitcast[CopyImageToBufferInfo2]()
+            command_buffer, Ptr(to=copy_image_to_buffer_info).bitcast[CopyImageToBufferInfo2]()
         )
 
-    fn cmd_blit_image_2(self, command_buffer: CommandBuffer, p_blit_image_info: BlitImageInfo2):
+    fn cmd_blit_image_2(self, command_buffer: CommandBuffer, blit_image_info: BlitImageInfo2):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBlitImage2.html
         """
         return self._v1_3.cmd_blit_image_2(
-            command_buffer, Ptr(to=p_blit_image_info).bitcast[BlitImageInfo2]()
+            command_buffer, Ptr(to=blit_image_info).bitcast[BlitImageInfo2]()
         )
 
     fn cmd_resolve_image_2(
-        self, command_buffer: CommandBuffer, p_resolve_image_info: ResolveImageInfo2
+        self, command_buffer: CommandBuffer, resolve_image_info: ResolveImageInfo2
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResolveImage2.html
         """
         return self._v1_3.cmd_resolve_image_2(
-            command_buffer, Ptr(to=p_resolve_image_info).bitcast[ResolveImageInfo2]()
+            command_buffer, Ptr(to=resolve_image_info).bitcast[ResolveImageInfo2]()
         )
 
-    fn cmd_begin_rendering(self, command_buffer: CommandBuffer, p_rendering_info: RenderingInfo):
+    fn cmd_begin_rendering(self, command_buffer: CommandBuffer, rendering_info: RenderingInfo):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRendering.html
         """
         return self._v1_3.cmd_begin_rendering(
-            command_buffer, Ptr(to=p_rendering_info).bitcast[RenderingInfo]()
+            command_buffer, Ptr(to=rendering_info).bitcast[RenderingInfo]()
         )
 
     fn cmd_end_rendering(self, command_buffer: CommandBuffer):
@@ -9156,8 +9140,8 @@ struct DeviceFunctionsV1_3(Copyable):
     fn get_device_buffer_memory_requirements(
         self,
         device: Device,
-        p_info: DeviceBufferMemoryRequirements,
-        mut p_memory_requirements: MemoryRequirements2,
+        info: DeviceBufferMemoryRequirements,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -9165,15 +9149,15 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_3.get_device_buffer_memory_requirements(
             device,
-            Ptr(to=p_info).bitcast[DeviceBufferMemoryRequirements](),
-            Ptr(to=p_memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[DeviceBufferMemoryRequirements](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_device_image_memory_requirements(
         self,
         device: Device,
-        p_info: DeviceImageMemoryRequirements,
-        mut p_memory_requirements: MemoryRequirements2,
+        info: DeviceImageMemoryRequirements,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -9181,15 +9165,15 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_3.get_device_image_memory_requirements(
             device,
-            Ptr(to=p_info).bitcast[DeviceImageMemoryRequirements](),
-            Ptr(to=p_memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_device_image_sparse_memory_requirements(
         self,
         device: Device,
-        p_info: DeviceImageMemoryRequirements,
-        mut p_sparse_memory_requirement_count: UInt32,
+        info: DeviceImageMemoryRequirements,
+        mut sparse_memory_requirement_count: UInt32,
         p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -9198,8 +9182,8 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_3.get_device_image_sparse_memory_requirements(
             device,
-            Ptr(to=p_info).bitcast[DeviceImageMemoryRequirements](),
-            Ptr(to=p_sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
 
@@ -9237,14 +9221,14 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.destroy_device(device, p_allocator)
 
     fn get_device_queue(
-        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut p_queue: Queue
+        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut queue: Queue
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue.html
         """
         return self._v1_0.get_device_queue(
-            device, queue_family_index, queue_index, Ptr(to=p_queue).bitcast[Queue]()
+            device, queue_family_index, queue_index, Ptr(to=queue).bitcast[Queue]()
         )
 
     fn queue_submit(
@@ -9277,9 +9261,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn allocate_memory(
         self,
         device: Device,
-        p_allocate_info: MemoryAllocateInfo,
+        allocate_info: MemoryAllocateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_memory: DeviceMemory,
+        mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9287,9 +9271,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.allocate_memory(
             device,
-            Ptr(to=p_allocate_info).bitcast[MemoryAllocateInfo](),
+            Ptr(to=allocate_info).bitcast[MemoryAllocateInfo](),
             p_allocator,
-            Ptr(to=p_memory).bitcast[DeviceMemory](),
+            Ptr(to=memory).bitcast[DeviceMemory](),
         )
 
     fn free_memory(
@@ -9311,14 +9295,14 @@ struct DeviceFunctionsV1_4(Copyable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        mut pp_data: Ptr[NoneType, MutAnyOrigin],
+        mut p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
         return self._v1_0.map_memory(
-            device, memory, offset, size, flags, Ptr(to=pp_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()
+            device, memory, offset, size, flags, Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()
         )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
@@ -9353,14 +9337,14 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
 
     fn get_device_memory_commitment(
-        self, device: Device, memory: DeviceMemory, mut p_committed_memory_in_bytes: DeviceSize
+        self, device: Device, memory: DeviceMemory, mut committed_memory_in_bytes: DeviceSize
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryCommitment.html
         """
         return self._v1_0.get_device_memory_commitment(
-            device, memory, Ptr(to=p_committed_memory_in_bytes).bitcast[DeviceSize]()
+            device, memory, Ptr(to=committed_memory_in_bytes).bitcast[DeviceSize]()
         )
 
     fn bind_buffer_memory(
@@ -9382,32 +9366,32 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
     fn get_buffer_memory_requirements(
-        self, device: Device, buffer: Buffer, mut p_memory_requirements: MemoryRequirements
+        self, device: Device, buffer: Buffer, mut memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements.html
         """
         return self._v1_0.get_buffer_memory_requirements(
-            device, buffer, Ptr(to=p_memory_requirements).bitcast[MemoryRequirements]()
+            device, buffer, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
         )
 
     fn get_image_memory_requirements(
-        self, device: Device, image: Image, mut p_memory_requirements: MemoryRequirements
+        self, device: Device, image: Image, mut memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements.html
         """
         return self._v1_0.get_image_memory_requirements(
-            device, image, Ptr(to=p_memory_requirements).bitcast[MemoryRequirements]()
+            device, image, Ptr(to=memory_requirements).bitcast[MemoryRequirements]()
         )
 
     fn get_image_sparse_memory_requirements(
         self,
         device: Device,
         image: Image,
-        mut p_sparse_memory_requirement_count: UInt32,
+        mut sparse_memory_requirement_count: UInt32,
         p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -9417,7 +9401,7 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.get_image_sparse_memory_requirements(
             device,
             image,
-            Ptr(to=p_sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
 
@@ -9437,9 +9421,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_fence(
         self,
         device: Device,
-        p_create_info: FenceCreateInfo,
+        create_info: FenceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_fence: Fence,
+        mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9447,9 +9431,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_fence(
             device,
-            Ptr(to=p_create_info).bitcast[FenceCreateInfo](),
+            Ptr(to=create_info).bitcast[FenceCreateInfo](),
             p_allocator,
-            Ptr(to=p_fence).bitcast[Fence](),
+            Ptr(to=fence).bitcast[Fence](),
         )
 
     fn destroy_fence(
@@ -9494,9 +9478,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_semaphore(
         self,
         device: Device,
-        p_create_info: SemaphoreCreateInfo,
+        create_info: SemaphoreCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_semaphore: Semaphore,
+        mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9504,9 +9488,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_semaphore(
             device,
-            Ptr(to=p_create_info).bitcast[SemaphoreCreateInfo](),
+            Ptr(to=create_info).bitcast[SemaphoreCreateInfo](),
             p_allocator,
-            Ptr(to=p_semaphore).bitcast[Semaphore](),
+            Ptr(to=semaphore).bitcast[Semaphore](),
         )
 
     fn destroy_semaphore(
@@ -9524,9 +9508,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_event(
         self,
         device: Device,
-        p_create_info: EventCreateInfo,
+        create_info: EventCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_event: Event,
+        mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9534,9 +9518,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_event(
             device,
-            Ptr(to=p_create_info).bitcast[EventCreateInfo](),
+            Ptr(to=create_info).bitcast[EventCreateInfo](),
             p_allocator,
-            Ptr(to=p_event).bitcast[Event](),
+            Ptr(to=event).bitcast[Event](),
         )
 
     fn destroy_event(
@@ -9572,9 +9556,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_query_pool(
         self,
         device: Device,
-        p_create_info: QueryPoolCreateInfo,
+        create_info: QueryPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_query_pool: QueryPool,
+        mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9582,9 +9566,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_query_pool(
             device,
-            Ptr(to=p_create_info).bitcast[QueryPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[QueryPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_query_pool).bitcast[QueryPool](),
+            Ptr(to=query_pool).bitcast[QueryPool](),
         )
 
     fn destroy_query_pool(
@@ -9621,9 +9605,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_buffer(
         self,
         device: Device,
-        p_create_info: BufferCreateInfo,
+        create_info: BufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_buffer: Buffer,
+        mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9631,9 +9615,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_buffer(
             device,
-            Ptr(to=p_create_info).bitcast[BufferCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferCreateInfo](),
             p_allocator,
-            Ptr(to=p_buffer).bitcast[Buffer](),
+            Ptr(to=buffer).bitcast[Buffer](),
         )
 
     fn destroy_buffer(
@@ -9648,9 +9632,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_buffer_view(
         self,
         device: Device,
-        p_create_info: BufferViewCreateInfo,
+        create_info: BufferViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_view: BufferView,
+        mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9658,9 +9642,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_buffer_view(
             device,
-            Ptr(to=p_create_info).bitcast[BufferViewCreateInfo](),
+            Ptr(to=create_info).bitcast[BufferViewCreateInfo](),
             p_allocator,
-            Ptr(to=p_view).bitcast[BufferView](),
+            Ptr(to=view).bitcast[BufferView](),
         )
 
     fn destroy_buffer_view(
@@ -9678,9 +9662,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_image(
         self,
         device: Device,
-        p_create_info: ImageCreateInfo,
+        create_info: ImageCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_image: Image,
+        mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9688,9 +9672,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_image(
             device,
-            Ptr(to=p_create_info).bitcast[ImageCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageCreateInfo](),
             p_allocator,
-            Ptr(to=p_image).bitcast[Image](),
+            Ptr(to=image).bitcast[Image](),
         )
 
     fn destroy_image(
@@ -9706,8 +9690,8 @@ struct DeviceFunctionsV1_4(Copyable):
         self,
         device: Device,
         image: Image,
-        p_subresource: ImageSubresource,
-        mut p_layout: SubresourceLayout,
+        subresource: ImageSubresource,
+        mut layout: SubresourceLayout,
     ):
         """See official vulkan docs for details.
         
@@ -9716,16 +9700,16 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.get_image_subresource_layout(
             device,
             image,
-            Ptr(to=p_subresource).bitcast[ImageSubresource](),
-            Ptr(to=p_layout).bitcast[SubresourceLayout](),
+            Ptr(to=subresource).bitcast[ImageSubresource](),
+            Ptr(to=layout).bitcast[SubresourceLayout](),
         )
 
     fn create_image_view(
         self,
         device: Device,
-        p_create_info: ImageViewCreateInfo,
+        create_info: ImageViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_view: ImageView,
+        mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9733,9 +9717,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_image_view(
             device,
-            Ptr(to=p_create_info).bitcast[ImageViewCreateInfo](),
+            Ptr(to=create_info).bitcast[ImageViewCreateInfo](),
             p_allocator,
-            Ptr(to=p_view).bitcast[ImageView](),
+            Ptr(to=view).bitcast[ImageView](),
         )
 
     fn destroy_image_view(
@@ -9753,9 +9737,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_shader_module(
         self,
         device: Device,
-        p_create_info: ShaderModuleCreateInfo,
+        create_info: ShaderModuleCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_shader_module: ShaderModule,
+        mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9763,9 +9747,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_shader_module(
             device,
-            Ptr(to=p_create_info).bitcast[ShaderModuleCreateInfo](),
+            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo](),
             p_allocator,
-            Ptr(to=p_shader_module).bitcast[ShaderModule](),
+            Ptr(to=shader_module).bitcast[ShaderModule](),
         )
 
     fn destroy_shader_module(
@@ -9783,9 +9767,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_pipeline_cache(
         self,
         device: Device,
-        p_create_info: PipelineCacheCreateInfo,
+        create_info: PipelineCacheCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_pipeline_cache: PipelineCache,
+        mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9793,9 +9777,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_pipeline_cache(
             device,
-            Ptr(to=p_create_info).bitcast[PipelineCacheCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineCacheCreateInfo](),
             p_allocator,
-            Ptr(to=p_pipeline_cache).bitcast[PipelineCache](),
+            Ptr(to=pipeline_cache).bitcast[PipelineCache](),
         )
 
     fn destroy_pipeline_cache(
@@ -9814,7 +9798,7 @@ struct DeviceFunctionsV1_4(Copyable):
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        mut p_data_size: UInt,
+        mut data_size: UInt,
         p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -9822,7 +9806,7 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         return self._v1_0.get_pipeline_cache_data(
-            device, pipeline_cache, Ptr(to=p_data_size).bitcast[UInt](), p_data
+            device, pipeline_cache, Ptr(to=data_size).bitcast[UInt](), p_data
         )
 
     fn merge_pipeline_caches(
@@ -9887,9 +9871,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_pipeline_layout(
         self,
         device: Device,
-        p_create_info: PipelineLayoutCreateInfo,
+        create_info: PipelineLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_pipeline_layout: PipelineLayout,
+        mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9897,9 +9881,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_pipeline_layout(
             device,
-            Ptr(to=p_create_info).bitcast[PipelineLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[PipelineLayoutCreateInfo](),
             p_allocator,
-            Ptr(to=p_pipeline_layout).bitcast[PipelineLayout](),
+            Ptr(to=pipeline_layout).bitcast[PipelineLayout](),
         )
 
     fn destroy_pipeline_layout(
@@ -9917,9 +9901,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_sampler(
         self,
         device: Device,
-        p_create_info: SamplerCreateInfo,
+        create_info: SamplerCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_sampler: Sampler,
+        mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9927,9 +9911,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_sampler(
             device,
-            Ptr(to=p_create_info).bitcast[SamplerCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerCreateInfo](),
             p_allocator,
-            Ptr(to=p_sampler).bitcast[Sampler](),
+            Ptr(to=sampler).bitcast[Sampler](),
         )
 
     fn destroy_sampler(
@@ -9947,9 +9931,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_descriptor_set_layout(
         self,
         device: Device,
-        p_create_info: DescriptorSetLayoutCreateInfo,
+        create_info: DescriptorSetLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_set_layout: DescriptorSetLayout,
+        mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9957,9 +9941,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_descriptor_set_layout(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
             p_allocator,
-            Ptr(to=p_set_layout).bitcast[DescriptorSetLayout](),
+            Ptr(to=set_layout).bitcast[DescriptorSetLayout](),
         )
 
     fn destroy_descriptor_set_layout(
@@ -9977,9 +9961,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_descriptor_pool(
         self,
         device: Device,
-        p_create_info: DescriptorPoolCreateInfo,
+        create_info: DescriptorPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_descriptor_pool: DescriptorPool,
+        mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9987,9 +9971,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_descriptor_pool(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_descriptor_pool).bitcast[DescriptorPool](),
+            Ptr(to=descriptor_pool).bitcast[DescriptorPool](),
         )
 
     fn destroy_descriptor_pool(
@@ -10016,7 +10000,7 @@ struct DeviceFunctionsV1_4(Copyable):
     fn allocate_descriptor_sets(
         self,
         device: Device,
-        p_allocate_info: DescriptorSetAllocateInfo,
+        allocate_info: DescriptorSetAllocateInfo,
         p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -10024,7 +10008,7 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
         return self._v1_0.allocate_descriptor_sets(
-            device, Ptr(to=p_allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
+            device, Ptr(to=allocate_info).bitcast[DescriptorSetAllocateInfo](), p_descriptor_sets
         )
 
     fn free_descriptor_sets(
@@ -10061,9 +10045,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_framebuffer(
         self,
         device: Device,
-        p_create_info: FramebufferCreateInfo,
+        create_info: FramebufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_framebuffer: Framebuffer,
+        mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -10071,9 +10055,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_framebuffer(
             device,
-            Ptr(to=p_create_info).bitcast[FramebufferCreateInfo](),
+            Ptr(to=create_info).bitcast[FramebufferCreateInfo](),
             p_allocator,
-            Ptr(to=p_framebuffer).bitcast[Framebuffer](),
+            Ptr(to=framebuffer).bitcast[Framebuffer](),
         )
 
     fn destroy_framebuffer(
@@ -10091,9 +10075,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_render_pass(
         self,
         device: Device,
-        p_create_info: RenderPassCreateInfo,
+        create_info: RenderPassCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_render_pass: RenderPass,
+        mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -10101,9 +10085,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_render_pass(
             device,
-            Ptr(to=p_create_info).bitcast[RenderPassCreateInfo](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo](),
             p_allocator,
-            Ptr(to=p_render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass](),
         )
 
     fn destroy_render_pass(
@@ -10119,22 +10103,22 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
     fn get_render_area_granularity(
-        self, device: Device, render_pass: RenderPass, mut p_granularity: Extent2D
+        self, device: Device, render_pass: RenderPass, mut granularity: Extent2D
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderAreaGranularity.html
         """
         return self._v1_0.get_render_area_granularity(
-            device, render_pass, Ptr(to=p_granularity).bitcast[Extent2D]()
+            device, render_pass, Ptr(to=granularity).bitcast[Extent2D]()
         )
 
     fn create_command_pool(
         self,
         device: Device,
-        p_create_info: CommandPoolCreateInfo,
+        create_info: CommandPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_command_pool: CommandPool,
+        mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -10142,9 +10126,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.create_command_pool(
             device,
-            Ptr(to=p_create_info).bitcast[CommandPoolCreateInfo](),
+            Ptr(to=create_info).bitcast[CommandPoolCreateInfo](),
             p_allocator,
-            Ptr(to=p_command_pool).bitcast[CommandPool](),
+            Ptr(to=command_pool).bitcast[CommandPool](),
         )
 
     fn destroy_command_pool(
@@ -10171,7 +10155,7 @@ struct DeviceFunctionsV1_4(Copyable):
     fn allocate_command_buffers(
         self,
         device: Device,
-        p_allocate_info: CommandBufferAllocateInfo,
+        allocate_info: CommandBufferAllocateInfo,
         p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -10179,7 +10163,7 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
         return self._v1_0.allocate_command_buffers(
-            device, Ptr(to=p_allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
+            device, Ptr(to=allocate_info).bitcast[CommandBufferAllocateInfo](), p_command_buffers
         )
 
     fn free_command_buffers(
@@ -10198,14 +10182,14 @@ struct DeviceFunctionsV1_4(Copyable):
         )
 
     fn begin_command_buffer(
-        self, command_buffer: CommandBuffer, p_begin_info: CommandBufferBeginInfo
+        self, command_buffer: CommandBuffer, begin_info: CommandBufferBeginInfo
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBeginCommandBuffer.html
         """
         return self._v1_0.begin_command_buffer(
-            command_buffer, Ptr(to=p_begin_info).bitcast[CommandBufferBeginInfo]()
+            command_buffer, Ptr(to=begin_info).bitcast[CommandBufferBeginInfo]()
         )
 
     fn end_command_buffer(self, command_buffer: CommandBuffer) -> Result:
@@ -10598,7 +10582,7 @@ struct DeviceFunctionsV1_4(Copyable):
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
-        p_color: ClearColorValue,
+        color: ClearColorValue,
         range_count: UInt32,
         p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
     ):
@@ -10610,7 +10594,7 @@ struct DeviceFunctionsV1_4(Copyable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=p_color).bitcast[ClearColorValue](),
+            Ptr(to=color).bitcast[ClearColorValue](),
             range_count,
             p_ranges,
         )
@@ -10620,7 +10604,7 @@ struct DeviceFunctionsV1_4(Copyable):
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
-        p_depth_stencil: ClearDepthStencilValue,
+        depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
         p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
     ):
@@ -10632,7 +10616,7 @@ struct DeviceFunctionsV1_4(Copyable):
             command_buffer,
             image,
             image_layout,
-            Ptr(to=p_depth_stencil).bitcast[ClearDepthStencilValue](),
+            Ptr(to=depth_stencil).bitcast[ClearDepthStencilValue](),
             range_count,
             p_ranges,
         )
@@ -10840,7 +10824,7 @@ struct DeviceFunctionsV1_4(Copyable):
     fn cmd_begin_render_pass(
         self,
         command_buffer: CommandBuffer,
-        p_render_pass_begin: RenderPassBeginInfo,
+        render_pass_begin: RenderPassBeginInfo,
         contents: SubpassContents,
     ):
         """See official vulkan docs for details.
@@ -10848,7 +10832,7 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass.html
         """
         return self._v1_0.cmd_begin_render_pass(
-            command_buffer, Ptr(to=p_render_pass_begin).bitcast[RenderPassBeginInfo](), contents
+            command_buffer, Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](), contents
         )
 
     fn cmd_next_subpass(self, command_buffer: CommandBuffer, contents: SubpassContents):
@@ -10907,7 +10891,7 @@ struct DeviceFunctionsV1_4(Copyable):
         heap_index: UInt32,
         local_device_index: UInt32,
         remote_device_index: UInt32,
-        mut p_peer_memory_features: PeerMemoryFeatureFlags,
+        mut peer_memory_features: PeerMemoryFeatureFlags,
     ):
         """See official vulkan docs for details.
         
@@ -10918,7 +10902,7 @@ struct DeviceFunctionsV1_4(Copyable):
             heap_index,
             local_device_index,
             remote_device_index,
-            Ptr(to=p_peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
+            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
         )
 
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
@@ -10955,8 +10939,8 @@ struct DeviceFunctionsV1_4(Copyable):
     fn get_image_memory_requirements_2(
         self,
         device: Device,
-        p_info: ImageMemoryRequirementsInfo2,
-        mut p_memory_requirements: MemoryRequirements2,
+        info: ImageMemoryRequirementsInfo2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -10964,15 +10948,15 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_1.get_image_memory_requirements_2(
             device,
-            Ptr(to=p_info).bitcast[ImageMemoryRequirementsInfo2](),
-            Ptr(to=p_memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_buffer_memory_requirements_2(
         self,
         device: Device,
-        p_info: BufferMemoryRequirementsInfo2,
-        mut p_memory_requirements: MemoryRequirements2,
+        info: BufferMemoryRequirementsInfo2,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -10980,15 +10964,15 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_1.get_buffer_memory_requirements_2(
             device,
-            Ptr(to=p_info).bitcast[BufferMemoryRequirementsInfo2](),
-            Ptr(to=p_memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_image_sparse_memory_requirements_2(
         self,
         device: Device,
-        p_info: ImageSparseMemoryRequirementsInfo2,
-        mut p_sparse_memory_requirement_count: UInt32,
+        info: ImageSparseMemoryRequirementsInfo2,
+        mut sparse_memory_requirement_count: UInt32,
         p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -10997,8 +10981,8 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
             device,
-            Ptr(to=p_info).bitcast[ImageSparseMemoryRequirementsInfo2](),
-            Ptr(to=p_sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
 
@@ -11011,23 +10995,21 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_1.trim_command_pool(device, command_pool, flags)
 
-    fn get_device_queue_2(
-        self, device: Device, p_queue_info: DeviceQueueInfo2, mut p_queue: Queue
-    ):
+    fn get_device_queue_2(self, device: Device, queue_info: DeviceQueueInfo2, mut queue: Queue):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
         """
         return self._v1_1.get_device_queue_2(
-            device, Ptr(to=p_queue_info).bitcast[DeviceQueueInfo2](), Ptr(to=p_queue).bitcast[Queue]()
+            device, Ptr(to=queue_info).bitcast[DeviceQueueInfo2](), Ptr(to=queue).bitcast[Queue]()
         )
 
     fn create_sampler_ycbcr_conversion(
         self,
         device: Device,
-        p_create_info: SamplerYcbcrConversionCreateInfo,
+        create_info: SamplerYcbcrConversionCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_ycbcr_conversion: SamplerYcbcrConversion,
+        mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -11035,9 +11017,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
             device,
-            Ptr(to=p_create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
+            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
             p_allocator,
-            Ptr(to=p_ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
+            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
         )
 
     fn destroy_sampler_ycbcr_conversion(
@@ -11055,9 +11037,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_descriptor_update_template(
         self,
         device: Device,
-        p_create_info: DescriptorUpdateTemplateCreateInfo,
+        create_info: DescriptorUpdateTemplateCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_descriptor_update_template: DescriptorUpdateTemplate,
+        mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -11065,9 +11047,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_1.create_descriptor_update_template(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
+            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
             p_allocator,
-            Ptr(to=p_descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
+            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
         )
 
     fn destroy_descriptor_update_template(
@@ -11102,8 +11084,8 @@ struct DeviceFunctionsV1_4(Copyable):
     fn get_descriptor_set_layout_support(
         self,
         device: Device,
-        p_create_info: DescriptorSetLayoutCreateInfo,
-        mut p_support: DescriptorSetLayoutSupport,
+        create_info: DescriptorSetLayoutCreateInfo,
+        mut support: DescriptorSetLayoutSupport,
     ):
         """See official vulkan docs for details.
         
@@ -11111,8 +11093,8 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_1.get_descriptor_set_layout_support(
             device,
-            Ptr(to=p_create_info).bitcast[DescriptorSetLayoutCreateInfo](),
-            Ptr(to=p_support).bitcast[DescriptorSetLayoutSupport](),
+            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
+            Ptr(to=support).bitcast[DescriptorSetLayoutSupport](),
         )
 
     fn cmd_draw_indirect_count(
@@ -11154,9 +11136,9 @@ struct DeviceFunctionsV1_4(Copyable):
     fn create_render_pass_2(
         self,
         device: Device,
-        p_create_info: RenderPassCreateInfo2,
+        create_info: RenderPassCreateInfo2,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_render_pass: RenderPass,
+        mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -11164,16 +11146,16 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_2.create_render_pass_2(
             device,
-            Ptr(to=p_create_info).bitcast[RenderPassCreateInfo2](),
+            Ptr(to=create_info).bitcast[RenderPassCreateInfo2](),
             p_allocator,
-            Ptr(to=p_render_pass).bitcast[RenderPass](),
+            Ptr(to=render_pass).bitcast[RenderPass](),
         )
 
     fn cmd_begin_render_pass_2(
         self,
         command_buffer: CommandBuffer,
-        p_render_pass_begin: RenderPassBeginInfo,
-        p_subpass_begin_info: SubpassBeginInfo,
+        render_pass_begin: RenderPassBeginInfo,
+        subpass_begin_info: SubpassBeginInfo,
     ):
         """See official vulkan docs for details.
         
@@ -11181,15 +11163,15 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_2.cmd_begin_render_pass_2(
             command_buffer,
-            Ptr(to=p_render_pass_begin).bitcast[RenderPassBeginInfo](),
-            Ptr(to=p_subpass_begin_info).bitcast[SubpassBeginInfo](),
+            Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](),
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
         )
 
     fn cmd_next_subpass_2(
         self,
         command_buffer: CommandBuffer,
-        p_subpass_begin_info: SubpassBeginInfo,
-        p_subpass_end_info: SubpassEndInfo,
+        subpass_begin_info: SubpassBeginInfo,
+        subpass_end_info: SubpassEndInfo,
     ):
         """See official vulkan docs for details.
         
@@ -11197,19 +11179,19 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_2.cmd_next_subpass_2(
             command_buffer,
-            Ptr(to=p_subpass_begin_info).bitcast[SubpassBeginInfo](),
-            Ptr(to=p_subpass_end_info).bitcast[SubpassEndInfo](),
+            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
+            Ptr(to=subpass_end_info).bitcast[SubpassEndInfo](),
         )
 
     fn cmd_end_render_pass_2(
-        self, command_buffer: CommandBuffer, p_subpass_end_info: SubpassEndInfo
+        self, command_buffer: CommandBuffer, subpass_end_info: SubpassEndInfo
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass2.html
         """
         return self._v1_2.cmd_end_render_pass_2(
-            command_buffer, Ptr(to=p_subpass_end_info).bitcast[SubpassEndInfo]()
+            command_buffer, Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()
         )
 
     fn reset_query_pool(
@@ -11222,69 +11204,67 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_2.reset_query_pool(device, query_pool, first_query, query_count)
 
     fn get_semaphore_counter_value(
-        self, device: Device, semaphore: Semaphore, mut p_value: UInt64
+        self, device: Device, semaphore: Semaphore, mut value: UInt64
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreCounterValue.html
         """
-        return self._v1_2.get_semaphore_counter_value(device, semaphore, Ptr(to=p_value).bitcast[UInt64]())
+        return self._v1_2.get_semaphore_counter_value(device, semaphore, Ptr(to=value).bitcast[UInt64]())
 
     fn wait_semaphores(
-        self, device: Device, p_wait_info: SemaphoreWaitInfo, timeout: UInt64
+        self, device: Device, wait_info: SemaphoreWaitInfo, timeout: UInt64
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitSemaphores.html
         """
-        return self._v1_2.wait_semaphores(device, Ptr(to=p_wait_info).bitcast[SemaphoreWaitInfo](), timeout)
+        return self._v1_2.wait_semaphores(device, Ptr(to=wait_info).bitcast[SemaphoreWaitInfo](), timeout)
 
-    fn signal_semaphore(self, device: Device, p_signal_info: SemaphoreSignalInfo) -> Result:
+    fn signal_semaphore(self, device: Device, signal_info: SemaphoreSignalInfo) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSignalSemaphore.html
         """
-        return self._v1_2.signal_semaphore(device, Ptr(to=p_signal_info).bitcast[SemaphoreSignalInfo]())
+        return self._v1_2.signal_semaphore(device, Ptr(to=signal_info).bitcast[SemaphoreSignalInfo]())
 
     fn get_buffer_device_address(
-        self, device: Device, p_info: BufferDeviceAddressInfo
+        self, device: Device, info: BufferDeviceAddressInfo
     ) -> DeviceAddress:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
-        return self._v1_2.get_buffer_device_address(
-            device, Ptr(to=p_info).bitcast[BufferDeviceAddressInfo]()
-        )
+        return self._v1_2.get_buffer_device_address(device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]())
 
     fn get_buffer_opaque_capture_address(
-        self, device: Device, p_info: BufferDeviceAddressInfo
+        self, device: Device, info: BufferDeviceAddressInfo
     ) -> UInt64:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureAddress.html
         """
         return self._v1_2.get_buffer_opaque_capture_address(
-            device, Ptr(to=p_info).bitcast[BufferDeviceAddressInfo]()
+            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
         )
 
     fn get_device_memory_opaque_capture_address(
-        self, device: Device, p_info: DeviceMemoryOpaqueCaptureAddressInfo
+        self, device: Device, info: DeviceMemoryOpaqueCaptureAddressInfo
     ) -> UInt64:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryOpaqueCaptureAddress.html
         """
         return self._v1_2.get_device_memory_opaque_capture_address(
-            device, Ptr(to=p_info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()
+            device, Ptr(to=info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()
         )
 
     fn create_private_data_slot(
         self,
         device: Device,
-        p_create_info: PrivateDataSlotCreateInfo,
+        create_info: PrivateDataSlotCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        mut p_private_data_slot: PrivateDataSlot,
+        mut private_data_slot: PrivateDataSlot,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -11292,9 +11272,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_3.create_private_data_slot(
             device,
-            Ptr(to=p_create_info).bitcast[PrivateDataSlotCreateInfo](),
+            Ptr(to=create_info).bitcast[PrivateDataSlotCreateInfo](),
             p_allocator,
-            Ptr(to=p_private_data_slot).bitcast[PrivateDataSlot](),
+            Ptr(to=private_data_slot).bitcast[PrivateDataSlot](),
         )
 
     fn destroy_private_data_slot(
@@ -11329,25 +11309,25 @@ struct DeviceFunctionsV1_4(Copyable):
         object_type: ObjectType,
         object_handle: UInt64,
         private_data_slot: PrivateDataSlot,
-        mut p_data: UInt64,
+        mut data: UInt64,
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPrivateData.html
         """
         return self._v1_3.get_private_data(
-            device, object_type, object_handle, private_data_slot, Ptr(to=p_data).bitcast[UInt64]()
+            device, object_type, object_handle, private_data_slot, Ptr(to=data).bitcast[UInt64]()
         )
 
     fn cmd_set_event_2(
-        self, command_buffer: CommandBuffer, event: Event, p_dependency_info: DependencyInfo
+        self, command_buffer: CommandBuffer, event: Event, dependency_info: DependencyInfo
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetEvent2.html
         """
         return self._v1_3.cmd_set_event_2(
-            command_buffer, event, Ptr(to=p_dependency_info).bitcast[DependencyInfo]()
+            command_buffer, event, Ptr(to=dependency_info).bitcast[DependencyInfo]()
         )
 
     fn cmd_reset_event_2(
@@ -11373,14 +11353,14 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_3.cmd_wait_events_2(command_buffer, event_count, p_events, p_dependency_infos)
 
     fn cmd_pipeline_barrier_2(
-        self, command_buffer: CommandBuffer, p_dependency_info: DependencyInfo
+        self, command_buffer: CommandBuffer, dependency_info: DependencyInfo
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPipelineBarrier2.html
         """
         return self._v1_3.cmd_pipeline_barrier_2(
-            command_buffer, Ptr(to=p_dependency_info).bitcast[DependencyInfo]()
+            command_buffer, Ptr(to=dependency_info).bitcast[DependencyInfo]()
         )
 
     fn cmd_write_timestamp_2(
@@ -11409,73 +11389,73 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_3.queue_submit_2(queue, submit_count, p_submits, fence)
 
-    fn cmd_copy_buffer_2(self, command_buffer: CommandBuffer, p_copy_buffer_info: CopyBufferInfo2):
+    fn cmd_copy_buffer_2(self, command_buffer: CommandBuffer, copy_buffer_info: CopyBufferInfo2):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer2.html
         """
         return self._v1_3.cmd_copy_buffer_2(
-            command_buffer, Ptr(to=p_copy_buffer_info).bitcast[CopyBufferInfo2]()
+            command_buffer, Ptr(to=copy_buffer_info).bitcast[CopyBufferInfo2]()
         )
 
-    fn cmd_copy_image_2(self, command_buffer: CommandBuffer, p_copy_image_info: CopyImageInfo2):
+    fn cmd_copy_image_2(self, command_buffer: CommandBuffer, copy_image_info: CopyImageInfo2):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImage2.html
         """
         return self._v1_3.cmd_copy_image_2(
-            command_buffer, Ptr(to=p_copy_image_info).bitcast[CopyImageInfo2]()
+            command_buffer, Ptr(to=copy_image_info).bitcast[CopyImageInfo2]()
         )
 
     fn cmd_copy_buffer_to_image_2(
-        self, command_buffer: CommandBuffer, p_copy_buffer_to_image_info: CopyBufferToImageInfo2
+        self, command_buffer: CommandBuffer, copy_buffer_to_image_info: CopyBufferToImageInfo2
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage2.html
         """
         return self._v1_3.cmd_copy_buffer_to_image_2(
-            command_buffer, Ptr(to=p_copy_buffer_to_image_info).bitcast[CopyBufferToImageInfo2]()
+            command_buffer, Ptr(to=copy_buffer_to_image_info).bitcast[CopyBufferToImageInfo2]()
         )
 
     fn cmd_copy_image_to_buffer_2(
-        self, command_buffer: CommandBuffer, p_copy_image_to_buffer_info: CopyImageToBufferInfo2
+        self, command_buffer: CommandBuffer, copy_image_to_buffer_info: CopyImageToBufferInfo2
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer2.html
         """
         return self._v1_3.cmd_copy_image_to_buffer_2(
-            command_buffer, Ptr(to=p_copy_image_to_buffer_info).bitcast[CopyImageToBufferInfo2]()
+            command_buffer, Ptr(to=copy_image_to_buffer_info).bitcast[CopyImageToBufferInfo2]()
         )
 
-    fn cmd_blit_image_2(self, command_buffer: CommandBuffer, p_blit_image_info: BlitImageInfo2):
+    fn cmd_blit_image_2(self, command_buffer: CommandBuffer, blit_image_info: BlitImageInfo2):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBlitImage2.html
         """
         return self._v1_3.cmd_blit_image_2(
-            command_buffer, Ptr(to=p_blit_image_info).bitcast[BlitImageInfo2]()
+            command_buffer, Ptr(to=blit_image_info).bitcast[BlitImageInfo2]()
         )
 
     fn cmd_resolve_image_2(
-        self, command_buffer: CommandBuffer, p_resolve_image_info: ResolveImageInfo2
+        self, command_buffer: CommandBuffer, resolve_image_info: ResolveImageInfo2
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResolveImage2.html
         """
         return self._v1_3.cmd_resolve_image_2(
-            command_buffer, Ptr(to=p_resolve_image_info).bitcast[ResolveImageInfo2]()
+            command_buffer, Ptr(to=resolve_image_info).bitcast[ResolveImageInfo2]()
         )
 
-    fn cmd_begin_rendering(self, command_buffer: CommandBuffer, p_rendering_info: RenderingInfo):
+    fn cmd_begin_rendering(self, command_buffer: CommandBuffer, rendering_info: RenderingInfo):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRendering.html
         """
         return self._v1_3.cmd_begin_rendering(
-            command_buffer, Ptr(to=p_rendering_info).bitcast[RenderingInfo]()
+            command_buffer, Ptr(to=rendering_info).bitcast[RenderingInfo]()
         )
 
     fn cmd_end_rendering(self, command_buffer: CommandBuffer):
@@ -11634,8 +11614,8 @@ struct DeviceFunctionsV1_4(Copyable):
     fn get_device_buffer_memory_requirements(
         self,
         device: Device,
-        p_info: DeviceBufferMemoryRequirements,
-        mut p_memory_requirements: MemoryRequirements2,
+        info: DeviceBufferMemoryRequirements,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -11643,15 +11623,15 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_3.get_device_buffer_memory_requirements(
             device,
-            Ptr(to=p_info).bitcast[DeviceBufferMemoryRequirements](),
-            Ptr(to=p_memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[DeviceBufferMemoryRequirements](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_device_image_memory_requirements(
         self,
         device: Device,
-        p_info: DeviceImageMemoryRequirements,
-        mut p_memory_requirements: MemoryRequirements2,
+        info: DeviceImageMemoryRequirements,
+        mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -11659,15 +11639,15 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_3.get_device_image_memory_requirements(
             device,
-            Ptr(to=p_info).bitcast[DeviceImageMemoryRequirements](),
-            Ptr(to=p_memory_requirements).bitcast[MemoryRequirements2](),
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn get_device_image_sparse_memory_requirements(
         self,
         device: Device,
-        p_info: DeviceImageMemoryRequirements,
-        mut p_sparse_memory_requirement_count: UInt32,
+        info: DeviceImageMemoryRequirements,
+        mut sparse_memory_requirement_count: UInt32,
         p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
@@ -11676,8 +11656,8 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_3.get_device_image_sparse_memory_requirements(
             device,
-            Ptr(to=p_info).bitcast[DeviceImageMemoryRequirements](),
-            Ptr(to=p_sparse_memory_requirement_count).bitcast[UInt32](),
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements](),
+            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
             p_sparse_memory_requirements,
         )
 
@@ -11696,8 +11676,8 @@ struct DeviceFunctionsV1_4(Copyable):
     fn map_memory_2(
         self,
         device: Device,
-        p_memory_map_info: MemoryMapInfo,
-        mut pp_data: Ptr[NoneType, MutAnyOrigin],
+        memory_map_info: MemoryMapInfo,
+        mut p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -11705,16 +11685,16 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_4.map_memory_2(
             device,
-            Ptr(to=p_memory_map_info).bitcast[MemoryMapInfo](),
-            Ptr(to=pp_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
+            Ptr(to=memory_map_info).bitcast[MemoryMapInfo](),
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
         )
 
-    fn unmap_memory_2(self, device: Device, p_memory_unmap_info: MemoryUnmapInfo) -> Result:
+    fn unmap_memory_2(self, device: Device, memory_unmap_info: MemoryUnmapInfo) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUnmapMemory2.html
         """
-        return self._v1_4.unmap_memory_2(device, Ptr(to=p_memory_unmap_info).bitcast[MemoryUnmapInfo]())
+        return self._v1_4.unmap_memory_2(device, Ptr(to=memory_unmap_info).bitcast[MemoryUnmapInfo]())
 
     fn cmd_bind_index_buffer_2(
         self,
@@ -11731,7 +11711,7 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_4.cmd_bind_index_buffer_2(command_buffer, buffer, offset, size, index_type)
 
     fn get_rendering_area_granularity(
-        self, device: Device, p_rendering_area_info: RenderingAreaInfo, mut p_granularity: Extent2D
+        self, device: Device, rendering_area_info: RenderingAreaInfo, mut granularity: Extent2D
     ):
         """See official vulkan docs for details.
         
@@ -11739,12 +11719,12 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_4.get_rendering_area_granularity(
             device,
-            Ptr(to=p_rendering_area_info).bitcast[RenderingAreaInfo](),
-            Ptr(to=p_granularity).bitcast[Extent2D](),
+            Ptr(to=rendering_area_info).bitcast[RenderingAreaInfo](),
+            Ptr(to=granularity).bitcast[Extent2D](),
         )
 
     fn get_device_image_subresource_layout(
-        self, device: Device, p_info: DeviceImageSubresourceInfo, mut p_layout: SubresourceLayout2
+        self, device: Device, info: DeviceImageSubresourceInfo, mut layout: SubresourceLayout2
     ):
         """See official vulkan docs for details.
         
@@ -11752,16 +11732,16 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_4.get_device_image_subresource_layout(
             device,
-            Ptr(to=p_info).bitcast[DeviceImageSubresourceInfo](),
-            Ptr(to=p_layout).bitcast[SubresourceLayout2](),
+            Ptr(to=info).bitcast[DeviceImageSubresourceInfo](),
+            Ptr(to=layout).bitcast[SubresourceLayout2](),
         )
 
     fn get_image_subresource_layout_2(
         self,
         device: Device,
         image: Image,
-        p_subresource: ImageSubresource2,
-        mut p_layout: SubresourceLayout2,
+        subresource: ImageSubresource2,
+        mut layout: SubresourceLayout2,
     ):
         """See official vulkan docs for details.
         
@@ -11770,8 +11750,8 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_4.get_image_subresource_layout_2(
             device,
             image,
-            Ptr(to=p_subresource).bitcast[ImageSubresource2](),
-            Ptr(to=p_layout).bitcast[SubresourceLayout2](),
+            Ptr(to=subresource).bitcast[ImageSubresource2](),
+            Ptr(to=layout).bitcast[SubresourceLayout2](),
         )
 
     fn cmd_push_descriptor_set(
@@ -11808,67 +11788,66 @@ struct DeviceFunctionsV1_4(Copyable):
         )
 
     fn cmd_set_rendering_attachment_locations(
-        self, command_buffer: CommandBuffer, p_location_info: RenderingAttachmentLocationInfo
+        self, command_buffer: CommandBuffer, location_info: RenderingAttachmentLocationInfo
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRenderingAttachmentLocations.html
         """
         return self._v1_4.cmd_set_rendering_attachment_locations(
-            command_buffer, Ptr(to=p_location_info).bitcast[RenderingAttachmentLocationInfo]()
+            command_buffer, Ptr(to=location_info).bitcast[RenderingAttachmentLocationInfo]()
         )
 
     fn cmd_set_rendering_input_attachment_indices(
         self,
         command_buffer: CommandBuffer,
-        p_input_attachment_index_info: RenderingInputAttachmentIndexInfo,
+        input_attachment_index_info: RenderingInputAttachmentIndexInfo,
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRenderingInputAttachmentIndices.html
         """
         return self._v1_4.cmd_set_rendering_input_attachment_indices(
-            command_buffer,
-            Ptr(to=p_input_attachment_index_info).bitcast[RenderingInputAttachmentIndexInfo](),
+            command_buffer, Ptr(to=input_attachment_index_info).bitcast[RenderingInputAttachmentIndexInfo]()
         )
 
     fn cmd_bind_descriptor_sets_2(
-        self, command_buffer: CommandBuffer, p_bind_descriptor_sets_info: BindDescriptorSetsInfo
+        self, command_buffer: CommandBuffer, bind_descriptor_sets_info: BindDescriptorSetsInfo
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorSets2.html
         """
         return self._v1_4.cmd_bind_descriptor_sets_2(
-            command_buffer, Ptr(to=p_bind_descriptor_sets_info).bitcast[BindDescriptorSetsInfo]()
+            command_buffer, Ptr(to=bind_descriptor_sets_info).bitcast[BindDescriptorSetsInfo]()
         )
 
     fn cmd_push_constants_2(
-        self, command_buffer: CommandBuffer, p_push_constants_info: PushConstantsInfo
+        self, command_buffer: CommandBuffer, push_constants_info: PushConstantsInfo
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants2.html
         """
         return self._v1_4.cmd_push_constants_2(
-            command_buffer, Ptr(to=p_push_constants_info).bitcast[PushConstantsInfo]()
+            command_buffer, Ptr(to=push_constants_info).bitcast[PushConstantsInfo]()
         )
 
     fn cmd_push_descriptor_set_2(
-        self, command_buffer: CommandBuffer, p_push_descriptor_set_info: PushDescriptorSetInfo
+        self, command_buffer: CommandBuffer, push_descriptor_set_info: PushDescriptorSetInfo
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSet2.html
         """
         return self._v1_4.cmd_push_descriptor_set_2(
-            command_buffer, Ptr(to=p_push_descriptor_set_info).bitcast[PushDescriptorSetInfo]()
+            command_buffer, Ptr(to=push_descriptor_set_info).bitcast[PushDescriptorSetInfo]()
         )
 
     fn cmd_push_descriptor_set_with_template_2(
         self,
         command_buffer: CommandBuffer,
-        p_push_descriptor_set_with_template_info: PushDescriptorSetWithTemplateInfo,
+        push_descriptor_set_with_template_info: PushDescriptorSetWithTemplateInfo,
     ):
         """See official vulkan docs for details.
         
@@ -11876,40 +11855,40 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_4.cmd_push_descriptor_set_with_template_2(
             command_buffer,
-            Ptr(to=p_push_descriptor_set_with_template_info).bitcast[PushDescriptorSetWithTemplateInfo](),
+            Ptr(to=push_descriptor_set_with_template_info).bitcast[PushDescriptorSetWithTemplateInfo](),
         )
 
     fn copy_memory_to_image(
-        self, device: Device, p_copy_memory_to_image_info: CopyMemoryToImageInfo
+        self, device: Device, copy_memory_to_image_info: CopyMemoryToImageInfo
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMemoryToImage.html
         """
         return self._v1_4.copy_memory_to_image(
-            device, Ptr(to=p_copy_memory_to_image_info).bitcast[CopyMemoryToImageInfo]()
+            device, Ptr(to=copy_memory_to_image_info).bitcast[CopyMemoryToImageInfo]()
         )
 
     fn copy_image_to_memory(
-        self, device: Device, p_copy_image_to_memory_info: CopyImageToMemoryInfo
+        self, device: Device, copy_image_to_memory_info: CopyImageToMemoryInfo
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyImageToMemory.html
         """
         return self._v1_4.copy_image_to_memory(
-            device, Ptr(to=p_copy_image_to_memory_info).bitcast[CopyImageToMemoryInfo]()
+            device, Ptr(to=copy_image_to_memory_info).bitcast[CopyImageToMemoryInfo]()
         )
 
     fn copy_image_to_image(
-        self, device: Device, p_copy_image_to_image_info: CopyImageToImageInfo
+        self, device: Device, copy_image_to_image_info: CopyImageToImageInfo
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyImageToImage.html
         """
         return self._v1_4.copy_image_to_image(
-            device, Ptr(to=p_copy_image_to_image_info).bitcast[CopyImageToImageInfo]()
+            device, Ptr(to=copy_image_to_image_info).bitcast[CopyImageToImageInfo]()
         )
 
     fn transition_image_layout(
