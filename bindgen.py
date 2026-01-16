@@ -1072,7 +1072,7 @@ class MojoFuncpointer:
         return emit_fn_like(
             f"comptime {self.name} = fn",
             [str(arg) for arg in self.args],
-            suffix="" if returns_none else f" -> {self.return_type}"
+            suffix="\n" if returns_none else f" -> {self.return_type}\n"
         )
 
 
@@ -2134,12 +2134,6 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         arg_name = pascal_to_snake(decl.name)
         parsed_type = decl.type
 
-        is_const_char_ptr = (
-            isinstance(parsed_type, MojoPointerType)
-            and parsed_type.origin == "ImmutOrigin.external"
-            and isinstance(parsed_type.pointee_type, MojoBaseType)
-            and parsed_type.pointee_type.name == "c_char"
-        )
         is_void_ptr = (
             isinstance(parsed_type, MojoPointerType)
             and isinstance(parsed_type.pointee_type, MojoBaseType)
@@ -2151,15 +2145,12 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
             and param.len is None
             and not param.optional
         )
-        if is_const_char_ptr:
-            argument = MojoArgument(arg_name, MojoBaseType("CStringSlice", ["ImmutAnyOrigin"]))
-            call_arg = arg_name
-        elif should_strip_ptr:
+        if should_strip_ptr:
             parsed_type = assert_type(MojoPointerType, parsed_type)
-            argument = MojoArgument(arg_name, parsed_type.pointee_type, mut=parsed_type.origin == "MutOrigin.external")
+            argument = MojoArgument(arg_name, parsed_type.pointee_type, mut=parsed_type.origin == "MutAnyOrigin")
             call_arg = f"Ptr(to={arg_name}).bitcast[{parsed_type.pointee_type}]()"
         elif isinstance(parsed_type, MojoPointerType):
-            new_origin: MojoOriginLiteral = "MutAnyOrigin" if parsed_type.origin == "MutOrigin.external" else "ImmutAnyOrigin"
+            new_origin: MojoOriginLiteral = "MutAnyOrigin" if parsed_type.origin == "MutAnyOrigin" else "ImmutAnyOrigin"
             argument = MojoArgument(arg_name, MojoPointerType(parsed_type.pointee_type, new_origin))
             call_arg = arg_name
         else:
@@ -2594,6 +2585,14 @@ def parse_declarator(declarator: str) -> ParsedDeclarator:
     for i in range(ptr_level):
         origin: MojoOriginLiteral = "MutAnyOrigin" if not pointee_is_const[i] else "ImmutAnyOrigin"
         type = MojoPointerType(pointee_type=type, origin=origin)
+        is_const_char_ptr = (
+            type.origin == "ImmutAnyOrigin"
+            and isinstance(type.pointee_type, MojoBaseType)
+            and type.pointee_type.name == "c_char"
+        )
+        if is_const_char_ptr:
+            type = MojoBaseType("CStringSlice", ["ImmutAnyOrigin"])
+
     for dim in array_dims:
         type = MojoArrayType(element_type=type, length=dim.removeprefix("VK_"))
     

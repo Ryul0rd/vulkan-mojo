@@ -29,7 +29,7 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         self,
         p_create_info: InstanceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_instance: Instance,
+        mut p_instance: Instance,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -43,9 +43,9 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
 
     fn enumerate_instance_extension_properties(
         self,
-        p_layer_name: Ptr[c_char, ImmutAnyOrigin],
-        p_property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, ImmutAnyOrigin],
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        mut p_property_count: UInt32,
+        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -56,7 +56,7 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         )
 
     fn enumerate_instance_layer_properties(
-        self, p_property_count: UInt32, p_properties: Ptr[LayerProperties, ImmutAnyOrigin]
+        self, mut p_property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -84,7 +84,7 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         self,
         p_create_info: InstanceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_instance: Instance,
+        mut p_instance: Instance,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -98,9 +98,9 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
 
     fn enumerate_instance_extension_properties(
         self,
-        p_layer_name: Ptr[c_char, ImmutAnyOrigin],
-        p_property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, ImmutAnyOrigin],
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        mut p_property_count: UInt32,
+        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -111,7 +111,7 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         )
 
     fn enumerate_instance_layer_properties(
-        self, p_property_count: UInt32, p_properties: Ptr[LayerProperties, ImmutAnyOrigin]
+        self, mut p_property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -121,7 +121,7 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
             Ptr(to=p_property_count).bitcast[UInt32](), p_properties
         )
 
-    fn enumerate_instance_version(self, p_api_version: UInt32) -> Result:
+    fn enumerate_instance_version(self, mut p_api_version: UInt32) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
@@ -149,8 +149,8 @@ struct InstanceFunctionsV1_0(Copyable):
     fn enumerate_physical_devices(
         self,
         instance: Instance,
-        p_physical_device_count: UInt32,
-        p_physical_devices: Ptr[PhysicalDevice, ImmutAnyOrigin],
+        mut p_physical_device_count: UInt32,
+        p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -161,7 +161,7 @@ struct InstanceFunctionsV1_0(Copyable):
         )
 
     fn get_physical_device_features(
-        self, physical_device: PhysicalDevice, p_features: PhysicalDeviceFeatures
+        self, physical_device: PhysicalDevice, mut p_features: PhysicalDeviceFeatures
     ):
         """See official vulkan docs for details.
         
@@ -172,7 +172,10 @@ struct InstanceFunctionsV1_0(Copyable):
         )
 
     fn get_physical_device_format_properties(
-        self, physical_device: PhysicalDevice, format: Format, p_format_properties: FormatProperties
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        mut p_format_properties: FormatProperties,
     ):
         """See official vulkan docs for details.
         
@@ -190,7 +193,7 @@ struct InstanceFunctionsV1_0(Copyable):
         tiling: ImageTiling,
         usage: ImageUsageFlags,
         flags: ImageCreateFlags,
-        p_image_format_properties: ImageFormatProperties,
+        mut p_image_format_properties: ImageFormatProperties,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -207,7 +210,7 @@ struct InstanceFunctionsV1_0(Copyable):
         )
 
     fn get_physical_device_properties(
-        self, physical_device: PhysicalDevice, p_properties: PhysicalDeviceProperties
+        self, physical_device: PhysicalDevice, mut p_properties: PhysicalDeviceProperties
     ):
         """See official vulkan docs for details.
         
@@ -220,8 +223,8 @@ struct InstanceFunctionsV1_0(Copyable):
     fn get_physical_device_queue_family_properties(
         self,
         physical_device: PhysicalDevice,
-        p_queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties, ImmutAnyOrigin],
+        mut p_queue_family_property_count: UInt32,
+        p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -234,7 +237,9 @@ struct InstanceFunctionsV1_0(Copyable):
         )
 
     fn get_physical_device_memory_properties(
-        self, physical_device: PhysicalDevice, p_memory_properties: PhysicalDeviceMemoryProperties
+        self,
+        physical_device: PhysicalDevice,
+        mut p_memory_properties: PhysicalDeviceMemoryProperties,
     ):
         """See official vulkan docs for details.
         
@@ -245,7 +250,7 @@ struct InstanceFunctionsV1_0(Copyable):
         )
 
     fn get_instance_proc_addr(
-        self, instance: Instance, p_name: Ptr[c_char, ImmutAnyOrigin]
+        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
@@ -258,7 +263,7 @@ struct InstanceFunctionsV1_0(Copyable):
         physical_device: PhysicalDevice,
         p_create_info: DeviceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_device: Device,
+        mut p_device: Device,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -274,9 +279,9 @@ struct InstanceFunctionsV1_0(Copyable):
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: Ptr[c_char, ImmutAnyOrigin],
-        p_property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, ImmutAnyOrigin],
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        mut p_property_count: UInt32,
+        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -289,8 +294,8 @@ struct InstanceFunctionsV1_0(Copyable):
     fn enumerate_device_layer_properties(
         self,
         physical_device: PhysicalDevice,
-        p_property_count: UInt32,
-        p_properties: Ptr[LayerProperties, ImmutAnyOrigin],
+        mut p_property_count: UInt32,
+        p_properties: Ptr[LayerProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -308,8 +313,8 @@ struct InstanceFunctionsV1_0(Copyable):
         samples: SampleCountFlagBits,
         usage: ImageUsageFlags,
         tiling: ImageTiling,
-        p_property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties, ImmutAnyOrigin],
+        mut p_property_count: UInt32,
+        p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -349,8 +354,8 @@ struct InstanceFunctionsV1_1(Copyable):
     fn enumerate_physical_devices(
         self,
         instance: Instance,
-        p_physical_device_count: UInt32,
-        p_physical_devices: Ptr[PhysicalDevice, ImmutAnyOrigin],
+        mut p_physical_device_count: UInt32,
+        p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -361,7 +366,7 @@ struct InstanceFunctionsV1_1(Copyable):
         )
 
     fn get_physical_device_features(
-        self, physical_device: PhysicalDevice, p_features: PhysicalDeviceFeatures
+        self, physical_device: PhysicalDevice, mut p_features: PhysicalDeviceFeatures
     ):
         """See official vulkan docs for details.
         
@@ -372,7 +377,10 @@ struct InstanceFunctionsV1_1(Copyable):
         )
 
     fn get_physical_device_format_properties(
-        self, physical_device: PhysicalDevice, format: Format, p_format_properties: FormatProperties
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        mut p_format_properties: FormatProperties,
     ):
         """See official vulkan docs for details.
         
@@ -390,7 +398,7 @@ struct InstanceFunctionsV1_1(Copyable):
         tiling: ImageTiling,
         usage: ImageUsageFlags,
         flags: ImageCreateFlags,
-        p_image_format_properties: ImageFormatProperties,
+        mut p_image_format_properties: ImageFormatProperties,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -407,7 +415,7 @@ struct InstanceFunctionsV1_1(Copyable):
         )
 
     fn get_physical_device_properties(
-        self, physical_device: PhysicalDevice, p_properties: PhysicalDeviceProperties
+        self, physical_device: PhysicalDevice, mut p_properties: PhysicalDeviceProperties
     ):
         """See official vulkan docs for details.
         
@@ -420,8 +428,8 @@ struct InstanceFunctionsV1_1(Copyable):
     fn get_physical_device_queue_family_properties(
         self,
         physical_device: PhysicalDevice,
-        p_queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties, ImmutAnyOrigin],
+        mut p_queue_family_property_count: UInt32,
+        p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -434,7 +442,9 @@ struct InstanceFunctionsV1_1(Copyable):
         )
 
     fn get_physical_device_memory_properties(
-        self, physical_device: PhysicalDevice, p_memory_properties: PhysicalDeviceMemoryProperties
+        self,
+        physical_device: PhysicalDevice,
+        mut p_memory_properties: PhysicalDeviceMemoryProperties,
     ):
         """See official vulkan docs for details.
         
@@ -445,7 +455,7 @@ struct InstanceFunctionsV1_1(Copyable):
         )
 
     fn get_instance_proc_addr(
-        self, instance: Instance, p_name: Ptr[c_char, ImmutAnyOrigin]
+        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
@@ -458,7 +468,7 @@ struct InstanceFunctionsV1_1(Copyable):
         physical_device: PhysicalDevice,
         p_create_info: DeviceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_device: Device,
+        mut p_device: Device,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -474,9 +484,9 @@ struct InstanceFunctionsV1_1(Copyable):
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: Ptr[c_char, ImmutAnyOrigin],
-        p_property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, ImmutAnyOrigin],
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        mut p_property_count: UInt32,
+        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -489,8 +499,8 @@ struct InstanceFunctionsV1_1(Copyable):
     fn enumerate_device_layer_properties(
         self,
         physical_device: PhysicalDevice,
-        p_property_count: UInt32,
-        p_properties: Ptr[LayerProperties, ImmutAnyOrigin],
+        mut p_property_count: UInt32,
+        p_properties: Ptr[LayerProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -508,8 +518,8 @@ struct InstanceFunctionsV1_1(Copyable):
         samples: SampleCountFlagBits,
         usage: ImageUsageFlags,
         tiling: ImageTiling,
-        p_property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties, ImmutAnyOrigin],
+        mut p_property_count: UInt32,
+        p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -529,8 +539,8 @@ struct InstanceFunctionsV1_1(Copyable):
     fn enumerate_physical_device_groups(
         self,
         instance: Instance,
-        p_physical_device_group_count: UInt32,
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, ImmutAnyOrigin],
+        mut p_physical_device_group_count: UInt32,
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -543,7 +553,7 @@ struct InstanceFunctionsV1_1(Copyable):
         )
 
     fn get_physical_device_features_2(
-        self, physical_device: PhysicalDevice, p_features: PhysicalDeviceFeatures2
+        self, physical_device: PhysicalDevice, mut p_features: PhysicalDeviceFeatures2
     ):
         """See official vulkan docs for details.
         
@@ -554,7 +564,7 @@ struct InstanceFunctionsV1_1(Copyable):
         )
 
     fn get_physical_device_properties_2(
-        self, physical_device: PhysicalDevice, p_properties: PhysicalDeviceProperties2
+        self, physical_device: PhysicalDevice, mut p_properties: PhysicalDeviceProperties2
     ):
         """See official vulkan docs for details.
         
@@ -568,7 +578,7 @@ struct InstanceFunctionsV1_1(Copyable):
         self,
         physical_device: PhysicalDevice,
         format: Format,
-        p_format_properties: FormatProperties2,
+        mut p_format_properties: FormatProperties2,
     ):
         """See official vulkan docs for details.
         
@@ -582,7 +592,7 @@ struct InstanceFunctionsV1_1(Copyable):
         self,
         physical_device: PhysicalDevice,
         p_image_format_info: PhysicalDeviceImageFormatInfo2,
-        p_image_format_properties: ImageFormatProperties2,
+        mut p_image_format_properties: ImageFormatProperties2,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -597,8 +607,8 @@ struct InstanceFunctionsV1_1(Copyable):
     fn get_physical_device_queue_family_properties_2(
         self,
         physical_device: PhysicalDevice,
-        p_queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties2, ImmutAnyOrigin],
+        mut p_queue_family_property_count: UInt32,
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -611,7 +621,9 @@ struct InstanceFunctionsV1_1(Copyable):
         )
 
     fn get_physical_device_memory_properties_2(
-        self, physical_device: PhysicalDevice, p_memory_properties: PhysicalDeviceMemoryProperties2
+        self,
+        physical_device: PhysicalDevice,
+        mut p_memory_properties: PhysicalDeviceMemoryProperties2,
     ):
         """See official vulkan docs for details.
         
@@ -625,8 +637,8 @@ struct InstanceFunctionsV1_1(Copyable):
         self,
         physical_device: PhysicalDevice,
         p_format_info: PhysicalDeviceSparseImageFormatInfo2,
-        p_property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties2, ImmutAnyOrigin],
+        mut p_property_count: UInt32,
+        p_properties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -643,7 +655,7 @@ struct InstanceFunctionsV1_1(Copyable):
         self,
         physical_device: PhysicalDevice,
         p_external_buffer_info: PhysicalDeviceExternalBufferInfo,
-        p_external_buffer_properties: ExternalBufferProperties,
+        mut p_external_buffer_properties: ExternalBufferProperties,
     ):
         """See official vulkan docs for details.
         
@@ -659,7 +671,7 @@ struct InstanceFunctionsV1_1(Copyable):
         self,
         physical_device: PhysicalDevice,
         p_external_fence_info: PhysicalDeviceExternalFenceInfo,
-        p_external_fence_properties: ExternalFenceProperties,
+        mut p_external_fence_properties: ExternalFenceProperties,
     ):
         """See official vulkan docs for details.
         
@@ -675,7 +687,7 @@ struct InstanceFunctionsV1_1(Copyable):
         self,
         physical_device: PhysicalDevice,
         p_external_semaphore_info: PhysicalDeviceExternalSemaphoreInfo,
-        p_external_semaphore_properties: ExternalSemaphoreProperties,
+        mut p_external_semaphore_properties: ExternalSemaphoreProperties,
     ):
         """See official vulkan docs for details.
         
@@ -712,8 +724,8 @@ struct InstanceFunctionsV1_3(Copyable):
     fn enumerate_physical_devices(
         self,
         instance: Instance,
-        p_physical_device_count: UInt32,
-        p_physical_devices: Ptr[PhysicalDevice, ImmutAnyOrigin],
+        mut p_physical_device_count: UInt32,
+        p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -724,7 +736,7 @@ struct InstanceFunctionsV1_3(Copyable):
         )
 
     fn get_physical_device_features(
-        self, physical_device: PhysicalDevice, p_features: PhysicalDeviceFeatures
+        self, physical_device: PhysicalDevice, mut p_features: PhysicalDeviceFeatures
     ):
         """See official vulkan docs for details.
         
@@ -735,7 +747,10 @@ struct InstanceFunctionsV1_3(Copyable):
         )
 
     fn get_physical_device_format_properties(
-        self, physical_device: PhysicalDevice, format: Format, p_format_properties: FormatProperties
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        mut p_format_properties: FormatProperties,
     ):
         """See official vulkan docs for details.
         
@@ -753,7 +768,7 @@ struct InstanceFunctionsV1_3(Copyable):
         tiling: ImageTiling,
         usage: ImageUsageFlags,
         flags: ImageCreateFlags,
-        p_image_format_properties: ImageFormatProperties,
+        mut p_image_format_properties: ImageFormatProperties,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -770,7 +785,7 @@ struct InstanceFunctionsV1_3(Copyable):
         )
 
     fn get_physical_device_properties(
-        self, physical_device: PhysicalDevice, p_properties: PhysicalDeviceProperties
+        self, physical_device: PhysicalDevice, mut p_properties: PhysicalDeviceProperties
     ):
         """See official vulkan docs for details.
         
@@ -783,8 +798,8 @@ struct InstanceFunctionsV1_3(Copyable):
     fn get_physical_device_queue_family_properties(
         self,
         physical_device: PhysicalDevice,
-        p_queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties, ImmutAnyOrigin],
+        mut p_queue_family_property_count: UInt32,
+        p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -797,7 +812,9 @@ struct InstanceFunctionsV1_3(Copyable):
         )
 
     fn get_physical_device_memory_properties(
-        self, physical_device: PhysicalDevice, p_memory_properties: PhysicalDeviceMemoryProperties
+        self,
+        physical_device: PhysicalDevice,
+        mut p_memory_properties: PhysicalDeviceMemoryProperties,
     ):
         """See official vulkan docs for details.
         
@@ -808,7 +825,7 @@ struct InstanceFunctionsV1_3(Copyable):
         )
 
     fn get_instance_proc_addr(
-        self, instance: Instance, p_name: Ptr[c_char, ImmutAnyOrigin]
+        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
@@ -821,7 +838,7 @@ struct InstanceFunctionsV1_3(Copyable):
         physical_device: PhysicalDevice,
         p_create_info: DeviceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_device: Device,
+        mut p_device: Device,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -837,9 +854,9 @@ struct InstanceFunctionsV1_3(Copyable):
     fn enumerate_device_extension_properties(
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: Ptr[c_char, ImmutAnyOrigin],
-        p_property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, ImmutAnyOrigin],
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        mut p_property_count: UInt32,
+        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -852,8 +869,8 @@ struct InstanceFunctionsV1_3(Copyable):
     fn enumerate_device_layer_properties(
         self,
         physical_device: PhysicalDevice,
-        p_property_count: UInt32,
-        p_properties: Ptr[LayerProperties, ImmutAnyOrigin],
+        mut p_property_count: UInt32,
+        p_properties: Ptr[LayerProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -871,8 +888,8 @@ struct InstanceFunctionsV1_3(Copyable):
         samples: SampleCountFlagBits,
         usage: ImageUsageFlags,
         tiling: ImageTiling,
-        p_property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties, ImmutAnyOrigin],
+        mut p_property_count: UInt32,
+        p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -892,8 +909,8 @@ struct InstanceFunctionsV1_3(Copyable):
     fn enumerate_physical_device_groups(
         self,
         instance: Instance,
-        p_physical_device_group_count: UInt32,
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, ImmutAnyOrigin],
+        mut p_physical_device_group_count: UInt32,
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -906,7 +923,7 @@ struct InstanceFunctionsV1_3(Copyable):
         )
 
     fn get_physical_device_features_2(
-        self, physical_device: PhysicalDevice, p_features: PhysicalDeviceFeatures2
+        self, physical_device: PhysicalDevice, mut p_features: PhysicalDeviceFeatures2
     ):
         """See official vulkan docs for details.
         
@@ -917,7 +934,7 @@ struct InstanceFunctionsV1_3(Copyable):
         )
 
     fn get_physical_device_properties_2(
-        self, physical_device: PhysicalDevice, p_properties: PhysicalDeviceProperties2
+        self, physical_device: PhysicalDevice, mut p_properties: PhysicalDeviceProperties2
     ):
         """See official vulkan docs for details.
         
@@ -931,7 +948,7 @@ struct InstanceFunctionsV1_3(Copyable):
         self,
         physical_device: PhysicalDevice,
         format: Format,
-        p_format_properties: FormatProperties2,
+        mut p_format_properties: FormatProperties2,
     ):
         """See official vulkan docs for details.
         
@@ -945,7 +962,7 @@ struct InstanceFunctionsV1_3(Copyable):
         self,
         physical_device: PhysicalDevice,
         p_image_format_info: PhysicalDeviceImageFormatInfo2,
-        p_image_format_properties: ImageFormatProperties2,
+        mut p_image_format_properties: ImageFormatProperties2,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -960,8 +977,8 @@ struct InstanceFunctionsV1_3(Copyable):
     fn get_physical_device_queue_family_properties_2(
         self,
         physical_device: PhysicalDevice,
-        p_queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties2, ImmutAnyOrigin],
+        mut p_queue_family_property_count: UInt32,
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -974,7 +991,9 @@ struct InstanceFunctionsV1_3(Copyable):
         )
 
     fn get_physical_device_memory_properties_2(
-        self, physical_device: PhysicalDevice, p_memory_properties: PhysicalDeviceMemoryProperties2
+        self,
+        physical_device: PhysicalDevice,
+        mut p_memory_properties: PhysicalDeviceMemoryProperties2,
     ):
         """See official vulkan docs for details.
         
@@ -988,8 +1007,8 @@ struct InstanceFunctionsV1_3(Copyable):
         self,
         physical_device: PhysicalDevice,
         p_format_info: PhysicalDeviceSparseImageFormatInfo2,
-        p_property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties2, ImmutAnyOrigin],
+        mut p_property_count: UInt32,
+        p_properties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -1006,7 +1025,7 @@ struct InstanceFunctionsV1_3(Copyable):
         self,
         physical_device: PhysicalDevice,
         p_external_buffer_info: PhysicalDeviceExternalBufferInfo,
-        p_external_buffer_properties: ExternalBufferProperties,
+        mut p_external_buffer_properties: ExternalBufferProperties,
     ):
         """See official vulkan docs for details.
         
@@ -1022,7 +1041,7 @@ struct InstanceFunctionsV1_3(Copyable):
         self,
         physical_device: PhysicalDevice,
         p_external_fence_info: PhysicalDeviceExternalFenceInfo,
-        p_external_fence_properties: ExternalFenceProperties,
+        mut p_external_fence_properties: ExternalFenceProperties,
     ):
         """See official vulkan docs for details.
         
@@ -1038,7 +1057,7 @@ struct InstanceFunctionsV1_3(Copyable):
         self,
         physical_device: PhysicalDevice,
         p_external_semaphore_info: PhysicalDeviceExternalSemaphoreInfo,
-        p_external_semaphore_properties: ExternalSemaphoreProperties,
+        mut p_external_semaphore_properties: ExternalSemaphoreProperties,
     ):
         """See official vulkan docs for details.
         
@@ -1053,8 +1072,8 @@ struct InstanceFunctionsV1_3(Copyable):
     fn get_physical_device_tool_properties(
         self,
         physical_device: PhysicalDevice,
-        p_tool_count: UInt32,
-        p_tool_properties: Ptr[PhysicalDeviceToolProperties, ImmutAnyOrigin],
+        mut p_tool_count: UInt32,
+        p_tool_properties: Ptr[PhysicalDeviceToolProperties, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1074,7 +1093,7 @@ struct DeviceFunctionsV1_0(Copyable):
         self._v1_0 = DeviceFunctionsAdditionsV1_0(dlhandle, device)
 
     fn get_device_proc_addr(
-        self, device: Device, p_name: Ptr[c_char, ImmutAnyOrigin]
+        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
@@ -1090,7 +1109,7 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.destroy_device(device, p_allocator)
 
     fn get_device_queue(
-        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, p_queue: Queue
+        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut p_queue: Queue
     ):
         """See official vulkan docs for details.
         
@@ -1132,7 +1151,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_allocate_info: MemoryAllocateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_memory: DeviceMemory,
+        mut p_memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1164,7 +1183,7 @@ struct DeviceFunctionsV1_0(Copyable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[NoneType, MutAnyOrigin],
+        mut pp_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1206,7 +1225,7 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
 
     fn get_device_memory_commitment(
-        self, device: Device, memory: DeviceMemory, p_committed_memory_in_bytes: DeviceSize
+        self, device: Device, memory: DeviceMemory, mut p_committed_memory_in_bytes: DeviceSize
     ):
         """See official vulkan docs for details.
         
@@ -1235,7 +1254,7 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
     fn get_buffer_memory_requirements(
-        self, device: Device, buffer: Buffer, p_memory_requirements: MemoryRequirements
+        self, device: Device, buffer: Buffer, mut p_memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
@@ -1246,7 +1265,7 @@ struct DeviceFunctionsV1_0(Copyable):
         )
 
     fn get_image_memory_requirements(
-        self, device: Device, image: Image, p_memory_requirements: MemoryRequirements
+        self, device: Device, image: Image, mut p_memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
@@ -1260,8 +1279,8 @@ struct DeviceFunctionsV1_0(Copyable):
         self,
         device: Device,
         image: Image,
-        p_sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, ImmutAnyOrigin],
+        mut p_sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -1292,7 +1311,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: FenceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_fence: Fence,
+        mut p_fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1349,7 +1368,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: SemaphoreCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_semaphore: Semaphore,
+        mut p_semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1379,7 +1398,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: EventCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_event: Event,
+        mut p_event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1427,7 +1446,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: QueryPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_query_pool: QueryPool,
+        mut p_query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1459,7 +1478,7 @@ struct DeviceFunctionsV1_0(Copyable):
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, MutAnyOrigin],
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
@@ -1476,7 +1495,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: BufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_buffer: Buffer,
+        mut p_buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1503,7 +1522,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: BufferViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_view: BufferView,
+        mut p_view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1533,7 +1552,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: ImageCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_image: Image,
+        mut p_image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1560,7 +1579,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         image: Image,
         p_subresource: ImageSubresource,
-        p_layout: SubresourceLayout,
+        mut p_layout: SubresourceLayout,
     ):
         """See official vulkan docs for details.
         
@@ -1578,7 +1597,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: ImageViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_view: ImageView,
+        mut p_view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1608,7 +1627,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: ShaderModuleCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_shader_module: ShaderModule,
+        mut p_shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1638,7 +1657,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: PipelineCacheCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipeline_cache: PipelineCache,
+        mut p_pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1667,8 +1686,8 @@ struct DeviceFunctionsV1_0(Copyable):
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        p_data_size: UInt,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        mut p_data_size: UInt,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1698,7 +1717,7 @@ struct DeviceFunctionsV1_0(Copyable):
         create_info_count: UInt32,
         p_create_infos: Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1715,7 +1734,7 @@ struct DeviceFunctionsV1_0(Copyable):
         create_info_count: UInt32,
         p_create_infos: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1742,7 +1761,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: PipelineLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipeline_layout: PipelineLayout,
+        mut p_pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1772,7 +1791,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: SamplerCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_sampler: Sampler,
+        mut p_sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1802,7 +1821,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: DescriptorSetLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_set_layout: DescriptorSetLayout,
+        mut p_set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1832,7 +1851,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: DescriptorPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_descriptor_pool: DescriptorPool,
+        mut p_descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1870,7 +1889,7 @@ struct DeviceFunctionsV1_0(Copyable):
         self,
         device: Device,
         p_allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1916,7 +1935,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: FramebufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_framebuffer: Framebuffer,
+        mut p_framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1946,7 +1965,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: RenderPassCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_render_pass: RenderPass,
+        mut p_render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1972,7 +1991,7 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
     fn get_render_area_granularity(
-        self, device: Device, render_pass: RenderPass, p_granularity: Extent2D
+        self, device: Device, render_pass: RenderPass, mut p_granularity: Extent2D
     ):
         """See official vulkan docs for details.
         
@@ -1987,7 +2006,7 @@ struct DeviceFunctionsV1_0(Copyable):
         device: Device,
         p_create_info: CommandPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_command_pool: CommandPool,
+        mut p_command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -2025,7 +2044,7 @@ struct DeviceFunctionsV1_0(Copyable):
         self,
         device: Device,
         p_allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -2742,7 +2761,7 @@ struct DeviceFunctionsV1_1(Copyable):
         self._v1_1 = DeviceFunctionsAdditionsV1_1(dlhandle, device)
 
     fn get_device_proc_addr(
-        self, device: Device, p_name: Ptr[c_char, ImmutAnyOrigin]
+        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
@@ -2758,7 +2777,7 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.destroy_device(device, p_allocator)
 
     fn get_device_queue(
-        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, p_queue: Queue
+        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut p_queue: Queue
     ):
         """See official vulkan docs for details.
         
@@ -2800,7 +2819,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_allocate_info: MemoryAllocateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_memory: DeviceMemory,
+        mut p_memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -2832,7 +2851,7 @@ struct DeviceFunctionsV1_1(Copyable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[NoneType, MutAnyOrigin],
+        mut pp_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -2874,7 +2893,7 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
 
     fn get_device_memory_commitment(
-        self, device: Device, memory: DeviceMemory, p_committed_memory_in_bytes: DeviceSize
+        self, device: Device, memory: DeviceMemory, mut p_committed_memory_in_bytes: DeviceSize
     ):
         """See official vulkan docs for details.
         
@@ -2903,7 +2922,7 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
     fn get_buffer_memory_requirements(
-        self, device: Device, buffer: Buffer, p_memory_requirements: MemoryRequirements
+        self, device: Device, buffer: Buffer, mut p_memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
@@ -2914,7 +2933,7 @@ struct DeviceFunctionsV1_1(Copyable):
         )
 
     fn get_image_memory_requirements(
-        self, device: Device, image: Image, p_memory_requirements: MemoryRequirements
+        self, device: Device, image: Image, mut p_memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
@@ -2928,8 +2947,8 @@ struct DeviceFunctionsV1_1(Copyable):
         self,
         device: Device,
         image: Image,
-        p_sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, ImmutAnyOrigin],
+        mut p_sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -2960,7 +2979,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: FenceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_fence: Fence,
+        mut p_fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3017,7 +3036,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: SemaphoreCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_semaphore: Semaphore,
+        mut p_semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3047,7 +3066,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: EventCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_event: Event,
+        mut p_event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3095,7 +3114,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: QueryPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_query_pool: QueryPool,
+        mut p_query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3127,7 +3146,7 @@ struct DeviceFunctionsV1_1(Copyable):
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, MutAnyOrigin],
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
@@ -3144,7 +3163,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: BufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_buffer: Buffer,
+        mut p_buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3171,7 +3190,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: BufferViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_view: BufferView,
+        mut p_view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3201,7 +3220,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: ImageCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_image: Image,
+        mut p_image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3228,7 +3247,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         image: Image,
         p_subresource: ImageSubresource,
-        p_layout: SubresourceLayout,
+        mut p_layout: SubresourceLayout,
     ):
         """See official vulkan docs for details.
         
@@ -3246,7 +3265,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: ImageViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_view: ImageView,
+        mut p_view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3276,7 +3295,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: ShaderModuleCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_shader_module: ShaderModule,
+        mut p_shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3306,7 +3325,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: PipelineCacheCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipeline_cache: PipelineCache,
+        mut p_pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3335,8 +3354,8 @@ struct DeviceFunctionsV1_1(Copyable):
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        p_data_size: UInt,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        mut p_data_size: UInt,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3366,7 +3385,7 @@ struct DeviceFunctionsV1_1(Copyable):
         create_info_count: UInt32,
         p_create_infos: Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3383,7 +3402,7 @@ struct DeviceFunctionsV1_1(Copyable):
         create_info_count: UInt32,
         p_create_infos: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3410,7 +3429,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: PipelineLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipeline_layout: PipelineLayout,
+        mut p_pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3440,7 +3459,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: SamplerCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_sampler: Sampler,
+        mut p_sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3470,7 +3489,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: DescriptorSetLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_set_layout: DescriptorSetLayout,
+        mut p_set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3500,7 +3519,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: DescriptorPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_descriptor_pool: DescriptorPool,
+        mut p_descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3538,7 +3557,7 @@ struct DeviceFunctionsV1_1(Copyable):
         self,
         device: Device,
         p_allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3584,7 +3603,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: FramebufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_framebuffer: Framebuffer,
+        mut p_framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3614,7 +3633,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: RenderPassCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_render_pass: RenderPass,
+        mut p_render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3640,7 +3659,7 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
     fn get_render_area_granularity(
-        self, device: Device, render_pass: RenderPass, p_granularity: Extent2D
+        self, device: Device, render_pass: RenderPass, mut p_granularity: Extent2D
     ):
         """See official vulkan docs for details.
         
@@ -3655,7 +3674,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: CommandPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_command_pool: CommandPool,
+        mut p_command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3693,7 +3712,7 @@ struct DeviceFunctionsV1_1(Copyable):
         self,
         device: Device,
         p_allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4428,7 +4447,7 @@ struct DeviceFunctionsV1_1(Copyable):
         heap_index: UInt32,
         local_device_index: UInt32,
         remote_device_index: UInt32,
-        p_peer_memory_features: PeerMemoryFeatureFlags,
+        mut p_peer_memory_features: PeerMemoryFeatureFlags,
     ):
         """See official vulkan docs for details.
         
@@ -4477,7 +4496,7 @@ struct DeviceFunctionsV1_1(Copyable):
         self,
         device: Device,
         p_info: ImageMemoryRequirementsInfo2,
-        p_memory_requirements: MemoryRequirements2,
+        mut p_memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -4493,7 +4512,7 @@ struct DeviceFunctionsV1_1(Copyable):
         self,
         device: Device,
         p_info: BufferMemoryRequirementsInfo2,
-        p_memory_requirements: MemoryRequirements2,
+        mut p_memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -4509,8 +4528,8 @@ struct DeviceFunctionsV1_1(Copyable):
         self,
         device: Device,
         p_info: ImageSparseMemoryRequirementsInfo2,
-        p_sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, ImmutAnyOrigin],
+        mut p_sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -4532,7 +4551,9 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_1.trim_command_pool(device, command_pool, flags)
 
-    fn get_device_queue_2(self, device: Device, p_queue_info: DeviceQueueInfo2, p_queue: Queue):
+    fn get_device_queue_2(
+        self, device: Device, p_queue_info: DeviceQueueInfo2, mut p_queue: Queue
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
@@ -4546,7 +4567,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: SamplerYcbcrConversionCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_ycbcr_conversion: SamplerYcbcrConversion,
+        mut p_ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4576,7 +4597,7 @@ struct DeviceFunctionsV1_1(Copyable):
         device: Device,
         p_create_info: DescriptorUpdateTemplateCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_descriptor_update_template: DescriptorUpdateTemplate,
+        mut p_descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4622,7 +4643,7 @@ struct DeviceFunctionsV1_1(Copyable):
         self,
         device: Device,
         p_create_info: DescriptorSetLayoutCreateInfo,
-        p_support: DescriptorSetLayoutSupport,
+        mut p_support: DescriptorSetLayoutSupport,
     ):
         """See official vulkan docs for details.
         
@@ -4648,7 +4669,7 @@ struct DeviceFunctionsV1_2(Copyable):
         self._v1_2 = DeviceFunctionsAdditionsV1_2(dlhandle, device)
 
     fn get_device_proc_addr(
-        self, device: Device, p_name: Ptr[c_char, ImmutAnyOrigin]
+        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
@@ -4664,7 +4685,7 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.destroy_device(device, p_allocator)
 
     fn get_device_queue(
-        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, p_queue: Queue
+        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut p_queue: Queue
     ):
         """See official vulkan docs for details.
         
@@ -4706,7 +4727,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_allocate_info: MemoryAllocateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_memory: DeviceMemory,
+        mut p_memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4738,7 +4759,7 @@ struct DeviceFunctionsV1_2(Copyable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[NoneType, MutAnyOrigin],
+        mut pp_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4780,7 +4801,7 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
 
     fn get_device_memory_commitment(
-        self, device: Device, memory: DeviceMemory, p_committed_memory_in_bytes: DeviceSize
+        self, device: Device, memory: DeviceMemory, mut p_committed_memory_in_bytes: DeviceSize
     ):
         """See official vulkan docs for details.
         
@@ -4809,7 +4830,7 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
     fn get_buffer_memory_requirements(
-        self, device: Device, buffer: Buffer, p_memory_requirements: MemoryRequirements
+        self, device: Device, buffer: Buffer, mut p_memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
@@ -4820,7 +4841,7 @@ struct DeviceFunctionsV1_2(Copyable):
         )
 
     fn get_image_memory_requirements(
-        self, device: Device, image: Image, p_memory_requirements: MemoryRequirements
+        self, device: Device, image: Image, mut p_memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
@@ -4834,8 +4855,8 @@ struct DeviceFunctionsV1_2(Copyable):
         self,
         device: Device,
         image: Image,
-        p_sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, ImmutAnyOrigin],
+        mut p_sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -4866,7 +4887,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: FenceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_fence: Fence,
+        mut p_fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4923,7 +4944,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: SemaphoreCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_semaphore: Semaphore,
+        mut p_semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4953,7 +4974,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: EventCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_event: Event,
+        mut p_event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5001,7 +5022,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: QueryPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_query_pool: QueryPool,
+        mut p_query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5033,7 +5054,7 @@ struct DeviceFunctionsV1_2(Copyable):
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, MutAnyOrigin],
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
@@ -5050,7 +5071,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: BufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_buffer: Buffer,
+        mut p_buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5077,7 +5098,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: BufferViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_view: BufferView,
+        mut p_view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5107,7 +5128,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: ImageCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_image: Image,
+        mut p_image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5134,7 +5155,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         image: Image,
         p_subresource: ImageSubresource,
-        p_layout: SubresourceLayout,
+        mut p_layout: SubresourceLayout,
     ):
         """See official vulkan docs for details.
         
@@ -5152,7 +5173,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: ImageViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_view: ImageView,
+        mut p_view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5182,7 +5203,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: ShaderModuleCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_shader_module: ShaderModule,
+        mut p_shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5212,7 +5233,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: PipelineCacheCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipeline_cache: PipelineCache,
+        mut p_pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5241,8 +5262,8 @@ struct DeviceFunctionsV1_2(Copyable):
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        p_data_size: UInt,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        mut p_data_size: UInt,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5272,7 +5293,7 @@ struct DeviceFunctionsV1_2(Copyable):
         create_info_count: UInt32,
         p_create_infos: Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5289,7 +5310,7 @@ struct DeviceFunctionsV1_2(Copyable):
         create_info_count: UInt32,
         p_create_infos: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5316,7 +5337,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: PipelineLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipeline_layout: PipelineLayout,
+        mut p_pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5346,7 +5367,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: SamplerCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_sampler: Sampler,
+        mut p_sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5376,7 +5397,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: DescriptorSetLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_set_layout: DescriptorSetLayout,
+        mut p_set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5406,7 +5427,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: DescriptorPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_descriptor_pool: DescriptorPool,
+        mut p_descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5444,7 +5465,7 @@ struct DeviceFunctionsV1_2(Copyable):
         self,
         device: Device,
         p_allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5490,7 +5511,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: FramebufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_framebuffer: Framebuffer,
+        mut p_framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5520,7 +5541,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: RenderPassCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_render_pass: RenderPass,
+        mut p_render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5546,7 +5567,7 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
     fn get_render_area_granularity(
-        self, device: Device, render_pass: RenderPass, p_granularity: Extent2D
+        self, device: Device, render_pass: RenderPass, mut p_granularity: Extent2D
     ):
         """See official vulkan docs for details.
         
@@ -5561,7 +5582,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: CommandPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_command_pool: CommandPool,
+        mut p_command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5599,7 +5620,7 @@ struct DeviceFunctionsV1_2(Copyable):
         self,
         device: Device,
         p_allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -6334,7 +6355,7 @@ struct DeviceFunctionsV1_2(Copyable):
         heap_index: UInt32,
         local_device_index: UInt32,
         remote_device_index: UInt32,
-        p_peer_memory_features: PeerMemoryFeatureFlags,
+        mut p_peer_memory_features: PeerMemoryFeatureFlags,
     ):
         """See official vulkan docs for details.
         
@@ -6383,7 +6404,7 @@ struct DeviceFunctionsV1_2(Copyable):
         self,
         device: Device,
         p_info: ImageMemoryRequirementsInfo2,
-        p_memory_requirements: MemoryRequirements2,
+        mut p_memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -6399,7 +6420,7 @@ struct DeviceFunctionsV1_2(Copyable):
         self,
         device: Device,
         p_info: BufferMemoryRequirementsInfo2,
-        p_memory_requirements: MemoryRequirements2,
+        mut p_memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -6415,8 +6436,8 @@ struct DeviceFunctionsV1_2(Copyable):
         self,
         device: Device,
         p_info: ImageSparseMemoryRequirementsInfo2,
-        p_sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, ImmutAnyOrigin],
+        mut p_sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -6438,7 +6459,9 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_1.trim_command_pool(device, command_pool, flags)
 
-    fn get_device_queue_2(self, device: Device, p_queue_info: DeviceQueueInfo2, p_queue: Queue):
+    fn get_device_queue_2(
+        self, device: Device, p_queue_info: DeviceQueueInfo2, mut p_queue: Queue
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
@@ -6452,7 +6475,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: SamplerYcbcrConversionCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_ycbcr_conversion: SamplerYcbcrConversion,
+        mut p_ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -6482,7 +6505,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: DescriptorUpdateTemplateCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_descriptor_update_template: DescriptorUpdateTemplate,
+        mut p_descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -6528,7 +6551,7 @@ struct DeviceFunctionsV1_2(Copyable):
         self,
         device: Device,
         p_create_info: DescriptorSetLayoutCreateInfo,
-        p_support: DescriptorSetLayoutSupport,
+        mut p_support: DescriptorSetLayoutSupport,
     ):
         """See official vulkan docs for details.
         
@@ -6581,7 +6604,7 @@ struct DeviceFunctionsV1_2(Copyable):
         device: Device,
         p_create_info: RenderPassCreateInfo2,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_render_pass: RenderPass,
+        mut p_render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -6647,7 +6670,7 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_2.reset_query_pool(device, query_pool, first_query, query_count)
 
     fn get_semaphore_counter_value(
-        self, device: Device, semaphore: Semaphore, p_value: UInt64
+        self, device: Device, semaphore: Semaphore, mut p_value: UInt64
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -6720,7 +6743,7 @@ struct DeviceFunctionsV1_3(Copyable):
         self._v1_3 = DeviceFunctionsAdditionsV1_3(dlhandle, device)
 
     fn get_device_proc_addr(
-        self, device: Device, p_name: Ptr[c_char, ImmutAnyOrigin]
+        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
@@ -6736,7 +6759,7 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.destroy_device(device, p_allocator)
 
     fn get_device_queue(
-        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, p_queue: Queue
+        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut p_queue: Queue
     ):
         """See official vulkan docs for details.
         
@@ -6778,7 +6801,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_allocate_info: MemoryAllocateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_memory: DeviceMemory,
+        mut p_memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -6810,7 +6833,7 @@ struct DeviceFunctionsV1_3(Copyable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[NoneType, MutAnyOrigin],
+        mut pp_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -6852,7 +6875,7 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
 
     fn get_device_memory_commitment(
-        self, device: Device, memory: DeviceMemory, p_committed_memory_in_bytes: DeviceSize
+        self, device: Device, memory: DeviceMemory, mut p_committed_memory_in_bytes: DeviceSize
     ):
         """See official vulkan docs for details.
         
@@ -6881,7 +6904,7 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
     fn get_buffer_memory_requirements(
-        self, device: Device, buffer: Buffer, p_memory_requirements: MemoryRequirements
+        self, device: Device, buffer: Buffer, mut p_memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
@@ -6892,7 +6915,7 @@ struct DeviceFunctionsV1_3(Copyable):
         )
 
     fn get_image_memory_requirements(
-        self, device: Device, image: Image, p_memory_requirements: MemoryRequirements
+        self, device: Device, image: Image, mut p_memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
@@ -6906,8 +6929,8 @@ struct DeviceFunctionsV1_3(Copyable):
         self,
         device: Device,
         image: Image,
-        p_sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, ImmutAnyOrigin],
+        mut p_sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -6938,7 +6961,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: FenceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_fence: Fence,
+        mut p_fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -6995,7 +7018,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: SemaphoreCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_semaphore: Semaphore,
+        mut p_semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7025,7 +7048,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: EventCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_event: Event,
+        mut p_event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7073,7 +7096,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: QueryPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_query_pool: QueryPool,
+        mut p_query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7105,7 +7128,7 @@ struct DeviceFunctionsV1_3(Copyable):
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, MutAnyOrigin],
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
@@ -7122,7 +7145,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: BufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_buffer: Buffer,
+        mut p_buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7149,7 +7172,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: BufferViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_view: BufferView,
+        mut p_view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7179,7 +7202,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: ImageCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_image: Image,
+        mut p_image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7206,7 +7229,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         image: Image,
         p_subresource: ImageSubresource,
-        p_layout: SubresourceLayout,
+        mut p_layout: SubresourceLayout,
     ):
         """See official vulkan docs for details.
         
@@ -7224,7 +7247,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: ImageViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_view: ImageView,
+        mut p_view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7254,7 +7277,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: ShaderModuleCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_shader_module: ShaderModule,
+        mut p_shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7284,7 +7307,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: PipelineCacheCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipeline_cache: PipelineCache,
+        mut p_pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7313,8 +7336,8 @@ struct DeviceFunctionsV1_3(Copyable):
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        p_data_size: UInt,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        mut p_data_size: UInt,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7344,7 +7367,7 @@ struct DeviceFunctionsV1_3(Copyable):
         create_info_count: UInt32,
         p_create_infos: Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7361,7 +7384,7 @@ struct DeviceFunctionsV1_3(Copyable):
         create_info_count: UInt32,
         p_create_infos: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7388,7 +7411,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: PipelineLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipeline_layout: PipelineLayout,
+        mut p_pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7418,7 +7441,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: SamplerCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_sampler: Sampler,
+        mut p_sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7448,7 +7471,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: DescriptorSetLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_set_layout: DescriptorSetLayout,
+        mut p_set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7478,7 +7501,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: DescriptorPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_descriptor_pool: DescriptorPool,
+        mut p_descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7516,7 +7539,7 @@ struct DeviceFunctionsV1_3(Copyable):
         self,
         device: Device,
         p_allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7562,7 +7585,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: FramebufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_framebuffer: Framebuffer,
+        mut p_framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7592,7 +7615,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: RenderPassCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_render_pass: RenderPass,
+        mut p_render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7618,7 +7641,7 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
     fn get_render_area_granularity(
-        self, device: Device, render_pass: RenderPass, p_granularity: Extent2D
+        self, device: Device, render_pass: RenderPass, mut p_granularity: Extent2D
     ):
         """See official vulkan docs for details.
         
@@ -7633,7 +7656,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: CommandPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_command_pool: CommandPool,
+        mut p_command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -7671,7 +7694,7 @@ struct DeviceFunctionsV1_3(Copyable):
         self,
         device: Device,
         p_allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -8406,7 +8429,7 @@ struct DeviceFunctionsV1_3(Copyable):
         heap_index: UInt32,
         local_device_index: UInt32,
         remote_device_index: UInt32,
-        p_peer_memory_features: PeerMemoryFeatureFlags,
+        mut p_peer_memory_features: PeerMemoryFeatureFlags,
     ):
         """See official vulkan docs for details.
         
@@ -8455,7 +8478,7 @@ struct DeviceFunctionsV1_3(Copyable):
         self,
         device: Device,
         p_info: ImageMemoryRequirementsInfo2,
-        p_memory_requirements: MemoryRequirements2,
+        mut p_memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -8471,7 +8494,7 @@ struct DeviceFunctionsV1_3(Copyable):
         self,
         device: Device,
         p_info: BufferMemoryRequirementsInfo2,
-        p_memory_requirements: MemoryRequirements2,
+        mut p_memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -8487,8 +8510,8 @@ struct DeviceFunctionsV1_3(Copyable):
         self,
         device: Device,
         p_info: ImageSparseMemoryRequirementsInfo2,
-        p_sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, ImmutAnyOrigin],
+        mut p_sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -8510,7 +8533,9 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_1.trim_command_pool(device, command_pool, flags)
 
-    fn get_device_queue_2(self, device: Device, p_queue_info: DeviceQueueInfo2, p_queue: Queue):
+    fn get_device_queue_2(
+        self, device: Device, p_queue_info: DeviceQueueInfo2, mut p_queue: Queue
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
@@ -8524,7 +8549,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: SamplerYcbcrConversionCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_ycbcr_conversion: SamplerYcbcrConversion,
+        mut p_ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -8554,7 +8579,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: DescriptorUpdateTemplateCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_descriptor_update_template: DescriptorUpdateTemplate,
+        mut p_descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -8600,7 +8625,7 @@ struct DeviceFunctionsV1_3(Copyable):
         self,
         device: Device,
         p_create_info: DescriptorSetLayoutCreateInfo,
-        p_support: DescriptorSetLayoutSupport,
+        mut p_support: DescriptorSetLayoutSupport,
     ):
         """See official vulkan docs for details.
         
@@ -8653,7 +8678,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: RenderPassCreateInfo2,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_render_pass: RenderPass,
+        mut p_render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -8719,7 +8744,7 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_2.reset_query_pool(device, query_pool, first_query, query_count)
 
     fn get_semaphore_counter_value(
-        self, device: Device, semaphore: Semaphore, p_value: UInt64
+        self, device: Device, semaphore: Semaphore, mut p_value: UInt64
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -8781,7 +8806,7 @@ struct DeviceFunctionsV1_3(Copyable):
         device: Device,
         p_create_info: PrivateDataSlotCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_private_data_slot: PrivateDataSlot,
+        mut p_private_data_slot: PrivateDataSlot,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -8826,7 +8851,7 @@ struct DeviceFunctionsV1_3(Copyable):
         object_type: ObjectType,
         object_handle: UInt64,
         private_data_slot: PrivateDataSlot,
-        p_data: UInt64,
+        mut p_data: UInt64,
     ):
         """See official vulkan docs for details.
         
@@ -9132,7 +9157,7 @@ struct DeviceFunctionsV1_3(Copyable):
         self,
         device: Device,
         p_info: DeviceBufferMemoryRequirements,
-        p_memory_requirements: MemoryRequirements2,
+        mut p_memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -9148,7 +9173,7 @@ struct DeviceFunctionsV1_3(Copyable):
         self,
         device: Device,
         p_info: DeviceImageMemoryRequirements,
-        p_memory_requirements: MemoryRequirements2,
+        mut p_memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -9164,8 +9189,8 @@ struct DeviceFunctionsV1_3(Copyable):
         self,
         device: Device,
         p_info: DeviceImageMemoryRequirements,
-        p_sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, ImmutAnyOrigin],
+        mut p_sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -9196,7 +9221,7 @@ struct DeviceFunctionsV1_4(Copyable):
         self._v1_4 = DeviceFunctionsAdditionsV1_4(dlhandle, device)
 
     fn get_device_proc_addr(
-        self, device: Device, p_name: Ptr[c_char, ImmutAnyOrigin]
+        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
@@ -9212,7 +9237,7 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.destroy_device(device, p_allocator)
 
     fn get_device_queue(
-        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, p_queue: Queue
+        self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut p_queue: Queue
     ):
         """See official vulkan docs for details.
         
@@ -9254,7 +9279,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_allocate_info: MemoryAllocateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_memory: DeviceMemory,
+        mut p_memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9286,7 +9311,7 @@ struct DeviceFunctionsV1_4(Copyable):
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        pp_data: Ptr[NoneType, MutAnyOrigin],
+        mut pp_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9328,7 +9353,7 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
 
     fn get_device_memory_commitment(
-        self, device: Device, memory: DeviceMemory, p_committed_memory_in_bytes: DeviceSize
+        self, device: Device, memory: DeviceMemory, mut p_committed_memory_in_bytes: DeviceSize
     ):
         """See official vulkan docs for details.
         
@@ -9357,7 +9382,7 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.bind_image_memory(device, image, memory, memory_offset)
 
     fn get_buffer_memory_requirements(
-        self, device: Device, buffer: Buffer, p_memory_requirements: MemoryRequirements
+        self, device: Device, buffer: Buffer, mut p_memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
@@ -9368,7 +9393,7 @@ struct DeviceFunctionsV1_4(Copyable):
         )
 
     fn get_image_memory_requirements(
-        self, device: Device, image: Image, p_memory_requirements: MemoryRequirements
+        self, device: Device, image: Image, mut p_memory_requirements: MemoryRequirements
     ):
         """See official vulkan docs for details.
         
@@ -9382,8 +9407,8 @@ struct DeviceFunctionsV1_4(Copyable):
         self,
         device: Device,
         image: Image,
-        p_sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, ImmutAnyOrigin],
+        mut p_sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -9414,7 +9439,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: FenceCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_fence: Fence,
+        mut p_fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9471,7 +9496,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: SemaphoreCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_semaphore: Semaphore,
+        mut p_semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9501,7 +9526,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: EventCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_event: Event,
+        mut p_event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9549,7 +9574,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: QueryPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_query_pool: QueryPool,
+        mut p_query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9581,7 +9606,7 @@ struct DeviceFunctionsV1_4(Copyable):
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, MutAnyOrigin],
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
@@ -9598,7 +9623,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: BufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_buffer: Buffer,
+        mut p_buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9625,7 +9650,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: BufferViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_view: BufferView,
+        mut p_view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9655,7 +9680,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: ImageCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_image: Image,
+        mut p_image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9682,7 +9707,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         image: Image,
         p_subresource: ImageSubresource,
-        p_layout: SubresourceLayout,
+        mut p_layout: SubresourceLayout,
     ):
         """See official vulkan docs for details.
         
@@ -9700,7 +9725,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: ImageViewCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_view: ImageView,
+        mut p_view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9730,7 +9755,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: ShaderModuleCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_shader_module: ShaderModule,
+        mut p_shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9760,7 +9785,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: PipelineCacheCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipeline_cache: PipelineCache,
+        mut p_pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9789,8 +9814,8 @@ struct DeviceFunctionsV1_4(Copyable):
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        p_data_size: UInt,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        mut p_data_size: UInt,
+        p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9820,7 +9845,7 @@ struct DeviceFunctionsV1_4(Copyable):
         create_info_count: UInt32,
         p_create_infos: Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9837,7 +9862,7 @@ struct DeviceFunctionsV1_4(Copyable):
         create_info_count: UInt32,
         p_create_infos: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, ImmutAnyOrigin],
+        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9864,7 +9889,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: PipelineLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipeline_layout: PipelineLayout,
+        mut p_pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9894,7 +9919,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: SamplerCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_sampler: Sampler,
+        mut p_sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9924,7 +9949,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: DescriptorSetLayoutCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_set_layout: DescriptorSetLayout,
+        mut p_set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9954,7 +9979,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: DescriptorPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_descriptor_pool: DescriptorPool,
+        mut p_descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -9992,7 +10017,7 @@ struct DeviceFunctionsV1_4(Copyable):
         self,
         device: Device,
         p_allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -10038,7 +10063,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: FramebufferCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_framebuffer: Framebuffer,
+        mut p_framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -10068,7 +10093,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: RenderPassCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_render_pass: RenderPass,
+        mut p_render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -10094,7 +10119,7 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
 
     fn get_render_area_granularity(
-        self, device: Device, render_pass: RenderPass, p_granularity: Extent2D
+        self, device: Device, render_pass: RenderPass, mut p_granularity: Extent2D
     ):
         """See official vulkan docs for details.
         
@@ -10109,7 +10134,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: CommandPoolCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_command_pool: CommandPool,
+        mut p_command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -10147,7 +10172,7 @@ struct DeviceFunctionsV1_4(Copyable):
         self,
         device: Device,
         p_allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -10882,7 +10907,7 @@ struct DeviceFunctionsV1_4(Copyable):
         heap_index: UInt32,
         local_device_index: UInt32,
         remote_device_index: UInt32,
-        p_peer_memory_features: PeerMemoryFeatureFlags,
+        mut p_peer_memory_features: PeerMemoryFeatureFlags,
     ):
         """See official vulkan docs for details.
         
@@ -10931,7 +10956,7 @@ struct DeviceFunctionsV1_4(Copyable):
         self,
         device: Device,
         p_info: ImageMemoryRequirementsInfo2,
-        p_memory_requirements: MemoryRequirements2,
+        mut p_memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -10947,7 +10972,7 @@ struct DeviceFunctionsV1_4(Copyable):
         self,
         device: Device,
         p_info: BufferMemoryRequirementsInfo2,
-        p_memory_requirements: MemoryRequirements2,
+        mut p_memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -10963,8 +10988,8 @@ struct DeviceFunctionsV1_4(Copyable):
         self,
         device: Device,
         p_info: ImageSparseMemoryRequirementsInfo2,
-        p_sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, ImmutAnyOrigin],
+        mut p_sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -10986,7 +11011,9 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_1.trim_command_pool(device, command_pool, flags)
 
-    fn get_device_queue_2(self, device: Device, p_queue_info: DeviceQueueInfo2, p_queue: Queue):
+    fn get_device_queue_2(
+        self, device: Device, p_queue_info: DeviceQueueInfo2, mut p_queue: Queue
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceQueue2.html
@@ -11000,7 +11027,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: SamplerYcbcrConversionCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_ycbcr_conversion: SamplerYcbcrConversion,
+        mut p_ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -11030,7 +11057,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: DescriptorUpdateTemplateCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_descriptor_update_template: DescriptorUpdateTemplate,
+        mut p_descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -11076,7 +11103,7 @@ struct DeviceFunctionsV1_4(Copyable):
         self,
         device: Device,
         p_create_info: DescriptorSetLayoutCreateInfo,
-        p_support: DescriptorSetLayoutSupport,
+        mut p_support: DescriptorSetLayoutSupport,
     ):
         """See official vulkan docs for details.
         
@@ -11129,7 +11156,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: RenderPassCreateInfo2,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_render_pass: RenderPass,
+        mut p_render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -11195,7 +11222,7 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_2.reset_query_pool(device, query_pool, first_query, query_count)
 
     fn get_semaphore_counter_value(
-        self, device: Device, semaphore: Semaphore, p_value: UInt64
+        self, device: Device, semaphore: Semaphore, mut p_value: UInt64
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -11257,7 +11284,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         p_create_info: PrivateDataSlotCreateInfo,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_private_data_slot: PrivateDataSlot,
+        mut p_private_data_slot: PrivateDataSlot,
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -11302,7 +11329,7 @@ struct DeviceFunctionsV1_4(Copyable):
         object_type: ObjectType,
         object_handle: UInt64,
         private_data_slot: PrivateDataSlot,
-        p_data: UInt64,
+        mut p_data: UInt64,
     ):
         """See official vulkan docs for details.
         
@@ -11608,7 +11635,7 @@ struct DeviceFunctionsV1_4(Copyable):
         self,
         device: Device,
         p_info: DeviceBufferMemoryRequirements,
-        p_memory_requirements: MemoryRequirements2,
+        mut p_memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -11624,7 +11651,7 @@ struct DeviceFunctionsV1_4(Copyable):
         self,
         device: Device,
         p_info: DeviceImageMemoryRequirements,
-        p_memory_requirements: MemoryRequirements2,
+        mut p_memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
         
@@ -11640,8 +11667,8 @@ struct DeviceFunctionsV1_4(Copyable):
         self,
         device: Device,
         p_info: DeviceImageMemoryRequirements,
-        p_sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, ImmutAnyOrigin],
+        mut p_sparse_memory_requirement_count: UInt32,
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
         
@@ -11667,7 +11694,10 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_4.cmd_set_line_stipple(command_buffer, line_stipple_factor, line_stipple_pattern)
 
     fn map_memory_2(
-        self, device: Device, p_memory_map_info: MemoryMapInfo, pp_data: Ptr[NoneType, MutAnyOrigin]
+        self,
+        device: Device,
+        p_memory_map_info: MemoryMapInfo,
+        mut pp_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -11701,7 +11731,7 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_4.cmd_bind_index_buffer_2(command_buffer, buffer, offset, size, index_type)
 
     fn get_rendering_area_granularity(
-        self, device: Device, p_rendering_area_info: RenderingAreaInfo, p_granularity: Extent2D
+        self, device: Device, p_rendering_area_info: RenderingAreaInfo, mut p_granularity: Extent2D
     ):
         """See official vulkan docs for details.
         
@@ -11714,7 +11744,7 @@ struct DeviceFunctionsV1_4(Copyable):
         )
 
     fn get_device_image_subresource_layout(
-        self, device: Device, p_info: DeviceImageSubresourceInfo, p_layout: SubresourceLayout2
+        self, device: Device, p_info: DeviceImageSubresourceInfo, mut p_layout: SubresourceLayout2
     ):
         """See official vulkan docs for details.
         
@@ -11731,7 +11761,7 @@ struct DeviceFunctionsV1_4(Copyable):
         device: Device,
         image: Image,
         p_subresource: ImageSubresource2,
-        p_layout: SubresourceLayout2,
+        mut p_layout: SubresourceLayout2,
     ):
         """See official vulkan docs for details.
         
@@ -11902,7 +11932,7 @@ struct GlobalFunctionsAdditionsV1_0(Copyable):
         p_instance: Ptr[Instance, MutAnyOrigin],
     ) -> Result
     var enumerate_instance_extension_properties: fn(
-        p_layer_name: Ptr[c_char, ImmutAnyOrigin],
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
         p_property_count: Ptr[UInt32, MutAnyOrigin],
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result
@@ -11974,7 +12004,7 @@ struct InstanceFunctionsAdditionsV1_0(Copyable):
         p_memory_properties: Ptr[PhysicalDeviceMemoryProperties, MutAnyOrigin],
     )
     var get_instance_proc_addr: fn(
-        instance: Instance, p_name: Ptr[c_char, ImmutAnyOrigin]
+        instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction
     var create_device: fn(
         physical_device: PhysicalDevice,
@@ -11984,7 +12014,7 @@ struct InstanceFunctionsAdditionsV1_0(Copyable):
     ) -> Result
     var enumerate_device_extension_properties: fn(
         physical_device: PhysicalDevice,
-        p_layer_name: Ptr[c_char, ImmutAnyOrigin],
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
         p_property_count: Ptr[UInt32, MutAnyOrigin],
         p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
     ) -> Result
@@ -12159,7 +12189,7 @@ struct InstanceFunctionsAdditionsV1_3(Copyable):
 
 struct DeviceFunctionsAdditionsV1_0(Copyable):
     var get_device_proc_addr: fn(
-        device: Device, p_name: Ptr[c_char, ImmutAnyOrigin]
+        device: Device, p_name: CStringSlice[ImmutAnyOrigin]
     ) -> PFN_vkVoidFunction
     var destroy_device: fn(device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin])
     var get_device_queue: fn(
