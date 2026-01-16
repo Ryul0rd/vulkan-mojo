@@ -2100,9 +2100,9 @@ def command_to_mojo_fn_type(registry_command: RegistryCommand) -> MojoFnType:
     return_type = parse_c_type(registry_command.return_type)
     arguments: List[MojoArgument] = []
     for param in registry_command.params:
+        decl = parse_declarator(param.text)
         arg_name = pascal_to_snake(param.name)
-        arg_type = parse_c_type(param.type)
-        arguments.append(MojoArgument(arg_name, arg_type))
+        arguments.append(MojoArgument(arg_name, decl.type))
     return MojoFnType(return_type, arguments)
 
 
