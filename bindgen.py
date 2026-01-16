@@ -2529,7 +2529,6 @@ def parse_declarator(declarator: str) -> ParsedDeclarator:
         parsed incorrectly rather than rejected.
     """
     s = declarator
-
     bit_width: Optional[int] = None
     m_bit = re.search(r":(\d+)$", s)
     if m_bit is not None:
@@ -2573,7 +2572,7 @@ def parse_declarator(declarator: str) -> ParsedDeclarator:
 
     type: MojoType = MojoBaseType(c_type_name_to_mojo(base_name))
     for i in range(ptr_level):
-        origin: MojoOriginLiteral = "MutOrigin.external" if not pointee_is_const[i] else "ImmutOrigin.external"
+        origin: MojoOriginLiteral = "MutAnyOrigin" if not pointee_is_const[i] else "ImmutAnyOrigin"
         type = MojoPointerType(pointee_type=type, origin=origin)
     for dim in array_dims:
         type = MojoArrayType(element_type=type, length=dim.removeprefix("VK_"))
