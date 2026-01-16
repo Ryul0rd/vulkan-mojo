@@ -2463,6 +2463,8 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
             while resolved_name in command_alias_map:
                 resolved_name = command_alias_map[resolved_name]
             required_commands.append(commands_by_name[resolved_name])
+        if len(required_commands) == 0:
+            continue
 
         # names look like "VK_TAG_foo_bar"
         tag = extension.name.split("_")[1].lower()
