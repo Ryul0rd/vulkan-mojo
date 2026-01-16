@@ -2157,7 +2157,7 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         elif should_strip_ptr:
             parsed_type = assert_type(MojoPointerType, parsed_type)
             argument = MojoArgument(arg_name, parsed_type.pointee_type, mut=parsed_type.origin == "MutOrigin.external")
-            call_arg = f"Ptr(to={arg_name}).bitcast[{parsed_type.pointee_type}]()[]"
+            call_arg = f"Ptr(to={arg_name}).bitcast[{parsed_type.pointee_type}]()"
         elif isinstance(parsed_type, MojoPointerType):
             new_origin: MojoOriginLiteral = "MutAnyOrigin" if parsed_type.origin == "MutOrigin.external" else "ImmutAnyOrigin"
             argument = MojoArgument(arg_name, MojoPointerType(parsed_type.pointee_type, new_origin))
