@@ -528,6 +528,7 @@ class RegistryExtension:
     name: str
     number: int
     type: Optional[Literal["instance", "device"]]
+    supported: List[Literal["vulkan", "vulkansc"]]
     requires: List[RegistryRequirement]
 
 
@@ -536,9 +537,10 @@ def parse_extensions(xml_registry: Element) -> List[RegistryExtension]:
     extensions: List[RegistryExtension] = []
 
     for extension_el in extensions_el.findall("extension"):
-        supported = assert_type(str, extension_el.attrib.get("supported"))
-        if supported == "disabled":
-            continue
+        supported: List[Literal["vulkan", "vulkansc"]] = []
+        for support in assert_type(str, extension_el.attrib.get("supported")).split(","):
+            if support in ("vulkan", "vulkansc"):
+                supported.append(support)
         name = assert_type(str, extension_el.attrib.get("name"))
         number = int(assert_type(str, extension_el.attrib.get("number")))
         ext_type = extension_el.attrib.get("type")
@@ -578,7 +580,7 @@ def parse_extensions(xml_registry: Element) -> List[RegistryExtension]:
                     else:
                         value = int(value_str)
                     requires.append(RegistryRequiredValueEnum(enum_name, extends, value, comment))
-        extensions.append(RegistryExtension(name, number, ext_type, requires))
+        extensions.append(RegistryExtension(name, number, ext_type, supported, requires))
     return extensions
 
 
