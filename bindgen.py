@@ -2138,7 +2138,7 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         registry_command: The Vulkan command from the registry
         version_added: If provided, indicates this is a core command added in the given
                       version, and the body should call through self._vX_Y.method_name.
-                      If None, assumes extension command calling self.method_name directly.
+                      If None, assumes extension command calling self._method_name directly.
     """
     methods: List[MojoMethod] = []
     native_name = registry_command.name
@@ -2185,7 +2185,7 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         version_field = f"_v{version_added.major}_{version_added.minor}"
         call_target = f"self.{version_field}.{name}"
     else:
-        call_target = f"self.{name}"
+        call_target = f"self._{name}"
     body_lines = emit_fn_like(
         f"return {call_target}",
         call_args,
@@ -2471,33 +2471,41 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
         native_name_prefix = f"VK_{tag.upper()}_"
         name = snake_to_pascal(extension.name.removeprefix(native_name_prefix))
         traits = ["Copyable"]
-        arguments = [
-            MojoArgument("global_functions", MojoParametricArgumentType("T", "GlobalFunctions")),
-            MojoArgument(extension.type, MojoBaseType(extension.type.capitalize())),
-        ]
+
         init_body_lines = ["self._dlhandle = global_functions.get_dlhandle()"]
+        init_body_lines.extend((
+            f'var get_{extension.type}_proc_addr = global_functions.get_dlhandle()[].get_function[',
+            f'    fn({extension.type}: {extension.type.capitalize()}, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction',
+            f']("vkGet{extension.type.capitalize()}ProcAddr")',
+        ))
         for required_command in required_commands:
+            mojo_name = command_to_mojo_name(required_command)
             init_body_lines.extend((
-                f'var get_{extension.type}_proc_addr = global_functions.get_dlhandle()[].get_function[',
-                f'    fn({extension.type}: {extension.type.capitalize()}, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction',
-                f']("vkGet{extension.type.capitalize()}ProcAddr")',
+                f'self._{mojo_name} = Ptr(to=get_{extension.type}_proc_addr(',
+                f'    {extension.type}, "{required_command.name}".as_c_string_slice()',
+                f')).bitcast[type_of(self._{mojo_name})]()[]',
             ))
         init_method = MojoMethod(
             "__init__",
             MojoBaseType("NoneType"),
             "out",
-            arguments=arguments,
+            arguments=[
+                MojoArgument("global_functions", MojoParametricArgumentType("T", "GlobalFunctions")),
+                MojoArgument(extension.type, MojoBaseType(extension.type.capitalize())),
+            ],
             body_lines=init_body_lines,
             docstring_lines=[],
         )
-        fields = [MojoField("_dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"]))]
+
         methods = [init_method]
+        fields = [MojoField("_dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"]))]
         for required_command in required_commands:
             fields.append(MojoField(
-                name = command_to_mojo_name(required_command),
+                name = "_" + command_to_mojo_name(required_command),
                 type = command_to_mojo_fn_type(required_command),
             ))
             methods.extend(registry_command_to_mojo_methods(required_command))
+        
         extension_loaders_by_tag[tag].append(MojoStruct(name, traits, fields, methods))
 
     # emission

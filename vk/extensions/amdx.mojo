@@ -14,13 +14,15 @@ struct ShaderEnqueue(Copyable):
         p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result
     var _get_execution_graph_pipeline_scratch_size_amdx: fn(
-        device: Device, execution_graph: Pipeline, size_info: ExecutionGraphPipelineScratchSizeAMDX
+        device: Device,
+        execution_graph: Pipeline,
+        p_size_info: Ptr[ExecutionGraphPipelineScratchSizeAMDX, MutAnyOrigin],
     ) -> Result
     var _get_execution_graph_pipeline_node_index_amdx: fn(
         device: Device,
         execution_graph: Pipeline,
-        node_info: PipelineShaderStageNodeCreateInfoAMDX,
-        node_index: UInt32,
+        p_node_info: Ptr[PipelineShaderStageNodeCreateInfoAMDX, ImmutAnyOrigin],
+        p_node_index: Ptr[UInt32, MutAnyOrigin],
     ) -> Result
     var _cmd_initialize_graph_scratch_memory_amdx: fn(
         command_buffer: CommandBuffer,
@@ -32,13 +34,13 @@ struct ShaderEnqueue(Copyable):
         command_buffer: CommandBuffer,
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
-        count_info: DispatchGraphCountInfoAMDX,
+        p_count_info: Ptr[DispatchGraphCountInfoAMDX, ImmutAnyOrigin],
     )
     var _cmd_dispatch_graph_indirect_amdx: fn(
         command_buffer: CommandBuffer,
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
-        count_info: DispatchGraphCountInfoAMDX,
+        p_count_info: Ptr[DispatchGraphCountInfoAMDX, ImmutAnyOrigin],
     )
     var _cmd_dispatch_graph_indirect_count_amdx: fn(
         command_buffer: CommandBuffer,
@@ -47,31 +49,31 @@ struct ShaderEnqueue(Copyable):
         count_info: DeviceAddress,
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_execution_graph_pipelines_amdx = Ptr(to=get_device_proc_addr(
-            device, "vkCreateExecutionGraphPipelinesAMDX".unsafe_ptr()
+            device, "vkCreateExecutionGraphPipelinesAMDX".as_c_string_slice()
         )).bitcast[type_of(self._create_execution_graph_pipelines_amdx)]()[]
         self._get_execution_graph_pipeline_scratch_size_amdx = Ptr(to=get_device_proc_addr(
-            device, "vkGetExecutionGraphPipelineScratchSizeAMDX".unsafe_ptr()
+            device, "vkGetExecutionGraphPipelineScratchSizeAMDX".as_c_string_slice()
         )).bitcast[type_of(self._get_execution_graph_pipeline_scratch_size_amdx)]()[]
         self._get_execution_graph_pipeline_node_index_amdx = Ptr(to=get_device_proc_addr(
-            device, "vkGetExecutionGraphPipelineNodeIndexAMDX".unsafe_ptr()
+            device, "vkGetExecutionGraphPipelineNodeIndexAMDX".as_c_string_slice()
         )).bitcast[type_of(self._get_execution_graph_pipeline_node_index_amdx)]()[]
         self._cmd_initialize_graph_scratch_memory_amdx = Ptr(to=get_device_proc_addr(
-            device, "vkCmdInitializeGraphScratchMemoryAMDX".unsafe_ptr()
+            device, "vkCmdInitializeGraphScratchMemoryAMDX".as_c_string_slice()
         )).bitcast[type_of(self._cmd_initialize_graph_scratch_memory_amdx)]()[]
         self._cmd_dispatch_graph_amdx = Ptr(to=get_device_proc_addr(
-            device, "vkCmdDispatchGraphAMDX".unsafe_ptr()
+            device, "vkCmdDispatchGraphAMDX".as_c_string_slice()
         )).bitcast[type_of(self._cmd_dispatch_graph_amdx)]()[]
         self._cmd_dispatch_graph_indirect_amdx = Ptr(to=get_device_proc_addr(
-            device, "vkCmdDispatchGraphIndirectAMDX".unsafe_ptr()
+            device, "vkCmdDispatchGraphIndirectAMDX".as_c_string_slice()
         )).bitcast[type_of(self._cmd_dispatch_graph_indirect_amdx)]()[]
         self._cmd_dispatch_graph_indirect_count_amdx = Ptr(to=get_device_proc_addr(
-            device, "vkCmdDispatchGraphIndirectCountAMDX".unsafe_ptr()
+            device, "vkCmdDispatchGraphIndirectCountAMDX".as_c_string_slice()
         )).bitcast[type_of(self._cmd_dispatch_graph_indirect_count_amdx)]()[]
 
     fn create_execution_graph_pipelines_amdx(
@@ -84,7 +86,7 @@ struct ShaderEnqueue(Copyable):
         p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateExecutionGraphPipelinesAMDX.html
         """
         return self._create_execution_graph_pipelines_amdx(
@@ -98,13 +100,11 @@ struct ShaderEnqueue(Copyable):
         mut size_info: ExecutionGraphPipelineScratchSizeAMDX,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetExecutionGraphPipelineScratchSizeAMDX.html
         """
         return self._get_execution_graph_pipeline_scratch_size_amdx(
-            device,
-            execution_graph,
-            Ptr(to=size_info).bitcast[ExecutionGraphPipelineScratchSizeAMDX]()[],
+            device, execution_graph, Ptr(to=size_info).bitcast[ExecutionGraphPipelineScratchSizeAMDX]()
         )
 
     fn get_execution_graph_pipeline_node_index_amdx(
@@ -115,14 +115,14 @@ struct ShaderEnqueue(Copyable):
         mut node_index: UInt32,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetExecutionGraphPipelineNodeIndexAMDX.html
         """
         return self._get_execution_graph_pipeline_node_index_amdx(
             device,
             execution_graph,
-            Ptr(to=node_info).bitcast[PipelineShaderStageNodeCreateInfoAMDX]()[],
-            Ptr(to=node_index).bitcast[UInt32]()[],
+            Ptr(to=node_info).bitcast[PipelineShaderStageNodeCreateInfoAMDX](),
+            Ptr(to=node_index).bitcast[UInt32](),
         )
 
     fn cmd_initialize_graph_scratch_memory_amdx(
@@ -133,7 +133,7 @@ struct ShaderEnqueue(Copyable):
         scratch_size: DeviceSize,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdInitializeGraphScratchMemoryAMDX.html
         """
         return self._cmd_initialize_graph_scratch_memory_amdx(
@@ -148,14 +148,11 @@ struct ShaderEnqueue(Copyable):
         count_info: DispatchGraphCountInfoAMDX,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchGraphAMDX.html
         """
         return self._cmd_dispatch_graph_amdx(
-            command_buffer,
-            scratch,
-            scratch_size,
-            Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX]()[],
+            command_buffer, scratch, scratch_size, Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX]()
         )
 
     fn cmd_dispatch_graph_indirect_amdx(
@@ -166,14 +163,11 @@ struct ShaderEnqueue(Copyable):
         count_info: DispatchGraphCountInfoAMDX,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchGraphIndirectAMDX.html
         """
         return self._cmd_dispatch_graph_indirect_amdx(
-            command_buffer,
-            scratch,
-            scratch_size,
-            Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX]()[],
+            command_buffer, scratch, scratch_size, Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX]()
         )
 
     fn cmd_dispatch_graph_indirect_count_amdx(
@@ -184,7 +178,7 @@ struct ShaderEnqueue(Copyable):
         count_info: DeviceAddress,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchGraphIndirectCountAMDX.html
         """
         return self._cmd_dispatch_graph_indirect_count_amdx(

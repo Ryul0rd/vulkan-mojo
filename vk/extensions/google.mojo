@@ -8,25 +8,25 @@ struct DisplayTiming(Copyable):
     var _get_refresh_cycle_duration_google: fn(
         device: Device,
         swapchain: SwapchainKHR,
-        display_timing_properties: RefreshCycleDurationGOOGLE,
+        p_display_timing_properties: Ptr[RefreshCycleDurationGOOGLE, MutAnyOrigin],
     ) -> Result
     var _get_past_presentation_timing_google: fn(
         device: Device,
         swapchain: SwapchainKHR,
-        presentation_timing_count: UInt32,
+        p_presentation_timing_count: Ptr[UInt32, MutAnyOrigin],
         p_presentation_timings: Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_refresh_cycle_duration_google = Ptr(to=get_device_proc_addr(
-            device, "vkGetRefreshCycleDurationGOOGLE".unsafe_ptr()
+            device, "vkGetRefreshCycleDurationGOOGLE".as_c_string_slice()
         )).bitcast[type_of(self._get_refresh_cycle_duration_google)]()[]
         self._get_past_presentation_timing_google = Ptr(to=get_device_proc_addr(
-            device, "vkGetPastPresentationTimingGOOGLE".unsafe_ptr()
+            device, "vkGetPastPresentationTimingGOOGLE".as_c_string_slice()
         )).bitcast[type_of(self._get_past_presentation_timing_google)]()[]
 
     fn get_refresh_cycle_duration_google(
@@ -36,13 +36,11 @@ struct DisplayTiming(Copyable):
         mut display_timing_properties: RefreshCycleDurationGOOGLE,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRefreshCycleDurationGOOGLE.html
         """
         return self._get_refresh_cycle_duration_google(
-            device,
-            swapchain,
-            Ptr(to=display_timing_properties).bitcast[RefreshCycleDurationGOOGLE]()[],
+            device, swapchain, Ptr(to=display_timing_properties).bitcast[RefreshCycleDurationGOOGLE]()
         )
 
     fn get_past_presentation_timing_google(
@@ -53,34 +51,9 @@ struct DisplayTiming(Copyable):
         p_presentation_timings: Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPastPresentationTimingGOOGLE.html
         """
         return self._get_past_presentation_timing_google(
-            device,
-            swapchain,
-            Ptr(to=presentation_timing_count).bitcast[UInt32]()[],
-            p_presentation_timings,
+            device, swapchain, Ptr(to=presentation_timing_count).bitcast[UInt32](), p_presentation_timings
         )
-
-    fn get_past_presentation_timing_google(
-        self, device: Device, swapchain: SwapchainKHR
-    ) -> ListResult[PastPresentationTimingGOOGLE]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPastPresentationTimingGOOGLE.html
-        """
-        var list = List[PastPresentationTimingGOOGLE]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_past_presentation_timing_google(
-                device, swapchain, count, Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin]()
-            )
-            if result == Result.SUCCESS:
-                list.reserve(Int(count))
-            result = self.get_past_presentation_timing_google(
-                device, swapchain, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)

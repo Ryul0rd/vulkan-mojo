@@ -7,18 +7,18 @@ struct IosSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_ios_surface_mvk: fn(
         instance: Instance,
-        create_info: IOSSurfaceCreateInfoMVK,
+        p_create_info: Ptr[IOSSurfaceCreateInfoMVK, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        surface: SurfaceKHR,
+        p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_ios_surface_mvk = Ptr(to=get_instance_proc_addr(
-            instance, "vkCreateIOSSurfaceMVK".unsafe_ptr()
+            instance, "vkCreateIOSSurfaceMVK".as_c_string_slice()
         )).bitcast[type_of(self._create_ios_surface_mvk)]()[]
 
     fn create_ios_surface_mvk(
@@ -29,14 +29,14 @@ struct IosSurface(Copyable):
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateIOSSurfaceMVK.html
         """
         return self._create_ios_surface_mvk(
             instance,
-            Ptr(to=create_info).bitcast[IOSSurfaceCreateInfoMVK]()[],
+            Ptr(to=create_info).bitcast[IOSSurfaceCreateInfoMVK](),
             p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR]()[],
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
 
@@ -44,18 +44,18 @@ struct MacosSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_mac_os_surface_mvk: fn(
         instance: Instance,
-        create_info: MacOSSurfaceCreateInfoMVK,
+        p_create_info: Ptr[MacOSSurfaceCreateInfoMVK, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        surface: SurfaceKHR,
+        p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_mac_os_surface_mvk = Ptr(to=get_instance_proc_addr(
-            instance, "vkCreateMacOSSurfaceMVK".unsafe_ptr()
+            instance, "vkCreateMacOSSurfaceMVK".as_c_string_slice()
         )).bitcast[type_of(self._create_mac_os_surface_mvk)]()[]
 
     fn create_mac_os_surface_mvk(
@@ -66,12 +66,12 @@ struct MacosSurface(Copyable):
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateMacOSSurfaceMVK.html
         """
         return self._create_mac_os_surface_mvk(
             instance,
-            Ptr(to=create_info).bitcast[MacOSSurfaceCreateInfoMVK]()[],
+            Ptr(to=create_info).bitcast[MacOSSurfaceCreateInfoMVK](),
             p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR]()[],
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )

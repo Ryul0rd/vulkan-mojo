@@ -13,16 +13,16 @@ struct ExternalMemoryCapabilities(Copyable):
         usage: ImageUsageFlags,
         flags: ImageCreateFlags,
         external_handle_type: ExternalMemoryHandleTypeFlagsNV,
-        external_image_format_properties: ExternalImageFormatPropertiesNV,
+        p_external_image_format_properties: Ptr[ExternalImageFormatPropertiesNV, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_external_image_format_properties_nv = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceExternalImageFormatPropertiesNV".unsafe_ptr()
+            instance, "vkGetPhysicalDeviceExternalImageFormatPropertiesNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_external_image_format_properties_nv)]()[]
 
     fn get_physical_device_external_image_format_properties_nv(
@@ -37,7 +37,7 @@ struct ExternalMemoryCapabilities(Copyable):
         mut external_image_format_properties: ExternalImageFormatPropertiesNV,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalImageFormatPropertiesNV.html
         """
         return self._get_physical_device_external_image_format_properties_nv(
@@ -48,7 +48,7 @@ struct ExternalMemoryCapabilities(Copyable):
             usage,
             flags,
             external_handle_type,
-            Ptr(to=external_image_format_properties).bitcast[ExternalImageFormatPropertiesNV]()[],
+            Ptr(to=external_image_format_properties).bitcast[ExternalImageFormatPropertiesNV](),
         )
 
 
@@ -58,16 +58,16 @@ struct ExternalMemoryWin32(Copyable):
         device: Device,
         memory: DeviceMemory,
         handle_type: ExternalMemoryHandleTypeFlagsNV,
-        handle: HANDLE,
+        p_handle: Ptr[HANDLE, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_win_32_handle_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetMemoryWin32HandleNV".unsafe_ptr()
+            device, "vkGetMemoryWin32HandleNV".as_c_string_slice()
         )).bitcast[type_of(self._get_memory_win_32_handle_nv)]()[]
 
     fn get_memory_win_32_handle_nv(
@@ -78,11 +78,11 @@ struct ExternalMemoryWin32(Copyable):
         mut handle: HANDLE,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryWin32HandleNV.html
         """
         return self._get_memory_win_32_handle_nv(
-            device, memory, handle_type, Ptr(to=handle).bitcast[HANDLE]()[]
+            device, memory, handle_type, Ptr(to=handle).bitcast[HANDLE]()
         )
 
 
@@ -95,13 +95,13 @@ struct ClipSpaceWScaling(Copyable):
         p_viewport_w_scalings: Ptr[ViewportWScalingNV, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_viewport_w_scaling_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdSetViewportWScalingNV".unsafe_ptr()
+            device, "vkCmdSetViewportWScalingNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_viewport_w_scaling_nv)]()[]
 
     fn cmd_set_viewport_w_scaling_nv(
@@ -112,7 +112,7 @@ struct ClipSpaceWScaling(Copyable):
         p_viewport_w_scalings: Ptr[ViewportWScalingNV, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWScalingNV.html
         """
         return self._cmd_set_viewport_w_scaling_nv(
@@ -138,26 +138,26 @@ struct ShadingRateImage(Copyable):
         p_custom_sample_orders: Ptr[CoarseSampleOrderCustomNV, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_bind_shading_rate_image_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdBindShadingRateImageNV".unsafe_ptr()
+            device, "vkCmdBindShadingRateImageNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_bind_shading_rate_image_nv)]()[]
         self._cmd_set_viewport_shading_rate_palette_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdSetViewportShadingRatePaletteNV".unsafe_ptr()
+            device, "vkCmdSetViewportShadingRatePaletteNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_viewport_shading_rate_palette_nv)]()[]
         self._cmd_set_coarse_sample_order_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdSetCoarseSampleOrderNV".unsafe_ptr()
+            device, "vkCmdSetCoarseSampleOrderNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_coarse_sample_order_nv)]()[]
 
     fn cmd_bind_shading_rate_image_nv(
         self, command_buffer: CommandBuffer, image_view: ImageView, image_layout: ImageLayout
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindShadingRateImageNV.html
         """
         return self._cmd_bind_shading_rate_image_nv(command_buffer, image_view, image_layout)
@@ -170,7 +170,7 @@ struct ShadingRateImage(Copyable):
         p_shading_rate_palettes: Ptr[ShadingRatePaletteNV, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportShadingRatePaletteNV.html
         """
         return self._cmd_set_viewport_shading_rate_palette_nv(
@@ -185,7 +185,7 @@ struct ShadingRateImage(Copyable):
         p_custom_sample_orders: Ptr[CoarseSampleOrderCustomNV, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoarseSampleOrderNV.html
         """
         return self._cmd_set_coarse_sample_order_nv(
@@ -197,9 +197,9 @@ struct RayTracing(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_acceleration_structure_nv: fn(
         device: Device,
-        create_info: AccelerationStructureCreateInfoNV,
+        p_create_info: Ptr[AccelerationStructureCreateInfoNV, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        acceleration_structure: AccelerationStructureNV,
+        p_acceleration_structure: Ptr[AccelerationStructureNV, MutAnyOrigin],
     ) -> Result
     var _destroy_acceleration_structure_nv: fn(
         device: Device,
@@ -208,8 +208,8 @@ struct RayTracing(Copyable):
     )
     var _get_acceleration_structure_memory_requirements_nv: fn(
         device: Device,
-        info: AccelerationStructureMemoryRequirementsInfoNV,
-        memory_requirements: MemoryRequirements2KHR,
+        p_info: Ptr[AccelerationStructureMemoryRequirementsInfoNV, ImmutAnyOrigin],
+        p_memory_requirements: Ptr[MemoryRequirements2KHR, MutAnyOrigin],
     )
     var _bind_acceleration_structure_memory_nv: fn(
         device: Device,
@@ -218,7 +218,7 @@ struct RayTracing(Copyable):
     ) -> Result
     var _cmd_build_acceleration_structure_nv: fn(
         command_buffer: CommandBuffer,
-        info: AccelerationStructureInfoNV,
+        p_info: Ptr[AccelerationStructureInfoNV, ImmutAnyOrigin],
         instance_data: Buffer,
         instance_offset: DeviceSize,
         update: Bool32,
@@ -282,46 +282,46 @@ struct RayTracing(Copyable):
     )
     var _compile_deferred_nv: fn(device: Device, pipeline: Pipeline, shader: UInt32) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_acceleration_structure_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCreateAccelerationStructureNV".unsafe_ptr()
+            device, "vkCreateAccelerationStructureNV".as_c_string_slice()
         )).bitcast[type_of(self._create_acceleration_structure_nv)]()[]
         self._destroy_acceleration_structure_nv = Ptr(to=get_device_proc_addr(
-            device, "vkDestroyAccelerationStructureNV".unsafe_ptr()
+            device, "vkDestroyAccelerationStructureNV".as_c_string_slice()
         )).bitcast[type_of(self._destroy_acceleration_structure_nv)]()[]
         self._get_acceleration_structure_memory_requirements_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetAccelerationStructureMemoryRequirementsNV".unsafe_ptr()
+            device, "vkGetAccelerationStructureMemoryRequirementsNV".as_c_string_slice()
         )).bitcast[type_of(self._get_acceleration_structure_memory_requirements_nv)]()[]
         self._bind_acceleration_structure_memory_nv = Ptr(to=get_device_proc_addr(
-            device, "vkBindAccelerationStructureMemoryNV".unsafe_ptr()
+            device, "vkBindAccelerationStructureMemoryNV".as_c_string_slice()
         )).bitcast[type_of(self._bind_acceleration_structure_memory_nv)]()[]
         self._cmd_build_acceleration_structure_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdBuildAccelerationStructureNV".unsafe_ptr()
+            device, "vkCmdBuildAccelerationStructureNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_build_acceleration_structure_nv)]()[]
         self._cmd_copy_acceleration_structure_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdCopyAccelerationStructureNV".unsafe_ptr()
+            device, "vkCmdCopyAccelerationStructureNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_copy_acceleration_structure_nv)]()[]
         self._cmd_trace_rays_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdTraceRaysNV".unsafe_ptr()
+            device, "vkCmdTraceRaysNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_trace_rays_nv)]()[]
         self._create_ray_tracing_pipelines_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCreateRayTracingPipelinesNV".unsafe_ptr()
+            device, "vkCreateRayTracingPipelinesNV".as_c_string_slice()
         )).bitcast[type_of(self._create_ray_tracing_pipelines_nv)]()[]
         self._get_ray_tracing_shader_group_handles_khr = Ptr(to=get_device_proc_addr(
-            device, "vkGetRayTracingShaderGroupHandlesKHR".unsafe_ptr()
+            device, "vkGetRayTracingShaderGroupHandlesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_ray_tracing_shader_group_handles_khr)]()[]
         self._get_acceleration_structure_handle_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetAccelerationStructureHandleNV".unsafe_ptr()
+            device, "vkGetAccelerationStructureHandleNV".as_c_string_slice()
         )).bitcast[type_of(self._get_acceleration_structure_handle_nv)]()[]
         self._cmd_write_acceleration_structures_properties_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdWriteAccelerationStructuresPropertiesNV".unsafe_ptr()
+            device, "vkCmdWriteAccelerationStructuresPropertiesNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_write_acceleration_structures_properties_nv)]()[]
         self._compile_deferred_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCompileDeferredNV".unsafe_ptr()
+            device, "vkCompileDeferredNV".as_c_string_slice()
         )).bitcast[type_of(self._compile_deferred_nv)]()[]
 
     fn create_acceleration_structure_nv(
@@ -332,14 +332,14 @@ struct RayTracing(Copyable):
         mut acceleration_structure: AccelerationStructureNV,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateAccelerationStructureNV.html
         """
         return self._create_acceleration_structure_nv(
             device,
-            Ptr(to=create_info).bitcast[AccelerationStructureCreateInfoNV]()[],
+            Ptr(to=create_info).bitcast[AccelerationStructureCreateInfoNV](),
             p_allocator,
-            Ptr(to=acceleration_structure).bitcast[AccelerationStructureNV]()[],
+            Ptr(to=acceleration_structure).bitcast[AccelerationStructureNV](),
         )
 
     fn destroy_acceleration_structure_nv(
@@ -349,7 +349,7 @@ struct RayTracing(Copyable):
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyAccelerationStructureNV.html
         """
         return self._destroy_acceleration_structure_nv(device, acceleration_structure, p_allocator)
@@ -361,13 +361,13 @@ struct RayTracing(Copyable):
         mut memory_requirements: MemoryRequirements2KHR,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAccelerationStructureMemoryRequirementsNV.html
         """
         return self._get_acceleration_structure_memory_requirements_nv(
             device,
-            Ptr(to=info).bitcast[AccelerationStructureMemoryRequirementsInfoNV]()[],
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2KHR]()[],
+            Ptr(to=info).bitcast[AccelerationStructureMemoryRequirementsInfoNV](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2KHR](),
         )
 
     fn bind_acceleration_structure_memory_nv(
@@ -377,7 +377,7 @@ struct RayTracing(Copyable):
         p_bind_infos: Ptr[BindAccelerationStructureMemoryInfoNV, ImmutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindAccelerationStructureMemoryNV.html
         """
         return self._bind_acceleration_structure_memory_nv(device, bind_info_count, p_bind_infos)
@@ -395,12 +395,12 @@ struct RayTracing(Copyable):
         scratch_offset: DeviceSize,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBuildAccelerationStructureNV.html
         """
         return self._cmd_build_acceleration_structure_nv(
             command_buffer,
-            Ptr(to=info).bitcast[AccelerationStructureInfoNV]()[],
+            Ptr(to=info).bitcast[AccelerationStructureInfoNV](),
             instance_data,
             instance_offset,
             update,
@@ -418,7 +418,7 @@ struct RayTracing(Copyable):
         mode: CopyAccelerationStructureModeKHR,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyAccelerationStructureNV.html
         """
         return self._cmd_copy_acceleration_structure_nv(command_buffer, dst, src, mode)
@@ -442,7 +442,7 @@ struct RayTracing(Copyable):
         depth: UInt32,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdTraceRaysNV.html
         """
         return self._cmd_trace_rays_nv(
@@ -473,7 +473,7 @@ struct RayTracing(Copyable):
         p_pipelines: Ptr[Pipeline, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRayTracingPipelinesNV.html
         """
         return self._create_ray_tracing_pipelines_nv(
@@ -490,7 +490,7 @@ struct RayTracing(Copyable):
         p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRayTracingShaderGroupHandlesKHR.html
         """
         return self._get_ray_tracing_shader_group_handles_khr(
@@ -505,12 +505,10 @@ struct RayTracing(Copyable):
         p_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAccelerationStructureHandleNV.html
         """
-        return self._get_acceleration_structure_handle_nv(
-            device, acceleration_structure, data_size, p_data
-        )
+        return self._get_acceleration_structure_handle_nv(device, acceleration_structure, data_size, p_data)
 
     fn cmd_write_acceleration_structures_properties_nv(
         self,
@@ -522,7 +520,7 @@ struct RayTracing(Copyable):
         first_query: UInt32,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWriteAccelerationStructuresPropertiesNV.html
         """
         return self._cmd_write_acceleration_structures_properties_nv(
@@ -536,7 +534,7 @@ struct RayTracing(Copyable):
 
     fn compile_deferred_nv(self, device: Device, pipeline: Pipeline, shader: UInt32) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCompileDeferredNV.html
         """
         return self._compile_deferred_nv(device, pipeline, shader)
@@ -564,26 +562,26 @@ struct MeshShader(Copyable):
         stride: UInt32,
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_draw_mesh_tasks_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdDrawMeshTasksNV".unsafe_ptr()
+            device, "vkCmdDrawMeshTasksNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_draw_mesh_tasks_nv)]()[]
         self._cmd_draw_mesh_tasks_indirect_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdDrawMeshTasksIndirectNV".unsafe_ptr()
+            device, "vkCmdDrawMeshTasksIndirectNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_draw_mesh_tasks_indirect_nv)]()[]
         self._cmd_draw_mesh_tasks_indirect_count_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdDrawMeshTasksIndirectCountNV".unsafe_ptr()
+            device, "vkCmdDrawMeshTasksIndirectCountNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_draw_mesh_tasks_indirect_count_nv)]()[]
 
     fn cmd_draw_mesh_tasks_nv(
         self, command_buffer: CommandBuffer, task_count: UInt32, first_task: UInt32
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawMeshTasksNV.html
         """
         return self._cmd_draw_mesh_tasks_nv(command_buffer, task_count, first_task)
@@ -597,12 +595,10 @@ struct MeshShader(Copyable):
         stride: UInt32,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawMeshTasksIndirectNV.html
         """
-        return self._cmd_draw_mesh_tasks_indirect_nv(
-            command_buffer, buffer, offset, draw_count, stride
-        )
+        return self._cmd_draw_mesh_tasks_indirect_nv(command_buffer, buffer, offset, draw_count, stride)
 
     fn cmd_draw_mesh_tasks_indirect_count_nv(
         self,
@@ -615,17 +611,11 @@ struct MeshShader(Copyable):
         stride: UInt32,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawMeshTasksIndirectCountNV.html
         """
         return self._cmd_draw_mesh_tasks_indirect_count_nv(
-            command_buffer,
-            buffer,
-            offset,
-            count_buffer,
-            count_buffer_offset,
-            max_draw_count,
-            stride,
+            command_buffer, buffer, offset, count_buffer, count_buffer_offset, max_draw_count, stride
         )
 
 
@@ -644,16 +634,16 @@ struct ScissorExclusive(Copyable):
         p_exclusive_scissors: Ptr[Rect2D, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_exclusive_scissor_enable_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdSetExclusiveScissorEnableNV".unsafe_ptr()
+            device, "vkCmdSetExclusiveScissorEnableNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_exclusive_scissor_enable_nv)]()[]
         self._cmd_set_exclusive_scissor_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdSetExclusiveScissorNV".unsafe_ptr()
+            device, "vkCmdSetExclusiveScissorNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_exclusive_scissor_nv)]()[]
 
     fn cmd_set_exclusive_scissor_enable_nv(
@@ -664,14 +654,11 @@ struct ScissorExclusive(Copyable):
         p_exclusive_scissor_enables: Ptr[Bool32, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetExclusiveScissorEnableNV.html
         """
         return self._cmd_set_exclusive_scissor_enable_nv(
-            command_buffer,
-            first_exclusive_scissor,
-            exclusive_scissor_count,
-            p_exclusive_scissor_enables,
+            command_buffer, first_exclusive_scissor, exclusive_scissor_count, p_exclusive_scissor_enables
         )
 
     fn cmd_set_exclusive_scissor_nv(
@@ -682,7 +669,7 @@ struct ScissorExclusive(Copyable):
         p_exclusive_scissors: Ptr[Rect2D, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetExclusiveScissorNV.html
         """
         return self._cmd_set_exclusive_scissor_nv(
@@ -697,35 +684,35 @@ struct DeviceDiagnosticCheckpoints(Copyable):
     )
     var _get_queue_checkpoint_data_nv: fn(
         queue: Queue,
-        checkpoint_data_count: UInt32,
+        p_checkpoint_data_count: Ptr[UInt32, MutAnyOrigin],
         p_checkpoint_data: Ptr[CheckpointDataNV, MutAnyOrigin],
     )
     var _get_queue_checkpoint_data_2_nv: fn(
         queue: Queue,
-        checkpoint_data_count: UInt32,
+        p_checkpoint_data_count: Ptr[UInt32, MutAnyOrigin],
         p_checkpoint_data: Ptr[CheckpointData2NV, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_checkpoint_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdSetCheckpointNV".unsafe_ptr()
+            device, "vkCmdSetCheckpointNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_checkpoint_nv)]()[]
         self._get_queue_checkpoint_data_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetQueueCheckpointDataNV".unsafe_ptr()
+            device, "vkGetQueueCheckpointDataNV".as_c_string_slice()
         )).bitcast[type_of(self._get_queue_checkpoint_data_nv)]()[]
         self._get_queue_checkpoint_data_2_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetQueueCheckpointData2NV".unsafe_ptr()
+            device, "vkGetQueueCheckpointData2NV".as_c_string_slice()
         )).bitcast[type_of(self._get_queue_checkpoint_data_2_nv)]()[]
 
     fn cmd_set_checkpoint_nv(
         self, command_buffer: CommandBuffer, p_checkpoint_marker: Ptr[NoneType, ImmutAnyOrigin]
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCheckpointNV.html
         """
         return self._cmd_set_checkpoint_nv(command_buffer, p_checkpoint_marker)
@@ -737,25 +724,12 @@ struct DeviceDiagnosticCheckpoints(Copyable):
         p_checkpoint_data: Ptr[CheckpointDataNV, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointDataNV.html
         """
         return self._get_queue_checkpoint_data_nv(
-            queue, Ptr(to=checkpoint_data_count).bitcast[UInt32]()[], p_checkpoint_data
+            queue, Ptr(to=checkpoint_data_count).bitcast[UInt32](), p_checkpoint_data
         )
-
-    fn get_queue_checkpoint_data_nv(self, queue: Queue) -> List[CheckpointDataNV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointDataNV.html
-        """
-        var list = List[CheckpointDataNV]()
-        var count: UInt32 = 0
-        self.get_queue_checkpoint_data_nv(queue, count, Ptr[CheckpointDataNV, MutAnyOrigin]())
-        list.reserve(Int(count))
-        self.get_queue_checkpoint_data_nv(queue, count, list.unsafe_ptr())
-        list._len = Int(count)
-        return list^
 
     fn get_queue_checkpoint_data_2_nv(
         self,
@@ -764,42 +738,29 @@ struct DeviceDiagnosticCheckpoints(Copyable):
         p_checkpoint_data: Ptr[CheckpointData2NV, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointData2NV.html
         """
         return self._get_queue_checkpoint_data_2_nv(
-            queue, Ptr(to=checkpoint_data_count).bitcast[UInt32]()[], p_checkpoint_data
+            queue, Ptr(to=checkpoint_data_count).bitcast[UInt32](), p_checkpoint_data
         )
-
-    fn get_queue_checkpoint_data_2_nv(self, queue: Queue) -> List[CheckpointData2NV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointData2NV.html
-        """
-        var list = List[CheckpointData2NV]()
-        var count: UInt32 = 0
-        self.get_queue_checkpoint_data_2_nv(queue, count, Ptr[CheckpointData2NV, MutAnyOrigin]())
-        list.reserve(Int(count))
-        self.get_queue_checkpoint_data_2_nv(queue, count, list.unsafe_ptr())
-        list._len = Int(count)
-        return list^
 
 
 struct CooperativeMatrix(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_cooperative_matrix_properties_nv: fn(
         physical_device: PhysicalDevice,
-        property_count: UInt32,
+        p_property_count: Ptr[UInt32, MutAnyOrigin],
         p_properties: Ptr[CooperativeMatrixPropertiesNV, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_cooperative_matrix_properties_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesNV".unsafe_ptr()
+            device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_cooperative_matrix_properties_nv)]()[]
 
     fn get_physical_device_cooperative_matrix_properties_nv(
@@ -809,51 +770,29 @@ struct CooperativeMatrix(Copyable):
         p_properties: Ptr[CooperativeMatrixPropertiesNV, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixPropertiesNV.html
         """
         return self._get_physical_device_cooperative_matrix_properties_nv(
-            physical_device, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
-
-    fn get_physical_device_cooperative_matrix_properties_nv(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[CooperativeMatrixPropertiesNV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixPropertiesNV.html
-        """
-        var list = List[CooperativeMatrixPropertiesNV]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_cooperative_matrix_properties_nv(
-                physical_device, count, Ptr[CooperativeMatrixPropertiesNV, MutAnyOrigin]()
-            )
-            if result == Result.SUCCESS:
-                list.reserve(Int(count))
-            result = self.get_physical_device_cooperative_matrix_properties_nv(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
 
 struct CoverageReductionMode(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_supported_framebuffer_mixed_samples_combinations_nv: fn(
         physical_device: PhysicalDevice,
-        combination_count: UInt32,
+        p_combination_count: Ptr[UInt32, MutAnyOrigin],
         p_combinations: Ptr[FramebufferMixedSamplesCombinationNV, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_supported_framebuffer_mixed_samples_combinations_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV".unsafe_ptr()
+            device, "vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_supported_framebuffer_mixed_samples_combinations_nv)]()[]
 
     fn get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
@@ -863,50 +802,29 @@ struct CoverageReductionMode(Copyable):
         p_combinations: Ptr[FramebufferMixedSamplesCombinationNV, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV.html
         """
         return self._get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
-            physical_device, Ptr(to=combination_count).bitcast[UInt32]()[], p_combinations
+            physical_device, Ptr(to=combination_count).bitcast[UInt32](), p_combinations
         )
-
-    fn get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[FramebufferMixedSamplesCombinationNV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV.html
-        """
-        var list = List[FramebufferMixedSamplesCombinationNV]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
-                physical_device, count, Ptr[FramebufferMixedSamplesCombinationNV, MutAnyOrigin]()
-            )
-            if result == Result.SUCCESS:
-                list.reserve(Int(count))
-            result = self.get_physical_device_supported_framebuffer_mixed_samples_combinations_nv(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
 
 struct DeviceGeneratedCommands(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_generated_commands_memory_requirements_nv: fn(
         device: Device,
-        info: GeneratedCommandsMemoryRequirementsInfoNV,
-        memory_requirements: MemoryRequirements2,
+        p_info: Ptr[GeneratedCommandsMemoryRequirementsInfoNV, ImmutAnyOrigin],
+        p_memory_requirements: Ptr[MemoryRequirements2, MutAnyOrigin],
     )
     var _cmd_preprocess_generated_commands_nv: fn(
-        command_buffer: CommandBuffer, generated_commands_info: GeneratedCommandsInfoNV
+        command_buffer: CommandBuffer,
+        p_generated_commands_info: Ptr[GeneratedCommandsInfoNV, ImmutAnyOrigin],
     )
     var _cmd_execute_generated_commands_nv: fn(
         command_buffer: CommandBuffer,
         is_preprocessed: Bool32,
-        generated_commands_info: GeneratedCommandsInfoNV,
+        p_generated_commands_info: Ptr[GeneratedCommandsInfoNV, ImmutAnyOrigin],
     )
     var _cmd_bind_pipeline_shader_group_nv: fn(
         command_buffer: CommandBuffer,
@@ -916,9 +834,9 @@ struct DeviceGeneratedCommands(Copyable):
     )
     var _create_indirect_commands_layout_nv: fn(
         device: Device,
-        create_info: IndirectCommandsLayoutCreateInfoNV,
+        p_create_info: Ptr[IndirectCommandsLayoutCreateInfoNV, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        indirect_commands_layout: IndirectCommandsLayoutNV,
+        p_indirect_commands_layout: Ptr[IndirectCommandsLayoutNV, MutAnyOrigin],
     ) -> Result
     var _destroy_indirect_commands_layout_nv: fn(
         device: Device,
@@ -926,28 +844,28 @@ struct DeviceGeneratedCommands(Copyable):
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_generated_commands_memory_requirements_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetGeneratedCommandsMemoryRequirementsNV".unsafe_ptr()
+            device, "vkGetGeneratedCommandsMemoryRequirementsNV".as_c_string_slice()
         )).bitcast[type_of(self._get_generated_commands_memory_requirements_nv)]()[]
         self._cmd_preprocess_generated_commands_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdPreprocessGeneratedCommandsNV".unsafe_ptr()
+            device, "vkCmdPreprocessGeneratedCommandsNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_preprocess_generated_commands_nv)]()[]
         self._cmd_execute_generated_commands_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdExecuteGeneratedCommandsNV".unsafe_ptr()
+            device, "vkCmdExecuteGeneratedCommandsNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_execute_generated_commands_nv)]()[]
         self._cmd_bind_pipeline_shader_group_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdBindPipelineShaderGroupNV".unsafe_ptr()
+            device, "vkCmdBindPipelineShaderGroupNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_bind_pipeline_shader_group_nv)]()[]
         self._create_indirect_commands_layout_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCreateIndirectCommandsLayoutNV".unsafe_ptr()
+            device, "vkCreateIndirectCommandsLayoutNV".as_c_string_slice()
         )).bitcast[type_of(self._create_indirect_commands_layout_nv)]()[]
         self._destroy_indirect_commands_layout_nv = Ptr(to=get_device_proc_addr(
-            device, "vkDestroyIndirectCommandsLayoutNV".unsafe_ptr()
+            device, "vkDestroyIndirectCommandsLayoutNV".as_c_string_slice()
         )).bitcast[type_of(self._destroy_indirect_commands_layout_nv)]()[]
 
     fn get_generated_commands_memory_requirements_nv(
@@ -957,24 +875,24 @@ struct DeviceGeneratedCommands(Copyable):
         mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetGeneratedCommandsMemoryRequirementsNV.html
         """
         return self._get_generated_commands_memory_requirements_nv(
             device,
-            Ptr(to=info).bitcast[GeneratedCommandsMemoryRequirementsInfoNV]()[],
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
+            Ptr(to=info).bitcast[GeneratedCommandsMemoryRequirementsInfoNV](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn cmd_preprocess_generated_commands_nv(
         self, command_buffer: CommandBuffer, generated_commands_info: GeneratedCommandsInfoNV
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPreprocessGeneratedCommandsNV.html
         """
         return self._cmd_preprocess_generated_commands_nv(
-            command_buffer, Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoNV]()[]
+            command_buffer, Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoNV]()
         )
 
     fn cmd_execute_generated_commands_nv(
@@ -984,13 +902,13 @@ struct DeviceGeneratedCommands(Copyable):
         generated_commands_info: GeneratedCommandsInfoNV,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteGeneratedCommandsNV.html
         """
         return self._cmd_execute_generated_commands_nv(
             command_buffer,
             is_preprocessed,
-            Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoNV]()[],
+            Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoNV](),
         )
 
     fn cmd_bind_pipeline_shader_group_nv(
@@ -1001,7 +919,7 @@ struct DeviceGeneratedCommands(Copyable):
         group_index: UInt32,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindPipelineShaderGroupNV.html
         """
         return self._cmd_bind_pipeline_shader_group_nv(
@@ -1016,14 +934,14 @@ struct DeviceGeneratedCommands(Copyable):
         mut indirect_commands_layout: IndirectCommandsLayoutNV,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateIndirectCommandsLayoutNV.html
         """
         return self._create_indirect_commands_layout_nv(
             device,
-            Ptr(to=create_info).bitcast[IndirectCommandsLayoutCreateInfoNV]()[],
+            Ptr(to=create_info).bitcast[IndirectCommandsLayoutCreateInfoNV](),
             p_allocator,
-            Ptr(to=indirect_commands_layout).bitcast[IndirectCommandsLayoutNV]()[],
+            Ptr(to=indirect_commands_layout).bitcast[IndirectCommandsLayoutNV](),
         )
 
     fn destroy_indirect_commands_layout_nv(
@@ -1033,66 +951,64 @@ struct DeviceGeneratedCommands(Copyable):
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyIndirectCommandsLayoutNV.html
         """
-        return self._destroy_indirect_commands_layout_nv(
-            device, indirect_commands_layout, p_allocator
-        )
+        return self._destroy_indirect_commands_layout_nv(device, indirect_commands_layout, p_allocator)
 
 
 struct CudaKernelLaunch(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_cuda_module_nv: fn(
         device: Device,
-        create_info: CudaModuleCreateInfoNV,
+        p_create_info: Ptr[CudaModuleCreateInfoNV, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        module: CudaModuleNV,
+        p_module: Ptr[CudaModuleNV, MutAnyOrigin],
     ) -> Result
     var _get_cuda_module_cache_nv: fn(
         device: Device,
         module: CudaModuleNV,
-        cache_size: UInt,
+        p_cache_size: Ptr[UInt, MutAnyOrigin],
         p_cache_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result
     var _create_cuda_function_nv: fn(
         device: Device,
-        create_info: CudaFunctionCreateInfoNV,
+        p_create_info: Ptr[CudaFunctionCreateInfoNV, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        function: CudaFunctionNV,
+        p_function: Ptr[CudaFunctionNV, MutAnyOrigin],
     ) -> Result
     var _destroy_cuda_module_nv: fn(
         device: Device, module: CudaModuleNV, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
     var _destroy_cuda_function_nv: fn(
-        device: Device,
-        function: CudaFunctionNV,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        device: Device, function: CudaFunctionNV, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
     )
-    var _cmd_cuda_launch_kernel_nv: fn(command_buffer: CommandBuffer, launch_info: CudaLaunchInfoNV)
+    var _cmd_cuda_launch_kernel_nv: fn(
+        command_buffer: CommandBuffer, p_launch_info: Ptr[CudaLaunchInfoNV, ImmutAnyOrigin]
+    )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_cuda_module_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCreateCudaModuleNV".unsafe_ptr()
+            device, "vkCreateCudaModuleNV".as_c_string_slice()
         )).bitcast[type_of(self._create_cuda_module_nv)]()[]
         self._get_cuda_module_cache_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetCudaModuleCacheNV".unsafe_ptr()
+            device, "vkGetCudaModuleCacheNV".as_c_string_slice()
         )).bitcast[type_of(self._get_cuda_module_cache_nv)]()[]
         self._create_cuda_function_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCreateCudaFunctionNV".unsafe_ptr()
+            device, "vkCreateCudaFunctionNV".as_c_string_slice()
         )).bitcast[type_of(self._create_cuda_function_nv)]()[]
         self._destroy_cuda_module_nv = Ptr(to=get_device_proc_addr(
-            device, "vkDestroyCudaModuleNV".unsafe_ptr()
+            device, "vkDestroyCudaModuleNV".as_c_string_slice()
         )).bitcast[type_of(self._destroy_cuda_module_nv)]()[]
         self._destroy_cuda_function_nv = Ptr(to=get_device_proc_addr(
-            device, "vkDestroyCudaFunctionNV".unsafe_ptr()
+            device, "vkDestroyCudaFunctionNV".as_c_string_slice()
         )).bitcast[type_of(self._destroy_cuda_function_nv)]()[]
         self._cmd_cuda_launch_kernel_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdCudaLaunchKernelNV".unsafe_ptr()
+            device, "vkCmdCudaLaunchKernelNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_cuda_launch_kernel_nv)]()[]
 
     fn create_cuda_module_nv(
@@ -1103,14 +1019,14 @@ struct CudaKernelLaunch(Copyable):
         mut module: CudaModuleNV,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCudaModuleNV.html
         """
         return self._create_cuda_module_nv(
             device,
-            Ptr(to=create_info).bitcast[CudaModuleCreateInfoNV]()[],
+            Ptr(to=create_info).bitcast[CudaModuleCreateInfoNV](),
             p_allocator,
-            Ptr(to=module).bitcast[CudaModuleNV]()[],
+            Ptr(to=module).bitcast[CudaModuleNV](),
         )
 
     fn get_cuda_module_cache_nv(
@@ -1121,32 +1037,12 @@ struct CudaKernelLaunch(Copyable):
         p_cache_data: Ptr[NoneType, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetCudaModuleCacheNV.html
         """
         return self._get_cuda_module_cache_nv(
-            device, module, Ptr(to=cache_size).bitcast[UInt]()[], p_cache_data
+            device, module, Ptr(to=cache_size).bitcast[UInt](), p_cache_data
         )
-
-    fn get_cuda_module_cache_nv(self, device: Device, module: CudaModuleNV) -> ListResult[UInt8]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetCudaModuleCacheNV.html
-        """
-        var list = List[UInt8]()
-        var count: UInt = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_cuda_module_cache_nv(
-                device, module, count, Ptr[NoneType, MutAnyOrigin]()
-            )
-            if result == Result.SUCCESS:
-                list.reserve(Int(count))
-            result = self.get_cuda_module_cache_nv(
-                device, module, count, list.unsafe_ptr().bitcast[NoneType]()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
     fn create_cuda_function_nv(
         self,
@@ -1156,14 +1052,14 @@ struct CudaKernelLaunch(Copyable):
         mut function: CudaFunctionNV,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCudaFunctionNV.html
         """
         return self._create_cuda_function_nv(
             device,
-            Ptr(to=create_info).bitcast[CudaFunctionCreateInfoNV]()[],
+            Ptr(to=create_info).bitcast[CudaFunctionCreateInfoNV](),
             p_allocator,
-            Ptr(to=function).bitcast[CudaFunctionNV]()[],
+            Ptr(to=function).bitcast[CudaFunctionNV](),
         )
 
     fn destroy_cuda_module_nv(
@@ -1173,7 +1069,7 @@ struct CudaKernelLaunch(Copyable):
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCudaModuleNV.html
         """
         return self._destroy_cuda_module_nv(device, module, p_allocator)
@@ -1185,7 +1081,7 @@ struct CudaKernelLaunch(Copyable):
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCudaFunctionNV.html
         """
         return self._destroy_cuda_function_nv(device, function, p_allocator)
@@ -1194,11 +1090,11 @@ struct CudaKernelLaunch(Copyable):
         self, command_buffer: CommandBuffer, launch_info: CudaLaunchInfoNV
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCudaLaunchKernelNV.html
         """
         return self._cmd_cuda_launch_kernel_nv(
-            command_buffer, Ptr(to=launch_info).bitcast[CudaLaunchInfoNV]()[]
+            command_buffer, Ptr(to=launch_info).bitcast[CudaLaunchInfoNV]()
         )
 
 
@@ -1210,13 +1106,13 @@ struct FragmentShadingRateEnums(Copyable):
         combiner_ops: InlineArray[FragmentShadingRateCombinerOpKHR, Int(2)],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_fragment_shading_rate_enum_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdSetFragmentShadingRateEnumNV".unsafe_ptr()
+            device, "vkCmdSetFragmentShadingRateEnumNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_fragment_shading_rate_enum_nv)]()[]
 
     fn cmd_set_fragment_shading_rate_enum_nv(
@@ -1226,40 +1122,38 @@ struct FragmentShadingRateEnums(Copyable):
         combiner_ops: InlineArray[FragmentShadingRateCombinerOpKHR, Int(2)],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetFragmentShadingRateEnumNV.html
         """
-        return self._cmd_set_fragment_shading_rate_enum_nv(
-            command_buffer, shading_rate, combiner_ops
-        )
+        return self._cmd_set_fragment_shading_rate_enum_nv(command_buffer, shading_rate, combiner_ops)
 
 
 struct AcquireWinrtDisplay(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _acquire_winrt_display_nv: fn(
-        physical_device: PhysicalDevice, display: DisplayKHR
-    ) -> Result
+    var _acquire_winrt_display_nv: fn(physical_device: PhysicalDevice, display: DisplayKHR) -> Result
     var _get_winrt_display_nv: fn(
-        physical_device: PhysicalDevice, device_relative_id: UInt32, display: DisplayKHR
+        physical_device: PhysicalDevice,
+        device_relative_id: UInt32,
+        p_display: Ptr[DisplayKHR, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._acquire_winrt_display_nv = Ptr(to=get_device_proc_addr(
-            device, "vkAcquireWinrtDisplayNV".unsafe_ptr()
+            device, "vkAcquireWinrtDisplayNV".as_c_string_slice()
         )).bitcast[type_of(self._acquire_winrt_display_nv)]()[]
         self._get_winrt_display_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetWinrtDisplayNV".unsafe_ptr()
+            device, "vkGetWinrtDisplayNV".as_c_string_slice()
         )).bitcast[type_of(self._get_winrt_display_nv)]()[]
 
     fn acquire_winrt_display_nv(
         self, physical_device: PhysicalDevice, display: DisplayKHR
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireWinrtDisplayNV.html
         """
         return self._acquire_winrt_display_nv(physical_device, display)
@@ -1268,11 +1162,11 @@ struct AcquireWinrtDisplay(Copyable):
         self, physical_device: PhysicalDevice, device_relative_id: UInt32, mut display: DisplayKHR
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetWinrtDisplayNV.html
         """
         return self._get_winrt_display_nv(
-            physical_device, device_relative_id, Ptr(to=display).bitcast[DisplayKHR]()[]
+            physical_device, device_relative_id, Ptr(to=display).bitcast[DisplayKHR]()
         )
 
 
@@ -1280,17 +1174,17 @@ struct ExternalMemoryRdma(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_memory_remote_address_nv: fn(
         device: Device,
-        memory_get_remote_address_info: MemoryGetRemoteAddressInfoNV,
-        address: RemoteAddressNV,
+        p_memory_get_remote_address_info: Ptr[MemoryGetRemoteAddressInfoNV, ImmutAnyOrigin],
+        p_address: Ptr[RemoteAddressNV, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_remote_address_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetMemoryRemoteAddressNV".unsafe_ptr()
+            device, "vkGetMemoryRemoteAddressNV".as_c_string_slice()
         )).bitcast[type_of(self._get_memory_remote_address_nv)]()[]
 
     fn get_memory_remote_address_nv(
@@ -1300,14 +1194,239 @@ struct ExternalMemoryRdma(Copyable):
         mut address: RemoteAddressNV,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryRemoteAddressNV.html
         """
         return self._get_memory_remote_address_nv(
             device,
-            Ptr(to=memory_get_remote_address_info).bitcast[MemoryGetRemoteAddressInfoNV]()[],
-            Ptr(to=address).bitcast[RemoteAddressNV]()[],
+            Ptr(to=memory_get_remote_address_info).bitcast[MemoryGetRemoteAddressInfoNV](),
+            Ptr(to=address).bitcast[RemoteAddressNV](),
         )
+
+
+struct ExternalSciSync(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _get_fence_sci_sync_fence_nv: fn(
+        device: Device,
+        p_get_sci_sync_handle_info: Ptr[FenceGetSciSyncInfoNV, ImmutAnyOrigin],
+        p_handle: Ptr[NoneType, MutAnyOrigin],
+    ) -> Result
+    var _get_fence_sci_sync_obj_nv: fn(
+        device: Device,
+        p_get_sci_sync_handle_info: Ptr[FenceGetSciSyncInfoNV, ImmutAnyOrigin],
+        p_handle: Ptr[NoneType, MutAnyOrigin],
+    ) -> Result
+    var _import_fence_sci_sync_fence_nv: fn(
+        device: Device, p_import_fence_sci_sync_info: Ptr[ImportFenceSciSyncInfoNV, ImmutAnyOrigin]
+    ) -> Result
+    var _import_fence_sci_sync_obj_nv: fn(
+        device: Device, p_import_fence_sci_sync_info: Ptr[ImportFenceSciSyncInfoNV, ImmutAnyOrigin]
+    ) -> Result
+    var _get_physical_device_sci_sync_attributes_nv: fn(
+        physical_device: PhysicalDevice,
+        p_sci_sync_attributes_info: Ptr[SciSyncAttributesInfoNV, ImmutAnyOrigin],
+        p_attributes: NvSciSyncAttrList,
+    ) -> Result
+    var _get_semaphore_sci_sync_obj_nv: fn(
+        device: Device,
+        p_get_sci_sync_info: Ptr[SemaphoreGetSciSyncInfoNV, ImmutAnyOrigin],
+        p_handle: Ptr[NoneType, MutAnyOrigin],
+    ) -> Result
+    var _import_semaphore_sci_sync_obj_nv: fn(
+        device: Device,
+        p_import_semaphore_sci_sync_info: Ptr[ImportSemaphoreSciSyncInfoNV, ImmutAnyOrigin],
+    ) -> Result
+
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetDeviceProcAddr")
+        self._get_fence_sci_sync_fence_nv = Ptr(to=get_device_proc_addr(
+            device, "vkGetFenceSciSyncFenceNV".as_c_string_slice()
+        )).bitcast[type_of(self._get_fence_sci_sync_fence_nv)]()[]
+        self._get_fence_sci_sync_obj_nv = Ptr(to=get_device_proc_addr(
+            device, "vkGetFenceSciSyncObjNV".as_c_string_slice()
+        )).bitcast[type_of(self._get_fence_sci_sync_obj_nv)]()[]
+        self._import_fence_sci_sync_fence_nv = Ptr(to=get_device_proc_addr(
+            device, "vkImportFenceSciSyncFenceNV".as_c_string_slice()
+        )).bitcast[type_of(self._import_fence_sci_sync_fence_nv)]()[]
+        self._import_fence_sci_sync_obj_nv = Ptr(to=get_device_proc_addr(
+            device, "vkImportFenceSciSyncObjNV".as_c_string_slice()
+        )).bitcast[type_of(self._import_fence_sci_sync_obj_nv)]()[]
+        self._get_physical_device_sci_sync_attributes_nv = Ptr(to=get_device_proc_addr(
+            device, "vkGetPhysicalDeviceSciSyncAttributesNV".as_c_string_slice()
+        )).bitcast[type_of(self._get_physical_device_sci_sync_attributes_nv)]()[]
+        self._get_semaphore_sci_sync_obj_nv = Ptr(to=get_device_proc_addr(
+            device, "vkGetSemaphoreSciSyncObjNV".as_c_string_slice()
+        )).bitcast[type_of(self._get_semaphore_sci_sync_obj_nv)]()[]
+        self._import_semaphore_sci_sync_obj_nv = Ptr(to=get_device_proc_addr(
+            device, "vkImportSemaphoreSciSyncObjNV".as_c_string_slice()
+        )).bitcast[type_of(self._import_semaphore_sci_sync_obj_nv)]()[]
+
+    fn get_fence_sci_sync_fence_nv(
+        self,
+        device: Device,
+        get_sci_sync_handle_info: FenceGetSciSyncInfoNV,
+        p_handle: Ptr[NoneType, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceSciSyncFenceNV.html
+        """
+        return self._get_fence_sci_sync_fence_nv(
+            device, Ptr(to=get_sci_sync_handle_info).bitcast[FenceGetSciSyncInfoNV](), p_handle
+        )
+
+    fn get_fence_sci_sync_obj_nv(
+        self,
+        device: Device,
+        get_sci_sync_handle_info: FenceGetSciSyncInfoNV,
+        p_handle: Ptr[NoneType, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceSciSyncObjNV.html
+        """
+        return self._get_fence_sci_sync_obj_nv(
+            device, Ptr(to=get_sci_sync_handle_info).bitcast[FenceGetSciSyncInfoNV](), p_handle
+        )
+
+    fn import_fence_sci_sync_fence_nv(
+        self, device: Device, import_fence_sci_sync_info: ImportFenceSciSyncInfoNV
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportFenceSciSyncFenceNV.html
+        """
+        return self._import_fence_sci_sync_fence_nv(
+            device, Ptr(to=import_fence_sci_sync_info).bitcast[ImportFenceSciSyncInfoNV]()
+        )
+
+    fn import_fence_sci_sync_obj_nv(
+        self, device: Device, import_fence_sci_sync_info: ImportFenceSciSyncInfoNV
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportFenceSciSyncObjNV.html
+        """
+        return self._import_fence_sci_sync_obj_nv(
+            device, Ptr(to=import_fence_sci_sync_info).bitcast[ImportFenceSciSyncInfoNV]()
+        )
+
+    fn get_physical_device_sci_sync_attributes_nv(
+        self,
+        physical_device: PhysicalDevice,
+        sci_sync_attributes_info: SciSyncAttributesInfoNV,
+        p_attributes: NvSciSyncAttrList,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSciSyncAttributesNV.html
+        """
+        return self._get_physical_device_sci_sync_attributes_nv(
+            physical_device,
+            Ptr(to=sci_sync_attributes_info).bitcast[SciSyncAttributesInfoNV](),
+            p_attributes,
+        )
+
+    fn get_semaphore_sci_sync_obj_nv(
+        self,
+        device: Device,
+        get_sci_sync_info: SemaphoreGetSciSyncInfoNV,
+        p_handle: Ptr[NoneType, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreSciSyncObjNV.html
+        """
+        return self._get_semaphore_sci_sync_obj_nv(
+            device, Ptr(to=get_sci_sync_info).bitcast[SemaphoreGetSciSyncInfoNV](), p_handle
+        )
+
+    fn import_semaphore_sci_sync_obj_nv(
+        self, device: Device, import_semaphore_sci_sync_info: ImportSemaphoreSciSyncInfoNV
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportSemaphoreSciSyncObjNV.html
+        """
+        return self._import_semaphore_sci_sync_obj_nv(
+            device, Ptr(to=import_semaphore_sci_sync_info).bitcast[ImportSemaphoreSciSyncInfoNV]()
+        )
+
+
+struct ExternalMemorySciBuf(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _get_memory_sci_buf_nv: fn(
+        device: Device,
+        p_get_sci_buf_info: Ptr[MemoryGetSciBufInfoNV, ImmutAnyOrigin],
+        p_handle: Ptr[NvSciBufObj, MutAnyOrigin],
+    ) -> Result
+    var _get_physical_device_external_memory_sci_buf_properties_nv: fn(
+        physical_device: PhysicalDevice,
+        handle_type: ExternalMemoryHandleTypeFlagBits,
+        handle: NvSciBufObj,
+        p_memory_sci_buf_properties: Ptr[MemorySciBufPropertiesNV, MutAnyOrigin],
+    ) -> Result
+    var _get_physical_device_sci_buf_attributes_nv: fn(
+        physical_device: PhysicalDevice, p_attributes: NvSciBufAttrList
+    ) -> Result
+
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetDeviceProcAddr")
+        self._get_memory_sci_buf_nv = Ptr(to=get_device_proc_addr(
+            device, "vkGetMemorySciBufNV".as_c_string_slice()
+        )).bitcast[type_of(self._get_memory_sci_buf_nv)]()[]
+        self._get_physical_device_external_memory_sci_buf_properties_nv = Ptr(to=get_device_proc_addr(
+            device, "vkGetPhysicalDeviceExternalMemorySciBufPropertiesNV".as_c_string_slice()
+        )).bitcast[type_of(self._get_physical_device_external_memory_sci_buf_properties_nv)]()[]
+        self._get_physical_device_sci_buf_attributes_nv = Ptr(to=get_device_proc_addr(
+            device, "vkGetPhysicalDeviceSciBufAttributesNV".as_c_string_slice()
+        )).bitcast[type_of(self._get_physical_device_sci_buf_attributes_nv)]()[]
+
+    fn get_memory_sci_buf_nv(
+        self, device: Device, get_sci_buf_info: MemoryGetSciBufInfoNV, mut handle: NvSciBufObj
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemorySciBufNV.html
+        """
+        return self._get_memory_sci_buf_nv(
+            device,
+            Ptr(to=get_sci_buf_info).bitcast[MemoryGetSciBufInfoNV](),
+            Ptr(to=handle).bitcast[NvSciBufObj](),
+        )
+
+    fn get_physical_device_external_memory_sci_buf_properties_nv(
+        self,
+        physical_device: PhysicalDevice,
+        handle_type: ExternalMemoryHandleTypeFlagBits,
+        handle: NvSciBufObj,
+        mut memory_sci_buf_properties: MemorySciBufPropertiesNV,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalMemorySciBufPropertiesNV.html
+        """
+        return self._get_physical_device_external_memory_sci_buf_properties_nv(
+            physical_device,
+            handle_type,
+            handle,
+            Ptr(to=memory_sci_buf_properties).bitcast[MemorySciBufPropertiesNV](),
+        )
+
+    fn get_physical_device_sci_buf_attributes_nv(
+        self, physical_device: PhysicalDevice, p_attributes: NvSciBufAttrList
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSciBufAttributesNV.html
+        """
+        return self._get_physical_device_sci_buf_attributes_nv(physical_device, p_attributes)
 
 
 struct CopyMemoryIndirect(Copyable):
@@ -1328,16 +1447,16 @@ struct CopyMemoryIndirect(Copyable):
         p_image_subresources: Ptr[ImageSubresourceLayers, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_copy_memory_indirect_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdCopyMemoryIndirectNV".unsafe_ptr()
+            device, "vkCmdCopyMemoryIndirectNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_copy_memory_indirect_nv)]()[]
         self._cmd_copy_memory_to_image_indirect_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdCopyMemoryToImageIndirectNV".unsafe_ptr()
+            device, "vkCmdCopyMemoryToImageIndirectNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_copy_memory_to_image_indirect_nv)]()[]
 
     fn cmd_copy_memory_indirect_nv(
@@ -1348,12 +1467,10 @@ struct CopyMemoryIndirect(Copyable):
         stride: UInt32,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMemoryIndirectNV.html
         """
-        return self._cmd_copy_memory_indirect_nv(
-            command_buffer, copy_buffer_address, copy_count, stride
-        )
+        return self._cmd_copy_memory_indirect_nv(command_buffer, copy_buffer_address, copy_count, stride)
 
     fn cmd_copy_memory_to_image_indirect_nv(
         self,
@@ -1366,7 +1483,7 @@ struct CopyMemoryIndirect(Copyable):
         p_image_subresources: Ptr[ImageSubresourceLayers, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMemoryToImageIndirectNV.html
         """
         return self._cmd_copy_memory_to_image_indirect_nv(
@@ -1394,16 +1511,16 @@ struct MemoryDecompression(Copyable):
         stride: UInt32,
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_decompress_memory_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdDecompressMemoryNV".unsafe_ptr()
+            device, "vkCmdDecompressMemoryNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_decompress_memory_nv)]()[]
         self._cmd_decompress_memory_indirect_count_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdDecompressMemoryIndirectCountNV".unsafe_ptr()
+            device, "vkCmdDecompressMemoryIndirectCountNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_decompress_memory_indirect_count_nv)]()[]
 
     fn cmd_decompress_memory_nv(
@@ -1413,7 +1530,7 @@ struct MemoryDecompression(Copyable):
         p_decompress_memory_regions: Ptr[DecompressMemoryRegionNV, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDecompressMemoryNV.html
         """
         return self._cmd_decompress_memory_nv(
@@ -1428,7 +1545,7 @@ struct MemoryDecompression(Copyable):
         stride: UInt32,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDecompressMemoryIndirectCountNV.html
         """
         return self._cmd_decompress_memory_indirect_count_nv(
@@ -1440,29 +1557,29 @@ struct DeviceGeneratedCommandsCompute(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_pipeline_indirect_memory_requirements_nv: fn(
         device: Device,
-        create_info: ComputePipelineCreateInfo,
-        memory_requirements: MemoryRequirements2,
+        p_create_info: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
+        p_memory_requirements: Ptr[MemoryRequirements2, MutAnyOrigin],
     )
     var _cmd_update_pipeline_indirect_buffer_nv: fn(
         command_buffer: CommandBuffer, pipeline_bind_point: PipelineBindPoint, pipeline: Pipeline
     )
     var _get_pipeline_indirect_device_address_nv: fn(
-        device: Device, info: PipelineIndirectDeviceAddressInfoNV
+        device: Device, p_info: Ptr[PipelineIndirectDeviceAddressInfoNV, ImmutAnyOrigin]
     ) -> DeviceAddress
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_pipeline_indirect_memory_requirements_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetPipelineIndirectMemoryRequirementsNV".unsafe_ptr()
+            device, "vkGetPipelineIndirectMemoryRequirementsNV".as_c_string_slice()
         )).bitcast[type_of(self._get_pipeline_indirect_memory_requirements_nv)]()[]
         self._cmd_update_pipeline_indirect_buffer_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdUpdatePipelineIndirectBufferNV".unsafe_ptr()
+            device, "vkCmdUpdatePipelineIndirectBufferNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_update_pipeline_indirect_buffer_nv)]()[]
         self._get_pipeline_indirect_device_address_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetPipelineIndirectDeviceAddressNV".unsafe_ptr()
+            device, "vkGetPipelineIndirectDeviceAddressNV".as_c_string_slice()
         )).bitcast[type_of(self._get_pipeline_indirect_device_address_nv)]()[]
 
     fn get_pipeline_indirect_memory_requirements_nv(
@@ -1472,13 +1589,13 @@ struct DeviceGeneratedCommandsCompute(Copyable):
         mut memory_requirements: MemoryRequirements2,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineIndirectMemoryRequirementsNV.html
         """
         return self._get_pipeline_indirect_memory_requirements_nv(
             device,
-            Ptr(to=create_info).bitcast[ComputePipelineCreateInfo]()[],
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2]()[],
+            Ptr(to=create_info).bitcast[ComputePipelineCreateInfo](),
+            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
         )
 
     fn cmd_update_pipeline_indirect_buffer_nv(
@@ -1488,22 +1605,20 @@ struct DeviceGeneratedCommandsCompute(Copyable):
         pipeline: Pipeline,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdUpdatePipelineIndirectBufferNV.html
         """
-        return self._cmd_update_pipeline_indirect_buffer_nv(
-            command_buffer, pipeline_bind_point, pipeline
-        )
+        return self._cmd_update_pipeline_indirect_buffer_nv(command_buffer, pipeline_bind_point, pipeline)
 
     fn get_pipeline_indirect_device_address_nv(
         self, device: Device, info: PipelineIndirectDeviceAddressInfoNV
     ) -> DeviceAddress:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineIndirectDeviceAddressNV.html
         """
         return self._get_pipeline_indirect_device_address_nv(
-            device, Ptr(to=info).bitcast[PipelineIndirectDeviceAddressInfoNV]()[]
+            device, Ptr(to=info).bitcast[PipelineIndirectDeviceAddressInfoNV]()
         )
 
 
@@ -1511,15 +1626,15 @@ struct OpticalFlow(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_optical_flow_image_formats_nv: fn(
         physical_device: PhysicalDevice,
-        optical_flow_image_format_info: OpticalFlowImageFormatInfoNV,
-        format_count: UInt32,
+        p_optical_flow_image_format_info: Ptr[OpticalFlowImageFormatInfoNV, ImmutAnyOrigin],
+        p_format_count: Ptr[UInt32, MutAnyOrigin],
         p_image_format_properties: Ptr[OpticalFlowImageFormatPropertiesNV, MutAnyOrigin],
     ) -> Result
     var _create_optical_flow_session_nv: fn(
         device: Device,
-        create_info: OpticalFlowSessionCreateInfoNV,
+        p_create_info: Ptr[OpticalFlowSessionCreateInfoNV, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        session: OpticalFlowSessionNV,
+        p_session: Ptr[OpticalFlowSessionNV, MutAnyOrigin],
     ) -> Result
     var _destroy_optical_flow_session_nv: fn(
         device: Device,
@@ -1536,28 +1651,28 @@ struct OpticalFlow(Copyable):
     var _cmd_optical_flow_execute_nv: fn(
         command_buffer: CommandBuffer,
         session: OpticalFlowSessionNV,
-        execute_info: OpticalFlowExecuteInfoNV,
+        p_execute_info: Ptr[OpticalFlowExecuteInfoNV, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_optical_flow_image_formats_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceOpticalFlowImageFormatsNV".unsafe_ptr()
+            device, "vkGetPhysicalDeviceOpticalFlowImageFormatsNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_optical_flow_image_formats_nv)]()[]
         self._create_optical_flow_session_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCreateOpticalFlowSessionNV".unsafe_ptr()
+            device, "vkCreateOpticalFlowSessionNV".as_c_string_slice()
         )).bitcast[type_of(self._create_optical_flow_session_nv)]()[]
         self._destroy_optical_flow_session_nv = Ptr(to=get_device_proc_addr(
-            device, "vkDestroyOpticalFlowSessionNV".unsafe_ptr()
+            device, "vkDestroyOpticalFlowSessionNV".as_c_string_slice()
         )).bitcast[type_of(self._destroy_optical_flow_session_nv)]()[]
         self._bind_optical_flow_session_image_nv = Ptr(to=get_device_proc_addr(
-            device, "vkBindOpticalFlowSessionImageNV".unsafe_ptr()
+            device, "vkBindOpticalFlowSessionImageNV".as_c_string_slice()
         )).bitcast[type_of(self._bind_optical_flow_session_image_nv)]()[]
         self._cmd_optical_flow_execute_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdOpticalFlowExecuteNV".unsafe_ptr()
+            device, "vkCmdOpticalFlowExecuteNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_optical_flow_execute_nv)]()[]
 
     fn get_physical_device_optical_flow_image_formats_nv(
@@ -1568,42 +1683,15 @@ struct OpticalFlow(Copyable):
         p_image_format_properties: Ptr[OpticalFlowImageFormatPropertiesNV, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceOpticalFlowImageFormatsNV.html
         """
         return self._get_physical_device_optical_flow_image_formats_nv(
             physical_device,
-            Ptr(to=optical_flow_image_format_info).bitcast[OpticalFlowImageFormatInfoNV]()[],
-            Ptr(to=format_count).bitcast[UInt32]()[],
+            Ptr(to=optical_flow_image_format_info).bitcast[OpticalFlowImageFormatInfoNV](),
+            Ptr(to=format_count).bitcast[UInt32](),
             p_image_format_properties,
         )
-
-    fn get_physical_device_optical_flow_image_formats_nv(
-        self,
-        physical_device: PhysicalDevice,
-        optical_flow_image_format_info: OpticalFlowImageFormatInfoNV,
-    ) -> ListResult[OpticalFlowImageFormatPropertiesNV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceOpticalFlowImageFormatsNV.html
-        """
-        var list = List[OpticalFlowImageFormatPropertiesNV]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_optical_flow_image_formats_nv(
-                physical_device,
-                optical_flow_image_format_info,
-                count,
-                Ptr[OpticalFlowImageFormatPropertiesNV, MutAnyOrigin](),
-            )
-            if result == Result.SUCCESS:
-                list.reserve(Int(count))
-            result = self.get_physical_device_optical_flow_image_formats_nv(
-                physical_device, optical_flow_image_format_info, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
     fn create_optical_flow_session_nv(
         self,
@@ -1613,14 +1701,14 @@ struct OpticalFlow(Copyable):
         mut session: OpticalFlowSessionNV,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateOpticalFlowSessionNV.html
         """
         return self._create_optical_flow_session_nv(
             device,
-            Ptr(to=create_info).bitcast[OpticalFlowSessionCreateInfoNV]()[],
+            Ptr(to=create_info).bitcast[OpticalFlowSessionCreateInfoNV](),
             p_allocator,
-            Ptr(to=session).bitcast[OpticalFlowSessionNV]()[],
+            Ptr(to=session).bitcast[OpticalFlowSessionNV](),
         )
 
     fn destroy_optical_flow_session_nv(
@@ -1630,7 +1718,7 @@ struct OpticalFlow(Copyable):
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyOpticalFlowSessionNV.html
         """
         return self._destroy_optical_flow_session_nv(device, session, p_allocator)
@@ -1644,12 +1732,10 @@ struct OpticalFlow(Copyable):
         layout: ImageLayout,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindOpticalFlowSessionImageNV.html
         """
-        return self._bind_optical_flow_session_image_nv(
-            device, session, binding_point, view, layout
-        )
+        return self._bind_optical_flow_session_image_nv(device, session, binding_point, view, layout)
 
     fn cmd_optical_flow_execute_nv(
         self,
@@ -1658,11 +1744,170 @@ struct OpticalFlow(Copyable):
         execute_info: OpticalFlowExecuteInfoNV,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdOpticalFlowExecuteNV.html
         """
         return self._cmd_optical_flow_execute_nv(
-            command_buffer, session, Ptr(to=execute_info).bitcast[OpticalFlowExecuteInfoNV]()[]
+            command_buffer, session, Ptr(to=execute_info).bitcast[OpticalFlowExecuteInfoNV]()
+        )
+
+
+struct ExternalSciSync2(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _create_semaphore_sci_sync_pool_nv: fn(
+        device: Device,
+        p_create_info: Ptr[SemaphoreSciSyncPoolCreateInfoNV, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_semaphore_pool: Ptr[SemaphoreSciSyncPoolNV, MutAnyOrigin],
+    ) -> Result
+    var _destroy_semaphore_sci_sync_pool_nv: fn(
+        device: Device,
+        semaphore_pool: SemaphoreSciSyncPoolNV,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+    )
+    var _get_fence_sci_sync_fence_nv: fn(
+        device: Device,
+        p_get_sci_sync_handle_info: Ptr[FenceGetSciSyncInfoNV, ImmutAnyOrigin],
+        p_handle: Ptr[NoneType, MutAnyOrigin],
+    ) -> Result
+    var _get_fence_sci_sync_obj_nv: fn(
+        device: Device,
+        p_get_sci_sync_handle_info: Ptr[FenceGetSciSyncInfoNV, ImmutAnyOrigin],
+        p_handle: Ptr[NoneType, MutAnyOrigin],
+    ) -> Result
+    var _import_fence_sci_sync_fence_nv: fn(
+        device: Device, p_import_fence_sci_sync_info: Ptr[ImportFenceSciSyncInfoNV, ImmutAnyOrigin]
+    ) -> Result
+    var _import_fence_sci_sync_obj_nv: fn(
+        device: Device, p_import_fence_sci_sync_info: Ptr[ImportFenceSciSyncInfoNV, ImmutAnyOrigin]
+    ) -> Result
+    var _get_physical_device_sci_sync_attributes_nv: fn(
+        physical_device: PhysicalDevice,
+        p_sci_sync_attributes_info: Ptr[SciSyncAttributesInfoNV, ImmutAnyOrigin],
+        p_attributes: NvSciSyncAttrList,
+    ) -> Result
+
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetDeviceProcAddr")
+        self._create_semaphore_sci_sync_pool_nv = Ptr(to=get_device_proc_addr(
+            device, "vkCreateSemaphoreSciSyncPoolNV".as_c_string_slice()
+        )).bitcast[type_of(self._create_semaphore_sci_sync_pool_nv)]()[]
+        self._destroy_semaphore_sci_sync_pool_nv = Ptr(to=get_device_proc_addr(
+            device, "vkDestroySemaphoreSciSyncPoolNV".as_c_string_slice()
+        )).bitcast[type_of(self._destroy_semaphore_sci_sync_pool_nv)]()[]
+        self._get_fence_sci_sync_fence_nv = Ptr(to=get_device_proc_addr(
+            device, "vkGetFenceSciSyncFenceNV".as_c_string_slice()
+        )).bitcast[type_of(self._get_fence_sci_sync_fence_nv)]()[]
+        self._get_fence_sci_sync_obj_nv = Ptr(to=get_device_proc_addr(
+            device, "vkGetFenceSciSyncObjNV".as_c_string_slice()
+        )).bitcast[type_of(self._get_fence_sci_sync_obj_nv)]()[]
+        self._import_fence_sci_sync_fence_nv = Ptr(to=get_device_proc_addr(
+            device, "vkImportFenceSciSyncFenceNV".as_c_string_slice()
+        )).bitcast[type_of(self._import_fence_sci_sync_fence_nv)]()[]
+        self._import_fence_sci_sync_obj_nv = Ptr(to=get_device_proc_addr(
+            device, "vkImportFenceSciSyncObjNV".as_c_string_slice()
+        )).bitcast[type_of(self._import_fence_sci_sync_obj_nv)]()[]
+        self._get_physical_device_sci_sync_attributes_nv = Ptr(to=get_device_proc_addr(
+            device, "vkGetPhysicalDeviceSciSyncAttributesNV".as_c_string_slice()
+        )).bitcast[type_of(self._get_physical_device_sci_sync_attributes_nv)]()[]
+
+    fn create_semaphore_sci_sync_pool_nv(
+        self,
+        device: Device,
+        create_info: SemaphoreSciSyncPoolCreateInfoNV,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut semaphore_pool: SemaphoreSciSyncPoolNV,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSemaphoreSciSyncPoolNV.html
+        """
+        return self._create_semaphore_sci_sync_pool_nv(
+            device,
+            Ptr(to=create_info).bitcast[SemaphoreSciSyncPoolCreateInfoNV](),
+            p_allocator,
+            Ptr(to=semaphore_pool).bitcast[SemaphoreSciSyncPoolNV](),
+        )
+
+    fn destroy_semaphore_sci_sync_pool_nv(
+        self,
+        device: Device,
+        semaphore_pool: SemaphoreSciSyncPoolNV,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySemaphoreSciSyncPoolNV.html
+        """
+        return self._destroy_semaphore_sci_sync_pool_nv(device, semaphore_pool, p_allocator)
+
+    fn get_fence_sci_sync_fence_nv(
+        self,
+        device: Device,
+        get_sci_sync_handle_info: FenceGetSciSyncInfoNV,
+        p_handle: Ptr[NoneType, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceSciSyncFenceNV.html
+        """
+        return self._get_fence_sci_sync_fence_nv(
+            device, Ptr(to=get_sci_sync_handle_info).bitcast[FenceGetSciSyncInfoNV](), p_handle
+        )
+
+    fn get_fence_sci_sync_obj_nv(
+        self,
+        device: Device,
+        get_sci_sync_handle_info: FenceGetSciSyncInfoNV,
+        p_handle: Ptr[NoneType, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceSciSyncObjNV.html
+        """
+        return self._get_fence_sci_sync_obj_nv(
+            device, Ptr(to=get_sci_sync_handle_info).bitcast[FenceGetSciSyncInfoNV](), p_handle
+        )
+
+    fn import_fence_sci_sync_fence_nv(
+        self, device: Device, import_fence_sci_sync_info: ImportFenceSciSyncInfoNV
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportFenceSciSyncFenceNV.html
+        """
+        return self._import_fence_sci_sync_fence_nv(
+            device, Ptr(to=import_fence_sci_sync_info).bitcast[ImportFenceSciSyncInfoNV]()
+        )
+
+    fn import_fence_sci_sync_obj_nv(
+        self, device: Device, import_fence_sci_sync_info: ImportFenceSciSyncInfoNV
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportFenceSciSyncObjNV.html
+        """
+        return self._import_fence_sci_sync_obj_nv(
+            device, Ptr(to=import_fence_sci_sync_info).bitcast[ImportFenceSciSyncInfoNV]()
+        )
+
+    fn get_physical_device_sci_sync_attributes_nv(
+        self,
+        physical_device: PhysicalDevice,
+        sci_sync_attributes_info: SciSyncAttributesInfoNV,
+        p_attributes: NvSciSyncAttrList,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSciSyncAttributesNV.html
+        """
+        return self._get_physical_device_sci_sync_attributes_nv(
+            physical_device,
+            Ptr(to=sci_sync_attributes_info).bitcast[SciSyncAttributesInfoNV](),
+            p_attributes,
         )
 
 
@@ -1670,11 +1915,11 @@ struct CooperativeVector(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_cooperative_vector_properties_nv: fn(
         physical_device: PhysicalDevice,
-        property_count: UInt32,
+        p_property_count: Ptr[UInt32, MutAnyOrigin],
         p_properties: Ptr[CooperativeVectorPropertiesNV, MutAnyOrigin],
     ) -> Result
     var _convert_cooperative_vector_matrix_nv: fn(
-        device: Device, info: ConvertCooperativeVectorMatrixInfoNV
+        device: Device, p_info: Ptr[ConvertCooperativeVectorMatrixInfoNV, ImmutAnyOrigin]
     ) -> Result
     var _cmd_convert_cooperative_vector_matrix_nv: fn(
         command_buffer: CommandBuffer,
@@ -1682,19 +1927,19 @@ struct CooperativeVector(Copyable):
         p_infos: Ptr[ConvertCooperativeVectorMatrixInfoNV, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_cooperative_vector_properties_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceCooperativeVectorPropertiesNV".unsafe_ptr()
+            device, "vkGetPhysicalDeviceCooperativeVectorPropertiesNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_cooperative_vector_properties_nv)]()[]
         self._convert_cooperative_vector_matrix_nv = Ptr(to=get_device_proc_addr(
-            device, "vkConvertCooperativeVectorMatrixNV".unsafe_ptr()
+            device, "vkConvertCooperativeVectorMatrixNV".as_c_string_slice()
         )).bitcast[type_of(self._convert_cooperative_vector_matrix_nv)]()[]
         self._cmd_convert_cooperative_vector_matrix_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdConvertCooperativeVectorMatrixNV".unsafe_ptr()
+            device, "vkCmdConvertCooperativeVectorMatrixNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_convert_cooperative_vector_matrix_nv)]()[]
 
     fn get_physical_device_cooperative_vector_properties_nv(
@@ -1704,44 +1949,22 @@ struct CooperativeVector(Copyable):
         p_properties: Ptr[CooperativeVectorPropertiesNV, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeVectorPropertiesNV.html
         """
         return self._get_physical_device_cooperative_vector_properties_nv(
-            physical_device, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
-
-    fn get_physical_device_cooperative_vector_properties_nv(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[CooperativeVectorPropertiesNV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeVectorPropertiesNV.html
-        """
-        var list = List[CooperativeVectorPropertiesNV]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_cooperative_vector_properties_nv(
-                physical_device, count, Ptr[CooperativeVectorPropertiesNV, MutAnyOrigin]()
-            )
-            if result == Result.SUCCESS:
-                list.reserve(Int(count))
-            result = self.get_physical_device_cooperative_vector_properties_nv(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)
 
     fn convert_cooperative_vector_matrix_nv(
         self, device: Device, info: ConvertCooperativeVectorMatrixInfoNV
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkConvertCooperativeVectorMatrixNV.html
         """
         return self._convert_cooperative_vector_matrix_nv(
-            device, Ptr(to=info).bitcast[ConvertCooperativeVectorMatrixInfoNV]()[]
+            device, Ptr(to=info).bitcast[ConvertCooperativeVectorMatrixInfoNV]()
         )
 
     fn cmd_convert_cooperative_vector_matrix_nv(
@@ -1751,7 +1974,7 @@ struct CooperativeVector(Copyable):
         p_infos: Ptr[ConvertCooperativeVectorMatrixInfoNV, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdConvertCooperativeVectorMatrixNV.html
         """
         return self._cmd_convert_cooperative_vector_matrix_nv(command_buffer, info_count, p_infos)
@@ -1760,71 +1983,77 @@ struct CooperativeVector(Copyable):
 struct LowLatency2(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _set_latency_sleep_mode_nv: fn(
-        device: Device, swapchain: SwapchainKHR, sleep_mode_info: LatencySleepModeInfoNV
+        device: Device,
+        swapchain: SwapchainKHR,
+        p_sleep_mode_info: Ptr[LatencySleepModeInfoNV, ImmutAnyOrigin],
     ) -> Result
     var _latency_sleep_nv: fn(
-        device: Device, swapchain: SwapchainKHR, sleep_info: LatencySleepInfoNV
+        device: Device, swapchain: SwapchainKHR, p_sleep_info: Ptr[LatencySleepInfoNV, ImmutAnyOrigin]
     ) -> Result
     var _set_latency_marker_nv: fn(
-        device: Device, swapchain: SwapchainKHR, latency_marker_info: SetLatencyMarkerInfoNV
+        device: Device,
+        swapchain: SwapchainKHR,
+        p_latency_marker_info: Ptr[SetLatencyMarkerInfoNV, ImmutAnyOrigin],
     )
     var _get_latency_timings_nv: fn(
-        device: Device, swapchain: SwapchainKHR, latency_marker_info: GetLatencyMarkerInfoNV
+        device: Device,
+        swapchain: SwapchainKHR,
+        p_latency_marker_info: Ptr[GetLatencyMarkerInfoNV, MutAnyOrigin],
     )
-    var _queue_notify_out_of_band_nv: fn(queue: Queue, queue_type_info: OutOfBandQueueTypeInfoNV)
+    var _queue_notify_out_of_band_nv: fn(
+        queue: Queue, p_queue_type_info: Ptr[OutOfBandQueueTypeInfoNV, ImmutAnyOrigin]
+    )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._set_latency_sleep_mode_nv = Ptr(to=get_device_proc_addr(
-            device, "vkSetLatencySleepModeNV".unsafe_ptr()
+            device, "vkSetLatencySleepModeNV".as_c_string_slice()
         )).bitcast[type_of(self._set_latency_sleep_mode_nv)]()[]
         self._latency_sleep_nv = Ptr(to=get_device_proc_addr(
-            device, "vkLatencySleepNV".unsafe_ptr()
+            device, "vkLatencySleepNV".as_c_string_slice()
         )).bitcast[type_of(self._latency_sleep_nv)]()[]
         self._set_latency_marker_nv = Ptr(to=get_device_proc_addr(
-            device, "vkSetLatencyMarkerNV".unsafe_ptr()
+            device, "vkSetLatencyMarkerNV".as_c_string_slice()
         )).bitcast[type_of(self._set_latency_marker_nv)]()[]
         self._get_latency_timings_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetLatencyTimingsNV".unsafe_ptr()
+            device, "vkGetLatencyTimingsNV".as_c_string_slice()
         )).bitcast[type_of(self._get_latency_timings_nv)]()[]
         self._queue_notify_out_of_band_nv = Ptr(to=get_device_proc_addr(
-            device, "vkQueueNotifyOutOfBandNV".unsafe_ptr()
+            device, "vkQueueNotifyOutOfBandNV".as_c_string_slice()
         )).bitcast[type_of(self._queue_notify_out_of_band_nv)]()[]
 
     fn set_latency_sleep_mode_nv(
         self, device: Device, swapchain: SwapchainKHR, sleep_mode_info: LatencySleepModeInfoNV
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetLatencySleepModeNV.html
         """
         return self._set_latency_sleep_mode_nv(
-            device, swapchain, Ptr(to=sleep_mode_info).bitcast[LatencySleepModeInfoNV]()[]
+            device, swapchain, Ptr(to=sleep_mode_info).bitcast[LatencySleepModeInfoNV]()
         )
 
     fn latency_sleep_nv(
         self, device: Device, swapchain: SwapchainKHR, sleep_info: LatencySleepInfoNV
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkLatencySleepNV.html
         """
-        return self._latency_sleep_nv(
-            device, swapchain, Ptr(to=sleep_info).bitcast[LatencySleepInfoNV]()[]
-        )
+        return self._latency_sleep_nv(device, swapchain, Ptr(to=sleep_info).bitcast[LatencySleepInfoNV]())
 
     fn set_latency_marker_nv(
         self, device: Device, swapchain: SwapchainKHR, latency_marker_info: SetLatencyMarkerInfoNV
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetLatencyMarkerNV.html
         """
         return self._set_latency_marker_nv(
-            device, swapchain, Ptr(to=latency_marker_info).bitcast[SetLatencyMarkerInfoNV]()[]
+            device, swapchain, Ptr(to=latency_marker_info).bitcast[SetLatencyMarkerInfoNV]()
         )
 
     fn get_latency_timings_nv(
@@ -1834,20 +2063,20 @@ struct LowLatency2(Copyable):
         mut latency_marker_info: GetLatencyMarkerInfoNV,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetLatencyTimingsNV.html
         """
         return self._get_latency_timings_nv(
-            device, swapchain, Ptr(to=latency_marker_info).bitcast[GetLatencyMarkerInfoNV]()[]
+            device, swapchain, Ptr(to=latency_marker_info).bitcast[GetLatencyMarkerInfoNV]()
         )
 
     fn queue_notify_out_of_band_nv(self, queue: Queue, queue_type_info: OutOfBandQueueTypeInfoNV):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueNotifyOutOfBandNV.html
         """
         return self._queue_notify_out_of_band_nv(
-            queue, Ptr(to=queue_type_info).bitcast[OutOfBandQueueTypeInfoNV]()[]
+            queue, Ptr(to=queue_type_info).bitcast[OutOfBandQueueTypeInfoNV]()
         )
 
 
@@ -1855,9 +2084,9 @@ struct ExternalComputeQueue(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_external_compute_queue_nv: fn(
         device: Device,
-        create_info: ExternalComputeQueueCreateInfoNV,
+        p_create_info: Ptr[ExternalComputeQueueCreateInfoNV, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        external_queue: ExternalComputeQueueNV,
+        p_external_queue: Ptr[ExternalComputeQueueNV, MutAnyOrigin],
     ) -> Result
     var _destroy_external_compute_queue_nv: fn(
         device: Device,
@@ -1866,23 +2095,23 @@ struct ExternalComputeQueue(Copyable):
     )
     var _get_external_compute_queue_data_nv: fn(
         external_queue: ExternalComputeQueueNV,
-        params: ExternalComputeQueueDataParamsNV,
+        params: Ptr[ExternalComputeQueueDataParamsNV, MutAnyOrigin],
         p_data: Ptr[NoneType, MutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_external_compute_queue_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCreateExternalComputeQueueNV".unsafe_ptr()
+            device, "vkCreateExternalComputeQueueNV".as_c_string_slice()
         )).bitcast[type_of(self._create_external_compute_queue_nv)]()[]
         self._destroy_external_compute_queue_nv = Ptr(to=get_device_proc_addr(
-            device, "vkDestroyExternalComputeQueueNV".unsafe_ptr()
+            device, "vkDestroyExternalComputeQueueNV".as_c_string_slice()
         )).bitcast[type_of(self._destroy_external_compute_queue_nv)]()[]
         self._get_external_compute_queue_data_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetExternalComputeQueueDataNV".unsafe_ptr()
+            device, "vkGetExternalComputeQueueDataNV".as_c_string_slice()
         )).bitcast[type_of(self._get_external_compute_queue_data_nv)]()[]
 
     fn create_external_compute_queue_nv(
@@ -1893,14 +2122,14 @@ struct ExternalComputeQueue(Copyable):
         mut external_queue: ExternalComputeQueueNV,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateExternalComputeQueueNV.html
         """
         return self._create_external_compute_queue_nv(
             device,
-            Ptr(to=create_info).bitcast[ExternalComputeQueueCreateInfoNV]()[],
+            Ptr(to=create_info).bitcast[ExternalComputeQueueCreateInfoNV](),
             p_allocator,
-            Ptr(to=external_queue).bitcast[ExternalComputeQueueNV]()[],
+            Ptr(to=external_queue).bitcast[ExternalComputeQueueNV](),
         )
 
     fn destroy_external_compute_queue_nv(
@@ -1910,7 +2139,7 @@ struct ExternalComputeQueue(Copyable):
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyExternalComputeQueueNV.html
         """
         return self._destroy_external_compute_queue_nv(device, external_queue, p_allocator)
@@ -1922,11 +2151,11 @@ struct ExternalComputeQueue(Copyable):
         p_data: Ptr[NoneType, MutAnyOrigin],
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetExternalComputeQueueDataNV.html
         """
         return self._get_external_compute_queue_data_nv(
-            external_queue, Ptr(to=params).bitcast[ExternalComputeQueueDataParamsNV]()[], p_data
+            external_queue, Ptr(to=params).bitcast[ExternalComputeQueueDataParamsNV](), p_data
         )
 
 
@@ -1934,23 +2163,24 @@ struct ClusterAccelerationStructure(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_cluster_acceleration_structure_build_sizes_nv: fn(
         device: Device,
-        info: ClusterAccelerationStructureInputInfoNV,
-        size_info: AccelerationStructureBuildSizesInfoKHR,
+        p_info: Ptr[ClusterAccelerationStructureInputInfoNV, ImmutAnyOrigin],
+        p_size_info: Ptr[AccelerationStructureBuildSizesInfoKHR, MutAnyOrigin],
     )
     var _cmd_build_cluster_acceleration_structure_indirect_nv: fn(
-        command_buffer: CommandBuffer, command_infos: ClusterAccelerationStructureCommandsInfoNV
+        command_buffer: CommandBuffer,
+        p_command_infos: Ptr[ClusterAccelerationStructureCommandsInfoNV, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_cluster_acceleration_structure_build_sizes_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetClusterAccelerationStructureBuildSizesNV".unsafe_ptr()
+            device, "vkGetClusterAccelerationStructureBuildSizesNV".as_c_string_slice()
         )).bitcast[type_of(self._get_cluster_acceleration_structure_build_sizes_nv)]()[]
         self._cmd_build_cluster_acceleration_structure_indirect_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdBuildClusterAccelerationStructureIndirectNV".unsafe_ptr()
+            device, "vkCmdBuildClusterAccelerationStructureIndirectNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_build_cluster_acceleration_structure_indirect_nv)]()[]
 
     fn get_cluster_acceleration_structure_build_sizes_nv(
@@ -1960,13 +2190,13 @@ struct ClusterAccelerationStructure(Copyable):
         mut size_info: AccelerationStructureBuildSizesInfoKHR,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetClusterAccelerationStructureBuildSizesNV.html
         """
         return self._get_cluster_acceleration_structure_build_sizes_nv(
             device,
-            Ptr(to=info).bitcast[ClusterAccelerationStructureInputInfoNV]()[],
-            Ptr(to=size_info).bitcast[AccelerationStructureBuildSizesInfoKHR]()[],
+            Ptr(to=info).bitcast[ClusterAccelerationStructureInputInfoNV](),
+            Ptr(to=size_info).bitcast[AccelerationStructureBuildSizesInfoKHR](),
         )
 
     fn cmd_build_cluster_acceleration_structure_indirect_nv(
@@ -1975,12 +2205,11 @@ struct ClusterAccelerationStructure(Copyable):
         command_infos: ClusterAccelerationStructureCommandsInfoNV,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBuildClusterAccelerationStructureIndirectNV.html
         """
         return self._cmd_build_cluster_acceleration_structure_indirect_nv(
-            command_buffer,
-            Ptr(to=command_infos).bitcast[ClusterAccelerationStructureCommandsInfoNV]()[],
+            command_buffer, Ptr(to=command_infos).bitcast[ClusterAccelerationStructureCommandsInfoNV]()
         )
 
 
@@ -1988,23 +2217,24 @@ struct PartitionedAccelerationStructure(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_partitioned_acceleration_structures_build_sizes_nv: fn(
         device: Device,
-        info: PartitionedAccelerationStructureInstancesInputNV,
-        size_info: AccelerationStructureBuildSizesInfoKHR,
+        p_info: Ptr[PartitionedAccelerationStructureInstancesInputNV, ImmutAnyOrigin],
+        p_size_info: Ptr[AccelerationStructureBuildSizesInfoKHR, MutAnyOrigin],
     )
     var _cmd_build_partitioned_acceleration_structures_nv: fn(
-        command_buffer: CommandBuffer, build_info: BuildPartitionedAccelerationStructureInfoNV
+        command_buffer: CommandBuffer,
+        p_build_info: Ptr[BuildPartitionedAccelerationStructureInfoNV, ImmutAnyOrigin],
     )
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_partitioned_acceleration_structures_build_sizes_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetPartitionedAccelerationStructuresBuildSizesNV".unsafe_ptr()
+            device, "vkGetPartitionedAccelerationStructuresBuildSizesNV".as_c_string_slice()
         )).bitcast[type_of(self._get_partitioned_acceleration_structures_build_sizes_nv)]()[]
         self._cmd_build_partitioned_acceleration_structures_nv = Ptr(to=get_device_proc_addr(
-            device, "vkCmdBuildPartitionedAccelerationStructuresNV".unsafe_ptr()
+            device, "vkCmdBuildPartitionedAccelerationStructuresNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_build_partitioned_acceleration_structures_nv)]()[]
 
     fn get_partitioned_acceleration_structures_build_sizes_nv(
@@ -2014,25 +2244,24 @@ struct PartitionedAccelerationStructure(Copyable):
         mut size_info: AccelerationStructureBuildSizesInfoKHR,
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPartitionedAccelerationStructuresBuildSizesNV.html
         """
         return self._get_partitioned_acceleration_structures_build_sizes_nv(
             device,
-            Ptr(to=info).bitcast[PartitionedAccelerationStructureInstancesInputNV]()[],
-            Ptr(to=size_info).bitcast[AccelerationStructureBuildSizesInfoKHR]()[],
+            Ptr(to=info).bitcast[PartitionedAccelerationStructureInstancesInputNV](),
+            Ptr(to=size_info).bitcast[AccelerationStructureBuildSizesInfoKHR](),
         )
 
     fn cmd_build_partitioned_acceleration_structures_nv(
         self, command_buffer: CommandBuffer, build_info: BuildPartitionedAccelerationStructureInfoNV
     ):
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBuildPartitionedAccelerationStructuresNV.html
         """
         return self._cmd_build_partitioned_acceleration_structures_nv(
-            command_buffer,
-            Ptr(to=build_info).bitcast[BuildPartitionedAccelerationStructureInfoNV]()[],
+            command_buffer, Ptr(to=build_info).bitcast[BuildPartitionedAccelerationStructureInfoNV]()
         )
 
 
@@ -2040,17 +2269,17 @@ struct CooperativeMatrix2(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv: fn(
         physical_device: PhysicalDevice,
-        property_count: UInt32,
+        p_property_count: Ptr[UInt32, MutAnyOrigin],
         p_properties: Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV".unsafe_ptr()
+            device, "vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv)]()[]
 
     fn get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
@@ -2060,33 +2289,9 @@ struct CooperativeMatrix2(Copyable):
         p_properties: Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutAnyOrigin],
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV.html
         """
         return self._get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
-            physical_device, Ptr(to=property_count).bitcast[UInt32]()[], p_properties
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
         )
-
-    fn get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
-        self, physical_device: PhysicalDevice
-    ) -> ListResult[CooperativeMatrixFlexibleDimensionsPropertiesNV]:
-        """See official vulkan docs for details.
-
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV.html
-        """
-        var list = List[CooperativeMatrixFlexibleDimensionsPropertiesNV]()
-        var count: UInt32 = 0
-        var result = Result.INCOMPLETE
-        while result == Result.INCOMPLETE:
-            result = self.get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
-                physical_device,
-                count,
-                Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutAnyOrigin](),
-            )
-            if result == Result.SUCCESS:
-                list.reserve(Int(count))
-            result = self.get_physical_device_cooperative_matrix_flexible_dimensions_properties_nv(
-                physical_device, count, list.unsafe_ptr()
-            )
-        list._len = Int(count)
-        return ListResult(list^, result)

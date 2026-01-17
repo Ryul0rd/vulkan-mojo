@@ -7,24 +7,24 @@ struct ScreenSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_screen_surface_qnx: fn(
         instance: Instance,
-        create_info: ScreenSurfaceCreateInfoQNX,
+        p_create_info: Ptr[ScreenSurfaceCreateInfoQNX, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        surface: SurfaceKHR,
+        p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
     ) -> Result
     var _get_physical_device_screen_presentation_support_qnx: fn(
         physical_device: PhysicalDevice, queue_family_index: UInt32, window: screen_window_t
     ) -> Bool32
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_screen_surface_qnx = Ptr(to=get_instance_proc_addr(
-            instance, "vkCreateScreenSurfaceQNX".unsafe_ptr()
+            instance, "vkCreateScreenSurfaceQNX".as_c_string_slice()
         )).bitcast[type_of(self._create_screen_surface_qnx)]()[]
         self._get_physical_device_screen_presentation_support_qnx = Ptr(to=get_instance_proc_addr(
-            instance, "vkGetPhysicalDeviceScreenPresentationSupportQNX".unsafe_ptr()
+            instance, "vkGetPhysicalDeviceScreenPresentationSupportQNX".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_screen_presentation_support_qnx)]()[]
 
     fn create_screen_surface_qnx(
@@ -35,21 +35,21 @@ struct ScreenSurface(Copyable):
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateScreenSurfaceQNX.html
         """
         return self._create_screen_surface_qnx(
             instance,
-            Ptr(to=create_info).bitcast[ScreenSurfaceCreateInfoQNX]()[],
+            Ptr(to=create_info).bitcast[ScreenSurfaceCreateInfoQNX](),
             p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR]()[],
+            Ptr(to=surface).bitcast[SurfaceKHR](),
         )
 
     fn get_physical_device_screen_presentation_support_qnx(
         self, physical_device: PhysicalDevice, queue_family_index: UInt32, window: screen_window_t
     ) -> Bool32:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceScreenPresentationSupportQNX.html
         """
         return self._get_physical_device_screen_presentation_support_qnx(
@@ -60,25 +60,27 @@ struct ScreenSurface(Copyable):
 struct ExternalMemoryScreenBuffer(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_screen_buffer_properties_qnx: fn(
-        device: Device, buffer: screen_buffer_t, properties: ScreenBufferPropertiesQNX
+        device: Device,
+        buffer: screen_buffer_t,
+        p_properties: Ptr[ScreenBufferPropertiesQNX, MutAnyOrigin],
     ) -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device) raises:
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: Ptr[UInt8, ImmutAnyOrigin]) -> PFN_vkVoidFunction
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_screen_buffer_properties_qnx = Ptr(to=get_device_proc_addr(
-            device, "vkGetScreenBufferPropertiesQNX".unsafe_ptr()
+            device, "vkGetScreenBufferPropertiesQNX".as_c_string_slice()
         )).bitcast[type_of(self._get_screen_buffer_properties_qnx)]()[]
 
     fn get_screen_buffer_properties_qnx(
         self, device: Device, buffer: screen_buffer_t, mut properties: ScreenBufferPropertiesQNX
     ) -> Result:
         """See official vulkan docs for details.
-
+        
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetScreenBufferPropertiesQNX.html
         """
         return self._get_screen_buffer_properties_qnx(
-            device, buffer, Ptr(to=properties).bitcast[ScreenBufferPropertiesQNX]()[]
+            device, buffer, Ptr(to=properties).bitcast[ScreenBufferPropertiesQNX]()
         )
