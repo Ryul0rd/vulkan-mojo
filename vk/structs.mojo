@@ -8,7 +8,6 @@ comptime Ptr = UnsafePointer
 
 comptime BufferUsageFlags2CreateInfoKHR = BufferUsageFlags2CreateInfo
 comptime PipelineCreateFlags2CreateInfoKHR = PipelineCreateFlags2CreateInfo
-comptime PhysicalDeviceExternalSciBufFeaturesNV = PhysicalDeviceExternalMemorySciBufFeaturesNV
 comptime DevicePrivateDataCreateInfoEXT = DevicePrivateDataCreateInfo
 comptime PrivateDataSlotCreateInfoEXT = PrivateDataSlotCreateInfo
 comptime PhysicalDevicePrivateDataFeaturesEXT = PhysicalDevicePrivateDataFeatures
