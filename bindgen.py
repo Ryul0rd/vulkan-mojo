@@ -125,6 +125,7 @@ class RegistryStructMember:
     optional: List[bool]
     len: Optional[str]
     comment: Optional[str]
+    values: Optional[str]
 
 
 @dataclass
@@ -211,6 +212,7 @@ def parse_types(xml_registry: Element) -> List[RegistryType]:
                     optional=optional,
                     len=member_el.attrib.get("len"),
                     comment=comment,
+                    values=member_el.attrib.get("values"),
                 ))
             returned_only = type_el.attrib.get("returnedonly") == "true"
             types.append(RegistryStruct(name, struct_members, returned_only))
@@ -784,6 +786,7 @@ class MojoPhysicalField:
     name: str
     type: MojoType
     packed: bool
+    default_value: Optional[str] = None
 
 
 @dataclass
@@ -791,6 +794,7 @@ class MojoLogicalField:
     name: str
     type: MojoType
     packing_data: Optional[FieldPackingData]
+    default_value: Optional[str] = None
 
 
 @dataclass
@@ -823,11 +827,13 @@ def parse_members(members: List[RegistryStructMember]) -> Tuple[List[MojoPhysica
                 name=field_name,
                 type=decl.type,
                 packed=False,
+                default_value=member.values,
             ))
             logical_fields.append(MojoLogicalField(
                 name=field_name,
                 type=decl.type,
                 packing_data=None,
+                default_value=member.values,
             ))
             continue
 
@@ -896,8 +902,16 @@ def bind_structs(files: Dict[str, str], registry: Registry):
         fields = [MojoField(field.name, field.type) for field in physical_fields]
         init_body_lines: List[str] = []
         for field in physical_fields:
+            is_default_stype = (
+                field.default_value is not None
+                and isinstance(field.type, MojoBaseType)
+                and field.type.name == "StructureType"
+            )
             if field.packed:
                 init_value = "0"
+            elif is_default_stype:
+                val_name = strip_enum_value_prefix("VkStructureType", assert_type(str, field.default_value), registry.tags)
+                init_value = f"StructureType.{val_name}"
             elif isinstance(field.type, MojoBaseType) and field.type.name in struct_names:
                 init_value = f"{field.name}.copy()"
             else:
@@ -906,7 +920,17 @@ def bind_structs(files: Dict[str, str], registry: Registry):
         for field in logical_fields:
             if field.packing_data is not None:
                 init_body_lines.append(f"self.set_{field.name}({field.name})")
-        arguments = [MojoArgument(field.name, field.type) for field in logical_fields]
+        
+        arguments: List[MojoArgument] = []
+        for field in logical_fields:
+            is_default_stype = (
+                field.default_value is not None
+                and isinstance(field.type, MojoBaseType)
+                and field.type.name == "StructureType"
+            )
+            if not is_default_stype:
+                arguments.append(MojoArgument(field.name, field.type))
+        
         methods: List[MojoMethod] = []
         if not registry_struct.returned_only:
             methods.append(MojoMethod(
