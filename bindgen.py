@@ -894,6 +894,8 @@ def bind_structs(files: Dict[str, str], registry: Registry):
     for registry_type in registry.types:
         if not isinstance(registry_type, RegistryAlias) or registry_type.category != "struct":
             continue
+        if registry_type.name not in enabled_type_names:
+            continue
         registry_alias = registry_type
         aliases.append(MojoTypeAlias(
             name=c_type_name_to_mojo(registry_alias.name),
