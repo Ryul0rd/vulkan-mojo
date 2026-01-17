@@ -2059,55 +2059,49 @@ class CumulativeVersionCommands:
 def collect_commands_by_version(
     registry: Registry,
 ) -> Tuple[List[VersionCommands], List[CumulativeVersionCommands]]:
-    # version commands
-    commands_by_name = {command.name: command for command in registry.commands}
-    version_level_commands: Dict[Tuple[Version, VkLevel], List[RegistryCommand]] = defaultdict(list)
+    commands_by_name = {cmd.name: cmd for cmd in registry.commands}
+    grouped_commands: Dict[VkLevel, Dict[Version, List[RegistryCommand]]] = defaultdict(lambda: defaultdict(list))
+    all_versions: Set[Version] = set()
+
     for feature in registry.features:
         if "vulkan" not in feature.api:
             continue
-        version_parts = feature.number.split(".")
-        version = Version(int(version_parts[0]), int(version_parts[1]))
-        for req in feature.requires:
-            if not isinstance(req, RegistryRequiredCommand):
-                continue
-            command = commands_by_name[req.name]
-            first_param_type = command.params[0].type
-            if first_param_type in ("VkInstance", "VkPhysicalDevice") or command.name == "get_instance_proc_addr":
-                level =  "instance"
-            elif first_param_type in ("VkDevice", "VkQueue", "VkCommandBuffer"):
-                level =  "device"
-            else:
-                level = "global"
-            version_level_commands[(version, level)].append(command)
-    
+        parts = feature.number.split(".")
+        version = Version(int(parts[0]), int(parts[1]))
+        all_versions.add(version)
+        for requirement in feature.requires:
+            if isinstance(requirement, RegistryRequiredCommand):
+                command = commands_by_name[requirement.name]
+                first_param = command.params[0].type
+                level: VkLevel = "global"
+                if first_param in ("VkInstance", "VkPhysicalDevice") or command.name == "get_instance_proc_addr":
+                    level = "instance"
+                elif first_param in ("VkDevice", "VkQueue", "VkCommandBuffer"):
+                    level = "device"
+                grouped_commands[level][version].append(command)
+
     version_commands: List[VersionCommands] = []
-    for (version, level), commands in sorted(version_level_commands.items()):
-        version_commands.append(VersionCommands(level, version, commands))
-
-    # cumulative version commands
-    version_commands_by_level: Dict[VkLevel, List[VersionCommands]] = defaultdict(list)
-    for vc in version_commands:
-        version_commands_by_level[vc.level].append(vc)
-    for level in version_commands_by_level:
-        version_commands_by_level[level].sort(key=lambda vc: (vc.version.major, vc.version.minor))
-    
-    cumulative_version_commands: List[CumulativeVersionCommands] = []
-    for level, version_commands_list in version_commands_by_level.items():
-        cumulative_commands: List[Tuple[Version, RegistryCommand]] = []
+    cumulative_list: List[CumulativeVersionCommands] = []
+    levels: List[VkLevel] = ["global", "instance", "device"]
+    for level in levels:
+        current_cumulative_cmds: List[Tuple[Version, RegistryCommand]] = []
         seen_versions: List[Version] = []
-        for vc in version_commands_list:
-            for command in vc.commands:
-                cumulative_commands.append((vc.version, command))
-            seen_versions.append(vc.version)
-            cumulative_version_commands.append(CumulativeVersionCommands(
+        for version in sorted(all_versions):
+            cmds = grouped_commands[level].get(version, [])
+            version_commands.append(VersionCommands(level, version, cmds))
+            seen_versions.append(version)
+            for command in cmds:
+                current_cumulative_cmds.append((version, command))
+            cumulative_list.append(CumulativeVersionCommands(
                 level=level,
-                version=vc.version,
+                version=version,
                 dependencies=list(seen_versions),
-                commands=list(cumulative_commands),
+                commands=list(current_cumulative_cmds),
             ))
-    cumulative_version_commands.sort(key=lambda c: (c.version.major, c.version.minor, c.level))
 
-    return version_commands, cumulative_version_commands
+    version_commands.sort(key=lambda x: (x.version, x.level))
+    cumulative_list.sort(key=lambda x: (x.version, x.level))
+    return version_commands, cumulative_list
 
 
 def command_to_mojo_name(registry_command: RegistryCommand) -> str:
