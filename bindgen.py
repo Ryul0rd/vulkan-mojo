@@ -2421,14 +2421,14 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
                 init_body_lines.append(f"self._v{dep_suffix} = {addition_type}(self._dlhandle)")
         else:
             init_arguments = [
-                MojoArgument("dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"])),
+                MojoArgument("global_functions", MojoBaseType(f"GlobalFunctionsV{version_suffix}")),
                 MojoArgument(cvc.level, MojoBaseType(cvc.level.capitalize())),
             ]
-            init_body_lines = ["self._dlhandle = dlhandle"]
+            init_body_lines = [f"self._dlhandle = global_functions.get_dlhandle()"]
             for dep_version in cvc.dependencies:
                 dep_suffix = f"{dep_version.major}_{dep_version.minor}"
                 addition_type = f"{level_name}FunctionsAdditionsV{dep_suffix}"
-                init_body_lines.append(f"self._v{dep_suffix} = {addition_type}(dlhandle, {cvc.level})")
+                init_body_lines.append(f"self._v{dep_suffix} = {addition_type}(self._dlhandle, {cvc.level})")
         
         methods: List[MojoMethod] = []
         methods.append(MojoMethod(

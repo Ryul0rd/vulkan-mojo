@@ -319,9 +319,9 @@ struct InstanceFunctionsV1_0(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: InstanceFunctionsAdditionsV1_0
 
-    fn __init__(out self, dlhandle: ArcPointer[OwnedDLHandle], instance: Instance):
-        self._dlhandle = dlhandle
-        self._v1_0 = InstanceFunctionsAdditionsV1_0(dlhandle, instance)
+    fn __init__(out self, global_functions: GlobalFunctionsV1_0, instance: Instance):
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = InstanceFunctionsAdditionsV1_0(self._dlhandle, instance)
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -521,10 +521,10 @@ struct InstanceFunctionsV1_1(Copyable):
     var _v1_0: InstanceFunctionsAdditionsV1_0
     var _v1_1: InstanceFunctionsAdditionsV1_1
 
-    fn __init__(out self, dlhandle: ArcPointer[OwnedDLHandle], instance: Instance):
-        self._dlhandle = dlhandle
-        self._v1_0 = InstanceFunctionsAdditionsV1_0(dlhandle, instance)
-        self._v1_1 = InstanceFunctionsAdditionsV1_1(dlhandle, instance)
+    fn __init__(out self, global_functions: GlobalFunctionsV1_1, instance: Instance):
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = InstanceFunctionsAdditionsV1_0(self._dlhandle, instance)
+        self._v1_1 = InstanceFunctionsAdditionsV1_1(self._dlhandle, instance)
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -887,10 +887,10 @@ struct InstanceFunctionsV1_2(Copyable):
     var _v1_0: InstanceFunctionsAdditionsV1_0
     var _v1_1: InstanceFunctionsAdditionsV1_1
 
-    fn __init__(out self, dlhandle: ArcPointer[OwnedDLHandle], instance: Instance):
-        self._dlhandle = dlhandle
-        self._v1_0 = InstanceFunctionsAdditionsV1_0(dlhandle, instance)
-        self._v1_1 = InstanceFunctionsAdditionsV1_1(dlhandle, instance)
+    fn __init__(out self, global_functions: GlobalFunctionsV1_2, instance: Instance):
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = InstanceFunctionsAdditionsV1_0(self._dlhandle, instance)
+        self._v1_1 = InstanceFunctionsAdditionsV1_1(self._dlhandle, instance)
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -1254,11 +1254,11 @@ struct InstanceFunctionsV1_3(Copyable):
     var _v1_1: InstanceFunctionsAdditionsV1_1
     var _v1_3: InstanceFunctionsAdditionsV1_3
 
-    fn __init__(out self, dlhandle: ArcPointer[OwnedDLHandle], instance: Instance):
-        self._dlhandle = dlhandle
-        self._v1_0 = InstanceFunctionsAdditionsV1_0(dlhandle, instance)
-        self._v1_1 = InstanceFunctionsAdditionsV1_1(dlhandle, instance)
-        self._v1_3 = InstanceFunctionsAdditionsV1_3(dlhandle, instance)
+    fn __init__(out self, global_functions: GlobalFunctionsV1_3, instance: Instance):
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = InstanceFunctionsAdditionsV1_0(self._dlhandle, instance)
+        self._v1_1 = InstanceFunctionsAdditionsV1_1(self._dlhandle, instance)
+        self._v1_3 = InstanceFunctionsAdditionsV1_3(self._dlhandle, instance)
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -1636,11 +1636,11 @@ struct InstanceFunctionsV1_4(Copyable):
     var _v1_1: InstanceFunctionsAdditionsV1_1
     var _v1_3: InstanceFunctionsAdditionsV1_3
 
-    fn __init__(out self, dlhandle: ArcPointer[OwnedDLHandle], instance: Instance):
-        self._dlhandle = dlhandle
-        self._v1_0 = InstanceFunctionsAdditionsV1_0(dlhandle, instance)
-        self._v1_1 = InstanceFunctionsAdditionsV1_1(dlhandle, instance)
-        self._v1_3 = InstanceFunctionsAdditionsV1_3(dlhandle, instance)
+    fn __init__(out self, global_functions: GlobalFunctionsV1_4, instance: Instance):
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = InstanceFunctionsAdditionsV1_0(self._dlhandle, instance)
+        self._v1_1 = InstanceFunctionsAdditionsV1_1(self._dlhandle, instance)
+        self._v1_3 = InstanceFunctionsAdditionsV1_3(self._dlhandle, instance)
 
     fn destroy_instance(
         self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
@@ -2016,9 +2016,9 @@ struct DeviceFunctionsV1_0(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: DeviceFunctionsAdditionsV1_0
 
-    fn __init__(out self, dlhandle: ArcPointer[OwnedDLHandle], device: Device):
-        self._dlhandle = dlhandle
-        self._v1_0 = DeviceFunctionsAdditionsV1_0(dlhandle, device)
+    fn __init__(out self, global_functions: GlobalFunctionsV1_0, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = DeviceFunctionsAdditionsV1_0(self._dlhandle, device)
 
     fn get_device_proc_addr(
         self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
@@ -3683,10 +3683,10 @@ struct DeviceFunctionsV1_1(Copyable):
     var _v1_0: DeviceFunctionsAdditionsV1_0
     var _v1_1: DeviceFunctionsAdditionsV1_1
 
-    fn __init__(out self, dlhandle: ArcPointer[OwnedDLHandle], device: Device):
-        self._dlhandle = dlhandle
-        self._v1_0 = DeviceFunctionsAdditionsV1_0(dlhandle, device)
-        self._v1_1 = DeviceFunctionsAdditionsV1_1(dlhandle, device)
+    fn __init__(out self, global_functions: GlobalFunctionsV1_1, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = DeviceFunctionsAdditionsV1_0(self._dlhandle, device)
+        self._v1_1 = DeviceFunctionsAdditionsV1_1(self._dlhandle, device)
 
     fn get_device_proc_addr(
         self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
@@ -5588,11 +5588,11 @@ struct DeviceFunctionsV1_2(Copyable):
     var _v1_1: DeviceFunctionsAdditionsV1_1
     var _v1_2: DeviceFunctionsAdditionsV1_2
 
-    fn __init__(out self, dlhandle: ArcPointer[OwnedDLHandle], device: Device):
-        self._dlhandle = dlhandle
-        self._v1_0 = DeviceFunctionsAdditionsV1_0(dlhandle, device)
-        self._v1_1 = DeviceFunctionsAdditionsV1_1(dlhandle, device)
-        self._v1_2 = DeviceFunctionsAdditionsV1_2(dlhandle, device)
+    fn __init__(out self, global_functions: GlobalFunctionsV1_2, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = DeviceFunctionsAdditionsV1_0(self._dlhandle, device)
+        self._v1_1 = DeviceFunctionsAdditionsV1_1(self._dlhandle, device)
+        self._v1_2 = DeviceFunctionsAdditionsV1_2(self._dlhandle, device)
 
     fn get_device_proc_addr(
         self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
@@ -7657,12 +7657,12 @@ struct DeviceFunctionsV1_3(Copyable):
     var _v1_2: DeviceFunctionsAdditionsV1_2
     var _v1_3: DeviceFunctionsAdditionsV1_3
 
-    fn __init__(out self, dlhandle: ArcPointer[OwnedDLHandle], device: Device):
-        self._dlhandle = dlhandle
-        self._v1_0 = DeviceFunctionsAdditionsV1_0(dlhandle, device)
-        self._v1_1 = DeviceFunctionsAdditionsV1_1(dlhandle, device)
-        self._v1_2 = DeviceFunctionsAdditionsV1_2(dlhandle, device)
-        self._v1_3 = DeviceFunctionsAdditionsV1_3(dlhandle, device)
+    fn __init__(out self, global_functions: GlobalFunctionsV1_3, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = DeviceFunctionsAdditionsV1_0(self._dlhandle, device)
+        self._v1_1 = DeviceFunctionsAdditionsV1_1(self._dlhandle, device)
+        self._v1_2 = DeviceFunctionsAdditionsV1_2(self._dlhandle, device)
+        self._v1_3 = DeviceFunctionsAdditionsV1_3(self._dlhandle, device)
 
     fn get_device_proc_addr(
         self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
@@ -10130,13 +10130,13 @@ struct DeviceFunctionsV1_4(Copyable):
     var _v1_3: DeviceFunctionsAdditionsV1_3
     var _v1_4: DeviceFunctionsAdditionsV1_4
 
-    fn __init__(out self, dlhandle: ArcPointer[OwnedDLHandle], device: Device):
-        self._dlhandle = dlhandle
-        self._v1_0 = DeviceFunctionsAdditionsV1_0(dlhandle, device)
-        self._v1_1 = DeviceFunctionsAdditionsV1_1(dlhandle, device)
-        self._v1_2 = DeviceFunctionsAdditionsV1_2(dlhandle, device)
-        self._v1_3 = DeviceFunctionsAdditionsV1_3(dlhandle, device)
-        self._v1_4 = DeviceFunctionsAdditionsV1_4(dlhandle, device)
+    fn __init__(out self, global_functions: GlobalFunctionsV1_4, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        self._v1_0 = DeviceFunctionsAdditionsV1_0(self._dlhandle, device)
+        self._v1_1 = DeviceFunctionsAdditionsV1_1(self._dlhandle, device)
+        self._v1_2 = DeviceFunctionsAdditionsV1_2(self._dlhandle, device)
+        self._v1_3 = DeviceFunctionsAdditionsV1_3(self._dlhandle, device)
+        self._v1_4 = DeviceFunctionsAdditionsV1_4(self._dlhandle, device)
 
     fn get_device_proc_addr(
         self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
