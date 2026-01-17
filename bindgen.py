@@ -639,7 +639,6 @@ class MojoFnType:
 @dataclass
 class MojoParametricArgumentType:
     name: str
-    type: str # this could probably be modeled better
 
     def __str__(self) -> str:
         return self.name
@@ -726,6 +725,7 @@ class MojoMethod:
     name: str
     return_type: MojoType
     self_ref_kind: Literal["ref", "mut", "out"]
+    parameters: List[MojoParameter]
     arguments: List[MojoArgument]
     body_lines: List[str]
     docstring_lines: List[str]
@@ -733,9 +733,6 @@ class MojoMethod:
 
     def __str__(self) -> str:
         returns_none = isinstance(self.return_type, MojoBaseType) and self.return_type.name == "NoneType"
-        parameters: List[str] = []
-        for argument in self.arguments:
-            parameters.extend(self._get_method_parameters_for_argument_type(argument.type))
         parts: List[str] = []
         self_arg = "self" if self.self_ref_kind == "ref" else f"{self.self_ref_kind} self"
         raises_part = " raises" if self.raises else ""
@@ -745,7 +742,7 @@ class MojoMethod:
             f"fn {self.name}",
             [self_arg] + [str(arg) for arg in self.arguments],
             suffix=suffix,
-            parameters=[param for param in parameters],
+            parameters=[str(param) for param in self.parameters],
             base_indent_level=1,
         ))
         if len(self.docstring_lines) != 0:
@@ -756,20 +753,17 @@ class MojoMethod:
         for line in self.body_lines:
             parts.append(f"        {line}\n")
         return "".join(parts)
-    
-    @classmethod
-    def _get_method_parameters_for_argument_type(cls, type: MojoType) -> List[str]:
-        parameters: List[str] = []
-        if isinstance(type, MojoParametricArgumentType):
-            parameters.append(f"{type.name}: {type.type}")
-        elif isinstance(type, MojoBaseType):
-            for parameter in type.parameters:
-                if isinstance(parameter, MojoParametricArgumentType):
-                    parameters.append(f"{parameter.name}: {parameter.type}")
-        elif isinstance(type, MojoPointerType) and isinstance(type.origin, MojoParametricArgumentType):
-            parameters.append(f"{type.origin.name}: {type.origin.type}")
-            parameters.extend(cls._get_method_parameters_for_argument_type(type.pointee_type))
-        return parameters
+
+
+@dataclass
+class MojoParameter:
+    name: str
+    type: str
+    default_value: Optional[str] = None
+
+    def __str__(self) -> str:
+        default_value_part = "" if self.default_value is None else f" = {self.default_value}"
+        return f"{self.name}: {self.type}{default_value_part}"
 
 
 @dataclass
@@ -966,6 +960,7 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                 name="__init__",
                 return_type=MojoBaseType("NoneType"),
                 self_ref_kind="out",
+                parameters=[],
                 arguments=arguments,
                 body_lines=init_body_lines,
                 docstring_lines=[],
@@ -982,6 +977,7 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                     name=f"{field.name}_slice",
                     return_type=MojoBaseType("CStringSlice", [f"origin_of(self.{field.name})"]),
                     self_ref_kind="ref",
+                    parameters=[],
                     arguments=[],
                     body_lines=[
                         f"return CStringSlice[origin_of(self.{field.name})](unsafe_from_ptr = self.{field.name}.unsafe_ptr())"
@@ -999,6 +995,7 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                 name=f"get_{field.name}",
                 return_type=MojoBaseType("UInt32"),
                 self_ref_kind="ref",
+                parameters=[],
                 arguments=[],
                 body_lines=[f"return get_packed_value[width={width}, offset={offset}](self.{physical_field_name})"],
                 docstring_lines=[],
@@ -1007,6 +1004,7 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                 name=f"set_{field.name}",
                 return_type=MojoBaseType("NoneType"),
                 self_ref_kind="mut",
+                parameters=[],
                 arguments=[MojoArgument("new_value", MojoBaseType("UInt32"))],
                 body_lines=[f"set_packed_value[width={width}, offset={offset}](self.{physical_field_name}, new_value)"],
                 docstring_lines=[],
@@ -2240,6 +2238,7 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         name=name,
         return_type=return_type,
         self_ref_kind="ref",
+        parameters=[],
         arguments=arguments,
         body_lines=body_lines,
         docstring_lines=docstring_lines,
@@ -2327,6 +2326,7 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         name=name,
         return_type=two_call_return_type,
         self_ref_kind="ref",
+        parameters=[],
         arguments=arguments[:-2],
         body_lines=two_call_body_lines,
         docstring_lines=docstring_lines,
@@ -2389,6 +2389,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             name="__init__",
             return_type=MojoBaseType("NoneType"),
             self_ref_kind="out",
+            parameters=[],
             arguments=init_arguments,
             body_lines=init_body_lines,
             docstring_lines=[],
@@ -2413,7 +2414,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             fields.append(MojoField(f"_v{dep_suffix}", addition_type))
         
         if cvc.level == "global":
-            init_arguments = []
+            init_arguments: List[MojoArgument] = []
             init_body_lines = ['self._dlhandle = ArcPointer(OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL))']
             for dep_version in cvc.dependencies:
                 dep_suffix = f"{dep_version.major}_{dep_version.minor}"
@@ -2435,6 +2436,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             name="__init__",
             return_type=MojoBaseType("NoneType"),
             self_ref_kind="out",
+            parameters=[],
             arguments=init_arguments,
             body_lines=init_body_lines,
             docstring_lines=[],
@@ -2445,6 +2447,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
                 name="get_dlhandle",
                 return_type=MojoBaseType("ArcPointer", ["OwnedDLHandle"]),
                 self_ref_kind="ref",
+                parameters=[],
                 arguments=[],
                 body_lines=["return self._dlhandle"],
                 docstring_lines=[],
@@ -2529,8 +2532,9 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
             "__init__",
             MojoBaseType("NoneType"),
             "out",
+            parameters=[MojoParameter("T", "GlobalFunctions")],
             arguments=[
-                MojoArgument("global_functions", MojoParametricArgumentType("T", "GlobalFunctions")),
+                MojoArgument("global_functions", MojoParametricArgumentType("T")),
                 MojoArgument(extension.type, MojoBaseType(extension.type.capitalize())),
             ],
             body_lines=init_body_lines,
