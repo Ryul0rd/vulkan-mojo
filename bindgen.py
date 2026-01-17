@@ -2115,26 +2115,14 @@ def command_to_mojo_fn_type(registry_command: RegistryCommand) -> MojoFnType:
     for param in registry_command.params:
         decl = parse_declarator(param.text)
         arg_name = pascal_to_snake(param.name)
+        if any(arg.name == arg_name for arg in arguments):
+            continue
         arguments.append(MojoArgument(arg_name, decl.type))
     return MojoFnType(return_type, arguments)
 
 
 def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_added: Optional[Version]=None) -> List[MojoMethod]:
-    """Convert a registry command to Mojo method(s).
-    
-    This function generates wrapper methods that:
-    - Convert single pointers to structs/primitives to by-value parameters
-    - Add 'mut' modifier for output parameters
-    - Generate proper bitcast conversions in the method body
-    - Keep double pointers and array pointers as Ptr types
-    - Convert const char* to CStringSlice[ImmutAnyOrigin]
-    
-    Args:
-        registry_command: The Vulkan command from the registry
-        version_added: If provided, indicates this is a core command added in the given
-                      version, and the body should call through self._vX_Y.method_name.
-                      If None, assumes extension command calling self._method_name directly.
-    """
+    """Convert a registry command to Mojo method(s)."""
     methods: List[MojoMethod] = []
     native_name = registry_command.name
     name = command_to_mojo_name(registry_command)
@@ -2173,8 +2161,10 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         else:
             argument = MojoArgument(arg_name, parsed_type)
             call_arg = arg_name
-        arguments.append(argument)
-        call_args.append(call_arg)
+
+        if not any(arg.name == arg_name for arg in arguments):
+            arguments.append(argument)
+            call_args.append(call_arg)
     
     if version_added is not None:
         version_field = f"_v{version_added.major}_{version_added.minor}"

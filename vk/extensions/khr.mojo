@@ -130,7 +130,6 @@ struct Swapchain(Copyable):
     var _create_swapchain_khr: fn(
         device: Device,
         p_create_info: Ptr[SwapchainCreateInfoKHR, ImmutAnyOrigin],
-        p_create_info: Ptr[SwapchainCreateInfoKHR, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_swapchain: Ptr[SwapchainKHR, MutAnyOrigin],
     ) -> Result
@@ -210,7 +209,6 @@ struct Swapchain(Copyable):
         self,
         device: Device,
         create_info: SwapchainCreateInfoKHR,
-        create_info: SwapchainCreateInfoKHR,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         mut swapchain: SwapchainKHR,
     ) -> Result:
@@ -220,7 +218,6 @@ struct Swapchain(Copyable):
         """
         return self._create_swapchain_khr(
             device,
-            Ptr(to=create_info).bitcast[SwapchainCreateInfoKHR](),
             Ptr(to=create_info).bitcast[SwapchainCreateInfoKHR](),
             p_allocator,
             Ptr(to=swapchain).bitcast[SwapchainKHR](),
@@ -519,7 +516,6 @@ struct DisplaySwapchain(Copyable):
         device: Device,
         swapchain_count: UInt32,
         p_create_infos: Ptr[SwapchainCreateInfoKHR, ImmutAnyOrigin],
-        p_create_infos: Ptr[SwapchainCreateInfoKHR, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_swapchains: Ptr[SwapchainKHR, MutAnyOrigin],
     ) -> Result
@@ -538,7 +534,6 @@ struct DisplaySwapchain(Copyable):
         device: Device,
         swapchain_count: UInt32,
         p_create_infos: Ptr[SwapchainCreateInfoKHR, ImmutAnyOrigin],
-        p_create_infos: Ptr[SwapchainCreateInfoKHR, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_swapchains: Ptr[SwapchainKHR, MutAnyOrigin],
     ) -> Result:
@@ -547,7 +542,7 @@ struct DisplaySwapchain(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSharedSwapchainsKHR.html
         """
         return self._create_shared_swapchains_khr(
-            device, swapchain_count, p_create_infos, p_create_infos, p_allocator, p_swapchains
+            device, swapchain_count, p_create_infos, p_allocator, p_swapchains
         )
 
 
