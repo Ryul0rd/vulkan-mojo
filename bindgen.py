@@ -775,10 +775,12 @@ class MojoArgument:
     name: str
     type: MojoType
     mut: bool = False
+    default_value: Optional[str] = None
 
     def __str__(self) -> str:
         mut_part = "mut " if self.mut else ""
-        return f"{mut_part}{self.name}: {self.type}"
+        default_part = f" = {self.default_value}" if self.default_value is not None else ""
+        return f"{mut_part}{self.name}: {self.type}{default_part}"
 
 
 @dataclass
@@ -909,9 +911,6 @@ def bind_structs(files: Dict[str, str], registry: Registry):
             )
             if field.packed:
                 init_value = "0"
-            elif is_default_stype:
-                val_name = strip_enum_value_prefix("VkStructureType", assert_type(str, field.default_value), registry.tags)
-                init_value = f"StructureType.{val_name}"
             elif isinstance(field.type, MojoBaseType) and field.type.name in struct_names:
                 init_value = f"{field.name}.copy()"
             else:
@@ -928,8 +927,19 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                 and isinstance(field.type, MojoBaseType)
                 and field.type.name == "StructureType"
             )
-            if not is_default_stype:
-                arguments.append(MojoArgument(field.name, field.type))
+            if is_default_stype:
+                val_name = strip_enum_value_prefix("VkStructureType", assert_type(str, field.default_value), registry.tags)
+                arguments.append(MojoArgument(
+                    field.name, 
+                    field.type, 
+                    default_value=f"StructureType.{val_name}"
+                ))
+            else:
+                arguments.append(MojoArgument(
+                    field.name, 
+                    field.type, 
+                    default_value=f"zero_init[{field.type}]()"
+                ))
         
         methods: List[MojoMethod] = []
         if not registry_struct.returned_only:
