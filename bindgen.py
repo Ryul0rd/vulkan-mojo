@@ -2087,10 +2087,11 @@ def collect_commands_by_version(
         current_cumulative_cmds: List[Tuple[Version, RegistryCommand]] = []
         seen_versions: List[Version] = []
         for version in sorted(all_versions):
-            cmds = grouped_commands[level].get(version, [])
-            version_commands.append(VersionCommands(level, version, cmds))
-            seen_versions.append(version)
-            for command in cmds:
+            commands = grouped_commands[level].get(version, [])
+            if commands:
+                version_commands.append(VersionCommands(level, version, commands))
+                seen_versions.append(version)
+            for command in commands:
                 current_cumulative_cmds.append((version, command))
             cumulative_list.append(CumulativeVersionCommands(
                 level=level,

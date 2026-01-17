@@ -129,6 +129,192 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         return self._v1_1.enumerate_instance_version(Ptr(to=api_version).bitcast[UInt32]())
 
 
+struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _v1_0: GlobalFunctionsAdditionsV1_0
+    var _v1_1: GlobalFunctionsAdditionsV1_1
+
+    fn __init__(out self) raises:
+        self._dlhandle = ArcPointer(OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL))
+        self._v1_0 = GlobalFunctionsAdditionsV1_0(self._dlhandle)
+        self._v1_1 = GlobalFunctionsAdditionsV1_1(self._dlhandle)
+
+    fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
+        return self._dlhandle
+
+    fn create_instance(
+        self,
+        create_info: InstanceCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut instance: Instance,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
+        """
+        return self._v1_0.create_instance(
+            Ptr(to=create_info).bitcast[InstanceCreateInfo](),
+            p_allocator,
+            Ptr(to=instance).bitcast[Instance](),
+        )
+
+    fn enumerate_instance_extension_properties(
+        self,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        mut property_count: UInt32,
+        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
+        """
+        return self._v1_0.enumerate_instance_extension_properties(
+            p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
+        )
+
+    fn enumerate_instance_layer_properties(
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
+        """
+        return self._v1_0.enumerate_instance_layer_properties(
+            Ptr(to=property_count).bitcast[UInt32](), p_properties
+        )
+
+    fn enumerate_instance_version(self, mut api_version: UInt32) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        """
+        return self._v1_1.enumerate_instance_version(Ptr(to=api_version).bitcast[UInt32]())
+
+
+struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _v1_0: GlobalFunctionsAdditionsV1_0
+    var _v1_1: GlobalFunctionsAdditionsV1_1
+
+    fn __init__(out self) raises:
+        self._dlhandle = ArcPointer(OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL))
+        self._v1_0 = GlobalFunctionsAdditionsV1_0(self._dlhandle)
+        self._v1_1 = GlobalFunctionsAdditionsV1_1(self._dlhandle)
+
+    fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
+        return self._dlhandle
+
+    fn create_instance(
+        self,
+        create_info: InstanceCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut instance: Instance,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
+        """
+        return self._v1_0.create_instance(
+            Ptr(to=create_info).bitcast[InstanceCreateInfo](),
+            p_allocator,
+            Ptr(to=instance).bitcast[Instance](),
+        )
+
+    fn enumerate_instance_extension_properties(
+        self,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        mut property_count: UInt32,
+        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
+        """
+        return self._v1_0.enumerate_instance_extension_properties(
+            p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
+        )
+
+    fn enumerate_instance_layer_properties(
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
+        """
+        return self._v1_0.enumerate_instance_layer_properties(
+            Ptr(to=property_count).bitcast[UInt32](), p_properties
+        )
+
+    fn enumerate_instance_version(self, mut api_version: UInt32) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        """
+        return self._v1_1.enumerate_instance_version(Ptr(to=api_version).bitcast[UInt32]())
+
+
+struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _v1_0: GlobalFunctionsAdditionsV1_0
+    var _v1_1: GlobalFunctionsAdditionsV1_1
+
+    fn __init__(out self) raises:
+        self._dlhandle = ArcPointer(OwnedDLHandle("libvulkan.so.1", RTLD.NOW | RTLD.GLOBAL))
+        self._v1_0 = GlobalFunctionsAdditionsV1_0(self._dlhandle)
+        self._v1_1 = GlobalFunctionsAdditionsV1_1(self._dlhandle)
+
+    fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
+        return self._dlhandle
+
+    fn create_instance(
+        self,
+        create_info: InstanceCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut instance: Instance,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
+        """
+        return self._v1_0.create_instance(
+            Ptr(to=create_info).bitcast[InstanceCreateInfo](),
+            p_allocator,
+            Ptr(to=instance).bitcast[Instance](),
+        )
+
+    fn enumerate_instance_extension_properties(
+        self,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        mut property_count: UInt32,
+        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
+        """
+        return self._v1_0.enumerate_instance_extension_properties(
+            p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
+        )
+
+    fn enumerate_instance_layer_properties(
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
+        """
+        return self._v1_0.enumerate_instance_layer_properties(
+            Ptr(to=property_count).bitcast[UInt32](), p_properties
+        )
+
+    fn enumerate_instance_version(self, mut api_version: UInt32) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceVersion.html
+        """
+        return self._v1_1.enumerate_instance_version(Ptr(to=api_version).bitcast[UInt32]())
+
+
 struct InstanceFunctionsV1_0(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: InstanceFunctionsAdditionsV1_0
@@ -696,7 +882,755 @@ struct InstanceFunctionsV1_1(Copyable):
         )
 
 
+struct InstanceFunctionsV1_2(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _v1_0: InstanceFunctionsAdditionsV1_0
+    var _v1_1: InstanceFunctionsAdditionsV1_1
+
+    fn __init__(out self, dlhandle: ArcPointer[OwnedDLHandle], instance: Instance):
+        self._dlhandle = dlhandle
+        self._v1_0 = InstanceFunctionsAdditionsV1_0(dlhandle, instance)
+        self._v1_1 = InstanceFunctionsAdditionsV1_1(dlhandle, instance)
+
+    fn destroy_instance(
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
+        """
+        return self._v1_0.destroy_instance(instance, p_allocator)
+
+    fn enumerate_physical_devices(
+        self,
+        instance: Instance,
+        mut physical_device_count: UInt32,
+        p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
+        """
+        return self._v1_0.enumerate_physical_devices(
+            instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
+        )
+
+    fn get_physical_device_features(
+        self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
+        """
+        return self._v1_0.get_physical_device_features(
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()
+        )
+
+    fn get_physical_device_format_properties(
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        mut format_properties: FormatProperties,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
+        """
+        return self._v1_0.get_physical_device_format_properties(
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()
+        )
+
+    fn get_physical_device_image_format_properties(
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        type: ImageType,
+        tiling: ImageTiling,
+        usage: ImageUsageFlags,
+        flags: ImageCreateFlags,
+        mut image_format_properties: ImageFormatProperties,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties.html
+        """
+        return self._v1_0.get_physical_device_image_format_properties(
+            physical_device,
+            format,
+            type,
+            tiling,
+            usage,
+            flags,
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties](),
+        )
+
+    fn get_physical_device_properties(
+        self, physical_device: PhysicalDevice, mut properties: PhysicalDeviceProperties
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
+        """
+        return self._v1_0.get_physical_device_properties(
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()
+        )
+
+    fn get_physical_device_queue_family_properties(
+        self,
+        physical_device: PhysicalDevice,
+        mut queue_family_property_count: UInt32,
+        p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
+        """
+        return self._v1_0.get_physical_device_queue_family_properties(
+            physical_device,
+            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            p_queue_family_properties,
+        )
+
+    fn get_physical_device_memory_properties(
+        self, physical_device: PhysicalDevice, mut memory_properties: PhysicalDeviceMemoryProperties
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
+        """
+        return self._v1_0.get_physical_device_memory_properties(
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()
+        )
+
+    fn get_instance_proc_addr(
+        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
+    ) -> PFN_vkVoidFunction:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
+        """
+        return self._v1_0.get_instance_proc_addr(instance, p_name)
+
+    fn create_device(
+        self,
+        physical_device: PhysicalDevice,
+        create_info: DeviceCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut device: Device,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDevice.html
+        """
+        return self._v1_0.create_device(
+            physical_device,
+            Ptr(to=create_info).bitcast[DeviceCreateInfo](),
+            p_allocator,
+            Ptr(to=device).bitcast[Device](),
+        )
+
+    fn enumerate_device_extension_properties(
+        self,
+        physical_device: PhysicalDevice,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        mut property_count: UInt32,
+        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
+        """
+        return self._v1_0.enumerate_device_extension_properties(
+            physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
+        )
+
+    fn enumerate_device_layer_properties(
+        self,
+        physical_device: PhysicalDevice,
+        mut property_count: UInt32,
+        p_properties: Ptr[LayerProperties, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
+        """
+        return self._v1_0.enumerate_device_layer_properties(
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
+        )
+
+    fn get_physical_device_sparse_image_format_properties(
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        type: ImageType,
+        samples: SampleCountFlagBits,
+        usage: ImageUsageFlags,
+        tiling: ImageTiling,
+        mut property_count: UInt32,
+        p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
+        """
+        return self._v1_0.get_physical_device_sparse_image_format_properties(
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=property_count).bitcast[UInt32](),
+            p_properties,
+        )
+
+    fn enumerate_physical_device_groups(
+        self,
+        instance: Instance,
+        mut physical_device_group_count: UInt32,
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
+        """
+        return self._v1_1.enumerate_physical_device_groups(
+            instance,
+            Ptr(to=physical_device_group_count).bitcast[UInt32](),
+            p_physical_device_group_properties,
+        )
+
+    fn get_physical_device_features_2(
+        self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures2
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
+        """
+        return self._v1_1.get_physical_device_features_2(
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()
+        )
+
+    fn get_physical_device_properties_2(
+        self, physical_device: PhysicalDevice, mut properties: PhysicalDeviceProperties2
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
+        """
+        return self._v1_1.get_physical_device_properties_2(
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()
+        )
+
+    fn get_physical_device_format_properties_2(
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        mut format_properties: FormatProperties2,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
+        """
+        return self._v1_1.get_physical_device_format_properties_2(
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()
+        )
+
+    fn get_physical_device_image_format_properties_2(
+        self,
+        physical_device: PhysicalDevice,
+        image_format_info: PhysicalDeviceImageFormatInfo2,
+        mut image_format_properties: ImageFormatProperties2,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties2.html
+        """
+        return self._v1_1.get_physical_device_image_format_properties_2(
+            physical_device,
+            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2](),
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2](),
+        )
+
+    fn get_physical_device_queue_family_properties_2(
+        self,
+        physical_device: PhysicalDevice,
+        mut queue_family_property_count: UInt32,
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
+        """
+        return self._v1_1.get_physical_device_queue_family_properties_2(
+            physical_device,
+            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            p_queue_family_properties,
+        )
+
+    fn get_physical_device_memory_properties_2(
+        self,
+        physical_device: PhysicalDevice,
+        mut memory_properties: PhysicalDeviceMemoryProperties2,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
+        """
+        return self._v1_1.get_physical_device_memory_properties_2(
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()
+        )
+
+    fn get_physical_device_sparse_image_format_properties_2(
+        self,
+        physical_device: PhysicalDevice,
+        format_info: PhysicalDeviceSparseImageFormatInfo2,
+        mut property_count: UInt32,
+        p_properties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
+        """
+        return self._v1_1.get_physical_device_sparse_image_format_properties_2(
+            physical_device,
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2](),
+            Ptr(to=property_count).bitcast[UInt32](),
+            p_properties,
+        )
+
+    fn get_physical_device_external_buffer_properties(
+        self,
+        physical_device: PhysicalDevice,
+        external_buffer_info: PhysicalDeviceExternalBufferInfo,
+        mut external_buffer_properties: ExternalBufferProperties,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalBufferProperties.html
+        """
+        return self._v1_1.get_physical_device_external_buffer_properties(
+            physical_device,
+            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo](),
+            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties](),
+        )
+
+    fn get_physical_device_external_fence_properties(
+        self,
+        physical_device: PhysicalDevice,
+        external_fence_info: PhysicalDeviceExternalFenceInfo,
+        mut external_fence_properties: ExternalFenceProperties,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalFenceProperties.html
+        """
+        return self._v1_1.get_physical_device_external_fence_properties(
+            physical_device,
+            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo](),
+            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties](),
+        )
+
+    fn get_physical_device_external_semaphore_properties(
+        self,
+        physical_device: PhysicalDevice,
+        external_semaphore_info: PhysicalDeviceExternalSemaphoreInfo,
+        mut external_semaphore_properties: ExternalSemaphoreProperties,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalSemaphoreProperties.html
+        """
+        return self._v1_1.get_physical_device_external_semaphore_properties(
+            physical_device,
+            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo](),
+            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties](),
+        )
+
+
 struct InstanceFunctionsV1_3(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _v1_0: InstanceFunctionsAdditionsV1_0
+    var _v1_1: InstanceFunctionsAdditionsV1_1
+    var _v1_3: InstanceFunctionsAdditionsV1_3
+
+    fn __init__(out self, dlhandle: ArcPointer[OwnedDLHandle], instance: Instance):
+        self._dlhandle = dlhandle
+        self._v1_0 = InstanceFunctionsAdditionsV1_0(dlhandle, instance)
+        self._v1_1 = InstanceFunctionsAdditionsV1_1(dlhandle, instance)
+        self._v1_3 = InstanceFunctionsAdditionsV1_3(dlhandle, instance)
+
+    fn destroy_instance(
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
+        """
+        return self._v1_0.destroy_instance(instance, p_allocator)
+
+    fn enumerate_physical_devices(
+        self,
+        instance: Instance,
+        mut physical_device_count: UInt32,
+        p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
+        """
+        return self._v1_0.enumerate_physical_devices(
+            instance, Ptr(to=physical_device_count).bitcast[UInt32](), p_physical_devices
+        )
+
+    fn get_physical_device_features(
+        self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures.html
+        """
+        return self._v1_0.get_physical_device_features(
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures]()
+        )
+
+    fn get_physical_device_format_properties(
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        mut format_properties: FormatProperties,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties.html
+        """
+        return self._v1_0.get_physical_device_format_properties(
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties]()
+        )
+
+    fn get_physical_device_image_format_properties(
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        type: ImageType,
+        tiling: ImageTiling,
+        usage: ImageUsageFlags,
+        flags: ImageCreateFlags,
+        mut image_format_properties: ImageFormatProperties,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties.html
+        """
+        return self._v1_0.get_physical_device_image_format_properties(
+            physical_device,
+            format,
+            type,
+            tiling,
+            usage,
+            flags,
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties](),
+        )
+
+    fn get_physical_device_properties(
+        self, physical_device: PhysicalDevice, mut properties: PhysicalDeviceProperties
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties.html
+        """
+        return self._v1_0.get_physical_device_properties(
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties]()
+        )
+
+    fn get_physical_device_queue_family_properties(
+        self,
+        physical_device: PhysicalDevice,
+        mut queue_family_property_count: UInt32,
+        p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
+        """
+        return self._v1_0.get_physical_device_queue_family_properties(
+            physical_device,
+            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            p_queue_family_properties,
+        )
+
+    fn get_physical_device_memory_properties(
+        self, physical_device: PhysicalDevice, mut memory_properties: PhysicalDeviceMemoryProperties
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties.html
+        """
+        return self._v1_0.get_physical_device_memory_properties(
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]()
+        )
+
+    fn get_instance_proc_addr(
+        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
+    ) -> PFN_vkVoidFunction:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
+        """
+        return self._v1_0.get_instance_proc_addr(instance, p_name)
+
+    fn create_device(
+        self,
+        physical_device: PhysicalDevice,
+        create_info: DeviceCreateInfo,
+        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        mut device: Device,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDevice.html
+        """
+        return self._v1_0.create_device(
+            physical_device,
+            Ptr(to=create_info).bitcast[DeviceCreateInfo](),
+            p_allocator,
+            Ptr(to=device).bitcast[Device](),
+        )
+
+    fn enumerate_device_extension_properties(
+        self,
+        physical_device: PhysicalDevice,
+        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        mut property_count: UInt32,
+        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
+        """
+        return self._v1_0.enumerate_device_extension_properties(
+            physical_device, p_layer_name, Ptr(to=property_count).bitcast[UInt32](), p_properties
+        )
+
+    fn enumerate_device_layer_properties(
+        self,
+        physical_device: PhysicalDevice,
+        mut property_count: UInt32,
+        p_properties: Ptr[LayerProperties, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
+        """
+        return self._v1_0.enumerate_device_layer_properties(
+            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
+        )
+
+    fn get_physical_device_sparse_image_format_properties(
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        type: ImageType,
+        samples: SampleCountFlagBits,
+        usage: ImageUsageFlags,
+        tiling: ImageTiling,
+        mut property_count: UInt32,
+        p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
+        """
+        return self._v1_0.get_physical_device_sparse_image_format_properties(
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=property_count).bitcast[UInt32](),
+            p_properties,
+        )
+
+    fn enumerate_physical_device_groups(
+        self,
+        instance: Instance,
+        mut physical_device_group_count: UInt32,
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
+        """
+        return self._v1_1.enumerate_physical_device_groups(
+            instance,
+            Ptr(to=physical_device_group_count).bitcast[UInt32](),
+            p_physical_device_group_properties,
+        )
+
+    fn get_physical_device_features_2(
+        self, physical_device: PhysicalDevice, mut features: PhysicalDeviceFeatures2
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
+        """
+        return self._v1_1.get_physical_device_features_2(
+            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()
+        )
+
+    fn get_physical_device_properties_2(
+        self, physical_device: PhysicalDevice, mut properties: PhysicalDeviceProperties2
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
+        """
+        return self._v1_1.get_physical_device_properties_2(
+            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()
+        )
+
+    fn get_physical_device_format_properties_2(
+        self,
+        physical_device: PhysicalDevice,
+        format: Format,
+        mut format_properties: FormatProperties2,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
+        """
+        return self._v1_1.get_physical_device_format_properties_2(
+            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()
+        )
+
+    fn get_physical_device_image_format_properties_2(
+        self,
+        physical_device: PhysicalDevice,
+        image_format_info: PhysicalDeviceImageFormatInfo2,
+        mut image_format_properties: ImageFormatProperties2,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties2.html
+        """
+        return self._v1_1.get_physical_device_image_format_properties_2(
+            physical_device,
+            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2](),
+            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2](),
+        )
+
+    fn get_physical_device_queue_family_properties_2(
+        self,
+        physical_device: PhysicalDevice,
+        mut queue_family_property_count: UInt32,
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
+        """
+        return self._v1_1.get_physical_device_queue_family_properties_2(
+            physical_device,
+            Ptr(to=queue_family_property_count).bitcast[UInt32](),
+            p_queue_family_properties,
+        )
+
+    fn get_physical_device_memory_properties_2(
+        self,
+        physical_device: PhysicalDevice,
+        mut memory_properties: PhysicalDeviceMemoryProperties2,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
+        """
+        return self._v1_1.get_physical_device_memory_properties_2(
+            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()
+        )
+
+    fn get_physical_device_sparse_image_format_properties_2(
+        self,
+        physical_device: PhysicalDevice,
+        format_info: PhysicalDeviceSparseImageFormatInfo2,
+        mut property_count: UInt32,
+        p_properties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
+        """
+        return self._v1_1.get_physical_device_sparse_image_format_properties_2(
+            physical_device,
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2](),
+            Ptr(to=property_count).bitcast[UInt32](),
+            p_properties,
+        )
+
+    fn get_physical_device_external_buffer_properties(
+        self,
+        physical_device: PhysicalDevice,
+        external_buffer_info: PhysicalDeviceExternalBufferInfo,
+        mut external_buffer_properties: ExternalBufferProperties,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalBufferProperties.html
+        """
+        return self._v1_1.get_physical_device_external_buffer_properties(
+            physical_device,
+            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo](),
+            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties](),
+        )
+
+    fn get_physical_device_external_fence_properties(
+        self,
+        physical_device: PhysicalDevice,
+        external_fence_info: PhysicalDeviceExternalFenceInfo,
+        mut external_fence_properties: ExternalFenceProperties,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalFenceProperties.html
+        """
+        return self._v1_1.get_physical_device_external_fence_properties(
+            physical_device,
+            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo](),
+            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties](),
+        )
+
+    fn get_physical_device_external_semaphore_properties(
+        self,
+        physical_device: PhysicalDevice,
+        external_semaphore_info: PhysicalDeviceExternalSemaphoreInfo,
+        mut external_semaphore_properties: ExternalSemaphoreProperties,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalSemaphoreProperties.html
+        """
+        return self._v1_1.get_physical_device_external_semaphore_properties(
+            physical_device,
+            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo](),
+            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties](),
+        )
+
+    fn get_physical_device_tool_properties(
+        self,
+        physical_device: PhysicalDevice,
+        mut tool_count: UInt32,
+        p_tool_properties: Ptr[PhysicalDeviceToolProperties, MutAnyOrigin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
+        """
+        return self._v1_3.get_physical_device_tool_properties(
+            physical_device, Ptr(to=tool_count).bitcast[UInt32](), p_tool_properties
+        )
+
+
+struct InstanceFunctionsV1_4(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _v1_0: InstanceFunctionsAdditionsV1_0
     var _v1_1: InstanceFunctionsAdditionsV1_1
