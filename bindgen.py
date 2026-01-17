@@ -877,6 +877,18 @@ def parse_members(members: List[RegistryStructMember]) -> Tuple[List[MojoPhysica
 
 
 def bind_structs(files: Dict[str, str], registry: Registry):
+    enabled_type_names: Set[str] = set()
+    for feature in registry.features:
+        for req in feature.requires:
+            if isinstance(req, RegistryRequiredType):
+                enabled_type_names.add(req.name)
+    for extension in registry.extensions:
+        if "vulkan" not in extension.supported:
+            continue
+        for req in extension.requires:
+            if isinstance(req, RegistryRequiredType):
+                enabled_type_names.add(req.name)
+
     # lower aliases
     aliases: List[MojoTypeAlias] = []
     for registry_type in registry.types:
@@ -892,13 +904,16 @@ def bind_structs(files: Dict[str, str], registry: Registry):
     struct_names: Set[str] = set()
     for registry_type in registry.types:
         if isinstance(registry_type, RegistryStruct):
-            struct_names.add(c_type_name_to_mojo(registry_type.name))
+            if registry_type.name in enabled_type_names:
+                struct_names.add(c_type_name_to_mojo(registry_type.name))
         elif isinstance(registry_type, RegistryAlias) and registry_type.category == "struct":
             struct_names.add(c_type_name_to_mojo(registry_type.name))
 
     structs: List[MojoStruct] = []
     for registry_type in registry.types:
         if not isinstance(registry_type, RegistryStruct):
+            continue
+        if registry_type.name not in enabled_type_names:
             continue
         registry_struct = registry_type
 
@@ -2474,6 +2489,8 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
     extension_loaders_by_tag: Dict[str, List[MojoStruct]] = defaultdict(list)
     for extension in registry.extensions:
         if extension.type is None:
+            continue
+        if "vulkan" not in extension.supported:
             continue
 
         required_commands: List[RegistryCommand] = []

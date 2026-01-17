@@ -3941,57 +3941,6 @@ struct VideoEncodeQueue(Copyable):
         return self._cmd_encode_video_khr(command_buffer, Ptr(to=encode_info).bitcast[VideoEncodeInfoKHR]())
 
 
-struct ObjectRefresh(Copyable):
-    var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_refresh_objects_khr: fn(
-        command_buffer: CommandBuffer, p_refresh_objects: Ptr[RefreshObjectListKHR, ImmutAnyOrigin]
-    )
-    var _get_physical_device_refreshable_object_types_khr: fn(
-        physical_device: PhysicalDevice,
-        p_refreshable_object_type_count: Ptr[UInt32, MutAnyOrigin],
-        p_refreshable_object_types: Ptr[ObjectType, MutAnyOrigin],
-    ) -> Result
-
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
-        self._dlhandle = global_functions.get_dlhandle()
-        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
-        ]("vkGetDeviceProcAddr")
-        self._cmd_refresh_objects_khr = Ptr(to=get_device_proc_addr(
-            device, "vkCmdRefreshObjectsKHR".as_c_string_slice()
-        )).bitcast[type_of(self._cmd_refresh_objects_khr)]()[]
-        self._get_physical_device_refreshable_object_types_khr = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceRefreshableObjectTypesKHR".as_c_string_slice()
-        )).bitcast[type_of(self._get_physical_device_refreshable_object_types_khr)]()[]
-
-    fn cmd_refresh_objects_khr(
-        self, command_buffer: CommandBuffer, refresh_objects: RefreshObjectListKHR
-    ):
-        """See official vulkan docs for details.
-        
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdRefreshObjectsKHR.html
-        """
-        return self._cmd_refresh_objects_khr(
-            command_buffer, Ptr(to=refresh_objects).bitcast[RefreshObjectListKHR]()
-        )
-
-    fn get_physical_device_refreshable_object_types_khr(
-        self,
-        physical_device: PhysicalDevice,
-        mut refreshable_object_type_count: UInt32,
-        p_refreshable_object_types: Ptr[ObjectType, MutAnyOrigin],
-    ) -> Result:
-        """See official vulkan docs for details.
-        
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceRefreshableObjectTypesKHR.html
-        """
-        return self._get_physical_device_refreshable_object_types_khr(
-            physical_device,
-            Ptr(to=refreshable_object_type_count).bitcast[UInt32](),
-            p_refreshable_object_types,
-        )
-
-
 struct Synchronization2(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_event_2: fn(
