@@ -77,9 +77,7 @@ struct PerformanceQuery(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkInitializePerformanceApiINTEL.html
         """
-        return self._initialize_performance_api_intel(
-            device, Ptr(to=initialize_info).bitcast[InitializePerformanceApiInfoINTEL]()
-        )
+        return self._initialize_performance_api_intel(device, Ptr(to=initialize_info))
 
     fn uninitialize_performance_api_intel(self, device: Device):
         """See official vulkan docs for details.
@@ -95,9 +93,7 @@ struct PerformanceQuery(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPerformanceMarkerINTEL.html
         """
-        return self._cmd_set_performance_marker_intel(
-            command_buffer, Ptr(to=marker_info).bitcast[PerformanceMarkerInfoINTEL]()
-        )
+        return self._cmd_set_performance_marker_intel(command_buffer, Ptr(to=marker_info))
 
     fn cmd_set_performance_stream_marker_intel(
         self, command_buffer: CommandBuffer, marker_info: PerformanceStreamMarkerInfoINTEL
@@ -106,9 +102,7 @@ struct PerformanceQuery(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPerformanceStreamMarkerINTEL.html
         """
-        return self._cmd_set_performance_stream_marker_intel(
-            command_buffer, Ptr(to=marker_info).bitcast[PerformanceStreamMarkerInfoINTEL]()
-        )
+        return self._cmd_set_performance_stream_marker_intel(command_buffer, Ptr(to=marker_info))
 
     fn cmd_set_performance_override_intel(
         self, command_buffer: CommandBuffer, override_info: PerformanceOverrideInfoINTEL
@@ -117,9 +111,7 @@ struct PerformanceQuery(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPerformanceOverrideINTEL.html
         """
-        return self._cmd_set_performance_override_intel(
-            command_buffer, Ptr(to=override_info).bitcast[PerformanceOverrideInfoINTEL]()
-        )
+        return self._cmd_set_performance_override_intel(command_buffer, Ptr(to=override_info))
 
     fn acquire_performance_configuration_intel(
         self,
@@ -132,9 +124,7 @@ struct PerformanceQuery(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquirePerformanceConfigurationINTEL.html
         """
         return self._acquire_performance_configuration_intel(
-            device,
-            Ptr(to=acquire_info).bitcast[PerformanceConfigurationAcquireInfoINTEL](),
-            Ptr(to=configuration).bitcast[PerformanceConfigurationINTEL](),
+            device, Ptr(to=acquire_info), Ptr(to=configuration)
         )
 
     fn release_performance_configuration_intel(
@@ -165,6 +155,4 @@ struct PerformanceQuery(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPerformanceParameterINTEL.html
         """
-        return self._get_performance_parameter_intel(
-            device, parameter, Ptr(to=value).bitcast[PerformanceValueINTEL]()
-        )
+        return self._get_performance_parameter_intel(device, parameter, Ptr(to=value))

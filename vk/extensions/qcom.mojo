@@ -37,9 +37,7 @@ struct TileShading(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchTileQCOM.html
         """
-        return self._cmd_dispatch_tile_qcom(
-            command_buffer, Ptr(to=dispatch_tile_info).bitcast[DispatchTileInfoQCOM]()
-        )
+        return self._cmd_dispatch_tile_qcom(command_buffer, Ptr(to=dispatch_tile_info))
 
     fn cmd_begin_per_tile_execution_qcom(
         self, command_buffer: CommandBuffer, per_tile_begin_info: PerTileBeginInfoQCOM
@@ -48,9 +46,7 @@ struct TileShading(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginPerTileExecutionQCOM.html
         """
-        return self._cmd_begin_per_tile_execution_qcom(
-            command_buffer, Ptr(to=per_tile_begin_info).bitcast[PerTileBeginInfoQCOM]()
-        )
+        return self._cmd_begin_per_tile_execution_qcom(command_buffer, Ptr(to=per_tile_begin_info))
 
     fn cmd_end_per_tile_execution_qcom(
         self, command_buffer: CommandBuffer, per_tile_end_info: PerTileEndInfoQCOM
@@ -59,9 +55,7 @@ struct TileShading(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndPerTileExecutionQCOM.html
         """
-        return self._cmd_end_per_tile_execution_qcom(
-            command_buffer, Ptr(to=per_tile_end_info).bitcast[PerTileEndInfoQCOM]()
-        )
+        return self._cmd_end_per_tile_execution_qcom(command_buffer, Ptr(to=per_tile_end_info))
 
 
 struct TileProperties(Copyable):
@@ -102,8 +96,30 @@ struct TileProperties(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFramebufferTilePropertiesQCOM.html
         """
         return self._get_framebuffer_tile_properties_qcom(
-            device, framebuffer, Ptr(to=properties_count).bitcast[UInt32](), p_properties
+            device, framebuffer, Ptr(to=properties_count), p_properties
         )
+
+    fn get_framebuffer_tile_properties_qcom(
+        self, device: Device, framebuffer: Framebuffer
+    ) -> ListResult[TilePropertiesQCOM]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFramebufferTilePropertiesQCOM.html
+        """
+        var list = List[TilePropertiesQCOM]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_framebuffer_tile_properties_qcom(
+                device, framebuffer, Ptr(to=count), Ptr[TilePropertiesQCOM, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_framebuffer_tile_properties_qcom(
+                device, framebuffer, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_dynamic_rendering_tile_properties_qcom(
         self, device: Device, rendering_info: RenderingInfo, mut properties: TilePropertiesQCOM
@@ -113,9 +129,7 @@ struct TileProperties(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDynamicRenderingTilePropertiesQCOM.html
         """
         return self._get_dynamic_rendering_tile_properties_qcom(
-            device,
-            Ptr(to=rendering_info).bitcast[RenderingInfo](),
-            Ptr(to=properties).bitcast[TilePropertiesQCOM](),
+            device, Ptr(to=rendering_info), Ptr(to=properties)
         )
 
 

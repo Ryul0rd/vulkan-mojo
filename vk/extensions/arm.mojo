@@ -109,12 +109,7 @@ struct Tensors(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateTensorARM.html
         """
-        return self._create_tensor_arm(
-            device,
-            Ptr(to=create_info).bitcast[TensorCreateInfoARM](),
-            p_allocator,
-            Ptr(to=tensor).bitcast[TensorARM](),
-        )
+        return self._create_tensor_arm(device, Ptr(to=create_info), p_allocator, Ptr(to=tensor))
 
     fn destroy_tensor_arm(
         self,
@@ -139,12 +134,7 @@ struct Tensors(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateTensorViewARM.html
         """
-        return self._create_tensor_view_arm(
-            device,
-            Ptr(to=create_info).bitcast[TensorViewCreateInfoARM](),
-            p_allocator,
-            Ptr(to=view).bitcast[TensorViewARM](),
-        )
+        return self._create_tensor_view_arm(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
 
     fn destroy_tensor_view_arm(
         self,
@@ -168,11 +158,7 @@ struct Tensors(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorMemoryRequirementsARM.html
         """
-        return self._get_tensor_memory_requirements_arm(
-            device,
-            Ptr(to=info).bitcast[TensorMemoryRequirementsInfoARM](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
-        )
+        return self._get_tensor_memory_requirements_arm(device, Ptr(to=info), Ptr(to=memory_requirements))
 
     fn bind_tensor_memory_arm(
         self,
@@ -197,9 +183,7 @@ struct Tensors(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceTensorMemoryRequirementsARM.html
         """
         return self._get_device_tensor_memory_requirements_arm(
-            device,
-            Ptr(to=info).bitcast[DeviceTensorMemoryRequirementsARM](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
     fn cmd_copy_tensor_arm(
@@ -209,9 +193,7 @@ struct Tensors(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyTensorARM.html
         """
-        return self._cmd_copy_tensor_arm(
-            command_buffer, Ptr(to=copy_tensor_info).bitcast[CopyTensorInfoARM]()
-        )
+        return self._cmd_copy_tensor_arm(command_buffer, Ptr(to=copy_tensor_info))
 
     fn get_physical_device_external_tensor_properties_arm(
         self,
@@ -224,9 +206,7 @@ struct Tensors(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalTensorPropertiesARM.html
         """
         return self._get_physical_device_external_tensor_properties_arm(
-            physical_device,
-            Ptr(to=external_tensor_info).bitcast[PhysicalDeviceExternalTensorInfoARM](),
-            Ptr(to=external_tensor_properties).bitcast[ExternalTensorPropertiesARM](),
+            physical_device, Ptr(to=external_tensor_info), Ptr(to=external_tensor_properties)
         )
 
     fn get_tensor_opaque_capture_descriptor_data_arm(
@@ -239,9 +219,7 @@ struct Tensors(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorOpaqueCaptureDescriptorDataARM.html
         """
-        return self._get_tensor_opaque_capture_descriptor_data_arm(
-            device, Ptr(to=info).bitcast[TensorCaptureDescriptorDataInfoARM](), p_data
-        )
+        return self._get_tensor_opaque_capture_descriptor_data_arm(device, Ptr(to=info), p_data)
 
     fn get_tensor_view_opaque_capture_descriptor_data_arm(
         self,
@@ -253,9 +231,7 @@ struct Tensors(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorViewOpaqueCaptureDescriptorDataARM.html
         """
-        return self._get_tensor_view_opaque_capture_descriptor_data_arm(
-            device, Ptr(to=info).bitcast[TensorViewCaptureDescriptorDataInfoARM](), p_data
-        )
+        return self._get_tensor_view_opaque_capture_descriptor_data_arm(device, Ptr(to=info), p_data)
 
 
 struct DataGraph(Copyable):
@@ -400,10 +376,7 @@ struct DataGraph(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDataGraphPipelineSessionARM.html
         """
         return self._create_data_graph_pipeline_session_arm(
-            device,
-            Ptr(to=create_info).bitcast[DataGraphPipelineSessionCreateInfoARM](),
-            p_allocator,
-            Ptr(to=session).bitcast[DataGraphPipelineSessionARM](),
+            device, Ptr(to=create_info), p_allocator, Ptr(to=session)
         )
 
     fn get_data_graph_pipeline_session_bind_point_requirements_arm(
@@ -418,11 +391,33 @@ struct DataGraph(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineSessionBindPointRequirementsARM.html
         """
         return self._get_data_graph_pipeline_session_bind_point_requirements_arm(
-            device,
-            Ptr(to=info).bitcast[DataGraphPipelineSessionBindPointRequirementsInfoARM](),
-            Ptr(to=bind_point_requirement_count).bitcast[UInt32](),
-            p_bind_point_requirements,
+            device, Ptr(to=info), Ptr(to=bind_point_requirement_count), p_bind_point_requirements
         )
+
+    fn get_data_graph_pipeline_session_bind_point_requirements_arm(
+        self, device: Device, info: DataGraphPipelineSessionBindPointRequirementsInfoARM
+    ) -> ListResult[DataGraphPipelineSessionBindPointRequirementARM]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineSessionBindPointRequirementsARM.html
+        """
+        var list = List[DataGraphPipelineSessionBindPointRequirementARM]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_data_graph_pipeline_session_bind_point_requirements_arm(
+                device,
+                Ptr(to=info),
+                Ptr(to=count),
+                Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_data_graph_pipeline_session_bind_point_requirements_arm(
+                device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_data_graph_pipeline_session_memory_requirements_arm(
         self,
@@ -435,9 +430,7 @@ struct DataGraph(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineSessionMemoryRequirementsARM.html
         """
         return self._get_data_graph_pipeline_session_memory_requirements_arm(
-            device,
-            Ptr(to=info).bitcast[DataGraphPipelineSessionMemoryRequirementsInfoARM](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
     fn bind_data_graph_pipeline_session_memory_arm(
@@ -488,11 +481,33 @@ struct DataGraph(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineAvailablePropertiesARM.html
         """
         return self._get_data_graph_pipeline_available_properties_arm(
-            device,
-            Ptr(to=pipeline_info).bitcast[DataGraphPipelineInfoARM](),
-            Ptr(to=properties_count).bitcast[UInt32](),
-            p_properties,
+            device, Ptr(to=pipeline_info), Ptr(to=properties_count), p_properties
         )
+
+    fn get_data_graph_pipeline_available_properties_arm(
+        self, device: Device, pipeline_info: DataGraphPipelineInfoARM
+    ) -> ListResult[DataGraphPipelinePropertyARM]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineAvailablePropertiesARM.html
+        """
+        var list = List[DataGraphPipelinePropertyARM]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_data_graph_pipeline_available_properties_arm(
+                device,
+                Ptr(to=pipeline_info),
+                Ptr(to=count),
+                Ptr[DataGraphPipelinePropertyARM, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_data_graph_pipeline_available_properties_arm(
+                device, Ptr(to=pipeline_info), Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_data_graph_pipeline_properties_arm(
         self,
@@ -506,10 +521,7 @@ struct DataGraph(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelinePropertiesARM.html
         """
         return self._get_data_graph_pipeline_properties_arm(
-            device,
-            Ptr(to=pipeline_info).bitcast[DataGraphPipelineInfoARM](),
-            properties_count,
-            p_properties,
+            device, Ptr(to=pipeline_info), properties_count, p_properties
         )
 
     fn get_physical_device_queue_family_data_graph_properties_arm(
@@ -526,9 +538,34 @@ struct DataGraph(Copyable):
         return self._get_physical_device_queue_family_data_graph_properties_arm(
             physical_device,
             queue_family_index,
-            Ptr(to=queue_family_data_graph_property_count).bitcast[UInt32](),
+            Ptr(to=queue_family_data_graph_property_count),
             p_queue_family_data_graph_properties,
         )
+
+    fn get_physical_device_queue_family_data_graph_properties_arm(
+        self, physical_device: PhysicalDevice, queue_family_index: UInt32
+    ) -> ListResult[QueueFamilyDataGraphPropertiesARM]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyDataGraphPropertiesARM.html
+        """
+        var list = List[QueueFamilyDataGraphPropertiesARM]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_queue_family_data_graph_properties_arm(
+                physical_device,
+                queue_family_index,
+                Ptr(to=count),
+                Ptr[QueueFamilyDataGraphPropertiesARM, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_queue_family_data_graph_properties_arm(
+                physical_device, queue_family_index, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_queue_family_data_graph_processing_engine_properties_arm(
         self,
@@ -542,6 +579,6 @@ struct DataGraph(Copyable):
         """
         return self._get_physical_device_queue_family_data_graph_processing_engine_properties_arm(
             physical_device,
-            Ptr(to=queue_family_data_graph_processing_engine_info).bitcast[PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM](),
-            Ptr(to=queue_family_data_graph_processing_engine_properties).bitcast[QueueFamilyDataGraphProcessingEnginePropertiesARM](),
+            Ptr(to=queue_family_data_graph_processing_engine_info),
+            Ptr(to=queue_family_data_graph_processing_engine_properties),
         )

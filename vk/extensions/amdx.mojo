@@ -104,7 +104,7 @@ struct ShaderEnqueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetExecutionGraphPipelineScratchSizeAMDX.html
         """
         return self._get_execution_graph_pipeline_scratch_size_amdx(
-            device, execution_graph, Ptr(to=size_info).bitcast[ExecutionGraphPipelineScratchSizeAMDX]()
+            device, execution_graph, Ptr(to=size_info)
         )
 
     fn get_execution_graph_pipeline_node_index_amdx(
@@ -119,10 +119,7 @@ struct ShaderEnqueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetExecutionGraphPipelineNodeIndexAMDX.html
         """
         return self._get_execution_graph_pipeline_node_index_amdx(
-            device,
-            execution_graph,
-            Ptr(to=node_info).bitcast[PipelineShaderStageNodeCreateInfoAMDX](),
-            Ptr(to=node_index).bitcast[UInt32](),
+            device, execution_graph, Ptr(to=node_info), Ptr(to=node_index)
         )
 
     fn cmd_initialize_graph_scratch_memory_amdx(
@@ -151,9 +148,7 @@ struct ShaderEnqueue(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchGraphAMDX.html
         """
-        return self._cmd_dispatch_graph_amdx(
-            command_buffer, scratch, scratch_size, Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX]()
-        )
+        return self._cmd_dispatch_graph_amdx(command_buffer, scratch, scratch_size, Ptr(to=count_info))
 
     fn cmd_dispatch_graph_indirect_amdx(
         self,
@@ -167,7 +162,7 @@ struct ShaderEnqueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchGraphIndirectAMDX.html
         """
         return self._cmd_dispatch_graph_indirect_amdx(
-            command_buffer, scratch, scratch_size, Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX]()
+            command_buffer, scratch, scratch_size, Ptr(to=count_info)
         )
 
     fn cmd_dispatch_graph_indirect_count_amdx(

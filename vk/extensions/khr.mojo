@@ -77,7 +77,7 @@ struct Surface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceSupportKHR.html
         """
         return self._get_physical_device_surface_support_khr(
-            physical_device, queue_family_index, surface, Ptr(to=supported).bitcast[Bool32]()
+            physical_device, queue_family_index, surface, Ptr(to=supported)
         )
 
     fn get_physical_device_surface_capabilities_khr(
@@ -91,7 +91,7 @@ struct Surface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceCapabilitiesKHR.html
         """
         return self._get_physical_device_surface_capabilities_khr(
-            physical_device, surface, Ptr(to=surface_capabilities).bitcast[SurfaceCapabilitiesKHR]()
+            physical_device, surface, Ptr(to=surface_capabilities)
         )
 
     fn get_physical_device_surface_formats_khr(
@@ -106,8 +106,30 @@ struct Surface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceFormatsKHR.html
         """
         return self._get_physical_device_surface_formats_khr(
-            physical_device, surface, Ptr(to=surface_format_count).bitcast[UInt32](), p_surface_formats
+            physical_device, surface, Ptr(to=surface_format_count), p_surface_formats
         )
+
+    fn get_physical_device_surface_formats_khr(
+        self, physical_device: PhysicalDevice, surface: SurfaceKHR
+    ) -> ListResult[SurfaceFormatKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceFormatsKHR.html
+        """
+        var list = List[SurfaceFormatKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_surface_formats_khr(
+                physical_device, surface, Ptr(to=count), Ptr[SurfaceFormatKHR, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_surface_formats_khr(
+                physical_device, surface, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_surface_present_modes_khr(
         self,
@@ -121,8 +143,30 @@ struct Surface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfacePresentModesKHR.html
         """
         return self._get_physical_device_surface_present_modes_khr(
-            physical_device, surface, Ptr(to=present_mode_count).bitcast[UInt32](), p_present_modes
+            physical_device, surface, Ptr(to=present_mode_count), p_present_modes
         )
+
+    fn get_physical_device_surface_present_modes_khr(
+        self, physical_device: PhysicalDevice, surface: SurfaceKHR
+    ) -> ListResult[PresentModeKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfacePresentModesKHR.html
+        """
+        var list = List[PresentModeKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_surface_present_modes_khr(
+                physical_device, surface, Ptr(to=count), Ptr[PresentModeKHR, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_surface_present_modes_khr(
+                physical_device, surface, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 
 struct Swapchain(Copyable):
@@ -216,12 +260,7 @@ struct Swapchain(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSwapchainKHR.html
         """
-        return self._create_swapchain_khr(
-            device,
-            Ptr(to=create_info).bitcast[SwapchainCreateInfoKHR](),
-            p_allocator,
-            Ptr(to=swapchain).bitcast[SwapchainKHR](),
-        )
+        return self._create_swapchain_khr(device, Ptr(to=create_info), p_allocator, Ptr(to=swapchain))
 
     fn destroy_swapchain_khr(
         self,
@@ -247,8 +286,28 @@ struct Swapchain(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSwapchainImagesKHR.html
         """
         return self._get_swapchain_images_khr(
-            device, swapchain, Ptr(to=swapchain_image_count).bitcast[UInt32](), p_swapchain_images
+            device, swapchain, Ptr(to=swapchain_image_count), p_swapchain_images
         )
+
+    fn get_swapchain_images_khr(
+        self, device: Device, swapchain: SwapchainKHR
+    ) -> ListResult[Image]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSwapchainImagesKHR.html
+        """
+        var list = List[Image]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_swapchain_images_khr(
+                device, swapchain, Ptr(to=count), Ptr[Image, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_swapchain_images_khr(device, swapchain, Ptr(to=count), list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn acquire_next_image_khr(
         self,
@@ -264,7 +323,7 @@ struct Swapchain(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireNextImageKHR.html
         """
         return self._acquire_next_image_khr(
-            device, swapchain, timeout, semaphore, fence, Ptr(to=image_index).bitcast[UInt32]()
+            device, swapchain, timeout, semaphore, fence, Ptr(to=image_index)
         )
 
     fn queue_present_khr(self, queue: Queue, present_info: PresentInfoKHR) -> Result:
@@ -272,7 +331,7 @@ struct Swapchain(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueuePresentKHR.html
         """
-        return self._queue_present_khr(queue, Ptr(to=present_info).bitcast[PresentInfoKHR]())
+        return self._queue_present_khr(queue, Ptr(to=present_info))
 
     fn get_device_group_present_capabilities_khr(
         self,
@@ -284,7 +343,7 @@ struct Swapchain(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupPresentCapabilitiesKHR.html
         """
         return self._get_device_group_present_capabilities_khr(
-            device, Ptr(to=device_group_present_capabilities).bitcast[DeviceGroupPresentCapabilitiesKHR]()
+            device, Ptr(to=device_group_present_capabilities)
         )
 
     fn get_device_group_surface_present_modes_khr(
@@ -294,9 +353,7 @@ struct Swapchain(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupSurfacePresentModesKHR.html
         """
-        return self._get_device_group_surface_present_modes_khr(
-            device, surface, Ptr(to=modes).bitcast[DeviceGroupPresentModeFlagsKHR]()
-        )
+        return self._get_device_group_surface_present_modes_khr(device, surface, Ptr(to=modes))
 
     fn get_physical_device_present_rectangles_khr(
         self,
@@ -310,8 +367,30 @@ struct Swapchain(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDevicePresentRectanglesKHR.html
         """
         return self._get_physical_device_present_rectangles_khr(
-            physical_device, surface, Ptr(to=rect_count).bitcast[UInt32](), p_rects
+            physical_device, surface, Ptr(to=rect_count), p_rects
         )
+
+    fn get_physical_device_present_rectangles_khr(
+        self, physical_device: PhysicalDevice, surface: SurfaceKHR
+    ) -> ListResult[Rect2D]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDevicePresentRectanglesKHR.html
+        """
+        var list = List[Rect2D]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_present_rectangles_khr(
+                physical_device, surface, Ptr(to=count), Ptr[Rect2D, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_present_rectangles_khr(
+                physical_device, surface, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn acquire_next_image_2_khr(
         self, device: Device, acquire_info: AcquireNextImageInfoKHR, mut image_index: UInt32
@@ -320,11 +399,7 @@ struct Swapchain(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireNextImage2KHR.html
         """
-        return self._acquire_next_image_2_khr(
-            device,
-            Ptr(to=acquire_info).bitcast[AcquireNextImageInfoKHR](),
-            Ptr(to=image_index).bitcast[UInt32](),
-        )
+        return self._acquire_next_image_2_khr(device, Ptr(to=acquire_info), Ptr(to=image_index))
 
 
 struct Display(Copyable):
@@ -409,8 +484,30 @@ struct Display(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPropertiesKHR.html
         """
         return self._get_physical_device_display_properties_khr(
-            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
+            physical_device, Ptr(to=property_count), p_properties
         )
+
+    fn get_physical_device_display_properties_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[DisplayPropertiesKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPropertiesKHR.html
+        """
+        var list = List[DisplayPropertiesKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_display_properties_khr(
+                physical_device, Ptr(to=count), Ptr[DisplayPropertiesKHR, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_display_properties_khr(
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_display_plane_properties_khr(
         self,
@@ -423,8 +520,30 @@ struct Display(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPlanePropertiesKHR.html
         """
         return self._get_physical_device_display_plane_properties_khr(
-            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
+            physical_device, Ptr(to=property_count), p_properties
         )
+
+    fn get_physical_device_display_plane_properties_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[DisplayPlanePropertiesKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPlanePropertiesKHR.html
+        """
+        var list = List[DisplayPlanePropertiesKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_display_plane_properties_khr(
+                physical_device, Ptr(to=count), Ptr[DisplayPlanePropertiesKHR, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_display_plane_properties_khr(
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_display_plane_supported_displays_khr(
         self,
@@ -438,8 +557,30 @@ struct Display(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayPlaneSupportedDisplaysKHR.html
         """
         return self._get_display_plane_supported_displays_khr(
-            physical_device, plane_index, Ptr(to=display_count).bitcast[UInt32](), p_displays
+            physical_device, plane_index, Ptr(to=display_count), p_displays
         )
+
+    fn get_display_plane_supported_displays_khr(
+        self, physical_device: PhysicalDevice, plane_index: UInt32
+    ) -> ListResult[DisplayKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayPlaneSupportedDisplaysKHR.html
+        """
+        var list = List[DisplayKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_display_plane_supported_displays_khr(
+                physical_device, plane_index, Ptr(to=count), Ptr[DisplayKHR, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_display_plane_supported_displays_khr(
+                physical_device, plane_index, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_display_mode_properties_khr(
         self,
@@ -453,8 +594,30 @@ struct Display(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayModePropertiesKHR.html
         """
         return self._get_display_mode_properties_khr(
-            physical_device, display, Ptr(to=property_count).bitcast[UInt32](), p_properties
+            physical_device, display, Ptr(to=property_count), p_properties
         )
+
+    fn get_display_mode_properties_khr(
+        self, physical_device: PhysicalDevice, display: DisplayKHR
+    ) -> ListResult[DisplayModePropertiesKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayModePropertiesKHR.html
+        """
+        var list = List[DisplayModePropertiesKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_display_mode_properties_khr(
+                physical_device, display, Ptr(to=count), Ptr[DisplayModePropertiesKHR, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_display_mode_properties_khr(
+                physical_device, display, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn create_display_mode_khr(
         self,
@@ -469,11 +632,7 @@ struct Display(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDisplayModeKHR.html
         """
         return self._create_display_mode_khr(
-            physical_device,
-            display,
-            Ptr(to=create_info).bitcast[DisplayModeCreateInfoKHR](),
-            p_allocator,
-            Ptr(to=mode).bitcast[DisplayModeKHR](),
+            physical_device, display, Ptr(to=create_info), p_allocator, Ptr(to=mode)
         )
 
     fn get_display_plane_capabilities_khr(
@@ -488,7 +647,7 @@ struct Display(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayPlaneCapabilitiesKHR.html
         """
         return self._get_display_plane_capabilities_khr(
-            physical_device, mode, plane_index, Ptr(to=capabilities).bitcast[DisplayPlaneCapabilitiesKHR]()
+            physical_device, mode, plane_index, Ptr(to=capabilities)
         )
 
     fn create_display_plane_surface_khr(
@@ -503,10 +662,7 @@ struct Display(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDisplayPlaneSurfaceKHR.html
         """
         return self._create_display_plane_surface_khr(
-            instance,
-            Ptr(to=create_info).bitcast[DisplaySurfaceCreateInfoKHR](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
         )
 
 
@@ -584,12 +740,7 @@ struct XlibSurface(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateXlibSurfaceKHR.html
         """
-        return self._create_xlib_surface_khr(
-            instance,
-            Ptr(to=create_info).bitcast[XlibSurfaceCreateInfoKHR](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
-        )
+        return self._create_xlib_surface_khr(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
 
     fn get_physical_device_xlib_presentation_support_khr(
         self,
@@ -603,7 +754,7 @@ struct XlibSurface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceXlibPresentationSupportKHR.html
         """
         return self._get_physical_device_xlib_presentation_support_khr(
-            physical_device, queue_family_index, Ptr(to=dpy).bitcast[Display](), visual_id
+            physical_device, queue_family_index, Ptr(to=dpy), visual_id
         )
 
 
@@ -645,12 +796,7 @@ struct XcbSurface(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateXcbSurfaceKHR.html
         """
-        return self._create_xcb_surface_khr(
-            instance,
-            Ptr(to=create_info).bitcast[XcbSurfaceCreateInfoKHR](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
-        )
+        return self._create_xcb_surface_khr(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
 
     fn get_physical_device_xcb_presentation_support_khr(
         self,
@@ -664,7 +810,7 @@ struct XcbSurface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceXcbPresentationSupportKHR.html
         """
         return self._get_physical_device_xcb_presentation_support_khr(
-            physical_device, queue_family_index, Ptr(to=connection).bitcast[xcb_connection_t](), visual_id
+            physical_device, queue_family_index, Ptr(to=connection), visual_id
         )
 
 
@@ -705,12 +851,7 @@ struct WaylandSurface(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateWaylandSurfaceKHR.html
         """
-        return self._create_wayland_surface_khr(
-            instance,
-            Ptr(to=create_info).bitcast[WaylandSurfaceCreateInfoKHR](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
-        )
+        return self._create_wayland_surface_khr(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
 
     fn get_physical_device_wayland_presentation_support_khr(
         self, physical_device: PhysicalDevice, queue_family_index: UInt32, mut display: wl_display
@@ -720,7 +861,7 @@ struct WaylandSurface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceWaylandPresentationSupportKHR.html
         """
         return self._get_physical_device_wayland_presentation_support_khr(
-            physical_device, queue_family_index, Ptr(to=display).bitcast[wl_display]()
+            physical_device, queue_family_index, Ptr(to=display)
         )
 
 
@@ -753,12 +894,7 @@ struct AndroidSurface(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateAndroidSurfaceKHR.html
         """
-        return self._create_android_surface_khr(
-            instance,
-            Ptr(to=create_info).bitcast[AndroidSurfaceCreateInfoKHR](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
-        )
+        return self._create_android_surface_khr(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
 
 
 struct Win32Surface(Copyable):
@@ -796,12 +932,7 @@ struct Win32Surface(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateWin32SurfaceKHR.html
         """
-        return self._create_win_32_surface_khr(
-            instance,
-            Ptr(to=create_info).bitcast[Win32SurfaceCreateInfoKHR](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
-        )
+        return self._create_win_32_surface_khr(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
 
     fn get_physical_device_win_32_presentation_support_khr(
         self, physical_device: PhysicalDevice, queue_family_index: UInt32
@@ -931,9 +1062,7 @@ struct VideoQueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceVideoCapabilitiesKHR.html
         """
         return self._get_physical_device_video_capabilities_khr(
-            physical_device,
-            Ptr(to=video_profile).bitcast[VideoProfileInfoKHR](),
-            Ptr(to=capabilities).bitcast[VideoCapabilitiesKHR](),
+            physical_device, Ptr(to=video_profile), Ptr(to=capabilities)
         )
 
     fn get_physical_device_video_format_properties_khr(
@@ -949,10 +1078,35 @@ struct VideoQueue(Copyable):
         """
         return self._get_physical_device_video_format_properties_khr(
             physical_device,
-            Ptr(to=video_format_info).bitcast[PhysicalDeviceVideoFormatInfoKHR](),
-            Ptr(to=video_format_property_count).bitcast[UInt32](),
+            Ptr(to=video_format_info),
+            Ptr(to=video_format_property_count),
             p_video_format_properties,
         )
+
+    fn get_physical_device_video_format_properties_khr(
+        self, physical_device: PhysicalDevice, video_format_info: PhysicalDeviceVideoFormatInfoKHR
+    ) -> ListResult[VideoFormatPropertiesKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceVideoFormatPropertiesKHR.html
+        """
+        var list = List[VideoFormatPropertiesKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_video_format_properties_khr(
+                physical_device,
+                Ptr(to=video_format_info),
+                Ptr(to=count),
+                Ptr[VideoFormatPropertiesKHR, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_video_format_properties_khr(
+                physical_device, Ptr(to=video_format_info), Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn create_video_session_khr(
         self,
@@ -966,10 +1120,7 @@ struct VideoQueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateVideoSessionKHR.html
         """
         return self._create_video_session_khr(
-            device,
-            Ptr(to=create_info).bitcast[VideoSessionCreateInfoKHR](),
-            p_allocator,
-            Ptr(to=video_session).bitcast[VideoSessionKHR](),
+            device, Ptr(to=create_info), p_allocator, Ptr(to=video_session)
         )
 
     fn destroy_video_session_khr(
@@ -996,11 +1147,33 @@ struct VideoQueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetVideoSessionMemoryRequirementsKHR.html
         """
         return self._get_video_session_memory_requirements_khr(
-            device,
-            video_session,
-            Ptr(to=memory_requirements_count).bitcast[UInt32](),
-            p_memory_requirements,
+            device, video_session, Ptr(to=memory_requirements_count), p_memory_requirements
         )
+
+    fn get_video_session_memory_requirements_khr(
+        self, device: Device, video_session: VideoSessionKHR
+    ) -> ListResult[VideoSessionMemoryRequirementsKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetVideoSessionMemoryRequirementsKHR.html
+        """
+        var list = List[VideoSessionMemoryRequirementsKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_video_session_memory_requirements_khr(
+                device,
+                video_session,
+                Ptr(to=count),
+                Ptr[VideoSessionMemoryRequirementsKHR, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_video_session_memory_requirements_khr(
+                device, video_session, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn bind_video_session_memory_khr(
         self,
@@ -1029,10 +1202,7 @@ struct VideoQueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateVideoSessionParametersKHR.html
         """
         return self._create_video_session_parameters_khr(
-            device,
-            Ptr(to=create_info).bitcast[VideoSessionParametersCreateInfoKHR](),
-            p_allocator,
-            Ptr(to=video_session_parameters).bitcast[VideoSessionParametersKHR](),
+            device, Ptr(to=create_info), p_allocator, Ptr(to=video_session_parameters)
         )
 
     fn update_video_session_parameters_khr(
@@ -1046,9 +1216,7 @@ struct VideoQueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateVideoSessionParametersKHR.html
         """
         return self._update_video_session_parameters_khr(
-            device,
-            video_session_parameters,
-            Ptr(to=update_info).bitcast[VideoSessionParametersUpdateInfoKHR](),
+            device, video_session_parameters, Ptr(to=update_info)
         )
 
     fn destroy_video_session_parameters_khr(
@@ -1070,9 +1238,7 @@ struct VideoQueue(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginVideoCodingKHR.html
         """
-        return self._cmd_begin_video_coding_khr(
-            command_buffer, Ptr(to=begin_info).bitcast[VideoBeginCodingInfoKHR]()
-        )
+        return self._cmd_begin_video_coding_khr(command_buffer, Ptr(to=begin_info))
 
     fn cmd_end_video_coding_khr(
         self, command_buffer: CommandBuffer, end_coding_info: VideoEndCodingInfoKHR
@@ -1081,9 +1247,7 @@ struct VideoQueue(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndVideoCodingKHR.html
         """
-        return self._cmd_end_video_coding_khr(
-            command_buffer, Ptr(to=end_coding_info).bitcast[VideoEndCodingInfoKHR]()
-        )
+        return self._cmd_end_video_coding_khr(command_buffer, Ptr(to=end_coding_info))
 
     fn cmd_control_video_coding_khr(
         self, command_buffer: CommandBuffer, coding_control_info: VideoCodingControlInfoKHR
@@ -1092,9 +1256,7 @@ struct VideoQueue(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdControlVideoCodingKHR.html
         """
-        return self._cmd_control_video_coding_khr(
-            command_buffer, Ptr(to=coding_control_info).bitcast[VideoCodingControlInfoKHR]()
-        )
+        return self._cmd_control_video_coding_khr(command_buffer, Ptr(to=coding_control_info))
 
 
 struct VideoDecodeQueue(Copyable):
@@ -1117,7 +1279,7 @@ struct VideoDecodeQueue(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDecodeVideoKHR.html
         """
-        return self._cmd_decode_video_khr(command_buffer, Ptr(to=decode_info).bitcast[VideoDecodeInfoKHR]())
+        return self._cmd_decode_video_khr(command_buffer, Ptr(to=decode_info))
 
 
 struct DynamicRendering(Copyable):
@@ -1144,7 +1306,7 @@ struct DynamicRendering(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRendering.html
         """
-        return self._cmd_begin_rendering(command_buffer, Ptr(to=rendering_info).bitcast[RenderingInfo]())
+        return self._cmd_begin_rendering(command_buffer, Ptr(to=rendering_info))
 
     fn cmd_end_rendering(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
@@ -1222,9 +1384,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFeatures2.html
         """
-        return self._get_physical_device_features_2(
-            physical_device, Ptr(to=features).bitcast[PhysicalDeviceFeatures2]()
-        )
+        return self._get_physical_device_features_2(physical_device, Ptr(to=features))
 
     fn get_physical_device_properties_2(
         self, physical_device: PhysicalDevice, mut properties: PhysicalDeviceProperties2
@@ -1233,9 +1393,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceProperties2.html
         """
-        return self._get_physical_device_properties_2(
-            physical_device, Ptr(to=properties).bitcast[PhysicalDeviceProperties2]()
-        )
+        return self._get_physical_device_properties_2(physical_device, Ptr(to=properties))
 
     fn get_physical_device_format_properties_2(
         self,
@@ -1248,7 +1406,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFormatProperties2.html
         """
         return self._get_physical_device_format_properties_2(
-            physical_device, format, Ptr(to=format_properties).bitcast[FormatProperties2]()
+            physical_device, format, Ptr(to=format_properties)
         )
 
     fn get_physical_device_image_format_properties_2(
@@ -1262,9 +1420,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceImageFormatProperties2.html
         """
         return self._get_physical_device_image_format_properties_2(
-            physical_device,
-            Ptr(to=image_format_info).bitcast[PhysicalDeviceImageFormatInfo2](),
-            Ptr(to=image_format_properties).bitcast[ImageFormatProperties2](),
+            physical_device, Ptr(to=image_format_info), Ptr(to=image_format_properties)
         )
 
     fn get_physical_device_queue_family_properties_2(
@@ -1278,10 +1434,27 @@ struct GetPhysicalDeviceProperties2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         return self._get_physical_device_queue_family_properties_2(
-            physical_device,
-            Ptr(to=queue_family_property_count).bitcast[UInt32](),
-            p_queue_family_properties,
+            physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
         )
+
+    fn get_physical_device_queue_family_properties_2(
+        self, physical_device: PhysicalDevice
+    ) -> List[QueueFamilyProperties2]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
+        """
+        var list = List[QueueFamilyProperties2]()
+        var count: UInt32 = 0
+        self._get_physical_device_queue_family_properties_2(
+            physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
+        )
+        list.reserve(Int(count))
+        self._get_physical_device_queue_family_properties_2(
+            physical_device, Ptr(to=count), list.unsafe_ptr()
+        )
+        list._len = Int(count)
+        return list^
 
     fn get_physical_device_memory_properties_2(
         self,
@@ -1292,9 +1465,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMemoryProperties2.html
         """
-        return self._get_physical_device_memory_properties_2(
-            physical_device, Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]()
-        )
+        return self._get_physical_device_memory_properties_2(physical_device, Ptr(to=memory_properties))
 
     fn get_physical_device_sparse_image_format_properties_2(
         self,
@@ -1308,11 +1479,30 @@ struct GetPhysicalDeviceProperties2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         return self._get_physical_device_sparse_image_format_properties_2(
-            physical_device,
-            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2](),
-            Ptr(to=property_count).bitcast[UInt32](),
-            p_properties,
+            physical_device, Ptr(to=format_info), Ptr(to=property_count), p_properties
         )
+
+    fn get_physical_device_sparse_image_format_properties_2(
+        self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
+    ) -> List[SparseImageFormatProperties2]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
+        """
+        var list = List[SparseImageFormatProperties2]()
+        var count: UInt32 = 0
+        self._get_physical_device_sparse_image_format_properties_2(
+            physical_device,
+            Ptr(to=format_info),
+            Ptr(to=count),
+            Ptr[SparseImageFormatProperties2, MutOrigin.external](),
+        )
+        list.reserve(Int(count))
+        self._get_physical_device_sparse_image_format_properties_2(
+            physical_device, Ptr(to=format_info), Ptr(to=count), list.unsafe_ptr()
+        )
+        list._len = Int(count)
+        return list^
 
 
 struct DeviceGroup(Copyable):
@@ -1393,11 +1583,7 @@ struct DeviceGroup(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupPeerMemoryFeatures.html
         """
         return self._get_device_group_peer_memory_features(
-            device,
-            heap_index,
-            local_device_index,
-            remote_device_index,
-            Ptr(to=peer_memory_features).bitcast[PeerMemoryFeatureFlags](),
+            device, heap_index, local_device_index, remote_device_index, Ptr(to=peer_memory_features)
         )
 
     fn cmd_set_device_mask(self, command_buffer: CommandBuffer, device_mask: UInt32):
@@ -1441,7 +1627,7 @@ struct DeviceGroup(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupPresentCapabilitiesKHR.html
         """
         return self._get_device_group_present_capabilities_khr(
-            device, Ptr(to=device_group_present_capabilities).bitcast[DeviceGroupPresentCapabilitiesKHR]()
+            device, Ptr(to=device_group_present_capabilities)
         )
 
     fn get_device_group_surface_present_modes_khr(
@@ -1451,9 +1637,7 @@ struct DeviceGroup(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupSurfacePresentModesKHR.html
         """
-        return self._get_device_group_surface_present_modes_khr(
-            device, surface, Ptr(to=modes).bitcast[DeviceGroupPresentModeFlagsKHR]()
-        )
+        return self._get_device_group_surface_present_modes_khr(device, surface, Ptr(to=modes))
 
     fn get_physical_device_present_rectangles_khr(
         self,
@@ -1467,8 +1651,30 @@ struct DeviceGroup(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDevicePresentRectanglesKHR.html
         """
         return self._get_physical_device_present_rectangles_khr(
-            physical_device, surface, Ptr(to=rect_count).bitcast[UInt32](), p_rects
+            physical_device, surface, Ptr(to=rect_count), p_rects
         )
+
+    fn get_physical_device_present_rectangles_khr(
+        self, physical_device: PhysicalDevice, surface: SurfaceKHR
+    ) -> ListResult[Rect2D]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDevicePresentRectanglesKHR.html
+        """
+        var list = List[Rect2D]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_present_rectangles_khr(
+                physical_device, surface, Ptr(to=count), Ptr[Rect2D, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_present_rectangles_khr(
+                physical_device, surface, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn acquire_next_image_2_khr(
         self, device: Device, acquire_info: AcquireNextImageInfoKHR, mut image_index: UInt32
@@ -1477,11 +1683,7 @@ struct DeviceGroup(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireNextImage2KHR.html
         """
-        return self._acquire_next_image_2_khr(
-            device,
-            Ptr(to=acquire_info).bitcast[AcquireNextImageInfoKHR](),
-            Ptr(to=image_index).bitcast[UInt32](),
-        )
+        return self._acquire_next_image_2_khr(device, Ptr(to=acquire_info), Ptr(to=image_index))
 
 
 struct Maintenance1(Copyable):
@@ -1535,10 +1737,28 @@ struct DeviceGroupCreation(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         return self._enumerate_physical_device_groups(
-            instance,
-            Ptr(to=physical_device_group_count).bitcast[UInt32](),
-            p_physical_device_group_properties,
+            instance, Ptr(to=physical_device_group_count), p_physical_device_group_properties
         )
+
+    fn enumerate_physical_device_groups(
+        self, instance: Instance
+    ) -> ListResult[PhysicalDeviceGroupProperties]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
+        """
+        var list = List[PhysicalDeviceGroupProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._enumerate_physical_device_groups(
+                instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._enumerate_physical_device_groups(instance, Ptr(to=count), list.unsafe_ptr())
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 
 struct ExternalMemoryCapabilities(Copyable):
@@ -1569,9 +1789,7 @@ struct ExternalMemoryCapabilities(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalBufferProperties.html
         """
         return self._get_physical_device_external_buffer_properties(
-            physical_device,
-            Ptr(to=external_buffer_info).bitcast[PhysicalDeviceExternalBufferInfo](),
-            Ptr(to=external_buffer_properties).bitcast[ExternalBufferProperties](),
+            physical_device, Ptr(to=external_buffer_info), Ptr(to=external_buffer_properties)
         )
 
 
@@ -1611,11 +1829,7 @@ struct ExternalMemoryWin32(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryWin32HandleKHR.html
         """
-        return self._get_memory_win_32_handle_khr(
-            device,
-            Ptr(to=get_win_32_handle_info).bitcast[MemoryGetWin32HandleInfoKHR](),
-            Ptr(to=handle).bitcast[HANDLE](),
-        )
+        return self._get_memory_win_32_handle_khr(device, Ptr(to=get_win_32_handle_info), Ptr(to=handle))
 
     fn get_memory_win_32_handle_properties_khr(
         self,
@@ -1629,10 +1843,7 @@ struct ExternalMemoryWin32(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryWin32HandlePropertiesKHR.html
         """
         return self._get_memory_win_32_handle_properties_khr(
-            device,
-            handle_type,
-            handle,
-            Ptr(to=memory_win_32_handle_properties).bitcast[MemoryWin32HandlePropertiesKHR](),
+            device, handle_type, handle, Ptr(to=memory_win_32_handle_properties)
         )
 
 
@@ -1669,9 +1880,7 @@ struct ExternalMemoryFd(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryFdKHR.html
         """
-        return self._get_memory_fd_khr(
-            device, Ptr(to=get_fd_info).bitcast[MemoryGetFdInfoKHR](), Ptr(to=fd).bitcast[Int32]()
-        )
+        return self._get_memory_fd_khr(device, Ptr(to=get_fd_info), Ptr(to=fd))
 
     fn get_memory_fd_properties_khr(
         self,
@@ -1684,9 +1893,7 @@ struct ExternalMemoryFd(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryFdPropertiesKHR.html
         """
-        return self._get_memory_fd_properties_khr(
-            device, handle_type, fd, Ptr(to=memory_fd_properties).bitcast[MemoryFdPropertiesKHR]()
-        )
+        return self._get_memory_fd_properties_khr(device, handle_type, fd, Ptr(to=memory_fd_properties))
 
 
 struct ExternalSemaphoreCapabilities(Copyable):
@@ -1717,9 +1924,7 @@ struct ExternalSemaphoreCapabilities(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalSemaphoreProperties.html
         """
         return self._get_physical_device_external_semaphore_properties(
-            physical_device,
-            Ptr(to=external_semaphore_info).bitcast[PhysicalDeviceExternalSemaphoreInfo](),
-            Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties](),
+            physical_device, Ptr(to=external_semaphore_info), Ptr(to=external_semaphore_properties)
         )
 
 
@@ -1754,9 +1959,7 @@ struct ExternalSemaphoreWin32(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportSemaphoreWin32HandleKHR.html
         """
-        return self._import_semaphore_win_32_handle_khr(
-            device, Ptr(to=import_semaphore_win_32_handle_info).bitcast[ImportSemaphoreWin32HandleInfoKHR]()
-        )
+        return self._import_semaphore_win_32_handle_khr(device, Ptr(to=import_semaphore_win_32_handle_info))
 
     fn get_semaphore_win_32_handle_khr(
         self,
@@ -1768,11 +1971,7 @@ struct ExternalSemaphoreWin32(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreWin32HandleKHR.html
         """
-        return self._get_semaphore_win_32_handle_khr(
-            device,
-            Ptr(to=get_win_32_handle_info).bitcast[SemaphoreGetWin32HandleInfoKHR](),
-            Ptr(to=handle).bitcast[HANDLE](),
-        )
+        return self._get_semaphore_win_32_handle_khr(device, Ptr(to=get_win_32_handle_info), Ptr(to=handle))
 
 
 struct ExternalSemaphoreFd(Copyable):
@@ -1805,9 +2004,7 @@ struct ExternalSemaphoreFd(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportSemaphoreFdKHR.html
         """
-        return self._import_semaphore_fd_khr(
-            device, Ptr(to=import_semaphore_fd_info).bitcast[ImportSemaphoreFdInfoKHR]()
-        )
+        return self._import_semaphore_fd_khr(device, Ptr(to=import_semaphore_fd_info))
 
     fn get_semaphore_fd_khr(
         self, device: Device, get_fd_info: SemaphoreGetFdInfoKHR, mut fd: Int32
@@ -1816,9 +2013,7 @@ struct ExternalSemaphoreFd(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreFdKHR.html
         """
-        return self._get_semaphore_fd_khr(
-            device, Ptr(to=get_fd_info).bitcast[SemaphoreGetFdInfoKHR](), Ptr(to=fd).bitcast[Int32]()
-        )
+        return self._get_semaphore_fd_khr(device, Ptr(to=get_fd_info), Ptr(to=fd))
 
 
 struct PushDescriptor(Copyable):
@@ -1942,10 +2137,7 @@ struct DescriptorUpdateTemplate(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorUpdateTemplate.html
         """
         return self._create_descriptor_update_template(
-            device,
-            Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo](),
-            p_allocator,
-            Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate](),
+            device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_update_template)
         )
 
     fn destroy_descriptor_update_template(
@@ -2043,12 +2235,7 @@ struct CreateRenderpass2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass2.html
         """
-        return self._create_render_pass_2(
-            device,
-            Ptr(to=create_info).bitcast[RenderPassCreateInfo2](),
-            p_allocator,
-            Ptr(to=render_pass).bitcast[RenderPass](),
-        )
+        return self._create_render_pass_2(device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass))
 
     fn cmd_begin_render_pass_2(
         self,
@@ -2061,9 +2248,7 @@ struct CreateRenderpass2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginRenderPass2.html
         """
         return self._cmd_begin_render_pass_2(
-            command_buffer,
-            Ptr(to=render_pass_begin).bitcast[RenderPassBeginInfo](),
-            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
+            command_buffer, Ptr(to=render_pass_begin), Ptr(to=subpass_begin_info)
         )
 
     fn cmd_next_subpass_2(
@@ -2077,9 +2262,7 @@ struct CreateRenderpass2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdNextSubpass2.html
         """
         return self._cmd_next_subpass_2(
-            command_buffer,
-            Ptr(to=subpass_begin_info).bitcast[SubpassBeginInfo](),
-            Ptr(to=subpass_end_info).bitcast[SubpassEndInfo](),
+            command_buffer, Ptr(to=subpass_begin_info), Ptr(to=subpass_end_info)
         )
 
     fn cmd_end_render_pass_2(
@@ -2089,9 +2272,7 @@ struct CreateRenderpass2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRenderPass2.html
         """
-        return self._cmd_end_render_pass_2(
-            command_buffer, Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]()
-        )
+        return self._cmd_end_render_pass_2(command_buffer, Ptr(to=subpass_end_info))
 
 
 struct SharedPresentableImage(Copyable):
@@ -2143,9 +2324,7 @@ struct ExternalFenceCapabilities(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalFenceProperties.html
         """
         return self._get_physical_device_external_fence_properties(
-            physical_device,
-            Ptr(to=external_fence_info).bitcast[PhysicalDeviceExternalFenceInfo](),
-            Ptr(to=external_fence_properties).bitcast[ExternalFenceProperties](),
+            physical_device, Ptr(to=external_fence_info), Ptr(to=external_fence_properties)
         )
 
 
@@ -2180,9 +2359,7 @@ struct ExternalFenceWin32(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportFenceWin32HandleKHR.html
         """
-        return self._import_fence_win_32_handle_khr(
-            device, Ptr(to=import_fence_win_32_handle_info).bitcast[ImportFenceWin32HandleInfoKHR]()
-        )
+        return self._import_fence_win_32_handle_khr(device, Ptr(to=import_fence_win_32_handle_info))
 
     fn get_fence_win_32_handle_khr(
         self, device: Device, get_win_32_handle_info: FenceGetWin32HandleInfoKHR, mut handle: HANDLE
@@ -2191,11 +2368,7 @@ struct ExternalFenceWin32(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceWin32HandleKHR.html
         """
-        return self._get_fence_win_32_handle_khr(
-            device,
-            Ptr(to=get_win_32_handle_info).bitcast[FenceGetWin32HandleInfoKHR](),
-            Ptr(to=handle).bitcast[HANDLE](),
-        )
+        return self._get_fence_win_32_handle_khr(device, Ptr(to=get_win_32_handle_info), Ptr(to=handle))
 
 
 struct ExternalFenceFd(Copyable):
@@ -2228,9 +2401,7 @@ struct ExternalFenceFd(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportFenceFdKHR.html
         """
-        return self._import_fence_fd_khr(
-            device, Ptr(to=import_fence_fd_info).bitcast[ImportFenceFdInfoKHR]()
-        )
+        return self._import_fence_fd_khr(device, Ptr(to=import_fence_fd_info))
 
     fn get_fence_fd_khr(
         self, device: Device, get_fd_info: FenceGetFdInfoKHR, mut fd: Int32
@@ -2239,9 +2410,7 @@ struct ExternalFenceFd(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFenceFdKHR.html
         """
-        return self._get_fence_fd_khr(
-            device, Ptr(to=get_fd_info).bitcast[FenceGetFdInfoKHR](), Ptr(to=fd).bitcast[Int32]()
-        )
+        return self._get_fence_fd_khr(device, Ptr(to=get_fd_info), Ptr(to=fd))
 
 
 struct PerformanceQuery(Copyable):
@@ -2294,11 +2463,7 @@ struct PerformanceQuery(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR.html
         """
         return self._enumerate_physical_device_queue_family_performance_query_counters_khr(
-            physical_device,
-            queue_family_index,
-            Ptr(to=counter_count).bitcast[UInt32](),
-            p_counters,
-            p_counter_descriptions,
+            physical_device, queue_family_index, Ptr(to=counter_count), p_counters, p_counter_descriptions
         )
 
     fn get_physical_device_queue_family_performance_query_passes_khr(
@@ -2312,9 +2477,7 @@ struct PerformanceQuery(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR.html
         """
         return self._get_physical_device_queue_family_performance_query_passes_khr(
-            physical_device,
-            Ptr(to=performance_query_create_info).bitcast[QueryPoolPerformanceCreateInfoKHR](),
-            Ptr(to=num_passes).bitcast[UInt32](),
+            physical_device, Ptr(to=performance_query_create_info), Ptr(to=num_passes)
         )
 
     fn acquire_profiling_lock_khr(
@@ -2324,7 +2487,7 @@ struct PerformanceQuery(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireProfilingLockKHR.html
         """
-        return self._acquire_profiling_lock_khr(device, Ptr(to=info).bitcast[AcquireProfilingLockInfoKHR]())
+        return self._acquire_profiling_lock_khr(device, Ptr(to=info))
 
     fn release_profiling_lock_khr(self, device: Device):
         """See official vulkan docs for details.
@@ -2371,9 +2534,7 @@ struct GetSurfaceCapabilities2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceCapabilities2KHR.html
         """
         return self._get_physical_device_surface_capabilities_2_khr(
-            physical_device,
-            Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR](),
-            Ptr(to=surface_capabilities).bitcast[SurfaceCapabilities2KHR](),
+            physical_device, Ptr(to=surface_info), Ptr(to=surface_capabilities)
         )
 
     fn get_physical_device_surface_formats_2_khr(
@@ -2388,11 +2549,33 @@ struct GetSurfaceCapabilities2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceFormats2KHR.html
         """
         return self._get_physical_device_surface_formats_2_khr(
-            physical_device,
-            Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR](),
-            Ptr(to=surface_format_count).bitcast[UInt32](),
-            p_surface_formats,
+            physical_device, Ptr(to=surface_info), Ptr(to=surface_format_count), p_surface_formats
         )
+
+    fn get_physical_device_surface_formats_2_khr(
+        self, physical_device: PhysicalDevice, surface_info: PhysicalDeviceSurfaceInfo2KHR
+    ) -> ListResult[SurfaceFormat2KHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceFormats2KHR.html
+        """
+        var list = List[SurfaceFormat2KHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_surface_formats_2_khr(
+                physical_device,
+                Ptr(to=surface_info),
+                Ptr(to=count),
+                Ptr[SurfaceFormat2KHR, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_surface_formats_2_khr(
+                physical_device, Ptr(to=surface_info), Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 
 struct GetDisplayProperties2(Copyable):
@@ -2448,8 +2631,30 @@ struct GetDisplayProperties2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayProperties2KHR.html
         """
         return self._get_physical_device_display_properties_2_khr(
-            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
+            physical_device, Ptr(to=property_count), p_properties
         )
+
+    fn get_physical_device_display_properties_2_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[DisplayProperties2KHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayProperties2KHR.html
+        """
+        var list = List[DisplayProperties2KHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_display_properties_2_khr(
+                physical_device, Ptr(to=count), Ptr[DisplayProperties2KHR, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_display_properties_2_khr(
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_physical_device_display_plane_properties_2_khr(
         self,
@@ -2462,8 +2667,30 @@ struct GetDisplayProperties2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPlaneProperties2KHR.html
         """
         return self._get_physical_device_display_plane_properties_2_khr(
-            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
+            physical_device, Ptr(to=property_count), p_properties
         )
+
+    fn get_physical_device_display_plane_properties_2_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[DisplayPlaneProperties2KHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPlaneProperties2KHR.html
+        """
+        var list = List[DisplayPlaneProperties2KHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_display_plane_properties_2_khr(
+                physical_device, Ptr(to=count), Ptr[DisplayPlaneProperties2KHR, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_display_plane_properties_2_khr(
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_display_mode_properties_2_khr(
         self,
@@ -2477,8 +2704,33 @@ struct GetDisplayProperties2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayModeProperties2KHR.html
         """
         return self._get_display_mode_properties_2_khr(
-            physical_device, display, Ptr(to=property_count).bitcast[UInt32](), p_properties
+            physical_device, display, Ptr(to=property_count), p_properties
         )
+
+    fn get_display_mode_properties_2_khr(
+        self, physical_device: PhysicalDevice, display: DisplayKHR
+    ) -> ListResult[DisplayModeProperties2KHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayModeProperties2KHR.html
+        """
+        var list = List[DisplayModeProperties2KHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_display_mode_properties_2_khr(
+                physical_device,
+                display,
+                Ptr(to=count),
+                Ptr[DisplayModeProperties2KHR, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_display_mode_properties_2_khr(
+                physical_device, display, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_display_plane_capabilities_2_khr(
         self,
@@ -2491,9 +2743,7 @@ struct GetDisplayProperties2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayPlaneCapabilities2KHR.html
         """
         return self._get_display_plane_capabilities_2_khr(
-            physical_device,
-            Ptr(to=display_plane_info).bitcast[DisplayPlaneInfo2KHR](),
-            Ptr(to=capabilities).bitcast[DisplayPlaneCapabilities2KHR](),
+            physical_device, Ptr(to=display_plane_info), Ptr(to=capabilities)
         )
 
 
@@ -2541,11 +2791,7 @@ struct GetMemoryRequirements2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageMemoryRequirements2.html
         """
-        return self._get_image_memory_requirements_2(
-            device,
-            Ptr(to=info).bitcast[ImageMemoryRequirementsInfo2](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
-        )
+        return self._get_image_memory_requirements_2(device, Ptr(to=info), Ptr(to=memory_requirements))
 
     fn get_buffer_memory_requirements_2(
         self,
@@ -2557,11 +2803,7 @@ struct GetMemoryRequirements2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferMemoryRequirements2.html
         """
-        return self._get_buffer_memory_requirements_2(
-            device,
-            Ptr(to=info).bitcast[BufferMemoryRequirementsInfo2](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
-        )
+        return self._get_buffer_memory_requirements_2(device, Ptr(to=info), Ptr(to=memory_requirements))
 
     fn get_image_sparse_memory_requirements_2(
         self,
@@ -2575,11 +2817,25 @@ struct GetMemoryRequirements2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         return self._get_image_sparse_memory_requirements_2(
-            device,
-            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2](),
-            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
-            p_sparse_memory_requirements,
+            device, Ptr(to=info), Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
         )
+
+    fn get_image_sparse_memory_requirements_2(
+        self, device: Device, info: ImageSparseMemoryRequirementsInfo2
+    ) -> List[SparseImageMemoryRequirements2]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
+        """
+        var list = List[SparseImageMemoryRequirements2]()
+        var count: UInt32 = 0
+        self._get_image_sparse_memory_requirements_2(
+            device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+        )
+        list.reserve(Int(count))
+        self._get_image_sparse_memory_requirements_2(device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
 
 
 struct AccelerationStructure(Copyable):
@@ -2741,10 +2997,7 @@ struct AccelerationStructure(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateAccelerationStructureKHR.html
         """
         return self._create_acceleration_structure_khr(
-            device,
-            Ptr(to=create_info).bitcast[AccelerationStructureCreateInfoKHR](),
-            p_allocator,
-            Ptr(to=acceleration_structure).bitcast[AccelerationStructureKHR](),
+            device, Ptr(to=create_info), p_allocator, Ptr(to=acceleration_structure)
         )
 
     fn destroy_acceleration_structure_khr(
@@ -2822,9 +3075,7 @@ struct AccelerationStructure(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyAccelerationStructureKHR.html
         """
-        return self._copy_acceleration_structure_khr(
-            device, deferred_operation, Ptr(to=info).bitcast[CopyAccelerationStructureInfoKHR]()
-        )
+        return self._copy_acceleration_structure_khr(device, deferred_operation, Ptr(to=info))
 
     fn copy_acceleration_structure_to_memory_khr(
         self,
@@ -2836,9 +3087,7 @@ struct AccelerationStructure(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyAccelerationStructureToMemoryKHR.html
         """
-        return self._copy_acceleration_structure_to_memory_khr(
-            device, deferred_operation, Ptr(to=info).bitcast[CopyAccelerationStructureToMemoryInfoKHR]()
-        )
+        return self._copy_acceleration_structure_to_memory_khr(device, deferred_operation, Ptr(to=info))
 
     fn copy_memory_to_acceleration_structure_khr(
         self,
@@ -2850,9 +3099,7 @@ struct AccelerationStructure(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMemoryToAccelerationStructureKHR.html
         """
-        return self._copy_memory_to_acceleration_structure_khr(
-            device, deferred_operation, Ptr(to=info).bitcast[CopyMemoryToAccelerationStructureInfoKHR]()
-        )
+        return self._copy_memory_to_acceleration_structure_khr(device, deferred_operation, Ptr(to=info))
 
     fn write_acceleration_structures_properties_khr(
         self,
@@ -2885,9 +3132,7 @@ struct AccelerationStructure(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyAccelerationStructureKHR.html
         """
-        return self._cmd_copy_acceleration_structure_khr(
-            command_buffer, Ptr(to=info).bitcast[CopyAccelerationStructureInfoKHR]()
-        )
+        return self._cmd_copy_acceleration_structure_khr(command_buffer, Ptr(to=info))
 
     fn cmd_copy_acceleration_structure_to_memory_khr(
         self, command_buffer: CommandBuffer, info: CopyAccelerationStructureToMemoryInfoKHR
@@ -2896,9 +3141,7 @@ struct AccelerationStructure(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyAccelerationStructureToMemoryKHR.html
         """
-        return self._cmd_copy_acceleration_structure_to_memory_khr(
-            command_buffer, Ptr(to=info).bitcast[CopyAccelerationStructureToMemoryInfoKHR]()
-        )
+        return self._cmd_copy_acceleration_structure_to_memory_khr(command_buffer, Ptr(to=info))
 
     fn cmd_copy_memory_to_acceleration_structure_khr(
         self, command_buffer: CommandBuffer, info: CopyMemoryToAccelerationStructureInfoKHR
@@ -2907,9 +3150,7 @@ struct AccelerationStructure(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMemoryToAccelerationStructureKHR.html
         """
-        return self._cmd_copy_memory_to_acceleration_structure_khr(
-            command_buffer, Ptr(to=info).bitcast[CopyMemoryToAccelerationStructureInfoKHR]()
-        )
+        return self._cmd_copy_memory_to_acceleration_structure_khr(command_buffer, Ptr(to=info))
 
     fn get_acceleration_structure_device_address_khr(
         self, device: Device, info: AccelerationStructureDeviceAddressInfoKHR
@@ -2918,9 +3159,7 @@ struct AccelerationStructure(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAccelerationStructureDeviceAddressKHR.html
         """
-        return self._get_acceleration_structure_device_address_khr(
-            device, Ptr(to=info).bitcast[AccelerationStructureDeviceAddressInfoKHR]()
-        )
+        return self._get_acceleration_structure_device_address_khr(device, Ptr(to=info))
 
     fn cmd_write_acceleration_structures_properties_khr(
         self,
@@ -2955,9 +3194,7 @@ struct AccelerationStructure(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceAccelerationStructureCompatibilityKHR.html
         """
         return self._get_device_acceleration_structure_compatibility_khr(
-            device,
-            Ptr(to=version_info).bitcast[AccelerationStructureVersionInfoKHR](),
-            Ptr(to=compatibility).bitcast[AccelerationStructureCompatibilityKHR](),
+            device, Ptr(to=version_info), Ptr(to=compatibility)
         )
 
     fn get_acceleration_structure_build_sizes_khr(
@@ -2973,11 +3210,7 @@ struct AccelerationStructure(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAccelerationStructureBuildSizesKHR.html
         """
         return self._get_acceleration_structure_build_sizes_khr(
-            device,
-            build_type,
-            Ptr(to=build_info).bitcast[AccelerationStructureBuildGeometryInfoKHR](),
-            p_max_primitive_counts,
-            Ptr(to=size_info).bitcast[AccelerationStructureBuildSizesInfoKHR](),
+            device, build_type, Ptr(to=build_info), p_max_primitive_counts, Ptr(to=size_info)
         )
 
 
@@ -3077,10 +3310,10 @@ struct RayTracingPipeline(Copyable):
         """
         return self._cmd_trace_rays_khr(
             command_buffer,
-            Ptr(to=raygen_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
-            Ptr(to=miss_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
-            Ptr(to=hit_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
-            Ptr(to=callable_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
+            Ptr(to=raygen_shader_binding_table),
+            Ptr(to=miss_shader_binding_table),
+            Ptr(to=hit_shader_binding_table),
+            Ptr(to=callable_shader_binding_table),
             width,
             height,
             depth,
@@ -3159,10 +3392,10 @@ struct RayTracingPipeline(Copyable):
         """
         return self._cmd_trace_rays_indirect_khr(
             command_buffer,
-            Ptr(to=raygen_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
-            Ptr(to=miss_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
-            Ptr(to=hit_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
-            Ptr(to=callable_shader_binding_table).bitcast[StridedDeviceAddressRegionKHR](),
+            Ptr(to=raygen_shader_binding_table),
+            Ptr(to=miss_shader_binding_table),
+            Ptr(to=hit_shader_binding_table),
+            Ptr(to=callable_shader_binding_table),
             indirect_device_address,
         )
 
@@ -3223,10 +3456,7 @@ struct SamplerYcbcrConversion(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSamplerYcbcrConversion.html
         """
         return self._create_sampler_ycbcr_conversion(
-            device,
-            Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo](),
-            p_allocator,
-            Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion](),
+            device, Ptr(to=create_info), p_allocator, Ptr(to=ycbcr_conversion)
         )
 
     fn destroy_sampler_ycbcr_conversion(
@@ -3315,11 +3545,7 @@ struct Maintenance3(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutSupport.html
         """
-        return self._get_descriptor_set_layout_support(
-            device,
-            Ptr(to=create_info).bitcast[DescriptorSetLayoutCreateInfo](),
-            Ptr(to=support).bitcast[DescriptorSetLayoutSupport](),
-        )
+        return self._get_descriptor_set_layout_support(device, Ptr(to=create_info), Ptr(to=support))
 
 
 struct DrawIndirectCount(Copyable):
@@ -3426,7 +3652,7 @@ struct TimelineSemaphore(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreCounterValue.html
         """
-        return self._get_semaphore_counter_value(device, semaphore, Ptr(to=value).bitcast[UInt64]())
+        return self._get_semaphore_counter_value(device, semaphore, Ptr(to=value))
 
     fn wait_semaphores(
         self, device: Device, wait_info: SemaphoreWaitInfo, timeout: UInt64
@@ -3435,14 +3661,14 @@ struct TimelineSemaphore(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitSemaphores.html
         """
-        return self._wait_semaphores(device, Ptr(to=wait_info).bitcast[SemaphoreWaitInfo](), timeout)
+        return self._wait_semaphores(device, Ptr(to=wait_info), timeout)
 
     fn signal_semaphore(self, device: Device, signal_info: SemaphoreSignalInfo) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSignalSemaphore.html
         """
-        return self._signal_semaphore(device, Ptr(to=signal_info).bitcast[SemaphoreSignalInfo]())
+        return self._signal_semaphore(device, Ptr(to=signal_info))
 
 
 struct FragmentShadingRate(Copyable):
@@ -3481,8 +3707,32 @@ struct FragmentShadingRate(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFragmentShadingRatesKHR.html
         """
         return self._get_physical_device_fragment_shading_rates_khr(
-            physical_device, Ptr(to=fragment_shading_rate_count).bitcast[UInt32](), p_fragment_shading_rates
+            physical_device, Ptr(to=fragment_shading_rate_count), p_fragment_shading_rates
         )
+
+    fn get_physical_device_fragment_shading_rates_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[PhysicalDeviceFragmentShadingRateKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFragmentShadingRatesKHR.html
+        """
+        var list = List[PhysicalDeviceFragmentShadingRateKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_fragment_shading_rates_khr(
+                physical_device,
+                Ptr(to=count),
+                Ptr[PhysicalDeviceFragmentShadingRateKHR, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_fragment_shading_rates_khr(
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn cmd_set_fragment_shading_rate_khr(
         self,
@@ -3494,9 +3744,7 @@ struct FragmentShadingRate(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetFragmentShadingRateKHR.html
         """
-        return self._cmd_set_fragment_shading_rate_khr(
-            command_buffer, Ptr(to=fragment_size).bitcast[Extent2D](), combiner_ops
-        )
+        return self._cmd_set_fragment_shading_rate_khr(command_buffer, Ptr(to=fragment_size), combiner_ops)
 
 
 struct DynamicRenderingLocalRead(Copyable):
@@ -3529,9 +3777,7 @@ struct DynamicRenderingLocalRead(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRenderingAttachmentLocations.html
         """
-        return self._cmd_set_rendering_attachment_locations(
-            command_buffer, Ptr(to=location_info).bitcast[RenderingAttachmentLocationInfo]()
-        )
+        return self._cmd_set_rendering_attachment_locations(command_buffer, Ptr(to=location_info))
 
     fn cmd_set_rendering_input_attachment_indices(
         self,
@@ -3543,7 +3789,7 @@ struct DynamicRenderingLocalRead(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRenderingInputAttachmentIndices.html
         """
         return self._cmd_set_rendering_input_attachment_indices(
-            command_buffer, Ptr(to=input_attachment_index_info).bitcast[RenderingInputAttachmentIndexInfo]()
+            command_buffer, Ptr(to=input_attachment_index_info)
         )
 
 
@@ -3606,7 +3852,7 @@ struct BufferDeviceAddress(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
-        return self._get_buffer_device_address(device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]())
+        return self._get_buffer_device_address(device, Ptr(to=info))
 
     fn get_buffer_opaque_capture_address(
         self, device: Device, info: BufferDeviceAddressInfo
@@ -3615,9 +3861,7 @@ struct BufferDeviceAddress(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureAddress.html
         """
-        return self._get_buffer_opaque_capture_address(
-            device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]()
-        )
+        return self._get_buffer_opaque_capture_address(device, Ptr(to=info))
 
     fn get_device_memory_opaque_capture_address(
         self, device: Device, info: DeviceMemoryOpaqueCaptureAddressInfo
@@ -3626,9 +3870,7 @@ struct BufferDeviceAddress(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMemoryOpaqueCaptureAddress.html
         """
-        return self._get_device_memory_opaque_capture_address(
-            device, Ptr(to=info).bitcast[DeviceMemoryOpaqueCaptureAddressInfo]()
-        )
+        return self._get_device_memory_opaque_capture_address(device, Ptr(to=info))
 
 
 struct DeferredHostOperations(Copyable):
@@ -3682,9 +3924,7 @@ struct DeferredHostOperations(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDeferredOperationKHR.html
         """
-        return self._create_deferred_operation_khr(
-            device, p_allocator, Ptr(to=deferred_operation).bitcast[DeferredOperationKHR]()
-        )
+        return self._create_deferred_operation_khr(device, p_allocator, Ptr(to=deferred_operation))
 
     fn destroy_deferred_operation_khr(
         self,
@@ -3774,11 +4014,33 @@ struct PipelineExecutableProperties(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutablePropertiesKHR.html
         """
         return self._get_pipeline_executable_properties_khr(
-            device,
-            Ptr(to=pipeline_info).bitcast[PipelineInfoKHR](),
-            Ptr(to=executable_count).bitcast[UInt32](),
-            p_properties,
+            device, Ptr(to=pipeline_info), Ptr(to=executable_count), p_properties
         )
+
+    fn get_pipeline_executable_properties_khr(
+        self, device: Device, pipeline_info: PipelineInfoKHR
+    ) -> ListResult[PipelineExecutablePropertiesKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutablePropertiesKHR.html
+        """
+        var list = List[PipelineExecutablePropertiesKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_pipeline_executable_properties_khr(
+                device,
+                Ptr(to=pipeline_info),
+                Ptr(to=count),
+                Ptr[PipelineExecutablePropertiesKHR, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_pipeline_executable_properties_khr(
+                device, Ptr(to=pipeline_info), Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_pipeline_executable_statistics_khr(
         self,
@@ -3792,11 +4054,33 @@ struct PipelineExecutableProperties(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutableStatisticsKHR.html
         """
         return self._get_pipeline_executable_statistics_khr(
-            device,
-            Ptr(to=executable_info).bitcast[PipelineExecutableInfoKHR](),
-            Ptr(to=statistic_count).bitcast[UInt32](),
-            p_statistics,
+            device, Ptr(to=executable_info), Ptr(to=statistic_count), p_statistics
         )
+
+    fn get_pipeline_executable_statistics_khr(
+        self, device: Device, executable_info: PipelineExecutableInfoKHR
+    ) -> ListResult[PipelineExecutableStatisticKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutableStatisticsKHR.html
+        """
+        var list = List[PipelineExecutableStatisticKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_pipeline_executable_statistics_khr(
+                device,
+                Ptr(to=executable_info),
+                Ptr(to=count),
+                Ptr[PipelineExecutableStatisticKHR, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_pipeline_executable_statistics_khr(
+                device, Ptr(to=executable_info), Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_pipeline_executable_internal_representations_khr(
         self,
@@ -3811,10 +4095,35 @@ struct PipelineExecutableProperties(Copyable):
         """
         return self._get_pipeline_executable_internal_representations_khr(
             device,
-            Ptr(to=executable_info).bitcast[PipelineExecutableInfoKHR](),
-            Ptr(to=internal_representation_count).bitcast[UInt32](),
+            Ptr(to=executable_info),
+            Ptr(to=internal_representation_count),
             p_internal_representations,
         )
+
+    fn get_pipeline_executable_internal_representations_khr(
+        self, device: Device, executable_info: PipelineExecutableInfoKHR
+    ) -> ListResult[PipelineExecutableInternalRepresentationKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutableInternalRepresentationsKHR.html
+        """
+        var list = List[PipelineExecutableInternalRepresentationKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_pipeline_executable_internal_representations_khr(
+                device,
+                Ptr(to=executable_info),
+                Ptr(to=count),
+                Ptr[PipelineExecutableInternalRepresentationKHR, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_pipeline_executable_internal_representations_khr(
+                device, Ptr(to=executable_info), Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 
 struct MapMemory2(Copyable):
@@ -3850,18 +4159,14 @@ struct MapMemory2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory2.html
         """
-        return self._map_memory_2(
-            device,
-            Ptr(to=memory_map_info).bitcast[MemoryMapInfo](),
-            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]](),
-        )
+        return self._map_memory_2(device, Ptr(to=memory_map_info), Ptr(to=p_data))
 
     fn unmap_memory_2(self, device: Device, memory_unmap_info: MemoryUnmapInfo) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUnmapMemory2.html
         """
-        return self._unmap_memory_2(device, Ptr(to=memory_unmap_info).bitcast[MemoryUnmapInfo]())
+        return self._unmap_memory_2(device, Ptr(to=memory_unmap_info))
 
 
 struct VideoEncodeQueue(Copyable):
@@ -3908,9 +4213,7 @@ struct VideoEncodeQueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR.html
         """
         return self._get_physical_device_video_encode_quality_level_properties_khr(
-            physical_device,
-            Ptr(to=quality_level_info).bitcast[PhysicalDeviceVideoEncodeQualityLevelInfoKHR](),
-            Ptr(to=quality_level_properties).bitcast[VideoEncodeQualityLevelPropertiesKHR](),
+            physical_device, Ptr(to=quality_level_info), Ptr(to=quality_level_properties)
         )
 
     fn get_encoded_video_session_parameters_khr(
@@ -3926,19 +4229,48 @@ struct VideoEncodeQueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetEncodedVideoSessionParametersKHR.html
         """
         return self._get_encoded_video_session_parameters_khr(
-            device,
-            Ptr(to=video_session_parameters_info).bitcast[VideoEncodeSessionParametersGetInfoKHR](),
-            p_feedback_info,
-            Ptr(to=data_size).bitcast[UInt](),
-            p_data,
+            device, Ptr(to=video_session_parameters_info), p_feedback_info, Ptr(to=data_size), p_data
         )
+
+    fn get_encoded_video_session_parameters_khr(
+        self,
+        device: Device,
+        video_session_parameters_info: VideoEncodeSessionParametersGetInfoKHR,
+        p_feedback_info: Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutAnyOrigin],
+    ) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetEncodedVideoSessionParametersKHR.html
+        """
+        var list = List[UInt8]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_encoded_video_session_parameters_khr(
+                device,
+                Ptr(to=video_session_parameters_info),
+                p_feedback_info,
+                Ptr(to=count),
+                Ptr[NoneType, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_encoded_video_session_parameters_khr(
+                device,
+                Ptr(to=video_session_parameters_info),
+                p_feedback_info,
+                Ptr(to=count),
+                list.unsafe_ptr().bitcast[NoneType](),
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn cmd_encode_video_khr(self, command_buffer: CommandBuffer, encode_info: VideoEncodeInfoKHR):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEncodeVideoKHR.html
         """
-        return self._cmd_encode_video_khr(command_buffer, Ptr(to=encode_info).bitcast[VideoEncodeInfoKHR]())
+        return self._cmd_encode_video_khr(command_buffer, Ptr(to=encode_info))
 
 
 struct Synchronization2(Copyable):
@@ -3998,9 +4330,7 @@ struct Synchronization2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetEvent2.html
         """
-        return self._cmd_set_event_2(
-            command_buffer, event, Ptr(to=dependency_info).bitcast[DependencyInfo]()
-        )
+        return self._cmd_set_event_2(command_buffer, event, Ptr(to=dependency_info))
 
     fn cmd_reset_event_2(
         self, command_buffer: CommandBuffer, event: Event, stage_mask: PipelineStageFlags2
@@ -4031,9 +4361,7 @@ struct Synchronization2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPipelineBarrier2.html
         """
-        return self._cmd_pipeline_barrier_2(
-            command_buffer, Ptr(to=dependency_info).bitcast[DependencyInfo]()
-        )
+        return self._cmd_pipeline_barrier_2(command_buffer, Ptr(to=dependency_info))
 
     fn cmd_write_timestamp_2(
         self,
@@ -4114,14 +4442,14 @@ struct CopyCommands2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer2.html
         """
-        return self._cmd_copy_buffer_2(command_buffer, Ptr(to=copy_buffer_info).bitcast[CopyBufferInfo2]())
+        return self._cmd_copy_buffer_2(command_buffer, Ptr(to=copy_buffer_info))
 
     fn cmd_copy_image_2(self, command_buffer: CommandBuffer, copy_image_info: CopyImageInfo2):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImage2.html
         """
-        return self._cmd_copy_image_2(command_buffer, Ptr(to=copy_image_info).bitcast[CopyImageInfo2]())
+        return self._cmd_copy_image_2(command_buffer, Ptr(to=copy_image_info))
 
     fn cmd_copy_buffer_to_image_2(
         self, command_buffer: CommandBuffer, copy_buffer_to_image_info: CopyBufferToImageInfo2
@@ -4130,9 +4458,7 @@ struct CopyCommands2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage2.html
         """
-        return self._cmd_copy_buffer_to_image_2(
-            command_buffer, Ptr(to=copy_buffer_to_image_info).bitcast[CopyBufferToImageInfo2]()
-        )
+        return self._cmd_copy_buffer_to_image_2(command_buffer, Ptr(to=copy_buffer_to_image_info))
 
     fn cmd_copy_image_to_buffer_2(
         self, command_buffer: CommandBuffer, copy_image_to_buffer_info: CopyImageToBufferInfo2
@@ -4141,16 +4467,14 @@ struct CopyCommands2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer2.html
         """
-        return self._cmd_copy_image_to_buffer_2(
-            command_buffer, Ptr(to=copy_image_to_buffer_info).bitcast[CopyImageToBufferInfo2]()
-        )
+        return self._cmd_copy_image_to_buffer_2(command_buffer, Ptr(to=copy_image_to_buffer_info))
 
     fn cmd_blit_image_2(self, command_buffer: CommandBuffer, blit_image_info: BlitImageInfo2):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBlitImage2.html
         """
-        return self._cmd_blit_image_2(command_buffer, Ptr(to=blit_image_info).bitcast[BlitImageInfo2]())
+        return self._cmd_blit_image_2(command_buffer, Ptr(to=blit_image_info))
 
     fn cmd_resolve_image_2(
         self, command_buffer: CommandBuffer, resolve_image_info: ResolveImageInfo2
@@ -4159,9 +4483,7 @@ struct CopyCommands2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdResolveImage2.html
         """
-        return self._cmd_resolve_image_2(
-            command_buffer, Ptr(to=resolve_image_info).bitcast[ResolveImageInfo2]()
-        )
+        return self._cmd_resolve_image_2(command_buffer, Ptr(to=resolve_image_info))
 
 
 struct RayTracingMaintenance1(Copyable):
@@ -4234,9 +4556,7 @@ struct Maintenance4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceBufferMemoryRequirements.html
         """
         return self._get_device_buffer_memory_requirements(
-            device,
-            Ptr(to=info).bitcast[DeviceBufferMemoryRequirements](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
     fn get_device_image_memory_requirements(
@@ -4249,11 +4569,7 @@ struct Maintenance4(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageMemoryRequirements.html
         """
-        return self._get_device_image_memory_requirements(
-            device,
-            Ptr(to=info).bitcast[DeviceImageMemoryRequirements](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
-        )
+        return self._get_device_image_memory_requirements(device, Ptr(to=info), Ptr(to=memory_requirements))
 
     fn get_device_image_sparse_memory_requirements(
         self,
@@ -4267,11 +4583,27 @@ struct Maintenance4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSparseMemoryRequirements.html
         """
         return self._get_device_image_sparse_memory_requirements(
-            device,
-            Ptr(to=info).bitcast[DeviceImageMemoryRequirements](),
-            Ptr(to=sparse_memory_requirement_count).bitcast[UInt32](),
-            p_sparse_memory_requirements,
+            device, Ptr(to=info), Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
         )
+
+    fn get_device_image_sparse_memory_requirements(
+        self, device: Device, info: DeviceImageMemoryRequirements
+    ) -> List[SparseImageMemoryRequirements2]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSparseMemoryRequirements.html
+        """
+        var list = List[SparseImageMemoryRequirements2]()
+        var count: UInt32 = 0
+        self._get_device_image_sparse_memory_requirements(
+            device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+        )
+        list.reserve(Int(count))
+        self._get_device_image_sparse_memory_requirements(
+            device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
+        )
+        list._len = Int(count)
+        return list^
 
 
 struct Maintenance5(Copyable):
@@ -4340,9 +4672,7 @@ struct Maintenance5(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRenderingAreaGranularity.html
         """
         return self._get_rendering_area_granularity(
-            device,
-            Ptr(to=rendering_area_info).bitcast[RenderingAreaInfo](),
-            Ptr(to=granularity).bitcast[Extent2D](),
+            device, Ptr(to=rendering_area_info), Ptr(to=granularity)
         )
 
     fn get_device_image_subresource_layout(
@@ -4352,11 +4682,7 @@ struct Maintenance5(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSubresourceLayout.html
         """
-        return self._get_device_image_subresource_layout(
-            device,
-            Ptr(to=info).bitcast[DeviceImageSubresourceInfo](),
-            Ptr(to=layout).bitcast[SubresourceLayout2](),
-        )
+        return self._get_device_image_subresource_layout(device, Ptr(to=info), Ptr(to=layout))
 
     fn get_image_subresource_layout_2(
         self,
@@ -4369,12 +4695,7 @@ struct Maintenance5(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout2.html
         """
-        return self._get_image_subresource_layout_2(
-            device,
-            image,
-            Ptr(to=subresource).bitcast[ImageSubresource2](),
-            Ptr(to=layout).bitcast[SubresourceLayout2](),
-        )
+        return self._get_image_subresource_layout_2(device, image, Ptr(to=subresource), Ptr(to=layout))
 
 
 struct PresentWait2(Copyable):
@@ -4401,9 +4722,7 @@ struct PresentWait2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitForPresent2KHR.html
         """
-        return self._wait_for_present_2_khr(
-            device, swapchain, Ptr(to=present_wait_2_info).bitcast[PresentWait2InfoKHR]()
-        )
+        return self._wait_for_present_2_khr(device, swapchain, Ptr(to=present_wait_2_info))
 
 
 struct PipelineBinary(Copyable):
@@ -4470,10 +4789,7 @@ struct PipelineBinary(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineBinariesKHR.html
         """
         return self._create_pipeline_binaries_khr(
-            device,
-            Ptr(to=create_info).bitcast[PipelineBinaryCreateInfoKHR](),
-            p_allocator,
-            Ptr(to=binaries).bitcast[PipelineBinaryHandlesInfoKHR](),
+            device, Ptr(to=create_info), p_allocator, Ptr(to=binaries)
         )
 
     fn destroy_pipeline_binary_khr(
@@ -4498,9 +4814,7 @@ struct PipelineBinary(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineKeyKHR.html
         """
-        return self._get_pipeline_key_khr(
-            device, p_pipeline_create_info, Ptr(to=pipeline_key).bitcast[PipelineBinaryKeyKHR]()
-        )
+        return self._get_pipeline_key_khr(device, p_pipeline_create_info, Ptr(to=pipeline_key))
 
     fn get_pipeline_binary_data_khr(
         self,
@@ -4516,11 +4830,44 @@ struct PipelineBinary(Copyable):
         """
         return self._get_pipeline_binary_data_khr(
             device,
-            Ptr(to=info).bitcast[PipelineBinaryDataInfoKHR](),
-            Ptr(to=pipeline_binary_key).bitcast[PipelineBinaryKeyKHR](),
-            Ptr(to=pipeline_binary_data_size).bitcast[UInt](),
+            Ptr(to=info),
+            Ptr(to=pipeline_binary_key),
+            Ptr(to=pipeline_binary_data_size),
             p_pipeline_binary_data,
         )
+
+    fn get_pipeline_binary_data_khr(
+        self,
+        device: Device,
+        info: PipelineBinaryDataInfoKHR,
+        mut pipeline_binary_key: PipelineBinaryKeyKHR,
+    ) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineBinaryDataKHR.html
+        """
+        var list = List[UInt8]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_pipeline_binary_data_khr(
+                device,
+                Ptr(to=info),
+                Ptr(to=pipeline_binary_key),
+                Ptr(to=count),
+                Ptr[NoneType, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_pipeline_binary_data_khr(
+                device,
+                Ptr(to=info),
+                Ptr(to=pipeline_binary_key),
+                Ptr(to=count),
+                list.unsafe_ptr().bitcast[NoneType](),
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn release_captured_pipeline_data_khr(
         self,
@@ -4532,9 +4879,7 @@ struct PipelineBinary(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkReleaseCapturedPipelineDataKHR.html
         """
-        return self._release_captured_pipeline_data_khr(
-            device, Ptr(to=info).bitcast[ReleaseCapturedPipelineDataInfoKHR](), p_allocator
-        )
+        return self._release_captured_pipeline_data_khr(device, Ptr(to=info), p_allocator)
 
 
 struct SwapchainMaintenance1(Copyable):
@@ -4559,9 +4904,7 @@ struct SwapchainMaintenance1(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkReleaseSwapchainImagesKHR.html
         """
-        return self._release_swapchain_images_khr(
-            device, Ptr(to=release_info).bitcast[ReleaseSwapchainImagesInfoKHR]()
-        )
+        return self._release_swapchain_images_khr(device, Ptr(to=release_info))
 
 
 struct CooperativeMatrix(Copyable):
@@ -4592,8 +4935,30 @@ struct CooperativeMatrix(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR.html
         """
         return self._get_physical_device_cooperative_matrix_properties_khr(
-            physical_device, Ptr(to=property_count).bitcast[UInt32](), p_properties
+            physical_device, Ptr(to=property_count), p_properties
         )
+
+    fn get_physical_device_cooperative_matrix_properties_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[CooperativeMatrixPropertiesKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR.html
+        """
+        var list = List[CooperativeMatrixPropertiesKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_cooperative_matrix_properties_khr(
+                physical_device, Ptr(to=count), Ptr[CooperativeMatrixPropertiesKHR, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_cooperative_matrix_properties_khr(
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 
 struct LineRasterization(Copyable):
@@ -4662,8 +5027,30 @@ struct CalibratedTimestamps(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCalibrateableTimeDomainsKHR.html
         """
         return self._get_physical_device_calibrateable_time_domains_khr(
-            physical_device, Ptr(to=time_domain_count).bitcast[UInt32](), p_time_domains
+            physical_device, Ptr(to=time_domain_count), p_time_domains
         )
+
+    fn get_physical_device_calibrateable_time_domains_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[TimeDomainKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCalibrateableTimeDomainsKHR.html
+        """
+        var list = List[TimeDomainKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_calibrateable_time_domains_khr(
+                physical_device, Ptr(to=count), Ptr[TimeDomainKHR, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_calibrateable_time_domains_khr(
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_calibrated_timestamps_khr(
         self,
@@ -4678,11 +5065,7 @@ struct CalibratedTimestamps(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetCalibratedTimestampsKHR.html
         """
         return self._get_calibrated_timestamps_khr(
-            device,
-            timestamp_count,
-            p_timestamp_infos,
-            p_timestamps,
-            Ptr(to=max_deviation).bitcast[UInt64](),
+            device, timestamp_count, p_timestamp_infos, p_timestamps, Ptr(to=max_deviation)
         )
 
 
@@ -4743,9 +5126,7 @@ struct Maintenance6(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorSets2.html
         """
-        return self._cmd_bind_descriptor_sets_2(
-            command_buffer, Ptr(to=bind_descriptor_sets_info).bitcast[BindDescriptorSetsInfo]()
-        )
+        return self._cmd_bind_descriptor_sets_2(command_buffer, Ptr(to=bind_descriptor_sets_info))
 
     fn cmd_push_constants_2(
         self, command_buffer: CommandBuffer, push_constants_info: PushConstantsInfo
@@ -4754,9 +5135,7 @@ struct Maintenance6(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants2.html
         """
-        return self._cmd_push_constants_2(
-            command_buffer, Ptr(to=push_constants_info).bitcast[PushConstantsInfo]()
-        )
+        return self._cmd_push_constants_2(command_buffer, Ptr(to=push_constants_info))
 
     fn cmd_push_descriptor_set_2(
         self, command_buffer: CommandBuffer, push_descriptor_set_info: PushDescriptorSetInfo
@@ -4765,9 +5144,7 @@ struct Maintenance6(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSet2.html
         """
-        return self._cmd_push_descriptor_set_2(
-            command_buffer, Ptr(to=push_descriptor_set_info).bitcast[PushDescriptorSetInfo]()
-        )
+        return self._cmd_push_descriptor_set_2(command_buffer, Ptr(to=push_descriptor_set_info))
 
     fn cmd_push_descriptor_set_with_template_2(
         self,
@@ -4779,8 +5156,7 @@ struct Maintenance6(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSetWithTemplate2.html
         """
         return self._cmd_push_descriptor_set_with_template_2(
-            command_buffer,
-            Ptr(to=push_descriptor_set_with_template_info).bitcast[PushDescriptorSetWithTemplateInfo](),
+            command_buffer, Ptr(to=push_descriptor_set_with_template_info)
         )
 
     fn cmd_set_descriptor_buffer_offsets_2_ext(
@@ -4793,8 +5169,7 @@ struct Maintenance6(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDescriptorBufferOffsets2EXT.html
         """
         return self._cmd_set_descriptor_buffer_offsets_2_ext(
-            command_buffer,
-            Ptr(to=set_descriptor_buffer_offsets_info).bitcast[SetDescriptorBufferOffsetsInfoEXT](),
+            command_buffer, Ptr(to=set_descriptor_buffer_offsets_info)
         )
 
     fn cmd_bind_descriptor_buffer_embedded_samplers_2_ext(
@@ -4807,6 +5182,5 @@ struct Maintenance6(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorBufferEmbeddedSamplers2EXT.html
         """
         return self._cmd_bind_descriptor_buffer_embedded_samplers_2_ext(
-            command_buffer,
-            Ptr(to=bind_descriptor_buffer_embedded_samplers_info).bitcast[BindDescriptorBufferEmbeddedSamplersInfoEXT](),
+            command_buffer, Ptr(to=bind_descriptor_buffer_embedded_samplers_info)
         )

@@ -54,10 +54,7 @@ struct DebugReport(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDebugReportCallbackEXT.html
         """
         return self._create_debug_report_callback_ext(
-            instance,
-            Ptr(to=create_info).bitcast[DebugReportCallbackCreateInfoEXT](),
-            p_allocator,
-            Ptr(to=callback).bitcast[DebugReportCallbackEXT](),
+            instance, Ptr(to=create_info), p_allocator, Ptr(to=callback)
         )
 
     fn destroy_debug_report_callback_ext(
@@ -136,9 +133,7 @@ struct DebugMarker(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDebugMarkerSetObjectTagEXT.html
         """
-        return self._debug_marker_set_object_tag_ext(
-            device, Ptr(to=tag_info).bitcast[DebugMarkerObjectTagInfoEXT]()
-        )
+        return self._debug_marker_set_object_tag_ext(device, Ptr(to=tag_info))
 
     fn debug_marker_set_object_name_ext(
         self, device: Device, name_info: DebugMarkerObjectNameInfoEXT
@@ -147,9 +142,7 @@ struct DebugMarker(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDebugMarkerSetObjectNameEXT.html
         """
-        return self._debug_marker_set_object_name_ext(
-            device, Ptr(to=name_info).bitcast[DebugMarkerObjectNameInfoEXT]()
-        )
+        return self._debug_marker_set_object_name_ext(device, Ptr(to=name_info))
 
     fn cmd_debug_marker_begin_ext(
         self, command_buffer: CommandBuffer, marker_info: DebugMarkerMarkerInfoEXT
@@ -158,9 +151,7 @@ struct DebugMarker(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDebugMarkerBeginEXT.html
         """
-        return self._cmd_debug_marker_begin_ext(
-            command_buffer, Ptr(to=marker_info).bitcast[DebugMarkerMarkerInfoEXT]()
-        )
+        return self._cmd_debug_marker_begin_ext(command_buffer, Ptr(to=marker_info))
 
     fn cmd_debug_marker_end_ext(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
@@ -176,9 +167,7 @@ struct DebugMarker(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDebugMarkerInsertEXT.html
         """
-        return self._cmd_debug_marker_insert_ext(
-            command_buffer, Ptr(to=marker_info).bitcast[DebugMarkerMarkerInfoEXT]()
-        )
+        return self._cmd_debug_marker_insert_ext(command_buffer, Ptr(to=marker_info))
 
 
 struct TransformFeedback(Copyable):
@@ -384,7 +373,7 @@ struct ConditionalRendering(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginConditionalRenderingEXT.html
         """
         return self._cmd_begin_conditional_rendering_ext(
-            command_buffer, Ptr(to=conditional_rendering_begin).bitcast[ConditionalRenderingBeginInfoEXT]()
+            command_buffer, Ptr(to=conditional_rendering_begin)
         )
 
     fn cmd_end_conditional_rendering_ext(self, command_buffer: CommandBuffer):
@@ -447,7 +436,7 @@ struct AcquireXlibDisplay(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireXlibDisplayEXT.html
         """
-        return self._acquire_xlib_display_ext(physical_device, Ptr(to=dpy).bitcast[Display](), display)
+        return self._acquire_xlib_display_ext(physical_device, Ptr(to=dpy), display)
 
     fn get_rand_r_output_display_ext(
         self,
@@ -460,12 +449,7 @@ struct AcquireXlibDisplay(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRandROutputDisplayEXT.html
         """
-        return self._get_rand_r_output_display_ext(
-            physical_device,
-            Ptr(to=dpy).bitcast[Display](),
-            rr_output,
-            Ptr(to=display).bitcast[DisplayKHR](),
-        )
+        return self._get_rand_r_output_display_ext(physical_device, Ptr(to=dpy), rr_output, Ptr(to=display))
 
 
 struct DisplaySurfaceCounter(Copyable):
@@ -496,7 +480,7 @@ struct DisplaySurfaceCounter(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceCapabilities2EXT.html
         """
         return self._get_physical_device_surface_capabilities_2_ext(
-            physical_device, surface, Ptr(to=surface_capabilities).bitcast[SurfaceCapabilities2EXT]()
+            physical_device, surface, Ptr(to=surface_capabilities)
         )
 
 
@@ -552,9 +536,7 @@ struct DisplayControl(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDisplayPowerControlEXT.html
         """
-        return self._display_power_control_ext(
-            device, display, Ptr(to=display_power_info).bitcast[DisplayPowerInfoEXT]()
-        )
+        return self._display_power_control_ext(device, display, Ptr(to=display_power_info))
 
     fn register_device_event_ext(
         self,
@@ -568,10 +550,7 @@ struct DisplayControl(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkRegisterDeviceEventEXT.html
         """
         return self._register_device_event_ext(
-            device,
-            Ptr(to=device_event_info).bitcast[DeviceEventInfoEXT](),
-            p_allocator,
-            Ptr(to=fence).bitcast[Fence](),
+            device, Ptr(to=device_event_info), p_allocator, Ptr(to=fence)
         )
 
     fn register_display_event_ext(
@@ -587,11 +566,7 @@ struct DisplayControl(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkRegisterDisplayEventEXT.html
         """
         return self._register_display_event_ext(
-            device,
-            display,
-            Ptr(to=display_event_info).bitcast[DisplayEventInfoEXT](),
-            p_allocator,
-            Ptr(to=fence).bitcast[Fence](),
+            device, display, Ptr(to=display_event_info), p_allocator, Ptr(to=fence)
         )
 
     fn get_swapchain_counter_ext(
@@ -605,9 +580,7 @@ struct DisplayControl(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSwapchainCounterEXT.html
         """
-        return self._get_swapchain_counter_ext(
-            device, swapchain, counter, Ptr(to=counter_value).bitcast[UInt64]()
-        )
+        return self._get_swapchain_counter_ext(device, swapchain, counter, Ptr(to=counter_value))
 
 
 struct DiscardRectangles(Copyable):
@@ -792,9 +765,7 @@ struct DebugUtils(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetDebugUtilsObjectNameEXT.html
         """
-        return self._set_debug_utils_object_name_ext(
-            device, Ptr(to=name_info).bitcast[DebugUtilsObjectNameInfoEXT]()
-        )
+        return self._set_debug_utils_object_name_ext(device, Ptr(to=name_info))
 
     fn set_debug_utils_object_tag_ext(
         self, device: Device, tag_info: DebugUtilsObjectTagInfoEXT
@@ -803,18 +774,14 @@ struct DebugUtils(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetDebugUtilsObjectTagEXT.html
         """
-        return self._set_debug_utils_object_tag_ext(
-            device, Ptr(to=tag_info).bitcast[DebugUtilsObjectTagInfoEXT]()
-        )
+        return self._set_debug_utils_object_tag_ext(device, Ptr(to=tag_info))
 
     fn queue_begin_debug_utils_label_ext(self, queue: Queue, label_info: DebugUtilsLabelEXT):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBeginDebugUtilsLabelEXT.html
         """
-        return self._queue_begin_debug_utils_label_ext(
-            queue, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()
-        )
+        return self._queue_begin_debug_utils_label_ext(queue, Ptr(to=label_info))
 
     fn queue_end_debug_utils_label_ext(self, queue: Queue):
         """See official vulkan docs for details.
@@ -828,9 +795,7 @@ struct DebugUtils(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueInsertDebugUtilsLabelEXT.html
         """
-        return self._queue_insert_debug_utils_label_ext(
-            queue, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()
-        )
+        return self._queue_insert_debug_utils_label_ext(queue, Ptr(to=label_info))
 
     fn cmd_begin_debug_utils_label_ext(
         self, command_buffer: CommandBuffer, label_info: DebugUtilsLabelEXT
@@ -839,9 +804,7 @@ struct DebugUtils(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginDebugUtilsLabelEXT.html
         """
-        return self._cmd_begin_debug_utils_label_ext(
-            command_buffer, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()
-        )
+        return self._cmd_begin_debug_utils_label_ext(command_buffer, Ptr(to=label_info))
 
     fn cmd_end_debug_utils_label_ext(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
@@ -857,9 +820,7 @@ struct DebugUtils(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdInsertDebugUtilsLabelEXT.html
         """
-        return self._cmd_insert_debug_utils_label_ext(
-            command_buffer, Ptr(to=label_info).bitcast[DebugUtilsLabelEXT]()
-        )
+        return self._cmd_insert_debug_utils_label_ext(command_buffer, Ptr(to=label_info))
 
     fn create_debug_utils_messenger_ext(
         self,
@@ -873,10 +834,7 @@ struct DebugUtils(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDebugUtilsMessengerEXT.html
         """
         return self._create_debug_utils_messenger_ext(
-            instance,
-            Ptr(to=create_info).bitcast[DebugUtilsMessengerCreateInfoEXT](),
-            p_allocator,
-            Ptr(to=messenger).bitcast[DebugUtilsMessengerEXT](),
+            instance, Ptr(to=create_info), p_allocator, Ptr(to=messenger)
         )
 
     fn destroy_debug_utils_messenger_ext(
@@ -903,10 +861,7 @@ struct DebugUtils(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSubmitDebugUtilsMessageEXT.html
         """
         return self._submit_debug_utils_message_ext(
-            instance,
-            message_severity,
-            message_types,
-            Ptr(to=callback_data).bitcast[DebugUtilsMessengerCallbackDataEXT](),
+            instance, message_severity, message_types, Ptr(to=callback_data)
         )
 
 
@@ -941,9 +896,7 @@ struct SampleLocations(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetSampleLocationsEXT.html
         """
-        return self._cmd_set_sample_locations_ext(
-            command_buffer, Ptr(to=sample_locations_info).bitcast[SampleLocationsInfoEXT]()
-        )
+        return self._cmd_set_sample_locations_ext(command_buffer, Ptr(to=sample_locations_info))
 
     fn get_physical_device_multisample_properties_ext(
         self,
@@ -956,7 +909,7 @@ struct SampleLocations(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMultisamplePropertiesEXT.html
         """
         return self._get_physical_device_multisample_properties_ext(
-            physical_device, samples, Ptr(to=multisample_properties).bitcast[MultisamplePropertiesEXT]()
+            physical_device, samples, Ptr(to=multisample_properties)
         )
 
 
@@ -984,9 +937,7 @@ struct ImageDrmFormatModifier(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageDrmFormatModifierPropertiesEXT.html
         """
-        return self._get_image_drm_format_modifier_properties_ext(
-            device, image, Ptr(to=properties).bitcast[ImageDrmFormatModifierPropertiesEXT]()
-        )
+        return self._get_image_drm_format_modifier_properties_ext(device, image, Ptr(to=properties))
 
 
 struct ValidationCache(Copyable):
@@ -1045,10 +996,7 @@ struct ValidationCache(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateValidationCacheEXT.html
         """
         return self._create_validation_cache_ext(
-            device,
-            Ptr(to=create_info).bitcast[ValidationCacheCreateInfoEXT](),
-            p_allocator,
-            Ptr(to=validation_cache).bitcast[ValidationCacheEXT](),
+            device, Ptr(to=create_info), p_allocator, Ptr(to=validation_cache)
         )
 
     fn destroy_validation_cache_ext(
@@ -1087,9 +1035,29 @@ struct ValidationCache(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetValidationCacheDataEXT.html
         """
-        return self._get_validation_cache_data_ext(
-            device, validation_cache, Ptr(to=data_size).bitcast[UInt](), p_data
-        )
+        return self._get_validation_cache_data_ext(device, validation_cache, Ptr(to=data_size), p_data)
+
+    fn get_validation_cache_data_ext(
+        self, device: Device, validation_cache: ValidationCacheEXT
+    ) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetValidationCacheDataEXT.html
+        """
+        var list = List[UInt8]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_validation_cache_data_ext(
+                device, validation_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_validation_cache_data_ext(
+                device, validation_cache, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 
 struct ExternalMemoryHost(Copyable):
@@ -1122,10 +1090,7 @@ struct ExternalMemoryHost(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryHostPointerPropertiesEXT.html
         """
         return self._get_memory_host_pointer_properties_ext(
-            device,
-            handle_type,
-            p_host_pointer,
-            Ptr(to=memory_host_pointer_properties).bitcast[MemoryHostPointerPropertiesEXT](),
+            device, handle_type, p_host_pointer, Ptr(to=memory_host_pointer_properties)
         )
 
 
@@ -1167,8 +1132,30 @@ struct CalibratedTimestamps(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCalibrateableTimeDomainsKHR.html
         """
         return self._get_physical_device_calibrateable_time_domains_khr(
-            physical_device, Ptr(to=time_domain_count).bitcast[UInt32](), p_time_domains
+            physical_device, Ptr(to=time_domain_count), p_time_domains
         )
+
+    fn get_physical_device_calibrateable_time_domains_khr(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[TimeDomainKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCalibrateableTimeDomainsKHR.html
+        """
+        var list = List[TimeDomainKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_calibrateable_time_domains_khr(
+                physical_device, Ptr(to=count), Ptr[TimeDomainKHR, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_calibrateable_time_domains_khr(
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn get_calibrated_timestamps_khr(
         self,
@@ -1183,11 +1170,7 @@ struct CalibratedTimestamps(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetCalibratedTimestampsKHR.html
         """
         return self._get_calibrated_timestamps_khr(
-            device,
-            timestamp_count,
-            p_timestamp_infos,
-            p_timestamps,
-            Ptr(to=max_deviation).bitcast[UInt64](),
+            device, timestamp_count, p_timestamp_infos, p_timestamps, Ptr(to=max_deviation)
         )
 
 
@@ -1220,12 +1203,7 @@ struct MetalSurface(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateMetalSurfaceEXT.html
         """
-        return self._create_metal_surface_ext(
-            instance,
-            Ptr(to=create_info).bitcast[MetalSurfaceCreateInfoEXT](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
-        )
+        return self._create_metal_surface_ext(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
 
 
 struct BufferDeviceAddress(Copyable):
@@ -1250,7 +1228,7 @@ struct BufferDeviceAddress(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferDeviceAddress.html
         """
-        return self._get_buffer_device_address(device, Ptr(to=info).bitcast[BufferDeviceAddressInfo]())
+        return self._get_buffer_device_address(device, Ptr(to=info))
 
 
 struct ToolingInfo(Copyable):
@@ -1281,8 +1259,30 @@ struct ToolingInfo(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
         """
         return self._get_physical_device_tool_properties(
-            physical_device, Ptr(to=tool_count).bitcast[UInt32](), p_tool_properties
+            physical_device, Ptr(to=tool_count), p_tool_properties
         )
+
+    fn get_physical_device_tool_properties(
+        self, physical_device: PhysicalDevice
+    ) -> ListResult[PhysicalDeviceToolProperties]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
+        """
+        var list = List[PhysicalDeviceToolProperties]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_tool_properties(
+                physical_device, Ptr(to=count), Ptr[PhysicalDeviceToolProperties, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_tool_properties(
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 
 struct FullScreenExclusive(Copyable):
@@ -1331,11 +1331,33 @@ struct FullScreenExclusive(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfacePresentModes2EXT.html
         """
         return self._get_physical_device_surface_present_modes_2_ext(
-            physical_device,
-            Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR](),
-            Ptr(to=present_mode_count).bitcast[UInt32](),
-            p_present_modes,
+            physical_device, Ptr(to=surface_info), Ptr(to=present_mode_count), p_present_modes
         )
+
+    fn get_physical_device_surface_present_modes_2_ext(
+        self, physical_device: PhysicalDevice, surface_info: PhysicalDeviceSurfaceInfo2KHR
+    ) -> ListResult[PresentModeKHR]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfacePresentModes2EXT.html
+        """
+        var list = List[PresentModeKHR]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_physical_device_surface_present_modes_2_ext(
+                physical_device,
+                Ptr(to=surface_info),
+                Ptr(to=count),
+                Ptr[PresentModeKHR, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_physical_device_surface_present_modes_2_ext(
+                physical_device, Ptr(to=surface_info), Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn acquire_full_screen_exclusive_mode_ext(
         self, device: Device, swapchain: SwapchainKHR
@@ -1366,9 +1388,7 @@ struct FullScreenExclusive(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceGroupSurfacePresentModes2EXT.html
         """
         return self._get_device_group_surface_present_modes_2_ext(
-            device,
-            Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR](),
-            Ptr(to=modes).bitcast[DeviceGroupPresentModeFlagsKHR](),
+            device, Ptr(to=surface_info), Ptr(to=modes)
         )
 
 
@@ -1402,10 +1422,7 @@ struct HeadlessSurface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateHeadlessSurfaceEXT.html
         """
         return self._create_headless_surface_ext(
-            instance,
-            Ptr(to=create_info).bitcast[HeadlessSurfaceCreateInfoEXT](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
         )
 
 
@@ -1717,9 +1734,7 @@ struct HostImageCopy(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMemoryToImage.html
         """
-        return self._copy_memory_to_image(
-            device, Ptr(to=copy_memory_to_image_info).bitcast[CopyMemoryToImageInfo]()
-        )
+        return self._copy_memory_to_image(device, Ptr(to=copy_memory_to_image_info))
 
     fn copy_image_to_memory(
         self, device: Device, copy_image_to_memory_info: CopyImageToMemoryInfo
@@ -1728,9 +1743,7 @@ struct HostImageCopy(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyImageToMemory.html
         """
-        return self._copy_image_to_memory(
-            device, Ptr(to=copy_image_to_memory_info).bitcast[CopyImageToMemoryInfo]()
-        )
+        return self._copy_image_to_memory(device, Ptr(to=copy_image_to_memory_info))
 
     fn copy_image_to_image(
         self, device: Device, copy_image_to_image_info: CopyImageToImageInfo
@@ -1739,9 +1752,7 @@ struct HostImageCopy(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyImageToImage.html
         """
-        return self._copy_image_to_image(
-            device, Ptr(to=copy_image_to_image_info).bitcast[CopyImageToImageInfo]()
-        )
+        return self._copy_image_to_image(device, Ptr(to=copy_image_to_image_info))
 
     fn transition_image_layout(
         self,
@@ -1766,12 +1777,7 @@ struct HostImageCopy(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout2.html
         """
-        return self._get_image_subresource_layout_2(
-            device,
-            image,
-            Ptr(to=subresource).bitcast[ImageSubresource2](),
-            Ptr(to=layout).bitcast[SubresourceLayout2](),
-        )
+        return self._get_image_subresource_layout_2(device, image, Ptr(to=subresource), Ptr(to=layout))
 
 
 struct SwapchainMaintenance1(Copyable):
@@ -1796,9 +1802,7 @@ struct SwapchainMaintenance1(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkReleaseSwapchainImagesKHR.html
         """
-        return self._release_swapchain_images_khr(
-            device, Ptr(to=release_info).bitcast[ReleaseSwapchainImagesInfoKHR]()
-        )
+        return self._release_swapchain_images_khr(device, Ptr(to=release_info))
 
 
 struct DepthBiasControl(Copyable):
@@ -1823,9 +1827,7 @@ struct DepthBiasControl(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBias2EXT.html
         """
-        return self._cmd_set_depth_bias_2_ext(
-            command_buffer, Ptr(to=depth_bias_info).bitcast[DepthBiasInfoEXT]()
-        )
+        return self._cmd_set_depth_bias_2_ext(command_buffer, Ptr(to=depth_bias_info))
 
 
 struct AcquireDrmDisplay(Copyable):
@@ -1872,9 +1874,7 @@ struct AcquireDrmDisplay(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDrmDisplayEXT.html
         """
-        return self._get_drm_display_ext(
-            physical_device, drm_fd, connector_id, Ptr(to=display).bitcast[DisplayKHR]()
-        )
+        return self._get_drm_display_ext(physical_device, drm_fd, connector_id, Ptr(to=display))
 
 
 struct PrivateData(Copyable):
@@ -1935,10 +1935,7 @@ struct PrivateData(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePrivateDataSlot.html
         """
         return self._create_private_data_slot(
-            device,
-            Ptr(to=create_info).bitcast[PrivateDataSlotCreateInfo](),
-            p_allocator,
-            Ptr(to=private_data_slot).bitcast[PrivateDataSlot](),
+            device, Ptr(to=create_info), p_allocator, Ptr(to=private_data_slot)
         )
 
     fn destroy_private_data_slot(
@@ -1979,9 +1976,7 @@ struct PrivateData(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPrivateData.html
         """
-        return self._get_private_data(
-            device, object_type, object_handle, private_data_slot, Ptr(to=data).bitcast[UInt64]()
-        )
+        return self._get_private_data(device, object_type, object_handle, private_data_slot, Ptr(to=data))
 
 
 struct MetalObjects(Copyable):
@@ -2006,9 +2001,7 @@ struct MetalObjects(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkExportMetalObjectsEXT.html
         """
-        return self._export_metal_objects_ext(
-            device, Ptr(to=metal_objects_info).bitcast[ExportMetalObjectsInfoEXT]()
-        )
+        return self._export_metal_objects_ext(device, Ptr(to=metal_objects_info))
 
 
 struct DescriptorBuffer(Copyable):
@@ -2122,9 +2115,7 @@ struct DescriptorBuffer(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutSizeEXT.html
         """
-        return self._get_descriptor_set_layout_size_ext(
-            device, layout, Ptr(to=layout_size_in_bytes).bitcast[DeviceSize]()
-        )
+        return self._get_descriptor_set_layout_size_ext(device, layout, Ptr(to=layout_size_in_bytes))
 
     fn get_descriptor_set_layout_binding_offset_ext(
         self, device: Device, layout: DescriptorSetLayout, binding: UInt32, mut offset: DeviceSize
@@ -2133,9 +2124,7 @@ struct DescriptorBuffer(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutBindingOffsetEXT.html
         """
-        return self._get_descriptor_set_layout_binding_offset_ext(
-            device, layout, binding, Ptr(to=offset).bitcast[DeviceSize]()
-        )
+        return self._get_descriptor_set_layout_binding_offset_ext(device, layout, binding, Ptr(to=offset))
 
     fn get_descriptor_ext(
         self,
@@ -2148,9 +2137,7 @@ struct DescriptorBuffer(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorEXT.html
         """
-        return self._get_descriptor_ext(
-            device, Ptr(to=descriptor_info).bitcast[DescriptorGetInfoEXT](), data_size, p_descriptor
-        )
+        return self._get_descriptor_ext(device, Ptr(to=descriptor_info), data_size, p_descriptor)
 
     fn cmd_bind_descriptor_buffers_ext(
         self,
@@ -2207,9 +2194,7 @@ struct DescriptorBuffer(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferOpaqueCaptureDescriptorDataEXT.html
         """
-        return self._get_buffer_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info).bitcast[BufferCaptureDescriptorDataInfoEXT](), p_data
-        )
+        return self._get_buffer_opaque_capture_descriptor_data_ext(device, Ptr(to=info), p_data)
 
     fn get_image_opaque_capture_descriptor_data_ext(
         self,
@@ -2221,9 +2206,7 @@ struct DescriptorBuffer(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageOpaqueCaptureDescriptorDataEXT.html
         """
-        return self._get_image_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info).bitcast[ImageCaptureDescriptorDataInfoEXT](), p_data
-        )
+        return self._get_image_opaque_capture_descriptor_data_ext(device, Ptr(to=info), p_data)
 
     fn get_image_view_opaque_capture_descriptor_data_ext(
         self,
@@ -2235,9 +2218,7 @@ struct DescriptorBuffer(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewOpaqueCaptureDescriptorDataEXT.html
         """
-        return self._get_image_view_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info).bitcast[ImageViewCaptureDescriptorDataInfoEXT](), p_data
-        )
+        return self._get_image_view_opaque_capture_descriptor_data_ext(device, Ptr(to=info), p_data)
 
     fn get_sampler_opaque_capture_descriptor_data_ext(
         self,
@@ -2249,9 +2230,7 @@ struct DescriptorBuffer(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSamplerOpaqueCaptureDescriptorDataEXT.html
         """
-        return self._get_sampler_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info).bitcast[SamplerCaptureDescriptorDataInfoEXT](), p_data
-        )
+        return self._get_sampler_opaque_capture_descriptor_data_ext(device, Ptr(to=info), p_data)
 
     fn get_acceleration_structure_opaque_capture_descriptor_data_ext(
         self,
@@ -2264,7 +2243,7 @@ struct DescriptorBuffer(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT.html
         """
         return self._get_acceleration_structure_opaque_capture_descriptor_data_ext(
-            device, Ptr(to=info).bitcast[AccelerationStructureCaptureDescriptorDataInfoEXT](), p_data
+            device, Ptr(to=info), p_data
         )
 
 
@@ -2383,12 +2362,7 @@ struct ImageCompressionControl(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout2.html
         """
-        return self._get_image_subresource_layout_2(
-            device,
-            image,
-            Ptr(to=subresource).bitcast[ImageSubresource2](),
-            Ptr(to=layout).bitcast[SubresourceLayout2](),
-        )
+        return self._get_image_subresource_layout_2(device, image, Ptr(to=subresource), Ptr(to=layout))
 
 
 struct DeviceFault(Copyable):
@@ -2418,9 +2392,7 @@ struct DeviceFault(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceFaultInfoEXT.html
         """
-        return self._get_device_fault_info_ext(
-            device, Ptr(to=fault_counts).bitcast[DeviceFaultCountsEXT](), p_fault_info
-        )
+        return self._get_device_fault_info_ext(device, Ptr(to=fault_counts), p_fault_info)
 
 
 struct DirectfbSurface(Copyable):
@@ -2459,10 +2431,7 @@ struct DirectfbSurface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDirectFBSurfaceEXT.html
         """
         return self._create_direct_fb_surface_ext(
-            instance,
-            Ptr(to=create_info).bitcast[DirectFBSurfaceCreateInfoEXT](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
         )
 
     fn get_physical_device_direct_fb_presentation_support_ext(
@@ -2473,7 +2442,7 @@ struct DirectfbSurface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDirectFBPresentationSupportEXT.html
         """
         return self._get_physical_device_direct_fb_presentation_support_ext(
-            physical_device, queue_family_index, Ptr(to=dfb).bitcast[IDirectFB]()
+            physical_device, queue_family_index, Ptr(to=dfb)
         )
 
 
@@ -2544,11 +2513,7 @@ struct PipelineProperties(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelinePropertiesEXT.html
         """
-        return self._get_pipeline_properties_ext(
-            device,
-            Ptr(to=pipeline_info).bitcast[PipelineInfoEXT](),
-            Ptr(to=pipeline_properties).bitcast[BaseOutStructure](),
-        )
+        return self._get_pipeline_properties_ext(device, Ptr(to=pipeline_info), Ptr(to=pipeline_properties))
 
 
 struct ExtendedDynamicState2(Copyable):
@@ -2866,12 +2831,7 @@ struct OpacityMicromap(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateMicromapEXT.html
         """
-        return self._create_micromap_ext(
-            device,
-            Ptr(to=create_info).bitcast[MicromapCreateInfoEXT](),
-            p_allocator,
-            Ptr(to=micromap).bitcast[MicromapEXT](),
-        )
+        return self._create_micromap_ext(device, Ptr(to=create_info), p_allocator, Ptr(to=micromap))
 
     fn destroy_micromap_ext(
         self,
@@ -2917,9 +2877,7 @@ struct OpacityMicromap(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMicromapEXT.html
         """
-        return self._copy_micromap_ext(
-            device, deferred_operation, Ptr(to=info).bitcast[CopyMicromapInfoEXT]()
-        )
+        return self._copy_micromap_ext(device, deferred_operation, Ptr(to=info))
 
     fn copy_micromap_to_memory_ext(
         self,
@@ -2931,9 +2889,7 @@ struct OpacityMicromap(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMicromapToMemoryEXT.html
         """
-        return self._copy_micromap_to_memory_ext(
-            device, deferred_operation, Ptr(to=info).bitcast[CopyMicromapToMemoryInfoEXT]()
-        )
+        return self._copy_micromap_to_memory_ext(device, deferred_operation, Ptr(to=info))
 
     fn copy_memory_to_micromap_ext(
         self,
@@ -2945,9 +2901,7 @@ struct OpacityMicromap(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCopyMemoryToMicromapEXT.html
         """
-        return self._copy_memory_to_micromap_ext(
-            device, deferred_operation, Ptr(to=info).bitcast[CopyMemoryToMicromapInfoEXT]()
-        )
+        return self._copy_memory_to_micromap_ext(device, deferred_operation, Ptr(to=info))
 
     fn write_micromaps_properties_ext(
         self,
@@ -2972,7 +2926,7 @@ struct OpacityMicromap(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMicromapEXT.html
         """
-        return self._cmd_copy_micromap_ext(command_buffer, Ptr(to=info).bitcast[CopyMicromapInfoEXT]())
+        return self._cmd_copy_micromap_ext(command_buffer, Ptr(to=info))
 
     fn cmd_copy_micromap_to_memory_ext(
         self, command_buffer: CommandBuffer, info: CopyMicromapToMemoryInfoEXT
@@ -2981,9 +2935,7 @@ struct OpacityMicromap(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMicromapToMemoryEXT.html
         """
-        return self._cmd_copy_micromap_to_memory_ext(
-            command_buffer, Ptr(to=info).bitcast[CopyMicromapToMemoryInfoEXT]()
-        )
+        return self._cmd_copy_micromap_to_memory_ext(command_buffer, Ptr(to=info))
 
     fn cmd_copy_memory_to_micromap_ext(
         self, command_buffer: CommandBuffer, info: CopyMemoryToMicromapInfoEXT
@@ -2992,9 +2944,7 @@ struct OpacityMicromap(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMemoryToMicromapEXT.html
         """
-        return self._cmd_copy_memory_to_micromap_ext(
-            command_buffer, Ptr(to=info).bitcast[CopyMemoryToMicromapInfoEXT]()
-        )
+        return self._cmd_copy_memory_to_micromap_ext(command_buffer, Ptr(to=info))
 
     fn cmd_write_micromaps_properties_ext(
         self,
@@ -3024,9 +2974,7 @@ struct OpacityMicromap(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMicromapCompatibilityEXT.html
         """
         return self._get_device_micromap_compatibility_ext(
-            device,
-            Ptr(to=version_info).bitcast[MicromapVersionInfoEXT](),
-            Ptr(to=compatibility).bitcast[AccelerationStructureCompatibilityKHR](),
+            device, Ptr(to=version_info), Ptr(to=compatibility)
         )
 
     fn get_micromap_build_sizes_ext(
@@ -3040,12 +2988,7 @@ struct OpacityMicromap(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMicromapBuildSizesEXT.html
         """
-        return self._get_micromap_build_sizes_ext(
-            device,
-            build_type,
-            Ptr(to=build_info).bitcast[MicromapBuildInfoEXT](),
-            Ptr(to=size_info).bitcast[MicromapBuildSizesInfoEXT](),
-        )
+        return self._get_micromap_build_sizes_ext(device, build_type, Ptr(to=build_info), Ptr(to=size_info))
 
 
 struct PageableDeviceLocalMemory(Copyable):
@@ -3631,9 +3574,7 @@ struct ShaderModuleIdentifier(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderModuleIdentifierEXT.html
         """
-        return self._get_shader_module_identifier_ext(
-            device, shader_module, Ptr(to=identifier).bitcast[ShaderModuleIdentifierEXT]()
-        )
+        return self._get_shader_module_identifier_ext(device, shader_module, Ptr(to=identifier))
 
     fn get_shader_module_create_info_identifier_ext(
         self,
@@ -3646,9 +3587,7 @@ struct ShaderModuleIdentifier(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderModuleCreateInfoIdentifierEXT.html
         """
         return self._get_shader_module_create_info_identifier_ext(
-            device,
-            Ptr(to=create_info).bitcast[ShaderModuleCreateInfo](),
-            Ptr(to=identifier).bitcast[ShaderModuleIdentifierEXT](),
+            device, Ptr(to=create_info), Ptr(to=identifier)
         )
 
 
@@ -4044,7 +3983,27 @@ struct ShaderObject(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderBinaryDataEXT.html
         """
-        return self._get_shader_binary_data_ext(device, shader, Ptr(to=data_size).bitcast[UInt](), p_data)
+        return self._get_shader_binary_data_ext(device, shader, Ptr(to=data_size), p_data)
+
+    fn get_shader_binary_data_ext(self, device: Device, shader: ShaderEXT) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderBinaryDataEXT.html
+        """
+        var list = List[UInt8]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_shader_binary_data_ext(
+                device, shader, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_shader_binary_data_ext(
+                device, shader, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
     fn cmd_bind_shaders_ext(
         self,
@@ -4698,9 +4657,7 @@ struct DeviceGeneratedCommands(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetGeneratedCommandsMemoryRequirementsEXT.html
         """
         return self._get_generated_commands_memory_requirements_ext(
-            device,
-            Ptr(to=info).bitcast[GeneratedCommandsMemoryRequirementsInfoEXT](),
-            Ptr(to=memory_requirements).bitcast[MemoryRequirements2](),
+            device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
     fn cmd_preprocess_generated_commands_ext(
@@ -4714,9 +4671,7 @@ struct DeviceGeneratedCommands(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPreprocessGeneratedCommandsEXT.html
         """
         return self._cmd_preprocess_generated_commands_ext(
-            command_buffer,
-            Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoEXT](),
-            state_command_buffer,
+            command_buffer, Ptr(to=generated_commands_info), state_command_buffer
         )
 
     fn cmd_execute_generated_commands_ext(
@@ -4730,9 +4685,7 @@ struct DeviceGeneratedCommands(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteGeneratedCommandsEXT.html
         """
         return self._cmd_execute_generated_commands_ext(
-            command_buffer,
-            is_preprocessed,
-            Ptr(to=generated_commands_info).bitcast[GeneratedCommandsInfoEXT](),
+            command_buffer, is_preprocessed, Ptr(to=generated_commands_info)
         )
 
     fn create_indirect_commands_layout_ext(
@@ -4747,10 +4700,7 @@ struct DeviceGeneratedCommands(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateIndirectCommandsLayoutEXT.html
         """
         return self._create_indirect_commands_layout_ext(
-            device,
-            Ptr(to=create_info).bitcast[IndirectCommandsLayoutCreateInfoEXT](),
-            p_allocator,
-            Ptr(to=indirect_commands_layout).bitcast[IndirectCommandsLayoutEXT](),
+            device, Ptr(to=create_info), p_allocator, Ptr(to=indirect_commands_layout)
         )
 
     fn destroy_indirect_commands_layout_ext(
@@ -4777,10 +4727,7 @@ struct DeviceGeneratedCommands(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateIndirectExecutionSetEXT.html
         """
         return self._create_indirect_execution_set_ext(
-            device,
-            Ptr(to=create_info).bitcast[IndirectExecutionSetCreateInfoEXT](),
-            p_allocator,
-            Ptr(to=indirect_execution_set).bitcast[IndirectExecutionSetEXT](),
+            device, Ptr(to=create_info), p_allocator, Ptr(to=indirect_execution_set)
         )
 
     fn destroy_indirect_execution_set_ext(
@@ -4892,11 +4839,7 @@ struct ExternalMemoryMetal(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryMetalHandleEXT.html
         """
-        return self._get_memory_metal_handle_ext(
-            device,
-            Ptr(to=get_metal_handle_info).bitcast[MemoryGetMetalHandleInfoEXT](),
-            Ptr(to=handle).bitcast[Ptr[NoneType, MutAnyOrigin]](),
-        )
+        return self._get_memory_metal_handle_ext(device, Ptr(to=get_metal_handle_info), Ptr(to=handle))
 
     fn get_memory_metal_handle_properties_ext(
         self,
@@ -4910,10 +4853,7 @@ struct ExternalMemoryMetal(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryMetalHandlePropertiesEXT.html
         """
         return self._get_memory_metal_handle_properties_ext(
-            device,
-            handle_type,
-            p_handle,
-            Ptr(to=memory_metal_handle_properties).bitcast[MemoryMetalHandlePropertiesEXT](),
+            device, handle_type, p_handle, Ptr(to=memory_metal_handle_properties)
         )
 
 

@@ -33,8 +33,5 @@ struct StreamDescriptorSurface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateStreamDescriptorSurfaceGGP.html
         """
         return self._create_stream_descriptor_surface_ggp(
-            instance,
-            Ptr(to=create_info).bitcast[StreamDescriptorSurfaceCreateInfoGGP](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
         )

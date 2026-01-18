@@ -59,12 +59,7 @@ struct BinaryImport(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCuModuleNVX.html
         """
-        return self._create_cu_module_nvx(
-            device,
-            Ptr(to=create_info).bitcast[CuModuleCreateInfoNVX](),
-            p_allocator,
-            Ptr(to=module).bitcast[CuModuleNVX](),
-        )
+        return self._create_cu_module_nvx(device, Ptr(to=create_info), p_allocator, Ptr(to=module))
 
     fn create_cu_function_nvx(
         self,
@@ -77,12 +72,7 @@ struct BinaryImport(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCuFunctionNVX.html
         """
-        return self._create_cu_function_nvx(
-            device,
-            Ptr(to=create_info).bitcast[CuFunctionCreateInfoNVX](),
-            p_allocator,
-            Ptr(to=function).bitcast[CuFunctionNVX](),
-        )
+        return self._create_cu_function_nvx(device, Ptr(to=create_info), p_allocator, Ptr(to=function))
 
     fn destroy_cu_module_nvx(
         self,
@@ -113,9 +103,7 @@ struct BinaryImport(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCuLaunchKernelNVX.html
         """
-        return self._cmd_cu_launch_kernel_nvx(
-            command_buffer, Ptr(to=launch_info).bitcast[CuLaunchInfoNVX]()
-        )
+        return self._cmd_cu_launch_kernel_nvx(command_buffer, Ptr(to=launch_info))
 
 
 struct ImageViewHandle(Copyable):
@@ -152,14 +140,14 @@ struct ImageViewHandle(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewHandleNVX.html
         """
-        return self._get_image_view_handle_nvx(device, Ptr(to=info).bitcast[ImageViewHandleInfoNVX]())
+        return self._get_image_view_handle_nvx(device, Ptr(to=info))
 
     fn get_image_view_handle_64_nvx(self, device: Device, info: ImageViewHandleInfoNVX) -> UInt64:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewHandle64NVX.html
         """
-        return self._get_image_view_handle_64_nvx(device, Ptr(to=info).bitcast[ImageViewHandleInfoNVX]())
+        return self._get_image_view_handle_64_nvx(device, Ptr(to=info))
 
     fn get_image_view_address_nvx(
         self, device: Device, image_view: ImageView, mut properties: ImageViewAddressPropertiesNVX
@@ -168,6 +156,4 @@ struct ImageViewHandle(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewAddressNVX.html
         """
-        return self._get_image_view_address_nvx(
-            device, image_view, Ptr(to=properties).bitcast[ImageViewAddressPropertiesNVX]()
-        )
+        return self._get_image_view_address_nvx(device, image_view, Ptr(to=properties))

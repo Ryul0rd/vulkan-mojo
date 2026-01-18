@@ -39,9 +39,7 @@ struct DisplayTiming(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRefreshCycleDurationGOOGLE.html
         """
-        return self._get_refresh_cycle_duration_google(
-            device, swapchain, Ptr(to=display_timing_properties).bitcast[RefreshCycleDurationGOOGLE]()
-        )
+        return self._get_refresh_cycle_duration_google(device, swapchain, Ptr(to=display_timing_properties))
 
     fn get_past_presentation_timing_google(
         self,
@@ -55,5 +53,27 @@ struct DisplayTiming(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPastPresentationTimingGOOGLE.html
         """
         return self._get_past_presentation_timing_google(
-            device, swapchain, Ptr(to=presentation_timing_count).bitcast[UInt32](), p_presentation_timings
+            device, swapchain, Ptr(to=presentation_timing_count), p_presentation_timings
         )
+
+    fn get_past_presentation_timing_google(
+        self, device: Device, swapchain: SwapchainKHR
+    ) -> ListResult[PastPresentationTimingGOOGLE]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPastPresentationTimingGOOGLE.html
+        """
+        var list = List[PastPresentationTimingGOOGLE]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_past_presentation_timing_google(
+                device, swapchain, Ptr(to=count), Ptr[PastPresentationTimingGOOGLE, MutOrigin.external]()
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_past_presentation_timing_google(
+                device, swapchain, Ptr(to=count), list.unsafe_ptr()
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)

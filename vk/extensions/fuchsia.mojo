@@ -33,10 +33,7 @@ struct ImagepipeSurface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImagePipeSurfaceFUCHSIA.html
         """
         return self._create_image_pipe_surface_fuchsia(
-            instance,
-            Ptr(to=create_info).bitcast[ImagePipeSurfaceCreateInfoFUCHSIA](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
+            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
         )
 
 
@@ -77,9 +74,7 @@ struct ExternalMemory(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryZirconHandleFUCHSIA.html
         """
         return self._get_memory_zircon_handle_fuchsia(
-            device,
-            Ptr(to=get_zircon_handle_info).bitcast[MemoryGetZirconHandleInfoFUCHSIA](),
-            Ptr(to=zircon_handle).bitcast[zx_handle_t](),
+            device, Ptr(to=get_zircon_handle_info), Ptr(to=zircon_handle)
         )
 
     fn get_memory_zircon_handle_properties_fuchsia(
@@ -94,10 +89,7 @@ struct ExternalMemory(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryZirconHandlePropertiesFUCHSIA.html
         """
         return self._get_memory_zircon_handle_properties_fuchsia(
-            device,
-            handle_type,
-            zircon_handle,
-            Ptr(to=memory_zircon_handle_properties).bitcast[MemoryZirconHandlePropertiesFUCHSIA](),
+            device, handle_type, zircon_handle, Ptr(to=memory_zircon_handle_properties)
         )
 
 
@@ -135,8 +127,7 @@ struct ExternalSemaphore(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkImportSemaphoreZirconHandleFUCHSIA.html
         """
         return self._import_semaphore_zircon_handle_fuchsia(
-            device,
-            Ptr(to=import_semaphore_zircon_handle_info).bitcast[ImportSemaphoreZirconHandleInfoFUCHSIA](),
+            device, Ptr(to=import_semaphore_zircon_handle_info)
         )
 
     fn get_semaphore_zircon_handle_fuchsia(
@@ -150,9 +141,7 @@ struct ExternalSemaphore(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSemaphoreZirconHandleFUCHSIA.html
         """
         return self._get_semaphore_zircon_handle_fuchsia(
-            device,
-            Ptr(to=get_zircon_handle_info).bitcast[SemaphoreGetZirconHandleInfoFUCHSIA](),
-            Ptr(to=zircon_handle).bitcast[zx_handle_t](),
+            device, Ptr(to=get_zircon_handle_info), Ptr(to=zircon_handle)
         )
 
 
@@ -218,10 +207,7 @@ struct BufferCollection(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBufferCollectionFUCHSIA.html
         """
         return self._create_buffer_collection_fuchsia(
-            device,
-            Ptr(to=create_info).bitcast[BufferCollectionCreateInfoFUCHSIA](),
-            p_allocator,
-            Ptr(to=collection).bitcast[BufferCollectionFUCHSIA](),
+            device, Ptr(to=create_info), p_allocator, Ptr(to=collection)
         )
 
     fn set_buffer_collection_image_constraints_fuchsia(
@@ -235,7 +221,7 @@ struct BufferCollection(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetBufferCollectionImageConstraintsFUCHSIA.html
         """
         return self._set_buffer_collection_image_constraints_fuchsia(
-            device, collection, Ptr(to=image_constraints_info).bitcast[ImageConstraintsInfoFUCHSIA]()
+            device, collection, Ptr(to=image_constraints_info)
         )
 
     fn set_buffer_collection_buffer_constraints_fuchsia(
@@ -249,7 +235,7 @@ struct BufferCollection(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetBufferCollectionBufferConstraintsFUCHSIA.html
         """
         return self._set_buffer_collection_buffer_constraints_fuchsia(
-            device, collection, Ptr(to=buffer_constraints_info).bitcast[BufferConstraintsInfoFUCHSIA]()
+            device, collection, Ptr(to=buffer_constraints_info)
         )
 
     fn destroy_buffer_collection_fuchsia(
@@ -274,6 +260,4 @@ struct BufferCollection(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetBufferCollectionPropertiesFUCHSIA.html
         """
-        return self._get_buffer_collection_properties_fuchsia(
-            device, collection, Ptr(to=properties).bitcast[BufferCollectionPropertiesFUCHSIA]()
-        )
+        return self._get_buffer_collection_properties_fuchsia(device, collection, Ptr(to=properties))

@@ -32,12 +32,7 @@ struct IosSurface(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateIOSSurfaceMVK.html
         """
-        return self._create_ios_surface_mvk(
-            instance,
-            Ptr(to=create_info).bitcast[IOSSurfaceCreateInfoMVK](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
-        )
+        return self._create_ios_surface_mvk(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
 
 
 struct MacosSurface(Copyable):
@@ -69,9 +64,4 @@ struct MacosSurface(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateMacOSSurfaceMVK.html
         """
-        return self._create_mac_os_surface_mvk(
-            instance,
-            Ptr(to=create_info).bitcast[MacOSSurfaceCreateInfoMVK](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
-        )
+        return self._create_mac_os_surface_mvk(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))

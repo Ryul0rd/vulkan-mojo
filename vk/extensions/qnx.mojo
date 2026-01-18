@@ -38,12 +38,7 @@ struct ScreenSurface(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateScreenSurfaceQNX.html
         """
-        return self._create_screen_surface_qnx(
-            instance,
-            Ptr(to=create_info).bitcast[ScreenSurfaceCreateInfoQNX](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
-        )
+        return self._create_screen_surface_qnx(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
 
     fn get_physical_device_screen_presentation_support_qnx(
         self, physical_device: PhysicalDevice, queue_family_index: UInt32, window: screen_window_t
@@ -81,6 +76,4 @@ struct ExternalMemoryScreenBuffer(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetScreenBufferPropertiesQNX.html
         """
-        return self._get_screen_buffer_properties_qnx(
-            device, buffer, Ptr(to=properties).bitcast[ScreenBufferPropertiesQNX]()
-        )
+        return self._get_screen_buffer_properties_qnx(device, buffer, Ptr(to=properties))

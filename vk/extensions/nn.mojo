@@ -32,9 +32,4 @@ struct ViSurface(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateViSurfaceNN.html
         """
-        return self._create_vi_surface_nn(
-            instance,
-            Ptr(to=create_info).bitcast[ViSurfaceCreateInfoNN](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
-        )
+        return self._create_vi_surface_nn(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))

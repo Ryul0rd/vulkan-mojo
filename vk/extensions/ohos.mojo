@@ -32,9 +32,4 @@ struct Surface(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSurfaceOHOS.html
         """
-        return self._create_surface_ohos(
-            instance,
-            Ptr(to=create_info).bitcast[SurfaceCreateInfoOHOS](),
-            p_allocator,
-            Ptr(to=surface).bitcast[SurfaceKHR](),
-        )
+        return self._create_surface_ohos(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))

@@ -107,8 +107,44 @@ struct ShaderInfo(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderInfoAMD.html
         """
         return self._get_shader_info_amd(
-            device, pipeline, shader_stage, info_type, Ptr(to=info_size).bitcast[UInt](), p_info
+            device, pipeline, shader_stage, info_type, Ptr(to=info_size), p_info
         )
+
+    fn get_shader_info_amd(
+        self,
+        device: Device,
+        pipeline: Pipeline,
+        shader_stage: ShaderStageFlagBits,
+        info_type: ShaderInfoTypeAMD,
+    ) -> ListResult[UInt8]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderInfoAMD.html
+        """
+        var list = List[UInt8]()
+        var count: UInt32 = 0
+        var result = Result.INCOMPLETE
+        while result == Result.INCOMPLETE:
+            result = self._get_shader_info_amd(
+                device,
+                pipeline,
+                shader_stage,
+                info_type,
+                Ptr(to=count),
+                Ptr[NoneType, MutOrigin.external](),
+            )
+            if result == Result.SUCCESS:
+                list.reserve(Int(count))
+            result = self._get_shader_info_amd(
+                device,
+                pipeline,
+                shader_stage,
+                info_type,
+                Ptr(to=count),
+                list.unsafe_ptr().bitcast[NoneType](),
+            )
+        list._len = Int(count)
+        return ListResult(list^, result)
 
 
 struct BufferMarker(Copyable):
@@ -214,4 +250,4 @@ struct AntiLag(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAntiLagUpdateAMD.html
         """
-        return self._anti_lag_update_amd(device, Ptr(to=data).bitcast[AntiLagDataAMD]())
+        return self._anti_lag_update_amd(device, Ptr(to=data))
