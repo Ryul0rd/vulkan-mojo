@@ -826,7 +826,9 @@ def parse_members(members: List[RegistryStructMember]) -> Tuple[List[PhysicalFie
             text = text.removesuffix(member.comment)
         decl = parse_declarator(text)
         field_name = pascal_to_snake(decl.name)
-
+        is_version_field = (field_name == "version" or field_name.endswith("_version"))
+        if is_version_field and isinstance(decl.type, MojoBaseType) and decl.type.name == "UInt32":
+            decl.type = MojoBaseType("Version")
         if decl.bit_width is not None:
             width = decl.bit_width
             start_new_group = not packed_active or (packed_offset + width > 32)
