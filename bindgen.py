@@ -979,16 +979,15 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                 init_arguments.append(MojoArgument(field.name, field.type, default_value=f"zero_init[{field.type}]()"))
         
         methods: List[MojoMethod] = []
-        if not registry_struct.returned_only:
-            methods.append(MojoMethod(
-                name="__init__",
-                return_type=MojoBaseType("NoneType"),
-                self_ref_kind="out",
-                parameters=init_parameters,
-                arguments=init_arguments,
-                body_lines=init_body_lines,
-                docstring_lines=[],
-            ))
+        methods.append(MojoMethod(
+            name="__init__",
+            return_type=MojoBaseType("NoneType"),
+            self_ref_kind="out",
+            parameters=init_parameters,
+            arguments=init_arguments,
+            body_lines=init_body_lines,
+            docstring_lines=[],
+        ))
         # getter for char array
         for field in physical_fields:
             is_array_string = (
