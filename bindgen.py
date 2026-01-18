@@ -904,12 +904,14 @@ def bind_structs(files: Dict[str, str], registry: Registry):
         for field in logical_fields:
             if isinstance(field, PackedLogicalField):
                 if field.first_in_group:
-                    init_body_lines.append(f"self.{field.name} = 0")
-                init_body_lines.append(f"self.set_{field.name}({field.name})")
+                    init_body_lines.append(f"self._packed{field.group_index} = 0")
             elif isinstance(field.type, MojoBaseType) and field.type.name in struct_names:
                 init_body_lines.append(f"self.{field.name} = {field.name}.copy()")
             else:
                 init_body_lines.append(f"self.{field.name} = {field.name}")
+        for field in logical_fields:
+            if isinstance(field, PackedLogicalField):
+                init_body_lines.append(f"self.set_{field.name}({field.name})")
         
         init_arguments: List[MojoArgument] = []
         for field in logical_fields:
