@@ -2196,8 +2196,6 @@ def command_to_mojo_fn_type(registry_command: RegistryCommand) -> MojoFnType:
 
 
 def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_added: Optional[Version]=None) -> List[MojoMethod]:
-    """Convert a registry command to Mojo method(s)."""
-    methods: List[MojoMethod] = []
     native_name = registry_command.name
     name = command_to_mojo_name(registry_command)
     return_type = parse_c_type(registry_command.return_type)
@@ -2207,163 +2205,122 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
     for param in registry_command.params:
         decl = parse_declarator(param.text)
         arg_name = pascal_to_snake(decl.name)
-        parsed_type = decl.type
+        arg_type = decl.type
 
         is_void_ptr = (
-            isinstance(parsed_type, MojoPointerType)
-            and isinstance(parsed_type.pointee_type, MojoBaseType)
-            and parsed_type.pointee_type.name == "NoneType"
+            isinstance(arg_type, MojoPointerType)
+            and isinstance(arg_type.pointee_type, MojoBaseType)
+            and arg_type.pointee_type.name == "NoneType"
         )
-        should_strip_ptr = (
-            isinstance(parsed_type, MojoPointerType)
-            and not is_void_ptr
-            and param.len is None
-            and not param.optional
-        )
-        if should_strip_ptr:
-            parsed_type = assert_type(MojoPointerType, parsed_type)
-            if arg_name.startswith("p_"):
-                arg_name = arg_name[2:]
-            elif arg_name.startswith("pp_"):
-                arg_name = arg_name[1:]
-            argument = MojoArgument(arg_name, parsed_type.pointee_type, mut=parsed_type.origin == "MutAnyOrigin")
-            call_arg = f"Ptr(to={arg_name})"
-        elif isinstance(parsed_type, MojoPointerType):
-            new_origin: MojoOriginLiteral = "MutAnyOrigin" if parsed_type.origin == "MutAnyOrigin" else "ImmutAnyOrigin"
-            argument = MojoArgument(arg_name, MojoPointerType(parsed_type.pointee_type, new_origin))
-            call_arg = arg_name
+        if isinstance(arg_type, MojoPointerType) and not is_void_ptr and not param.optional and param.len is None:
+            arg_type = assert_type(MojoPointerType, arg_type)
+            arg_name = arg_name[2:] if arg_name.startswith("p_") else (arg_name[1:] if arg_name.startswith("pp_") else arg_name)
+            arguments.append(MojoArgument(arg_name, arg_type.pointee_type, mut=arg_type.origin == "MutAnyOrigin"))
+            call_args.append(f"Ptr(to={arg_name})")
         else:
-            argument = MojoArgument(arg_name, parsed_type)
-            call_arg = arg_name
+            if isinstance(arg_type, MojoPointerType):
+                new_origin: MojoOriginLiteral = "MutAnyOrigin" if arg_type.origin == "MutAnyOrigin" else "ImmutAnyOrigin"
+                arg_type = MojoPointerType(arg_type.pointee_type, new_origin)
+            arguments.append(MojoArgument(arg_name, arg_type))
+            call_args.append(arg_name)
 
-        if not any(arg.name == arg_name for arg in arguments):
-            arguments.append(argument)
-            call_args.append(call_arg)
-    
-    if version_added is not None:
-        version_field = f"_v{version_added.major}_{version_added.minor}"
-        call_target = f"self.{version_field}.{name}"
-    else:
-        call_target = f"self._{name}"
-    body_lines = emit_fn_like(
-        f"return {call_target}",
-        call_args,
-        suffix="",
-        base_indent_level=0,
-    ).rstrip("\n").split("\n")
-
-    docstring_lines = [
-        'See official vulkan docs for details.',
-        '',
-        f'https://registry.khronos.org/vulkan/specs/latest/man/html/{native_name}.html',
+    # Emit Standard Raw Method
+    call_target = f"self.{f'_v{version_added.major}_{version_added.minor}' if version_added else '_'}{name}"
+    docstring = [
+        "See official vulkan docs for details.", "",
+        f"https://registry.khronos.org/vulkan/specs/latest/man/html/{native_name}.html"
     ]
-    methods.append(MojoMethod(
+
+    methods = [MojoMethod(
         name=name,
         return_type=return_type,
         self_ref_kind="ref",
         parameters=[],
         arguments=arguments,
-        body_lines=body_lines,
-        docstring_lines=docstring_lines,
-    ))
+        body_lines=emit_fn_like(f"return {call_target}", call_args).splitlines(),
+        docstring_lines=docstring,
+    )]
 
-    # two call pattern helper method
-    if len(registry_command.params) < 2:
+    # Two-Call Pattern Detection (e.g. vkEnumerate...)
+    if len(registry_command.params) < 2: 
         return methods
-    count_param = registry_command.params[-2]
-    count_arg_type = parse_c_type(count_param.text)
-    data_param = registry_command.params[-1]
-    data_arg_type = parse_c_type(data_param.text)
-    follows_2_call_pattern = (
-        # return type is right
-        isinstance(return_type, MojoBaseType)
-        and return_type.name in ("Result", "NoneType")
-        # count param is right
-        and isinstance(count_arg_type, MojoPointerType)
-        and count_arg_type.origin == "MutAnyOrigin"
-        and isinstance(count_arg_type.pointee_type, MojoBaseType)
-        and count_arg_type.pointee_type.name in ("UInt32", "UInt")
-        # data param is right
-        and isinstance(data_arg_type, MojoPointerType)
-        and data_arg_type.origin == "MutAnyOrigin"
-        and data_param.optional
-        and data_param.len == count_param.name
+    count_param, data_param = registry_command.params[-2], registry_command.params[-1]
+    count_type, data_type = parse_c_type(count_param.text), parse_c_type(data_param.text)
+    is_valid_pattern = (
+        isinstance(return_type, MojoBaseType) and return_type.name in ("Result", "NoneType") and
+        isinstance(count_type, MojoPointerType) and count_type.origin == "MutAnyOrigin" and 
+        isinstance(count_type.pointee_type, MojoBaseType) and count_type.pointee_type.name in ("UInt32", "UInt") and
+        isinstance(data_type, MojoPointerType) and data_type.origin == "MutAnyOrigin" and
+        data_param.optional and data_param.len == count_param.name
     )
-    if not follows_2_call_pattern:
+    if not is_valid_pattern: 
         return methods
-    returns_result = registry_command.return_type == "VkResult"
-    
-    original_data_pointee = assert_type(MojoPointerType, data_arg_type).pointee_type
-    element_type = original_data_pointee
-    if element_type == MojoBaseType("NoneType"):
-        element_type = MojoBaseType("UInt8")
-    element_type_str = str(element_type)
-    if returns_result:
-        two_call_return_type = MojoBaseType("ListResult", parameters=[element_type_str])
-    else:
-        two_call_return_type = MojoBaseType("List", parameters=[element_type_str])
 
-    need_bitcast = original_data_pointee != element_type
-    if need_bitcast:
-        arg_null = f"Ptr[{original_data_pointee}, MutOrigin.external]()"
-        arg_list = f"list.unsafe_ptr().bitcast[{original_data_pointee}]()"
-    else:
-        arg_null = f"Ptr[{element_type_str}, MutOrigin.external]()"
-        arg_list = "list.unsafe_ptr()"
+    # Emit Helper Method
+    count_type = assert_type(MojoPointerType, count_type)
+    count_pointee_type = assert_type(MojoBaseType, count_type.pointee_type)
+    data_type = assert_type(MojoPointerType, data_type)
+    is_result = registry_command.return_type == "VkResult"
+    elem_type = data_type.pointee_type
+    if isinstance(elem_type, MojoBaseType) and elem_type.name == "NoneType":
+        elem_type = MojoBaseType("UInt8")
 
-    count_pointee_type = assert_type(MojoBaseType, assert_type(MojoPointerType, count_arg_type).pointee_type)
-    base_call_args = call_args[:-2]
-    two_call_body_lines: List[str] = []
-    two_call_body_lines.append(f"var list = List[{element_type_str}]()")
-    two_call_body_lines.append(f"var count: {count_pointee_type.name} = 0")
+    list_type = f"List[{elem_type}]"
+    ret_type_name = "ListResult" if is_result else "List"
+    return_type = MojoBaseType(ret_type_name, [str(elem_type)])
     
-    if returns_result:
-        two_call_body_lines.append("var result = Result.INCOMPLETE")
-        two_call_body_lines.append("while result == Result.INCOMPLETE:")
-        first_call_lines = emit_fn_like(
-            f"result = {call_target}",
-            base_call_args + ["Ptr(to=count)", arg_null],
-            suffix="",
-            base_indent_level=1,
-        ).rstrip("\n").split("\n")
-        two_call_body_lines.extend(first_call_lines)
-        two_call_body_lines.append("    if result == Result.SUCCESS:")
-        two_call_body_lines.append("        list.reserve(Int(count))")
-        second_call = emit_fn_like(
-            f"result = {call_target}",
-            base_call_args + ["Ptr(to=count)", arg_list],
-            suffix="",
-            base_indent_level=1,
-        ).rstrip("\n").split("\n")
-        two_call_body_lines.extend(second_call)
-        two_call_body_lines.append("list._len = Int(count)")
-        two_call_body_lines.append("return ListResult(list^, result)")
+    # Handle casts (e.g. if data is void* but element is UInt8)
+    needs_cast = elem_type != data_type.pointee_type
+    ptr_null = f"Ptr[{data_type.pointee_type}, MutOrigin.external]()"
+    ptr_list = f"list.unsafe_ptr(){'.bitcast['+str(data_type.pointee_type)+']()' if needs_cast else ''}"
+
+    # Pre-generate calls
+    base_args = call_args[:-2]
+    indent = 1 if is_result else 0
+    prefix = "result = " if is_result else ""
+    call_1 = emit_fn_like(
+        f"{prefix}{call_target}",
+        base_args + ["Ptr(to=count)", ptr_null],
+        base_indent_level=indent
+    ).strip()
+    call_2 = emit_fn_like(
+        f"{prefix}{call_target}",
+        base_args + ["Ptr(to=count)", ptr_list],
+        base_indent_level=indent
+    ).strip()
+    
+    body_lines = [
+        f"var list = {list_type}()",
+        f"var count: {count_pointee_type.name} = 0"
+    ]
+    if is_result:
+        body_lines.extend([
+            "var result = Result.INCOMPLETE",
+            "while result == Result.INCOMPLETE:",
+            f"    {call_1}",
+            "    if result == Result.SUCCESS:",
+            "        list.reserve(Int(count))",
+            f"        {call_2}",
+            "list._len = Int(count)",
+            "return ListResult(list^, result)",
+        ])
     else:
-        first_call_lines = emit_fn_like(
-            f"{call_target}",
-            base_call_args + ["Ptr(to=count)", arg_null],
-            suffix="",
-            base_indent_level=0,
-        ).rstrip("\n").split("\n")
-        two_call_body_lines.extend(first_call_lines)
-        two_call_body_lines.append("list.reserve(Int(count))")
-        second_call = emit_fn_like(
-            f"{call_target}",
-            base_call_args + ["Ptr(to=count)", arg_list],
-            suffix="",
-        ).rstrip("\n").split("\n")
-        two_call_body_lines.extend(second_call)
-        two_call_body_lines.append("list._len = Int(count)")
-        two_call_body_lines.append("return list^")
+        body_lines.extend([
+            call_1,
+            "list.reserve(Int(count))",
+            call_2,
+            "list._len = Int(count)",
+            "return list^",
+        ])
 
     methods.append(MojoMethod(
         name=name,
-        return_type=two_call_return_type,
+        return_type=return_type,
         self_ref_kind="ref",
         parameters=[],
         arguments=arguments[:-2],
-        body_lines=two_call_body_lines,
-        docstring_lines=docstring_lines,
+        body_lines=body_lines,
+        docstring_lines=docstring,
     ))
 
     return methods
