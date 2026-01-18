@@ -1045,7 +1045,7 @@ struct ValidationCache(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetValidationCacheDataEXT.html
         """
         var list = List[UInt8]()
-        var count: UInt32 = 0
+        var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_validation_cache_data_ext(
@@ -3991,7 +3991,7 @@ struct ShaderObject(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderBinaryDataEXT.html
         """
         var list = List[UInt8]()
-        var count: UInt32 = 0
+        var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_shader_binary_data_ext(

@@ -1099,7 +1099,7 @@ struct CudaKernelLaunch(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetCudaModuleCacheNV.html
         """
         var list = List[UInt8]()
-        var count: UInt32 = 0
+        var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_cuda_module_cache_nv(

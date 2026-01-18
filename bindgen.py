@@ -2312,10 +2312,11 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         arg_null = f"Ptr[{element_type_str}, MutOrigin.external]()"
         arg_list = "list.unsafe_ptr()"
 
+    count_pointee_type = assert_type(MojoBaseType, assert_type(MojoPointerType, count_arg_type).pointee_type)
     base_call_args = call_args[:-2]
     two_call_body_lines: List[str] = []
     two_call_body_lines.append(f"var list = List[{element_type_str}]()")
-    two_call_body_lines.append("var count: UInt32 = 0")
+    two_call_body_lines.append(f"var count: {count_pointee_type.name} = 0")
     
     if returns_result:
         two_call_body_lines.append("var result = Result.INCOMPLETE")

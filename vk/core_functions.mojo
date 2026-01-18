@@ -3396,7 +3396,7 @@ struct DeviceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         var list = List[UInt8]()
-        var count: UInt32 = 0
+        var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
@@ -4985,7 +4985,7 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         var list = List[UInt8]()
-        var count: UInt32 = 0
+        var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
@@ -6806,7 +6806,7 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         var list = List[UInt8]()
-        var count: UInt32 = 0
+        var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
@@ -8778,7 +8778,7 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         var list = List[UInt8]()
-        var count: UInt32 = 0
+        var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
@@ -11145,7 +11145,7 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
         var list = List[UInt8]()
-        var count: UInt32 = 0
+        var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(

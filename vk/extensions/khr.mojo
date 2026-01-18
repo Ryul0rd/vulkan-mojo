@@ -4243,7 +4243,7 @@ struct VideoEncodeQueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetEncodedVideoSessionParametersKHR.html
         """
         var list = List[UInt8]()
-        var count: UInt32 = 0
+        var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_encoded_video_session_parameters_khr(
@@ -4847,7 +4847,7 @@ struct PipelineBinary(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineBinaryDataKHR.html
         """
         var list = List[UInt8]()
-        var count: UInt32 = 0
+        var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_pipeline_binary_data_khr(
