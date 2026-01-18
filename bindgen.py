@@ -855,6 +855,45 @@ def parse_members(members: List[RegistryStructMember]) -> Tuple[List[PhysicalFie
     return physical_fields, logical_fields
 
 
+def as_parametric_type(name: str, mojo_type: MojoType, parameters: List[MojoParameter]) -> MojoType:
+    if name.startswith("pp_"):
+        stripped_name = "p_" + name[3:]
+    elif name.startswith("p_"):
+        stripped_name = name[2:]
+    else:
+        stripped_name = name
+
+    if isinstance(mojo_type, MojoPointerType):
+        param_name = f"{stripped_name}_origin"
+        is_mutable = mojo_type.origin in ("MutAnyOrigin", "MutOrigin.external")
+        parameters.append(MojoParameter(
+            name=param_name,
+            type="MutOrigin" if is_mutable else "ImmutOrigin",
+            default_value="MutAnyOrigin" if is_mutable else "ImmutAnyOrigin"
+        ))
+        new_pointee = as_parametric_type(stripped_name, mojo_type.pointee_type, parameters)
+        return MojoPointerType(
+            pointee_type=new_pointee,
+            origin=MojoParametricOrigin(param_name)
+        )
+
+    elif isinstance(mojo_type, MojoBaseType) and mojo_type.name == "CStringSlice":
+        param_name = f"{stripped_name}_origin"
+        # CStringSlice has 1 param
+        is_mutable = mojo_type.parameters[0] in ("MutAnyOrigin", "MutOrigin.external")
+        parameters.append(MojoParameter(
+            name=param_name,
+            type="MutOrigin" if is_mutable else "ImmutOrigin",
+            default_value="MutAnyOrigin" if is_mutable else "ImmutAnyOrigin"
+        ))
+        return MojoBaseType(
+            name="CStringSlice",
+            parameters=[MojoParametricOrigin(param_name)]
+        )
+        
+    return mojo_type
+
+
 def bind_structs(files: Dict[str, str], registry: Registry):
     enabled_type_names: Set[str] = set()
     for feature in registry.features:
@@ -907,25 +946,32 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                     init_body_lines.append(f"self._packed{field.group_index} = 0")
             elif isinstance(field.type, MojoBaseType) and field.type.name in struct_names:
                 init_body_lines.append(f"self.{field.name} = {field.name}.copy()")
+            elif isinstance(field.type, MojoPointerType) or (isinstance(field.type, MojoBaseType) and field.type.name == "CStringSlice"):
+                init_body_lines.append(f"self.{field.name} = Ptr(to={field.name}).bitcast[type_of(self.{field.name})]()[]")
             else:
                 init_body_lines.append(f"self.{field.name} = {field.name}")
         for field in logical_fields:
             if isinstance(field, PackedLogicalField):
                 init_body_lines.append(f"self.set_{field.name}({field.name})")
         
+        init_parameters: List[MojoParameter] = []
         init_arguments: List[MojoArgument] = []
         for field in logical_fields:
             if isinstance(field, PackedLogicalField):
                 init_arguments.append(MojoArgument(field.name, MojoBaseType("UInt32"), default_value="zero_init[UInt32]()"))
-            elif field.default_value is None:
-                init_arguments.append(MojoArgument(field.name, field.type, default_value=f"zero_init[{field.type}]()"))
-            else:
-                default_value = field.default_value
-                if isinstance(field.type, MojoBaseType) and default_value.startswith("VK_"):
+            elif isinstance(field.type, MojoPointerType) or (isinstance(field.type, MojoBaseType) and field.type.name == "CStringSlice"):
+                arg_type = as_parametric_type(field.name, field.type, init_parameters)
+                init_arguments.append(MojoArgument(field.name, arg_type, default_value=f"zero_init[{arg_type}]()"))
+            elif field.default_value is not None:
+                if isinstance(field.type, MojoBaseType) and field.default_value.startswith("VK_"):
                     c_enum_name = "Vk" + field.type.name
-                    stripped_name = strip_enum_value_prefix(c_enum_name, default_value, registry.tags)
-                    default_value = f"{field.type.name}.{stripped_name}"
-                init_arguments.append(MojoArgument(field.name, field.type, default_value=default_value))
+                    stripped_name = strip_enum_value_prefix(c_enum_name, field.default_value, registry.tags)
+                    default_val_str = f"{field.type.name}.{stripped_name}"
+                else:
+                    default_val_str = field.default_value
+                init_arguments.append(MojoArgument(field.name, field.type, default_value=default_val_str))
+            else:
+                init_arguments.append(MojoArgument(field.name, field.type, default_value=f"zero_init[{field.type}]()"))
         
         methods: List[MojoMethod] = []
         if not registry_struct.returned_only:
@@ -933,7 +979,7 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                 name="__init__",
                 return_type=MojoBaseType("NoneType"),
                 self_ref_kind="out",
-                parameters=[],
+                parameters=init_parameters,
                 arguments=init_arguments,
                 body_lines=init_body_lines,
                 docstring_lines=[],
