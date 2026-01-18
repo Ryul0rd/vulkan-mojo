@@ -27,18 +27,23 @@ struct ScreenSurface(Copyable):
             instance, "vkGetPhysicalDeviceScreenPresentationSupportQNX".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_screen_presentation_support_qnx)]()[]
 
-    fn create_screen_surface_qnx(
+    fn create_screen_surface_qnx[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: ScreenSurfaceCreateInfoQNX,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateScreenSurfaceQNX.html
         """
-        return self._create_screen_surface_qnx(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
+        return self._create_screen_surface_qnx(
+            instance,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=surface),
+        )
 
     fn get_physical_device_screen_presentation_support_qnx(
         self, physical_device: PhysicalDevice, queue_family_index: UInt32, window: screen_window_t

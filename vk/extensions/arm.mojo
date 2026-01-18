@@ -98,55 +98,69 @@ struct Tensors(Copyable):
             device, "vkGetTensorViewOpaqueCaptureDescriptorDataARM".as_c_string_slice()
         )).bitcast[type_of(self._get_tensor_view_opaque_capture_descriptor_data_arm)]()[]
 
-    fn create_tensor_arm(
+    fn create_tensor_arm[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: TensorCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut tensor: TensorARM,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateTensorARM.html
         """
-        return self._create_tensor_arm(device, Ptr(to=create_info), p_allocator, Ptr(to=tensor))
+        return self._create_tensor_arm(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=tensor),
+        )
 
-    fn destroy_tensor_arm(
+    fn destroy_tensor_arm[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         tensor: TensorARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyTensorARM.html
         """
-        return self._destroy_tensor_arm(device, tensor, p_allocator)
+        return self._destroy_tensor_arm(
+            device, tensor, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_tensor_view_arm(
+    fn create_tensor_view_arm[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: TensorViewCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut view: TensorViewARM,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateTensorViewARM.html
         """
-        return self._create_tensor_view_arm(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._create_tensor_view_arm(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=view),
+        )
 
-    fn destroy_tensor_view_arm(
+    fn destroy_tensor_view_arm[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         tensor_view: TensorViewARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyTensorViewARM.html
         """
-        return self._destroy_tensor_view_arm(device, tensor_view, p_allocator)
+        return self._destroy_tensor_view_arm(
+            device, tensor_view, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_tensor_memory_requirements_arm(
         self,
@@ -160,17 +174,21 @@ struct Tensors(Copyable):
         """
         return self._get_tensor_memory_requirements_arm(device, Ptr(to=info), Ptr(to=memory_requirements))
 
-    fn bind_tensor_memory_arm(
+    fn bind_tensor_memory_arm[p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
-        p_bind_infos: Ptr[BindTensorMemoryInfoARM, ImmutAnyOrigin],
+        p_bind_infos: Ptr[BindTensorMemoryInfoARM, p_bind_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindTensorMemoryARM.html
         """
-        return self._bind_tensor_memory_arm(device, bind_info_count, p_bind_infos)
+        return self._bind_tensor_memory_arm(
+            device,
+            bind_info_count,
+            Ptr(to=p_bind_infos).bitcast[Ptr[BindTensorMemoryInfoARM, ImmutAnyOrigin]]()[],
+        )
 
     fn get_device_tensor_memory_requirements_arm(
         self,
@@ -209,29 +227,33 @@ struct Tensors(Copyable):
             physical_device, Ptr(to=external_tensor_info), Ptr(to=external_tensor_properties)
         )
 
-    fn get_tensor_opaque_capture_descriptor_data_arm(
+    fn get_tensor_opaque_capture_descriptor_data_arm[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         info: TensorCaptureDescriptorDataInfoARM,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorOpaqueCaptureDescriptorDataARM.html
         """
-        return self._get_tensor_opaque_capture_descriptor_data_arm(device, Ptr(to=info), p_data)
+        return self._get_tensor_opaque_capture_descriptor_data_arm(
+            device, Ptr(to=info), Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[]
+        )
 
-    fn get_tensor_view_opaque_capture_descriptor_data_arm(
+    fn get_tensor_view_opaque_capture_descriptor_data_arm[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         info: TensorViewCaptureDescriptorDataInfoARM,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorViewOpaqueCaptureDescriptorDataARM.html
         """
-        return self._get_tensor_view_opaque_capture_descriptor_data_arm(device, Ptr(to=info), p_data)
+        return self._get_tensor_view_opaque_capture_descriptor_data_arm(
+            device, Ptr(to=info), Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[]
+        )
 
 
 struct DataGraph(Copyable):
@@ -340,15 +362,19 @@ struct DataGraph(Copyable):
             device, "vkGetPhysicalDeviceQueueFamilyDataGraphProcessingEnginePropertiesARM".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_queue_family_data_graph_processing_engine_properties_arm)]()[]
 
-    fn create_data_graph_pipelines_arm(
+    fn create_data_graph_pipelines_arm[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         deferred_operation: DeferredOperationKHR,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[DataGraphPipelineCreateInfoARM, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[DataGraphPipelineCreateInfoARM, p_create_infos_origin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -359,16 +385,16 @@ struct DataGraph(Copyable):
             deferred_operation,
             pipeline_cache,
             create_info_count,
-            p_create_infos,
-            p_allocator,
-            p_pipelines,
+            Ptr(to=p_create_infos).bitcast[Ptr[DataGraphPipelineCreateInfoARM, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn create_data_graph_pipeline_session_arm(
+    fn create_data_graph_pipeline_session_arm[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DataGraphPipelineSessionCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut session: DataGraphPipelineSessionARM,
     ) -> Result:
         """See official vulkan docs for details.
@@ -376,25 +402,35 @@ struct DataGraph(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDataGraphPipelineSessionARM.html
         """
         return self._create_data_graph_pipeline_session_arm(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=session)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=session),
         )
 
-    fn get_data_graph_pipeline_session_bind_point_requirements_arm(
+    fn get_data_graph_pipeline_session_bind_point_requirements_arm[
+        p_bind_point_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         info: DataGraphPipelineSessionBindPointRequirementsInfoARM,
         mut bind_point_requirement_count: UInt32,
-        p_bind_point_requirements: Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutAnyOrigin],
+        p_bind_point_requirements: Ptr[DataGraphPipelineSessionBindPointRequirementARM, p_bind_point_requirements_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineSessionBindPointRequirementsARM.html
         """
         return self._get_data_graph_pipeline_session_bind_point_requirements_arm(
-            device, Ptr(to=info), Ptr(to=bind_point_requirement_count), p_bind_point_requirements
+            device,
+            Ptr(to=info),
+            Ptr(to=bind_point_requirement_count),
+            Ptr(to=p_bind_point_requirements).bitcast[Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutAnyOrigin]]()[],
         )
 
-    fn get_data_graph_pipeline_session_bind_point_requirements_arm(
+    fn get_data_graph_pipeline_session_bind_point_requirements_arm[
+        p_bind_point_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, info: DataGraphPipelineSessionBindPointRequirementsInfoARM
     ) -> ListResult[DataGraphPipelineSessionBindPointRequirementARM]:
         """See official vulkan docs for details.
@@ -406,16 +442,16 @@ struct DataGraph(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_data_graph_pipeline_session_bind_point_requirements_arm(
-                device,
-                Ptr(to=info),
-                Ptr(to=count),
-                Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutOrigin.external](),
-            )
+        device,
+        Ptr(to=info),
+        Ptr(to=count),
+        Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_data_graph_pipeline_session_bind_point_requirements_arm(
-                device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_data_graph_pipeline_session_bind_point_requirements_arm(
+        device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -433,58 +469,77 @@ struct DataGraph(Copyable):
             device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
-    fn bind_data_graph_pipeline_session_memory_arm(
+    fn bind_data_graph_pipeline_session_memory_arm[
+        p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin
+    ](
         self,
         device: Device,
         bind_info_count: UInt32,
-        p_bind_infos: Ptr[BindDataGraphPipelineSessionMemoryInfoARM, ImmutAnyOrigin],
+        p_bind_infos: Ptr[BindDataGraphPipelineSessionMemoryInfoARM, p_bind_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindDataGraphPipelineSessionMemoryARM.html
         """
-        return self._bind_data_graph_pipeline_session_memory_arm(device, bind_info_count, p_bind_infos)
+        return self._bind_data_graph_pipeline_session_memory_arm(
+            device,
+            bind_info_count,
+            Ptr(to=p_bind_infos).bitcast[Ptr[BindDataGraphPipelineSessionMemoryInfoARM, ImmutAnyOrigin]]()[],
+        )
 
-    fn destroy_data_graph_pipeline_session_arm(
+    fn destroy_data_graph_pipeline_session_arm[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         session: DataGraphPipelineSessionARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDataGraphPipelineSessionARM.html
         """
-        return self._destroy_data_graph_pipeline_session_arm(device, session, p_allocator)
+        return self._destroy_data_graph_pipeline_session_arm(
+            device, session, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn cmd_dispatch_data_graph_arm(
+    fn cmd_dispatch_data_graph_arm[p_info_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         session: DataGraphPipelineSessionARM,
-        p_info: Ptr[DataGraphPipelineDispatchInfoARM, ImmutAnyOrigin],
+        p_info: Ptr[DataGraphPipelineDispatchInfoARM, p_info_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchDataGraphARM.html
         """
-        return self._cmd_dispatch_data_graph_arm(command_buffer, session, p_info)
+        return self._cmd_dispatch_data_graph_arm(
+            command_buffer,
+            session,
+            Ptr(to=p_info).bitcast[Ptr[DataGraphPipelineDispatchInfoARM, ImmutAnyOrigin]]()[],
+        )
 
-    fn get_data_graph_pipeline_available_properties_arm(
+    fn get_data_graph_pipeline_available_properties_arm[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         pipeline_info: DataGraphPipelineInfoARM,
         mut properties_count: UInt32,
-        p_properties: Ptr[DataGraphPipelinePropertyARM, MutAnyOrigin],
+        p_properties: Ptr[DataGraphPipelinePropertyARM, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineAvailablePropertiesARM.html
         """
         return self._get_data_graph_pipeline_available_properties_arm(
-            device, Ptr(to=pipeline_info), Ptr(to=properties_count), p_properties
+            device,
+            Ptr(to=pipeline_info),
+            Ptr(to=properties_count),
+            Ptr(to=p_properties).bitcast[Ptr[DataGraphPipelinePropertyARM, MutAnyOrigin]]()[],
         )
 
-    fn get_data_graph_pipeline_available_properties_arm(
+    fn get_data_graph_pipeline_available_properties_arm[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, pipeline_info: DataGraphPipelineInfoARM
     ) -> ListResult[DataGraphPipelinePropertyARM]:
         """See official vulkan docs for details.
@@ -496,40 +551,45 @@ struct DataGraph(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_data_graph_pipeline_available_properties_arm(
-                device,
-                Ptr(to=pipeline_info),
-                Ptr(to=count),
-                Ptr[DataGraphPipelinePropertyARM, MutOrigin.external](),
-            )
+        device,
+        Ptr(to=pipeline_info),
+        Ptr(to=count),
+        Ptr[DataGraphPipelinePropertyARM, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_data_graph_pipeline_available_properties_arm(
-                device, Ptr(to=pipeline_info), Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_data_graph_pipeline_available_properties_arm(
+        device, Ptr(to=pipeline_info), Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_data_graph_pipeline_properties_arm(
+    fn get_data_graph_pipeline_properties_arm[p_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         pipeline_info: DataGraphPipelineInfoARM,
         properties_count: UInt32,
-        p_properties: Ptr[DataGraphPipelinePropertyQueryResultARM, MutAnyOrigin],
+        p_properties: Ptr[DataGraphPipelinePropertyQueryResultARM, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelinePropertiesARM.html
         """
         return self._get_data_graph_pipeline_properties_arm(
-            device, Ptr(to=pipeline_info), properties_count, p_properties
+            device,
+            Ptr(to=pipeline_info),
+            properties_count,
+            Ptr(to=p_properties).bitcast[Ptr[DataGraphPipelinePropertyQueryResultARM, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_queue_family_data_graph_properties_arm(
+    fn get_physical_device_queue_family_data_graph_properties_arm[
+        p_queue_family_data_graph_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
         mut queue_family_data_graph_property_count: UInt32,
-        p_queue_family_data_graph_properties: Ptr[QueueFamilyDataGraphPropertiesARM, MutAnyOrigin],
+        p_queue_family_data_graph_properties: Ptr[QueueFamilyDataGraphPropertiesARM, p_queue_family_data_graph_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -539,10 +599,12 @@ struct DataGraph(Copyable):
             physical_device,
             queue_family_index,
             Ptr(to=queue_family_data_graph_property_count),
-            p_queue_family_data_graph_properties,
+            Ptr(to=p_queue_family_data_graph_properties).bitcast[Ptr[QueueFamilyDataGraphPropertiesARM, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_queue_family_data_graph_properties_arm(
+    fn get_physical_device_queue_family_data_graph_properties_arm[
+        p_queue_family_data_graph_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice, queue_family_index: UInt32
     ) -> ListResult[QueueFamilyDataGraphPropertiesARM]:
         """See official vulkan docs for details.
@@ -554,16 +616,16 @@ struct DataGraph(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_queue_family_data_graph_properties_arm(
-                physical_device,
-                queue_family_index,
-                Ptr(to=count),
-                Ptr[QueueFamilyDataGraphPropertiesARM, MutOrigin.external](),
-            )
+        physical_device,
+        queue_family_index,
+        Ptr(to=count),
+        Ptr[QueueFamilyDataGraphPropertiesARM, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_queue_family_data_graph_properties_arm(
-                physical_device, queue_family_index, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_queue_family_data_graph_properties_arm(
+        physical_device, queue_family_index, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 

@@ -21,15 +21,20 @@ struct Surface(Copyable):
             instance, "vkCreateSurfaceOHOS".as_c_string_slice()
         )).bitcast[type_of(self._create_surface_ohos)]()[]
 
-    fn create_surface_ohos(
+    fn create_surface_ohos[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: SurfaceCreateInfoOHOS,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSurfaceOHOS.html
         """
-        return self._create_surface_ohos(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
+        return self._create_surface_ohos(
+            instance,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=surface),
+        )

@@ -21,15 +21,20 @@ struct ViSurface(Copyable):
             instance, "vkCreateViSurfaceNN".as_c_string_slice()
         )).bitcast[type_of(self._create_vi_surface_nn)]()[]
 
-    fn create_vi_surface_nn(
+    fn create_vi_surface_nn[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: ViSurfaceCreateInfoNN,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateViSurfaceNN.html
         """
-        return self._create_vi_surface_nn(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
+        return self._create_vi_surface_nn(
+            instance,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=surface),
+        )

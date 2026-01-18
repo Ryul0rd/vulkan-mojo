@@ -25,34 +25,46 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
     fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
         return self._dlhandle
 
-    fn create_instance(
+    fn create_instance[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         create_info: InstanceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut instance: Instance,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
-        return self._v1_0.create_instance(Ptr(to=create_info), p_allocator, Ptr(to=instance))
+        return self._v1_0.create_instance(
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=instance),
+        )
 
-    fn enumerate_instance_extension_properties(
+    fn enumerate_instance_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
-        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+        p_properties: Ptr[ExtensionProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            p_layer_name, Ptr(to=property_count), p_properties
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[ExtensionProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_instance_extension_properties(
-        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    fn enumerate_instance_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
+        self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -63,26 +75,34 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_extension_properties(
-                p_layer_name, Ptr(to=count), Ptr[ExtensionProperties, MutOrigin.external]()
-            )
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        Ptr[ExtensionProperties, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_instance_extension_properties(
-                p_layer_name, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_instance_extension_properties(
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        list.unsafe_ptr(),
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_instance_layer_properties(
-        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
+    fn enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, p_properties_origin]
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
-        return self._v1_0.enumerate_instance_layer_properties(Ptr(to=property_count), p_properties)
+        return self._v1_0.enumerate_instance_layer_properties(
+            Ptr(to=property_count), Ptr(to=p_properties).bitcast[Ptr[LayerProperties, MutAnyOrigin]]()[]
+        )
 
-    fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
+    fn enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
+        self
+    ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
@@ -92,11 +112,11 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_layer_properties(
-                Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
-            )
+        Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_instance_layer_properties(Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_0.enumerate_instance_layer_properties(Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -114,34 +134,46 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
     fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
         return self._dlhandle
 
-    fn create_instance(
+    fn create_instance[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         create_info: InstanceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut instance: Instance,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
-        return self._v1_0.create_instance(Ptr(to=create_info), p_allocator, Ptr(to=instance))
+        return self._v1_0.create_instance(
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=instance),
+        )
 
-    fn enumerate_instance_extension_properties(
+    fn enumerate_instance_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
-        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+        p_properties: Ptr[ExtensionProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            p_layer_name, Ptr(to=property_count), p_properties
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[ExtensionProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_instance_extension_properties(
-        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    fn enumerate_instance_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
+        self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -152,26 +184,34 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_extension_properties(
-                p_layer_name, Ptr(to=count), Ptr[ExtensionProperties, MutOrigin.external]()
-            )
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        Ptr[ExtensionProperties, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_instance_extension_properties(
-                p_layer_name, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_instance_extension_properties(
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        list.unsafe_ptr(),
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_instance_layer_properties(
-        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
+    fn enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, p_properties_origin]
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
-        return self._v1_0.enumerate_instance_layer_properties(Ptr(to=property_count), p_properties)
+        return self._v1_0.enumerate_instance_layer_properties(
+            Ptr(to=property_count), Ptr(to=p_properties).bitcast[Ptr[LayerProperties, MutAnyOrigin]]()[]
+        )
 
-    fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
+    fn enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
+        self
+    ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
@@ -181,11 +221,11 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_layer_properties(
-                Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
-            )
+        Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_instance_layer_properties(Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_0.enumerate_instance_layer_properties(Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -210,34 +250,46 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
     fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
         return self._dlhandle
 
-    fn create_instance(
+    fn create_instance[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         create_info: InstanceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut instance: Instance,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
-        return self._v1_0.create_instance(Ptr(to=create_info), p_allocator, Ptr(to=instance))
+        return self._v1_0.create_instance(
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=instance),
+        )
 
-    fn enumerate_instance_extension_properties(
+    fn enumerate_instance_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
-        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+        p_properties: Ptr[ExtensionProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            p_layer_name, Ptr(to=property_count), p_properties
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[ExtensionProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_instance_extension_properties(
-        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    fn enumerate_instance_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
+        self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -248,26 +300,34 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_extension_properties(
-                p_layer_name, Ptr(to=count), Ptr[ExtensionProperties, MutOrigin.external]()
-            )
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        Ptr[ExtensionProperties, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_instance_extension_properties(
-                p_layer_name, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_instance_extension_properties(
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        list.unsafe_ptr(),
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_instance_layer_properties(
-        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
+    fn enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, p_properties_origin]
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
-        return self._v1_0.enumerate_instance_layer_properties(Ptr(to=property_count), p_properties)
+        return self._v1_0.enumerate_instance_layer_properties(
+            Ptr(to=property_count), Ptr(to=p_properties).bitcast[Ptr[LayerProperties, MutAnyOrigin]]()[]
+        )
 
-    fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
+    fn enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
+        self
+    ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
@@ -277,11 +337,11 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_layer_properties(
-                Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
-            )
+        Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_instance_layer_properties(Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_0.enumerate_instance_layer_properties(Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -306,34 +366,46 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
     fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
         return self._dlhandle
 
-    fn create_instance(
+    fn create_instance[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         create_info: InstanceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut instance: Instance,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
-        return self._v1_0.create_instance(Ptr(to=create_info), p_allocator, Ptr(to=instance))
+        return self._v1_0.create_instance(
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=instance),
+        )
 
-    fn enumerate_instance_extension_properties(
+    fn enumerate_instance_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
-        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+        p_properties: Ptr[ExtensionProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            p_layer_name, Ptr(to=property_count), p_properties
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[ExtensionProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_instance_extension_properties(
-        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    fn enumerate_instance_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
+        self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -344,26 +416,34 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_extension_properties(
-                p_layer_name, Ptr(to=count), Ptr[ExtensionProperties, MutOrigin.external]()
-            )
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        Ptr[ExtensionProperties, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_instance_extension_properties(
-                p_layer_name, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_instance_extension_properties(
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        list.unsafe_ptr(),
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_instance_layer_properties(
-        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
+    fn enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, p_properties_origin]
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
-        return self._v1_0.enumerate_instance_layer_properties(Ptr(to=property_count), p_properties)
+        return self._v1_0.enumerate_instance_layer_properties(
+            Ptr(to=property_count), Ptr(to=p_properties).bitcast[Ptr[LayerProperties, MutAnyOrigin]]()[]
+        )
 
-    fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
+    fn enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
+        self
+    ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
@@ -373,11 +453,11 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_layer_properties(
-                Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
-            )
+        Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_instance_layer_properties(Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_0.enumerate_instance_layer_properties(Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -402,34 +482,46 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
     fn get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
         return self._dlhandle
 
-    fn create_instance(
+    fn create_instance[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         create_info: InstanceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut instance: Instance,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateInstance.html
         """
-        return self._v1_0.create_instance(Ptr(to=create_info), p_allocator, Ptr(to=instance))
+        return self._v1_0.create_instance(
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=instance),
+        )
 
-    fn enumerate_instance_extension_properties(
+    fn enumerate_instance_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
-        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+        p_properties: Ptr[ExtensionProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            p_layer_name, Ptr(to=property_count), p_properties
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[ExtensionProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_instance_extension_properties(
-        self, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    fn enumerate_instance_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
+        self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -440,26 +532,34 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_extension_properties(
-                p_layer_name, Ptr(to=count), Ptr[ExtensionProperties, MutOrigin.external]()
-            )
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        Ptr[ExtensionProperties, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_instance_extension_properties(
-                p_layer_name, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_instance_extension_properties(
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        list.unsafe_ptr(),
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_instance_layer_properties(
-        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, MutAnyOrigin]
+    fn enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
+        self, mut property_count: UInt32, p_properties: Ptr[LayerProperties, p_properties_origin]
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
         """
-        return self._v1_0.enumerate_instance_layer_properties(Ptr(to=property_count), p_properties)
+        return self._v1_0.enumerate_instance_layer_properties(
+            Ptr(to=property_count), Ptr(to=p_properties).bitcast[Ptr[LayerProperties, MutAnyOrigin]]()[]
+        )
 
-    fn enumerate_instance_layer_properties(self) -> ListResult[LayerProperties]:
+    fn enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
+        self
+    ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceLayerProperties.html
@@ -469,11 +569,11 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_layer_properties(
-                Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
-            )
+        Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_instance_layer_properties(Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_0.enumerate_instance_layer_properties(Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -493,30 +593,36 @@ struct InstanceFunctionsV1_0(Copyable):
         self._dlhandle = global_functions.get_dlhandle()
         self._v1_0 = InstanceFunctionsAdditionsV1_0(self._dlhandle, instance)
 
-    fn destroy_instance(
-        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_instance[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, p_allocator_origin]
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
         """
-        return self._v1_0.destroy_instance(instance, p_allocator)
+        return self._v1_0.destroy_instance(
+            instance, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn enumerate_physical_devices(
+    fn enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutAnyOrigin](
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
-        p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
+        p_physical_devices: Ptr[PhysicalDevice, p_physical_devices_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
-            instance, Ptr(to=physical_device_count), p_physical_devices
+            instance,
+            Ptr(to=physical_device_count),
+            Ptr(to=p_physical_devices).bitcast[Ptr[PhysicalDevice, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
+    fn enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutAnyOrigin](
+        self, instance: Instance
+    ) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
@@ -526,11 +632,11 @@ struct InstanceFunctionsV1_0(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_physical_devices(
-                instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
-            )
+        instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_physical_devices(instance, Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_0.enumerate_physical_devices(instance, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -584,21 +690,27 @@ struct InstanceFunctionsV1_0(Copyable):
         """
         return self._v1_0.get_physical_device_properties(physical_device, Ptr(to=properties))
 
-    fn get_physical_device_queue_family_properties(
+    fn get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
+        p_queue_family_properties: Ptr[QueueFamilyProperties, p_queue_family_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         return self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
+            physical_device,
+            Ptr(to=queue_family_property_count),
+            Ptr(to=p_queue_family_properties).bitcast[Ptr[QueueFamilyProperties, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_queue_family_properties(
+    fn get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
@@ -608,12 +720,12 @@ struct InstanceFunctionsV1_0(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
-        )
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -626,45 +738,61 @@ struct InstanceFunctionsV1_0(Copyable):
         """
         return self._v1_0.get_physical_device_memory_properties(physical_device, Ptr(to=memory_properties))
 
-    fn get_instance_proc_addr(
-        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
+    fn get_instance_proc_addr[p_name_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name)
+        return self._v1_0.get_instance_proc_addr(
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
-    fn create_device(
+    fn create_device[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut device: Device,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDevice.html
         """
-        return self._v1_0.create_device(physical_device, Ptr(to=create_info), p_allocator, Ptr(to=device))
+        return self._v1_0.create_device(
+            physical_device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=device),
+        )
 
-    fn enumerate_device_extension_properties(
+    fn enumerate_device_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+        p_properties: Ptr[ExtensionProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
-            physical_device, p_layer_name, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[ExtensionProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    fn enumerate_device_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -675,31 +803,39 @@ struct InstanceFunctionsV1_0(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_extension_properties(
-                physical_device, p_layer_name, Ptr(to=count), Ptr[ExtensionProperties, MutOrigin.external]()
-            )
+        physical_device,
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        Ptr[ExtensionProperties, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_device_extension_properties(
-                physical_device, p_layer_name, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_device_extension_properties(
+        physical_device,
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        list.unsafe_ptr(),
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_device_layer_properties(
+    fn enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[LayerProperties, MutAnyOrigin],
+        p_properties: Ptr[LayerProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[LayerProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_device_layer_properties(
+    fn enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -711,17 +847,19 @@ struct InstanceFunctionsV1_0(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_layer_properties(
-                physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
-            )
+        physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_device_layer_properties(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_device_layer_properties(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_physical_device_sparse_image_format_properties(
+    fn get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -730,17 +868,26 @@ struct InstanceFunctionsV1_0(Copyable):
         usage: ImageUsageFlags,
         tiling: ImageTiling,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
+        p_properties: Ptr[SparseImageFormatProperties, p_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device, format, type, samples, usage, tiling, Ptr(to=property_count), p_properties
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[SparseImageFormatProperties, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_sparse_image_format_properties(
+    fn get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -756,19 +903,19 @@ struct InstanceFunctionsV1_0(Copyable):
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device,
-            format,
-            type,
-            samples,
-            usage,
-            tiling,
-            Ptr(to=count),
-            Ptr[SparseImageFormatProperties, MutOrigin.external](),
-        )
+    physical_device,
+    format,
+    type,
+    samples,
+    usage,
+    tiling,
+    Ptr(to=count),
+    Ptr[SparseImageFormatProperties, MutOrigin.external](),
+)
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device, format, type, samples, usage, tiling, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, format, type, samples, usage, tiling, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -783,30 +930,36 @@ struct InstanceFunctionsV1_1(Copyable):
         self._v1_0 = InstanceFunctionsAdditionsV1_0(self._dlhandle, instance)
         self._v1_1 = InstanceFunctionsAdditionsV1_1(self._dlhandle, instance)
 
-    fn destroy_instance(
-        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_instance[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, p_allocator_origin]
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
         """
-        return self._v1_0.destroy_instance(instance, p_allocator)
+        return self._v1_0.destroy_instance(
+            instance, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn enumerate_physical_devices(
+    fn enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutAnyOrigin](
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
-        p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
+        p_physical_devices: Ptr[PhysicalDevice, p_physical_devices_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
-            instance, Ptr(to=physical_device_count), p_physical_devices
+            instance,
+            Ptr(to=physical_device_count),
+            Ptr(to=p_physical_devices).bitcast[Ptr[PhysicalDevice, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
+    fn enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutAnyOrigin](
+        self, instance: Instance
+    ) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
@@ -816,11 +969,11 @@ struct InstanceFunctionsV1_1(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_physical_devices(
-                instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
-            )
+        instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_physical_devices(instance, Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_0.enumerate_physical_devices(instance, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -874,21 +1027,27 @@ struct InstanceFunctionsV1_1(Copyable):
         """
         return self._v1_0.get_physical_device_properties(physical_device, Ptr(to=properties))
 
-    fn get_physical_device_queue_family_properties(
+    fn get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
+        p_queue_family_properties: Ptr[QueueFamilyProperties, p_queue_family_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         return self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
+            physical_device,
+            Ptr(to=queue_family_property_count),
+            Ptr(to=p_queue_family_properties).bitcast[Ptr[QueueFamilyProperties, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_queue_family_properties(
+    fn get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
@@ -898,12 +1057,12 @@ struct InstanceFunctionsV1_1(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
-        )
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -916,45 +1075,61 @@ struct InstanceFunctionsV1_1(Copyable):
         """
         return self._v1_0.get_physical_device_memory_properties(physical_device, Ptr(to=memory_properties))
 
-    fn get_instance_proc_addr(
-        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
+    fn get_instance_proc_addr[p_name_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name)
+        return self._v1_0.get_instance_proc_addr(
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
-    fn create_device(
+    fn create_device[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut device: Device,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDevice.html
         """
-        return self._v1_0.create_device(physical_device, Ptr(to=create_info), p_allocator, Ptr(to=device))
+        return self._v1_0.create_device(
+            physical_device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=device),
+        )
 
-    fn enumerate_device_extension_properties(
+    fn enumerate_device_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+        p_properties: Ptr[ExtensionProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
-            physical_device, p_layer_name, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[ExtensionProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    fn enumerate_device_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -965,31 +1140,39 @@ struct InstanceFunctionsV1_1(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_extension_properties(
-                physical_device, p_layer_name, Ptr(to=count), Ptr[ExtensionProperties, MutOrigin.external]()
-            )
+        physical_device,
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        Ptr[ExtensionProperties, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_device_extension_properties(
-                physical_device, p_layer_name, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_device_extension_properties(
+        physical_device,
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        list.unsafe_ptr(),
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_device_layer_properties(
+    fn enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[LayerProperties, MutAnyOrigin],
+        p_properties: Ptr[LayerProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[LayerProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_device_layer_properties(
+    fn enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -1001,17 +1184,19 @@ struct InstanceFunctionsV1_1(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_layer_properties(
-                physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
-            )
+        physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_device_layer_properties(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_device_layer_properties(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_physical_device_sparse_image_format_properties(
+    fn get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -1020,17 +1205,26 @@ struct InstanceFunctionsV1_1(Copyable):
         usage: ImageUsageFlags,
         tiling: ImageTiling,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
+        p_properties: Ptr[SparseImageFormatProperties, p_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device, format, type, samples, usage, tiling, Ptr(to=property_count), p_properties
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[SparseImageFormatProperties, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_sparse_image_format_properties(
+    fn get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -1046,37 +1240,43 @@ struct InstanceFunctionsV1_1(Copyable):
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device,
-            format,
-            type,
-            samples,
-            usage,
-            tiling,
-            Ptr(to=count),
-            Ptr[SparseImageFormatProperties, MutOrigin.external](),
-        )
+    physical_device,
+    format,
+    type,
+    samples,
+    usage,
+    tiling,
+    Ptr(to=count),
+    Ptr[SparseImageFormatProperties, MutOrigin.external](),
+)
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device, format, type, samples, usage, tiling, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, format, type, samples, usage, tiling, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
-    fn enumerate_physical_device_groups(
+    fn enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, p_physical_device_group_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         return self._v1_1.enumerate_physical_device_groups(
-            instance, Ptr(to=physical_device_group_count), p_physical_device_group_properties
+            instance,
+            Ptr(to=physical_device_group_count),
+            Ptr(to=p_physical_device_group_properties).bitcast[Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_physical_device_groups(
+    fn enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, instance: Instance
     ) -> ListResult[PhysicalDeviceGroupProperties]:
         """See official vulkan docs for details.
@@ -1088,11 +1288,11 @@ struct InstanceFunctionsV1_1(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_1.enumerate_physical_device_groups(
-                instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
-            )
+        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_1.enumerate_physical_device_groups(instance, Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_1.enumerate_physical_device_groups(instance, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1142,21 +1342,27 @@ struct InstanceFunctionsV1_1(Copyable):
             physical_device, Ptr(to=image_format_info), Ptr(to=image_format_properties)
         )
 
-    fn get_physical_device_queue_family_properties_2(
+    fn get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, p_queue_family_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
+            physical_device,
+            Ptr(to=queue_family_property_count),
+            Ptr(to=p_queue_family_properties).bitcast[Ptr[QueueFamilyProperties2, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_queue_family_properties_2(
+    fn get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties2]:
         """See official vulkan docs for details.
@@ -1166,12 +1372,12 @@ struct InstanceFunctionsV1_1(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
-        )
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_1.get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -1188,22 +1394,29 @@ struct InstanceFunctionsV1_1(Copyable):
             physical_device, Ptr(to=memory_properties)
         )
 
-    fn get_physical_device_sparse_image_format_properties_2(
+    fn get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
+        p_properties: Ptr[SparseImageFormatProperties2, p_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
-            physical_device, Ptr(to=format_info), Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=format_info),
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[SparseImageFormatProperties2, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_sparse_image_format_properties_2(
+    fn get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
     ) -> List[SparseImageFormatProperties2]:
         """See official vulkan docs for details.
@@ -1213,15 +1426,15 @@ struct InstanceFunctionsV1_1(Copyable):
         var list = List[SparseImageFormatProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-            physical_device,
-            Ptr(to=format_info),
-            Ptr(to=count),
-            Ptr[SparseImageFormatProperties2, MutOrigin.external](),
-        )
+    physical_device,
+    Ptr(to=format_info),
+    Ptr(to=count),
+    Ptr[SparseImageFormatProperties2, MutOrigin.external](),
+)
         list.reserve(Int(count))
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-            physical_device, Ptr(to=format_info), Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=format_info), Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -1278,30 +1491,36 @@ struct InstanceFunctionsV1_2(Copyable):
         self._v1_0 = InstanceFunctionsAdditionsV1_0(self._dlhandle, instance)
         self._v1_1 = InstanceFunctionsAdditionsV1_1(self._dlhandle, instance)
 
-    fn destroy_instance(
-        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_instance[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, p_allocator_origin]
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
         """
-        return self._v1_0.destroy_instance(instance, p_allocator)
+        return self._v1_0.destroy_instance(
+            instance, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn enumerate_physical_devices(
+    fn enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutAnyOrigin](
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
-        p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
+        p_physical_devices: Ptr[PhysicalDevice, p_physical_devices_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
-            instance, Ptr(to=physical_device_count), p_physical_devices
+            instance,
+            Ptr(to=physical_device_count),
+            Ptr(to=p_physical_devices).bitcast[Ptr[PhysicalDevice, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
+    fn enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutAnyOrigin](
+        self, instance: Instance
+    ) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
@@ -1311,11 +1530,11 @@ struct InstanceFunctionsV1_2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_physical_devices(
-                instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
-            )
+        instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_physical_devices(instance, Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_0.enumerate_physical_devices(instance, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1369,21 +1588,27 @@ struct InstanceFunctionsV1_2(Copyable):
         """
         return self._v1_0.get_physical_device_properties(physical_device, Ptr(to=properties))
 
-    fn get_physical_device_queue_family_properties(
+    fn get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
+        p_queue_family_properties: Ptr[QueueFamilyProperties, p_queue_family_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         return self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
+            physical_device,
+            Ptr(to=queue_family_property_count),
+            Ptr(to=p_queue_family_properties).bitcast[Ptr[QueueFamilyProperties, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_queue_family_properties(
+    fn get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
@@ -1393,12 +1618,12 @@ struct InstanceFunctionsV1_2(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
-        )
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -1411,45 +1636,61 @@ struct InstanceFunctionsV1_2(Copyable):
         """
         return self._v1_0.get_physical_device_memory_properties(physical_device, Ptr(to=memory_properties))
 
-    fn get_instance_proc_addr(
-        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
+    fn get_instance_proc_addr[p_name_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name)
+        return self._v1_0.get_instance_proc_addr(
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
-    fn create_device(
+    fn create_device[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut device: Device,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDevice.html
         """
-        return self._v1_0.create_device(physical_device, Ptr(to=create_info), p_allocator, Ptr(to=device))
+        return self._v1_0.create_device(
+            physical_device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=device),
+        )
 
-    fn enumerate_device_extension_properties(
+    fn enumerate_device_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+        p_properties: Ptr[ExtensionProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
-            physical_device, p_layer_name, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[ExtensionProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    fn enumerate_device_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -1460,31 +1701,39 @@ struct InstanceFunctionsV1_2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_extension_properties(
-                physical_device, p_layer_name, Ptr(to=count), Ptr[ExtensionProperties, MutOrigin.external]()
-            )
+        physical_device,
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        Ptr[ExtensionProperties, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_device_extension_properties(
-                physical_device, p_layer_name, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_device_extension_properties(
+        physical_device,
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        list.unsafe_ptr(),
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_device_layer_properties(
+    fn enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[LayerProperties, MutAnyOrigin],
+        p_properties: Ptr[LayerProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[LayerProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_device_layer_properties(
+    fn enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -1496,17 +1745,19 @@ struct InstanceFunctionsV1_2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_layer_properties(
-                physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
-            )
+        physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_device_layer_properties(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_device_layer_properties(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_physical_device_sparse_image_format_properties(
+    fn get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -1515,17 +1766,26 @@ struct InstanceFunctionsV1_2(Copyable):
         usage: ImageUsageFlags,
         tiling: ImageTiling,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
+        p_properties: Ptr[SparseImageFormatProperties, p_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device, format, type, samples, usage, tiling, Ptr(to=property_count), p_properties
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[SparseImageFormatProperties, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_sparse_image_format_properties(
+    fn get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -1541,37 +1801,43 @@ struct InstanceFunctionsV1_2(Copyable):
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device,
-            format,
-            type,
-            samples,
-            usage,
-            tiling,
-            Ptr(to=count),
-            Ptr[SparseImageFormatProperties, MutOrigin.external](),
-        )
+    physical_device,
+    format,
+    type,
+    samples,
+    usage,
+    tiling,
+    Ptr(to=count),
+    Ptr[SparseImageFormatProperties, MutOrigin.external](),
+)
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device, format, type, samples, usage, tiling, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, format, type, samples, usage, tiling, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
-    fn enumerate_physical_device_groups(
+    fn enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, p_physical_device_group_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         return self._v1_1.enumerate_physical_device_groups(
-            instance, Ptr(to=physical_device_group_count), p_physical_device_group_properties
+            instance,
+            Ptr(to=physical_device_group_count),
+            Ptr(to=p_physical_device_group_properties).bitcast[Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_physical_device_groups(
+    fn enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, instance: Instance
     ) -> ListResult[PhysicalDeviceGroupProperties]:
         """See official vulkan docs for details.
@@ -1583,11 +1849,11 @@ struct InstanceFunctionsV1_2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_1.enumerate_physical_device_groups(
-                instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
-            )
+        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_1.enumerate_physical_device_groups(instance, Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_1.enumerate_physical_device_groups(instance, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1637,21 +1903,27 @@ struct InstanceFunctionsV1_2(Copyable):
             physical_device, Ptr(to=image_format_info), Ptr(to=image_format_properties)
         )
 
-    fn get_physical_device_queue_family_properties_2(
+    fn get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, p_queue_family_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
+            physical_device,
+            Ptr(to=queue_family_property_count),
+            Ptr(to=p_queue_family_properties).bitcast[Ptr[QueueFamilyProperties2, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_queue_family_properties_2(
+    fn get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties2]:
         """See official vulkan docs for details.
@@ -1661,12 +1933,12 @@ struct InstanceFunctionsV1_2(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
-        )
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_1.get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -1683,22 +1955,29 @@ struct InstanceFunctionsV1_2(Copyable):
             physical_device, Ptr(to=memory_properties)
         )
 
-    fn get_physical_device_sparse_image_format_properties_2(
+    fn get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
+        p_properties: Ptr[SparseImageFormatProperties2, p_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
-            physical_device, Ptr(to=format_info), Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=format_info),
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[SparseImageFormatProperties2, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_sparse_image_format_properties_2(
+    fn get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
     ) -> List[SparseImageFormatProperties2]:
         """See official vulkan docs for details.
@@ -1708,15 +1987,15 @@ struct InstanceFunctionsV1_2(Copyable):
         var list = List[SparseImageFormatProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-            physical_device,
-            Ptr(to=format_info),
-            Ptr(to=count),
-            Ptr[SparseImageFormatProperties2, MutOrigin.external](),
-        )
+    physical_device,
+    Ptr(to=format_info),
+    Ptr(to=count),
+    Ptr[SparseImageFormatProperties2, MutOrigin.external](),
+)
         list.reserve(Int(count))
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-            physical_device, Ptr(to=format_info), Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=format_info), Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -1775,30 +2054,36 @@ struct InstanceFunctionsV1_3(Copyable):
         self._v1_1 = InstanceFunctionsAdditionsV1_1(self._dlhandle, instance)
         self._v1_3 = InstanceFunctionsAdditionsV1_3(self._dlhandle, instance)
 
-    fn destroy_instance(
-        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_instance[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, p_allocator_origin]
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
         """
-        return self._v1_0.destroy_instance(instance, p_allocator)
+        return self._v1_0.destroy_instance(
+            instance, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn enumerate_physical_devices(
+    fn enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutAnyOrigin](
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
-        p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
+        p_physical_devices: Ptr[PhysicalDevice, p_physical_devices_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
-            instance, Ptr(to=physical_device_count), p_physical_devices
+            instance,
+            Ptr(to=physical_device_count),
+            Ptr(to=p_physical_devices).bitcast[Ptr[PhysicalDevice, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
+    fn enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutAnyOrigin](
+        self, instance: Instance
+    ) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
@@ -1808,11 +2093,11 @@ struct InstanceFunctionsV1_3(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_physical_devices(
-                instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
-            )
+        instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_physical_devices(instance, Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_0.enumerate_physical_devices(instance, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1866,21 +2151,27 @@ struct InstanceFunctionsV1_3(Copyable):
         """
         return self._v1_0.get_physical_device_properties(physical_device, Ptr(to=properties))
 
-    fn get_physical_device_queue_family_properties(
+    fn get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
+        p_queue_family_properties: Ptr[QueueFamilyProperties, p_queue_family_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         return self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
+            physical_device,
+            Ptr(to=queue_family_property_count),
+            Ptr(to=p_queue_family_properties).bitcast[Ptr[QueueFamilyProperties, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_queue_family_properties(
+    fn get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
@@ -1890,12 +2181,12 @@ struct InstanceFunctionsV1_3(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
-        )
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -1908,45 +2199,61 @@ struct InstanceFunctionsV1_3(Copyable):
         """
         return self._v1_0.get_physical_device_memory_properties(physical_device, Ptr(to=memory_properties))
 
-    fn get_instance_proc_addr(
-        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
+    fn get_instance_proc_addr[p_name_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name)
+        return self._v1_0.get_instance_proc_addr(
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
-    fn create_device(
+    fn create_device[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut device: Device,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDevice.html
         """
-        return self._v1_0.create_device(physical_device, Ptr(to=create_info), p_allocator, Ptr(to=device))
+        return self._v1_0.create_device(
+            physical_device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=device),
+        )
 
-    fn enumerate_device_extension_properties(
+    fn enumerate_device_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+        p_properties: Ptr[ExtensionProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
-            physical_device, p_layer_name, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[ExtensionProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    fn enumerate_device_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -1957,31 +2264,39 @@ struct InstanceFunctionsV1_3(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_extension_properties(
-                physical_device, p_layer_name, Ptr(to=count), Ptr[ExtensionProperties, MutOrigin.external]()
-            )
+        physical_device,
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        Ptr[ExtensionProperties, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_device_extension_properties(
-                physical_device, p_layer_name, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_device_extension_properties(
+        physical_device,
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        list.unsafe_ptr(),
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_device_layer_properties(
+    fn enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[LayerProperties, MutAnyOrigin],
+        p_properties: Ptr[LayerProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[LayerProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_device_layer_properties(
+    fn enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -1993,17 +2308,19 @@ struct InstanceFunctionsV1_3(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_layer_properties(
-                physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
-            )
+        physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_device_layer_properties(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_device_layer_properties(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_physical_device_sparse_image_format_properties(
+    fn get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -2012,17 +2329,26 @@ struct InstanceFunctionsV1_3(Copyable):
         usage: ImageUsageFlags,
         tiling: ImageTiling,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
+        p_properties: Ptr[SparseImageFormatProperties, p_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device, format, type, samples, usage, tiling, Ptr(to=property_count), p_properties
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[SparseImageFormatProperties, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_sparse_image_format_properties(
+    fn get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -2038,37 +2364,43 @@ struct InstanceFunctionsV1_3(Copyable):
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device,
-            format,
-            type,
-            samples,
-            usage,
-            tiling,
-            Ptr(to=count),
-            Ptr[SparseImageFormatProperties, MutOrigin.external](),
-        )
+    physical_device,
+    format,
+    type,
+    samples,
+    usage,
+    tiling,
+    Ptr(to=count),
+    Ptr[SparseImageFormatProperties, MutOrigin.external](),
+)
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device, format, type, samples, usage, tiling, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, format, type, samples, usage, tiling, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
-    fn enumerate_physical_device_groups(
+    fn enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, p_physical_device_group_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         return self._v1_1.enumerate_physical_device_groups(
-            instance, Ptr(to=physical_device_group_count), p_physical_device_group_properties
+            instance,
+            Ptr(to=physical_device_group_count),
+            Ptr(to=p_physical_device_group_properties).bitcast[Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_physical_device_groups(
+    fn enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, instance: Instance
     ) -> ListResult[PhysicalDeviceGroupProperties]:
         """See official vulkan docs for details.
@@ -2080,11 +2412,11 @@ struct InstanceFunctionsV1_3(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_1.enumerate_physical_device_groups(
-                instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
-            )
+        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_1.enumerate_physical_device_groups(instance, Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_1.enumerate_physical_device_groups(instance, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2134,21 +2466,27 @@ struct InstanceFunctionsV1_3(Copyable):
             physical_device, Ptr(to=image_format_info), Ptr(to=image_format_properties)
         )
 
-    fn get_physical_device_queue_family_properties_2(
+    fn get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, p_queue_family_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
+            physical_device,
+            Ptr(to=queue_family_property_count),
+            Ptr(to=p_queue_family_properties).bitcast[Ptr[QueueFamilyProperties2, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_queue_family_properties_2(
+    fn get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties2]:
         """See official vulkan docs for details.
@@ -2158,12 +2496,12 @@ struct InstanceFunctionsV1_3(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
-        )
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_1.get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -2180,22 +2518,29 @@ struct InstanceFunctionsV1_3(Copyable):
             physical_device, Ptr(to=memory_properties)
         )
 
-    fn get_physical_device_sparse_image_format_properties_2(
+    fn get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
+        p_properties: Ptr[SparseImageFormatProperties2, p_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
-            physical_device, Ptr(to=format_info), Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=format_info),
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[SparseImageFormatProperties2, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_sparse_image_format_properties_2(
+    fn get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
     ) -> List[SparseImageFormatProperties2]:
         """See official vulkan docs for details.
@@ -2205,15 +2550,15 @@ struct InstanceFunctionsV1_3(Copyable):
         var list = List[SparseImageFormatProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-            physical_device,
-            Ptr(to=format_info),
-            Ptr(to=count),
-            Ptr[SparseImageFormatProperties2, MutOrigin.external](),
-        )
+    physical_device,
+    Ptr(to=format_info),
+    Ptr(to=count),
+    Ptr[SparseImageFormatProperties2, MutOrigin.external](),
+)
         list.reserve(Int(count))
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-            physical_device, Ptr(to=format_info), Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=format_info), Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -2259,21 +2604,23 @@ struct InstanceFunctionsV1_3(Copyable):
             physical_device, Ptr(to=external_semaphore_info), Ptr(to=external_semaphore_properties)
         )
 
-    fn get_physical_device_tool_properties(
+    fn get_physical_device_tool_properties[p_tool_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         mut tool_count: UInt32,
-        p_tool_properties: Ptr[PhysicalDeviceToolProperties, MutAnyOrigin],
+        p_tool_properties: Ptr[PhysicalDeviceToolProperties, p_tool_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
         """
         return self._v1_3.get_physical_device_tool_properties(
-            physical_device, Ptr(to=tool_count), p_tool_properties
+            physical_device,
+            Ptr(to=tool_count),
+            Ptr(to=p_tool_properties).bitcast[Ptr[PhysicalDeviceToolProperties, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_tool_properties(
+    fn get_physical_device_tool_properties[p_tool_properties_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[PhysicalDeviceToolProperties]:
         """See official vulkan docs for details.
@@ -2285,13 +2632,13 @@ struct InstanceFunctionsV1_3(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_3.get_physical_device_tool_properties(
-                physical_device, Ptr(to=count), Ptr[PhysicalDeviceToolProperties, MutOrigin.external]()
-            )
+        physical_device, Ptr(to=count), Ptr[PhysicalDeviceToolProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_3.get_physical_device_tool_properties(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_3.get_physical_device_tool_properties(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2308,30 +2655,36 @@ struct InstanceFunctionsV1_4(Copyable):
         self._v1_1 = InstanceFunctionsAdditionsV1_1(self._dlhandle, instance)
         self._v1_3 = InstanceFunctionsAdditionsV1_3(self._dlhandle, instance)
 
-    fn destroy_instance(
-        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_instance[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, instance: Instance, p_allocator: Ptr[AllocationCallbacks, p_allocator_origin]
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyInstance.html
         """
-        return self._v1_0.destroy_instance(instance, p_allocator)
+        return self._v1_0.destroy_instance(
+            instance, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn enumerate_physical_devices(
+    fn enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutAnyOrigin](
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
-        p_physical_devices: Ptr[PhysicalDevice, MutAnyOrigin],
+        p_physical_devices: Ptr[PhysicalDevice, p_physical_devices_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
         """
         return self._v1_0.enumerate_physical_devices(
-            instance, Ptr(to=physical_device_count), p_physical_devices
+            instance,
+            Ptr(to=physical_device_count),
+            Ptr(to=p_physical_devices).bitcast[Ptr[PhysicalDevice, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_physical_devices(self, instance: Instance) -> ListResult[PhysicalDevice]:
+    fn enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutAnyOrigin](
+        self, instance: Instance
+    ) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDevices.html
@@ -2341,11 +2694,11 @@ struct InstanceFunctionsV1_4(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_physical_devices(
-                instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
-            )
+        instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_physical_devices(instance, Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_0.enumerate_physical_devices(instance, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2399,21 +2752,27 @@ struct InstanceFunctionsV1_4(Copyable):
         """
         return self._v1_0.get_physical_device_properties(physical_device, Ptr(to=properties))
 
-    fn get_physical_device_queue_family_properties(
+    fn get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties, MutAnyOrigin],
+        p_queue_family_properties: Ptr[QueueFamilyProperties, p_queue_family_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties.html
         """
         return self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
+            physical_device,
+            Ptr(to=queue_family_property_count),
+            Ptr(to=p_queue_family_properties).bitcast[Ptr[QueueFamilyProperties, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_queue_family_properties(
+    fn get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
@@ -2423,12 +2782,12 @@ struct InstanceFunctionsV1_4(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
-        )
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
-            physical_device, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -2441,45 +2800,61 @@ struct InstanceFunctionsV1_4(Copyable):
         """
         return self._v1_0.get_physical_device_memory_properties(physical_device, Ptr(to=memory_properties))
 
-    fn get_instance_proc_addr(
-        self, instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
+    fn get_instance_proc_addr[p_name_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
-        return self._v1_0.get_instance_proc_addr(instance, p_name)
+        return self._v1_0.get_instance_proc_addr(
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
-    fn create_device(
+    fn create_device[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut device: Device,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDevice.html
         """
-        return self._v1_0.create_device(physical_device, Ptr(to=create_info), p_allocator, Ptr(to=device))
+        return self._v1_0.create_device(
+            physical_device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=device),
+        )
 
-    fn enumerate_device_extension_properties(
+    fn enumerate_device_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: CStringSlice[ImmutAnyOrigin],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
-        p_properties: Ptr[ExtensionProperties, MutAnyOrigin],
+        p_properties: Ptr[ExtensionProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceExtensionProperties.html
         """
         return self._v1_0.enumerate_device_extension_properties(
-            physical_device, p_layer_name, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[ExtensionProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_device_extension_properties(
-        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[ImmutAnyOrigin]
+    fn enumerate_device_extension_properties[
+        p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_properties_origin: MutOrigin = MutAnyOrigin,
+    ](
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -2490,31 +2865,39 @@ struct InstanceFunctionsV1_4(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_extension_properties(
-                physical_device, p_layer_name, Ptr(to=count), Ptr[ExtensionProperties, MutOrigin.external]()
-            )
+        physical_device,
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        Ptr[ExtensionProperties, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_device_extension_properties(
-                physical_device, p_layer_name, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_device_extension_properties(
+        physical_device,
+        Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
+        Ptr(to=count),
+        list.unsafe_ptr(),
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn enumerate_device_layer_properties(
+    fn enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[LayerProperties, MutAnyOrigin],
+        p_properties: Ptr[LayerProperties, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateDeviceLayerProperties.html
         """
         return self._v1_0.enumerate_device_layer_properties(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[LayerProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_device_layer_properties(
+    fn enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -2526,17 +2909,19 @@ struct InstanceFunctionsV1_4(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_layer_properties(
-                physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
-            )
+        physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.enumerate_device_layer_properties(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_0.enumerate_device_layer_properties(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_physical_device_sparse_image_format_properties(
+    fn get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -2545,17 +2930,26 @@ struct InstanceFunctionsV1_4(Copyable):
         usage: ImageUsageFlags,
         tiling: ImageTiling,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties, MutAnyOrigin],
+        p_properties: Ptr[SparseImageFormatProperties, p_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties.html
         """
         return self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device, format, type, samples, usage, tiling, Ptr(to=property_count), p_properties
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[SparseImageFormatProperties, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_sparse_image_format_properties(
+    fn get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -2571,37 +2965,43 @@ struct InstanceFunctionsV1_4(Copyable):
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device,
-            format,
-            type,
-            samples,
-            usage,
-            tiling,
-            Ptr(to=count),
-            Ptr[SparseImageFormatProperties, MutOrigin.external](),
-        )
+    physical_device,
+    format,
+    type,
+    samples,
+    usage,
+    tiling,
+    Ptr(to=count),
+    Ptr[SparseImageFormatProperties, MutOrigin.external](),
+)
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
-            physical_device, format, type, samples, usage, tiling, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, format, type, samples, usage, tiling, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
-    fn enumerate_physical_device_groups(
+    fn enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, p_physical_device_group_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         return self._v1_1.enumerate_physical_device_groups(
-            instance, Ptr(to=physical_device_group_count), p_physical_device_group_properties
+            instance,
+            Ptr(to=physical_device_group_count),
+            Ptr(to=p_physical_device_group_properties).bitcast[Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_physical_device_groups(
+    fn enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, instance: Instance
     ) -> ListResult[PhysicalDeviceGroupProperties]:
         """See official vulkan docs for details.
@@ -2613,11 +3013,11 @@ struct InstanceFunctionsV1_4(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_1.enumerate_physical_device_groups(
-                instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
-            )
+        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_1.enumerate_physical_device_groups(instance, Ptr(to=count), list.unsafe_ptr())
+                result = self._v1_1.enumerate_physical_device_groups(instance, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2667,21 +3067,27 @@ struct InstanceFunctionsV1_4(Copyable):
             physical_device, Ptr(to=image_format_info), Ptr(to=image_format_properties)
         )
 
-    fn get_physical_device_queue_family_properties_2(
+    fn get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, p_queue_family_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         return self._v1_1.get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
+            physical_device,
+            Ptr(to=queue_family_property_count),
+            Ptr(to=p_queue_family_properties).bitcast[Ptr[QueueFamilyProperties2, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_queue_family_properties_2(
+    fn get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties2]:
         """See official vulkan docs for details.
@@ -2691,12 +3097,12 @@ struct InstanceFunctionsV1_4(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
-        )
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_1.get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -2713,22 +3119,29 @@ struct InstanceFunctionsV1_4(Copyable):
             physical_device, Ptr(to=memory_properties)
         )
 
-    fn get_physical_device_sparse_image_format_properties_2(
+    fn get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
+        p_properties: Ptr[SparseImageFormatProperties2, p_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         return self._v1_1.get_physical_device_sparse_image_format_properties_2(
-            physical_device, Ptr(to=format_info), Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=format_info),
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[SparseImageFormatProperties2, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_sparse_image_format_properties_2(
+    fn get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
     ) -> List[SparseImageFormatProperties2]:
         """See official vulkan docs for details.
@@ -2738,15 +3151,15 @@ struct InstanceFunctionsV1_4(Copyable):
         var list = List[SparseImageFormatProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-            physical_device,
-            Ptr(to=format_info),
-            Ptr(to=count),
-            Ptr[SparseImageFormatProperties2, MutOrigin.external](),
-        )
+    physical_device,
+    Ptr(to=format_info),
+    Ptr(to=count),
+    Ptr[SparseImageFormatProperties2, MutOrigin.external](),
+)
         list.reserve(Int(count))
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-            physical_device, Ptr(to=format_info), Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=format_info), Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -2792,21 +3205,23 @@ struct InstanceFunctionsV1_4(Copyable):
             physical_device, Ptr(to=external_semaphore_info), Ptr(to=external_semaphore_properties)
         )
 
-    fn get_physical_device_tool_properties(
+    fn get_physical_device_tool_properties[p_tool_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         mut tool_count: UInt32,
-        p_tool_properties: Ptr[PhysicalDeviceToolProperties, MutAnyOrigin],
+        p_tool_properties: Ptr[PhysicalDeviceToolProperties, p_tool_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceToolProperties.html
         """
         return self._v1_3.get_physical_device_tool_properties(
-            physical_device, Ptr(to=tool_count), p_tool_properties
+            physical_device,
+            Ptr(to=tool_count),
+            Ptr(to=p_tool_properties).bitcast[Ptr[PhysicalDeviceToolProperties, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_tool_properties(
+    fn get_physical_device_tool_properties[p_tool_properties_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[PhysicalDeviceToolProperties]:
         """See official vulkan docs for details.
@@ -2818,13 +3233,13 @@ struct InstanceFunctionsV1_4(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_3.get_physical_device_tool_properties(
-                physical_device, Ptr(to=count), Ptr[PhysicalDeviceToolProperties, MutOrigin.external]()
-            )
+        physical_device, Ptr(to=count), Ptr[PhysicalDeviceToolProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_3.get_physical_device_tool_properties(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._v1_3.get_physical_device_tool_properties(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2837,21 +3252,27 @@ struct DeviceFunctionsV1_0(Copyable):
         self._dlhandle = global_functions.get_dlhandle()
         self._v1_0 = DeviceFunctionsAdditionsV1_0(self._dlhandle, device)
 
-    fn get_device_proc_addr(
-        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
+    fn get_device_proc_addr[p_name_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name)
+        return self._v1_0.get_device_proc_addr(
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
+    fn destroy_device[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, p_allocator: Ptr[AllocationCallbacks, p_allocator_origin]
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
         """
-        return self._v1_0.destroy_device(device, p_allocator)
+        return self._v1_0.destroy_device(
+            device, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_device_queue(
         self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut queue: Queue
@@ -2862,18 +3283,20 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.get_device_queue(device, queue_family_index, queue_index, Ptr(to=queue))
 
-    fn queue_submit(
+    fn queue_submit[p_submits_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
-        p_submits: Ptr[SubmitInfo, ImmutAnyOrigin],
+        p_submits: Ptr[SubmitInfo, p_submits_origin],
         fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit.html
         """
-        return self._v1_0.queue_submit(queue, submit_count, p_submits, fence)
+        return self._v1_0.queue_submit(
+            queue, submit_count, Ptr(to=p_submits).bitcast[Ptr[SubmitInfo, ImmutAnyOrigin]]()[], fence
+        )
 
     fn queue_wait_idle(self, queue: Queue) -> Result:
         """See official vulkan docs for details.
@@ -2889,30 +3312,37 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.device_wait_idle(device)
 
-    fn allocate_memory(
+    fn allocate_memory[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateMemory.html
         """
-        return self._v1_0.allocate_memory(device, Ptr(to=allocate_info), p_allocator, Ptr(to=memory))
+        return self._v1_0.allocate_memory(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=memory),
+        )
 
-    fn free_memory(
+    fn free_memory[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeMemory.html
         """
-        return self._v1_0.free_memory(device, memory, p_allocator)
+        return self._v1_0.free_memory(
+            device, memory, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn map_memory(
         self,
@@ -2936,29 +3366,37 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.unmap_memory(device, memory)
 
-    fn flush_mapped_memory_ranges(
+    fn flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
-        p_memory_ranges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
+        p_memory_ranges: Ptr[MappedMemoryRange, p_memory_ranges_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFlushMappedMemoryRanges.html
         """
-        return self._v1_0.flush_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.flush_mapped_memory_ranges(
+            device,
+            memory_range_count,
+            Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutAnyOrigin]]()[],
+        )
 
-    fn invalidate_mapped_memory_ranges(
+    fn invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
-        p_memory_ranges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
+        p_memory_ranges: Ptr[MappedMemoryRange, p_memory_ranges_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkInvalidateMappedMemoryRanges.html
         """
-        return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.invalidate_mapped_memory_ranges(
+            device,
+            memory_range_count,
+            Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutAnyOrigin]]()[],
+        )
 
     fn get_device_memory_commitment(
         self, device: Device, memory: DeviceMemory, mut committed_memory_in_bytes: DeviceSize
@@ -3005,22 +3443,29 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.get_image_memory_requirements(device, image, Ptr(to=memory_requirements))
 
-    fn get_image_sparse_memory_requirements(
+    fn get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         image: Image,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, p_sparse_memory_requirements_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         return self._v1_0.get_image_sparse_memory_requirements(
-            device, image, Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
+            device,
+            image,
+            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements, MutAnyOrigin]]()[],
         )
 
-    fn get_image_sparse_memory_requirements(
+    fn get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, image: Image
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
@@ -3030,56 +3475,73 @@ struct DeviceFunctionsV1_0(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-            device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
-        )
+    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(device, image, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
-    fn queue_bind_sparse(
+    fn queue_bind_sparse[p_bind_info_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         queue: Queue,
         bind_info_count: UInt32,
-        p_bind_info: Ptr[BindSparseInfo, ImmutAnyOrigin],
+        p_bind_info: Ptr[BindSparseInfo, p_bind_info_origin],
         fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBindSparse.html
         """
-        return self._v1_0.queue_bind_sparse(queue, bind_info_count, p_bind_info, fence)
+        return self._v1_0.queue_bind_sparse(
+            queue,
+            bind_info_count,
+            Ptr(to=p_bind_info).bitcast[Ptr[BindSparseInfo, ImmutAnyOrigin]]()[],
+            fence,
+        )
 
-    fn create_fence(
+    fn create_fence[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: FenceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFence.html
         """
-        return self._v1_0.create_fence(device, Ptr(to=create_info), p_allocator, Ptr(to=fence))
+        return self._v1_0.create_fence(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=fence),
+        )
 
-    fn destroy_fence(
-        self, device: Device, fence: Fence, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_fence[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFence.html
         """
-        return self._v1_0.destroy_fence(device, fence, p_allocator)
+        return self._v1_0.destroy_fence(
+            device, fence, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn reset_fences(
-        self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, ImmutAnyOrigin]
+    fn reset_fences[p_fences_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, p_fences_origin]
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetFences.html
         """
-        return self._v1_0.reset_fences(device, fence_count, p_fences)
+        return self._v1_0.reset_fences(
+            device, fence_count, Ptr(to=p_fences).bitcast[Ptr[Fence, ImmutAnyOrigin]]()[]
+        )
 
     fn get_fence_status(self, device: Device, fence: Fence) -> Result:
         """See official vulkan docs for details.
@@ -3088,11 +3550,11 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.get_fence_status(device, fence)
 
-    fn wait_for_fences(
+    fn wait_for_fences[p_fences_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         fence_count: UInt32,
-        p_fences: Ptr[Fence, ImmutAnyOrigin],
+        p_fences: Ptr[Fence, p_fences_origin],
         wait_all: Bool32,
         timeout: UInt64,
     ) -> Result:
@@ -3100,54 +3562,73 @@ struct DeviceFunctionsV1_0(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitForFences.html
         """
-        return self._v1_0.wait_for_fences(device, fence_count, p_fences, wait_all, timeout)
+        return self._v1_0.wait_for_fences(
+            device, fence_count, Ptr(to=p_fences).bitcast[Ptr[Fence, ImmutAnyOrigin]]()[], wait_all, timeout
+        )
 
-    fn create_semaphore(
+    fn create_semaphore[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSemaphore.html
         """
-        return self._v1_0.create_semaphore(device, Ptr(to=create_info), p_allocator, Ptr(to=semaphore))
+        return self._v1_0.create_semaphore(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=semaphore),
+        )
 
-    fn destroy_semaphore(
+    fn destroy_semaphore[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         semaphore: Semaphore,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySemaphore.html
         """
-        return self._v1_0.destroy_semaphore(device, semaphore, p_allocator)
+        return self._v1_0.destroy_semaphore(
+            device, semaphore, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_event(
+    fn create_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: EventCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateEvent.html
         """
-        return self._v1_0.create_event(device, Ptr(to=create_info), p_allocator, Ptr(to=event))
+        return self._v1_0.create_event(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=event),
+        )
 
-    fn destroy_event(
-        self, device: Device, event: Event, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        event: Event,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyEvent.html
         """
-        return self._v1_0.destroy_event(device, event, p_allocator)
+        return self._v1_0.destroy_event(
+            device, event, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_event_status(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
@@ -3170,39 +3651,46 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.reset_event(device, event)
 
-    fn create_query_pool(
+    fn create_query_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateQueryPool.html
         """
-        return self._v1_0.create_query_pool(device, Ptr(to=create_info), p_allocator, Ptr(to=query_pool))
+        return self._v1_0.create_query_pool(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=query_pool),
+        )
 
-    fn destroy_query_pool(
+    fn destroy_query_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyQueryPool.html
         """
-        return self._v1_0.destroy_query_pool(device, query_pool, p_allocator)
+        return self._v1_0.destroy_query_pool(
+            device, query_pool, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn get_query_pool_results(
+    fn get_query_pool_results[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
@@ -3211,77 +3699,111 @@ struct DeviceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueryPoolResults.html
         """
         return self._v1_0.get_query_pool_results(
-            device, query_pool, first_query, query_count, data_size, p_data, stride, flags
+            device,
+            query_pool,
+            first_query,
+            query_count,
+            data_size,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
+            stride,
+            flags,
         )
 
-    fn create_buffer(
+    fn create_buffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: BufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBuffer.html
         """
-        return self._v1_0.create_buffer(device, Ptr(to=create_info), p_allocator, Ptr(to=buffer))
+        return self._v1_0.create_buffer(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=buffer),
+        )
 
-    fn destroy_buffer(
-        self, device: Device, buffer: Buffer, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_buffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        buffer: Buffer,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBuffer.html
         """
-        return self._v1_0.destroy_buffer(device, buffer, p_allocator)
+        return self._v1_0.destroy_buffer(
+            device, buffer, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_buffer_view(
+    fn create_buffer_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBufferView.html
         """
-        return self._v1_0.create_buffer_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_buffer_view(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=view),
+        )
 
-    fn destroy_buffer_view(
+    fn destroy_buffer_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         buffer_view: BufferView,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBufferView.html
         """
-        return self._v1_0.destroy_buffer_view(device, buffer_view, p_allocator)
+        return self._v1_0.destroy_buffer_view(
+            device, buffer_view, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_image(
+    fn create_image[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ImageCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImage.html
         """
-        return self._v1_0.create_image(device, Ptr(to=create_info), p_allocator, Ptr(to=image))
+        return self._v1_0.create_image(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=image),
+        )
 
-    fn destroy_image(
-        self, device: Device, image: Image, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_image[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        image: Image,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImage.html
         """
-        return self._v1_0.destroy_image(device, image, p_allocator)
+        return self._v1_0.destroy_image(
+            device, image, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_image_subresource_layout(
         self,
@@ -3296,36 +3818,43 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.get_image_subresource_layout(device, image, Ptr(to=subresource), Ptr(to=layout))
 
-    fn create_image_view(
+    fn create_image_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImageView.html
         """
-        return self._v1_0.create_image_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_image_view(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=view),
+        )
 
-    fn destroy_image_view(
+    fn destroy_image_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         image_view: ImageView,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImageView.html
         """
-        return self._v1_0.destroy_image_view(device, image_view, p_allocator)
+        return self._v1_0.destroy_image_view(
+            device, image_view, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_shader_module(
+    fn create_shader_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
@@ -3333,26 +3862,31 @@ struct DeviceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateShaderModule.html
         """
         return self._v1_0.create_shader_module(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=shader_module)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=shader_module),
         )
 
-    fn destroy_shader_module(
+    fn destroy_shader_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         shader_module: ShaderModule,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyShaderModule.html
         """
-        return self._v1_0.destroy_shader_module(device, shader_module, p_allocator)
+        return self._v1_0.destroy_shader_module(
+            device, shader_module, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_pipeline_cache(
+    fn create_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
@@ -3360,35 +3894,47 @@ struct DeviceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineCache.html
         """
         return self._v1_0.create_pipeline_cache(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_cache)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=pipeline_cache),
         )
 
-    fn destroy_pipeline_cache(
+    fn destroy_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineCache.html
         """
-        return self._v1_0.destroy_pipeline_cache(device, pipeline_cache, p_allocator)
+        return self._v1_0.destroy_pipeline_cache(
+            device,
+            pipeline_cache,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn get_pipeline_cache_data(
+    fn get_pipeline_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         mut data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
-        return self._v1_0.get_pipeline_cache_data(device, pipeline_cache, Ptr(to=data_size), p_data)
+        return self._v1_0.get_pipeline_cache_data(
+            device,
+            pipeline_cache,
+            Ptr(to=data_size),
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
+        )
 
-    fn get_pipeline_cache_data(
+    fn get_pipeline_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -3400,80 +3946,105 @@ struct DeviceFunctionsV1_0(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
-                device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
-            )
+        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.get_pipeline_cache_data(
-                device, pipeline_cache, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
-            )
+                result = self._v1_0.get_pipeline_cache_data(
+        device, pipeline_cache, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn merge_pipeline_caches(
+    fn merge_pipeline_caches[p_src_caches_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         dst_cache: PipelineCache,
         src_cache_count: UInt32,
-        p_src_caches: Ptr[PipelineCache, ImmutAnyOrigin],
+        p_src_caches: Ptr[PipelineCache, p_src_caches_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMergePipelineCaches.html
         """
-        return self._v1_0.merge_pipeline_caches(device, dst_cache, src_cache_count, p_src_caches)
+        return self._v1_0.merge_pipeline_caches(
+            device,
+            dst_cache,
+            src_cache_count,
+            Ptr(to=p_src_caches).bitcast[Ptr[PipelineCache, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_graphics_pipelines(
+    fn create_graphics_pipelines[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[GraphicsPipelineCreateInfo, p_create_infos_origin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateGraphicsPipelines.html
         """
         return self._v1_0.create_graphics_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=p_create_infos).bitcast[Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn create_compute_pipelines(
+    fn create_compute_pipelines[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[ComputePipelineCreateInfo, p_create_infos_origin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateComputePipelines.html
         """
         return self._v1_0.create_compute_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=p_create_infos).bitcast[Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn destroy_pipeline(
+    fn destroy_pipeline[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipeline.html
         """
-        return self._v1_0.destroy_pipeline(device, pipeline, p_allocator)
+        return self._v1_0.destroy_pipeline(
+            device, pipeline, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_pipeline_layout(
+    fn create_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
@@ -3481,51 +4052,65 @@ struct DeviceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineLayout.html
         """
         return self._v1_0.create_pipeline_layout(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_layout)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=pipeline_layout),
         )
 
-    fn destroy_pipeline_layout(
+    fn destroy_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline_layout: PipelineLayout,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineLayout.html
         """
-        return self._v1_0.destroy_pipeline_layout(device, pipeline_layout, p_allocator)
+        return self._v1_0.destroy_pipeline_layout(
+            device,
+            pipeline_layout,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_sampler(
+    fn create_sampler[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SamplerCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSampler.html
         """
-        return self._v1_0.create_sampler(device, Ptr(to=create_info), p_allocator, Ptr(to=sampler))
+        return self._v1_0.create_sampler(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=sampler),
+        )
 
-    fn destroy_sampler(
+    fn destroy_sampler[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         sampler: Sampler,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySampler.html
         """
-        return self._v1_0.destroy_sampler(device, sampler, p_allocator)
+        return self._v1_0.destroy_sampler(
+            device, sampler, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_descriptor_set_layout(
+    fn create_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
@@ -3533,26 +4118,33 @@ struct DeviceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorSetLayout.html
         """
         return self._v1_0.create_descriptor_set_layout(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=set_layout)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=set_layout),
         )
 
-    fn destroy_descriptor_set_layout(
+    fn destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorSetLayout.html
         """
-        return self._v1_0.destroy_descriptor_set_layout(device, descriptor_set_layout, p_allocator)
+        return self._v1_0.destroy_descriptor_set_layout(
+            device,
+            descriptor_set_layout,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_descriptor_pool(
+    fn create_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
@@ -3560,20 +4152,27 @@ struct DeviceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorPool.html
         """
         return self._v1_0.create_descriptor_pool(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_pool)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=descriptor_pool),
         )
 
-    fn destroy_descriptor_pool(
+    fn destroy_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorPool.html
         """
-        return self._v1_0.destroy_descriptor_pool(device, descriptor_pool, p_allocator)
+        return self._v1_0.destroy_descriptor_pool(
+            device,
+            descriptor_pool,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
     fn reset_descriptor_pool(
         self, device: Device, descriptor_pool: DescriptorPool, flags: DescriptorPoolResetFlags
@@ -3584,98 +4183,126 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
-    fn allocate_descriptor_sets(
+    fn allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
-        return self._v1_0.allocate_descriptor_sets(device, Ptr(to=allocate_info), p_descriptor_sets)
+        return self._v1_0.allocate_descriptor_sets(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, MutAnyOrigin]]()[],
+        )
 
-    fn free_descriptor_sets(
+    fn free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeDescriptorSets.html
         """
         return self._v1_0.free_descriptor_sets(
-            device, descriptor_pool, descriptor_set_count, p_descriptor_sets
+            device,
+            descriptor_pool,
+            descriptor_set_count,
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, ImmutAnyOrigin]]()[],
         )
 
-    fn update_descriptor_sets(
+    fn update_descriptor_sets[
+        p_descriptor_writes_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_descriptor_copies_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         device: Device,
         descriptor_write_count: UInt32,
-        p_descriptor_writes: Ptr[WriteDescriptorSet, ImmutAnyOrigin],
+        p_descriptor_writes: Ptr[WriteDescriptorSet, p_descriptor_writes_origin],
         descriptor_copy_count: UInt32,
-        p_descriptor_copies: Ptr[CopyDescriptorSet, ImmutAnyOrigin],
+        p_descriptor_copies: Ptr[CopyDescriptorSet, p_descriptor_copies_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSets.html
         """
         return self._v1_0.update_descriptor_sets(
-            device, descriptor_write_count, p_descriptor_writes, descriptor_copy_count, p_descriptor_copies
+            device,
+            descriptor_write_count,
+            Ptr(to=p_descriptor_writes).bitcast[Ptr[WriteDescriptorSet, ImmutAnyOrigin]]()[],
+            descriptor_copy_count,
+            Ptr(to=p_descriptor_copies).bitcast[Ptr[CopyDescriptorSet, ImmutAnyOrigin]]()[],
         )
 
-    fn create_framebuffer(
+    fn create_framebuffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFramebuffer.html
         """
-        return self._v1_0.create_framebuffer(device, Ptr(to=create_info), p_allocator, Ptr(to=framebuffer))
+        return self._v1_0.create_framebuffer(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=framebuffer),
+        )
 
-    fn destroy_framebuffer(
+    fn destroy_framebuffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         framebuffer: Framebuffer,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFramebuffer.html
         """
-        return self._v1_0.destroy_framebuffer(device, framebuffer, p_allocator)
+        return self._v1_0.destroy_framebuffer(
+            device, framebuffer, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_render_pass(
+    fn create_render_pass[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass.html
         """
-        return self._v1_0.create_render_pass(device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass))
+        return self._v1_0.create_render_pass(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=render_pass),
+        )
 
-    fn destroy_render_pass(
+    fn destroy_render_pass[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         render_pass: RenderPass,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyRenderPass.html
         """
-        return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
+        return self._v1_0.destroy_render_pass(
+            device, render_pass, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_render_area_granularity(
         self, device: Device, render_pass: RenderPass, mut granularity: Extent2D
@@ -3686,11 +4313,11 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.get_render_area_granularity(device, render_pass, Ptr(to=granularity))
 
-    fn create_command_pool(
+    fn create_command_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
@@ -3698,20 +4325,25 @@ struct DeviceFunctionsV1_0(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCommandPool.html
         """
         return self._v1_0.create_command_pool(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=command_pool)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=command_pool),
         )
 
-    fn destroy_command_pool(
+    fn destroy_command_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCommandPool.html
         """
-        return self._v1_0.destroy_command_pool(device, command_pool, p_allocator)
+        return self._v1_0.destroy_command_pool(
+            device, command_pool, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn reset_command_pool(
         self, device: Device, command_pool: CommandPool, flags: CommandPoolResetFlags
@@ -3722,31 +4354,38 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
-    fn allocate_command_buffers(
+    fn allocate_command_buffers[p_command_buffers_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
-        return self._v1_0.allocate_command_buffers(device, Ptr(to=allocate_info), p_command_buffers)
+        return self._v1_0.allocate_command_buffers(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, MutAnyOrigin]]()[],
+        )
 
-    fn free_command_buffers(
+    fn free_command_buffers[p_command_buffers_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeCommandBuffers.html
         """
         return self._v1_0.free_command_buffers(
-            device, command_pool, command_buffer_count, p_command_buffers
+            device,
+            command_pool,
+            command_buffer_count,
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutAnyOrigin]]()[],
         )
 
     fn begin_command_buffer(
@@ -3786,31 +4425,41 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
-    fn cmd_set_viewport(
+    fn cmd_set_viewport[p_viewports_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        p_viewports: Ptr[Viewport, ImmutAnyOrigin],
+        p_viewports: Ptr[Viewport, p_viewports_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewport.html
         """
-        return self._v1_0.cmd_set_viewport(command_buffer, first_viewport, viewport_count, p_viewports)
+        return self._v1_0.cmd_set_viewport(
+            command_buffer,
+            first_viewport,
+            viewport_count,
+            Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutAnyOrigin]]()[],
+        )
 
-    fn cmd_set_scissor(
+    fn cmd_set_scissor[p_scissors_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
         scissor_count: UInt32,
-        p_scissors: Ptr[Rect2D, ImmutAnyOrigin],
+        p_scissors: Ptr[Rect2D, p_scissors_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissor.html
         """
-        return self._v1_0.cmd_set_scissor(command_buffer, first_scissor, scissor_count, p_scissors)
+        return self._v1_0.cmd_set_scissor(
+            command_buffer,
+            first_scissor,
+            scissor_count,
+            Ptr(to=p_scissors).bitcast[Ptr[Rect2D, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_set_line_width(self, command_buffer: CommandBuffer, line_width: Float32):
         """See official vulkan docs for details.
@@ -3879,16 +4528,19 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.cmd_set_stencil_reference(command_buffer, face_mask, reference)
 
-    fn cmd_bind_descriptor_sets(
+    fn cmd_bind_descriptor_sets[
+        p_descriptor_sets_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_dynamic_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
         first_set: UInt32,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
         dynamic_offset_count: UInt32,
-        p_dynamic_offsets: Ptr[UInt32, ImmutAnyOrigin],
+        p_dynamic_offsets: Ptr[UInt32, p_dynamic_offsets_origin],
     ):
         """See official vulkan docs for details.
         
@@ -3900,9 +4552,9 @@ struct DeviceFunctionsV1_0(Copyable):
             layout,
             first_set,
             descriptor_set_count,
-            p_descriptor_sets,
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, ImmutAnyOrigin]]()[],
             dynamic_offset_count,
-            p_dynamic_offsets,
+            Ptr(to=p_dynamic_offsets).bitcast[Ptr[UInt32, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_bind_index_buffer(
@@ -3918,20 +4570,27 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
-    fn cmd_bind_vertex_buffers(
+    fn cmd_bind_vertex_buffers[
+        p_buffers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
-        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_buffers: Ptr[Buffer, p_buffers_origin],
+        p_offsets: Ptr[DeviceSize, p_offsets_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers.html
         """
         return self._v1_0.cmd_bind_vertex_buffers(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets
+            command_buffer,
+            first_binding,
+            binding_count,
+            Ptr(to=p_buffers).bitcast[Ptr[Buffer, ImmutAnyOrigin]]()[],
+            Ptr(to=p_offsets).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_draw(
@@ -4017,21 +4676,27 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.cmd_dispatch_indirect(command_buffer, buffer, offset)
 
-    fn cmd_copy_buffer(
+    fn cmd_copy_buffer[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer.html
         """
-        return self._v1_0.cmd_copy_buffer(command_buffer, src_buffer, dst_buffer, region_count, p_regions)
+        return self._v1_0.cmd_copy_buffer(
+            command_buffer,
+            src_buffer,
+            dst_buffer,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferCopy, ImmutAnyOrigin]]()[],
+        )
 
-    fn cmd_copy_image(
+    fn cmd_copy_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -4039,7 +4704,7 @@ struct DeviceFunctionsV1_0(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[ImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
@@ -4052,10 +4717,10 @@ struct DeviceFunctionsV1_0(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_blit_image(
+    fn cmd_blit_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -4063,7 +4728,7 @@ struct DeviceFunctionsV1_0(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageBlit, ImmutAnyOrigin],
+        p_regions: Ptr[ImageBlit, p_regions_origin],
         filter: Filter,
     ):
         """See official vulkan docs for details.
@@ -4077,57 +4742,73 @@ struct DeviceFunctionsV1_0(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageBlit, ImmutAnyOrigin]]()[],
             filter,
         )
 
-    fn cmd_copy_buffer_to_image(
+    fn cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage.html
         """
         return self._v1_0.cmd_copy_buffer_to_image(
-            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, p_regions
+            command_buffer,
+            src_buffer,
+            dst_image,
+            dst_image_layout,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_copy_image_to_buffer(
+    fn cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
         src_image_layout: ImageLayout,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer.html
         """
         return self._v1_0.cmd_copy_image_to_buffer(
-            command_buffer, src_image, src_image_layout, dst_buffer, region_count, p_regions
+            command_buffer,
+            src_image,
+            src_image_layout,
+            dst_buffer,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_update_buffer(
+    fn cmd_update_buffer[p_data_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         data_size: DeviceSize,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdUpdateBuffer.html
         """
-        return self._v1_0.cmd_update_buffer(command_buffer, dst_buffer, dst_offset, data_size, p_data)
+        return self._v1_0.cmd_update_buffer(
+            command_buffer,
+            dst_buffer,
+            dst_offset,
+            data_size,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_fill_buffer(
         self,
@@ -4143,57 +4824,74 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
-    fn cmd_clear_color_image(
+    fn cmd_clear_color_image[p_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
         color: ClearColorValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
+        p_ranges: Ptr[ImageSubresourceRange, p_ranges_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearColorImage.html
         """
         return self._v1_0.cmd_clear_color_image(
-            command_buffer, image, image_layout, Ptr(to=color), range_count, p_ranges
+            command_buffer,
+            image,
+            image_layout,
+            Ptr(to=color),
+            range_count,
+            Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_clear_depth_stencil_image(
+    fn cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
         depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
+        p_ranges: Ptr[ImageSubresourceRange, p_ranges_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearDepthStencilImage.html
         """
         return self._v1_0.cmd_clear_depth_stencil_image(
-            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, p_ranges
+            command_buffer,
+            image,
+            image_layout,
+            Ptr(to=depth_stencil),
+            range_count,
+            Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_clear_attachments(
+    fn cmd_clear_attachments[
+        p_attachments_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_rects_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
-        p_attachments: Ptr[ClearAttachment, ImmutAnyOrigin],
+        p_attachments: Ptr[ClearAttachment, p_attachments_origin],
         rect_count: UInt32,
-        p_rects: Ptr[ClearRect, ImmutAnyOrigin],
+        p_rects: Ptr[ClearRect, p_rects_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearAttachments.html
         """
         return self._v1_0.cmd_clear_attachments(
-            command_buffer, attachment_count, p_attachments, rect_count, p_rects
+            command_buffer,
+            attachment_count,
+            Ptr(to=p_attachments).bitcast[Ptr[ClearAttachment, ImmutAnyOrigin]]()[],
+            rect_count,
+            Ptr(to=p_rects).bitcast[Ptr[ClearRect, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_resolve_image(
+    fn cmd_resolve_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -4201,7 +4899,7 @@ struct DeviceFunctionsV1_0(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageResolve, ImmutAnyOrigin],
+        p_regions: Ptr[ImageResolve, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
@@ -4214,7 +4912,7 @@ struct DeviceFunctionsV1_0(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageResolve, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_set_event(
@@ -4235,19 +4933,24 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
-    fn cmd_wait_events(
+    fn cmd_wait_events[
+        p_events_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event, ImmutAnyOrigin],
+        p_events: Ptr[Event, p_events_origin],
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
+        p_memory_barriers: Ptr[MemoryBarrier, p_memory_barriers_origin],
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
+        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, p_buffer_memory_barriers_origin],
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
+        p_image_memory_barriers: Ptr[ImageMemoryBarrier, p_image_memory_barriers_origin],
     ):
         """See official vulkan docs for details.
         
@@ -4256,29 +4959,33 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.cmd_wait_events(
             command_buffer,
             event_count,
-            p_events,
+            Ptr(to=p_events).bitcast[Ptr[Event, ImmutAnyOrigin]]()[],
             src_stage_mask,
             dst_stage_mask,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=p_memory_barriers).bitcast[Ptr[MemoryBarrier, ImmutAnyOrigin]]()[],
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=p_buffer_memory_barriers).bitcast[Ptr[BufferMemoryBarrier, ImmutAnyOrigin]]()[],
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_pipeline_barrier(
+    fn cmd_pipeline_barrier[
+        p_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         dependency_flags: DependencyFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
+        p_memory_barriers: Ptr[MemoryBarrier, p_memory_barriers_origin],
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
+        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, p_buffer_memory_barriers_origin],
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
+        p_image_memory_barriers: Ptr[ImageMemoryBarrier, p_image_memory_barriers_origin],
     ):
         """See official vulkan docs for details.
         
@@ -4290,11 +4997,11 @@ struct DeviceFunctionsV1_0(Copyable):
             dst_stage_mask,
             dependency_flags,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=p_memory_barriers).bitcast[Ptr[MemoryBarrier, ImmutAnyOrigin]]()[],
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=p_buffer_memory_barriers).bitcast[Ptr[BufferMemoryBarrier, ImmutAnyOrigin]]()[],
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_begin_query(
@@ -4362,20 +5069,27 @@ struct DeviceFunctionsV1_0(Copyable):
             command_buffer, query_pool, first_query, query_count, dst_buffer, dst_offset, stride, flags
         )
 
-    fn cmd_push_constants(
+    fn cmd_push_constants[p_values_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         layout: PipelineLayout,
         stage_flags: ShaderStageFlags,
         offset: UInt32,
         size: UInt32,
-        p_values: Ptr[NoneType, ImmutAnyOrigin],
+        p_values: Ptr[NoneType, p_values_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants.html
         """
-        return self._v1_0.cmd_push_constants(command_buffer, layout, stage_flags, offset, size, p_values)
+        return self._v1_0.cmd_push_constants(
+            command_buffer,
+            layout,
+            stage_flags,
+            offset,
+            size,
+            Ptr(to=p_values).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_begin_render_pass(
         self,
@@ -4403,17 +5117,21 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
-    fn cmd_execute_commands(
+    fn cmd_execute_commands[p_command_buffers_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteCommands.html
         """
-        return self._v1_0.cmd_execute_commands(command_buffer, command_buffer_count, p_command_buffers)
+        return self._v1_0.cmd_execute_commands(
+            command_buffer,
+            command_buffer_count,
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutAnyOrigin]]()[],
+        )
 
 
 struct DeviceFunctionsV1_1(Copyable):
@@ -4426,21 +5144,27 @@ struct DeviceFunctionsV1_1(Copyable):
         self._v1_0 = DeviceFunctionsAdditionsV1_0(self._dlhandle, device)
         self._v1_1 = DeviceFunctionsAdditionsV1_1(self._dlhandle, device)
 
-    fn get_device_proc_addr(
-        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
+    fn get_device_proc_addr[p_name_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name)
+        return self._v1_0.get_device_proc_addr(
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
+    fn destroy_device[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, p_allocator: Ptr[AllocationCallbacks, p_allocator_origin]
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
         """
-        return self._v1_0.destroy_device(device, p_allocator)
+        return self._v1_0.destroy_device(
+            device, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_device_queue(
         self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut queue: Queue
@@ -4451,18 +5175,20 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.get_device_queue(device, queue_family_index, queue_index, Ptr(to=queue))
 
-    fn queue_submit(
+    fn queue_submit[p_submits_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
-        p_submits: Ptr[SubmitInfo, ImmutAnyOrigin],
+        p_submits: Ptr[SubmitInfo, p_submits_origin],
         fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit.html
         """
-        return self._v1_0.queue_submit(queue, submit_count, p_submits, fence)
+        return self._v1_0.queue_submit(
+            queue, submit_count, Ptr(to=p_submits).bitcast[Ptr[SubmitInfo, ImmutAnyOrigin]]()[], fence
+        )
 
     fn queue_wait_idle(self, queue: Queue) -> Result:
         """See official vulkan docs for details.
@@ -4478,30 +5204,37 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.device_wait_idle(device)
 
-    fn allocate_memory(
+    fn allocate_memory[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateMemory.html
         """
-        return self._v1_0.allocate_memory(device, Ptr(to=allocate_info), p_allocator, Ptr(to=memory))
+        return self._v1_0.allocate_memory(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=memory),
+        )
 
-    fn free_memory(
+    fn free_memory[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeMemory.html
         """
-        return self._v1_0.free_memory(device, memory, p_allocator)
+        return self._v1_0.free_memory(
+            device, memory, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn map_memory(
         self,
@@ -4525,29 +5258,37 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.unmap_memory(device, memory)
 
-    fn flush_mapped_memory_ranges(
+    fn flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
-        p_memory_ranges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
+        p_memory_ranges: Ptr[MappedMemoryRange, p_memory_ranges_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFlushMappedMemoryRanges.html
         """
-        return self._v1_0.flush_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.flush_mapped_memory_ranges(
+            device,
+            memory_range_count,
+            Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutAnyOrigin]]()[],
+        )
 
-    fn invalidate_mapped_memory_ranges(
+    fn invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
-        p_memory_ranges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
+        p_memory_ranges: Ptr[MappedMemoryRange, p_memory_ranges_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkInvalidateMappedMemoryRanges.html
         """
-        return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.invalidate_mapped_memory_ranges(
+            device,
+            memory_range_count,
+            Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutAnyOrigin]]()[],
+        )
 
     fn get_device_memory_commitment(
         self, device: Device, memory: DeviceMemory, mut committed_memory_in_bytes: DeviceSize
@@ -4594,22 +5335,29 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.get_image_memory_requirements(device, image, Ptr(to=memory_requirements))
 
-    fn get_image_sparse_memory_requirements(
+    fn get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         image: Image,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, p_sparse_memory_requirements_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         return self._v1_0.get_image_sparse_memory_requirements(
-            device, image, Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
+            device,
+            image,
+            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements, MutAnyOrigin]]()[],
         )
 
-    fn get_image_sparse_memory_requirements(
+    fn get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, image: Image
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
@@ -4619,56 +5367,73 @@ struct DeviceFunctionsV1_1(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-            device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
-        )
+    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(device, image, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
-    fn queue_bind_sparse(
+    fn queue_bind_sparse[p_bind_info_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         queue: Queue,
         bind_info_count: UInt32,
-        p_bind_info: Ptr[BindSparseInfo, ImmutAnyOrigin],
+        p_bind_info: Ptr[BindSparseInfo, p_bind_info_origin],
         fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBindSparse.html
         """
-        return self._v1_0.queue_bind_sparse(queue, bind_info_count, p_bind_info, fence)
+        return self._v1_0.queue_bind_sparse(
+            queue,
+            bind_info_count,
+            Ptr(to=p_bind_info).bitcast[Ptr[BindSparseInfo, ImmutAnyOrigin]]()[],
+            fence,
+        )
 
-    fn create_fence(
+    fn create_fence[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: FenceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFence.html
         """
-        return self._v1_0.create_fence(device, Ptr(to=create_info), p_allocator, Ptr(to=fence))
+        return self._v1_0.create_fence(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=fence),
+        )
 
-    fn destroy_fence(
-        self, device: Device, fence: Fence, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_fence[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFence.html
         """
-        return self._v1_0.destroy_fence(device, fence, p_allocator)
+        return self._v1_0.destroy_fence(
+            device, fence, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn reset_fences(
-        self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, ImmutAnyOrigin]
+    fn reset_fences[p_fences_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, p_fences_origin]
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetFences.html
         """
-        return self._v1_0.reset_fences(device, fence_count, p_fences)
+        return self._v1_0.reset_fences(
+            device, fence_count, Ptr(to=p_fences).bitcast[Ptr[Fence, ImmutAnyOrigin]]()[]
+        )
 
     fn get_fence_status(self, device: Device, fence: Fence) -> Result:
         """See official vulkan docs for details.
@@ -4677,11 +5442,11 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.get_fence_status(device, fence)
 
-    fn wait_for_fences(
+    fn wait_for_fences[p_fences_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         fence_count: UInt32,
-        p_fences: Ptr[Fence, ImmutAnyOrigin],
+        p_fences: Ptr[Fence, p_fences_origin],
         wait_all: Bool32,
         timeout: UInt64,
     ) -> Result:
@@ -4689,54 +5454,73 @@ struct DeviceFunctionsV1_1(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitForFences.html
         """
-        return self._v1_0.wait_for_fences(device, fence_count, p_fences, wait_all, timeout)
+        return self._v1_0.wait_for_fences(
+            device, fence_count, Ptr(to=p_fences).bitcast[Ptr[Fence, ImmutAnyOrigin]]()[], wait_all, timeout
+        )
 
-    fn create_semaphore(
+    fn create_semaphore[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSemaphore.html
         """
-        return self._v1_0.create_semaphore(device, Ptr(to=create_info), p_allocator, Ptr(to=semaphore))
+        return self._v1_0.create_semaphore(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=semaphore),
+        )
 
-    fn destroy_semaphore(
+    fn destroy_semaphore[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         semaphore: Semaphore,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySemaphore.html
         """
-        return self._v1_0.destroy_semaphore(device, semaphore, p_allocator)
+        return self._v1_0.destroy_semaphore(
+            device, semaphore, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_event(
+    fn create_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: EventCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateEvent.html
         """
-        return self._v1_0.create_event(device, Ptr(to=create_info), p_allocator, Ptr(to=event))
+        return self._v1_0.create_event(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=event),
+        )
 
-    fn destroy_event(
-        self, device: Device, event: Event, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        event: Event,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyEvent.html
         """
-        return self._v1_0.destroy_event(device, event, p_allocator)
+        return self._v1_0.destroy_event(
+            device, event, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_event_status(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
@@ -4759,39 +5543,46 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.reset_event(device, event)
 
-    fn create_query_pool(
+    fn create_query_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateQueryPool.html
         """
-        return self._v1_0.create_query_pool(device, Ptr(to=create_info), p_allocator, Ptr(to=query_pool))
+        return self._v1_0.create_query_pool(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=query_pool),
+        )
 
-    fn destroy_query_pool(
+    fn destroy_query_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyQueryPool.html
         """
-        return self._v1_0.destroy_query_pool(device, query_pool, p_allocator)
+        return self._v1_0.destroy_query_pool(
+            device, query_pool, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn get_query_pool_results(
+    fn get_query_pool_results[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
@@ -4800,77 +5591,111 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueryPoolResults.html
         """
         return self._v1_0.get_query_pool_results(
-            device, query_pool, first_query, query_count, data_size, p_data, stride, flags
+            device,
+            query_pool,
+            first_query,
+            query_count,
+            data_size,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
+            stride,
+            flags,
         )
 
-    fn create_buffer(
+    fn create_buffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: BufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBuffer.html
         """
-        return self._v1_0.create_buffer(device, Ptr(to=create_info), p_allocator, Ptr(to=buffer))
+        return self._v1_0.create_buffer(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=buffer),
+        )
 
-    fn destroy_buffer(
-        self, device: Device, buffer: Buffer, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_buffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        buffer: Buffer,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBuffer.html
         """
-        return self._v1_0.destroy_buffer(device, buffer, p_allocator)
+        return self._v1_0.destroy_buffer(
+            device, buffer, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_buffer_view(
+    fn create_buffer_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBufferView.html
         """
-        return self._v1_0.create_buffer_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_buffer_view(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=view),
+        )
 
-    fn destroy_buffer_view(
+    fn destroy_buffer_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         buffer_view: BufferView,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBufferView.html
         """
-        return self._v1_0.destroy_buffer_view(device, buffer_view, p_allocator)
+        return self._v1_0.destroy_buffer_view(
+            device, buffer_view, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_image(
+    fn create_image[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ImageCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImage.html
         """
-        return self._v1_0.create_image(device, Ptr(to=create_info), p_allocator, Ptr(to=image))
+        return self._v1_0.create_image(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=image),
+        )
 
-    fn destroy_image(
-        self, device: Device, image: Image, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_image[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        image: Image,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImage.html
         """
-        return self._v1_0.destroy_image(device, image, p_allocator)
+        return self._v1_0.destroy_image(
+            device, image, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_image_subresource_layout(
         self,
@@ -4885,36 +5710,43 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.get_image_subresource_layout(device, image, Ptr(to=subresource), Ptr(to=layout))
 
-    fn create_image_view(
+    fn create_image_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImageView.html
         """
-        return self._v1_0.create_image_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_image_view(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=view),
+        )
 
-    fn destroy_image_view(
+    fn destroy_image_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         image_view: ImageView,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImageView.html
         """
-        return self._v1_0.destroy_image_view(device, image_view, p_allocator)
+        return self._v1_0.destroy_image_view(
+            device, image_view, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_shader_module(
+    fn create_shader_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
@@ -4922,26 +5754,31 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateShaderModule.html
         """
         return self._v1_0.create_shader_module(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=shader_module)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=shader_module),
         )
 
-    fn destroy_shader_module(
+    fn destroy_shader_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         shader_module: ShaderModule,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyShaderModule.html
         """
-        return self._v1_0.destroy_shader_module(device, shader_module, p_allocator)
+        return self._v1_0.destroy_shader_module(
+            device, shader_module, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_pipeline_cache(
+    fn create_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
@@ -4949,35 +5786,47 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineCache.html
         """
         return self._v1_0.create_pipeline_cache(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_cache)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=pipeline_cache),
         )
 
-    fn destroy_pipeline_cache(
+    fn destroy_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineCache.html
         """
-        return self._v1_0.destroy_pipeline_cache(device, pipeline_cache, p_allocator)
+        return self._v1_0.destroy_pipeline_cache(
+            device,
+            pipeline_cache,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn get_pipeline_cache_data(
+    fn get_pipeline_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         mut data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
-        return self._v1_0.get_pipeline_cache_data(device, pipeline_cache, Ptr(to=data_size), p_data)
+        return self._v1_0.get_pipeline_cache_data(
+            device,
+            pipeline_cache,
+            Ptr(to=data_size),
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
+        )
 
-    fn get_pipeline_cache_data(
+    fn get_pipeline_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -4989,80 +5838,105 @@ struct DeviceFunctionsV1_1(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
-                device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
-            )
+        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.get_pipeline_cache_data(
-                device, pipeline_cache, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
-            )
+                result = self._v1_0.get_pipeline_cache_data(
+        device, pipeline_cache, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn merge_pipeline_caches(
+    fn merge_pipeline_caches[p_src_caches_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         dst_cache: PipelineCache,
         src_cache_count: UInt32,
-        p_src_caches: Ptr[PipelineCache, ImmutAnyOrigin],
+        p_src_caches: Ptr[PipelineCache, p_src_caches_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMergePipelineCaches.html
         """
-        return self._v1_0.merge_pipeline_caches(device, dst_cache, src_cache_count, p_src_caches)
+        return self._v1_0.merge_pipeline_caches(
+            device,
+            dst_cache,
+            src_cache_count,
+            Ptr(to=p_src_caches).bitcast[Ptr[PipelineCache, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_graphics_pipelines(
+    fn create_graphics_pipelines[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[GraphicsPipelineCreateInfo, p_create_infos_origin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateGraphicsPipelines.html
         """
         return self._v1_0.create_graphics_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=p_create_infos).bitcast[Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn create_compute_pipelines(
+    fn create_compute_pipelines[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[ComputePipelineCreateInfo, p_create_infos_origin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateComputePipelines.html
         """
         return self._v1_0.create_compute_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=p_create_infos).bitcast[Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn destroy_pipeline(
+    fn destroy_pipeline[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipeline.html
         """
-        return self._v1_0.destroy_pipeline(device, pipeline, p_allocator)
+        return self._v1_0.destroy_pipeline(
+            device, pipeline, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_pipeline_layout(
+    fn create_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
@@ -5070,51 +5944,65 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineLayout.html
         """
         return self._v1_0.create_pipeline_layout(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_layout)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=pipeline_layout),
         )
 
-    fn destroy_pipeline_layout(
+    fn destroy_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline_layout: PipelineLayout,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineLayout.html
         """
-        return self._v1_0.destroy_pipeline_layout(device, pipeline_layout, p_allocator)
+        return self._v1_0.destroy_pipeline_layout(
+            device,
+            pipeline_layout,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_sampler(
+    fn create_sampler[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SamplerCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSampler.html
         """
-        return self._v1_0.create_sampler(device, Ptr(to=create_info), p_allocator, Ptr(to=sampler))
+        return self._v1_0.create_sampler(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=sampler),
+        )
 
-    fn destroy_sampler(
+    fn destroy_sampler[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         sampler: Sampler,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySampler.html
         """
-        return self._v1_0.destroy_sampler(device, sampler, p_allocator)
+        return self._v1_0.destroy_sampler(
+            device, sampler, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_descriptor_set_layout(
+    fn create_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
@@ -5122,26 +6010,33 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorSetLayout.html
         """
         return self._v1_0.create_descriptor_set_layout(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=set_layout)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=set_layout),
         )
 
-    fn destroy_descriptor_set_layout(
+    fn destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorSetLayout.html
         """
-        return self._v1_0.destroy_descriptor_set_layout(device, descriptor_set_layout, p_allocator)
+        return self._v1_0.destroy_descriptor_set_layout(
+            device,
+            descriptor_set_layout,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_descriptor_pool(
+    fn create_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
@@ -5149,20 +6044,27 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorPool.html
         """
         return self._v1_0.create_descriptor_pool(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_pool)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=descriptor_pool),
         )
 
-    fn destroy_descriptor_pool(
+    fn destroy_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorPool.html
         """
-        return self._v1_0.destroy_descriptor_pool(device, descriptor_pool, p_allocator)
+        return self._v1_0.destroy_descriptor_pool(
+            device,
+            descriptor_pool,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
     fn reset_descriptor_pool(
         self, device: Device, descriptor_pool: DescriptorPool, flags: DescriptorPoolResetFlags
@@ -5173,98 +6075,126 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
-    fn allocate_descriptor_sets(
+    fn allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
-        return self._v1_0.allocate_descriptor_sets(device, Ptr(to=allocate_info), p_descriptor_sets)
+        return self._v1_0.allocate_descriptor_sets(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, MutAnyOrigin]]()[],
+        )
 
-    fn free_descriptor_sets(
+    fn free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeDescriptorSets.html
         """
         return self._v1_0.free_descriptor_sets(
-            device, descriptor_pool, descriptor_set_count, p_descriptor_sets
+            device,
+            descriptor_pool,
+            descriptor_set_count,
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, ImmutAnyOrigin]]()[],
         )
 
-    fn update_descriptor_sets(
+    fn update_descriptor_sets[
+        p_descriptor_writes_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_descriptor_copies_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         device: Device,
         descriptor_write_count: UInt32,
-        p_descriptor_writes: Ptr[WriteDescriptorSet, ImmutAnyOrigin],
+        p_descriptor_writes: Ptr[WriteDescriptorSet, p_descriptor_writes_origin],
         descriptor_copy_count: UInt32,
-        p_descriptor_copies: Ptr[CopyDescriptorSet, ImmutAnyOrigin],
+        p_descriptor_copies: Ptr[CopyDescriptorSet, p_descriptor_copies_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSets.html
         """
         return self._v1_0.update_descriptor_sets(
-            device, descriptor_write_count, p_descriptor_writes, descriptor_copy_count, p_descriptor_copies
+            device,
+            descriptor_write_count,
+            Ptr(to=p_descriptor_writes).bitcast[Ptr[WriteDescriptorSet, ImmutAnyOrigin]]()[],
+            descriptor_copy_count,
+            Ptr(to=p_descriptor_copies).bitcast[Ptr[CopyDescriptorSet, ImmutAnyOrigin]]()[],
         )
 
-    fn create_framebuffer(
+    fn create_framebuffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFramebuffer.html
         """
-        return self._v1_0.create_framebuffer(device, Ptr(to=create_info), p_allocator, Ptr(to=framebuffer))
+        return self._v1_0.create_framebuffer(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=framebuffer),
+        )
 
-    fn destroy_framebuffer(
+    fn destroy_framebuffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         framebuffer: Framebuffer,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFramebuffer.html
         """
-        return self._v1_0.destroy_framebuffer(device, framebuffer, p_allocator)
+        return self._v1_0.destroy_framebuffer(
+            device, framebuffer, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_render_pass(
+    fn create_render_pass[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass.html
         """
-        return self._v1_0.create_render_pass(device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass))
+        return self._v1_0.create_render_pass(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=render_pass),
+        )
 
-    fn destroy_render_pass(
+    fn destroy_render_pass[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         render_pass: RenderPass,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyRenderPass.html
         """
-        return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
+        return self._v1_0.destroy_render_pass(
+            device, render_pass, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_render_area_granularity(
         self, device: Device, render_pass: RenderPass, mut granularity: Extent2D
@@ -5275,11 +6205,11 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.get_render_area_granularity(device, render_pass, Ptr(to=granularity))
 
-    fn create_command_pool(
+    fn create_command_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
@@ -5287,20 +6217,25 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCommandPool.html
         """
         return self._v1_0.create_command_pool(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=command_pool)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=command_pool),
         )
 
-    fn destroy_command_pool(
+    fn destroy_command_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCommandPool.html
         """
-        return self._v1_0.destroy_command_pool(device, command_pool, p_allocator)
+        return self._v1_0.destroy_command_pool(
+            device, command_pool, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn reset_command_pool(
         self, device: Device, command_pool: CommandPool, flags: CommandPoolResetFlags
@@ -5311,31 +6246,38 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
-    fn allocate_command_buffers(
+    fn allocate_command_buffers[p_command_buffers_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
-        return self._v1_0.allocate_command_buffers(device, Ptr(to=allocate_info), p_command_buffers)
+        return self._v1_0.allocate_command_buffers(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, MutAnyOrigin]]()[],
+        )
 
-    fn free_command_buffers(
+    fn free_command_buffers[p_command_buffers_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeCommandBuffers.html
         """
         return self._v1_0.free_command_buffers(
-            device, command_pool, command_buffer_count, p_command_buffers
+            device,
+            command_pool,
+            command_buffer_count,
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutAnyOrigin]]()[],
         )
 
     fn begin_command_buffer(
@@ -5375,31 +6317,41 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
-    fn cmd_set_viewport(
+    fn cmd_set_viewport[p_viewports_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        p_viewports: Ptr[Viewport, ImmutAnyOrigin],
+        p_viewports: Ptr[Viewport, p_viewports_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewport.html
         """
-        return self._v1_0.cmd_set_viewport(command_buffer, first_viewport, viewport_count, p_viewports)
+        return self._v1_0.cmd_set_viewport(
+            command_buffer,
+            first_viewport,
+            viewport_count,
+            Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutAnyOrigin]]()[],
+        )
 
-    fn cmd_set_scissor(
+    fn cmd_set_scissor[p_scissors_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
         scissor_count: UInt32,
-        p_scissors: Ptr[Rect2D, ImmutAnyOrigin],
+        p_scissors: Ptr[Rect2D, p_scissors_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissor.html
         """
-        return self._v1_0.cmd_set_scissor(command_buffer, first_scissor, scissor_count, p_scissors)
+        return self._v1_0.cmd_set_scissor(
+            command_buffer,
+            first_scissor,
+            scissor_count,
+            Ptr(to=p_scissors).bitcast[Ptr[Rect2D, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_set_line_width(self, command_buffer: CommandBuffer, line_width: Float32):
         """See official vulkan docs for details.
@@ -5468,16 +6420,19 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.cmd_set_stencil_reference(command_buffer, face_mask, reference)
 
-    fn cmd_bind_descriptor_sets(
+    fn cmd_bind_descriptor_sets[
+        p_descriptor_sets_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_dynamic_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
         first_set: UInt32,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
         dynamic_offset_count: UInt32,
-        p_dynamic_offsets: Ptr[UInt32, ImmutAnyOrigin],
+        p_dynamic_offsets: Ptr[UInt32, p_dynamic_offsets_origin],
     ):
         """See official vulkan docs for details.
         
@@ -5489,9 +6444,9 @@ struct DeviceFunctionsV1_1(Copyable):
             layout,
             first_set,
             descriptor_set_count,
-            p_descriptor_sets,
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, ImmutAnyOrigin]]()[],
             dynamic_offset_count,
-            p_dynamic_offsets,
+            Ptr(to=p_dynamic_offsets).bitcast[Ptr[UInt32, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_bind_index_buffer(
@@ -5507,20 +6462,27 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
-    fn cmd_bind_vertex_buffers(
+    fn cmd_bind_vertex_buffers[
+        p_buffers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
-        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_buffers: Ptr[Buffer, p_buffers_origin],
+        p_offsets: Ptr[DeviceSize, p_offsets_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers.html
         """
         return self._v1_0.cmd_bind_vertex_buffers(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets
+            command_buffer,
+            first_binding,
+            binding_count,
+            Ptr(to=p_buffers).bitcast[Ptr[Buffer, ImmutAnyOrigin]]()[],
+            Ptr(to=p_offsets).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_draw(
@@ -5606,21 +6568,27 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.cmd_dispatch_indirect(command_buffer, buffer, offset)
 
-    fn cmd_copy_buffer(
+    fn cmd_copy_buffer[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer.html
         """
-        return self._v1_0.cmd_copy_buffer(command_buffer, src_buffer, dst_buffer, region_count, p_regions)
+        return self._v1_0.cmd_copy_buffer(
+            command_buffer,
+            src_buffer,
+            dst_buffer,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferCopy, ImmutAnyOrigin]]()[],
+        )
 
-    fn cmd_copy_image(
+    fn cmd_copy_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -5628,7 +6596,7 @@ struct DeviceFunctionsV1_1(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[ImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
@@ -5641,10 +6609,10 @@ struct DeviceFunctionsV1_1(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_blit_image(
+    fn cmd_blit_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -5652,7 +6620,7 @@ struct DeviceFunctionsV1_1(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageBlit, ImmutAnyOrigin],
+        p_regions: Ptr[ImageBlit, p_regions_origin],
         filter: Filter,
     ):
         """See official vulkan docs for details.
@@ -5666,57 +6634,73 @@ struct DeviceFunctionsV1_1(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageBlit, ImmutAnyOrigin]]()[],
             filter,
         )
 
-    fn cmd_copy_buffer_to_image(
+    fn cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage.html
         """
         return self._v1_0.cmd_copy_buffer_to_image(
-            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, p_regions
+            command_buffer,
+            src_buffer,
+            dst_image,
+            dst_image_layout,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_copy_image_to_buffer(
+    fn cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
         src_image_layout: ImageLayout,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer.html
         """
         return self._v1_0.cmd_copy_image_to_buffer(
-            command_buffer, src_image, src_image_layout, dst_buffer, region_count, p_regions
+            command_buffer,
+            src_image,
+            src_image_layout,
+            dst_buffer,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_update_buffer(
+    fn cmd_update_buffer[p_data_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         data_size: DeviceSize,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdUpdateBuffer.html
         """
-        return self._v1_0.cmd_update_buffer(command_buffer, dst_buffer, dst_offset, data_size, p_data)
+        return self._v1_0.cmd_update_buffer(
+            command_buffer,
+            dst_buffer,
+            dst_offset,
+            data_size,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_fill_buffer(
         self,
@@ -5732,57 +6716,74 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
-    fn cmd_clear_color_image(
+    fn cmd_clear_color_image[p_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
         color: ClearColorValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
+        p_ranges: Ptr[ImageSubresourceRange, p_ranges_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearColorImage.html
         """
         return self._v1_0.cmd_clear_color_image(
-            command_buffer, image, image_layout, Ptr(to=color), range_count, p_ranges
+            command_buffer,
+            image,
+            image_layout,
+            Ptr(to=color),
+            range_count,
+            Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_clear_depth_stencil_image(
+    fn cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
         depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
+        p_ranges: Ptr[ImageSubresourceRange, p_ranges_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearDepthStencilImage.html
         """
         return self._v1_0.cmd_clear_depth_stencil_image(
-            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, p_ranges
+            command_buffer,
+            image,
+            image_layout,
+            Ptr(to=depth_stencil),
+            range_count,
+            Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_clear_attachments(
+    fn cmd_clear_attachments[
+        p_attachments_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_rects_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
-        p_attachments: Ptr[ClearAttachment, ImmutAnyOrigin],
+        p_attachments: Ptr[ClearAttachment, p_attachments_origin],
         rect_count: UInt32,
-        p_rects: Ptr[ClearRect, ImmutAnyOrigin],
+        p_rects: Ptr[ClearRect, p_rects_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearAttachments.html
         """
         return self._v1_0.cmd_clear_attachments(
-            command_buffer, attachment_count, p_attachments, rect_count, p_rects
+            command_buffer,
+            attachment_count,
+            Ptr(to=p_attachments).bitcast[Ptr[ClearAttachment, ImmutAnyOrigin]]()[],
+            rect_count,
+            Ptr(to=p_rects).bitcast[Ptr[ClearRect, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_resolve_image(
+    fn cmd_resolve_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -5790,7 +6791,7 @@ struct DeviceFunctionsV1_1(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageResolve, ImmutAnyOrigin],
+        p_regions: Ptr[ImageResolve, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
@@ -5803,7 +6804,7 @@ struct DeviceFunctionsV1_1(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageResolve, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_set_event(
@@ -5824,19 +6825,24 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
-    fn cmd_wait_events(
+    fn cmd_wait_events[
+        p_events_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event, ImmutAnyOrigin],
+        p_events: Ptr[Event, p_events_origin],
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
+        p_memory_barriers: Ptr[MemoryBarrier, p_memory_barriers_origin],
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
+        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, p_buffer_memory_barriers_origin],
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
+        p_image_memory_barriers: Ptr[ImageMemoryBarrier, p_image_memory_barriers_origin],
     ):
         """See official vulkan docs for details.
         
@@ -5845,29 +6851,33 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.cmd_wait_events(
             command_buffer,
             event_count,
-            p_events,
+            Ptr(to=p_events).bitcast[Ptr[Event, ImmutAnyOrigin]]()[],
             src_stage_mask,
             dst_stage_mask,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=p_memory_barriers).bitcast[Ptr[MemoryBarrier, ImmutAnyOrigin]]()[],
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=p_buffer_memory_barriers).bitcast[Ptr[BufferMemoryBarrier, ImmutAnyOrigin]]()[],
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_pipeline_barrier(
+    fn cmd_pipeline_barrier[
+        p_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         dependency_flags: DependencyFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
+        p_memory_barriers: Ptr[MemoryBarrier, p_memory_barriers_origin],
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
+        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, p_buffer_memory_barriers_origin],
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
+        p_image_memory_barriers: Ptr[ImageMemoryBarrier, p_image_memory_barriers_origin],
     ):
         """See official vulkan docs for details.
         
@@ -5879,11 +6889,11 @@ struct DeviceFunctionsV1_1(Copyable):
             dst_stage_mask,
             dependency_flags,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=p_memory_barriers).bitcast[Ptr[MemoryBarrier, ImmutAnyOrigin]]()[],
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=p_buffer_memory_barriers).bitcast[Ptr[BufferMemoryBarrier, ImmutAnyOrigin]]()[],
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_begin_query(
@@ -5951,20 +6961,27 @@ struct DeviceFunctionsV1_1(Copyable):
             command_buffer, query_pool, first_query, query_count, dst_buffer, dst_offset, stride, flags
         )
 
-    fn cmd_push_constants(
+    fn cmd_push_constants[p_values_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         layout: PipelineLayout,
         stage_flags: ShaderStageFlags,
         offset: UInt32,
         size: UInt32,
-        p_values: Ptr[NoneType, ImmutAnyOrigin],
+        p_values: Ptr[NoneType, p_values_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants.html
         """
-        return self._v1_0.cmd_push_constants(command_buffer, layout, stage_flags, offset, size, p_values)
+        return self._v1_0.cmd_push_constants(
+            command_buffer,
+            layout,
+            stage_flags,
+            offset,
+            size,
+            Ptr(to=p_values).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_begin_render_pass(
         self,
@@ -5992,41 +7009,53 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
-    fn cmd_execute_commands(
+    fn cmd_execute_commands[p_command_buffers_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteCommands.html
         """
-        return self._v1_0.cmd_execute_commands(command_buffer, command_buffer_count, p_command_buffers)
+        return self._v1_0.cmd_execute_commands(
+            command_buffer,
+            command_buffer_count,
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutAnyOrigin]]()[],
+        )
 
-    fn bind_buffer_memory_2(
+    fn bind_buffer_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
-        p_bind_infos: Ptr[BindBufferMemoryInfo, ImmutAnyOrigin],
+        p_bind_infos: Ptr[BindBufferMemoryInfo, p_bind_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory2.html
         """
-        return self._v1_1.bind_buffer_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_buffer_memory_2(
+            device,
+            bind_info_count,
+            Ptr(to=p_bind_infos).bitcast[Ptr[BindBufferMemoryInfo, ImmutAnyOrigin]]()[],
+        )
 
-    fn bind_image_memory_2(
+    fn bind_image_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
-        p_bind_infos: Ptr[BindImageMemoryInfo, ImmutAnyOrigin],
+        p_bind_infos: Ptr[BindImageMemoryInfo, p_bind_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory2.html
         """
-        return self._v1_1.bind_image_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_image_memory_2(
+            device,
+            bind_info_count,
+            Ptr(to=p_bind_infos).bitcast[Ptr[BindImageMemoryInfo, ImmutAnyOrigin]]()[],
+        )
 
     fn get_device_group_peer_memory_features(
         self,
@@ -6101,22 +7130,29 @@ struct DeviceFunctionsV1_1(Copyable):
             device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
-    fn get_image_sparse_memory_requirements_2(
+    fn get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, p_sparse_memory_requirements_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
+            device,
+            Ptr(to=info),
+            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]]()[],
         )
 
-    fn get_image_sparse_memory_requirements_2(
+    fn get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, info: ImageSparseMemoryRequirementsInfo2
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -6126,12 +7162,12 @@ struct DeviceFunctionsV1_1(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_1.get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
-        )
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_1.get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
-        )
+    device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -6151,11 +7187,11 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_1.get_device_queue_2(device, Ptr(to=queue_info), Ptr(to=queue))
 
-    fn create_sampler_ycbcr_conversion(
+    fn create_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
@@ -6163,26 +7199,33 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSamplerYcbcrConversion.html
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=ycbcr_conversion)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=ycbcr_conversion),
         )
 
-    fn destroy_sampler_ycbcr_conversion(
+    fn destroy_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySamplerYcbcrConversion.html
         """
-        return self._v1_1.destroy_sampler_ycbcr_conversion(device, ycbcr_conversion, p_allocator)
+        return self._v1_1.destroy_sampler_ycbcr_conversion(
+            device,
+            ycbcr_conversion,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_descriptor_update_template(
+    fn create_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
@@ -6190,36 +7233,44 @@ struct DeviceFunctionsV1_1(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorUpdateTemplate.html
         """
         return self._v1_1.create_descriptor_update_template(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_update_template)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=descriptor_update_template),
         )
 
-    fn destroy_descriptor_update_template(
+    fn destroy_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorUpdateTemplate.html
         """
         return self._v1_1.destroy_descriptor_update_template(
-            device, descriptor_update_template, p_allocator
+            device,
+            descriptor_update_template,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
         )
 
-    fn update_descriptor_set_with_template(
+    fn update_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_set: DescriptorSet,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._v1_1.update_descriptor_set_with_template(
-            device, descriptor_set, descriptor_update_template, p_data
+            device,
+            descriptor_set,
+            descriptor_update_template,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
         )
 
     fn get_descriptor_set_layout_support(
@@ -6247,21 +7298,27 @@ struct DeviceFunctionsV1_2(Copyable):
         self._v1_1 = DeviceFunctionsAdditionsV1_1(self._dlhandle, device)
         self._v1_2 = DeviceFunctionsAdditionsV1_2(self._dlhandle, device)
 
-    fn get_device_proc_addr(
-        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
+    fn get_device_proc_addr[p_name_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name)
+        return self._v1_0.get_device_proc_addr(
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
+    fn destroy_device[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, p_allocator: Ptr[AllocationCallbacks, p_allocator_origin]
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
         """
-        return self._v1_0.destroy_device(device, p_allocator)
+        return self._v1_0.destroy_device(
+            device, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_device_queue(
         self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut queue: Queue
@@ -6272,18 +7329,20 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.get_device_queue(device, queue_family_index, queue_index, Ptr(to=queue))
 
-    fn queue_submit(
+    fn queue_submit[p_submits_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
-        p_submits: Ptr[SubmitInfo, ImmutAnyOrigin],
+        p_submits: Ptr[SubmitInfo, p_submits_origin],
         fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit.html
         """
-        return self._v1_0.queue_submit(queue, submit_count, p_submits, fence)
+        return self._v1_0.queue_submit(
+            queue, submit_count, Ptr(to=p_submits).bitcast[Ptr[SubmitInfo, ImmutAnyOrigin]]()[], fence
+        )
 
     fn queue_wait_idle(self, queue: Queue) -> Result:
         """See official vulkan docs for details.
@@ -6299,30 +7358,37 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.device_wait_idle(device)
 
-    fn allocate_memory(
+    fn allocate_memory[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateMemory.html
         """
-        return self._v1_0.allocate_memory(device, Ptr(to=allocate_info), p_allocator, Ptr(to=memory))
+        return self._v1_0.allocate_memory(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=memory),
+        )
 
-    fn free_memory(
+    fn free_memory[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeMemory.html
         """
-        return self._v1_0.free_memory(device, memory, p_allocator)
+        return self._v1_0.free_memory(
+            device, memory, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn map_memory(
         self,
@@ -6346,29 +7412,37 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.unmap_memory(device, memory)
 
-    fn flush_mapped_memory_ranges(
+    fn flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
-        p_memory_ranges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
+        p_memory_ranges: Ptr[MappedMemoryRange, p_memory_ranges_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFlushMappedMemoryRanges.html
         """
-        return self._v1_0.flush_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.flush_mapped_memory_ranges(
+            device,
+            memory_range_count,
+            Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutAnyOrigin]]()[],
+        )
 
-    fn invalidate_mapped_memory_ranges(
+    fn invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
-        p_memory_ranges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
+        p_memory_ranges: Ptr[MappedMemoryRange, p_memory_ranges_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkInvalidateMappedMemoryRanges.html
         """
-        return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.invalidate_mapped_memory_ranges(
+            device,
+            memory_range_count,
+            Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutAnyOrigin]]()[],
+        )
 
     fn get_device_memory_commitment(
         self, device: Device, memory: DeviceMemory, mut committed_memory_in_bytes: DeviceSize
@@ -6415,22 +7489,29 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.get_image_memory_requirements(device, image, Ptr(to=memory_requirements))
 
-    fn get_image_sparse_memory_requirements(
+    fn get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         image: Image,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, p_sparse_memory_requirements_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         return self._v1_0.get_image_sparse_memory_requirements(
-            device, image, Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
+            device,
+            image,
+            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements, MutAnyOrigin]]()[],
         )
 
-    fn get_image_sparse_memory_requirements(
+    fn get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, image: Image
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
@@ -6440,56 +7521,73 @@ struct DeviceFunctionsV1_2(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-            device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
-        )
+    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(device, image, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
-    fn queue_bind_sparse(
+    fn queue_bind_sparse[p_bind_info_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         queue: Queue,
         bind_info_count: UInt32,
-        p_bind_info: Ptr[BindSparseInfo, ImmutAnyOrigin],
+        p_bind_info: Ptr[BindSparseInfo, p_bind_info_origin],
         fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBindSparse.html
         """
-        return self._v1_0.queue_bind_sparse(queue, bind_info_count, p_bind_info, fence)
+        return self._v1_0.queue_bind_sparse(
+            queue,
+            bind_info_count,
+            Ptr(to=p_bind_info).bitcast[Ptr[BindSparseInfo, ImmutAnyOrigin]]()[],
+            fence,
+        )
 
-    fn create_fence(
+    fn create_fence[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: FenceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFence.html
         """
-        return self._v1_0.create_fence(device, Ptr(to=create_info), p_allocator, Ptr(to=fence))
+        return self._v1_0.create_fence(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=fence),
+        )
 
-    fn destroy_fence(
-        self, device: Device, fence: Fence, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_fence[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFence.html
         """
-        return self._v1_0.destroy_fence(device, fence, p_allocator)
+        return self._v1_0.destroy_fence(
+            device, fence, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn reset_fences(
-        self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, ImmutAnyOrigin]
+    fn reset_fences[p_fences_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, p_fences_origin]
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetFences.html
         """
-        return self._v1_0.reset_fences(device, fence_count, p_fences)
+        return self._v1_0.reset_fences(
+            device, fence_count, Ptr(to=p_fences).bitcast[Ptr[Fence, ImmutAnyOrigin]]()[]
+        )
 
     fn get_fence_status(self, device: Device, fence: Fence) -> Result:
         """See official vulkan docs for details.
@@ -6498,11 +7596,11 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.get_fence_status(device, fence)
 
-    fn wait_for_fences(
+    fn wait_for_fences[p_fences_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         fence_count: UInt32,
-        p_fences: Ptr[Fence, ImmutAnyOrigin],
+        p_fences: Ptr[Fence, p_fences_origin],
         wait_all: Bool32,
         timeout: UInt64,
     ) -> Result:
@@ -6510,54 +7608,73 @@ struct DeviceFunctionsV1_2(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitForFences.html
         """
-        return self._v1_0.wait_for_fences(device, fence_count, p_fences, wait_all, timeout)
+        return self._v1_0.wait_for_fences(
+            device, fence_count, Ptr(to=p_fences).bitcast[Ptr[Fence, ImmutAnyOrigin]]()[], wait_all, timeout
+        )
 
-    fn create_semaphore(
+    fn create_semaphore[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSemaphore.html
         """
-        return self._v1_0.create_semaphore(device, Ptr(to=create_info), p_allocator, Ptr(to=semaphore))
+        return self._v1_0.create_semaphore(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=semaphore),
+        )
 
-    fn destroy_semaphore(
+    fn destroy_semaphore[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         semaphore: Semaphore,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySemaphore.html
         """
-        return self._v1_0.destroy_semaphore(device, semaphore, p_allocator)
+        return self._v1_0.destroy_semaphore(
+            device, semaphore, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_event(
+    fn create_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: EventCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateEvent.html
         """
-        return self._v1_0.create_event(device, Ptr(to=create_info), p_allocator, Ptr(to=event))
+        return self._v1_0.create_event(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=event),
+        )
 
-    fn destroy_event(
-        self, device: Device, event: Event, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        event: Event,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyEvent.html
         """
-        return self._v1_0.destroy_event(device, event, p_allocator)
+        return self._v1_0.destroy_event(
+            device, event, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_event_status(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
@@ -6580,39 +7697,46 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.reset_event(device, event)
 
-    fn create_query_pool(
+    fn create_query_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateQueryPool.html
         """
-        return self._v1_0.create_query_pool(device, Ptr(to=create_info), p_allocator, Ptr(to=query_pool))
+        return self._v1_0.create_query_pool(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=query_pool),
+        )
 
-    fn destroy_query_pool(
+    fn destroy_query_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyQueryPool.html
         """
-        return self._v1_0.destroy_query_pool(device, query_pool, p_allocator)
+        return self._v1_0.destroy_query_pool(
+            device, query_pool, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn get_query_pool_results(
+    fn get_query_pool_results[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
@@ -6621,77 +7745,111 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueryPoolResults.html
         """
         return self._v1_0.get_query_pool_results(
-            device, query_pool, first_query, query_count, data_size, p_data, stride, flags
+            device,
+            query_pool,
+            first_query,
+            query_count,
+            data_size,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
+            stride,
+            flags,
         )
 
-    fn create_buffer(
+    fn create_buffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: BufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBuffer.html
         """
-        return self._v1_0.create_buffer(device, Ptr(to=create_info), p_allocator, Ptr(to=buffer))
+        return self._v1_0.create_buffer(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=buffer),
+        )
 
-    fn destroy_buffer(
-        self, device: Device, buffer: Buffer, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_buffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        buffer: Buffer,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBuffer.html
         """
-        return self._v1_0.destroy_buffer(device, buffer, p_allocator)
+        return self._v1_0.destroy_buffer(
+            device, buffer, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_buffer_view(
+    fn create_buffer_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBufferView.html
         """
-        return self._v1_0.create_buffer_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_buffer_view(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=view),
+        )
 
-    fn destroy_buffer_view(
+    fn destroy_buffer_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         buffer_view: BufferView,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBufferView.html
         """
-        return self._v1_0.destroy_buffer_view(device, buffer_view, p_allocator)
+        return self._v1_0.destroy_buffer_view(
+            device, buffer_view, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_image(
+    fn create_image[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ImageCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImage.html
         """
-        return self._v1_0.create_image(device, Ptr(to=create_info), p_allocator, Ptr(to=image))
+        return self._v1_0.create_image(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=image),
+        )
 
-    fn destroy_image(
-        self, device: Device, image: Image, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_image[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        image: Image,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImage.html
         """
-        return self._v1_0.destroy_image(device, image, p_allocator)
+        return self._v1_0.destroy_image(
+            device, image, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_image_subresource_layout(
         self,
@@ -6706,36 +7864,43 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.get_image_subresource_layout(device, image, Ptr(to=subresource), Ptr(to=layout))
 
-    fn create_image_view(
+    fn create_image_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImageView.html
         """
-        return self._v1_0.create_image_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_image_view(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=view),
+        )
 
-    fn destroy_image_view(
+    fn destroy_image_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         image_view: ImageView,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImageView.html
         """
-        return self._v1_0.destroy_image_view(device, image_view, p_allocator)
+        return self._v1_0.destroy_image_view(
+            device, image_view, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_shader_module(
+    fn create_shader_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
@@ -6743,26 +7908,31 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateShaderModule.html
         """
         return self._v1_0.create_shader_module(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=shader_module)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=shader_module),
         )
 
-    fn destroy_shader_module(
+    fn destroy_shader_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         shader_module: ShaderModule,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyShaderModule.html
         """
-        return self._v1_0.destroy_shader_module(device, shader_module, p_allocator)
+        return self._v1_0.destroy_shader_module(
+            device, shader_module, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_pipeline_cache(
+    fn create_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
@@ -6770,35 +7940,47 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineCache.html
         """
         return self._v1_0.create_pipeline_cache(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_cache)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=pipeline_cache),
         )
 
-    fn destroy_pipeline_cache(
+    fn destroy_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineCache.html
         """
-        return self._v1_0.destroy_pipeline_cache(device, pipeline_cache, p_allocator)
+        return self._v1_0.destroy_pipeline_cache(
+            device,
+            pipeline_cache,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn get_pipeline_cache_data(
+    fn get_pipeline_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         mut data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
-        return self._v1_0.get_pipeline_cache_data(device, pipeline_cache, Ptr(to=data_size), p_data)
+        return self._v1_0.get_pipeline_cache_data(
+            device,
+            pipeline_cache,
+            Ptr(to=data_size),
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
+        )
 
-    fn get_pipeline_cache_data(
+    fn get_pipeline_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -6810,80 +7992,105 @@ struct DeviceFunctionsV1_2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
-                device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
-            )
+        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.get_pipeline_cache_data(
-                device, pipeline_cache, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
-            )
+                result = self._v1_0.get_pipeline_cache_data(
+        device, pipeline_cache, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn merge_pipeline_caches(
+    fn merge_pipeline_caches[p_src_caches_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         dst_cache: PipelineCache,
         src_cache_count: UInt32,
-        p_src_caches: Ptr[PipelineCache, ImmutAnyOrigin],
+        p_src_caches: Ptr[PipelineCache, p_src_caches_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMergePipelineCaches.html
         """
-        return self._v1_0.merge_pipeline_caches(device, dst_cache, src_cache_count, p_src_caches)
+        return self._v1_0.merge_pipeline_caches(
+            device,
+            dst_cache,
+            src_cache_count,
+            Ptr(to=p_src_caches).bitcast[Ptr[PipelineCache, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_graphics_pipelines(
+    fn create_graphics_pipelines[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[GraphicsPipelineCreateInfo, p_create_infos_origin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateGraphicsPipelines.html
         """
         return self._v1_0.create_graphics_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=p_create_infos).bitcast[Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn create_compute_pipelines(
+    fn create_compute_pipelines[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[ComputePipelineCreateInfo, p_create_infos_origin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateComputePipelines.html
         """
         return self._v1_0.create_compute_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=p_create_infos).bitcast[Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn destroy_pipeline(
+    fn destroy_pipeline[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipeline.html
         """
-        return self._v1_0.destroy_pipeline(device, pipeline, p_allocator)
+        return self._v1_0.destroy_pipeline(
+            device, pipeline, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_pipeline_layout(
+    fn create_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
@@ -6891,51 +8098,65 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineLayout.html
         """
         return self._v1_0.create_pipeline_layout(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_layout)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=pipeline_layout),
         )
 
-    fn destroy_pipeline_layout(
+    fn destroy_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline_layout: PipelineLayout,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineLayout.html
         """
-        return self._v1_0.destroy_pipeline_layout(device, pipeline_layout, p_allocator)
+        return self._v1_0.destroy_pipeline_layout(
+            device,
+            pipeline_layout,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_sampler(
+    fn create_sampler[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SamplerCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSampler.html
         """
-        return self._v1_0.create_sampler(device, Ptr(to=create_info), p_allocator, Ptr(to=sampler))
+        return self._v1_0.create_sampler(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=sampler),
+        )
 
-    fn destroy_sampler(
+    fn destroy_sampler[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         sampler: Sampler,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySampler.html
         """
-        return self._v1_0.destroy_sampler(device, sampler, p_allocator)
+        return self._v1_0.destroy_sampler(
+            device, sampler, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_descriptor_set_layout(
+    fn create_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
@@ -6943,26 +8164,33 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorSetLayout.html
         """
         return self._v1_0.create_descriptor_set_layout(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=set_layout)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=set_layout),
         )
 
-    fn destroy_descriptor_set_layout(
+    fn destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorSetLayout.html
         """
-        return self._v1_0.destroy_descriptor_set_layout(device, descriptor_set_layout, p_allocator)
+        return self._v1_0.destroy_descriptor_set_layout(
+            device,
+            descriptor_set_layout,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_descriptor_pool(
+    fn create_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
@@ -6970,20 +8198,27 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorPool.html
         """
         return self._v1_0.create_descriptor_pool(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_pool)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=descriptor_pool),
         )
 
-    fn destroy_descriptor_pool(
+    fn destroy_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorPool.html
         """
-        return self._v1_0.destroy_descriptor_pool(device, descriptor_pool, p_allocator)
+        return self._v1_0.destroy_descriptor_pool(
+            device,
+            descriptor_pool,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
     fn reset_descriptor_pool(
         self, device: Device, descriptor_pool: DescriptorPool, flags: DescriptorPoolResetFlags
@@ -6994,98 +8229,126 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
-    fn allocate_descriptor_sets(
+    fn allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
-        return self._v1_0.allocate_descriptor_sets(device, Ptr(to=allocate_info), p_descriptor_sets)
+        return self._v1_0.allocate_descriptor_sets(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, MutAnyOrigin]]()[],
+        )
 
-    fn free_descriptor_sets(
+    fn free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeDescriptorSets.html
         """
         return self._v1_0.free_descriptor_sets(
-            device, descriptor_pool, descriptor_set_count, p_descriptor_sets
+            device,
+            descriptor_pool,
+            descriptor_set_count,
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, ImmutAnyOrigin]]()[],
         )
 
-    fn update_descriptor_sets(
+    fn update_descriptor_sets[
+        p_descriptor_writes_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_descriptor_copies_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         device: Device,
         descriptor_write_count: UInt32,
-        p_descriptor_writes: Ptr[WriteDescriptorSet, ImmutAnyOrigin],
+        p_descriptor_writes: Ptr[WriteDescriptorSet, p_descriptor_writes_origin],
         descriptor_copy_count: UInt32,
-        p_descriptor_copies: Ptr[CopyDescriptorSet, ImmutAnyOrigin],
+        p_descriptor_copies: Ptr[CopyDescriptorSet, p_descriptor_copies_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSets.html
         """
         return self._v1_0.update_descriptor_sets(
-            device, descriptor_write_count, p_descriptor_writes, descriptor_copy_count, p_descriptor_copies
+            device,
+            descriptor_write_count,
+            Ptr(to=p_descriptor_writes).bitcast[Ptr[WriteDescriptorSet, ImmutAnyOrigin]]()[],
+            descriptor_copy_count,
+            Ptr(to=p_descriptor_copies).bitcast[Ptr[CopyDescriptorSet, ImmutAnyOrigin]]()[],
         )
 
-    fn create_framebuffer(
+    fn create_framebuffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFramebuffer.html
         """
-        return self._v1_0.create_framebuffer(device, Ptr(to=create_info), p_allocator, Ptr(to=framebuffer))
+        return self._v1_0.create_framebuffer(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=framebuffer),
+        )
 
-    fn destroy_framebuffer(
+    fn destroy_framebuffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         framebuffer: Framebuffer,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFramebuffer.html
         """
-        return self._v1_0.destroy_framebuffer(device, framebuffer, p_allocator)
+        return self._v1_0.destroy_framebuffer(
+            device, framebuffer, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_render_pass(
+    fn create_render_pass[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass.html
         """
-        return self._v1_0.create_render_pass(device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass))
+        return self._v1_0.create_render_pass(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=render_pass),
+        )
 
-    fn destroy_render_pass(
+    fn destroy_render_pass[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         render_pass: RenderPass,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyRenderPass.html
         """
-        return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
+        return self._v1_0.destroy_render_pass(
+            device, render_pass, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_render_area_granularity(
         self, device: Device, render_pass: RenderPass, mut granularity: Extent2D
@@ -7096,11 +8359,11 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.get_render_area_granularity(device, render_pass, Ptr(to=granularity))
 
-    fn create_command_pool(
+    fn create_command_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
@@ -7108,20 +8371,25 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCommandPool.html
         """
         return self._v1_0.create_command_pool(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=command_pool)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=command_pool),
         )
 
-    fn destroy_command_pool(
+    fn destroy_command_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCommandPool.html
         """
-        return self._v1_0.destroy_command_pool(device, command_pool, p_allocator)
+        return self._v1_0.destroy_command_pool(
+            device, command_pool, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn reset_command_pool(
         self, device: Device, command_pool: CommandPool, flags: CommandPoolResetFlags
@@ -7132,31 +8400,38 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
-    fn allocate_command_buffers(
+    fn allocate_command_buffers[p_command_buffers_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
-        return self._v1_0.allocate_command_buffers(device, Ptr(to=allocate_info), p_command_buffers)
+        return self._v1_0.allocate_command_buffers(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, MutAnyOrigin]]()[],
+        )
 
-    fn free_command_buffers(
+    fn free_command_buffers[p_command_buffers_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeCommandBuffers.html
         """
         return self._v1_0.free_command_buffers(
-            device, command_pool, command_buffer_count, p_command_buffers
+            device,
+            command_pool,
+            command_buffer_count,
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutAnyOrigin]]()[],
         )
 
     fn begin_command_buffer(
@@ -7196,31 +8471,41 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
-    fn cmd_set_viewport(
+    fn cmd_set_viewport[p_viewports_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        p_viewports: Ptr[Viewport, ImmutAnyOrigin],
+        p_viewports: Ptr[Viewport, p_viewports_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewport.html
         """
-        return self._v1_0.cmd_set_viewport(command_buffer, first_viewport, viewport_count, p_viewports)
+        return self._v1_0.cmd_set_viewport(
+            command_buffer,
+            first_viewport,
+            viewport_count,
+            Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutAnyOrigin]]()[],
+        )
 
-    fn cmd_set_scissor(
+    fn cmd_set_scissor[p_scissors_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
         scissor_count: UInt32,
-        p_scissors: Ptr[Rect2D, ImmutAnyOrigin],
+        p_scissors: Ptr[Rect2D, p_scissors_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissor.html
         """
-        return self._v1_0.cmd_set_scissor(command_buffer, first_scissor, scissor_count, p_scissors)
+        return self._v1_0.cmd_set_scissor(
+            command_buffer,
+            first_scissor,
+            scissor_count,
+            Ptr(to=p_scissors).bitcast[Ptr[Rect2D, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_set_line_width(self, command_buffer: CommandBuffer, line_width: Float32):
         """See official vulkan docs for details.
@@ -7289,16 +8574,19 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.cmd_set_stencil_reference(command_buffer, face_mask, reference)
 
-    fn cmd_bind_descriptor_sets(
+    fn cmd_bind_descriptor_sets[
+        p_descriptor_sets_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_dynamic_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
         first_set: UInt32,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
         dynamic_offset_count: UInt32,
-        p_dynamic_offsets: Ptr[UInt32, ImmutAnyOrigin],
+        p_dynamic_offsets: Ptr[UInt32, p_dynamic_offsets_origin],
     ):
         """See official vulkan docs for details.
         
@@ -7310,9 +8598,9 @@ struct DeviceFunctionsV1_2(Copyable):
             layout,
             first_set,
             descriptor_set_count,
-            p_descriptor_sets,
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, ImmutAnyOrigin]]()[],
             dynamic_offset_count,
-            p_dynamic_offsets,
+            Ptr(to=p_dynamic_offsets).bitcast[Ptr[UInt32, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_bind_index_buffer(
@@ -7328,20 +8616,27 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
-    fn cmd_bind_vertex_buffers(
+    fn cmd_bind_vertex_buffers[
+        p_buffers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
-        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_buffers: Ptr[Buffer, p_buffers_origin],
+        p_offsets: Ptr[DeviceSize, p_offsets_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers.html
         """
         return self._v1_0.cmd_bind_vertex_buffers(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets
+            command_buffer,
+            first_binding,
+            binding_count,
+            Ptr(to=p_buffers).bitcast[Ptr[Buffer, ImmutAnyOrigin]]()[],
+            Ptr(to=p_offsets).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_draw(
@@ -7427,21 +8722,27 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.cmd_dispatch_indirect(command_buffer, buffer, offset)
 
-    fn cmd_copy_buffer(
+    fn cmd_copy_buffer[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer.html
         """
-        return self._v1_0.cmd_copy_buffer(command_buffer, src_buffer, dst_buffer, region_count, p_regions)
+        return self._v1_0.cmd_copy_buffer(
+            command_buffer,
+            src_buffer,
+            dst_buffer,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferCopy, ImmutAnyOrigin]]()[],
+        )
 
-    fn cmd_copy_image(
+    fn cmd_copy_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -7449,7 +8750,7 @@ struct DeviceFunctionsV1_2(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[ImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
@@ -7462,10 +8763,10 @@ struct DeviceFunctionsV1_2(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_blit_image(
+    fn cmd_blit_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -7473,7 +8774,7 @@ struct DeviceFunctionsV1_2(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageBlit, ImmutAnyOrigin],
+        p_regions: Ptr[ImageBlit, p_regions_origin],
         filter: Filter,
     ):
         """See official vulkan docs for details.
@@ -7487,57 +8788,73 @@ struct DeviceFunctionsV1_2(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageBlit, ImmutAnyOrigin]]()[],
             filter,
         )
 
-    fn cmd_copy_buffer_to_image(
+    fn cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage.html
         """
         return self._v1_0.cmd_copy_buffer_to_image(
-            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, p_regions
+            command_buffer,
+            src_buffer,
+            dst_image,
+            dst_image_layout,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_copy_image_to_buffer(
+    fn cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
         src_image_layout: ImageLayout,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer.html
         """
         return self._v1_0.cmd_copy_image_to_buffer(
-            command_buffer, src_image, src_image_layout, dst_buffer, region_count, p_regions
+            command_buffer,
+            src_image,
+            src_image_layout,
+            dst_buffer,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_update_buffer(
+    fn cmd_update_buffer[p_data_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         data_size: DeviceSize,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdUpdateBuffer.html
         """
-        return self._v1_0.cmd_update_buffer(command_buffer, dst_buffer, dst_offset, data_size, p_data)
+        return self._v1_0.cmd_update_buffer(
+            command_buffer,
+            dst_buffer,
+            dst_offset,
+            data_size,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_fill_buffer(
         self,
@@ -7553,57 +8870,74 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
-    fn cmd_clear_color_image(
+    fn cmd_clear_color_image[p_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
         color: ClearColorValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
+        p_ranges: Ptr[ImageSubresourceRange, p_ranges_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearColorImage.html
         """
         return self._v1_0.cmd_clear_color_image(
-            command_buffer, image, image_layout, Ptr(to=color), range_count, p_ranges
+            command_buffer,
+            image,
+            image_layout,
+            Ptr(to=color),
+            range_count,
+            Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_clear_depth_stencil_image(
+    fn cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
         depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
+        p_ranges: Ptr[ImageSubresourceRange, p_ranges_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearDepthStencilImage.html
         """
         return self._v1_0.cmd_clear_depth_stencil_image(
-            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, p_ranges
+            command_buffer,
+            image,
+            image_layout,
+            Ptr(to=depth_stencil),
+            range_count,
+            Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_clear_attachments(
+    fn cmd_clear_attachments[
+        p_attachments_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_rects_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
-        p_attachments: Ptr[ClearAttachment, ImmutAnyOrigin],
+        p_attachments: Ptr[ClearAttachment, p_attachments_origin],
         rect_count: UInt32,
-        p_rects: Ptr[ClearRect, ImmutAnyOrigin],
+        p_rects: Ptr[ClearRect, p_rects_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearAttachments.html
         """
         return self._v1_0.cmd_clear_attachments(
-            command_buffer, attachment_count, p_attachments, rect_count, p_rects
+            command_buffer,
+            attachment_count,
+            Ptr(to=p_attachments).bitcast[Ptr[ClearAttachment, ImmutAnyOrigin]]()[],
+            rect_count,
+            Ptr(to=p_rects).bitcast[Ptr[ClearRect, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_resolve_image(
+    fn cmd_resolve_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -7611,7 +8945,7 @@ struct DeviceFunctionsV1_2(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageResolve, ImmutAnyOrigin],
+        p_regions: Ptr[ImageResolve, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
@@ -7624,7 +8958,7 @@ struct DeviceFunctionsV1_2(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageResolve, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_set_event(
@@ -7645,19 +8979,24 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
-    fn cmd_wait_events(
+    fn cmd_wait_events[
+        p_events_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event, ImmutAnyOrigin],
+        p_events: Ptr[Event, p_events_origin],
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
+        p_memory_barriers: Ptr[MemoryBarrier, p_memory_barriers_origin],
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
+        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, p_buffer_memory_barriers_origin],
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
+        p_image_memory_barriers: Ptr[ImageMemoryBarrier, p_image_memory_barriers_origin],
     ):
         """See official vulkan docs for details.
         
@@ -7666,29 +9005,33 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.cmd_wait_events(
             command_buffer,
             event_count,
-            p_events,
+            Ptr(to=p_events).bitcast[Ptr[Event, ImmutAnyOrigin]]()[],
             src_stage_mask,
             dst_stage_mask,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=p_memory_barriers).bitcast[Ptr[MemoryBarrier, ImmutAnyOrigin]]()[],
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=p_buffer_memory_barriers).bitcast[Ptr[BufferMemoryBarrier, ImmutAnyOrigin]]()[],
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_pipeline_barrier(
+    fn cmd_pipeline_barrier[
+        p_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         dependency_flags: DependencyFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
+        p_memory_barriers: Ptr[MemoryBarrier, p_memory_barriers_origin],
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
+        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, p_buffer_memory_barriers_origin],
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
+        p_image_memory_barriers: Ptr[ImageMemoryBarrier, p_image_memory_barriers_origin],
     ):
         """See official vulkan docs for details.
         
@@ -7700,11 +9043,11 @@ struct DeviceFunctionsV1_2(Copyable):
             dst_stage_mask,
             dependency_flags,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=p_memory_barriers).bitcast[Ptr[MemoryBarrier, ImmutAnyOrigin]]()[],
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=p_buffer_memory_barriers).bitcast[Ptr[BufferMemoryBarrier, ImmutAnyOrigin]]()[],
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_begin_query(
@@ -7772,20 +9115,27 @@ struct DeviceFunctionsV1_2(Copyable):
             command_buffer, query_pool, first_query, query_count, dst_buffer, dst_offset, stride, flags
         )
 
-    fn cmd_push_constants(
+    fn cmd_push_constants[p_values_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         layout: PipelineLayout,
         stage_flags: ShaderStageFlags,
         offset: UInt32,
         size: UInt32,
-        p_values: Ptr[NoneType, ImmutAnyOrigin],
+        p_values: Ptr[NoneType, p_values_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants.html
         """
-        return self._v1_0.cmd_push_constants(command_buffer, layout, stage_flags, offset, size, p_values)
+        return self._v1_0.cmd_push_constants(
+            command_buffer,
+            layout,
+            stage_flags,
+            offset,
+            size,
+            Ptr(to=p_values).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_begin_render_pass(
         self,
@@ -7813,41 +9163,53 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
-    fn cmd_execute_commands(
+    fn cmd_execute_commands[p_command_buffers_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteCommands.html
         """
-        return self._v1_0.cmd_execute_commands(command_buffer, command_buffer_count, p_command_buffers)
+        return self._v1_0.cmd_execute_commands(
+            command_buffer,
+            command_buffer_count,
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutAnyOrigin]]()[],
+        )
 
-    fn bind_buffer_memory_2(
+    fn bind_buffer_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
-        p_bind_infos: Ptr[BindBufferMemoryInfo, ImmutAnyOrigin],
+        p_bind_infos: Ptr[BindBufferMemoryInfo, p_bind_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory2.html
         """
-        return self._v1_1.bind_buffer_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_buffer_memory_2(
+            device,
+            bind_info_count,
+            Ptr(to=p_bind_infos).bitcast[Ptr[BindBufferMemoryInfo, ImmutAnyOrigin]]()[],
+        )
 
-    fn bind_image_memory_2(
+    fn bind_image_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
-        p_bind_infos: Ptr[BindImageMemoryInfo, ImmutAnyOrigin],
+        p_bind_infos: Ptr[BindImageMemoryInfo, p_bind_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory2.html
         """
-        return self._v1_1.bind_image_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_image_memory_2(
+            device,
+            bind_info_count,
+            Ptr(to=p_bind_infos).bitcast[Ptr[BindImageMemoryInfo, ImmutAnyOrigin]]()[],
+        )
 
     fn get_device_group_peer_memory_features(
         self,
@@ -7922,22 +9284,29 @@ struct DeviceFunctionsV1_2(Copyable):
             device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
-    fn get_image_sparse_memory_requirements_2(
+    fn get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, p_sparse_memory_requirements_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
+            device,
+            Ptr(to=info),
+            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]]()[],
         )
 
-    fn get_image_sparse_memory_requirements_2(
+    fn get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, info: ImageSparseMemoryRequirementsInfo2
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -7947,12 +9316,12 @@ struct DeviceFunctionsV1_2(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_1.get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
-        )
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_1.get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
-        )
+    device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -7972,11 +9341,11 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_1.get_device_queue_2(device, Ptr(to=queue_info), Ptr(to=queue))
 
-    fn create_sampler_ycbcr_conversion(
+    fn create_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
@@ -7984,26 +9353,33 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSamplerYcbcrConversion.html
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=ycbcr_conversion)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=ycbcr_conversion),
         )
 
-    fn destroy_sampler_ycbcr_conversion(
+    fn destroy_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySamplerYcbcrConversion.html
         """
-        return self._v1_1.destroy_sampler_ycbcr_conversion(device, ycbcr_conversion, p_allocator)
+        return self._v1_1.destroy_sampler_ycbcr_conversion(
+            device,
+            ycbcr_conversion,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_descriptor_update_template(
+    fn create_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
@@ -8011,36 +9387,44 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorUpdateTemplate.html
         """
         return self._v1_1.create_descriptor_update_template(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_update_template)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=descriptor_update_template),
         )
 
-    fn destroy_descriptor_update_template(
+    fn destroy_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorUpdateTemplate.html
         """
         return self._v1_1.destroy_descriptor_update_template(
-            device, descriptor_update_template, p_allocator
+            device,
+            descriptor_update_template,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
         )
 
-    fn update_descriptor_set_with_template(
+    fn update_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_set: DescriptorSet,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._v1_1.update_descriptor_set_with_template(
-            device, descriptor_set, descriptor_update_template, p_data
+            device,
+            descriptor_set,
+            descriptor_update_template,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
         )
 
     fn get_descriptor_set_layout_support(
@@ -8091,11 +9475,11 @@ struct DeviceFunctionsV1_2(Copyable):
             command_buffer, buffer, offset, count_buffer, count_buffer_offset, max_draw_count, stride
         )
 
-    fn create_render_pass_2(
+    fn create_render_pass_2[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo2,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
@@ -8103,7 +9487,10 @@ struct DeviceFunctionsV1_2(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass2.html
         """
         return self._v1_2.create_render_pass_2(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=render_pass),
         )
 
     fn cmd_begin_render_pass_2(
@@ -8219,21 +9606,27 @@ struct DeviceFunctionsV1_3(Copyable):
         self._v1_2 = DeviceFunctionsAdditionsV1_2(self._dlhandle, device)
         self._v1_3 = DeviceFunctionsAdditionsV1_3(self._dlhandle, device)
 
-    fn get_device_proc_addr(
-        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
+    fn get_device_proc_addr[p_name_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name)
+        return self._v1_0.get_device_proc_addr(
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
+    fn destroy_device[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, p_allocator: Ptr[AllocationCallbacks, p_allocator_origin]
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
         """
-        return self._v1_0.destroy_device(device, p_allocator)
+        return self._v1_0.destroy_device(
+            device, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_device_queue(
         self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut queue: Queue
@@ -8244,18 +9637,20 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.get_device_queue(device, queue_family_index, queue_index, Ptr(to=queue))
 
-    fn queue_submit(
+    fn queue_submit[p_submits_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
-        p_submits: Ptr[SubmitInfo, ImmutAnyOrigin],
+        p_submits: Ptr[SubmitInfo, p_submits_origin],
         fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit.html
         """
-        return self._v1_0.queue_submit(queue, submit_count, p_submits, fence)
+        return self._v1_0.queue_submit(
+            queue, submit_count, Ptr(to=p_submits).bitcast[Ptr[SubmitInfo, ImmutAnyOrigin]]()[], fence
+        )
 
     fn queue_wait_idle(self, queue: Queue) -> Result:
         """See official vulkan docs for details.
@@ -8271,30 +9666,37 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.device_wait_idle(device)
 
-    fn allocate_memory(
+    fn allocate_memory[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateMemory.html
         """
-        return self._v1_0.allocate_memory(device, Ptr(to=allocate_info), p_allocator, Ptr(to=memory))
+        return self._v1_0.allocate_memory(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=memory),
+        )
 
-    fn free_memory(
+    fn free_memory[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeMemory.html
         """
-        return self._v1_0.free_memory(device, memory, p_allocator)
+        return self._v1_0.free_memory(
+            device, memory, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn map_memory(
         self,
@@ -8318,29 +9720,37 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.unmap_memory(device, memory)
 
-    fn flush_mapped_memory_ranges(
+    fn flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
-        p_memory_ranges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
+        p_memory_ranges: Ptr[MappedMemoryRange, p_memory_ranges_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFlushMappedMemoryRanges.html
         """
-        return self._v1_0.flush_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.flush_mapped_memory_ranges(
+            device,
+            memory_range_count,
+            Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutAnyOrigin]]()[],
+        )
 
-    fn invalidate_mapped_memory_ranges(
+    fn invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
-        p_memory_ranges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
+        p_memory_ranges: Ptr[MappedMemoryRange, p_memory_ranges_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkInvalidateMappedMemoryRanges.html
         """
-        return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.invalidate_mapped_memory_ranges(
+            device,
+            memory_range_count,
+            Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutAnyOrigin]]()[],
+        )
 
     fn get_device_memory_commitment(
         self, device: Device, memory: DeviceMemory, mut committed_memory_in_bytes: DeviceSize
@@ -8387,22 +9797,29 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.get_image_memory_requirements(device, image, Ptr(to=memory_requirements))
 
-    fn get_image_sparse_memory_requirements(
+    fn get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         image: Image,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, p_sparse_memory_requirements_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         return self._v1_0.get_image_sparse_memory_requirements(
-            device, image, Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
+            device,
+            image,
+            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements, MutAnyOrigin]]()[],
         )
 
-    fn get_image_sparse_memory_requirements(
+    fn get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, image: Image
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
@@ -8412,56 +9829,73 @@ struct DeviceFunctionsV1_3(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-            device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
-        )
+    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(device, image, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
-    fn queue_bind_sparse(
+    fn queue_bind_sparse[p_bind_info_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         queue: Queue,
         bind_info_count: UInt32,
-        p_bind_info: Ptr[BindSparseInfo, ImmutAnyOrigin],
+        p_bind_info: Ptr[BindSparseInfo, p_bind_info_origin],
         fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBindSparse.html
         """
-        return self._v1_0.queue_bind_sparse(queue, bind_info_count, p_bind_info, fence)
+        return self._v1_0.queue_bind_sparse(
+            queue,
+            bind_info_count,
+            Ptr(to=p_bind_info).bitcast[Ptr[BindSparseInfo, ImmutAnyOrigin]]()[],
+            fence,
+        )
 
-    fn create_fence(
+    fn create_fence[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: FenceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFence.html
         """
-        return self._v1_0.create_fence(device, Ptr(to=create_info), p_allocator, Ptr(to=fence))
+        return self._v1_0.create_fence(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=fence),
+        )
 
-    fn destroy_fence(
-        self, device: Device, fence: Fence, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_fence[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFence.html
         """
-        return self._v1_0.destroy_fence(device, fence, p_allocator)
+        return self._v1_0.destroy_fence(
+            device, fence, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn reset_fences(
-        self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, ImmutAnyOrigin]
+    fn reset_fences[p_fences_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, p_fences_origin]
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetFences.html
         """
-        return self._v1_0.reset_fences(device, fence_count, p_fences)
+        return self._v1_0.reset_fences(
+            device, fence_count, Ptr(to=p_fences).bitcast[Ptr[Fence, ImmutAnyOrigin]]()[]
+        )
 
     fn get_fence_status(self, device: Device, fence: Fence) -> Result:
         """See official vulkan docs for details.
@@ -8470,11 +9904,11 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.get_fence_status(device, fence)
 
-    fn wait_for_fences(
+    fn wait_for_fences[p_fences_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         fence_count: UInt32,
-        p_fences: Ptr[Fence, ImmutAnyOrigin],
+        p_fences: Ptr[Fence, p_fences_origin],
         wait_all: Bool32,
         timeout: UInt64,
     ) -> Result:
@@ -8482,54 +9916,73 @@ struct DeviceFunctionsV1_3(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitForFences.html
         """
-        return self._v1_0.wait_for_fences(device, fence_count, p_fences, wait_all, timeout)
+        return self._v1_0.wait_for_fences(
+            device, fence_count, Ptr(to=p_fences).bitcast[Ptr[Fence, ImmutAnyOrigin]]()[], wait_all, timeout
+        )
 
-    fn create_semaphore(
+    fn create_semaphore[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSemaphore.html
         """
-        return self._v1_0.create_semaphore(device, Ptr(to=create_info), p_allocator, Ptr(to=semaphore))
+        return self._v1_0.create_semaphore(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=semaphore),
+        )
 
-    fn destroy_semaphore(
+    fn destroy_semaphore[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         semaphore: Semaphore,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySemaphore.html
         """
-        return self._v1_0.destroy_semaphore(device, semaphore, p_allocator)
+        return self._v1_0.destroy_semaphore(
+            device, semaphore, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_event(
+    fn create_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: EventCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateEvent.html
         """
-        return self._v1_0.create_event(device, Ptr(to=create_info), p_allocator, Ptr(to=event))
+        return self._v1_0.create_event(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=event),
+        )
 
-    fn destroy_event(
-        self, device: Device, event: Event, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        event: Event,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyEvent.html
         """
-        return self._v1_0.destroy_event(device, event, p_allocator)
+        return self._v1_0.destroy_event(
+            device, event, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_event_status(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
@@ -8552,39 +10005,46 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.reset_event(device, event)
 
-    fn create_query_pool(
+    fn create_query_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateQueryPool.html
         """
-        return self._v1_0.create_query_pool(device, Ptr(to=create_info), p_allocator, Ptr(to=query_pool))
+        return self._v1_0.create_query_pool(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=query_pool),
+        )
 
-    fn destroy_query_pool(
+    fn destroy_query_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyQueryPool.html
         """
-        return self._v1_0.destroy_query_pool(device, query_pool, p_allocator)
+        return self._v1_0.destroy_query_pool(
+            device, query_pool, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn get_query_pool_results(
+    fn get_query_pool_results[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
@@ -8593,77 +10053,111 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueryPoolResults.html
         """
         return self._v1_0.get_query_pool_results(
-            device, query_pool, first_query, query_count, data_size, p_data, stride, flags
+            device,
+            query_pool,
+            first_query,
+            query_count,
+            data_size,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
+            stride,
+            flags,
         )
 
-    fn create_buffer(
+    fn create_buffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: BufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBuffer.html
         """
-        return self._v1_0.create_buffer(device, Ptr(to=create_info), p_allocator, Ptr(to=buffer))
+        return self._v1_0.create_buffer(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=buffer),
+        )
 
-    fn destroy_buffer(
-        self, device: Device, buffer: Buffer, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_buffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        buffer: Buffer,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBuffer.html
         """
-        return self._v1_0.destroy_buffer(device, buffer, p_allocator)
+        return self._v1_0.destroy_buffer(
+            device, buffer, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_buffer_view(
+    fn create_buffer_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBufferView.html
         """
-        return self._v1_0.create_buffer_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_buffer_view(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=view),
+        )
 
-    fn destroy_buffer_view(
+    fn destroy_buffer_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         buffer_view: BufferView,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBufferView.html
         """
-        return self._v1_0.destroy_buffer_view(device, buffer_view, p_allocator)
+        return self._v1_0.destroy_buffer_view(
+            device, buffer_view, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_image(
+    fn create_image[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ImageCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImage.html
         """
-        return self._v1_0.create_image(device, Ptr(to=create_info), p_allocator, Ptr(to=image))
+        return self._v1_0.create_image(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=image),
+        )
 
-    fn destroy_image(
-        self, device: Device, image: Image, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_image[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        image: Image,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImage.html
         """
-        return self._v1_0.destroy_image(device, image, p_allocator)
+        return self._v1_0.destroy_image(
+            device, image, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_image_subresource_layout(
         self,
@@ -8678,36 +10172,43 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.get_image_subresource_layout(device, image, Ptr(to=subresource), Ptr(to=layout))
 
-    fn create_image_view(
+    fn create_image_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImageView.html
         """
-        return self._v1_0.create_image_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_image_view(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=view),
+        )
 
-    fn destroy_image_view(
+    fn destroy_image_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         image_view: ImageView,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImageView.html
         """
-        return self._v1_0.destroy_image_view(device, image_view, p_allocator)
+        return self._v1_0.destroy_image_view(
+            device, image_view, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_shader_module(
+    fn create_shader_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
@@ -8715,26 +10216,31 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateShaderModule.html
         """
         return self._v1_0.create_shader_module(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=shader_module)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=shader_module),
         )
 
-    fn destroy_shader_module(
+    fn destroy_shader_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         shader_module: ShaderModule,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyShaderModule.html
         """
-        return self._v1_0.destroy_shader_module(device, shader_module, p_allocator)
+        return self._v1_0.destroy_shader_module(
+            device, shader_module, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_pipeline_cache(
+    fn create_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
@@ -8742,35 +10248,47 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineCache.html
         """
         return self._v1_0.create_pipeline_cache(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_cache)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=pipeline_cache),
         )
 
-    fn destroy_pipeline_cache(
+    fn destroy_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineCache.html
         """
-        return self._v1_0.destroy_pipeline_cache(device, pipeline_cache, p_allocator)
+        return self._v1_0.destroy_pipeline_cache(
+            device,
+            pipeline_cache,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn get_pipeline_cache_data(
+    fn get_pipeline_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         mut data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
-        return self._v1_0.get_pipeline_cache_data(device, pipeline_cache, Ptr(to=data_size), p_data)
+        return self._v1_0.get_pipeline_cache_data(
+            device,
+            pipeline_cache,
+            Ptr(to=data_size),
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
+        )
 
-    fn get_pipeline_cache_data(
+    fn get_pipeline_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -8782,80 +10300,105 @@ struct DeviceFunctionsV1_3(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
-                device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
-            )
+        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.get_pipeline_cache_data(
-                device, pipeline_cache, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
-            )
+                result = self._v1_0.get_pipeline_cache_data(
+        device, pipeline_cache, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn merge_pipeline_caches(
+    fn merge_pipeline_caches[p_src_caches_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         dst_cache: PipelineCache,
         src_cache_count: UInt32,
-        p_src_caches: Ptr[PipelineCache, ImmutAnyOrigin],
+        p_src_caches: Ptr[PipelineCache, p_src_caches_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMergePipelineCaches.html
         """
-        return self._v1_0.merge_pipeline_caches(device, dst_cache, src_cache_count, p_src_caches)
+        return self._v1_0.merge_pipeline_caches(
+            device,
+            dst_cache,
+            src_cache_count,
+            Ptr(to=p_src_caches).bitcast[Ptr[PipelineCache, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_graphics_pipelines(
+    fn create_graphics_pipelines[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[GraphicsPipelineCreateInfo, p_create_infos_origin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateGraphicsPipelines.html
         """
         return self._v1_0.create_graphics_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=p_create_infos).bitcast[Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn create_compute_pipelines(
+    fn create_compute_pipelines[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[ComputePipelineCreateInfo, p_create_infos_origin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateComputePipelines.html
         """
         return self._v1_0.create_compute_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=p_create_infos).bitcast[Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn destroy_pipeline(
+    fn destroy_pipeline[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipeline.html
         """
-        return self._v1_0.destroy_pipeline(device, pipeline, p_allocator)
+        return self._v1_0.destroy_pipeline(
+            device, pipeline, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_pipeline_layout(
+    fn create_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
@@ -8863,51 +10406,65 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineLayout.html
         """
         return self._v1_0.create_pipeline_layout(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_layout)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=pipeline_layout),
         )
 
-    fn destroy_pipeline_layout(
+    fn destroy_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline_layout: PipelineLayout,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineLayout.html
         """
-        return self._v1_0.destroy_pipeline_layout(device, pipeline_layout, p_allocator)
+        return self._v1_0.destroy_pipeline_layout(
+            device,
+            pipeline_layout,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_sampler(
+    fn create_sampler[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SamplerCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSampler.html
         """
-        return self._v1_0.create_sampler(device, Ptr(to=create_info), p_allocator, Ptr(to=sampler))
+        return self._v1_0.create_sampler(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=sampler),
+        )
 
-    fn destroy_sampler(
+    fn destroy_sampler[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         sampler: Sampler,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySampler.html
         """
-        return self._v1_0.destroy_sampler(device, sampler, p_allocator)
+        return self._v1_0.destroy_sampler(
+            device, sampler, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_descriptor_set_layout(
+    fn create_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
@@ -8915,26 +10472,33 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorSetLayout.html
         """
         return self._v1_0.create_descriptor_set_layout(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=set_layout)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=set_layout),
         )
 
-    fn destroy_descriptor_set_layout(
+    fn destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorSetLayout.html
         """
-        return self._v1_0.destroy_descriptor_set_layout(device, descriptor_set_layout, p_allocator)
+        return self._v1_0.destroy_descriptor_set_layout(
+            device,
+            descriptor_set_layout,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_descriptor_pool(
+    fn create_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
@@ -8942,20 +10506,27 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorPool.html
         """
         return self._v1_0.create_descriptor_pool(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_pool)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=descriptor_pool),
         )
 
-    fn destroy_descriptor_pool(
+    fn destroy_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorPool.html
         """
-        return self._v1_0.destroy_descriptor_pool(device, descriptor_pool, p_allocator)
+        return self._v1_0.destroy_descriptor_pool(
+            device,
+            descriptor_pool,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
     fn reset_descriptor_pool(
         self, device: Device, descriptor_pool: DescriptorPool, flags: DescriptorPoolResetFlags
@@ -8966,98 +10537,126 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
-    fn allocate_descriptor_sets(
+    fn allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
-        return self._v1_0.allocate_descriptor_sets(device, Ptr(to=allocate_info), p_descriptor_sets)
+        return self._v1_0.allocate_descriptor_sets(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, MutAnyOrigin]]()[],
+        )
 
-    fn free_descriptor_sets(
+    fn free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeDescriptorSets.html
         """
         return self._v1_0.free_descriptor_sets(
-            device, descriptor_pool, descriptor_set_count, p_descriptor_sets
+            device,
+            descriptor_pool,
+            descriptor_set_count,
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, ImmutAnyOrigin]]()[],
         )
 
-    fn update_descriptor_sets(
+    fn update_descriptor_sets[
+        p_descriptor_writes_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_descriptor_copies_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         device: Device,
         descriptor_write_count: UInt32,
-        p_descriptor_writes: Ptr[WriteDescriptorSet, ImmutAnyOrigin],
+        p_descriptor_writes: Ptr[WriteDescriptorSet, p_descriptor_writes_origin],
         descriptor_copy_count: UInt32,
-        p_descriptor_copies: Ptr[CopyDescriptorSet, ImmutAnyOrigin],
+        p_descriptor_copies: Ptr[CopyDescriptorSet, p_descriptor_copies_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSets.html
         """
         return self._v1_0.update_descriptor_sets(
-            device, descriptor_write_count, p_descriptor_writes, descriptor_copy_count, p_descriptor_copies
+            device,
+            descriptor_write_count,
+            Ptr(to=p_descriptor_writes).bitcast[Ptr[WriteDescriptorSet, ImmutAnyOrigin]]()[],
+            descriptor_copy_count,
+            Ptr(to=p_descriptor_copies).bitcast[Ptr[CopyDescriptorSet, ImmutAnyOrigin]]()[],
         )
 
-    fn create_framebuffer(
+    fn create_framebuffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFramebuffer.html
         """
-        return self._v1_0.create_framebuffer(device, Ptr(to=create_info), p_allocator, Ptr(to=framebuffer))
+        return self._v1_0.create_framebuffer(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=framebuffer),
+        )
 
-    fn destroy_framebuffer(
+    fn destroy_framebuffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         framebuffer: Framebuffer,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFramebuffer.html
         """
-        return self._v1_0.destroy_framebuffer(device, framebuffer, p_allocator)
+        return self._v1_0.destroy_framebuffer(
+            device, framebuffer, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_render_pass(
+    fn create_render_pass[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass.html
         """
-        return self._v1_0.create_render_pass(device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass))
+        return self._v1_0.create_render_pass(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=render_pass),
+        )
 
-    fn destroy_render_pass(
+    fn destroy_render_pass[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         render_pass: RenderPass,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyRenderPass.html
         """
-        return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
+        return self._v1_0.destroy_render_pass(
+            device, render_pass, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_render_area_granularity(
         self, device: Device, render_pass: RenderPass, mut granularity: Extent2D
@@ -9068,11 +10667,11 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.get_render_area_granularity(device, render_pass, Ptr(to=granularity))
 
-    fn create_command_pool(
+    fn create_command_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
@@ -9080,20 +10679,25 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCommandPool.html
         """
         return self._v1_0.create_command_pool(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=command_pool)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=command_pool),
         )
 
-    fn destroy_command_pool(
+    fn destroy_command_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCommandPool.html
         """
-        return self._v1_0.destroy_command_pool(device, command_pool, p_allocator)
+        return self._v1_0.destroy_command_pool(
+            device, command_pool, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn reset_command_pool(
         self, device: Device, command_pool: CommandPool, flags: CommandPoolResetFlags
@@ -9104,31 +10708,38 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
-    fn allocate_command_buffers(
+    fn allocate_command_buffers[p_command_buffers_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
-        return self._v1_0.allocate_command_buffers(device, Ptr(to=allocate_info), p_command_buffers)
+        return self._v1_0.allocate_command_buffers(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, MutAnyOrigin]]()[],
+        )
 
-    fn free_command_buffers(
+    fn free_command_buffers[p_command_buffers_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeCommandBuffers.html
         """
         return self._v1_0.free_command_buffers(
-            device, command_pool, command_buffer_count, p_command_buffers
+            device,
+            command_pool,
+            command_buffer_count,
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutAnyOrigin]]()[],
         )
 
     fn begin_command_buffer(
@@ -9168,31 +10779,41 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
-    fn cmd_set_viewport(
+    fn cmd_set_viewport[p_viewports_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        p_viewports: Ptr[Viewport, ImmutAnyOrigin],
+        p_viewports: Ptr[Viewport, p_viewports_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewport.html
         """
-        return self._v1_0.cmd_set_viewport(command_buffer, first_viewport, viewport_count, p_viewports)
+        return self._v1_0.cmd_set_viewport(
+            command_buffer,
+            first_viewport,
+            viewport_count,
+            Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutAnyOrigin]]()[],
+        )
 
-    fn cmd_set_scissor(
+    fn cmd_set_scissor[p_scissors_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
         scissor_count: UInt32,
-        p_scissors: Ptr[Rect2D, ImmutAnyOrigin],
+        p_scissors: Ptr[Rect2D, p_scissors_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissor.html
         """
-        return self._v1_0.cmd_set_scissor(command_buffer, first_scissor, scissor_count, p_scissors)
+        return self._v1_0.cmd_set_scissor(
+            command_buffer,
+            first_scissor,
+            scissor_count,
+            Ptr(to=p_scissors).bitcast[Ptr[Rect2D, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_set_line_width(self, command_buffer: CommandBuffer, line_width: Float32):
         """See official vulkan docs for details.
@@ -9261,16 +10882,19 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.cmd_set_stencil_reference(command_buffer, face_mask, reference)
 
-    fn cmd_bind_descriptor_sets(
+    fn cmd_bind_descriptor_sets[
+        p_descriptor_sets_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_dynamic_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
         first_set: UInt32,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
         dynamic_offset_count: UInt32,
-        p_dynamic_offsets: Ptr[UInt32, ImmutAnyOrigin],
+        p_dynamic_offsets: Ptr[UInt32, p_dynamic_offsets_origin],
     ):
         """See official vulkan docs for details.
         
@@ -9282,9 +10906,9 @@ struct DeviceFunctionsV1_3(Copyable):
             layout,
             first_set,
             descriptor_set_count,
-            p_descriptor_sets,
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, ImmutAnyOrigin]]()[],
             dynamic_offset_count,
-            p_dynamic_offsets,
+            Ptr(to=p_dynamic_offsets).bitcast[Ptr[UInt32, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_bind_index_buffer(
@@ -9300,20 +10924,27 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
-    fn cmd_bind_vertex_buffers(
+    fn cmd_bind_vertex_buffers[
+        p_buffers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
-        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_buffers: Ptr[Buffer, p_buffers_origin],
+        p_offsets: Ptr[DeviceSize, p_offsets_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers.html
         """
         return self._v1_0.cmd_bind_vertex_buffers(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets
+            command_buffer,
+            first_binding,
+            binding_count,
+            Ptr(to=p_buffers).bitcast[Ptr[Buffer, ImmutAnyOrigin]]()[],
+            Ptr(to=p_offsets).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_draw(
@@ -9399,21 +11030,27 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.cmd_dispatch_indirect(command_buffer, buffer, offset)
 
-    fn cmd_copy_buffer(
+    fn cmd_copy_buffer[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer.html
         """
-        return self._v1_0.cmd_copy_buffer(command_buffer, src_buffer, dst_buffer, region_count, p_regions)
+        return self._v1_0.cmd_copy_buffer(
+            command_buffer,
+            src_buffer,
+            dst_buffer,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferCopy, ImmutAnyOrigin]]()[],
+        )
 
-    fn cmd_copy_image(
+    fn cmd_copy_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -9421,7 +11058,7 @@ struct DeviceFunctionsV1_3(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[ImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
@@ -9434,10 +11071,10 @@ struct DeviceFunctionsV1_3(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_blit_image(
+    fn cmd_blit_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -9445,7 +11082,7 @@ struct DeviceFunctionsV1_3(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageBlit, ImmutAnyOrigin],
+        p_regions: Ptr[ImageBlit, p_regions_origin],
         filter: Filter,
     ):
         """See official vulkan docs for details.
@@ -9459,57 +11096,73 @@ struct DeviceFunctionsV1_3(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageBlit, ImmutAnyOrigin]]()[],
             filter,
         )
 
-    fn cmd_copy_buffer_to_image(
+    fn cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage.html
         """
         return self._v1_0.cmd_copy_buffer_to_image(
-            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, p_regions
+            command_buffer,
+            src_buffer,
+            dst_image,
+            dst_image_layout,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_copy_image_to_buffer(
+    fn cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
         src_image_layout: ImageLayout,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer.html
         """
         return self._v1_0.cmd_copy_image_to_buffer(
-            command_buffer, src_image, src_image_layout, dst_buffer, region_count, p_regions
+            command_buffer,
+            src_image,
+            src_image_layout,
+            dst_buffer,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_update_buffer(
+    fn cmd_update_buffer[p_data_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         data_size: DeviceSize,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdUpdateBuffer.html
         """
-        return self._v1_0.cmd_update_buffer(command_buffer, dst_buffer, dst_offset, data_size, p_data)
+        return self._v1_0.cmd_update_buffer(
+            command_buffer,
+            dst_buffer,
+            dst_offset,
+            data_size,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_fill_buffer(
         self,
@@ -9525,57 +11178,74 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
-    fn cmd_clear_color_image(
+    fn cmd_clear_color_image[p_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
         color: ClearColorValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
+        p_ranges: Ptr[ImageSubresourceRange, p_ranges_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearColorImage.html
         """
         return self._v1_0.cmd_clear_color_image(
-            command_buffer, image, image_layout, Ptr(to=color), range_count, p_ranges
+            command_buffer,
+            image,
+            image_layout,
+            Ptr(to=color),
+            range_count,
+            Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_clear_depth_stencil_image(
+    fn cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
         depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
+        p_ranges: Ptr[ImageSubresourceRange, p_ranges_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearDepthStencilImage.html
         """
         return self._v1_0.cmd_clear_depth_stencil_image(
-            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, p_ranges
+            command_buffer,
+            image,
+            image_layout,
+            Ptr(to=depth_stencil),
+            range_count,
+            Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_clear_attachments(
+    fn cmd_clear_attachments[
+        p_attachments_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_rects_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
-        p_attachments: Ptr[ClearAttachment, ImmutAnyOrigin],
+        p_attachments: Ptr[ClearAttachment, p_attachments_origin],
         rect_count: UInt32,
-        p_rects: Ptr[ClearRect, ImmutAnyOrigin],
+        p_rects: Ptr[ClearRect, p_rects_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearAttachments.html
         """
         return self._v1_0.cmd_clear_attachments(
-            command_buffer, attachment_count, p_attachments, rect_count, p_rects
+            command_buffer,
+            attachment_count,
+            Ptr(to=p_attachments).bitcast[Ptr[ClearAttachment, ImmutAnyOrigin]]()[],
+            rect_count,
+            Ptr(to=p_rects).bitcast[Ptr[ClearRect, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_resolve_image(
+    fn cmd_resolve_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -9583,7 +11253,7 @@ struct DeviceFunctionsV1_3(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageResolve, ImmutAnyOrigin],
+        p_regions: Ptr[ImageResolve, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
@@ -9596,7 +11266,7 @@ struct DeviceFunctionsV1_3(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageResolve, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_set_event(
@@ -9617,19 +11287,24 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
-    fn cmd_wait_events(
+    fn cmd_wait_events[
+        p_events_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event, ImmutAnyOrigin],
+        p_events: Ptr[Event, p_events_origin],
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
+        p_memory_barriers: Ptr[MemoryBarrier, p_memory_barriers_origin],
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
+        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, p_buffer_memory_barriers_origin],
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
+        p_image_memory_barriers: Ptr[ImageMemoryBarrier, p_image_memory_barriers_origin],
     ):
         """See official vulkan docs for details.
         
@@ -9638,29 +11313,33 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.cmd_wait_events(
             command_buffer,
             event_count,
-            p_events,
+            Ptr(to=p_events).bitcast[Ptr[Event, ImmutAnyOrigin]]()[],
             src_stage_mask,
             dst_stage_mask,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=p_memory_barriers).bitcast[Ptr[MemoryBarrier, ImmutAnyOrigin]]()[],
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=p_buffer_memory_barriers).bitcast[Ptr[BufferMemoryBarrier, ImmutAnyOrigin]]()[],
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_pipeline_barrier(
+    fn cmd_pipeline_barrier[
+        p_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         dependency_flags: DependencyFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
+        p_memory_barriers: Ptr[MemoryBarrier, p_memory_barriers_origin],
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
+        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, p_buffer_memory_barriers_origin],
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
+        p_image_memory_barriers: Ptr[ImageMemoryBarrier, p_image_memory_barriers_origin],
     ):
         """See official vulkan docs for details.
         
@@ -9672,11 +11351,11 @@ struct DeviceFunctionsV1_3(Copyable):
             dst_stage_mask,
             dependency_flags,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=p_memory_barriers).bitcast[Ptr[MemoryBarrier, ImmutAnyOrigin]]()[],
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=p_buffer_memory_barriers).bitcast[Ptr[BufferMemoryBarrier, ImmutAnyOrigin]]()[],
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_begin_query(
@@ -9744,20 +11423,27 @@ struct DeviceFunctionsV1_3(Copyable):
             command_buffer, query_pool, first_query, query_count, dst_buffer, dst_offset, stride, flags
         )
 
-    fn cmd_push_constants(
+    fn cmd_push_constants[p_values_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         layout: PipelineLayout,
         stage_flags: ShaderStageFlags,
         offset: UInt32,
         size: UInt32,
-        p_values: Ptr[NoneType, ImmutAnyOrigin],
+        p_values: Ptr[NoneType, p_values_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants.html
         """
-        return self._v1_0.cmd_push_constants(command_buffer, layout, stage_flags, offset, size, p_values)
+        return self._v1_0.cmd_push_constants(
+            command_buffer,
+            layout,
+            stage_flags,
+            offset,
+            size,
+            Ptr(to=p_values).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_begin_render_pass(
         self,
@@ -9785,41 +11471,53 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
-    fn cmd_execute_commands(
+    fn cmd_execute_commands[p_command_buffers_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteCommands.html
         """
-        return self._v1_0.cmd_execute_commands(command_buffer, command_buffer_count, p_command_buffers)
+        return self._v1_0.cmd_execute_commands(
+            command_buffer,
+            command_buffer_count,
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutAnyOrigin]]()[],
+        )
 
-    fn bind_buffer_memory_2(
+    fn bind_buffer_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
-        p_bind_infos: Ptr[BindBufferMemoryInfo, ImmutAnyOrigin],
+        p_bind_infos: Ptr[BindBufferMemoryInfo, p_bind_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory2.html
         """
-        return self._v1_1.bind_buffer_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_buffer_memory_2(
+            device,
+            bind_info_count,
+            Ptr(to=p_bind_infos).bitcast[Ptr[BindBufferMemoryInfo, ImmutAnyOrigin]]()[],
+        )
 
-    fn bind_image_memory_2(
+    fn bind_image_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
-        p_bind_infos: Ptr[BindImageMemoryInfo, ImmutAnyOrigin],
+        p_bind_infos: Ptr[BindImageMemoryInfo, p_bind_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory2.html
         """
-        return self._v1_1.bind_image_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_image_memory_2(
+            device,
+            bind_info_count,
+            Ptr(to=p_bind_infos).bitcast[Ptr[BindImageMemoryInfo, ImmutAnyOrigin]]()[],
+        )
 
     fn get_device_group_peer_memory_features(
         self,
@@ -9894,22 +11592,29 @@ struct DeviceFunctionsV1_3(Copyable):
             device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
-    fn get_image_sparse_memory_requirements_2(
+    fn get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, p_sparse_memory_requirements_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
+            device,
+            Ptr(to=info),
+            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]]()[],
         )
 
-    fn get_image_sparse_memory_requirements_2(
+    fn get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, info: ImageSparseMemoryRequirementsInfo2
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -9919,12 +11624,12 @@ struct DeviceFunctionsV1_3(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_1.get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
-        )
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_1.get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
-        )
+    device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -9944,11 +11649,11 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_1.get_device_queue_2(device, Ptr(to=queue_info), Ptr(to=queue))
 
-    fn create_sampler_ycbcr_conversion(
+    fn create_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
@@ -9956,26 +11661,33 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSamplerYcbcrConversion.html
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=ycbcr_conversion)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=ycbcr_conversion),
         )
 
-    fn destroy_sampler_ycbcr_conversion(
+    fn destroy_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySamplerYcbcrConversion.html
         """
-        return self._v1_1.destroy_sampler_ycbcr_conversion(device, ycbcr_conversion, p_allocator)
+        return self._v1_1.destroy_sampler_ycbcr_conversion(
+            device,
+            ycbcr_conversion,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_descriptor_update_template(
+    fn create_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
@@ -9983,36 +11695,44 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorUpdateTemplate.html
         """
         return self._v1_1.create_descriptor_update_template(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_update_template)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=descriptor_update_template),
         )
 
-    fn destroy_descriptor_update_template(
+    fn destroy_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorUpdateTemplate.html
         """
         return self._v1_1.destroy_descriptor_update_template(
-            device, descriptor_update_template, p_allocator
+            device,
+            descriptor_update_template,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
         )
 
-    fn update_descriptor_set_with_template(
+    fn update_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_set: DescriptorSet,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._v1_1.update_descriptor_set_with_template(
-            device, descriptor_set, descriptor_update_template, p_data
+            device,
+            descriptor_set,
+            descriptor_update_template,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
         )
 
     fn get_descriptor_set_layout_support(
@@ -10063,11 +11783,11 @@ struct DeviceFunctionsV1_3(Copyable):
             command_buffer, buffer, offset, count_buffer, count_buffer_offset, max_draw_count, stride
         )
 
-    fn create_render_pass_2(
+    fn create_render_pass_2[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo2,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
@@ -10075,7 +11795,10 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass2.html
         """
         return self._v1_2.create_render_pass_2(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=render_pass),
         )
 
     fn cmd_begin_render_pass_2(
@@ -10176,11 +11899,11 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_2.get_device_memory_opaque_capture_address(device, Ptr(to=info))
 
-    fn create_private_data_slot(
+    fn create_private_data_slot[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PrivateDataSlotCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut private_data_slot: PrivateDataSlot,
     ) -> Result:
         """See official vulkan docs for details.
@@ -10188,20 +11911,27 @@ struct DeviceFunctionsV1_3(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePrivateDataSlot.html
         """
         return self._v1_3.create_private_data_slot(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=private_data_slot)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=private_data_slot),
         )
 
-    fn destroy_private_data_slot(
+    fn destroy_private_data_slot[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         private_data_slot: PrivateDataSlot,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPrivateDataSlot.html
         """
-        return self._v1_3.destroy_private_data_slot(device, private_data_slot, p_allocator)
+        return self._v1_3.destroy_private_data_slot(
+            device,
+            private_data_slot,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
     fn set_private_data(
         self,
@@ -10251,18 +11981,26 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_3.cmd_reset_event_2(command_buffer, event, stage_mask)
 
-    fn cmd_wait_events_2(
+    fn cmd_wait_events_2[
+        p_events_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_dependency_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event, ImmutAnyOrigin],
-        p_dependency_infos: Ptr[DependencyInfo, ImmutAnyOrigin],
+        p_events: Ptr[Event, p_events_origin],
+        p_dependency_infos: Ptr[DependencyInfo, p_dependency_infos_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWaitEvents2.html
         """
-        return self._v1_3.cmd_wait_events_2(command_buffer, event_count, p_events, p_dependency_infos)
+        return self._v1_3.cmd_wait_events_2(
+            command_buffer,
+            event_count,
+            Ptr(to=p_events).bitcast[Ptr[Event, ImmutAnyOrigin]]()[],
+            Ptr(to=p_dependency_infos).bitcast[Ptr[DependencyInfo, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_pipeline_barrier_2(
         self, command_buffer: CommandBuffer, dependency_info: DependencyInfo
@@ -10286,18 +12024,20 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_3.cmd_write_timestamp_2(command_buffer, stage, query_pool, query)
 
-    fn queue_submit_2(
+    fn queue_submit_2[p_submits_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
-        p_submits: Ptr[SubmitInfo2, ImmutAnyOrigin],
+        p_submits: Ptr[SubmitInfo2, p_submits_origin],
         fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit2.html
         """
-        return self._v1_3.queue_submit_2(queue, submit_count, p_submits, fence)
+        return self._v1_3.queue_submit_2(
+            queue, submit_count, Ptr(to=p_submits).bitcast[Ptr[SubmitInfo2, ImmutAnyOrigin]]()[], fence
+        )
 
     fn cmd_copy_buffer_2(self, command_buffer: CommandBuffer, copy_buffer_info: CopyBufferInfo2):
         """See official vulkan docs for details.
@@ -10384,46 +12124,61 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_3.cmd_set_primitive_topology(command_buffer, primitive_topology)
 
-    fn cmd_set_viewport_with_count(
+    fn cmd_set_viewport_with_count[p_viewports_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         viewport_count: UInt32,
-        p_viewports: Ptr[Viewport, ImmutAnyOrigin],
+        p_viewports: Ptr[Viewport, p_viewports_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWithCount.html
         """
-        return self._v1_3.cmd_set_viewport_with_count(command_buffer, viewport_count, p_viewports)
+        return self._v1_3.cmd_set_viewport_with_count(
+            command_buffer, viewport_count, Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutAnyOrigin]]()[]
+        )
 
-    fn cmd_set_scissor_with_count(
+    fn cmd_set_scissor_with_count[p_scissors_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         scissor_count: UInt32,
-        p_scissors: Ptr[Rect2D, ImmutAnyOrigin],
+        p_scissors: Ptr[Rect2D, p_scissors_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissorWithCount.html
         """
-        return self._v1_3.cmd_set_scissor_with_count(command_buffer, scissor_count, p_scissors)
+        return self._v1_3.cmd_set_scissor_with_count(
+            command_buffer, scissor_count, Ptr(to=p_scissors).bitcast[Ptr[Rect2D, ImmutAnyOrigin]]()[]
+        )
 
-    fn cmd_bind_vertex_buffers_2(
+    fn cmd_bind_vertex_buffers_2[
+        p_buffers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_sizes_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_strides_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
-        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
-        p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
-        p_strides: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_buffers: Ptr[Buffer, p_buffers_origin],
+        p_offsets: Ptr[DeviceSize, p_offsets_origin],
+        p_sizes: Ptr[DeviceSize, p_sizes_origin],
+        p_strides: Ptr[DeviceSize, p_strides_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers2.html
         """
         return self._v1_3.cmd_bind_vertex_buffers_2(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets, p_sizes, p_strides
+            command_buffer,
+            first_binding,
+            binding_count,
+            Ptr(to=p_buffers).bitcast[Ptr[Buffer, ImmutAnyOrigin]]()[],
+            Ptr(to=p_offsets).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
+            Ptr(to=p_sizes).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
+            Ptr(to=p_strides).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_set_depth_test_enable(self, command_buffer: CommandBuffer, depth_test_enable: Bool32):
@@ -10535,22 +12290,29 @@ struct DeviceFunctionsV1_3(Copyable):
             device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
-    fn get_device_image_sparse_memory_requirements(
+    fn get_device_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         info: DeviceImageMemoryRequirements,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, p_sparse_memory_requirements_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSparseMemoryRequirements.html
         """
         return self._v1_3.get_device_image_sparse_memory_requirements(
-            device, Ptr(to=info), Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
+            device,
+            Ptr(to=info),
+            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]]()[],
         )
 
-    fn get_device_image_sparse_memory_requirements(
+    fn get_device_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, info: DeviceImageMemoryRequirements
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -10560,12 +12322,12 @@ struct DeviceFunctionsV1_3(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_3.get_device_image_sparse_memory_requirements(
-            device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
-        )
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_3.get_device_image_sparse_memory_requirements(
-            device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
-        )
+    device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -10586,21 +12348,27 @@ struct DeviceFunctionsV1_4(Copyable):
         self._v1_3 = DeviceFunctionsAdditionsV1_3(self._dlhandle, device)
         self._v1_4 = DeviceFunctionsAdditionsV1_4(self._dlhandle, device)
 
-    fn get_device_proc_addr(
-        self, device: Device, p_name: CStringSlice[ImmutAnyOrigin]
+    fn get_device_proc_addr[p_name_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
-        return self._v1_0.get_device_proc_addr(device, p_name)
+        return self._v1_0.get_device_proc_addr(
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[]
+        )
 
-    fn destroy_device(self, device: Device, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]):
+    fn destroy_device[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, p_allocator: Ptr[AllocationCallbacks, p_allocator_origin]
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDevice.html
         """
-        return self._v1_0.destroy_device(device, p_allocator)
+        return self._v1_0.destroy_device(
+            device, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_device_queue(
         self, device: Device, queue_family_index: UInt32, queue_index: UInt32, mut queue: Queue
@@ -10611,18 +12379,20 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.get_device_queue(device, queue_family_index, queue_index, Ptr(to=queue))
 
-    fn queue_submit(
+    fn queue_submit[p_submits_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
-        p_submits: Ptr[SubmitInfo, ImmutAnyOrigin],
+        p_submits: Ptr[SubmitInfo, p_submits_origin],
         fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit.html
         """
-        return self._v1_0.queue_submit(queue, submit_count, p_submits, fence)
+        return self._v1_0.queue_submit(
+            queue, submit_count, Ptr(to=p_submits).bitcast[Ptr[SubmitInfo, ImmutAnyOrigin]]()[], fence
+        )
 
     fn queue_wait_idle(self, queue: Queue) -> Result:
         """See official vulkan docs for details.
@@ -10638,30 +12408,37 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.device_wait_idle(device)
 
-    fn allocate_memory(
+    fn allocate_memory[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut memory: DeviceMemory,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateMemory.html
         """
-        return self._v1_0.allocate_memory(device, Ptr(to=allocate_info), p_allocator, Ptr(to=memory))
+        return self._v1_0.allocate_memory(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=memory),
+        )
 
-    fn free_memory(
+    fn free_memory[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeMemory.html
         """
-        return self._v1_0.free_memory(device, memory, p_allocator)
+        return self._v1_0.free_memory(
+            device, memory, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn map_memory(
         self,
@@ -10685,29 +12462,37 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.unmap_memory(device, memory)
 
-    fn flush_mapped_memory_ranges(
+    fn flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
-        p_memory_ranges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
+        p_memory_ranges: Ptr[MappedMemoryRange, p_memory_ranges_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFlushMappedMemoryRanges.html
         """
-        return self._v1_0.flush_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.flush_mapped_memory_ranges(
+            device,
+            memory_range_count,
+            Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutAnyOrigin]]()[],
+        )
 
-    fn invalidate_mapped_memory_ranges(
+    fn invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
-        p_memory_ranges: Ptr[MappedMemoryRange, ImmutAnyOrigin],
+        p_memory_ranges: Ptr[MappedMemoryRange, p_memory_ranges_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkInvalidateMappedMemoryRanges.html
         """
-        return self._v1_0.invalidate_mapped_memory_ranges(device, memory_range_count, p_memory_ranges)
+        return self._v1_0.invalidate_mapped_memory_ranges(
+            device,
+            memory_range_count,
+            Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutAnyOrigin]]()[],
+        )
 
     fn get_device_memory_commitment(
         self, device: Device, memory: DeviceMemory, mut committed_memory_in_bytes: DeviceSize
@@ -10754,22 +12539,29 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.get_image_memory_requirements(device, image, Ptr(to=memory_requirements))
 
-    fn get_image_sparse_memory_requirements(
+    fn get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         image: Image,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, MutAnyOrigin],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements, p_sparse_memory_requirements_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements.html
         """
         return self._v1_0.get_image_sparse_memory_requirements(
-            device, image, Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
+            device,
+            image,
+            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements, MutAnyOrigin]]()[],
         )
 
-    fn get_image_sparse_memory_requirements(
+    fn get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, image: Image
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
@@ -10779,56 +12571,73 @@ struct DeviceFunctionsV1_4(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-            device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
-        )
+    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(device, image, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
-    fn queue_bind_sparse(
+    fn queue_bind_sparse[p_bind_info_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         queue: Queue,
         bind_info_count: UInt32,
-        p_bind_info: Ptr[BindSparseInfo, ImmutAnyOrigin],
+        p_bind_info: Ptr[BindSparseInfo, p_bind_info_origin],
         fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBindSparse.html
         """
-        return self._v1_0.queue_bind_sparse(queue, bind_info_count, p_bind_info, fence)
+        return self._v1_0.queue_bind_sparse(
+            queue,
+            bind_info_count,
+            Ptr(to=p_bind_info).bitcast[Ptr[BindSparseInfo, ImmutAnyOrigin]]()[],
+            fence,
+        )
 
-    fn create_fence(
+    fn create_fence[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: FenceCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFence.html
         """
-        return self._v1_0.create_fence(device, Ptr(to=create_info), p_allocator, Ptr(to=fence))
+        return self._v1_0.create_fence(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=fence),
+        )
 
-    fn destroy_fence(
-        self, device: Device, fence: Fence, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_fence[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        fence: Fence,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFence.html
         """
-        return self._v1_0.destroy_fence(device, fence, p_allocator)
+        return self._v1_0.destroy_fence(
+            device, fence, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn reset_fences(
-        self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, ImmutAnyOrigin]
+    fn reset_fences[p_fences_origin: ImmutOrigin = ImmutAnyOrigin](
+        self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, p_fences_origin]
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetFences.html
         """
-        return self._v1_0.reset_fences(device, fence_count, p_fences)
+        return self._v1_0.reset_fences(
+            device, fence_count, Ptr(to=p_fences).bitcast[Ptr[Fence, ImmutAnyOrigin]]()[]
+        )
 
     fn get_fence_status(self, device: Device, fence: Fence) -> Result:
         """See official vulkan docs for details.
@@ -10837,11 +12646,11 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.get_fence_status(device, fence)
 
-    fn wait_for_fences(
+    fn wait_for_fences[p_fences_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         fence_count: UInt32,
-        p_fences: Ptr[Fence, ImmutAnyOrigin],
+        p_fences: Ptr[Fence, p_fences_origin],
         wait_all: Bool32,
         timeout: UInt64,
     ) -> Result:
@@ -10849,54 +12658,73 @@ struct DeviceFunctionsV1_4(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkWaitForFences.html
         """
-        return self._v1_0.wait_for_fences(device, fence_count, p_fences, wait_all, timeout)
+        return self._v1_0.wait_for_fences(
+            device, fence_count, Ptr(to=p_fences).bitcast[Ptr[Fence, ImmutAnyOrigin]]()[], wait_all, timeout
+        )
 
-    fn create_semaphore(
+    fn create_semaphore[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut semaphore: Semaphore,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSemaphore.html
         """
-        return self._v1_0.create_semaphore(device, Ptr(to=create_info), p_allocator, Ptr(to=semaphore))
+        return self._v1_0.create_semaphore(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=semaphore),
+        )
 
-    fn destroy_semaphore(
+    fn destroy_semaphore[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         semaphore: Semaphore,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySemaphore.html
         """
-        return self._v1_0.destroy_semaphore(device, semaphore, p_allocator)
+        return self._v1_0.destroy_semaphore(
+            device, semaphore, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_event(
+    fn create_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: EventCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut event: Event,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateEvent.html
         """
-        return self._v1_0.create_event(device, Ptr(to=create_info), p_allocator, Ptr(to=event))
+        return self._v1_0.create_event(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=event),
+        )
 
-    fn destroy_event(
-        self, device: Device, event: Event, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        event: Event,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyEvent.html
         """
-        return self._v1_0.destroy_event(device, event, p_allocator)
+        return self._v1_0.destroy_event(
+            device, event, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_event_status(self, device: Device, event: Event) -> Result:
         """See official vulkan docs for details.
@@ -10919,39 +12747,46 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.reset_event(device, event)
 
-    fn create_query_pool(
+    fn create_query_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut query_pool: QueryPool,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateQueryPool.html
         """
-        return self._v1_0.create_query_pool(device, Ptr(to=create_info), p_allocator, Ptr(to=query_pool))
+        return self._v1_0.create_query_pool(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=query_pool),
+        )
 
-    fn destroy_query_pool(
+    fn destroy_query_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyQueryPool.html
         """
-        return self._v1_0.destroy_query_pool(device, query_pool, p_allocator)
+        return self._v1_0.destroy_query_pool(
+            device, query_pool, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn get_query_pool_results(
+    fn get_query_pool_results[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
         first_query: UInt32,
         query_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
         stride: DeviceSize,
         flags: QueryResultFlags,
     ) -> Result:
@@ -10960,77 +12795,111 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueryPoolResults.html
         """
         return self._v1_0.get_query_pool_results(
-            device, query_pool, first_query, query_count, data_size, p_data, stride, flags
+            device,
+            query_pool,
+            first_query,
+            query_count,
+            data_size,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
+            stride,
+            flags,
         )
 
-    fn create_buffer(
+    fn create_buffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: BufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut buffer: Buffer,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBuffer.html
         """
-        return self._v1_0.create_buffer(device, Ptr(to=create_info), p_allocator, Ptr(to=buffer))
+        return self._v1_0.create_buffer(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=buffer),
+        )
 
-    fn destroy_buffer(
-        self, device: Device, buffer: Buffer, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_buffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        buffer: Buffer,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBuffer.html
         """
-        return self._v1_0.destroy_buffer(device, buffer, p_allocator)
+        return self._v1_0.destroy_buffer(
+            device, buffer, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_buffer_view(
+    fn create_buffer_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut view: BufferView,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBufferView.html
         """
-        return self._v1_0.create_buffer_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_buffer_view(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=view),
+        )
 
-    fn destroy_buffer_view(
+    fn destroy_buffer_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         buffer_view: BufferView,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBufferView.html
         """
-        return self._v1_0.destroy_buffer_view(device, buffer_view, p_allocator)
+        return self._v1_0.destroy_buffer_view(
+            device, buffer_view, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_image(
+    fn create_image[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ImageCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut image: Image,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImage.html
         """
-        return self._v1_0.create_image(device, Ptr(to=create_info), p_allocator, Ptr(to=image))
+        return self._v1_0.create_image(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=image),
+        )
 
-    fn destroy_image(
-        self, device: Device, image: Image, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
+    fn destroy_image[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        device: Device,
+        image: Image,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImage.html
         """
-        return self._v1_0.destroy_image(device, image, p_allocator)
+        return self._v1_0.destroy_image(
+            device, image, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_image_subresource_layout(
         self,
@@ -11045,36 +12914,43 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.get_image_subresource_layout(device, image, Ptr(to=subresource), Ptr(to=layout))
 
-    fn create_image_view(
+    fn create_image_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut view: ImageView,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImageView.html
         """
-        return self._v1_0.create_image_view(device, Ptr(to=create_info), p_allocator, Ptr(to=view))
+        return self._v1_0.create_image_view(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=view),
+        )
 
-    fn destroy_image_view(
+    fn destroy_image_view[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         image_view: ImageView,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyImageView.html
         """
-        return self._v1_0.destroy_image_view(device, image_view, p_allocator)
+        return self._v1_0.destroy_image_view(
+            device, image_view, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_shader_module(
+    fn create_shader_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut shader_module: ShaderModule,
     ) -> Result:
         """See official vulkan docs for details.
@@ -11082,26 +12958,31 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateShaderModule.html
         """
         return self._v1_0.create_shader_module(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=shader_module)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=shader_module),
         )
 
-    fn destroy_shader_module(
+    fn destroy_shader_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         shader_module: ShaderModule,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyShaderModule.html
         """
-        return self._v1_0.destroy_shader_module(device, shader_module, p_allocator)
+        return self._v1_0.destroy_shader_module(
+            device, shader_module, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_pipeline_cache(
+    fn create_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut pipeline_cache: PipelineCache,
     ) -> Result:
         """See official vulkan docs for details.
@@ -11109,35 +12990,47 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineCache.html
         """
         return self._v1_0.create_pipeline_cache(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_cache)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=pipeline_cache),
         )
 
-    fn destroy_pipeline_cache(
+    fn destroy_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineCache.html
         """
-        return self._v1_0.destroy_pipeline_cache(device, pipeline_cache, p_allocator)
+        return self._v1_0.destroy_pipeline_cache(
+            device,
+            pipeline_cache,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn get_pipeline_cache_data(
+    fn get_pipeline_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         mut data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineCacheData.html
         """
-        return self._v1_0.get_pipeline_cache_data(device, pipeline_cache, Ptr(to=data_size), p_data)
+        return self._v1_0.get_pipeline_cache_data(
+            device,
+            pipeline_cache,
+            Ptr(to=data_size),
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
+        )
 
-    fn get_pipeline_cache_data(
+    fn get_pipeline_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -11149,80 +13042,105 @@ struct DeviceFunctionsV1_4(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
-                device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
-            )
+        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._v1_0.get_pipeline_cache_data(
-                device, pipeline_cache, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
-            )
+                result = self._v1_0.get_pipeline_cache_data(
+        device, pipeline_cache, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn merge_pipeline_caches(
+    fn merge_pipeline_caches[p_src_caches_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         dst_cache: PipelineCache,
         src_cache_count: UInt32,
-        p_src_caches: Ptr[PipelineCache, ImmutAnyOrigin],
+        p_src_caches: Ptr[PipelineCache, p_src_caches_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMergePipelineCaches.html
         """
-        return self._v1_0.merge_pipeline_caches(device, dst_cache, src_cache_count, p_src_caches)
+        return self._v1_0.merge_pipeline_caches(
+            device,
+            dst_cache,
+            src_cache_count,
+            Ptr(to=p_src_caches).bitcast[Ptr[PipelineCache, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_graphics_pipelines(
+    fn create_graphics_pipelines[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[GraphicsPipelineCreateInfo, p_create_infos_origin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateGraphicsPipelines.html
         """
         return self._v1_0.create_graphics_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=p_create_infos).bitcast[Ptr[GraphicsPipelineCreateInfo, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn create_compute_pipelines(
+    fn create_compute_pipelines[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[ComputePipelineCreateInfo, p_create_infos_origin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateComputePipelines.html
         """
         return self._v1_0.create_compute_pipelines(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=p_create_infos).bitcast[Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn destroy_pipeline(
+    fn destroy_pipeline[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipeline.html
         """
-        return self._v1_0.destroy_pipeline(device, pipeline, p_allocator)
+        return self._v1_0.destroy_pipeline(
+            device, pipeline, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_pipeline_layout(
+    fn create_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut pipeline_layout: PipelineLayout,
     ) -> Result:
         """See official vulkan docs for details.
@@ -11230,51 +13148,65 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineLayout.html
         """
         return self._v1_0.create_pipeline_layout(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=pipeline_layout)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=pipeline_layout),
         )
 
-    fn destroy_pipeline_layout(
+    fn destroy_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline_layout: PipelineLayout,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineLayout.html
         """
-        return self._v1_0.destroy_pipeline_layout(device, pipeline_layout, p_allocator)
+        return self._v1_0.destroy_pipeline_layout(
+            device,
+            pipeline_layout,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_sampler(
+    fn create_sampler[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SamplerCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut sampler: Sampler,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSampler.html
         """
-        return self._v1_0.create_sampler(device, Ptr(to=create_info), p_allocator, Ptr(to=sampler))
+        return self._v1_0.create_sampler(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=sampler),
+        )
 
-    fn destroy_sampler(
+    fn destroy_sampler[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         sampler: Sampler,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySampler.html
         """
-        return self._v1_0.destroy_sampler(device, sampler, p_allocator)
+        return self._v1_0.destroy_sampler(
+            device, sampler, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_descriptor_set_layout(
+    fn create_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut set_layout: DescriptorSetLayout,
     ) -> Result:
         """See official vulkan docs for details.
@@ -11282,26 +13214,33 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorSetLayout.html
         """
         return self._v1_0.create_descriptor_set_layout(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=set_layout)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=set_layout),
         )
 
-    fn destroy_descriptor_set_layout(
+    fn destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorSetLayout.html
         """
-        return self._v1_0.destroy_descriptor_set_layout(device, descriptor_set_layout, p_allocator)
+        return self._v1_0.destroy_descriptor_set_layout(
+            device,
+            descriptor_set_layout,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_descriptor_pool(
+    fn create_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut descriptor_pool: DescriptorPool,
     ) -> Result:
         """See official vulkan docs for details.
@@ -11309,20 +13248,27 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorPool.html
         """
         return self._v1_0.create_descriptor_pool(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_pool)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=descriptor_pool),
         )
 
-    fn destroy_descriptor_pool(
+    fn destroy_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorPool.html
         """
-        return self._v1_0.destroy_descriptor_pool(device, descriptor_pool, p_allocator)
+        return self._v1_0.destroy_descriptor_pool(
+            device,
+            descriptor_pool,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
     fn reset_descriptor_pool(
         self, device: Device, descriptor_pool: DescriptorPool, flags: DescriptorPoolResetFlags
@@ -11333,98 +13279,126 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
-    fn allocate_descriptor_sets(
+    fn allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
-        p_descriptor_sets: Ptr[DescriptorSet, MutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateDescriptorSets.html
         """
-        return self._v1_0.allocate_descriptor_sets(device, Ptr(to=allocate_info), p_descriptor_sets)
+        return self._v1_0.allocate_descriptor_sets(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, MutAnyOrigin]]()[],
+        )
 
-    fn free_descriptor_sets(
+    fn free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeDescriptorSets.html
         """
         return self._v1_0.free_descriptor_sets(
-            device, descriptor_pool, descriptor_set_count, p_descriptor_sets
+            device,
+            descriptor_pool,
+            descriptor_set_count,
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, ImmutAnyOrigin]]()[],
         )
 
-    fn update_descriptor_sets(
+    fn update_descriptor_sets[
+        p_descriptor_writes_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_descriptor_copies_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         device: Device,
         descriptor_write_count: UInt32,
-        p_descriptor_writes: Ptr[WriteDescriptorSet, ImmutAnyOrigin],
+        p_descriptor_writes: Ptr[WriteDescriptorSet, p_descriptor_writes_origin],
         descriptor_copy_count: UInt32,
-        p_descriptor_copies: Ptr[CopyDescriptorSet, ImmutAnyOrigin],
+        p_descriptor_copies: Ptr[CopyDescriptorSet, p_descriptor_copies_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSets.html
         """
         return self._v1_0.update_descriptor_sets(
-            device, descriptor_write_count, p_descriptor_writes, descriptor_copy_count, p_descriptor_copies
+            device,
+            descriptor_write_count,
+            Ptr(to=p_descriptor_writes).bitcast[Ptr[WriteDescriptorSet, ImmutAnyOrigin]]()[],
+            descriptor_copy_count,
+            Ptr(to=p_descriptor_copies).bitcast[Ptr[CopyDescriptorSet, ImmutAnyOrigin]]()[],
         )
 
-    fn create_framebuffer(
+    fn create_framebuffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut framebuffer: Framebuffer,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateFramebuffer.html
         """
-        return self._v1_0.create_framebuffer(device, Ptr(to=create_info), p_allocator, Ptr(to=framebuffer))
+        return self._v1_0.create_framebuffer(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=framebuffer),
+        )
 
-    fn destroy_framebuffer(
+    fn destroy_framebuffer[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         framebuffer: Framebuffer,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyFramebuffer.html
         """
-        return self._v1_0.destroy_framebuffer(device, framebuffer, p_allocator)
+        return self._v1_0.destroy_framebuffer(
+            device, framebuffer, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn create_render_pass(
+    fn create_render_pass[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass.html
         """
-        return self._v1_0.create_render_pass(device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass))
+        return self._v1_0.create_render_pass(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=render_pass),
+        )
 
-    fn destroy_render_pass(
+    fn destroy_render_pass[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         render_pass: RenderPass,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyRenderPass.html
         """
-        return self._v1_0.destroy_render_pass(device, render_pass, p_allocator)
+        return self._v1_0.destroy_render_pass(
+            device, render_pass, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_render_area_granularity(
         self, device: Device, render_pass: RenderPass, mut granularity: Extent2D
@@ -11435,11 +13409,11 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.get_render_area_granularity(device, render_pass, Ptr(to=granularity))
 
-    fn create_command_pool(
+    fn create_command_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut command_pool: CommandPool,
     ) -> Result:
         """See official vulkan docs for details.
@@ -11447,20 +13421,25 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCommandPool.html
         """
         return self._v1_0.create_command_pool(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=command_pool)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=command_pool),
         )
 
-    fn destroy_command_pool(
+    fn destroy_command_pool[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCommandPool.html
         """
-        return self._v1_0.destroy_command_pool(device, command_pool, p_allocator)
+        return self._v1_0.destroy_command_pool(
+            device, command_pool, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn reset_command_pool(
         self, device: Device, command_pool: CommandPool, flags: CommandPoolResetFlags
@@ -11471,31 +13450,38 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
-    fn allocate_command_buffers(
+    fn allocate_command_buffers[p_command_buffers_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
-        p_command_buffers: Ptr[CommandBuffer, MutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAllocateCommandBuffers.html
         """
-        return self._v1_0.allocate_command_buffers(device, Ptr(to=allocate_info), p_command_buffers)
+        return self._v1_0.allocate_command_buffers(
+            device,
+            Ptr(to=allocate_info),
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, MutAnyOrigin]]()[],
+        )
 
-    fn free_command_buffers(
+    fn free_command_buffers[p_command_buffers_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkFreeCommandBuffers.html
         """
         return self._v1_0.free_command_buffers(
-            device, command_pool, command_buffer_count, p_command_buffers
+            device,
+            command_pool,
+            command_buffer_count,
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutAnyOrigin]]()[],
         )
 
     fn begin_command_buffer(
@@ -11535,31 +13521,41 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
-    fn cmd_set_viewport(
+    fn cmd_set_viewport[p_viewports_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
-        p_viewports: Ptr[Viewport, ImmutAnyOrigin],
+        p_viewports: Ptr[Viewport, p_viewports_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewport.html
         """
-        return self._v1_0.cmd_set_viewport(command_buffer, first_viewport, viewport_count, p_viewports)
+        return self._v1_0.cmd_set_viewport(
+            command_buffer,
+            first_viewport,
+            viewport_count,
+            Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutAnyOrigin]]()[],
+        )
 
-    fn cmd_set_scissor(
+    fn cmd_set_scissor[p_scissors_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
         scissor_count: UInt32,
-        p_scissors: Ptr[Rect2D, ImmutAnyOrigin],
+        p_scissors: Ptr[Rect2D, p_scissors_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissor.html
         """
-        return self._v1_0.cmd_set_scissor(command_buffer, first_scissor, scissor_count, p_scissors)
+        return self._v1_0.cmd_set_scissor(
+            command_buffer,
+            first_scissor,
+            scissor_count,
+            Ptr(to=p_scissors).bitcast[Ptr[Rect2D, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_set_line_width(self, command_buffer: CommandBuffer, line_width: Float32):
         """See official vulkan docs for details.
@@ -11628,16 +13624,19 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.cmd_set_stencil_reference(command_buffer, face_mask, reference)
 
-    fn cmd_bind_descriptor_sets(
+    fn cmd_bind_descriptor_sets[
+        p_descriptor_sets_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_dynamic_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
         first_set: UInt32,
         descriptor_set_count: UInt32,
-        p_descriptor_sets: Ptr[DescriptorSet, ImmutAnyOrigin],
+        p_descriptor_sets: Ptr[DescriptorSet, p_descriptor_sets_origin],
         dynamic_offset_count: UInt32,
-        p_dynamic_offsets: Ptr[UInt32, ImmutAnyOrigin],
+        p_dynamic_offsets: Ptr[UInt32, p_dynamic_offsets_origin],
     ):
         """See official vulkan docs for details.
         
@@ -11649,9 +13648,9 @@ struct DeviceFunctionsV1_4(Copyable):
             layout,
             first_set,
             descriptor_set_count,
-            p_descriptor_sets,
+            Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, ImmutAnyOrigin]]()[],
             dynamic_offset_count,
-            p_dynamic_offsets,
+            Ptr(to=p_dynamic_offsets).bitcast[Ptr[UInt32, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_bind_index_buffer(
@@ -11667,20 +13666,27 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
-    fn cmd_bind_vertex_buffers(
+    fn cmd_bind_vertex_buffers[
+        p_buffers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
-        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_buffers: Ptr[Buffer, p_buffers_origin],
+        p_offsets: Ptr[DeviceSize, p_offsets_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers.html
         """
         return self._v1_0.cmd_bind_vertex_buffers(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets
+            command_buffer,
+            first_binding,
+            binding_count,
+            Ptr(to=p_buffers).bitcast[Ptr[Buffer, ImmutAnyOrigin]]()[],
+            Ptr(to=p_offsets).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_draw(
@@ -11766,21 +13772,27 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.cmd_dispatch_indirect(command_buffer, buffer, offset)
 
-    fn cmd_copy_buffer(
+    fn cmd_copy_buffer[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBuffer.html
         """
-        return self._v1_0.cmd_copy_buffer(command_buffer, src_buffer, dst_buffer, region_count, p_regions)
+        return self._v1_0.cmd_copy_buffer(
+            command_buffer,
+            src_buffer,
+            dst_buffer,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferCopy, ImmutAnyOrigin]]()[],
+        )
 
-    fn cmd_copy_image(
+    fn cmd_copy_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -11788,7 +13800,7 @@ struct DeviceFunctionsV1_4(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[ImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
@@ -11801,10 +13813,10 @@ struct DeviceFunctionsV1_4(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_blit_image(
+    fn cmd_blit_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -11812,7 +13824,7 @@ struct DeviceFunctionsV1_4(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageBlit, ImmutAnyOrigin],
+        p_regions: Ptr[ImageBlit, p_regions_origin],
         filter: Filter,
     ):
         """See official vulkan docs for details.
@@ -11826,57 +13838,73 @@ struct DeviceFunctionsV1_4(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageBlit, ImmutAnyOrigin]]()[],
             filter,
         )
 
-    fn cmd_copy_buffer_to_image(
+    fn cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyBufferToImage.html
         """
         return self._v1_0.cmd_copy_buffer_to_image(
-            command_buffer, src_buffer, dst_image, dst_image_layout, region_count, p_regions
+            command_buffer,
+            src_buffer,
+            dst_image,
+            dst_image_layout,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_copy_image_to_buffer(
+    fn cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
         src_image_layout: ImageLayout,
         dst_buffer: Buffer,
         region_count: UInt32,
-        p_regions: Ptr[BufferImageCopy, ImmutAnyOrigin],
+        p_regions: Ptr[BufferImageCopy, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyImageToBuffer.html
         """
         return self._v1_0.cmd_copy_image_to_buffer(
-            command_buffer, src_image, src_image_layout, dst_buffer, region_count, p_regions
+            command_buffer,
+            src_image,
+            src_image_layout,
+            dst_buffer,
+            region_count,
+            Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_update_buffer(
+    fn cmd_update_buffer[p_data_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         data_size: DeviceSize,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdUpdateBuffer.html
         """
-        return self._v1_0.cmd_update_buffer(command_buffer, dst_buffer, dst_offset, data_size, p_data)
+        return self._v1_0.cmd_update_buffer(
+            command_buffer,
+            dst_buffer,
+            dst_offset,
+            data_size,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_fill_buffer(
         self,
@@ -11892,57 +13920,74 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
-    fn cmd_clear_color_image(
+    fn cmd_clear_color_image[p_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
         color: ClearColorValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
+        p_ranges: Ptr[ImageSubresourceRange, p_ranges_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearColorImage.html
         """
         return self._v1_0.cmd_clear_color_image(
-            command_buffer, image, image_layout, Ptr(to=color), range_count, p_ranges
+            command_buffer,
+            image,
+            image_layout,
+            Ptr(to=color),
+            range_count,
+            Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_clear_depth_stencil_image(
+    fn cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
         image_layout: ImageLayout,
         depth_stencil: ClearDepthStencilValue,
         range_count: UInt32,
-        p_ranges: Ptr[ImageSubresourceRange, ImmutAnyOrigin],
+        p_ranges: Ptr[ImageSubresourceRange, p_ranges_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearDepthStencilImage.html
         """
         return self._v1_0.cmd_clear_depth_stencil_image(
-            command_buffer, image, image_layout, Ptr(to=depth_stencil), range_count, p_ranges
+            command_buffer,
+            image,
+            image_layout,
+            Ptr(to=depth_stencil),
+            range_count,
+            Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_clear_attachments(
+    fn cmd_clear_attachments[
+        p_attachments_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_rects_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
-        p_attachments: Ptr[ClearAttachment, ImmutAnyOrigin],
+        p_attachments: Ptr[ClearAttachment, p_attachments_origin],
         rect_count: UInt32,
-        p_rects: Ptr[ClearRect, ImmutAnyOrigin],
+        p_rects: Ptr[ClearRect, p_rects_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdClearAttachments.html
         """
         return self._v1_0.cmd_clear_attachments(
-            command_buffer, attachment_count, p_attachments, rect_count, p_rects
+            command_buffer,
+            attachment_count,
+            Ptr(to=p_attachments).bitcast[Ptr[ClearAttachment, ImmutAnyOrigin]]()[],
+            rect_count,
+            Ptr(to=p_rects).bitcast[Ptr[ClearRect, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_resolve_image(
+    fn cmd_resolve_image[p_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -11950,7 +13995,7 @@ struct DeviceFunctionsV1_4(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         region_count: UInt32,
-        p_regions: Ptr[ImageResolve, ImmutAnyOrigin],
+        p_regions: Ptr[ImageResolve, p_regions_origin],
     ):
         """See official vulkan docs for details.
         
@@ -11963,7 +14008,7 @@ struct DeviceFunctionsV1_4(Copyable):
             dst_image,
             dst_image_layout,
             region_count,
-            p_regions,
+            Ptr(to=p_regions).bitcast[Ptr[ImageResolve, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_set_event(
@@ -11984,19 +14029,24 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
-    fn cmd_wait_events(
+    fn cmd_wait_events[
+        p_events_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event, ImmutAnyOrigin],
+        p_events: Ptr[Event, p_events_origin],
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
+        p_memory_barriers: Ptr[MemoryBarrier, p_memory_barriers_origin],
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
+        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, p_buffer_memory_barriers_origin],
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
+        p_image_memory_barriers: Ptr[ImageMemoryBarrier, p_image_memory_barriers_origin],
     ):
         """See official vulkan docs for details.
         
@@ -12005,29 +14055,33 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.cmd_wait_events(
             command_buffer,
             event_count,
-            p_events,
+            Ptr(to=p_events).bitcast[Ptr[Event, ImmutAnyOrigin]]()[],
             src_stage_mask,
             dst_stage_mask,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=p_memory_barriers).bitcast[Ptr[MemoryBarrier, ImmutAnyOrigin]]()[],
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=p_buffer_memory_barriers).bitcast[Ptr[BufferMemoryBarrier, ImmutAnyOrigin]]()[],
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_pipeline_barrier(
+    fn cmd_pipeline_barrier[
+        p_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         src_stage_mask: PipelineStageFlags,
         dst_stage_mask: PipelineStageFlags,
         dependency_flags: DependencyFlags,
         memory_barrier_count: UInt32,
-        p_memory_barriers: Ptr[MemoryBarrier, ImmutAnyOrigin],
+        p_memory_barriers: Ptr[MemoryBarrier, p_memory_barriers_origin],
         buffer_memory_barrier_count: UInt32,
-        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, ImmutAnyOrigin],
+        p_buffer_memory_barriers: Ptr[BufferMemoryBarrier, p_buffer_memory_barriers_origin],
         image_memory_barrier_count: UInt32,
-        p_image_memory_barriers: Ptr[ImageMemoryBarrier, ImmutAnyOrigin],
+        p_image_memory_barriers: Ptr[ImageMemoryBarrier, p_image_memory_barriers_origin],
     ):
         """See official vulkan docs for details.
         
@@ -12039,11 +14093,11 @@ struct DeviceFunctionsV1_4(Copyable):
             dst_stage_mask,
             dependency_flags,
             memory_barrier_count,
-            p_memory_barriers,
+            Ptr(to=p_memory_barriers).bitcast[Ptr[MemoryBarrier, ImmutAnyOrigin]]()[],
             buffer_memory_barrier_count,
-            p_buffer_memory_barriers,
+            Ptr(to=p_buffer_memory_barriers).bitcast[Ptr[BufferMemoryBarrier, ImmutAnyOrigin]]()[],
             image_memory_barrier_count,
-            p_image_memory_barriers,
+            Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_begin_query(
@@ -12111,20 +14165,27 @@ struct DeviceFunctionsV1_4(Copyable):
             command_buffer, query_pool, first_query, query_count, dst_buffer, dst_offset, stride, flags
         )
 
-    fn cmd_push_constants(
+    fn cmd_push_constants[p_values_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         layout: PipelineLayout,
         stage_flags: ShaderStageFlags,
         offset: UInt32,
         size: UInt32,
-        p_values: Ptr[NoneType, ImmutAnyOrigin],
+        p_values: Ptr[NoneType, p_values_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushConstants.html
         """
-        return self._v1_0.cmd_push_constants(command_buffer, layout, stage_flags, offset, size, p_values)
+        return self._v1_0.cmd_push_constants(
+            command_buffer,
+            layout,
+            stage_flags,
+            offset,
+            size,
+            Ptr(to=p_values).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_begin_render_pass(
         self,
@@ -12152,41 +14213,53 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
-    fn cmd_execute_commands(
+    fn cmd_execute_commands[p_command_buffers_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
-        p_command_buffers: Ptr[CommandBuffer, ImmutAnyOrigin],
+        p_command_buffers: Ptr[CommandBuffer, p_command_buffers_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteCommands.html
         """
-        return self._v1_0.cmd_execute_commands(command_buffer, command_buffer_count, p_command_buffers)
+        return self._v1_0.cmd_execute_commands(
+            command_buffer,
+            command_buffer_count,
+            Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutAnyOrigin]]()[],
+        )
 
-    fn bind_buffer_memory_2(
+    fn bind_buffer_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
-        p_bind_infos: Ptr[BindBufferMemoryInfo, ImmutAnyOrigin],
+        p_bind_infos: Ptr[BindBufferMemoryInfo, p_bind_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory2.html
         """
-        return self._v1_1.bind_buffer_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_buffer_memory_2(
+            device,
+            bind_info_count,
+            Ptr(to=p_bind_infos).bitcast[Ptr[BindBufferMemoryInfo, ImmutAnyOrigin]]()[],
+        )
 
-    fn bind_image_memory_2(
+    fn bind_image_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
-        p_bind_infos: Ptr[BindImageMemoryInfo, ImmutAnyOrigin],
+        p_bind_infos: Ptr[BindImageMemoryInfo, p_bind_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory2.html
         """
-        return self._v1_1.bind_image_memory_2(device, bind_info_count, p_bind_infos)
+        return self._v1_1.bind_image_memory_2(
+            device,
+            bind_info_count,
+            Ptr(to=p_bind_infos).bitcast[Ptr[BindImageMemoryInfo, ImmutAnyOrigin]]()[],
+        )
 
     fn get_device_group_peer_memory_features(
         self,
@@ -12261,22 +14334,29 @@ struct DeviceFunctionsV1_4(Copyable):
             device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
-    fn get_image_sparse_memory_requirements_2(
+    fn get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, p_sparse_memory_requirements_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         return self._v1_1.get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
+            device,
+            Ptr(to=info),
+            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]]()[],
         )
 
-    fn get_image_sparse_memory_requirements_2(
+    fn get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, info: ImageSparseMemoryRequirementsInfo2
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -12286,12 +14366,12 @@ struct DeviceFunctionsV1_4(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_1.get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
-        )
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_1.get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
-        )
+    device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -12311,11 +14391,11 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_1.get_device_queue_2(device, Ptr(to=queue_info), Ptr(to=queue))
 
-    fn create_sampler_ycbcr_conversion(
+    fn create_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
@@ -12323,26 +14403,33 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSamplerYcbcrConversion.html
         """
         return self._v1_1.create_sampler_ycbcr_conversion(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=ycbcr_conversion)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=ycbcr_conversion),
         )
 
-    fn destroy_sampler_ycbcr_conversion(
+    fn destroy_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySamplerYcbcrConversion.html
         """
-        return self._v1_1.destroy_sampler_ycbcr_conversion(device, ycbcr_conversion, p_allocator)
+        return self._v1_1.destroy_sampler_ycbcr_conversion(
+            device,
+            ycbcr_conversion,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn create_descriptor_update_template(
+    fn create_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
@@ -12350,36 +14437,44 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorUpdateTemplate.html
         """
         return self._v1_1.create_descriptor_update_template(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_update_template)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=descriptor_update_template),
         )
 
-    fn destroy_descriptor_update_template(
+    fn destroy_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorUpdateTemplate.html
         """
         return self._v1_1.destroy_descriptor_update_template(
-            device, descriptor_update_template, p_allocator
+            device,
+            descriptor_update_template,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
         )
 
-    fn update_descriptor_set_with_template(
+    fn update_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_set: DescriptorSet,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._v1_1.update_descriptor_set_with_template(
-            device, descriptor_set, descriptor_update_template, p_data
+            device,
+            descriptor_set,
+            descriptor_update_template,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
         )
 
     fn get_descriptor_set_layout_support(
@@ -12430,11 +14525,11 @@ struct DeviceFunctionsV1_4(Copyable):
             command_buffer, buffer, offset, count_buffer, count_buffer_offset, max_draw_count, stride
         )
 
-    fn create_render_pass_2(
+    fn create_render_pass_2[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo2,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
@@ -12442,7 +14537,10 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass2.html
         """
         return self._v1_2.create_render_pass_2(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=render_pass),
         )
 
     fn cmd_begin_render_pass_2(
@@ -12543,11 +14641,11 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_2.get_device_memory_opaque_capture_address(device, Ptr(to=info))
 
-    fn create_private_data_slot(
+    fn create_private_data_slot[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PrivateDataSlotCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut private_data_slot: PrivateDataSlot,
     ) -> Result:
         """See official vulkan docs for details.
@@ -12555,20 +14653,27 @@ struct DeviceFunctionsV1_4(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePrivateDataSlot.html
         """
         return self._v1_3.create_private_data_slot(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=private_data_slot)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=private_data_slot),
         )
 
-    fn destroy_private_data_slot(
+    fn destroy_private_data_slot[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         private_data_slot: PrivateDataSlot,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPrivateDataSlot.html
         """
-        return self._v1_3.destroy_private_data_slot(device, private_data_slot, p_allocator)
+        return self._v1_3.destroy_private_data_slot(
+            device,
+            private_data_slot,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
     fn set_private_data(
         self,
@@ -12618,18 +14723,26 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_3.cmd_reset_event_2(command_buffer, event, stage_mask)
 
-    fn cmd_wait_events_2(
+    fn cmd_wait_events_2[
+        p_events_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_dependency_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event, ImmutAnyOrigin],
-        p_dependency_infos: Ptr[DependencyInfo, ImmutAnyOrigin],
+        p_events: Ptr[Event, p_events_origin],
+        p_dependency_infos: Ptr[DependencyInfo, p_dependency_infos_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWaitEvents2.html
         """
-        return self._v1_3.cmd_wait_events_2(command_buffer, event_count, p_events, p_dependency_infos)
+        return self._v1_3.cmd_wait_events_2(
+            command_buffer,
+            event_count,
+            Ptr(to=p_events).bitcast[Ptr[Event, ImmutAnyOrigin]]()[],
+            Ptr(to=p_dependency_infos).bitcast[Ptr[DependencyInfo, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_pipeline_barrier_2(
         self, command_buffer: CommandBuffer, dependency_info: DependencyInfo
@@ -12653,18 +14766,20 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_3.cmd_write_timestamp_2(command_buffer, stage, query_pool, query)
 
-    fn queue_submit_2(
+    fn queue_submit_2[p_submits_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
-        p_submits: Ptr[SubmitInfo2, ImmutAnyOrigin],
+        p_submits: Ptr[SubmitInfo2, p_submits_origin],
         fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit2.html
         """
-        return self._v1_3.queue_submit_2(queue, submit_count, p_submits, fence)
+        return self._v1_3.queue_submit_2(
+            queue, submit_count, Ptr(to=p_submits).bitcast[Ptr[SubmitInfo2, ImmutAnyOrigin]]()[], fence
+        )
 
     fn cmd_copy_buffer_2(self, command_buffer: CommandBuffer, copy_buffer_info: CopyBufferInfo2):
         """See official vulkan docs for details.
@@ -12751,46 +14866,61 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_3.cmd_set_primitive_topology(command_buffer, primitive_topology)
 
-    fn cmd_set_viewport_with_count(
+    fn cmd_set_viewport_with_count[p_viewports_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         viewport_count: UInt32,
-        p_viewports: Ptr[Viewport, ImmutAnyOrigin],
+        p_viewports: Ptr[Viewport, p_viewports_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWithCount.html
         """
-        return self._v1_3.cmd_set_viewport_with_count(command_buffer, viewport_count, p_viewports)
+        return self._v1_3.cmd_set_viewport_with_count(
+            command_buffer, viewport_count, Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutAnyOrigin]]()[]
+        )
 
-    fn cmd_set_scissor_with_count(
+    fn cmd_set_scissor_with_count[p_scissors_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         scissor_count: UInt32,
-        p_scissors: Ptr[Rect2D, ImmutAnyOrigin],
+        p_scissors: Ptr[Rect2D, p_scissors_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissorWithCount.html
         """
-        return self._v1_3.cmd_set_scissor_with_count(command_buffer, scissor_count, p_scissors)
+        return self._v1_3.cmd_set_scissor_with_count(
+            command_buffer, scissor_count, Ptr(to=p_scissors).bitcast[Ptr[Rect2D, ImmutAnyOrigin]]()[]
+        )
 
-    fn cmd_bind_vertex_buffers_2(
+    fn cmd_bind_vertex_buffers_2[
+        p_buffers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_sizes_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_strides_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
-        p_buffers: Ptr[Buffer, ImmutAnyOrigin],
-        p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
-        p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
-        p_strides: Ptr[DeviceSize, ImmutAnyOrigin],
+        p_buffers: Ptr[Buffer, p_buffers_origin],
+        p_offsets: Ptr[DeviceSize, p_offsets_origin],
+        p_sizes: Ptr[DeviceSize, p_sizes_origin],
+        p_strides: Ptr[DeviceSize, p_strides_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers2.html
         """
         return self._v1_3.cmd_bind_vertex_buffers_2(
-            command_buffer, first_binding, binding_count, p_buffers, p_offsets, p_sizes, p_strides
+            command_buffer,
+            first_binding,
+            binding_count,
+            Ptr(to=p_buffers).bitcast[Ptr[Buffer, ImmutAnyOrigin]]()[],
+            Ptr(to=p_offsets).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
+            Ptr(to=p_sizes).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
+            Ptr(to=p_strides).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_set_depth_test_enable(self, command_buffer: CommandBuffer, depth_test_enable: Bool32):
@@ -12902,22 +15032,29 @@ struct DeviceFunctionsV1_4(Copyable):
             device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
-    fn get_device_image_sparse_memory_requirements(
+    fn get_device_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         info: DeviceImageMemoryRequirements,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, p_sparse_memory_requirements_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSparseMemoryRequirements.html
         """
         return self._v1_3.get_device_image_sparse_memory_requirements(
-            device, Ptr(to=info), Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
+            device,
+            Ptr(to=info),
+            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]]()[],
         )
 
-    fn get_device_image_sparse_memory_requirements(
+    fn get_device_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, info: DeviceImageMemoryRequirements
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -12927,12 +15064,12 @@ struct DeviceFunctionsV1_4(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_3.get_device_image_sparse_memory_requirements(
-            device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
-        )
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._v1_3.get_device_image_sparse_memory_requirements(
-            device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
-        )
+    device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -13014,37 +15151,46 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_4.get_image_subresource_layout_2(device, image, Ptr(to=subresource), Ptr(to=layout))
 
-    fn cmd_push_descriptor_set(
+    fn cmd_push_descriptor_set[p_descriptor_writes_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
         set: UInt32,
         descriptor_write_count: UInt32,
-        p_descriptor_writes: Ptr[WriteDescriptorSet, ImmutAnyOrigin],
+        p_descriptor_writes: Ptr[WriteDescriptorSet, p_descriptor_writes_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSet.html
         """
         return self._v1_4.cmd_push_descriptor_set(
-            command_buffer, pipeline_bind_point, layout, set, descriptor_write_count, p_descriptor_writes
+            command_buffer,
+            pipeline_bind_point,
+            layout,
+            set,
+            descriptor_write_count,
+            Ptr(to=p_descriptor_writes).bitcast[Ptr[WriteDescriptorSet, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_push_descriptor_set_with_template(
+    fn cmd_push_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         descriptor_update_template: DescriptorUpdateTemplate,
         layout: PipelineLayout,
         set: UInt32,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSetWithTemplate.html
         """
         return self._v1_4.cmd_push_descriptor_set_with_template(
-            command_buffer, descriptor_update_template, layout, set, p_data
+            command_buffer,
+            descriptor_update_template,
+            layout,
+            set,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
         )
 
     fn cmd_set_rendering_attachment_locations(
@@ -13136,17 +15282,21 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_4.copy_image_to_image(device, Ptr(to=copy_image_to_image_info))
 
-    fn transition_image_layout(
+    fn transition_image_layout[p_transitions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         transition_count: UInt32,
-        p_transitions: Ptr[HostImageLayoutTransitionInfo, ImmutAnyOrigin],
+        p_transitions: Ptr[HostImageLayoutTransitionInfo, p_transitions_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkTransitionImageLayout.html
         """
-        return self._v1_4.transition_image_layout(device, transition_count, p_transitions)
+        return self._v1_4.transition_image_layout(
+            device,
+            transition_count,
+            Ptr(to=p_transitions).bitcast[Ptr[HostImageLayoutTransitionInfo, ImmutAnyOrigin]]()[],
+        )
 
 
 struct GlobalFunctionsAdditionsV1_0(Copyable):

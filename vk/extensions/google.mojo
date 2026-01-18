@@ -41,22 +41,25 @@ struct DisplayTiming(Copyable):
         """
         return self._get_refresh_cycle_duration_google(device, swapchain, Ptr(to=display_timing_properties))
 
-    fn get_past_presentation_timing_google(
+    fn get_past_presentation_timing_google[p_presentation_timings_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         swapchain: SwapchainKHR,
         mut presentation_timing_count: UInt32,
-        p_presentation_timings: Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin],
+        p_presentation_timings: Ptr[PastPresentationTimingGOOGLE, p_presentation_timings_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPastPresentationTimingGOOGLE.html
         """
         return self._get_past_presentation_timing_google(
-            device, swapchain, Ptr(to=presentation_timing_count), p_presentation_timings
+            device,
+            swapchain,
+            Ptr(to=presentation_timing_count),
+            Ptr(to=p_presentation_timings).bitcast[Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin]]()[],
         )
 
-    fn get_past_presentation_timing_google(
+    fn get_past_presentation_timing_google[p_presentation_timings_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, swapchain: SwapchainKHR
     ) -> ListResult[PastPresentationTimingGOOGLE]:
         """See official vulkan docs for details.
@@ -68,12 +71,12 @@ struct DisplayTiming(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_past_presentation_timing_google(
-                device, swapchain, Ptr(to=count), Ptr[PastPresentationTimingGOOGLE, MutOrigin.external]()
-            )
+        device, swapchain, Ptr(to=count), Ptr[PastPresentationTimingGOOGLE, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_past_presentation_timing_google(
-                device, swapchain, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_past_presentation_timing_google(
+        device, swapchain, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)

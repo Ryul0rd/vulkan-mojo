@@ -2200,32 +2200,42 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
     name = command_to_mojo_name(registry_command)
     return_type = parse_c_type(registry_command.return_type)
     
+    parameters: List[MojoParameter] = []
     arguments: List[MojoArgument] = []
     call_args: List[str] = []
     for param in registry_command.params:
         decl = parse_declarator(param.text)
         arg_name = pascal_to_snake(decl.name)
-        arg_type = decl.type
+        original_arg_type = decl.type
 
         is_void_ptr = (
-            isinstance(arg_type, MojoPointerType)
-            and isinstance(arg_type.pointee_type, MojoBaseType)
-            and arg_type.pointee_type.name == "NoneType"
+            isinstance(original_arg_type, MojoPointerType)
+            and isinstance(original_arg_type.pointee_type, MojoBaseType)
+            and original_arg_type.pointee_type.name == "NoneType"
         )
-        if isinstance(arg_type, MojoPointerType) and not is_void_ptr and not param.optional and param.len is None:
-            arg_type = assert_type(MojoPointerType, arg_type)
+        if isinstance(original_arg_type, MojoPointerType) and not is_void_ptr and not param.optional and param.len is None:
+            original_arg_type = assert_type(MojoPointerType, original_arg_type)
             arg_name = arg_name[2:] if arg_name.startswith("p_") else (arg_name[1:] if arg_name.startswith("pp_") else arg_name)
-            arguments.append(MojoArgument(arg_name, arg_type.pointee_type, mut=arg_type.origin == "MutAnyOrigin"))
+            arguments.append(MojoArgument(arg_name, original_arg_type.pointee_type, mut=original_arg_type.origin == "MutAnyOrigin"))
             call_args.append(f"Ptr(to={arg_name})")
         else:
-            if isinstance(arg_type, MojoPointerType):
-                new_origin: MojoOriginLiteral = "MutAnyOrigin" if arg_type.origin == "MutAnyOrigin" else "ImmutAnyOrigin"
-                arg_type = MojoPointerType(arg_type.pointee_type, new_origin)
-            arguments.append(MojoArgument(arg_name, arg_type))
-            call_args.append(arg_name)
+            if isinstance(original_arg_type, MojoPointerType):
+                new_origin: MojoOriginLiteral = "MutAnyOrigin" if original_arg_type.origin == "MutAnyOrigin" else "ImmutAnyOrigin"
+                arg_type = MojoPointerType(original_arg_type.pointee_type, new_origin)
+            else:
+                arg_type = original_arg_type
+            
+            parametric_arg_type = as_parametric_type(arg_name, arg_type, parameters)
+            arguments.append(MojoArgument(arg_name, parametric_arg_type))
+            
+            if parametric_arg_type != arg_type:
+                call_args.append(f"Ptr(to={arg_name}).bitcast[{original_arg_type}]()[]")
+            else:
+                call_args.append(arg_name)
 
     # Emit Standard Raw Method
-    call_target = f"self.{f'_v{version_added.major}_{version_added.minor}' if version_added else '_'}{name}"
+    target_field = f"_v{version_added.major}_{version_added.minor}." if version_added else "_"
+    call_target = f"self.{target_field}{name}"
     docstring = [
         "See official vulkan docs for details.", "",
         f"https://registry.khronos.org/vulkan/specs/latest/man/html/{native_name}.html"
@@ -2235,7 +2245,7 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         name=name,
         return_type=return_type,
         self_ref_kind="ref",
-        parameters=[],
+        parameters=parameters,
         arguments=arguments,
         body_lines=emit_fn_like(f"return {call_target}", call_args).splitlines(),
         docstring_lines=docstring,
@@ -2317,7 +2327,7 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         name=name,
         return_type=return_type,
         self_ref_kind="ref",
-        parameters=[],
+        parameters=parameters,
         arguments=arguments[:-2],
         body_lines=body_lines,
         docstring_lines=docstring,

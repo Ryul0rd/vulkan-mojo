@@ -21,11 +21,11 @@ struct ImagepipeSurface(Copyable):
             instance, "vkCreateImagePipeSurfaceFUCHSIA".as_c_string_slice()
         )).bitcast[type_of(self._create_image_pipe_surface_fuchsia)]()[]
 
-    fn create_image_pipe_surface_fuchsia(
+    fn create_image_pipe_surface_fuchsia[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: ImagePipeSurfaceCreateInfoFUCHSIA,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -33,7 +33,10 @@ struct ImagepipeSurface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateImagePipeSurfaceFUCHSIA.html
         """
         return self._create_image_pipe_surface_fuchsia(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=surface),
         )
 
 
@@ -195,11 +198,11 @@ struct BufferCollection(Copyable):
             device, "vkGetBufferCollectionPropertiesFUCHSIA".as_c_string_slice()
         )).bitcast[type_of(self._get_buffer_collection_properties_fuchsia)]()[]
 
-    fn create_buffer_collection_fuchsia(
+    fn create_buffer_collection_fuchsia[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: BufferCollectionCreateInfoFUCHSIA,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut collection: BufferCollectionFUCHSIA,
     ) -> Result:
         """See official vulkan docs for details.
@@ -207,7 +210,10 @@ struct BufferCollection(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateBufferCollectionFUCHSIA.html
         """
         return self._create_buffer_collection_fuchsia(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=collection)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=collection),
         )
 
     fn set_buffer_collection_image_constraints_fuchsia(
@@ -238,17 +244,19 @@ struct BufferCollection(Copyable):
             device, collection, Ptr(to=buffer_constraints_info)
         )
 
-    fn destroy_buffer_collection_fuchsia(
+    fn destroy_buffer_collection_fuchsia[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         collection: BufferCollectionFUCHSIA,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBufferCollectionFUCHSIA.html
         """
-        return self._destroy_buffer_collection_fuchsia(device, collection, p_allocator)
+        return self._destroy_buffer_collection_fuchsia(
+            device, collection, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_buffer_collection_properties_fuchsia(
         self,

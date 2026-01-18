@@ -93,24 +93,29 @@ struct ShaderInfo(Copyable):
             device, "vkGetShaderInfoAMD".as_c_string_slice()
         )).bitcast[type_of(self._get_shader_info_amd)]()[]
 
-    fn get_shader_info_amd(
+    fn get_shader_info_amd[p_info_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
         shader_stage: ShaderStageFlagBits,
         info_type: ShaderInfoTypeAMD,
         mut info_size: UInt,
-        p_info: Ptr[NoneType, MutAnyOrigin],
+        p_info: Ptr[NoneType, p_info_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderInfoAMD.html
         """
         return self._get_shader_info_amd(
-            device, pipeline, shader_stage, info_type, Ptr(to=info_size), p_info
+            device,
+            pipeline,
+            shader_stage,
+            info_type,
+            Ptr(to=info_size),
+            Ptr(to=p_info).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
-    fn get_shader_info_amd(
+    fn get_shader_info_amd[p_info_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
@@ -126,23 +131,23 @@ struct ShaderInfo(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_shader_info_amd(
-                device,
-                pipeline,
-                shader_stage,
-                info_type,
-                Ptr(to=count),
-                Ptr[NoneType, MutOrigin.external](),
-            )
+        device,
+        pipeline,
+        shader_stage,
+        info_type,
+        Ptr(to=count),
+        Ptr[NoneType, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_shader_info_amd(
-                device,
-                pipeline,
-                shader_stage,
-                info_type,
-                Ptr(to=count),
-                list.unsafe_ptr().bitcast[NoneType](),
-            )
+                result = self._get_shader_info_amd(
+        device,
+        pipeline,
+        shader_stage,
+        info_type,
+        Ptr(to=count),
+        list.unsafe_ptr().bitcast[NoneType](),
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 

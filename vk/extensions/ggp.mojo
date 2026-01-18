@@ -21,11 +21,11 @@ struct StreamDescriptorSurface(Copyable):
             instance, "vkCreateStreamDescriptorSurfaceGGP".as_c_string_slice()
         )).bitcast[type_of(self._create_stream_descriptor_surface_ggp)]()[]
 
-    fn create_stream_descriptor_surface_ggp(
+    fn create_stream_descriptor_surface_ggp[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: StreamDescriptorSurfaceCreateInfoGGP,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -33,5 +33,8 @@ struct StreamDescriptorSurface(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateStreamDescriptorSurfaceGGP.html
         """
         return self._create_stream_descriptor_surface_ggp(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=surface),
         )

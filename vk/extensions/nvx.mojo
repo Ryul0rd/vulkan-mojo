@@ -48,55 +48,69 @@ struct BinaryImport(Copyable):
             device, "vkCmdCuLaunchKernelNVX".as_c_string_slice()
         )).bitcast[type_of(self._cmd_cu_launch_kernel_nvx)]()[]
 
-    fn create_cu_module_nvx(
+    fn create_cu_module_nvx[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: CuModuleCreateInfoNVX,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut module: CuModuleNVX,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCuModuleNVX.html
         """
-        return self._create_cu_module_nvx(device, Ptr(to=create_info), p_allocator, Ptr(to=module))
+        return self._create_cu_module_nvx(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=module),
+        )
 
-    fn create_cu_function_nvx(
+    fn create_cu_function_nvx[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: CuFunctionCreateInfoNVX,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut function: CuFunctionNVX,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateCuFunctionNVX.html
         """
-        return self._create_cu_function_nvx(device, Ptr(to=create_info), p_allocator, Ptr(to=function))
+        return self._create_cu_function_nvx(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=function),
+        )
 
-    fn destroy_cu_module_nvx(
+    fn destroy_cu_module_nvx[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         module: CuModuleNVX,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCuModuleNVX.html
         """
-        return self._destroy_cu_module_nvx(device, module, p_allocator)
+        return self._destroy_cu_module_nvx(
+            device, module, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn destroy_cu_function_nvx(
+    fn destroy_cu_function_nvx[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         function: CuFunctionNVX,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCuFunctionNVX.html
         """
-        return self._destroy_cu_function_nvx(device, function, p_allocator)
+        return self._destroy_cu_function_nvx(
+            device, function, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn cmd_cu_launch_kernel_nvx(self, command_buffer: CommandBuffer, launch_info: CuLaunchInfoNVX):
         """See official vulkan docs for details.

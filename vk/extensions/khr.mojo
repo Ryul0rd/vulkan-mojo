@@ -53,17 +53,19 @@ struct Surface(Copyable):
             instance, "vkGetPhysicalDeviceSurfacePresentModesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_surface_present_modes_khr)]()[]
 
-    fn destroy_surface_khr(
+    fn destroy_surface_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         surface: SurfaceKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySurfaceKHR.html
         """
-        return self._destroy_surface_khr(instance, surface, p_allocator)
+        return self._destroy_surface_khr(
+            instance, surface, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_physical_device_surface_support_khr(
         self,
@@ -94,22 +96,25 @@ struct Surface(Copyable):
             physical_device, surface, Ptr(to=surface_capabilities)
         )
 
-    fn get_physical_device_surface_formats_khr(
+    fn get_physical_device_surface_formats_khr[p_surface_formats_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
         mut surface_format_count: UInt32,
-        p_surface_formats: Ptr[SurfaceFormatKHR, MutAnyOrigin],
+        p_surface_formats: Ptr[SurfaceFormatKHR, p_surface_formats_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceFormatsKHR.html
         """
         return self._get_physical_device_surface_formats_khr(
-            physical_device, surface, Ptr(to=surface_format_count), p_surface_formats
+            physical_device,
+            surface,
+            Ptr(to=surface_format_count),
+            Ptr(to=p_surface_formats).bitcast[Ptr[SurfaceFormatKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_surface_formats_khr(
+    fn get_physical_device_surface_formats_khr[p_surface_formats_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice, surface: SurfaceKHR
     ) -> ListResult[SurfaceFormatKHR]:
         """See official vulkan docs for details.
@@ -121,32 +126,39 @@ struct Surface(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_surface_formats_khr(
-                physical_device, surface, Ptr(to=count), Ptr[SurfaceFormatKHR, MutOrigin.external]()
-            )
+        physical_device, surface, Ptr(to=count), Ptr[SurfaceFormatKHR, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_surface_formats_khr(
-                physical_device, surface, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_surface_formats_khr(
+        physical_device, surface, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_physical_device_surface_present_modes_khr(
+    fn get_physical_device_surface_present_modes_khr[
+        p_present_modes_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
         mut present_mode_count: UInt32,
-        p_present_modes: Ptr[PresentModeKHR, MutAnyOrigin],
+        p_present_modes: Ptr[PresentModeKHR, p_present_modes_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfacePresentModesKHR.html
         """
         return self._get_physical_device_surface_present_modes_khr(
-            physical_device, surface, Ptr(to=present_mode_count), p_present_modes
+            physical_device,
+            surface,
+            Ptr(to=present_mode_count),
+            Ptr(to=p_present_modes).bitcast[Ptr[PresentModeKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_surface_present_modes_khr(
+    fn get_physical_device_surface_present_modes_khr[
+        p_present_modes_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice, surface: SurfaceKHR
     ) -> ListResult[PresentModeKHR]:
         """See official vulkan docs for details.
@@ -158,13 +170,13 @@ struct Surface(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_surface_present_modes_khr(
-                physical_device, surface, Ptr(to=count), Ptr[PresentModeKHR, MutOrigin.external]()
-            )
+        physical_device, surface, Ptr(to=count), Ptr[PresentModeKHR, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_surface_present_modes_khr(
-                physical_device, surface, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_surface_present_modes_khr(
+        physical_device, surface, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -249,47 +261,59 @@ struct Swapchain(Copyable):
             device, "vkAcquireNextImage2KHR".as_c_string_slice()
         )).bitcast[type_of(self._acquire_next_image_2_khr)]()[]
 
-    fn create_swapchain_khr(
+    fn create_swapchain_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SwapchainCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        create_info: SwapchainCreateInfoKHR,
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut swapchain: SwapchainKHR,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSwapchainKHR.html
         """
-        return self._create_swapchain_khr(device, Ptr(to=create_info), p_allocator, Ptr(to=swapchain))
+        return self._create_swapchain_khr(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=swapchain),
+        )
 
-    fn destroy_swapchain_khr(
+    fn destroy_swapchain_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         swapchain: SwapchainKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySwapchainKHR.html
         """
-        return self._destroy_swapchain_khr(device, swapchain, p_allocator)
+        return self._destroy_swapchain_khr(
+            device, swapchain, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn get_swapchain_images_khr(
+    fn get_swapchain_images_khr[p_swapchain_images_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         swapchain: SwapchainKHR,
         mut swapchain_image_count: UInt32,
-        p_swapchain_images: Ptr[Image, MutAnyOrigin],
+        p_swapchain_images: Ptr[Image, p_swapchain_images_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSwapchainImagesKHR.html
         """
         return self._get_swapchain_images_khr(
-            device, swapchain, Ptr(to=swapchain_image_count), p_swapchain_images
+            device,
+            swapchain,
+            Ptr(to=swapchain_image_count),
+            Ptr(to=p_swapchain_images).bitcast[Ptr[Image, MutAnyOrigin]]()[],
         )
 
-    fn get_swapchain_images_khr(
+    fn get_swapchain_images_khr[p_swapchain_images_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, swapchain: SwapchainKHR
     ) -> ListResult[Image]:
         """See official vulkan docs for details.
@@ -301,11 +325,11 @@ struct Swapchain(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_swapchain_images_khr(
-                device, swapchain, Ptr(to=count), Ptr[Image, MutOrigin.external]()
-            )
+        device, swapchain, Ptr(to=count), Ptr[Image, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_swapchain_images_khr(device, swapchain, Ptr(to=count), list.unsafe_ptr())
+                result = self._get_swapchain_images_khr(device, swapchain, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -355,22 +379,25 @@ struct Swapchain(Copyable):
         """
         return self._get_device_group_surface_present_modes_khr(device, surface, Ptr(to=modes))
 
-    fn get_physical_device_present_rectangles_khr(
+    fn get_physical_device_present_rectangles_khr[p_rects_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
         mut rect_count: UInt32,
-        p_rects: Ptr[Rect2D, MutAnyOrigin],
+        p_rects: Ptr[Rect2D, p_rects_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDevicePresentRectanglesKHR.html
         """
         return self._get_physical_device_present_rectangles_khr(
-            physical_device, surface, Ptr(to=rect_count), p_rects
+            physical_device,
+            surface,
+            Ptr(to=rect_count),
+            Ptr(to=p_rects).bitcast[Ptr[Rect2D, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_present_rectangles_khr(
+    fn get_physical_device_present_rectangles_khr[p_rects_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice, surface: SurfaceKHR
     ) -> ListResult[Rect2D]:
         """See official vulkan docs for details.
@@ -382,13 +409,13 @@ struct Swapchain(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_present_rectangles_khr(
-                physical_device, surface, Ptr(to=count), Ptr[Rect2D, MutOrigin.external]()
-            )
+        physical_device, surface, Ptr(to=count), Ptr[Rect2D, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_present_rectangles_khr(
-                physical_device, surface, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_present_rectangles_khr(
+        physical_device, surface, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -473,21 +500,23 @@ struct Display(Copyable):
             instance, "vkCreateDisplayPlaneSurfaceKHR".as_c_string_slice()
         )).bitcast[type_of(self._create_display_plane_surface_khr)]()[]
 
-    fn get_physical_device_display_properties_khr(
+    fn get_physical_device_display_properties_khr[p_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[DisplayPropertiesKHR, MutAnyOrigin],
+        p_properties: Ptr[DisplayPropertiesKHR, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPropertiesKHR.html
         """
         return self._get_physical_device_display_properties_khr(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[DisplayPropertiesKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_display_properties_khr(
+    fn get_physical_device_display_properties_khr[p_properties_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[DisplayPropertiesKHR]:
         """See official vulkan docs for details.
@@ -499,31 +528,37 @@ struct Display(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_display_properties_khr(
-                physical_device, Ptr(to=count), Ptr[DisplayPropertiesKHR, MutOrigin.external]()
-            )
+        physical_device, Ptr(to=count), Ptr[DisplayPropertiesKHR, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_display_properties_khr(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_display_properties_khr(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_physical_device_display_plane_properties_khr(
+    fn get_physical_device_display_plane_properties_khr[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[DisplayPlanePropertiesKHR, MutAnyOrigin],
+        p_properties: Ptr[DisplayPlanePropertiesKHR, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPlanePropertiesKHR.html
         """
         return self._get_physical_device_display_plane_properties_khr(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[DisplayPlanePropertiesKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_display_plane_properties_khr(
+    fn get_physical_device_display_plane_properties_khr[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> ListResult[DisplayPlanePropertiesKHR]:
         """See official vulkan docs for details.
@@ -535,32 +570,35 @@ struct Display(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_display_plane_properties_khr(
-                physical_device, Ptr(to=count), Ptr[DisplayPlanePropertiesKHR, MutOrigin.external]()
-            )
+        physical_device, Ptr(to=count), Ptr[DisplayPlanePropertiesKHR, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_display_plane_properties_khr(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_display_plane_properties_khr(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_display_plane_supported_displays_khr(
+    fn get_display_plane_supported_displays_khr[p_displays_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         plane_index: UInt32,
         mut display_count: UInt32,
-        p_displays: Ptr[DisplayKHR, MutAnyOrigin],
+        p_displays: Ptr[DisplayKHR, p_displays_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayPlaneSupportedDisplaysKHR.html
         """
         return self._get_display_plane_supported_displays_khr(
-            physical_device, plane_index, Ptr(to=display_count), p_displays
+            physical_device,
+            plane_index,
+            Ptr(to=display_count),
+            Ptr(to=p_displays).bitcast[Ptr[DisplayKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_display_plane_supported_displays_khr(
+    fn get_display_plane_supported_displays_khr[p_displays_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice, plane_index: UInt32
     ) -> ListResult[DisplayKHR]:
         """See official vulkan docs for details.
@@ -572,32 +610,35 @@ struct Display(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_display_plane_supported_displays_khr(
-                physical_device, plane_index, Ptr(to=count), Ptr[DisplayKHR, MutOrigin.external]()
-            )
+        physical_device, plane_index, Ptr(to=count), Ptr[DisplayKHR, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_display_plane_supported_displays_khr(
-                physical_device, plane_index, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_display_plane_supported_displays_khr(
+        physical_device, plane_index, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_display_mode_properties_khr(
+    fn get_display_mode_properties_khr[p_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         display: DisplayKHR,
         mut property_count: UInt32,
-        p_properties: Ptr[DisplayModePropertiesKHR, MutAnyOrigin],
+        p_properties: Ptr[DisplayModePropertiesKHR, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayModePropertiesKHR.html
         """
         return self._get_display_mode_properties_khr(
-            physical_device, display, Ptr(to=property_count), p_properties
+            physical_device,
+            display,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[DisplayModePropertiesKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_display_mode_properties_khr(
+    fn get_display_mode_properties_khr[p_properties_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice, display: DisplayKHR
     ) -> ListResult[DisplayModePropertiesKHR]:
         """See official vulkan docs for details.
@@ -609,22 +650,22 @@ struct Display(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_display_mode_properties_khr(
-                physical_device, display, Ptr(to=count), Ptr[DisplayModePropertiesKHR, MutOrigin.external]()
-            )
+        physical_device, display, Ptr(to=count), Ptr[DisplayModePropertiesKHR, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_display_mode_properties_khr(
-                physical_device, display, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_display_mode_properties_khr(
+        physical_device, display, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn create_display_mode_khr(
+    fn create_display_mode_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         display: DisplayKHR,
         create_info: DisplayModeCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut mode: DisplayModeKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -632,7 +673,11 @@ struct Display(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDisplayModeKHR.html
         """
         return self._create_display_mode_khr(
-            physical_device, display, Ptr(to=create_info), p_allocator, Ptr(to=mode)
+            physical_device,
+            display,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=mode),
         )
 
     fn get_display_plane_capabilities_khr(
@@ -650,11 +695,11 @@ struct Display(Copyable):
             physical_device, mode, plane_index, Ptr(to=capabilities)
         )
 
-    fn create_display_plane_surface_khr(
+    fn create_display_plane_surface_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: DisplaySurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -662,7 +707,10 @@ struct Display(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDisplayPlaneSurfaceKHR.html
         """
         return self._create_display_plane_surface_khr(
-            instance, Ptr(to=create_info), p_allocator, Ptr(to=surface)
+            instance,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=surface),
         )
 
 
@@ -685,20 +733,31 @@ struct DisplaySwapchain(Copyable):
             device, "vkCreateSharedSwapchainsKHR".as_c_string_slice()
         )).bitcast[type_of(self._create_shared_swapchains_khr)]()[]
 
-    fn create_shared_swapchains_khr(
+    fn create_shared_swapchains_khr[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_create_infos_origin_2: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_swapchains_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         swapchain_count: UInt32,
-        p_create_infos: Ptr[SwapchainCreateInfoKHR, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_swapchains: Ptr[SwapchainKHR, MutAnyOrigin],
+        p_create_infos: Ptr[SwapchainCreateInfoKHR, p_create_infos_origin],
+        p_create_infos: Ptr[SwapchainCreateInfoKHR, p_create_infos_origin_2],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_swapchains: Ptr[SwapchainKHR, p_swapchains_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSharedSwapchainsKHR.html
         """
         return self._create_shared_swapchains_khr(
-            device, swapchain_count, p_create_infos, p_allocator, p_swapchains
+            device,
+            swapchain_count,
+            Ptr(to=p_create_infos).bitcast[Ptr[SwapchainCreateInfoKHR, ImmutAnyOrigin]]()[],
+            Ptr(to=p_create_infos).bitcast[Ptr[SwapchainCreateInfoKHR, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_swapchains).bitcast[Ptr[SwapchainKHR, MutAnyOrigin]]()[],
         )
 
 
@@ -729,18 +788,23 @@ struct XlibSurface(Copyable):
             instance, "vkGetPhysicalDeviceXlibPresentationSupportKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_xlib_presentation_support_khr)]()[]
 
-    fn create_xlib_surface_khr(
+    fn create_xlib_surface_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: XlibSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateXlibSurfaceKHR.html
         """
-        return self._create_xlib_surface_khr(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
+        return self._create_xlib_surface_khr(
+            instance,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=surface),
+        )
 
     fn get_physical_device_xlib_presentation_support_khr(
         self,
@@ -785,18 +849,23 @@ struct XcbSurface(Copyable):
             instance, "vkGetPhysicalDeviceXcbPresentationSupportKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_xcb_presentation_support_khr)]()[]
 
-    fn create_xcb_surface_khr(
+    fn create_xcb_surface_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: XcbSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateXcbSurfaceKHR.html
         """
-        return self._create_xcb_surface_khr(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
+        return self._create_xcb_surface_khr(
+            instance,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=surface),
+        )
 
     fn get_physical_device_xcb_presentation_support_khr(
         self,
@@ -840,18 +909,23 @@ struct WaylandSurface(Copyable):
             instance, "vkGetPhysicalDeviceWaylandPresentationSupportKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_wayland_presentation_support_khr)]()[]
 
-    fn create_wayland_surface_khr(
+    fn create_wayland_surface_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: WaylandSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateWaylandSurfaceKHR.html
         """
-        return self._create_wayland_surface_khr(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
+        return self._create_wayland_surface_khr(
+            instance,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=surface),
+        )
 
     fn get_physical_device_wayland_presentation_support_khr(
         self, physical_device: PhysicalDevice, queue_family_index: UInt32, mut display: wl_display
@@ -883,18 +957,23 @@ struct AndroidSurface(Copyable):
             instance, "vkCreateAndroidSurfaceKHR".as_c_string_slice()
         )).bitcast[type_of(self._create_android_surface_khr)]()[]
 
-    fn create_android_surface_khr(
+    fn create_android_surface_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: AndroidSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateAndroidSurfaceKHR.html
         """
-        return self._create_android_surface_khr(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
+        return self._create_android_surface_khr(
+            instance,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=surface),
+        )
 
 
 struct Win32Surface(Copyable):
@@ -921,18 +1000,23 @@ struct Win32Surface(Copyable):
             instance, "vkGetPhysicalDeviceWin32PresentationSupportKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_win_32_presentation_support_khr)]()[]
 
-    fn create_win_32_surface_khr(
+    fn create_win_32_surface_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: Win32SurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateWin32SurfaceKHR.html
         """
-        return self._create_win_32_surface_khr(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
+        return self._create_win_32_surface_khr(
+            instance,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=surface),
+        )
 
     fn get_physical_device_win_32_presentation_support_khr(
         self, physical_device: PhysicalDevice, queue_family_index: UInt32
@@ -1065,12 +1149,14 @@ struct VideoQueue(Copyable):
             physical_device, Ptr(to=video_profile), Ptr(to=capabilities)
         )
 
-    fn get_physical_device_video_format_properties_khr(
+    fn get_physical_device_video_format_properties_khr[
+        p_video_format_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         video_format_info: PhysicalDeviceVideoFormatInfoKHR,
         mut video_format_property_count: UInt32,
-        p_video_format_properties: Ptr[VideoFormatPropertiesKHR, MutAnyOrigin],
+        p_video_format_properties: Ptr[VideoFormatPropertiesKHR, p_video_format_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1080,10 +1166,12 @@ struct VideoQueue(Copyable):
             physical_device,
             Ptr(to=video_format_info),
             Ptr(to=video_format_property_count),
-            p_video_format_properties,
+            Ptr(to=p_video_format_properties).bitcast[Ptr[VideoFormatPropertiesKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_video_format_properties_khr(
+    fn get_physical_device_video_format_properties_khr[
+        p_video_format_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice, video_format_info: PhysicalDeviceVideoFormatInfoKHR
     ) -> ListResult[VideoFormatPropertiesKHR]:
         """See official vulkan docs for details.
@@ -1095,24 +1183,24 @@ struct VideoQueue(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_video_format_properties_khr(
-                physical_device,
-                Ptr(to=video_format_info),
-                Ptr(to=count),
-                Ptr[VideoFormatPropertiesKHR, MutOrigin.external](),
-            )
+        physical_device,
+        Ptr(to=video_format_info),
+        Ptr(to=count),
+        Ptr[VideoFormatPropertiesKHR, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_video_format_properties_khr(
-                physical_device, Ptr(to=video_format_info), Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_video_format_properties_khr(
+        physical_device, Ptr(to=video_format_info), Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn create_video_session_khr(
+    fn create_video_session_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: VideoSessionCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut video_session: VideoSessionKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -1120,37 +1208,49 @@ struct VideoQueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateVideoSessionKHR.html
         """
         return self._create_video_session_khr(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=video_session)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=video_session),
         )
 
-    fn destroy_video_session_khr(
+    fn destroy_video_session_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         video_session: VideoSessionKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyVideoSessionKHR.html
         """
-        return self._destroy_video_session_khr(device, video_session, p_allocator)
+        return self._destroy_video_session_khr(
+            device, video_session, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
-    fn get_video_session_memory_requirements_khr(
+    fn get_video_session_memory_requirements_khr[
+        p_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         video_session: VideoSessionKHR,
         mut memory_requirements_count: UInt32,
-        p_memory_requirements: Ptr[VideoSessionMemoryRequirementsKHR, MutAnyOrigin],
+        p_memory_requirements: Ptr[VideoSessionMemoryRequirementsKHR, p_memory_requirements_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetVideoSessionMemoryRequirementsKHR.html
         """
         return self._get_video_session_memory_requirements_khr(
-            device, video_session, Ptr(to=memory_requirements_count), p_memory_requirements
+            device,
+            video_session,
+            Ptr(to=memory_requirements_count),
+            Ptr(to=p_memory_requirements).bitcast[Ptr[VideoSessionMemoryRequirementsKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_video_session_memory_requirements_khr(
+    fn get_video_session_memory_requirements_khr[
+        p_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, video_session: VideoSessionKHR
     ) -> ListResult[VideoSessionMemoryRequirementsKHR]:
         """See official vulkan docs for details.
@@ -1162,39 +1262,44 @@ struct VideoQueue(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_video_session_memory_requirements_khr(
-                device,
-                video_session,
-                Ptr(to=count),
-                Ptr[VideoSessionMemoryRequirementsKHR, MutOrigin.external](),
-            )
+        device,
+        video_session,
+        Ptr(to=count),
+        Ptr[VideoSessionMemoryRequirementsKHR, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_video_session_memory_requirements_khr(
-                device, video_session, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_video_session_memory_requirements_khr(
+        device, video_session, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn bind_video_session_memory_khr(
+    fn bind_video_session_memory_khr[
+        p_bind_session_memory_infos_origin: ImmutOrigin = ImmutAnyOrigin
+    ](
         self,
         device: Device,
         video_session: VideoSessionKHR,
         bind_session_memory_info_count: UInt32,
-        p_bind_session_memory_infos: Ptr[BindVideoSessionMemoryInfoKHR, ImmutAnyOrigin],
+        p_bind_session_memory_infos: Ptr[BindVideoSessionMemoryInfoKHR, p_bind_session_memory_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindVideoSessionMemoryKHR.html
         """
         return self._bind_video_session_memory_khr(
-            device, video_session, bind_session_memory_info_count, p_bind_session_memory_infos
+            device,
+            video_session,
+            bind_session_memory_info_count,
+            Ptr(to=p_bind_session_memory_infos).bitcast[Ptr[BindVideoSessionMemoryInfoKHR, ImmutAnyOrigin]]()[],
         )
 
-    fn create_video_session_parameters_khr(
+    fn create_video_session_parameters_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: VideoSessionParametersCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut video_session_parameters: VideoSessionParametersKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -1202,7 +1307,10 @@ struct VideoQueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateVideoSessionParametersKHR.html
         """
         return self._create_video_session_parameters_khr(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=video_session_parameters)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=video_session_parameters),
         )
 
     fn update_video_session_parameters_khr(
@@ -1219,17 +1327,21 @@ struct VideoQueue(Copyable):
             device, video_session_parameters, Ptr(to=update_info)
         )
 
-    fn destroy_video_session_parameters_khr(
+    fn destroy_video_session_parameters_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         video_session_parameters: VideoSessionParametersKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyVideoSessionParametersKHR.html
         """
-        return self._destroy_video_session_parameters_khr(device, video_session_parameters, p_allocator)
+        return self._destroy_video_session_parameters_khr(
+            device,
+            video_session_parameters,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_begin_video_coding_khr(
         self, command_buffer: CommandBuffer, begin_info: VideoBeginCodingInfoKHR
@@ -1423,21 +1535,27 @@ struct GetPhysicalDeviceProperties2(Copyable):
             physical_device, Ptr(to=image_format_info), Ptr(to=image_format_properties)
         )
 
-    fn get_physical_device_queue_family_properties_2(
+    fn get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutAnyOrigin],
+        p_queue_family_properties: Ptr[QueueFamilyProperties2, p_queue_family_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyProperties2.html
         """
         return self._get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=queue_family_property_count), p_queue_family_properties
+            physical_device,
+            Ptr(to=queue_family_property_count),
+            Ptr(to=p_queue_family_properties).bitcast[Ptr[QueueFamilyProperties2, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_queue_family_properties_2(
+    fn get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties2]:
         """See official vulkan docs for details.
@@ -1447,12 +1565,12 @@ struct GetPhysicalDeviceProperties2(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
-        )
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._get_physical_device_queue_family_properties_2(
-            physical_device, Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -1467,22 +1585,29 @@ struct GetPhysicalDeviceProperties2(Copyable):
         """
         return self._get_physical_device_memory_properties_2(physical_device, Ptr(to=memory_properties))
 
-    fn get_physical_device_sparse_image_format_properties_2(
+    fn get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties2, MutAnyOrigin],
+        p_properties: Ptr[SparseImageFormatProperties2, p_properties_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSparseImageFormatProperties2.html
         """
         return self._get_physical_device_sparse_image_format_properties_2(
-            physical_device, Ptr(to=format_info), Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=format_info),
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[SparseImageFormatProperties2, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_sparse_image_format_properties_2(
+    fn get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
     ) -> List[SparseImageFormatProperties2]:
         """See official vulkan docs for details.
@@ -1492,15 +1617,15 @@ struct GetPhysicalDeviceProperties2(Copyable):
         var list = List[SparseImageFormatProperties2]()
         var count: UInt32 = 0
         self._get_physical_device_sparse_image_format_properties_2(
-            physical_device,
-            Ptr(to=format_info),
-            Ptr(to=count),
-            Ptr[SparseImageFormatProperties2, MutOrigin.external](),
-        )
+    physical_device,
+    Ptr(to=format_info),
+    Ptr(to=count),
+    Ptr[SparseImageFormatProperties2, MutOrigin.external](),
+)
         list.reserve(Int(count))
         self._get_physical_device_sparse_image_format_properties_2(
-            physical_device, Ptr(to=format_info), Ptr(to=count), list.unsafe_ptr()
-        )
+    physical_device, Ptr(to=format_info), Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -1639,22 +1764,25 @@ struct DeviceGroup(Copyable):
         """
         return self._get_device_group_surface_present_modes_khr(device, surface, Ptr(to=modes))
 
-    fn get_physical_device_present_rectangles_khr(
+    fn get_physical_device_present_rectangles_khr[p_rects_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
         mut rect_count: UInt32,
-        p_rects: Ptr[Rect2D, MutAnyOrigin],
+        p_rects: Ptr[Rect2D, p_rects_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDevicePresentRectanglesKHR.html
         """
         return self._get_physical_device_present_rectangles_khr(
-            physical_device, surface, Ptr(to=rect_count), p_rects
+            physical_device,
+            surface,
+            Ptr(to=rect_count),
+            Ptr(to=p_rects).bitcast[Ptr[Rect2D, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_present_rectangles_khr(
+    fn get_physical_device_present_rectangles_khr[p_rects_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice, surface: SurfaceKHR
     ) -> ListResult[Rect2D]:
         """See official vulkan docs for details.
@@ -1666,13 +1794,13 @@ struct DeviceGroup(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_present_rectangles_khr(
-                physical_device, surface, Ptr(to=count), Ptr[Rect2D, MutOrigin.external]()
-            )
+        physical_device, surface, Ptr(to=count), Ptr[Rect2D, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_present_rectangles_khr(
-                physical_device, surface, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_present_rectangles_khr(
+        physical_device, surface, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1726,21 +1854,27 @@ struct DeviceGroupCreation(Copyable):
             instance, "vkEnumeratePhysicalDeviceGroups".as_c_string_slice()
         )).bitcast[type_of(self._enumerate_physical_device_groups)]()[]
 
-    fn enumerate_physical_device_groups(
+    fn enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin],
+        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, p_physical_device_group_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceGroups.html
         """
         return self._enumerate_physical_device_groups(
-            instance, Ptr(to=physical_device_group_count), p_physical_device_group_properties
+            instance,
+            Ptr(to=physical_device_group_count),
+            Ptr(to=p_physical_device_group_properties).bitcast[Ptr[PhysicalDeviceGroupProperties, MutAnyOrigin]]()[],
         )
 
-    fn enumerate_physical_device_groups(
+    fn enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, instance: Instance
     ) -> ListResult[PhysicalDeviceGroupProperties]:
         """See official vulkan docs for details.
@@ -1752,11 +1886,11 @@ struct DeviceGroupCreation(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._enumerate_physical_device_groups(
-                instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
-            )
+        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._enumerate_physical_device_groups(instance, Ptr(to=count), list.unsafe_ptr())
+                result = self._enumerate_physical_device_groups(instance, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2046,37 +2180,46 @@ struct PushDescriptor(Copyable):
             device, "vkCmdPushDescriptorSetWithTemplate".as_c_string_slice()
         )).bitcast[type_of(self._cmd_push_descriptor_set_with_template)]()[]
 
-    fn cmd_push_descriptor_set(
+    fn cmd_push_descriptor_set[p_descriptor_writes_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
         set: UInt32,
         descriptor_write_count: UInt32,
-        p_descriptor_writes: Ptr[WriteDescriptorSet, ImmutAnyOrigin],
+        p_descriptor_writes: Ptr[WriteDescriptorSet, p_descriptor_writes_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSet.html
         """
         return self._cmd_push_descriptor_set(
-            command_buffer, pipeline_bind_point, layout, set, descriptor_write_count, p_descriptor_writes
+            command_buffer,
+            pipeline_bind_point,
+            layout,
+            set,
+            descriptor_write_count,
+            Ptr(to=p_descriptor_writes).bitcast[Ptr[WriteDescriptorSet, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_push_descriptor_set_with_template(
+    fn cmd_push_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         descriptor_update_template: DescriptorUpdateTemplate,
         layout: PipelineLayout,
         set: UInt32,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSetWithTemplate.html
         """
         return self._cmd_push_descriptor_set_with_template(
-            command_buffer, descriptor_update_template, layout, set, p_data
+            command_buffer,
+            descriptor_update_template,
+            layout,
+            set,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
         )
 
 
@@ -2125,11 +2268,11 @@ struct DescriptorUpdateTemplate(Copyable):
             device, "vkCmdPushDescriptorSetWithTemplate".as_c_string_slice()
         )).bitcast[type_of(self._cmd_push_descriptor_set_with_template)]()[]
 
-    fn create_descriptor_update_template(
+    fn create_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
@@ -2137,50 +2280,64 @@ struct DescriptorUpdateTemplate(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDescriptorUpdateTemplate.html
         """
         return self._create_descriptor_update_template(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=descriptor_update_template)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=descriptor_update_template),
         )
 
-    fn destroy_descriptor_update_template(
+    fn destroy_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDescriptorUpdateTemplate.html
         """
-        return self._destroy_descriptor_update_template(device, descriptor_update_template, p_allocator)
+        return self._destroy_descriptor_update_template(
+            device,
+            descriptor_update_template,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn update_descriptor_set_with_template(
+    fn update_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         descriptor_set: DescriptorSet,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateDescriptorSetWithTemplate.html
         """
         return self._update_descriptor_set_with_template(
-            device, descriptor_set, descriptor_update_template, p_data
+            device,
+            descriptor_set,
+            descriptor_update_template,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_push_descriptor_set_with_template(
+    fn cmd_push_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         descriptor_update_template: DescriptorUpdateTemplate,
         layout: PipelineLayout,
         set: UInt32,
-        p_data: Ptr[NoneType, ImmutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDescriptorSetWithTemplate.html
         """
         return self._cmd_push_descriptor_set_with_template(
-            command_buffer, descriptor_update_template, layout, set, p_data
+            command_buffer,
+            descriptor_update_template,
+            layout,
+            set,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[],
         )
 
 
@@ -2224,18 +2381,23 @@ struct CreateRenderpass2(Copyable):
             device, "vkCmdEndRenderPass2".as_c_string_slice()
         )).bitcast[type_of(self._cmd_end_render_pass_2)]()[]
 
-    fn create_render_pass_2(
+    fn create_render_pass_2[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo2,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateRenderPass2.html
         """
-        return self._create_render_pass_2(device, Ptr(to=create_info), p_allocator, Ptr(to=render_pass))
+        return self._create_render_pass_2(
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=render_pass),
+        )
 
     fn cmd_begin_render_pass_2(
         self,
@@ -2450,20 +2612,27 @@ struct PerformanceQuery(Copyable):
             device, "vkReleaseProfilingLockKHR".as_c_string_slice()
         )).bitcast[type_of(self._release_profiling_lock_khr)]()[]
 
-    fn enumerate_physical_device_queue_family_performance_query_counters_khr(
+    fn enumerate_physical_device_queue_family_performance_query_counters_khr[
+        p_counters_origin: MutOrigin = MutAnyOrigin,
+        p_counter_descriptions_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
         mut counter_count: UInt32,
-        p_counters: Ptr[PerformanceCounterKHR, MutAnyOrigin],
-        p_counter_descriptions: Ptr[PerformanceCounterDescriptionKHR, MutAnyOrigin],
+        p_counters: Ptr[PerformanceCounterKHR, p_counters_origin],
+        p_counter_descriptions: Ptr[PerformanceCounterDescriptionKHR, p_counter_descriptions_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR.html
         """
         return self._enumerate_physical_device_queue_family_performance_query_counters_khr(
-            physical_device, queue_family_index, Ptr(to=counter_count), p_counters, p_counter_descriptions
+            physical_device,
+            queue_family_index,
+            Ptr(to=counter_count),
+            Ptr(to=p_counters).bitcast[Ptr[PerformanceCounterKHR, MutAnyOrigin]]()[],
+            Ptr(to=p_counter_descriptions).bitcast[Ptr[PerformanceCounterDescriptionKHR, MutAnyOrigin]]()[],
         )
 
     fn get_physical_device_queue_family_performance_query_passes_khr(
@@ -2537,22 +2706,29 @@ struct GetSurfaceCapabilities2(Copyable):
             physical_device, Ptr(to=surface_info), Ptr(to=surface_capabilities)
         )
 
-    fn get_physical_device_surface_formats_2_khr(
+    fn get_physical_device_surface_formats_2_khr[
+        p_surface_formats_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         surface_info: PhysicalDeviceSurfaceInfo2KHR,
         mut surface_format_count: UInt32,
-        p_surface_formats: Ptr[SurfaceFormat2KHR, MutAnyOrigin],
+        p_surface_formats: Ptr[SurfaceFormat2KHR, p_surface_formats_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceSurfaceFormats2KHR.html
         """
         return self._get_physical_device_surface_formats_2_khr(
-            physical_device, Ptr(to=surface_info), Ptr(to=surface_format_count), p_surface_formats
+            physical_device,
+            Ptr(to=surface_info),
+            Ptr(to=surface_format_count),
+            Ptr(to=p_surface_formats).bitcast[Ptr[SurfaceFormat2KHR, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_surface_formats_2_khr(
+    fn get_physical_device_surface_formats_2_khr[
+        p_surface_formats_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice, surface_info: PhysicalDeviceSurfaceInfo2KHR
     ) -> ListResult[SurfaceFormat2KHR]:
         """See official vulkan docs for details.
@@ -2564,16 +2740,16 @@ struct GetSurfaceCapabilities2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_surface_formats_2_khr(
-                physical_device,
-                Ptr(to=surface_info),
-                Ptr(to=count),
-                Ptr[SurfaceFormat2KHR, MutOrigin.external](),
-            )
+        physical_device,
+        Ptr(to=surface_info),
+        Ptr(to=count),
+        Ptr[SurfaceFormat2KHR, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_surface_formats_2_khr(
-                physical_device, Ptr(to=surface_info), Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_surface_formats_2_khr(
+        physical_device, Ptr(to=surface_info), Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2620,21 +2796,23 @@ struct GetDisplayProperties2(Copyable):
             instance, "vkGetDisplayPlaneCapabilities2KHR".as_c_string_slice()
         )).bitcast[type_of(self._get_display_plane_capabilities_2_khr)]()[]
 
-    fn get_physical_device_display_properties_2_khr(
+    fn get_physical_device_display_properties_2_khr[p_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[DisplayProperties2KHR, MutAnyOrigin],
+        p_properties: Ptr[DisplayProperties2KHR, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayProperties2KHR.html
         """
         return self._get_physical_device_display_properties_2_khr(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[DisplayProperties2KHR, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_display_properties_2_khr(
+    fn get_physical_device_display_properties_2_khr[p_properties_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[DisplayProperties2KHR]:
         """See official vulkan docs for details.
@@ -2646,31 +2824,37 @@ struct GetDisplayProperties2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_display_properties_2_khr(
-                physical_device, Ptr(to=count), Ptr[DisplayProperties2KHR, MutOrigin.external]()
-            )
+        physical_device, Ptr(to=count), Ptr[DisplayProperties2KHR, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_display_properties_2_khr(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_display_properties_2_khr(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_physical_device_display_plane_properties_2_khr(
+    fn get_physical_device_display_plane_properties_2_khr[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[DisplayPlaneProperties2KHR, MutAnyOrigin],
+        p_properties: Ptr[DisplayPlaneProperties2KHR, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDisplayPlaneProperties2KHR.html
         """
         return self._get_physical_device_display_plane_properties_2_khr(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[DisplayPlaneProperties2KHR, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_display_plane_properties_2_khr(
+    fn get_physical_device_display_plane_properties_2_khr[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> ListResult[DisplayPlaneProperties2KHR]:
         """See official vulkan docs for details.
@@ -2682,32 +2866,35 @@ struct GetDisplayProperties2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_display_plane_properties_2_khr(
-                physical_device, Ptr(to=count), Ptr[DisplayPlaneProperties2KHR, MutOrigin.external]()
-            )
+        physical_device, Ptr(to=count), Ptr[DisplayPlaneProperties2KHR, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_display_plane_properties_2_khr(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_display_plane_properties_2_khr(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_display_mode_properties_2_khr(
+    fn get_display_mode_properties_2_khr[p_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         display: DisplayKHR,
         mut property_count: UInt32,
-        p_properties: Ptr[DisplayModeProperties2KHR, MutAnyOrigin],
+        p_properties: Ptr[DisplayModeProperties2KHR, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDisplayModeProperties2KHR.html
         """
         return self._get_display_mode_properties_2_khr(
-            physical_device, display, Ptr(to=property_count), p_properties
+            physical_device,
+            display,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[DisplayModeProperties2KHR, MutAnyOrigin]]()[],
         )
 
-    fn get_display_mode_properties_2_khr(
+    fn get_display_mode_properties_2_khr[p_properties_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice, display: DisplayKHR
     ) -> ListResult[DisplayModeProperties2KHR]:
         """See official vulkan docs for details.
@@ -2719,16 +2906,16 @@ struct GetDisplayProperties2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_display_mode_properties_2_khr(
-                physical_device,
-                display,
-                Ptr(to=count),
-                Ptr[DisplayModeProperties2KHR, MutOrigin.external](),
-            )
+        physical_device,
+        display,
+        Ptr(to=count),
+        Ptr[DisplayModeProperties2KHR, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_display_mode_properties_2_khr(
-                physical_device, display, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_display_mode_properties_2_khr(
+        physical_device, display, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2805,22 +2992,29 @@ struct GetMemoryRequirements2(Copyable):
         """
         return self._get_buffer_memory_requirements_2(device, Ptr(to=info), Ptr(to=memory_requirements))
 
-    fn get_image_sparse_memory_requirements_2(
+    fn get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, p_sparse_memory_requirements_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSparseMemoryRequirements2.html
         """
         return self._get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
+            device,
+            Ptr(to=info),
+            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]]()[],
         )
 
-    fn get_image_sparse_memory_requirements_2(
+    fn get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, info: ImageSparseMemoryRequirementsInfo2
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -2830,8 +3024,8 @@ struct GetMemoryRequirements2(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._get_image_sparse_memory_requirements_2(
-            device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
-        )
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._get_image_sparse_memory_requirements_2(device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
@@ -2985,11 +3179,11 @@ struct AccelerationStructure(Copyable):
             device, "vkGetAccelerationStructureBuildSizesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_acceleration_structure_build_sizes_khr)]()[]
 
-    fn create_acceleration_structure_khr(
+    fn create_acceleration_structure_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: AccelerationStructureCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut acceleration_structure: AccelerationStructureKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -2997,44 +3191,64 @@ struct AccelerationStructure(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateAccelerationStructureKHR.html
         """
         return self._create_acceleration_structure_khr(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=acceleration_structure)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=acceleration_structure),
         )
 
-    fn destroy_acceleration_structure_khr(
+    fn destroy_acceleration_structure_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         acceleration_structure: AccelerationStructureKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyAccelerationStructureKHR.html
         """
-        return self._destroy_acceleration_structure_khr(device, acceleration_structure, p_allocator)
+        return self._destroy_acceleration_structure_khr(
+            device,
+            acceleration_structure,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn cmd_build_acceleration_structures_khr(
+    fn cmd_build_acceleration_structures_khr[
+        p_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        pp_build_range_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        pp_build_range_infos_origin_2: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         info_count: UInt32,
-        p_infos: Ptr[AccelerationStructureBuildGeometryInfoKHR, ImmutAnyOrigin],
-        pp_build_range_infos: Ptr[Ptr[AccelerationStructureBuildRangeInfoKHR, ImmutAnyOrigin], ImmutAnyOrigin],
+        p_infos: Ptr[AccelerationStructureBuildGeometryInfoKHR, p_infos_origin],
+        pp_build_range_infos: Ptr[Ptr[AccelerationStructureBuildRangeInfoKHR, pp_build_range_infos_origin_2], pp_build_range_infos_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBuildAccelerationStructuresKHR.html
         """
         return self._cmd_build_acceleration_structures_khr(
-            command_buffer, info_count, p_infos, pp_build_range_infos
+            command_buffer,
+            info_count,
+            Ptr(to=p_infos).bitcast[Ptr[AccelerationStructureBuildGeometryInfoKHR, ImmutAnyOrigin]]()[],
+            Ptr(to=pp_build_range_infos).bitcast[Ptr[Ptr[AccelerationStructureBuildRangeInfoKHR, ImmutAnyOrigin], ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_build_acceleration_structures_indirect_khr(
+    fn cmd_build_acceleration_structures_indirect_khr[
+        p_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_indirect_device_addresses_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_indirect_strides_origin: ImmutOrigin = ImmutAnyOrigin,
+        pp_max_primitive_counts_origin: ImmutOrigin = ImmutAnyOrigin,
+        pp_max_primitive_counts_origin_2: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         info_count: UInt32,
-        p_infos: Ptr[AccelerationStructureBuildGeometryInfoKHR, ImmutAnyOrigin],
-        p_indirect_device_addresses: Ptr[DeviceAddress, ImmutAnyOrigin],
-        p_indirect_strides: Ptr[UInt32, ImmutAnyOrigin],
-        pp_max_primitive_counts: Ptr[Ptr[UInt32, ImmutAnyOrigin], ImmutAnyOrigin],
+        p_infos: Ptr[AccelerationStructureBuildGeometryInfoKHR, p_infos_origin],
+        p_indirect_device_addresses: Ptr[DeviceAddress, p_indirect_device_addresses_origin],
+        p_indirect_strides: Ptr[UInt32, p_indirect_strides_origin],
+        pp_max_primitive_counts: Ptr[Ptr[UInt32, pp_max_primitive_counts_origin_2], pp_max_primitive_counts_origin],
     ):
         """See official vulkan docs for details.
         
@@ -3043,26 +3257,34 @@ struct AccelerationStructure(Copyable):
         return self._cmd_build_acceleration_structures_indirect_khr(
             command_buffer,
             info_count,
-            p_infos,
-            p_indirect_device_addresses,
-            p_indirect_strides,
-            pp_max_primitive_counts,
+            Ptr(to=p_infos).bitcast[Ptr[AccelerationStructureBuildGeometryInfoKHR, ImmutAnyOrigin]]()[],
+            Ptr(to=p_indirect_device_addresses).bitcast[Ptr[DeviceAddress, ImmutAnyOrigin]]()[],
+            Ptr(to=p_indirect_strides).bitcast[Ptr[UInt32, ImmutAnyOrigin]]()[],
+            Ptr(to=pp_max_primitive_counts).bitcast[Ptr[Ptr[UInt32, ImmutAnyOrigin], ImmutAnyOrigin]]()[],
         )
 
-    fn build_acceleration_structures_khr(
+    fn build_acceleration_structures_khr[
+        p_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        pp_build_range_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        pp_build_range_infos_origin_2: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         device: Device,
         deferred_operation: DeferredOperationKHR,
         info_count: UInt32,
-        p_infos: Ptr[AccelerationStructureBuildGeometryInfoKHR, ImmutAnyOrigin],
-        pp_build_range_infos: Ptr[Ptr[AccelerationStructureBuildRangeInfoKHR, ImmutAnyOrigin], ImmutAnyOrigin],
+        p_infos: Ptr[AccelerationStructureBuildGeometryInfoKHR, p_infos_origin],
+        pp_build_range_infos: Ptr[Ptr[AccelerationStructureBuildRangeInfoKHR, pp_build_range_infos_origin_2], pp_build_range_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBuildAccelerationStructuresKHR.html
         """
         return self._build_acceleration_structures_khr(
-            device, deferred_operation, info_count, p_infos, pp_build_range_infos
+            device,
+            deferred_operation,
+            info_count,
+            Ptr(to=p_infos).bitcast[Ptr[AccelerationStructureBuildGeometryInfoKHR, ImmutAnyOrigin]]()[],
+            Ptr(to=pp_build_range_infos).bitcast[Ptr[Ptr[AccelerationStructureBuildRangeInfoKHR, ImmutAnyOrigin], ImmutAnyOrigin]]()[],
         )
 
     fn copy_acceleration_structure_khr(
@@ -3101,14 +3323,17 @@ struct AccelerationStructure(Copyable):
         """
         return self._copy_memory_to_acceleration_structure_khr(device, deferred_operation, Ptr(to=info))
 
-    fn write_acceleration_structures_properties_khr(
+    fn write_acceleration_structures_properties_khr[
+        p_acceleration_structures_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_data_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         acceleration_structure_count: UInt32,
-        p_acceleration_structures: Ptr[AccelerationStructureKHR, ImmutAnyOrigin],
+        p_acceleration_structures: Ptr[AccelerationStructureKHR, p_acceleration_structures_origin],
         query_type: QueryType,
         data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
         stride: UInt,
     ) -> Result:
         """See official vulkan docs for details.
@@ -3118,10 +3343,10 @@ struct AccelerationStructure(Copyable):
         return self._write_acceleration_structures_properties_khr(
             device,
             acceleration_structure_count,
-            p_acceleration_structures,
+            Ptr(to=p_acceleration_structures).bitcast[Ptr[AccelerationStructureKHR, ImmutAnyOrigin]]()[],
             query_type,
             data_size,
-            p_data,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
             stride,
         )
 
@@ -3161,11 +3386,13 @@ struct AccelerationStructure(Copyable):
         """
         return self._get_acceleration_structure_device_address_khr(device, Ptr(to=info))
 
-    fn cmd_write_acceleration_structures_properties_khr(
+    fn cmd_write_acceleration_structures_properties_khr[
+        p_acceleration_structures_origin: ImmutOrigin = ImmutAnyOrigin
+    ](
         self,
         command_buffer: CommandBuffer,
         acceleration_structure_count: UInt32,
-        p_acceleration_structures: Ptr[AccelerationStructureKHR, ImmutAnyOrigin],
+        p_acceleration_structures: Ptr[AccelerationStructureKHR, p_acceleration_structures_origin],
         query_type: QueryType,
         query_pool: QueryPool,
         first_query: UInt32,
@@ -3177,7 +3404,7 @@ struct AccelerationStructure(Copyable):
         return self._cmd_write_acceleration_structures_properties_khr(
             command_buffer,
             acceleration_structure_count,
-            p_acceleration_structures,
+            Ptr(to=p_acceleration_structures).bitcast[Ptr[AccelerationStructureKHR, ImmutAnyOrigin]]()[],
             query_type,
             query_pool,
             first_query,
@@ -3197,12 +3424,14 @@ struct AccelerationStructure(Copyable):
             device, Ptr(to=version_info), Ptr(to=compatibility)
         )
 
-    fn get_acceleration_structure_build_sizes_khr(
+    fn get_acceleration_structure_build_sizes_khr[
+        p_max_primitive_counts_origin: ImmutOrigin = ImmutAnyOrigin
+    ](
         self,
         device: Device,
         build_type: AccelerationStructureBuildTypeKHR,
         build_info: AccelerationStructureBuildGeometryInfoKHR,
-        p_max_primitive_counts: Ptr[UInt32, ImmutAnyOrigin],
+        p_max_primitive_counts: Ptr[UInt32, p_max_primitive_counts_origin],
         mut size_info: AccelerationStructureBuildSizesInfoKHR,
     ):
         """See official vulkan docs for details.
@@ -3210,7 +3439,11 @@ struct AccelerationStructure(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAccelerationStructureBuildSizesKHR.html
         """
         return self._get_acceleration_structure_build_sizes_khr(
-            device, build_type, Ptr(to=build_info), p_max_primitive_counts, Ptr(to=size_info)
+            device,
+            build_type,
+            Ptr(to=build_info),
+            Ptr(to=p_max_primitive_counts).bitcast[Ptr[UInt32, ImmutAnyOrigin]]()[],
+            Ptr(to=size_info),
         )
 
 
@@ -3319,15 +3552,19 @@ struct RayTracingPipeline(Copyable):
             depth,
         )
 
-    fn create_ray_tracing_pipelines_khr(
+    fn create_ray_tracing_pipelines_khr[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         deferred_operation: DeferredOperationKHR,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[RayTracingPipelineCreateInfoKHR, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[RayTracingPipelineCreateInfoKHR, p_create_infos_origin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3338,43 +3575,55 @@ struct RayTracingPipeline(Copyable):
             deferred_operation,
             pipeline_cache,
             create_info_count,
-            p_create_infos,
-            p_allocator,
-            p_pipelines,
+            Ptr(to=p_create_infos).bitcast[Ptr[RayTracingPipelineCreateInfoKHR, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn get_ray_tracing_shader_group_handles_khr(
+    fn get_ray_tracing_shader_group_handles_khr[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
         first_group: UInt32,
         group_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRayTracingShaderGroupHandlesKHR.html
         """
         return self._get_ray_tracing_shader_group_handles_khr(
-            device, pipeline, first_group, group_count, data_size, p_data
+            device,
+            pipeline,
+            first_group,
+            group_count,
+            data_size,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
-    fn get_ray_tracing_capture_replay_shader_group_handles_khr(
+    fn get_ray_tracing_capture_replay_shader_group_handles_khr[
+        p_data_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         pipeline: Pipeline,
         first_group: UInt32,
         group_count: UInt32,
         data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRayTracingCaptureReplayShaderGroupHandlesKHR.html
         """
         return self._get_ray_tracing_capture_replay_shader_group_handles_khr(
-            device, pipeline, first_group, group_count, data_size, p_data
+            device,
+            pipeline,
+            first_group,
+            group_count,
+            data_size,
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
     fn cmd_trace_rays_indirect_khr(
@@ -3444,11 +3693,11 @@ struct SamplerYcbcrConversion(Copyable):
             device, "vkDestroySamplerYcbcrConversion".as_c_string_slice()
         )).bitcast[type_of(self._destroy_sampler_ycbcr_conversion)]()[]
 
-    fn create_sampler_ycbcr_conversion(
+    fn create_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
@@ -3456,20 +3705,27 @@ struct SamplerYcbcrConversion(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateSamplerYcbcrConversion.html
         """
         return self._create_sampler_ycbcr_conversion(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=ycbcr_conversion)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=ycbcr_conversion),
         )
 
-    fn destroy_sampler_ycbcr_conversion(
+    fn destroy_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroySamplerYcbcrConversion.html
         """
-        return self._destroy_sampler_ycbcr_conversion(device, ycbcr_conversion, p_allocator)
+        return self._destroy_sampler_ycbcr_conversion(
+            device,
+            ycbcr_conversion,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
 
 struct BindMemory2(Copyable):
@@ -3493,29 +3749,37 @@ struct BindMemory2(Copyable):
             device, "vkBindImageMemory2".as_c_string_slice()
         )).bitcast[type_of(self._bind_image_memory_2)]()[]
 
-    fn bind_buffer_memory_2(
+    fn bind_buffer_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
-        p_bind_infos: Ptr[BindBufferMemoryInfo, ImmutAnyOrigin],
+        p_bind_infos: Ptr[BindBufferMemoryInfo, p_bind_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindBufferMemory2.html
         """
-        return self._bind_buffer_memory_2(device, bind_info_count, p_bind_infos)
+        return self._bind_buffer_memory_2(
+            device,
+            bind_info_count,
+            Ptr(to=p_bind_infos).bitcast[Ptr[BindBufferMemoryInfo, ImmutAnyOrigin]]()[],
+        )
 
-    fn bind_image_memory_2(
+    fn bind_image_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
-        p_bind_infos: Ptr[BindImageMemoryInfo, ImmutAnyOrigin],
+        p_bind_infos: Ptr[BindImageMemoryInfo, p_bind_infos_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkBindImageMemory2.html
         """
-        return self._bind_image_memory_2(device, bind_info_count, p_bind_infos)
+        return self._bind_image_memory_2(
+            device,
+            bind_info_count,
+            Ptr(to=p_bind_infos).bitcast[Ptr[BindImageMemoryInfo, ImmutAnyOrigin]]()[],
+        )
 
 
 struct Maintenance3(Copyable):
@@ -3696,21 +3960,27 @@ struct FragmentShadingRate(Copyable):
             device, "vkCmdSetFragmentShadingRateKHR".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_fragment_shading_rate_khr)]()[]
 
-    fn get_physical_device_fragment_shading_rates_khr(
+    fn get_physical_device_fragment_shading_rates_khr[
+        p_fragment_shading_rates_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut fragment_shading_rate_count: UInt32,
-        p_fragment_shading_rates: Ptr[PhysicalDeviceFragmentShadingRateKHR, MutAnyOrigin],
+        p_fragment_shading_rates: Ptr[PhysicalDeviceFragmentShadingRateKHR, p_fragment_shading_rates_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceFragmentShadingRatesKHR.html
         """
         return self._get_physical_device_fragment_shading_rates_khr(
-            physical_device, Ptr(to=fragment_shading_rate_count), p_fragment_shading_rates
+            physical_device,
+            Ptr(to=fragment_shading_rate_count),
+            Ptr(to=p_fragment_shading_rates).bitcast[Ptr[PhysicalDeviceFragmentShadingRateKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_fragment_shading_rates_khr(
+    fn get_physical_device_fragment_shading_rates_khr[
+        p_fragment_shading_rates_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> ListResult[PhysicalDeviceFragmentShadingRateKHR]:
         """See official vulkan docs for details.
@@ -3722,15 +3992,15 @@ struct FragmentShadingRate(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_fragment_shading_rates_khr(
-                physical_device,
-                Ptr(to=count),
-                Ptr[PhysicalDeviceFragmentShadingRateKHR, MutOrigin.external](),
-            )
+        physical_device,
+        Ptr(to=count),
+        Ptr[PhysicalDeviceFragmentShadingRateKHR, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_fragment_shading_rates_khr(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_fragment_shading_rates_khr(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -3914,29 +4184,35 @@ struct DeferredHostOperations(Copyable):
             device, "vkDeferredOperationJoinKHR".as_c_string_slice()
         )).bitcast[type_of(self._deferred_operation_join_khr)]()[]
 
-    fn create_deferred_operation_khr(
+    fn create_deferred_operation_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut deferred_operation: DeferredOperationKHR,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateDeferredOperationKHR.html
         """
-        return self._create_deferred_operation_khr(device, p_allocator, Ptr(to=deferred_operation))
+        return self._create_deferred_operation_khr(
+            device,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=deferred_operation),
+        )
 
-    fn destroy_deferred_operation_khr(
+    fn destroy_deferred_operation_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         operation: DeferredOperationKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDeferredOperationKHR.html
         """
-        return self._destroy_deferred_operation_khr(device, operation, p_allocator)
+        return self._destroy_deferred_operation_khr(
+            device, operation, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
     fn get_deferred_operation_max_concurrency_khr(
         self, device: Device, operation: DeferredOperationKHR
@@ -4002,22 +4278,25 @@ struct PipelineExecutableProperties(Copyable):
             device, "vkGetPipelineExecutableInternalRepresentationsKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_pipeline_executable_internal_representations_khr)]()[]
 
-    fn get_pipeline_executable_properties_khr(
+    fn get_pipeline_executable_properties_khr[p_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         pipeline_info: PipelineInfoKHR,
         mut executable_count: UInt32,
-        p_properties: Ptr[PipelineExecutablePropertiesKHR, MutAnyOrigin],
+        p_properties: Ptr[PipelineExecutablePropertiesKHR, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutablePropertiesKHR.html
         """
         return self._get_pipeline_executable_properties_khr(
-            device, Ptr(to=pipeline_info), Ptr(to=executable_count), p_properties
+            device,
+            Ptr(to=pipeline_info),
+            Ptr(to=executable_count),
+            Ptr(to=p_properties).bitcast[Ptr[PipelineExecutablePropertiesKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_pipeline_executable_properties_khr(
+    fn get_pipeline_executable_properties_khr[p_properties_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, pipeline_info: PipelineInfoKHR
     ) -> ListResult[PipelineExecutablePropertiesKHR]:
         """See official vulkan docs for details.
@@ -4029,35 +4308,38 @@ struct PipelineExecutableProperties(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_pipeline_executable_properties_khr(
-                device,
-                Ptr(to=pipeline_info),
-                Ptr(to=count),
-                Ptr[PipelineExecutablePropertiesKHR, MutOrigin.external](),
-            )
+        device,
+        Ptr(to=pipeline_info),
+        Ptr(to=count),
+        Ptr[PipelineExecutablePropertiesKHR, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_pipeline_executable_properties_khr(
-                device, Ptr(to=pipeline_info), Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_pipeline_executable_properties_khr(
+        device, Ptr(to=pipeline_info), Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_pipeline_executable_statistics_khr(
+    fn get_pipeline_executable_statistics_khr[p_statistics_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         executable_info: PipelineExecutableInfoKHR,
         mut statistic_count: UInt32,
-        p_statistics: Ptr[PipelineExecutableStatisticKHR, MutAnyOrigin],
+        p_statistics: Ptr[PipelineExecutableStatisticKHR, p_statistics_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineExecutableStatisticsKHR.html
         """
         return self._get_pipeline_executable_statistics_khr(
-            device, Ptr(to=executable_info), Ptr(to=statistic_count), p_statistics
+            device,
+            Ptr(to=executable_info),
+            Ptr(to=statistic_count),
+            Ptr(to=p_statistics).bitcast[Ptr[PipelineExecutableStatisticKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_pipeline_executable_statistics_khr(
+    fn get_pipeline_executable_statistics_khr[p_statistics_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, executable_info: PipelineExecutableInfoKHR
     ) -> ListResult[PipelineExecutableStatisticKHR]:
         """See official vulkan docs for details.
@@ -4069,25 +4351,27 @@ struct PipelineExecutableProperties(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_pipeline_executable_statistics_khr(
-                device,
-                Ptr(to=executable_info),
-                Ptr(to=count),
-                Ptr[PipelineExecutableStatisticKHR, MutOrigin.external](),
-            )
+        device,
+        Ptr(to=executable_info),
+        Ptr(to=count),
+        Ptr[PipelineExecutableStatisticKHR, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_pipeline_executable_statistics_khr(
-                device, Ptr(to=executable_info), Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_pipeline_executable_statistics_khr(
+        device, Ptr(to=executable_info), Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_pipeline_executable_internal_representations_khr(
+    fn get_pipeline_executable_internal_representations_khr[
+        p_internal_representations_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         executable_info: PipelineExecutableInfoKHR,
         mut internal_representation_count: UInt32,
-        p_internal_representations: Ptr[PipelineExecutableInternalRepresentationKHR, MutAnyOrigin],
+        p_internal_representations: Ptr[PipelineExecutableInternalRepresentationKHR, p_internal_representations_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4097,10 +4381,12 @@ struct PipelineExecutableProperties(Copyable):
             device,
             Ptr(to=executable_info),
             Ptr(to=internal_representation_count),
-            p_internal_representations,
+            Ptr(to=p_internal_representations).bitcast[Ptr[PipelineExecutableInternalRepresentationKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_pipeline_executable_internal_representations_khr(
+    fn get_pipeline_executable_internal_representations_khr[
+        p_internal_representations_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, executable_info: PipelineExecutableInfoKHR
     ) -> ListResult[PipelineExecutableInternalRepresentationKHR]:
         """See official vulkan docs for details.
@@ -4112,16 +4398,16 @@ struct PipelineExecutableProperties(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_pipeline_executable_internal_representations_khr(
-                device,
-                Ptr(to=executable_info),
-                Ptr(to=count),
-                Ptr[PipelineExecutableInternalRepresentationKHR, MutOrigin.external](),
-            )
+        device,
+        Ptr(to=executable_info),
+        Ptr(to=count),
+        Ptr[PipelineExecutableInternalRepresentationKHR, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_pipeline_executable_internal_representations_khr(
-                device, Ptr(to=executable_info), Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_pipeline_executable_internal_representations_khr(
+        device, Ptr(to=executable_info), Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -4216,27 +4502,35 @@ struct VideoEncodeQueue(Copyable):
             physical_device, Ptr(to=quality_level_info), Ptr(to=quality_level_properties)
         )
 
-    fn get_encoded_video_session_parameters_khr(
+    fn get_encoded_video_session_parameters_khr[
+        p_feedback_info_origin: MutOrigin = MutAnyOrigin, p_data_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         video_session_parameters_info: VideoEncodeSessionParametersGetInfoKHR,
-        p_feedback_info: Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutAnyOrigin],
+        p_feedback_info: Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, p_feedback_info_origin],
         mut data_size: UInt,
-        p_data: Ptr[NoneType, MutAnyOrigin],
+        p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetEncodedVideoSessionParametersKHR.html
         """
         return self._get_encoded_video_session_parameters_khr(
-            device, Ptr(to=video_session_parameters_info), p_feedback_info, Ptr(to=data_size), p_data
+            device,
+            Ptr(to=video_session_parameters_info),
+            Ptr(to=p_feedback_info).bitcast[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutAnyOrigin]]()[],
+            Ptr(to=data_size),
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
-    fn get_encoded_video_session_parameters_khr(
+    fn get_encoded_video_session_parameters_khr[
+        p_feedback_info_origin: MutOrigin = MutAnyOrigin, p_data_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         video_session_parameters_info: VideoEncodeSessionParametersGetInfoKHR,
-        p_feedback_info: Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutAnyOrigin],
+        p_feedback_info: Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, p_feedback_info_origin],
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
         
@@ -4247,21 +4541,21 @@ struct VideoEncodeQueue(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_encoded_video_session_parameters_khr(
-                device,
-                Ptr(to=video_session_parameters_info),
-                p_feedback_info,
-                Ptr(to=count),
-                Ptr[NoneType, MutOrigin.external](),
-            )
+        device,
+        Ptr(to=video_session_parameters_info),
+        Ptr(to=p_feedback_info).bitcast[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutAnyOrigin]]()[],
+        Ptr(to=count),
+        Ptr[NoneType, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_encoded_video_session_parameters_khr(
-                device,
-                Ptr(to=video_session_parameters_info),
-                p_feedback_info,
-                Ptr(to=count),
-                list.unsafe_ptr().bitcast[NoneType](),
-            )
+                result = self._get_encoded_video_session_parameters_khr(
+        device,
+        Ptr(to=video_session_parameters_info),
+        Ptr(to=p_feedback_info).bitcast[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutAnyOrigin]]()[],
+        Ptr(to=count),
+        list.unsafe_ptr().bitcast[NoneType](),
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -4341,18 +4635,26 @@ struct Synchronization2(Copyable):
         """
         return self._cmd_reset_event_2(command_buffer, event, stage_mask)
 
-    fn cmd_wait_events_2(
+    fn cmd_wait_events_2[
+        p_events_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_dependency_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
-        p_events: Ptr[Event, ImmutAnyOrigin],
-        p_dependency_infos: Ptr[DependencyInfo, ImmutAnyOrigin],
+        p_events: Ptr[Event, p_events_origin],
+        p_dependency_infos: Ptr[DependencyInfo, p_dependency_infos_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWaitEvents2.html
         """
-        return self._cmd_wait_events_2(command_buffer, event_count, p_events, p_dependency_infos)
+        return self._cmd_wait_events_2(
+            command_buffer,
+            event_count,
+            Ptr(to=p_events).bitcast[Ptr[Event, ImmutAnyOrigin]]()[],
+            Ptr(to=p_dependency_infos).bitcast[Ptr[DependencyInfo, ImmutAnyOrigin]]()[],
+        )
 
     fn cmd_pipeline_barrier_2(
         self, command_buffer: CommandBuffer, dependency_info: DependencyInfo
@@ -4376,18 +4678,20 @@ struct Synchronization2(Copyable):
         """
         return self._cmd_write_timestamp_2(command_buffer, stage, query_pool, query)
 
-    fn queue_submit_2(
+    fn queue_submit_2[p_submits_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
-        p_submits: Ptr[SubmitInfo2, ImmutAnyOrigin],
+        p_submits: Ptr[SubmitInfo2, p_submits_origin],
         fence: Fence,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueSubmit2.html
         """
-        return self._queue_submit_2(queue, submit_count, p_submits, fence)
+        return self._queue_submit_2(
+            queue, submit_count, Ptr(to=p_submits).bitcast[Ptr[SubmitInfo2, ImmutAnyOrigin]]()[], fence
+        )
 
 
 struct CopyCommands2(Copyable):
@@ -4571,22 +4875,29 @@ struct Maintenance4(Copyable):
         """
         return self._get_device_image_memory_requirements(device, Ptr(to=info), Ptr(to=memory_requirements))
 
-    fn get_device_image_sparse_memory_requirements(
+    fn get_device_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         info: DeviceImageMemoryRequirements,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutAnyOrigin],
+        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, p_sparse_memory_requirements_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceImageSparseMemoryRequirements.html
         """
         return self._get_device_image_sparse_memory_requirements(
-            device, Ptr(to=info), Ptr(to=sparse_memory_requirement_count), p_sparse_memory_requirements
+            device,
+            Ptr(to=info),
+            Ptr(to=sparse_memory_requirement_count),
+            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements2, MutAnyOrigin]]()[],
         )
 
-    fn get_device_image_sparse_memory_requirements(
+    fn get_device_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutAnyOrigin
+    ](
         self, device: Device, info: DeviceImageMemoryRequirements
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -4596,12 +4907,12 @@ struct Maintenance4(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._get_device_image_sparse_memory_requirements(
-            device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
-        )
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+)
         list.reserve(Int(count))
         self._get_device_image_sparse_memory_requirements(
-            device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
-        )
+    device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr()
+)
         list._len = Int(count)
         return list^
 
@@ -4777,11 +5088,11 @@ struct PipelineBinary(Copyable):
             device, "vkReleaseCapturedPipelineDataKHR".as_c_string_slice()
         )).bitcast[type_of(self._release_captured_pipeline_data_khr)]()[]
 
-    fn create_pipeline_binaries_khr(
+    fn create_pipeline_binaries_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PipelineBinaryCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut binaries: PipelineBinaryHandlesInfoKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -4789,40 +5100,51 @@ struct PipelineBinary(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreatePipelineBinariesKHR.html
         """
         return self._create_pipeline_binaries_khr(
-            device, Ptr(to=create_info), p_allocator, Ptr(to=binaries)
+            device,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=binaries),
         )
 
-    fn destroy_pipeline_binary_khr(
+    fn destroy_pipeline_binary_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         pipeline_binary: PipelineBinaryKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPipelineBinaryKHR.html
         """
-        return self._destroy_pipeline_binary_khr(device, pipeline_binary, p_allocator)
+        return self._destroy_pipeline_binary_khr(
+            device,
+            pipeline_binary,
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+        )
 
-    fn get_pipeline_key_khr(
+    fn get_pipeline_key_khr[p_pipeline_create_info_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
-        p_pipeline_create_info: Ptr[PipelineCreateInfoKHR, ImmutAnyOrigin],
+        p_pipeline_create_info: Ptr[PipelineCreateInfoKHR, p_pipeline_create_info_origin],
         mut pipeline_key: PipelineBinaryKeyKHR,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineKeyKHR.html
         """
-        return self._get_pipeline_key_khr(device, p_pipeline_create_info, Ptr(to=pipeline_key))
+        return self._get_pipeline_key_khr(
+            device,
+            Ptr(to=p_pipeline_create_info).bitcast[Ptr[PipelineCreateInfoKHR, ImmutAnyOrigin]]()[],
+            Ptr(to=pipeline_key),
+        )
 
-    fn get_pipeline_binary_data_khr(
+    fn get_pipeline_binary_data_khr[p_pipeline_binary_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         info: PipelineBinaryDataInfoKHR,
         mut pipeline_binary_key: PipelineBinaryKeyKHR,
         mut pipeline_binary_data_size: UInt,
-        p_pipeline_binary_data: Ptr[NoneType, MutAnyOrigin],
+        p_pipeline_binary_data: Ptr[NoneType, p_pipeline_binary_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4833,10 +5155,10 @@ struct PipelineBinary(Copyable):
             Ptr(to=info),
             Ptr(to=pipeline_binary_key),
             Ptr(to=pipeline_binary_data_size),
-            p_pipeline_binary_data,
+            Ptr(to=p_pipeline_binary_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
-    fn get_pipeline_binary_data_khr(
+    fn get_pipeline_binary_data_khr[p_pipeline_binary_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         info: PipelineBinaryDataInfoKHR,
@@ -4851,35 +5173,37 @@ struct PipelineBinary(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_pipeline_binary_data_khr(
-                device,
-                Ptr(to=info),
-                Ptr(to=pipeline_binary_key),
-                Ptr(to=count),
-                Ptr[NoneType, MutOrigin.external](),
-            )
+        device,
+        Ptr(to=info),
+        Ptr(to=pipeline_binary_key),
+        Ptr(to=count),
+        Ptr[NoneType, MutOrigin.external](),
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_pipeline_binary_data_khr(
-                device,
-                Ptr(to=info),
-                Ptr(to=pipeline_binary_key),
-                Ptr(to=count),
-                list.unsafe_ptr().bitcast[NoneType](),
-            )
+                result = self._get_pipeline_binary_data_khr(
+        device,
+        Ptr(to=info),
+        Ptr(to=pipeline_binary_key),
+        Ptr(to=count),
+        list.unsafe_ptr().bitcast[NoneType](),
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn release_captured_pipeline_data_khr(
+    fn release_captured_pipeline_data_khr[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         info: ReleaseCapturedPipelineDataInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkReleaseCapturedPipelineDataKHR.html
         """
-        return self._release_captured_pipeline_data_khr(device, Ptr(to=info), p_allocator)
+        return self._release_captured_pipeline_data_khr(
+            device, Ptr(to=info), Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
+        )
 
 
 struct SwapchainMaintenance1(Copyable):
@@ -4924,21 +5248,27 @@ struct CooperativeMatrix(Copyable):
             device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_cooperative_matrix_properties_khr)]()[]
 
-    fn get_physical_device_cooperative_matrix_properties_khr(
+    fn get_physical_device_cooperative_matrix_properties_khr[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[CooperativeMatrixPropertiesKHR, MutAnyOrigin],
+        p_properties: Ptr[CooperativeMatrixPropertiesKHR, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR.html
         """
         return self._get_physical_device_cooperative_matrix_properties_khr(
-            physical_device, Ptr(to=property_count), p_properties
+            physical_device,
+            Ptr(to=property_count),
+            Ptr(to=p_properties).bitcast[Ptr[CooperativeMatrixPropertiesKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_cooperative_matrix_properties_khr(
+    fn get_physical_device_cooperative_matrix_properties_khr[
+        p_properties_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> ListResult[CooperativeMatrixPropertiesKHR]:
         """See official vulkan docs for details.
@@ -4950,13 +5280,13 @@ struct CooperativeMatrix(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_cooperative_matrix_properties_khr(
-                physical_device, Ptr(to=count), Ptr[CooperativeMatrixPropertiesKHR, MutOrigin.external]()
-            )
+        physical_device, Ptr(to=count), Ptr[CooperativeMatrixPropertiesKHR, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_cooperative_matrix_properties_khr(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_cooperative_matrix_properties_khr(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -5016,21 +5346,27 @@ struct CalibratedTimestamps(Copyable):
             device, "vkGetCalibratedTimestampsKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_calibrated_timestamps_khr)]()[]
 
-    fn get_physical_device_calibrateable_time_domains_khr(
+    fn get_physical_device_calibrateable_time_domains_khr[
+        p_time_domains_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut time_domain_count: UInt32,
-        p_time_domains: Ptr[TimeDomainKHR, MutAnyOrigin],
+        p_time_domains: Ptr[TimeDomainKHR, p_time_domains_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceCalibrateableTimeDomainsKHR.html
         """
         return self._get_physical_device_calibrateable_time_domains_khr(
-            physical_device, Ptr(to=time_domain_count), p_time_domains
+            physical_device,
+            Ptr(to=time_domain_count),
+            Ptr(to=p_time_domains).bitcast[Ptr[TimeDomainKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_calibrateable_time_domains_khr(
+    fn get_physical_device_calibrateable_time_domains_khr[
+        p_time_domains_origin: MutOrigin = MutAnyOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> ListResult[TimeDomainKHR]:
         """See official vulkan docs for details.
@@ -5042,22 +5378,25 @@ struct CalibratedTimestamps(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_calibrateable_time_domains_khr(
-                physical_device, Ptr(to=count), Ptr[TimeDomainKHR, MutOrigin.external]()
-            )
+        physical_device, Ptr(to=count), Ptr[TimeDomainKHR, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_physical_device_calibrateable_time_domains_khr(
-                physical_device, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_physical_device_calibrateable_time_domains_khr(
+        physical_device, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_calibrated_timestamps_khr(
+    fn get_calibrated_timestamps_khr[
+        p_timestamp_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_timestamps_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         timestamp_count: UInt32,
-        p_timestamp_infos: Ptr[CalibratedTimestampInfoKHR, ImmutAnyOrigin],
-        p_timestamps: Ptr[UInt64, MutAnyOrigin],
+        p_timestamp_infos: Ptr[CalibratedTimestampInfoKHR, p_timestamp_infos_origin],
+        p_timestamps: Ptr[UInt64, p_timestamps_origin],
         mut max_deviation: UInt64,
     ) -> Result:
         """See official vulkan docs for details.
@@ -5065,7 +5404,11 @@ struct CalibratedTimestamps(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetCalibratedTimestampsKHR.html
         """
         return self._get_calibrated_timestamps_khr(
-            device, timestamp_count, p_timestamp_infos, p_timestamps, Ptr(to=max_deviation)
+            device,
+            timestamp_count,
+            Ptr(to=p_timestamp_infos).bitcast[Ptr[CalibratedTimestampInfoKHR, ImmutAnyOrigin]]()[],
+            Ptr(to=p_timestamps).bitcast[Ptr[UInt64, MutAnyOrigin]]()[],
+            Ptr(to=max_deviation),
         )
 
 

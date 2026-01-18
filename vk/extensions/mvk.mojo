@@ -21,18 +21,23 @@ struct IosSurface(Copyable):
             instance, "vkCreateIOSSurfaceMVK".as_c_string_slice()
         )).bitcast[type_of(self._create_ios_surface_mvk)]()[]
 
-    fn create_ios_surface_mvk(
+    fn create_ios_surface_mvk[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: IOSSurfaceCreateInfoMVK,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateIOSSurfaceMVK.html
         """
-        return self._create_ios_surface_mvk(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
+        return self._create_ios_surface_mvk(
+            instance,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=surface),
+        )
 
 
 struct MacosSurface(Copyable):
@@ -53,15 +58,20 @@ struct MacosSurface(Copyable):
             instance, "vkCreateMacOSSurfaceMVK".as_c_string_slice()
         )).bitcast[type_of(self._create_mac_os_surface_mvk)]()[]
 
-    fn create_mac_os_surface_mvk(
+    fn create_mac_os_surface_mvk[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: MacOSSurfaceCreateInfoMVK,
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateMacOSSurfaceMVK.html
         """
-        return self._create_mac_os_surface_mvk(instance, Ptr(to=create_info), p_allocator, Ptr(to=surface))
+        return self._create_mac_os_surface_mvk(
+            instance,
+            Ptr(to=create_info),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=surface),
+        )

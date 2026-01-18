@@ -76,21 +76,30 @@ struct ShaderEnqueue(Copyable):
             device, "vkCmdDispatchGraphIndirectCountAMDX".as_c_string_slice()
         )).bitcast[type_of(self._cmd_dispatch_graph_indirect_count_amdx)]()[]
 
-    fn create_execution_graph_pipelines_amdx(
+    fn create_execution_graph_pipelines_amdx[
+        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+    ](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, p_create_infos_origin],
+        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCreateExecutionGraphPipelinesAMDX.html
         """
         return self._create_execution_graph_pipelines_amdx(
-            device, pipeline_cache, create_info_count, p_create_infos, p_allocator, p_pipelines
+            device,
+            pipeline_cache,
+            create_info_count,
+            Ptr(to=p_create_infos).bitcast[Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutAnyOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
     fn get_execution_graph_pipeline_scratch_size_amdx(

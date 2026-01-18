@@ -84,22 +84,25 @@ struct TileProperties(Copyable):
             device, "vkGetDynamicRenderingTilePropertiesQCOM".as_c_string_slice()
         )).bitcast[type_of(self._get_dynamic_rendering_tile_properties_qcom)]()[]
 
-    fn get_framebuffer_tile_properties_qcom(
+    fn get_framebuffer_tile_properties_qcom[p_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         framebuffer: Framebuffer,
         mut properties_count: UInt32,
-        p_properties: Ptr[TilePropertiesQCOM, MutAnyOrigin],
+        p_properties: Ptr[TilePropertiesQCOM, p_properties_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetFramebufferTilePropertiesQCOM.html
         """
         return self._get_framebuffer_tile_properties_qcom(
-            device, framebuffer, Ptr(to=properties_count), p_properties
+            device,
+            framebuffer,
+            Ptr(to=properties_count),
+            Ptr(to=p_properties).bitcast[Ptr[TilePropertiesQCOM, MutAnyOrigin]]()[],
         )
 
-    fn get_framebuffer_tile_properties_qcom(
+    fn get_framebuffer_tile_properties_qcom[p_properties_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, framebuffer: Framebuffer
     ) -> ListResult[TilePropertiesQCOM]:
         """See official vulkan docs for details.
@@ -111,13 +114,13 @@ struct TileProperties(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_framebuffer_tile_properties_qcom(
-                device, framebuffer, Ptr(to=count), Ptr[TilePropertiesQCOM, MutOrigin.external]()
-            )
+        device, framebuffer, Ptr(to=count), Ptr[TilePropertiesQCOM, MutOrigin.external]()
+    )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-            result = self._get_framebuffer_tile_properties_qcom(
-                device, framebuffer, Ptr(to=count), list.unsafe_ptr()
-            )
+                result = self._get_framebuffer_tile_properties_qcom(
+        device, framebuffer, Ptr(to=count), list.unsafe_ptr()
+    )
         list._len = Int(count)
         return ListResult(list^, result)
 
@@ -149,13 +152,16 @@ struct TileMemoryHeap(Copyable):
             device, "vkCmdBindTileMemoryQCOM".as_c_string_slice()
         )).bitcast[type_of(self._cmd_bind_tile_memory_qcom)]()[]
 
-    fn cmd_bind_tile_memory_qcom(
+    fn cmd_bind_tile_memory_qcom[p_tile_memory_bind_info_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
-        p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, ImmutAnyOrigin],
+        p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, p_tile_memory_bind_info_origin],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindTileMemoryQCOM.html
         """
-        return self._cmd_bind_tile_memory_qcom(command_buffer, p_tile_memory_bind_info)
+        return self._cmd_bind_tile_memory_qcom(
+            command_buffer,
+            Ptr(to=p_tile_memory_bind_info).bitcast[Ptr[TileMemoryBindInfoQCOM, ImmutAnyOrigin]]()[],
+        )

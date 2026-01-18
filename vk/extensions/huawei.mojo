@@ -22,18 +22,20 @@ struct SubpassShading(Copyable):
             device, "vkCmdSubpassShadingHUAWEI".as_c_string_slice()
         )).bitcast[type_of(self._cmd_subpass_shading_huawei)]()[]
 
-    fn get_device_subpass_shading_max_workgroup_size_huawei(
+    fn get_device_subpass_shading_max_workgroup_size_huawei[
+        p_max_workgroup_size_origin: MutOrigin = MutAnyOrigin
+    ](
         self,
         device: Device,
         renderpass: RenderPass,
-        p_max_workgroup_size: Ptr[Extent2D, MutAnyOrigin],
+        p_max_workgroup_size: Ptr[Extent2D, p_max_workgroup_size_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceSubpassShadingMaxWorkgroupSizeHUAWEI.html
         """
         return self._get_device_subpass_shading_max_workgroup_size_huawei(
-            device, renderpass, p_max_workgroup_size
+            device, renderpass, Ptr(to=p_max_workgroup_size).bitcast[Ptr[Extent2D, MutAnyOrigin]]()[]
         )
 
     fn cmd_subpass_shading_huawei(self, command_buffer: CommandBuffer):
