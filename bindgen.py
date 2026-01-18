@@ -966,6 +966,10 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                 init_arguments.append(MojoArgument(field.name, field.type, default_value=f"zero_init[{field.type}]()"))
             else:
                 default_value = field.default_value
+                if isinstance(field.type, MojoBaseType) and default_value.startswith("VK_"):
+                    c_enum_name = "Vk" + field.type.name
+                    stripped_name = strip_enum_value_prefix(c_enum_name, default_value, registry.tags)
+                    default_value = f"{field.type.name}.{stripped_name}"
                 init_arguments.append(MojoArgument(field.name, field.type, default_value=default_value))
         
         methods: List[MojoMethod] = []
@@ -1008,7 +1012,7 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                 self_ref_kind="ref",
                 parameters=[],
                 arguments=[],
-                body_lines=[f"return Span(ptr=self.{field.name}, length=self.{field.len})"],
+                body_lines=[f"return Span(ptr=self.{field.name}, length=Int(self.{field.len}))"],
                 docstring_lines=[],
             ))
         # getters and setters for packed fields
