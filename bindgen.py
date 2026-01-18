@@ -595,7 +595,7 @@ MojoOriginLiteral = Literal["MutOrigin.external", "ImmutOrigin.external", "MutAn
 @dataclass
 class MojoBaseType:
     name: str
-    parameters: List[MojoOriginLiteral | MojoParametricArgumentType | str] = field(default_factory=list) # type: ignore[reportUnknownVariableType]
+    parameters: List[MojoOriginLiteral | MojoParametricOrigin | str] = field(default_factory=list) # type: ignore[reportUnknownVariableType]
 
     def __str__(self) -> str:
         if len(self.parameters) != 0:
@@ -607,7 +607,7 @@ class MojoBaseType:
 @dataclass
 class MojoPointerType:
     pointee_type: MojoType
-    origin: MojoOriginLiteral | MojoParametricArgumentType
+    origin: MojoOriginLiteral | MojoParametricOrigin
 
     def __str__(self) -> str:
         return f"Ptr[{self.pointee_type}, {self.origin}]"
@@ -620,6 +620,15 @@ class MojoArrayType:
 
     def __str__(self) -> str:
         return f"InlineArray[{self.element_type}, Int({self.length})]"
+
+
+@dataclass
+class MojoSpanType:
+    element_type: MojoType
+    origin: MojoOriginLiteral | MojoParametricOrigin
+
+    def __str__(self) -> str:
+        return f"Span[{self.element_type}, {self.origin}]"
 
 
 @dataclass
@@ -637,14 +646,14 @@ class MojoFnType:
 
 
 @dataclass
-class MojoParametricArgumentType:
-    name: str
+class MojoParametricOrigin:
+    parameter_name: str
 
     def __str__(self) -> str:
-        return self.name
+        return self.parameter_name
 
 
-MojoType = MojoBaseType | MojoPointerType | MojoArrayType | MojoFnType | MojoParametricArgumentType
+MojoType = MojoBaseType | MojoPointerType | MojoArrayType | MojoSpanType | MojoFnType | MojoParametricOrigin
 
 
 @dataclass
@@ -780,34 +789,58 @@ class MojoArgument:
 
 
 @dataclass
-class MojoPhysicalField:
+class PhysicalField:
     name: str
     type: MojoType
-    packed: bool
+
+
+@dataclass
+class StandardLogicalField:
+    name: str
+    type: MojoType
     default_value: Optional[str] = None
 
 
 @dataclass
-class MojoLogicalField:
+class PackedLogicalField:
     name: str
-    type: MojoType
-    packing_data: Optional[FieldPackingData]
-    default_value: Optional[str] = None
-
-
-@dataclass
-class FieldPackingData:
+    first_in_group: bool
     group_index: int
     bit_width: int
     bit_offset: int
 
 
-def parse_members(members: List[RegistryStructMember]) -> Tuple[List[MojoPhysicalField], List[MojoLogicalField]]:
-    physical_fields: List[MojoPhysicalField] = []
-    logical_fields: List[MojoLogicalField] = []
-    packed_group_index = 0
+@dataclass
+class SpanLogicalField:
+    name: str
+    element_type: MojoType
+    mut: bool
+    len: str
+    data: str
+
+
+LogicalField = StandardLogicalField | PackedLogicalField | SpanLogicalField
+
+
+def parse_members(members: List[RegistryStructMember]) -> Tuple[List[PhysicalField], List[LogicalField]]:
+    physical_fields: List[PhysicalField] = []
+    logical_fields: List[LogicalField] = []
+    packed_group_index = -1
     packed_offset = 0
     packed_active = False
+
+    span_data_to_len_name: Dict[str, str] = {}
+    for member in members:
+        if member.len is None:
+            continue
+        length = member.len.split(",")[0]
+        if length == "null-terminated":
+            continue
+        text = member.text
+        if member.comment is not None:
+            text = text.removesuffix(member.comment)
+        decl = parse_declarator(text)
+        span_data_to_len_name[decl.name] = member.len
 
     for member in members:
         text = member.text
@@ -816,56 +849,49 @@ def parse_members(members: List[RegistryStructMember]) -> Tuple[List[MojoPhysica
         decl = parse_declarator(text)
         field_name = pascal_to_snake(decl.name)
 
-        if decl.bit_width is None:
-            if packed_active:
+        if decl.bit_width is not None:
+            width = decl.bit_width
+            start_new_group = not packed_active or (packed_offset + width > 32)
+            if start_new_group:
+                packed_active = True
                 packed_group_index += 1
                 packed_offset = 0
-                packed_active = False
-            physical_fields.append(MojoPhysicalField(
+                physical_fields.append(PhysicalField(
+                    name=f"_packed{packed_group_index}",
+                    type=MojoBaseType("UInt32"),
+                ))
+            logical_fields.append(PackedLogicalField(
                 name=field_name,
-                type=decl.type,
-                packed=False,
-                default_value=member.values,
-            ))
-            logical_fields.append(MojoLogicalField(
-                name=field_name,
-                type=decl.type,
-                packing_data=None,
-                default_value=member.values,
-            ))
-            continue
-
-        width = decl.bit_width
-        if not packed_active:
-            packed_active = True
-            packed_offset = 0
-            physical_fields.append(MojoPhysicalField(
-                name=f"_packed{packed_group_index}",
-                type=MojoBaseType("UInt32"),
-                packed=True,
-            ))
-        if packed_offset + width > 32:
-            packed_group_index += 1
-            packed_offset = 0
-            physical_fields.append(MojoPhysicalField(
-                name=f"_packed{packed_group_index}",
-                type=MojoBaseType("UInt32"),
-                packed=True,
-            ))
-        logical_fields.append(MojoLogicalField(
-            name=field_name,
-            type=MojoBaseType("UInt32"),
-            packing_data=FieldPackingData(
+                first_in_group=start_new_group,
                 group_index=packed_group_index,
                 bit_width=width,
                 bit_offset=packed_offset,
-            ),
-        ))
-        packed_offset += width
-        if packed_offset == 32:
-            packed_group_index += 1
-            packed_offset = 0
-            packed_active = False
+            ))
+            packed_offset += width
+            continue
+
+        packed_active = False
+        physical_fields.append(PhysicalField(field_name, decl.type))
+        if decl.name in span_data_to_len_name.values():
+            pass
+        elif decl.name in span_data_to_len_name.keys():
+            if isinstance(decl.type, MojoPointerType):
+                element_type = decl.type.pointee_type
+                mut = decl.type.origin == "MutAnyOrigin"
+            elif isinstance(decl.type, MojoArrayType):
+                element_type = decl.type.element_type
+                mut = False
+            else:
+                raise TypeError("Unexpected Span data type")
+            logical_fields.append(SpanLogicalField(
+                name=field_name,
+                element_type=element_type,
+                mut=mut,
+                len=pascal_to_snake(span_data_to_len_name[decl.name]),
+                data=pascal_to_snake(decl.name),
+            ))
+        else:
+            logical_fields.append(StandardLogicalField(field_name, decl.type, default_value=member.values))
         
     return physical_fields, logical_fields
 
@@ -916,43 +942,31 @@ def bind_structs(files: Dict[str, str], registry: Registry):
         physical_fields, logical_fields = parse_members(registry_struct.members)
         fields = [MojoField(field.name, field.type) for field in physical_fields]
         init_body_lines: List[str] = []
-        for field in physical_fields:
-            is_default_stype = (
-                field.default_value is not None
-                and isinstance(field.type, MojoBaseType)
-                and field.type.name == "StructureType"
-            )
-            if field.packed:
-                init_value = "0"
-            elif isinstance(field.type, MojoBaseType) and field.type.name in struct_names:
-                init_value = f"{field.name}.copy()"
-            else:
-                init_value = field.name
-            init_body_lines.append(f"self.{field.name} = {init_value}")
         for field in logical_fields:
-            if field.packing_data is not None:
+            if isinstance(field, PackedLogicalField):
+                if field.first_in_group:
+                    init_body_lines.append(f"self.{field.name} = 0")
                 init_body_lines.append(f"self.set_{field.name}({field.name})")
-        
-        arguments: List[MojoArgument] = []
-        for field in logical_fields:
-            is_default_stype = (
-                field.default_value is not None
-                and isinstance(field.type, MojoBaseType)
-                and field.type.name == "StructureType"
-            )
-            if is_default_stype:
-                val_name = strip_enum_value_prefix("VkStructureType", assert_type(str, field.default_value), registry.tags)
-                arguments.append(MojoArgument(
-                    field.name, 
-                    field.type, 
-                    default_value=f"StructureType.{val_name}"
-                ))
+            elif isinstance(field, SpanLogicalField):
+                init_body_lines.append(f"self.{field.len} = len({field.name})")
+                init_body_lines.append(f"self.{field.data} = Ptr(to={field.name}.unsafe_ptr()).bitcast[type_of(self.{field.data})]()[]")
+            elif isinstance(field.type, MojoBaseType) and field.type.name in struct_names:
+                init_body_lines.append(f"self.{field.name} = {field.name}.copy()")
             else:
-                arguments.append(MojoArgument(
-                    field.name, 
-                    field.type, 
-                    default_value=f"zero_init[{field.type}]()"
-                ))
+                init_body_lines.append(f"self.{field.name} = {field.name}")
+        
+        init_arguments: List[MojoArgument] = []
+        for field in logical_fields:
+            if isinstance(field, PackedLogicalField):
+                init_arguments.append(MojoArgument(field.name, MojoBaseType("UInt32"), default_value="zero_init[UInt32]()"))
+            elif isinstance(field, SpanLogicalField):
+                span_type = MojoSpanType(field.element_type, "MutAnyOrigin" if field.mut else "ImmutAnyOrigin")
+                init_arguments.append(MojoArgument(field.name, span_type, default_value=f"zero_init[{span_type}]()"))
+            elif field.default_value is None:
+                init_arguments.append(MojoArgument(field.name, field.type, default_value=f"zero_init[{field.type}]()"))
+            else:
+                default_value = field.default_value
+                init_arguments.append(MojoArgument(field.name, field.type, default_value=default_value))
         
         methods: List[MojoMethod] = []
         if not registry_struct.returned_only:
@@ -961,7 +975,7 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                 return_type=MojoBaseType("NoneType"),
                 self_ref_kind="out",
                 parameters=[],
-                arguments=arguments,
+                arguments=init_arguments,
                 body_lines=init_body_lines,
                 docstring_lines=[],
             ))
@@ -984,13 +998,26 @@ def bind_structs(files: Dict[str, str], registry: Registry):
                     ],
                     docstring_lines=[],
                 ))
+        # getters for spans
+        for field in logical_fields:
+            if not isinstance(field, SpanLogicalField):
+                continue
+            methods.append(MojoMethod(
+                name=field.name,
+                return_type=MojoSpanType(field.element_type, "MutAnyOrigin" if field.mut else "ImmutAnyOrigin"),
+                self_ref_kind="ref",
+                parameters=[],
+                arguments=[],
+                body_lines=[f"return Span(ptr=self.{field.name}, length=self.{field.len})"],
+                docstring_lines=[],
+            ))
         # getters and setters for packed fields
         for field in logical_fields:
-            if field.packing_data is None:
+            if not isinstance(field, PackedLogicalField):
                 continue
-            physical_field_name = f"_packed{field.packing_data.group_index}"
-            width = field.packing_data.bit_width
-            offset = field.packing_data.bit_offset
+            physical_field_name = f"_packed{field.group_index}"
+            width = field.bit_width
+            offset = field.bit_offset
             methods.append(MojoMethod(
                 name=f"get_{field.name}",
                 return_type=MojoBaseType("UInt32"),
@@ -1021,13 +1048,13 @@ def bind_structs(files: Dict[str, str], registry: Registry):
     parts.append(
         "from sys.ffi import CStringSlice, c_char\n"
         "from .constants import *\n"
-        # "from .basetypes import *\n"
-        # "from .external_types import *\n"
-        # "from .enums import *\n"
-        # "from .flags import *\n"
-        # "from .handles import *\n"
-        # "from .fn_types import *\n"
-        # "from .unions import *\n"
+        "from .basetypes import *\n"
+        "from .external_types import *\n"
+        "from .enums import *\n"
+        "from .flags import *\n"
+        "from .handles import *\n"
+        "from .fn_types import *\n"
+        "from .unions import *\n"
         "from .misc import *\n"
         "\n\n"
         "comptime Ptr = UnsafePointer\n"
@@ -2534,7 +2561,7 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
             "out",
             parameters=[MojoParameter("T", "GlobalFunctions")],
             arguments=[
-                MojoArgument("global_functions", MojoParametricArgumentType("T")),
+                MojoArgument("global_functions", MojoParametricOrigin("T")),
                 MojoArgument(extension.type, MojoBaseType(extension.type.capitalize())),
             ],
             body_lines=init_body_lines,
