@@ -5161,17 +5161,21 @@ struct ExternalMemoryMetal(Copyable):
             device, "vkGetMemoryMetalHandlePropertiesEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_memory_metal_handle_properties_ext)]()[]
 
-    fn get_memory_metal_handle_ext(
+    fn get_memory_metal_handle_ext[handle_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         get_metal_handle_info: MemoryGetMetalHandleInfoEXT,
-        mut handle: Ptr[NoneType, MutAnyOrigin],
+        mut handle: Ptr[NoneType, handle_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryMetalHandleEXT.html
         """
-        return self._get_memory_metal_handle_ext(device, Ptr(to=get_metal_handle_info), Ptr(to=handle))
+        return self._get_memory_metal_handle_ext(
+            device,
+            Ptr(to=get_metal_handle_info),
+            Ptr(to=Ptr(to=handle)).bitcast[Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin]]()[],
+        )
 
     fn get_memory_metal_handle_properties_ext[p_handle_origin: ImmutOrigin = ImmutAnyOrigin](
         self,

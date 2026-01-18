@@ -4430,17 +4430,21 @@ struct MapMemory2(Copyable):
             device, "vkUnmapMemory2".as_c_string_slice()
         )).bitcast[type_of(self._unmap_memory_2)]()[]
 
-    fn map_memory_2(
+    fn map_memory_2[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         memory_map_info: MemoryMapInfo,
-        mut p_data: Ptr[NoneType, MutAnyOrigin],
+        mut p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory2.html
         """
-        return self._map_memory_2(device, Ptr(to=memory_map_info), Ptr(to=p_data))
+        return self._map_memory_2(
+            device,
+            Ptr(to=memory_map_info),
+            Ptr(to=Ptr(to=p_data)).bitcast[Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin]]()[],
+        )
 
     fn unmap_memory_2(self, device: Device, memory_unmap_info: MemoryUnmapInfo) -> Result:
         """See official vulkan docs for details.

@@ -3344,20 +3344,27 @@ struct DeviceFunctionsV1_0(Copyable):
             device, memory, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn map_memory(
+    fn map_memory[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        mut p_data: Ptr[NoneType, MutAnyOrigin],
+        mut p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
-        return self._v1_0.map_memory(device, memory, offset, size, flags, Ptr(to=p_data))
+        return self._v1_0.map_memory(
+            device,
+            memory,
+            offset,
+            size,
+            flags,
+            Ptr(to=Ptr(to=p_data)).bitcast[Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin]]()[],
+        )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
@@ -5236,20 +5243,27 @@ struct DeviceFunctionsV1_1(Copyable):
             device, memory, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn map_memory(
+    fn map_memory[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        mut p_data: Ptr[NoneType, MutAnyOrigin],
+        mut p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
-        return self._v1_0.map_memory(device, memory, offset, size, flags, Ptr(to=p_data))
+        return self._v1_0.map_memory(
+            device,
+            memory,
+            offset,
+            size,
+            flags,
+            Ptr(to=Ptr(to=p_data)).bitcast[Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin]]()[],
+        )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
@@ -7390,20 +7404,27 @@ struct DeviceFunctionsV1_2(Copyable):
             device, memory, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn map_memory(
+    fn map_memory[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        mut p_data: Ptr[NoneType, MutAnyOrigin],
+        mut p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
-        return self._v1_0.map_memory(device, memory, offset, size, flags, Ptr(to=p_data))
+        return self._v1_0.map_memory(
+            device,
+            memory,
+            offset,
+            size,
+            flags,
+            Ptr(to=Ptr(to=p_data)).bitcast[Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin]]()[],
+        )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
@@ -9698,20 +9719,27 @@ struct DeviceFunctionsV1_3(Copyable):
             device, memory, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn map_memory(
+    fn map_memory[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        mut p_data: Ptr[NoneType, MutAnyOrigin],
+        mut p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
-        return self._v1_0.map_memory(device, memory, offset, size, flags, Ptr(to=p_data))
+        return self._v1_0.map_memory(
+            device,
+            memory,
+            offset,
+            size,
+            flags,
+            Ptr(to=Ptr(to=p_data)).bitcast[Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin]]()[],
+        )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
@@ -12440,20 +12468,27 @@ struct DeviceFunctionsV1_4(Copyable):
             device, memory, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn map_memory(
+    fn map_memory[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
         offset: DeviceSize,
         size: DeviceSize,
         flags: MemoryMapFlags,
-        mut p_data: Ptr[NoneType, MutAnyOrigin],
+        mut p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory.html
         """
-        return self._v1_0.map_memory(device, memory, offset, size, flags, Ptr(to=p_data))
+        return self._v1_0.map_memory(
+            device,
+            memory,
+            offset,
+            size,
+            flags,
+            Ptr(to=Ptr(to=p_data)).bitcast[Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin]]()[],
+        )
 
     fn unmap_memory(self, device: Device, memory: DeviceMemory):
         """See official vulkan docs for details.
@@ -15085,17 +15120,21 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_4.cmd_set_line_stipple(command_buffer, line_stipple_factor, line_stipple_pattern)
 
-    fn map_memory_2(
+    fn map_memory_2[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         memory_map_info: MemoryMapInfo,
-        mut p_data: Ptr[NoneType, MutAnyOrigin],
+        mut p_data: Ptr[NoneType, p_data_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkMapMemory2.html
         """
-        return self._v1_4.map_memory_2(device, Ptr(to=memory_map_info), Ptr(to=p_data))
+        return self._v1_4.map_memory_2(
+            device,
+            Ptr(to=memory_map_info),
+            Ptr(to=Ptr(to=p_data)).bitcast[Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin]]()[],
+        )
 
     fn unmap_memory_2(self, device: Device, memory_unmap_info: MemoryUnmapInfo) -> Result:
         """See official vulkan docs for details.

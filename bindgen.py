@@ -2218,8 +2218,13 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
             arg_name = arg_name[2:] if arg_name.startswith("p_") else (arg_name[1:] if arg_name.startswith("pp_") else arg_name)
             if any(arg.name == arg_name for arg in arguments):
                 continue
-            arguments.append(MojoArgument(arg_name, original_arg_type.pointee_type, mut=original_arg_type.origin == "MutAnyOrigin"))
-            call_args.append(f"Ptr(to={arg_name})")
+            inner_type = original_arg_type.pointee_type
+            parametric_type = as_parametric_type(arg_name, inner_type, parameters)
+            arguments.append(MojoArgument(arg_name, parametric_type, mut=original_arg_type.origin == "MutAnyOrigin"))
+            if parametric_type != inner_type:
+                call_args.append(f"Ptr(to=Ptr(to={arg_name})).bitcast[{original_arg_type}]()[]")
+            else:
+                call_args.append(f"Ptr(to={arg_name})")
         else:
             if any(arg.name == arg_name for arg in arguments):
                 continue

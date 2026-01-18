@@ -42,14 +42,18 @@ struct ExternalMemoryAndroidHardwareBuffer(Copyable):
             device, Ptr(to=buffer), Ptr(to=properties)
         )
 
-    fn get_memory_android_hardware_buffer_android(
+    fn get_memory_android_hardware_buffer_android[buffer_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         info: MemoryGetAndroidHardwareBufferInfoANDROID,
-        mut buffer: Ptr[AHardwareBuffer, MutAnyOrigin],
+        mut buffer: Ptr[AHardwareBuffer, buffer_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMemoryAndroidHardwareBufferANDROID.html
         """
-        return self._get_memory_android_hardware_buffer_android(device, Ptr(to=info), Ptr(to=buffer))
+        return self._get_memory_android_hardware_buffer_android(
+            device,
+            Ptr(to=info),
+            Ptr(to=Ptr(to=buffer)).bitcast[Ptr[Ptr[AHardwareBuffer, MutAnyOrigin], MutAnyOrigin]]()[],
+        )
