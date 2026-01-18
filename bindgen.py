@@ -856,29 +856,32 @@ def parse_members(members: List[RegistryStructMember]) -> Tuple[List[PhysicalFie
 
 
 def as_parametric_type(name: str, mojo_type: MojoType, parameters: List[MojoParameter]) -> MojoType:
-    if name.startswith("pp_"):
-        stripped_name = "p_" + name[3:]
-    elif name.startswith("p_"):
-        stripped_name = name[2:]
-    else:
-        stripped_name = name
+    def get_unique_name(base: str) -> str:
+        if not any(p.name == base for p in parameters):
+            return base
+        count = 2
+        while True:
+            candidate = f"{base}_{count}"
+            if not any(p.name == candidate for p in parameters):
+                return candidate
+            count += 1
 
     if isinstance(mojo_type, MojoPointerType):
-        param_name = f"{stripped_name}_origin"
+        param_name = get_unique_name(f"{name}_origin")
         is_mutable = mojo_type.origin in ("MutAnyOrigin", "MutOrigin.external")
         parameters.append(MojoParameter(
             name=param_name,
             type="MutOrigin" if is_mutable else "ImmutOrigin",
             default_value="MutAnyOrigin" if is_mutable else "ImmutAnyOrigin"
         ))
-        new_pointee = as_parametric_type(stripped_name, mojo_type.pointee_type, parameters)
+        new_pointee = as_parametric_type(name, mojo_type.pointee_type, parameters)
         return MojoPointerType(
             pointee_type=new_pointee,
             origin=MojoParametricOrigin(param_name)
         )
 
     elif isinstance(mojo_type, MojoBaseType) and mojo_type.name == "CStringSlice":
-        param_name = f"{stripped_name}_origin"
+        param_name = get_unique_name(f"{name}_origin")
         # CStringSlice has 1 param
         is_mutable = mojo_type.parameters[0] in ("MutAnyOrigin", "MutOrigin.external")
         parameters.append(MojoParameter(
@@ -2835,7 +2838,8 @@ def emit_fn_like(
     if len(params_line) > MAX_LINE_LENGTH:
         param_lines = (f"{inner_indent}{param}," for param in params_list)
     else:
-        param_lines = (params_line,)
+        params_content = ", ".join(params_list)
+        param_lines = (f"{inner_indent}{params_content}",)
     lines = [
         f"{base_indent}{prefix}[",
         *param_lines,
