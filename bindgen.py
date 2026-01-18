@@ -2216,9 +2216,13 @@ def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_
         if isinstance(original_arg_type, MojoPointerType) and not is_void_ptr and not param.optional and param.len is None:
             original_arg_type = assert_type(MojoPointerType, original_arg_type)
             arg_name = arg_name[2:] if arg_name.startswith("p_") else (arg_name[1:] if arg_name.startswith("pp_") else arg_name)
+            if any(arg.name == arg_name for arg in arguments):
+                continue
             arguments.append(MojoArgument(arg_name, original_arg_type.pointee_type, mut=original_arg_type.origin == "MutAnyOrigin"))
             call_args.append(f"Ptr(to={arg_name})")
         else:
+            if any(arg.name == arg_name for arg in arguments):
+                continue
             if isinstance(original_arg_type, MojoPointerType):
                 new_origin: MojoOriginLiteral = "MutAnyOrigin" if original_arg_type.origin == "MutAnyOrigin" else "ImmutAnyOrigin"
                 arg_type = MojoPointerType(original_arg_type.pointee_type, new_origin)

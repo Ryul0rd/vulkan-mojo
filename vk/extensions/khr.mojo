@@ -265,7 +265,6 @@ struct Swapchain(Copyable):
         self,
         device: Device,
         create_info: SwapchainCreateInfoKHR,
-        create_info: SwapchainCreateInfoKHR,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         mut swapchain: SwapchainKHR,
     ) -> Result:
@@ -275,7 +274,6 @@ struct Swapchain(Copyable):
         """
         return self._create_swapchain_khr(
             device,
-            Ptr(to=create_info),
             Ptr(to=create_info),
             Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
             Ptr(to=swapchain),
@@ -735,7 +733,6 @@ struct DisplaySwapchain(Copyable):
 
     fn create_shared_swapchains_khr[
         p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
-        p_create_infos_origin_2: ImmutOrigin = ImmutAnyOrigin,
         p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
         p_swapchains_origin: MutOrigin = MutAnyOrigin,
     ](
@@ -743,7 +740,6 @@ struct DisplaySwapchain(Copyable):
         device: Device,
         swapchain_count: UInt32,
         p_create_infos: Ptr[SwapchainCreateInfoKHR, p_create_infos_origin],
-        p_create_infos: Ptr[SwapchainCreateInfoKHR, p_create_infos_origin_2],
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
         p_swapchains: Ptr[SwapchainKHR, p_swapchains_origin],
     ) -> Result:
@@ -754,7 +750,6 @@ struct DisplaySwapchain(Copyable):
         return self._create_shared_swapchains_khr(
             device,
             swapchain_count,
-            Ptr(to=p_create_infos).bitcast[Ptr[SwapchainCreateInfoKHR, ImmutAnyOrigin]]()[],
             Ptr(to=p_create_infos).bitcast[Ptr[SwapchainCreateInfoKHR, ImmutAnyOrigin]]()[],
             Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
             Ptr(to=p_swapchains).bitcast[Ptr[SwapchainKHR, MutAnyOrigin]]()[],
