@@ -1451,6 +1451,32 @@ def strip_enum_value_prefix(enum_name: str, value_name: str, tags: List[Registry
     return result
 
 
+def collect_additional_enumerators(registry: Registry) -> Dict[str, List[RegistryEnumerator]]:
+    # Helper to process requirements
+    def process_requirements(requirements: List[RegistryRequirement]):
+        for req in requirements:
+            if isinstance(req, RegistryRequiredOffsetEnum):
+                value = extension_enum_value(req.extnumber, req.offset, req.dir)
+                additional_value = RegistryValueEnumerator(name=req.name, value=value, comment=req.comment)
+                additional_values[req.extends].append(additional_value)
+            elif isinstance(req, RegistryRequiredBitposEnum):
+                additional_value = RegistryBitposEnumerator(name=req.name, bitpos=req.bitpos, comment=req.comment)
+                additional_values[req.extends].append(additional_value)
+            elif isinstance(req, RegistryRequiredValueEnum):
+                additional_value = RegistryValueEnumerator(name=req.name, value=req.value, comment=req.comment)
+                additional_values[req.extends].append(additional_value)
+            elif isinstance(req, RegistryRequiredEnumAlias):
+                additional_value = RegistryEnumeratorAlias(name=req.name, alias=req.alias, comment=req.comment)
+                additional_values[req.extends].append(additional_value)
+
+    additional_values: Dict[str, List[RegistryEnumerator]] = defaultdict(list)
+    for feature in registry.features:
+        process_requirements(feature.requires)
+    for extension in registry.extensions:
+        process_requirements(extension.requires)
+    return additional_values
+
+
 def bind_enums(files: Dict[str, str], registry: Registry):
     # collect type aliases
     aliases: List[MojoTypeAlias] = []
@@ -1461,39 +1487,7 @@ def bind_enums(files: Dict[str, str], registry: Registry):
                 alias=c_type_name_to_mojo(registry_type.alias),
             ))
 
-    # Build a map of enum name -> list of additional enumerators from features/extensions
-    additional_values: Dict[str, List[RegistryEnumerator]] = defaultdict(list)
-    for feature in registry.features:
-        for req in feature.requires:
-            if isinstance(req, RegistryRequiredOffsetEnum):
-                value = extension_enum_value(req.extnumber, req.offset, req.dir)
-                additional_value = RegistryValueEnumerator(name=req.name, value=value, comment=req.comment)
-                additional_values[req.extends].append(additional_value)
-            elif isinstance(req, RegistryRequiredBitposEnum):
-                additional_value = RegistryBitposEnumerator(name=req.name, bitpos=req.bitpos, comment=req.comment)
-                additional_values[req.extends].append(additional_value)
-            elif isinstance(req, RegistryRequiredValueEnum):
-                additional_value = RegistryValueEnumerator(name=req.name, value=req.value, comment=req.comment)
-                additional_values[req.extends].append(additional_value)
-            elif isinstance(req, RegistryRequiredEnumAlias):
-                additional_value = RegistryEnumeratorAlias(name=req.name, alias=req.alias, comment=req.comment)
-                additional_values[req.extends].append(additional_value)
-    for extension in registry.extensions:
-        for req in extension.requires:
-            if isinstance(req, RegistryRequiredOffsetEnum):
-                value = extension_enum_value(req.extnumber, req.offset, req.dir)
-                additional_value = RegistryValueEnumerator(name=req.name, value=value, comment=req.comment)
-                additional_values[req.extends].append(additional_value)
-            elif isinstance(req, RegistryRequiredBitposEnum):
-                additional_value = RegistryBitposEnumerator(name=req.name, bitpos=req.bitpos, comment=req.comment)
-                additional_values[req.extends].append(additional_value)
-            elif isinstance(req, RegistryRequiredValueEnum):
-                additional_value = RegistryValueEnumerator(name=req.name, value=req.value, comment=req.comment)
-                additional_values[req.extends].append(additional_value)
-            elif isinstance(req, RegistryRequiredEnumAlias):
-                additional_value = RegistryEnumeratorAlias(name=req.name, alias=req.alias, comment=req.comment)
-                additional_values[req.extends].append(additional_value)
-
+    additional_values = collect_additional_enumerators(registry)
     enums: List[MojoEnum] = []
     for enum_def in registry.enums:
         if not enum_def.type == "enum":
@@ -1671,30 +1665,40 @@ def flag_bit_mojo_name(enum_name: str, value_name: str, tags: List[RegistryTag])
     Examples:
         VkFramebufferCreateFlagBits, VK_FRAMEBUFFER_CREATE_IMAGELESS_BIT -> IMAGELESS
         VkAccessFlagBits2, VK_ACCESS_2_NONE -> NONE
-        VkAccessFlagBits2, VK_ACCESS_2_INDIRECT_COMMAND_READ_BIT -> INDIRECT_COMMAND_READ
-        VkSampleCountFlagBits, VK_SAMPLE_COUNT_1_BIT -> N_1
-        VkIndirectCommandsLayoutUsageFlagBitsNV, VK_INDIRECT_COMMANDS_LAYOUT_USAGE_EXPLICIT_PREPROCESS_BIT_NV -> EXPLICIT_PREPROCESS
-        VkClusterAccelerationStructureClusterFlagBitsNV, VK_CLUSTER_ACCELERATION_STRUCTURE_CLUSTER_ALLOW_DISABLE_OPACITY_MICROMAPS_BIT_NV -> ALLOW_DISABLE_OPACITY_MICROMAPS
-        VkAccessFlagBits3KHR, VK_ACCESS_3_NONE_KHR -> NONE
+        # Extension bit in Core enum -> Keep suffix
+        VkImageUsageFlagBits, VK_IMAGE_USAGE_FRAGMENT_DENSITY_MAP_BIT_EXT -> FRAGMENT_DENSITY_MAP_EXT
+        # Extension bit in Extension enum -> Strip suffix
+        VkExternalMemoryHandleTypeFlagBitsNV, VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_BIT_NV -> OPAQUE_WIN32
     """
     tag_names = sorted([tag.name for tag in tags], key=lambda tag: len(tag), reverse=True)
     prefix = enum_name
+    
     enum_tag: Optional[str] = None
     for tag in tag_names:
         if prefix.endswith(tag):
             enum_tag = tag
             prefix = prefix.removesuffix(tag)
             break
+            
     prefix = re.sub(r'FlagBits(\d+)$', r'\1', prefix)
     prefix = prefix.removesuffix("FlagBits")
     prefix = pascal_to_snake(prefix).upper() + "_"
-
+    prefix = prefix if value_name.startswith(prefix) else "VK_"
     result = value_name.removeprefix(prefix)
-    result = result.removesuffix(f"_{enum_tag}")
+    
+    value_tag: Optional[str] = None
+    for tag in tag_names:
+        suffix = f"_{tag}"
+        if result.endswith(suffix):
+            value_tag = tag
+            result = result.removesuffix(suffix)
+            break
+            
     result = result.removesuffix("_BIT")
+    if value_tag is not None and value_tag != enum_tag:
+        result = f"{result}_{value_tag}"
     if result and result[0].isdigit():
         result = "N_" + result
-    
     return result
 
 
@@ -1708,6 +1712,7 @@ def bind_flags(files: Dict[str, str], registry: Registry):
                 alias=c_type_name_to_mojo(registry_type.alias),
             ))
 
+    additional_values = collect_additional_enumerators(registry)
     enum_defs_by_name = {enum_def.name: enum_def for enum_def in registry.enums}
     flags_list: List[MojoFlags] = []
     flagbits_list: List[MojoFlagBits] = []
@@ -1729,11 +1734,16 @@ def bind_flags(files: Dict[str, str], registry: Registry):
         
         base_values: List[RegistryEnumerator] = []
         if bits_native_name in enum_defs_by_name:
-            base_values = enum_defs_by_name[bits_native_name].values
+            base_values = list(enum_defs_by_name[bits_native_name].values)
+        base_values.extend(additional_values.get(bits_native_name, []))
         
         mojo_values: List[MojoFlagValue] = []
+        seen_names: Set[str] = set()
         for enumerator in base_values:
             value_name = flag_bit_mojo_name(bits_native_name, enumerator.name, registry.tags)
+            if value_name in seen_names:
+                continue
+            seen_names.add(value_name)
             if isinstance(enumerator, RegistryValueEnumerator):
                 mojo_values.append(MojoFlagValue(value_name, "value", enumerator.value))
             elif isinstance(enumerator, RegistryBitposEnumerator):
