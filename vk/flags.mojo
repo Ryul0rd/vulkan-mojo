@@ -66,8 +66,8 @@ struct FramebufferCreateFlags(Equatable):
     fn __rand__(self, other: FramebufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: FramebufferCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: FramebufferCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: FramebufferCreateFlags) -> Bool:
         return self & other == self
@@ -131,8 +131,8 @@ struct QueryPoolCreateFlags(Equatable):
     fn __rand__(self, other: QueryPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: QueryPoolCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: QueryPoolCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: QueryPoolCreateFlags) -> Bool:
         return self & other == self
@@ -196,8 +196,8 @@ struct RenderPassCreateFlags(Equatable):
     fn __rand__(self, other: RenderPassCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: RenderPassCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: RenderPassCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: RenderPassCreateFlags) -> Bool:
         return self & other == self
@@ -267,8 +267,8 @@ struct SamplerCreateFlags(Equatable):
     fn __rand__(self, other: SamplerCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SamplerCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SamplerCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SamplerCreateFlags) -> Bool:
         return self & other == self
@@ -340,8 +340,8 @@ struct PipelineLayoutCreateFlags(Equatable):
     fn __rand__(self, other: PipelineLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineLayoutCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineLayoutCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineLayoutCreateFlags) -> Bool:
         return self & other == self
@@ -407,8 +407,8 @@ struct PipelineCacheCreateFlags(Equatable):
     fn __rand__(self, other: PipelineCacheCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineCacheCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineCacheCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineCacheCreateFlags) -> Bool:
         return self & other == self
@@ -478,8 +478,8 @@ struct PipelineDepthStencilStateCreateFlags(Equatable):
     fn __rand__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineDepthStencilStateCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineDepthStencilStateCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineDepthStencilStateCreateFlags) -> Bool:
         return self & other == self
@@ -545,8 +545,8 @@ struct PipelineDynamicStateCreateFlags(Equatable):
     fn __rand__(self, other: PipelineDynamicStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineDynamicStateCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineDynamicStateCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineDynamicStateCreateFlags) -> Bool:
         return self & other == self
@@ -606,8 +606,8 @@ struct PipelineColorBlendStateCreateFlags(Equatable):
     fn __rand__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineColorBlendStateCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineColorBlendStateCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineColorBlendStateCreateFlags) -> Bool:
         return self & other == self
@@ -671,8 +671,8 @@ struct PipelineMultisampleStateCreateFlags(Equatable):
     fn __rand__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineMultisampleStateCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineMultisampleStateCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineMultisampleStateCreateFlags) -> Bool:
         return self & other == self
@@ -732,8 +732,8 @@ struct PipelineRasterizationStateCreateFlags(Equatable):
     fn __rand__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineRasterizationStateCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineRasterizationStateCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineRasterizationStateCreateFlags) -> Bool:
         return self & other == self
@@ -793,8 +793,8 @@ struct PipelineViewportStateCreateFlags(Equatable):
     fn __rand__(self, other: PipelineViewportStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineViewportStateCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineViewportStateCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineViewportStateCreateFlags) -> Bool:
         return self & other == self
@@ -854,8 +854,8 @@ struct PipelineTessellationStateCreateFlags(Equatable):
     fn __rand__(self, other: PipelineTessellationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineTessellationStateCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineTessellationStateCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineTessellationStateCreateFlags) -> Bool:
         return self & other == self
@@ -915,8 +915,8 @@ struct PipelineInputAssemblyStateCreateFlags(Equatable):
     fn __rand__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineInputAssemblyStateCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineInputAssemblyStateCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineInputAssemblyStateCreateFlags) -> Bool:
         return self & other == self
@@ -976,8 +976,8 @@ struct PipelineVertexInputStateCreateFlags(Equatable):
     fn __rand__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineVertexInputStateCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineVertexInputStateCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineVertexInputStateCreateFlags) -> Bool:
         return self & other == self
@@ -1037,8 +1037,8 @@ struct PipelineShaderStageCreateFlags(Equatable):
     fn __rand__(self, other: PipelineShaderStageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineShaderStageCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineShaderStageCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineShaderStageCreateFlags) -> Bool:
         return self & other == self
@@ -1106,8 +1106,8 @@ struct DescriptorSetLayoutCreateFlags(Equatable):
     fn __rand__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DescriptorSetLayoutCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DescriptorSetLayoutCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DescriptorSetLayoutCreateFlags) -> Bool:
         return self & other == self
@@ -1185,8 +1185,8 @@ struct BufferViewCreateFlags(Equatable):
     fn __rand__(self, other: BufferViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: BufferViewCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: BufferViewCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: BufferViewCreateFlags) -> Bool:
         return self & other == self
@@ -1246,8 +1246,8 @@ struct InstanceCreateFlags(Equatable):
     fn __rand__(self, other: InstanceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: InstanceCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: InstanceCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: InstanceCreateFlags) -> Bool:
         return self & other == self
@@ -1313,8 +1313,8 @@ struct DeviceCreateFlags(Equatable):
     fn __rand__(self, other: DeviceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DeviceCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DeviceCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DeviceCreateFlags) -> Bool:
         return self & other == self
@@ -1374,8 +1374,8 @@ struct DeviceQueueCreateFlags(Equatable):
     fn __rand__(self, other: DeviceQueueCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DeviceQueueCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DeviceQueueCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DeviceQueueCreateFlags) -> Bool:
         return self & other == self
@@ -1443,8 +1443,8 @@ struct QueueFlags(Equatable):
     fn __rand__(self, other: QueueFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: QueueFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: QueueFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: QueueFlags) -> Bool:
         return self & other == self
@@ -1532,8 +1532,8 @@ struct MemoryPropertyFlags(Equatable):
     fn __rand__(self, other: MemoryPropertyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: MemoryPropertyFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: MemoryPropertyFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: MemoryPropertyFlags) -> Bool:
         return self & other == self
@@ -1613,8 +1613,8 @@ struct MemoryHeapFlags(Equatable):
     fn __rand__(self, other: MemoryHeapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: MemoryHeapFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: MemoryHeapFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: MemoryHeapFlags) -> Bool:
         return self & other == self
@@ -1684,8 +1684,8 @@ struct AccessFlags(Equatable):
     fn __rand__(self, other: AccessFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: AccessFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: AccessFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: AccessFlags) -> Bool:
         return self & other == self
@@ -1805,8 +1805,8 @@ struct BufferUsageFlags(Equatable):
     fn __rand__(self, other: BufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: BufferUsageFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: BufferUsageFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: BufferUsageFlags) -> Bool:
         return self & other == self
@@ -1924,8 +1924,8 @@ struct BufferCreateFlags(Equatable):
     fn __rand__(self, other: BufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: BufferCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: BufferCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: BufferCreateFlags) -> Bool:
         return self & other == self
@@ -2003,8 +2003,8 @@ struct ShaderStageFlags(Equatable):
     fn __rand__(self, other: ShaderStageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ShaderStageFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ShaderStageFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ShaderStageFlags) -> Bool:
         return self & other == self
@@ -2104,8 +2104,8 @@ struct ImageUsageFlags(Equatable):
     fn __rand__(self, other: ImageUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ImageUsageFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ImageUsageFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ImageUsageFlags) -> Bool:
         return self & other == self
@@ -2225,8 +2225,8 @@ struct ImageCreateFlags(Equatable):
     fn __rand__(self, other: ImageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ImageCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ImageCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ImageCreateFlags) -> Bool:
         return self & other == self
@@ -2332,8 +2332,8 @@ struct ImageViewCreateFlags(Equatable):
     fn __rand__(self, other: ImageViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ImageViewCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ImageViewCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ImageViewCreateFlags) -> Bool:
         return self & other == self
@@ -2401,8 +2401,8 @@ struct PipelineCreateFlags(Equatable):
     fn __rand__(self, other: PipelineCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineCreateFlags) -> Bool:
         return self & other == self
@@ -2526,8 +2526,8 @@ struct ColorComponentFlags(Equatable):
     fn __rand__(self, other: ColorComponentFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ColorComponentFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ColorComponentFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ColorComponentFlags) -> Bool:
         return self & other == self
@@ -2597,8 +2597,8 @@ struct FenceCreateFlags(Equatable):
     fn __rand__(self, other: FenceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: FenceCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: FenceCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: FenceCreateFlags) -> Bool:
         return self & other == self
@@ -2662,8 +2662,8 @@ struct SemaphoreCreateFlags(Equatable):
     fn __rand__(self, other: SemaphoreCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SemaphoreCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SemaphoreCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SemaphoreCreateFlags) -> Bool:
         return self & other == self
@@ -2723,8 +2723,8 @@ struct FormatFeatureFlags(Equatable):
     fn __rand__(self, other: FormatFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: FormatFeatureFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: FormatFeatureFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: FormatFeatureFlags) -> Bool:
         return self & other == self
@@ -2848,8 +2848,8 @@ struct QueryControlFlags(Equatable):
     fn __rand__(self, other: QueryControlFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: QueryControlFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: QueryControlFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: QueryControlFlags) -> Bool:
         return self & other == self
@@ -2913,8 +2913,8 @@ struct QueryResultFlags(Equatable):
     fn __rand__(self, other: QueryResultFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: QueryResultFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: QueryResultFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: QueryResultFlags) -> Bool:
         return self & other == self
@@ -2986,8 +2986,8 @@ struct ShaderModuleCreateFlags(Equatable):
     fn __rand__(self, other: ShaderModuleCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ShaderModuleCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ShaderModuleCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ShaderModuleCreateFlags) -> Bool:
         return self & other == self
@@ -3047,8 +3047,8 @@ struct EventCreateFlags(Equatable):
     fn __rand__(self, other: EventCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: EventCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: EventCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: EventCreateFlags) -> Bool:
         return self & other == self
@@ -3112,8 +3112,8 @@ struct CommandPoolCreateFlags(Equatable):
     fn __rand__(self, other: CommandPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: CommandPoolCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: CommandPoolCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: CommandPoolCreateFlags) -> Bool:
         return self & other == self
@@ -3181,8 +3181,8 @@ struct CommandPoolResetFlags(Equatable):
     fn __rand__(self, other: CommandPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: CommandPoolResetFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: CommandPoolResetFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: CommandPoolResetFlags) -> Bool:
         return self & other == self
@@ -3248,8 +3248,8 @@ struct CommandBufferResetFlags(Equatable):
     fn __rand__(self, other: CommandBufferResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: CommandBufferResetFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: CommandBufferResetFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: CommandBufferResetFlags) -> Bool:
         return self & other == self
@@ -3313,8 +3313,8 @@ struct CommandBufferUsageFlags(Equatable):
     fn __rand__(self, other: CommandBufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: CommandBufferUsageFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: CommandBufferUsageFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: CommandBufferUsageFlags) -> Bool:
         return self & other == self
@@ -3382,8 +3382,8 @@ struct QueryPipelineStatisticFlags(Equatable):
     fn __rand__(self, other: QueryPipelineStatisticFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: QueryPipelineStatisticFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: QueryPipelineStatisticFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: QueryPipelineStatisticFlags) -> Bool:
         return self & other == self
@@ -3473,8 +3473,8 @@ struct MemoryMapFlags(Equatable):
     fn __rand__(self, other: MemoryMapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: MemoryMapFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: MemoryMapFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: MemoryMapFlags) -> Bool:
         return self & other == self
@@ -3538,8 +3538,8 @@ struct MemoryUnmapFlags(Equatable):
     fn __rand__(self, other: MemoryUnmapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: MemoryUnmapFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: MemoryUnmapFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: MemoryUnmapFlags) -> Bool:
         return self & other == self
@@ -3603,8 +3603,8 @@ struct ImageAspectFlags(Equatable):
     fn __rand__(self, other: ImageAspectFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ImageAspectFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ImageAspectFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ImageAspectFlags) -> Bool:
         return self & other == self
@@ -3690,8 +3690,8 @@ struct SparseMemoryBindFlags(Equatable):
     fn __rand__(self, other: SparseMemoryBindFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SparseMemoryBindFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SparseMemoryBindFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SparseMemoryBindFlags) -> Bool:
         return self & other == self
@@ -3755,8 +3755,8 @@ struct SparseImageFormatFlags(Equatable):
     fn __rand__(self, other: SparseImageFormatFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SparseImageFormatFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SparseImageFormatFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SparseImageFormatFlags) -> Bool:
         return self & other == self
@@ -3824,8 +3824,8 @@ struct SubpassDescriptionFlags(Equatable):
     fn __rand__(self, other: SubpassDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SubpassDescriptionFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SubpassDescriptionFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SubpassDescriptionFlags) -> Bool:
         return self & other == self
@@ -3905,8 +3905,8 @@ struct PipelineStageFlags(Equatable):
     fn __rand__(self, other: PipelineStageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineStageFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineStageFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineStageFlags) -> Bool:
         return self & other == self
@@ -4022,8 +4022,8 @@ struct SampleCountFlags(Equatable):
     fn __rand__(self, other: SampleCountFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SampleCountFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SampleCountFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SampleCountFlags) -> Bool:
         return self & other == self
@@ -4099,8 +4099,8 @@ struct AttachmentDescriptionFlags(Equatable):
     fn __rand__(self, other: AttachmentDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: AttachmentDescriptionFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: AttachmentDescriptionFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: AttachmentDescriptionFlags) -> Bool:
         return self & other == self
@@ -4168,8 +4168,8 @@ struct StencilFaceFlags(Equatable):
     fn __rand__(self, other: StencilFaceFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: StencilFaceFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: StencilFaceFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: StencilFaceFlags) -> Bool:
         return self & other == self
@@ -4237,8 +4237,8 @@ struct CullModeFlags(Equatable):
     fn __rand__(self, other: CullModeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: CullModeFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: CullModeFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: CullModeFlags) -> Bool:
         return self & other == self
@@ -4308,8 +4308,8 @@ struct DescriptorPoolCreateFlags(Equatable):
     fn __rand__(self, other: DescriptorPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DescriptorPoolCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DescriptorPoolCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DescriptorPoolCreateFlags) -> Bool:
         return self & other == self
@@ -4381,8 +4381,8 @@ struct DescriptorPoolResetFlags(Equatable):
     fn __rand__(self, other: DescriptorPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DescriptorPoolResetFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DescriptorPoolResetFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DescriptorPoolResetFlags) -> Bool:
         return self & other == self
@@ -4442,8 +4442,8 @@ struct DependencyFlags(Equatable):
     fn __rand__(self, other: DependencyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DependencyFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DependencyFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DependencyFlags) -> Bool:
         return self & other == self
@@ -4519,8 +4519,8 @@ struct SubgroupFeatureFlags(Equatable):
     fn __rand__(self, other: SubgroupFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SubgroupFeatureFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SubgroupFeatureFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SubgroupFeatureFlags) -> Bool:
         return self & other == self
@@ -4604,8 +4604,8 @@ struct IndirectCommandsLayoutUsageFlagsNV(Equatable):
     fn __rand__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: IndirectCommandsLayoutUsageFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Bool:
         return self & other == self
@@ -4673,8 +4673,8 @@ struct IndirectStateFlagsNV(Equatable):
     fn __rand__(self, other: IndirectStateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: IndirectStateFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: IndirectStateFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: IndirectStateFlagsNV) -> Bool:
         return self & other == self
@@ -4738,8 +4738,8 @@ struct GeometryFlagsKHR(Equatable):
     fn __rand__(self, other: GeometryFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: GeometryFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: GeometryFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: GeometryFlagsKHR) -> Bool:
         return self & other == self
@@ -4805,8 +4805,8 @@ struct GeometryInstanceFlagsKHR(Equatable):
     fn __rand__(self, other: GeometryInstanceFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: GeometryInstanceFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: GeometryInstanceFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: GeometryInstanceFlagsKHR) -> Bool:
         return self & other == self
@@ -4880,8 +4880,8 @@ struct ClusterAccelerationStructureGeometryFlagsNV(Equatable):
     fn __rand__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ClusterAccelerationStructureGeometryFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Bool:
         return self & other == self
@@ -4949,8 +4949,8 @@ struct ClusterAccelerationStructureClusterFlagsNV(Equatable):
     fn __rand__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ClusterAccelerationStructureClusterFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Bool:
         return self & other == self
@@ -5014,8 +5014,8 @@ struct ClusterAccelerationStructureAddressResolutionFlagsNV(Equatable):
     fn __rand__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ClusterAccelerationStructureAddressResolutionFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Bool:
         return self & other == self
@@ -5091,8 +5091,8 @@ struct BuildAccelerationStructureFlagsKHR(Equatable):
     fn __rand__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: BuildAccelerationStructureFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: BuildAccelerationStructureFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: BuildAccelerationStructureFlagsKHR) -> Bool:
         return self & other == self
@@ -5178,8 +5178,8 @@ struct PrivateDataSlotCreateFlags(Equatable):
     fn __rand__(self, other: PrivateDataSlotCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PrivateDataSlotCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PrivateDataSlotCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PrivateDataSlotCreateFlags) -> Bool:
         return self & other == self
@@ -5243,8 +5243,8 @@ struct AccelerationStructureCreateFlagsKHR(Equatable):
     fn __rand__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: AccelerationStructureCreateFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: AccelerationStructureCreateFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: AccelerationStructureCreateFlagsKHR) -> Bool:
         return self & other == self
@@ -5312,8 +5312,8 @@ struct DescriptorUpdateTemplateCreateFlags(Equatable):
     fn __rand__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DescriptorUpdateTemplateCreateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DescriptorUpdateTemplateCreateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DescriptorUpdateTemplateCreateFlags) -> Bool:
         return self & other == self
@@ -5373,8 +5373,8 @@ struct PipelineCreationFeedbackFlags(Equatable):
     fn __rand__(self, other: PipelineCreationFeedbackFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineCreationFeedbackFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineCreationFeedbackFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineCreationFeedbackFlags) -> Bool:
         return self & other == self
@@ -5442,8 +5442,8 @@ struct PerformanceCounterDescriptionFlagsKHR(Equatable):
     fn __rand__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PerformanceCounterDescriptionFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PerformanceCounterDescriptionFlagsKHR) -> Bool:
         return self & other == self
@@ -5509,8 +5509,8 @@ struct AcquireProfilingLockFlagsKHR(Equatable):
     fn __rand__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: AcquireProfilingLockFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: AcquireProfilingLockFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: AcquireProfilingLockFlagsKHR) -> Bool:
         return self & other == self
@@ -5570,8 +5570,8 @@ struct SemaphoreWaitFlags(Equatable):
     fn __rand__(self, other: SemaphoreWaitFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SemaphoreWaitFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SemaphoreWaitFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SemaphoreWaitFlags) -> Bool:
         return self & other == self
@@ -5635,8 +5635,8 @@ struct PipelineCompilerControlFlagsAMD(Equatable):
     fn __rand__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineCompilerControlFlagBitsAMD) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineCompilerControlFlagsAMD) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineCompilerControlFlagsAMD) -> Bool:
         return self & other == self
@@ -5696,8 +5696,8 @@ struct ShaderCorePropertiesFlagsAMD(Equatable):
     fn __rand__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ShaderCorePropertiesFlagBitsAMD) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ShaderCorePropertiesFlagsAMD) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ShaderCorePropertiesFlagsAMD) -> Bool:
         return self & other == self
@@ -5757,8 +5757,8 @@ struct DeviceDiagnosticsConfigFlagsNV(Equatable):
     fn __rand__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DeviceDiagnosticsConfigFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DeviceDiagnosticsConfigFlagsNV) -> Bool:
         return self & other == self
@@ -5828,8 +5828,8 @@ struct RefreshObjectFlagsKHR(Equatable):
     fn __rand__(self, other: RefreshObjectFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: RefreshObjectFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: RefreshObjectFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: RefreshObjectFlagsKHR) -> Bool:
         return self & other == self
@@ -5889,8 +5889,8 @@ struct AccessFlags2(Equatable):
     fn __rand__(self, other: AccessFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: AccessFlagBits2) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: AccessFlags2) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: AccessFlags2) -> Bool:
         return self & other == self
@@ -6066,8 +6066,8 @@ struct PipelineStageFlags2(Equatable):
     fn __rand__(self, other: PipelineStageFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineStageFlagBits2) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineStageFlags2) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineStageFlags2) -> Bool:
         return self & other == self
@@ -6225,8 +6225,8 @@ struct AccelerationStructureMotionInfoFlagsNV(Equatable):
     fn __rand__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: AccelerationStructureMotionInfoFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: AccelerationStructureMotionInfoFlagsNV) -> Bool:
         return self & other == self
@@ -6286,8 +6286,8 @@ struct AccelerationStructureMotionInstanceFlagsNV(Equatable):
     fn __rand__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: AccelerationStructureMotionInstanceFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Bool:
         return self & other == self
@@ -6347,8 +6347,8 @@ struct FormatFeatureFlags2(Equatable):
     fn __rand__(self, other: FormatFeatureFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: FormatFeatureFlagBits2) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: FormatFeatureFlags2) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: FormatFeatureFlags2) -> Bool:
         return self & other == self
@@ -6528,8 +6528,8 @@ struct RenderingFlags(Equatable):
     fn __rand__(self, other: RenderingFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: RenderingFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: RenderingFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: RenderingFlags) -> Bool:
         return self & other == self
@@ -6611,8 +6611,8 @@ struct MemoryDecompressionMethodFlagsNV(Equatable):
     fn __rand__(self, other: MemoryDecompressionMethodFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: MemoryDecompressionMethodFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: MemoryDecompressionMethodFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: MemoryDecompressionMethodFlagsNV) -> Bool:
         return self & other == self
@@ -6676,8 +6676,8 @@ struct BuildMicromapFlagsEXT(Equatable):
     fn __rand__(self, other: BuildMicromapFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: BuildMicromapFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: BuildMicromapFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: BuildMicromapFlagsEXT) -> Bool:
         return self & other == self
@@ -6745,8 +6745,8 @@ struct MicromapCreateFlagsEXT(Equatable):
     fn __rand__(self, other: MicromapCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: MicromapCreateFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: MicromapCreateFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: MicromapCreateFlagsEXT) -> Bool:
         return self & other == self
@@ -6810,8 +6810,8 @@ struct IndirectCommandsLayoutUsageFlagsEXT(Equatable):
     fn __rand__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: IndirectCommandsLayoutUsageFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Bool:
         return self & other == self
@@ -6877,8 +6877,8 @@ struct IndirectCommandsInputModeFlagsEXT(Equatable):
     fn __rand__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: IndirectCommandsInputModeFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: IndirectCommandsInputModeFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: IndirectCommandsInputModeFlagsEXT) -> Bool:
         return self & other == self
@@ -6944,8 +6944,8 @@ struct DirectDriverLoadingFlagsLUNARG(Equatable):
     fn __rand__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DirectDriverLoadingFlagBitsLUNARG) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DirectDriverLoadingFlagsLUNARG) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DirectDriverLoadingFlagsLUNARG) -> Bool:
         return self & other == self
@@ -7005,8 +7005,8 @@ struct PipelineCreateFlags2(Equatable):
     fn __rand__(self, other: PipelineCreateFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineCreateFlagBits2) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineCreateFlags2) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineCreateFlags2) -> Bool:
         return self & other == self
@@ -7164,8 +7164,8 @@ struct BufferUsageFlags2(Equatable):
     fn __rand__(self, other: BufferUsageFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: BufferUsageFlagBits2) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: BufferUsageFlags2) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: BufferUsageFlags2) -> Bool:
         return self & other == self
@@ -7297,8 +7297,8 @@ struct TensorCreateFlagsARM(Equatable):
     fn __rand__(self, other: TensorCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: TensorCreateFlagBitsARM) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: TensorCreateFlagsARM) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: TensorCreateFlagsARM) -> Bool:
         return self & other == self
@@ -7368,8 +7368,8 @@ struct TensorUsageFlagsARM(Equatable):
     fn __rand__(self, other: TensorUsageFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: TensorUsageFlagBitsARM) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: TensorUsageFlagsARM) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: TensorUsageFlagsARM) -> Bool:
         return self & other == self
@@ -7441,8 +7441,8 @@ struct TensorViewCreateFlagsARM(Equatable):
     fn __rand__(self, other: TensorViewCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: TensorViewCreateFlagBitsARM) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: TensorViewCreateFlagsARM) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: TensorViewCreateFlagsARM) -> Bool:
         return self & other == self
@@ -7506,8 +7506,8 @@ struct DataGraphPipelineSessionCreateFlagsARM(Equatable):
     fn __rand__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DataGraphPipelineSessionCreateFlagBitsARM) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Bool:
         return self & other == self
@@ -7571,8 +7571,8 @@ struct DataGraphPipelineDispatchFlagsARM(Equatable):
     fn __rand__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DataGraphPipelineDispatchFlagBitsARM) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DataGraphPipelineDispatchFlagsARM) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DataGraphPipelineDispatchFlagsARM) -> Bool:
         return self & other == self
@@ -7632,8 +7632,8 @@ struct VideoEncodeRgbModelConversionFlagsVALVE(Equatable):
     fn __rand__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeRgbModelConversionFlagBitsVALVE) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Bool:
         return self & other == self
@@ -7705,8 +7705,8 @@ struct VideoEncodeRgbRangeCompressionFlagsVALVE(Equatable):
     fn __rand__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeRgbRangeCompressionFlagBitsVALVE) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Bool:
         return self & other == self
@@ -7772,8 +7772,8 @@ struct VideoEncodeRgbChromaOffsetFlagsVALVE(Equatable):
     fn __rand__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeRgbChromaOffsetFlagBitsVALVE) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Bool:
         return self & other == self
@@ -7839,8 +7839,8 @@ struct CompositeAlphaFlagsKHR(Equatable):
     fn __rand__(self, other: CompositeAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: CompositeAlphaFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: CompositeAlphaFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: CompositeAlphaFlagsKHR) -> Bool:
         return self & other == self
@@ -7910,8 +7910,8 @@ struct DisplayPlaneAlphaFlagsKHR(Equatable):
     fn __rand__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DisplayPlaneAlphaFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DisplayPlaneAlphaFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DisplayPlaneAlphaFlagsKHR) -> Bool:
         return self & other == self
@@ -7981,8 +7981,8 @@ struct SurfaceTransformFlagsKHR(Equatable):
     fn __rand__(self, other: SurfaceTransformFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SurfaceTransformFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SurfaceTransformFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SurfaceTransformFlagsKHR) -> Bool:
         return self & other == self
@@ -8062,8 +8062,8 @@ struct SwapchainCreateFlagsKHR(Equatable):
     fn __rand__(self, other: SwapchainCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SwapchainCreateFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SwapchainCreateFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SwapchainCreateFlagsKHR) -> Bool:
         return self & other == self
@@ -8143,8 +8143,8 @@ struct DisplayModeCreateFlagsKHR(Equatable):
     fn __rand__(self, other: DisplayModeCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DisplayModeCreateFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DisplayModeCreateFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DisplayModeCreateFlagsKHR) -> Bool:
         return self & other == self
@@ -8204,8 +8204,8 @@ struct DisplaySurfaceCreateFlagsKHR(Equatable):
     fn __rand__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DisplaySurfaceCreateFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DisplaySurfaceCreateFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DisplaySurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
@@ -8265,8 +8265,8 @@ struct AndroidSurfaceCreateFlagsKHR(Equatable):
     fn __rand__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: AndroidSurfaceCreateFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: AndroidSurfaceCreateFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: AndroidSurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
@@ -8326,8 +8326,8 @@ struct ViSurfaceCreateFlagsNN(Equatable):
     fn __rand__(self, other: ViSurfaceCreateFlagsNN) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ViSurfaceCreateFlagBitsNN) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ViSurfaceCreateFlagsNN) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ViSurfaceCreateFlagsNN) -> Bool:
         return self & other == self
@@ -8387,8 +8387,8 @@ struct WaylandSurfaceCreateFlagsKHR(Equatable):
     fn __rand__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: WaylandSurfaceCreateFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: WaylandSurfaceCreateFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: WaylandSurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
@@ -8452,8 +8452,8 @@ struct Win32SurfaceCreateFlagsKHR(Equatable):
     fn __rand__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: Win32SurfaceCreateFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: Win32SurfaceCreateFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: Win32SurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
@@ -8513,8 +8513,8 @@ struct XlibSurfaceCreateFlagsKHR(Equatable):
     fn __rand__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: XlibSurfaceCreateFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: XlibSurfaceCreateFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: XlibSurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
@@ -8574,8 +8574,8 @@ struct XcbSurfaceCreateFlagsKHR(Equatable):
     fn __rand__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: XcbSurfaceCreateFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: XcbSurfaceCreateFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: XcbSurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
@@ -8635,8 +8635,8 @@ struct DirectFBSurfaceCreateFlagsEXT(Equatable):
     fn __rand__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DirectFBSurfaceCreateFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DirectFBSurfaceCreateFlagsEXT) -> Bool:
         return self & other == self
@@ -8696,8 +8696,8 @@ struct IOSSurfaceCreateFlagsMVK(Equatable):
     fn __rand__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: IOSSurfaceCreateFlagBitsMVK) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: IOSSurfaceCreateFlagsMVK) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: IOSSurfaceCreateFlagsMVK) -> Bool:
         return self & other == self
@@ -8757,8 +8757,8 @@ struct MacOSSurfaceCreateFlagsMVK(Equatable):
     fn __rand__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: MacOSSurfaceCreateFlagBitsMVK) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: MacOSSurfaceCreateFlagsMVK) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: MacOSSurfaceCreateFlagsMVK) -> Bool:
         return self & other == self
@@ -8818,8 +8818,8 @@ struct MetalSurfaceCreateFlagsEXT(Equatable):
     fn __rand__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: MetalSurfaceCreateFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: MetalSurfaceCreateFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: MetalSurfaceCreateFlagsEXT) -> Bool:
         return self & other == self
@@ -8879,8 +8879,8 @@ struct ImagePipeSurfaceCreateFlagsFUCHSIA(Equatable):
     fn __rand__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ImagePipeSurfaceCreateFlagBitsFUCHSIA) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Bool:
         return self & other == self
@@ -8940,8 +8940,8 @@ struct StreamDescriptorSurfaceCreateFlagsGGP(Equatable):
     fn __rand__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: StreamDescriptorSurfaceCreateFlagBitsGGP) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Bool:
         return self & other == self
@@ -9001,8 +9001,8 @@ struct HeadlessSurfaceCreateFlagsEXT(Equatable):
     fn __rand__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: HeadlessSurfaceCreateFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: HeadlessSurfaceCreateFlagsEXT) -> Bool:
         return self & other == self
@@ -9062,8 +9062,8 @@ struct ScreenSurfaceCreateFlagsQNX(Equatable):
     fn __rand__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ScreenSurfaceCreateFlagBitsQNX) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ScreenSurfaceCreateFlagsQNX) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ScreenSurfaceCreateFlagsQNX) -> Bool:
         return self & other == self
@@ -9123,8 +9123,8 @@ struct PeerMemoryFeatureFlags(Equatable):
     fn __rand__(self, other: PeerMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PeerMemoryFeatureFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PeerMemoryFeatureFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PeerMemoryFeatureFlags) -> Bool:
         return self & other == self
@@ -9194,8 +9194,8 @@ struct MemoryAllocateFlags(Equatable):
     fn __rand__(self, other: MemoryAllocateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: MemoryAllocateFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: MemoryAllocateFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: MemoryAllocateFlags) -> Bool:
         return self & other == self
@@ -9265,8 +9265,8 @@ struct DeviceGroupPresentModeFlagsKHR(Equatable):
     fn __rand__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DeviceGroupPresentModeFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DeviceGroupPresentModeFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DeviceGroupPresentModeFlagsKHR) -> Bool:
         return self & other == self
@@ -9336,8 +9336,8 @@ struct DebugReportFlagsEXT(Equatable):
     fn __rand__(self, other: DebugReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DebugReportFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DebugReportFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DebugReportFlagsEXT) -> Bool:
         return self & other == self
@@ -9409,8 +9409,8 @@ struct CommandPoolTrimFlags(Equatable):
     fn __rand__(self, other: CommandPoolTrimFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: CommandPoolTrimFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: CommandPoolTrimFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: CommandPoolTrimFlags) -> Bool:
         return self & other == self
@@ -9470,8 +9470,8 @@ struct ExternalMemoryHandleTypeFlagsNV(Equatable):
     fn __rand__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ExternalMemoryHandleTypeFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ExternalMemoryHandleTypeFlagsNV) -> Bool:
         return self & other == self
@@ -9541,8 +9541,8 @@ struct ClusterAccelerationStructureIndexFormatFlagsNV(Equatable):
     fn __rand__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ClusterAccelerationStructureIndexFormatFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Bool:
         return self & other == self
@@ -9610,8 +9610,8 @@ struct ExternalMemoryFeatureFlagsNV(Equatable):
     fn __rand__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ExternalMemoryFeatureFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ExternalMemoryFeatureFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ExternalMemoryFeatureFlagsNV) -> Bool:
         return self & other == self
@@ -9679,8 +9679,8 @@ struct ExternalMemoryHandleTypeFlags(Equatable):
     fn __rand__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ExternalMemoryHandleTypeFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ExternalMemoryHandleTypeFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ExternalMemoryHandleTypeFlags) -> Bool:
         return self & other == self
@@ -9780,8 +9780,8 @@ struct ExternalMemoryFeatureFlags(Equatable):
     fn __rand__(self, other: ExternalMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ExternalMemoryFeatureFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ExternalMemoryFeatureFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ExternalMemoryFeatureFlags) -> Bool:
         return self & other == self
@@ -9849,8 +9849,8 @@ struct ExternalSemaphoreHandleTypeFlags(Equatable):
     fn __rand__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ExternalSemaphoreHandleTypeFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ExternalSemaphoreHandleTypeFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ExternalSemaphoreHandleTypeFlags) -> Bool:
         return self & other == self
@@ -9926,8 +9926,8 @@ struct ExternalSemaphoreFeatureFlags(Equatable):
     fn __rand__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ExternalSemaphoreFeatureFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ExternalSemaphoreFeatureFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ExternalSemaphoreFeatureFlags) -> Bool:
         return self & other == self
@@ -9993,8 +9993,8 @@ struct SemaphoreImportFlags(Equatable):
     fn __rand__(self, other: SemaphoreImportFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SemaphoreImportFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SemaphoreImportFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SemaphoreImportFlags) -> Bool:
         return self & other == self
@@ -10058,8 +10058,8 @@ struct ExternalFenceHandleTypeFlags(Equatable):
     fn __rand__(self, other: ExternalFenceHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ExternalFenceHandleTypeFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ExternalFenceHandleTypeFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ExternalFenceHandleTypeFlags) -> Bool:
         return self & other == self
@@ -10133,8 +10133,8 @@ struct ExternalFenceFeatureFlags(Equatable):
     fn __rand__(self, other: ExternalFenceFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ExternalFenceFeatureFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ExternalFenceFeatureFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ExternalFenceFeatureFlags) -> Bool:
         return self & other == self
@@ -10200,8 +10200,8 @@ struct FenceImportFlags(Equatable):
     fn __rand__(self, other: FenceImportFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: FenceImportFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: FenceImportFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: FenceImportFlags) -> Bool:
         return self & other == self
@@ -10265,8 +10265,8 @@ struct SurfaceCounterFlagsEXT(Equatable):
     fn __rand__(self, other: SurfaceCounterFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SurfaceCounterFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SurfaceCounterFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SurfaceCounterFlagsEXT) -> Bool:
         return self & other == self
@@ -10330,8 +10330,8 @@ struct PipelineViewportSwizzleStateCreateFlagsNV(Equatable):
     fn __rand__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineViewportSwizzleStateCreateFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Bool:
         return self & other == self
@@ -10391,8 +10391,8 @@ struct PipelineDiscardRectangleStateCreateFlagsEXT(Equatable):
     fn __rand__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineDiscardRectangleStateCreateFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Bool:
         return self & other == self
@@ -10452,8 +10452,8 @@ struct PipelineCoverageToColorStateCreateFlagsNV(Equatable):
     fn __rand__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineCoverageToColorStateCreateFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Bool:
         return self & other == self
@@ -10513,8 +10513,8 @@ struct PipelineCoverageModulationStateCreateFlagsNV(Equatable):
     fn __rand__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineCoverageModulationStateCreateFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Bool:
         return self & other == self
@@ -10574,8 +10574,8 @@ struct PipelineCoverageReductionStateCreateFlagsNV(Equatable):
     fn __rand__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineCoverageReductionStateCreateFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Bool:
         return self & other == self
@@ -10635,8 +10635,8 @@ struct ValidationCacheCreateFlagsEXT(Equatable):
     fn __rand__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ValidationCacheCreateFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ValidationCacheCreateFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ValidationCacheCreateFlagsEXT) -> Bool:
         return self & other == self
@@ -10696,8 +10696,8 @@ struct DebugUtilsMessageSeverityFlagsEXT(Equatable):
     fn __rand__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DebugUtilsMessageSeverityFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Bool:
         return self & other == self
@@ -10767,8 +10767,8 @@ struct DebugUtilsMessageTypeFlagsEXT(Equatable):
     fn __rand__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DebugUtilsMessageTypeFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DebugUtilsMessageTypeFlagsEXT) -> Bool:
         return self & other == self
@@ -10838,8 +10838,8 @@ struct DebugUtilsMessengerCreateFlagsEXT(Equatable):
     fn __rand__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DebugUtilsMessengerCreateFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Bool:
         return self & other == self
@@ -10899,8 +10899,8 @@ struct DebugUtilsMessengerCallbackDataFlagsEXT(Equatable):
     fn __rand__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DebugUtilsMessengerCallbackDataFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Bool:
         return self & other == self
@@ -10960,8 +10960,8 @@ struct DeviceMemoryReportFlagsEXT(Equatable):
     fn __rand__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DeviceMemoryReportFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DeviceMemoryReportFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DeviceMemoryReportFlagsEXT) -> Bool:
         return self & other == self
@@ -11021,8 +11021,8 @@ struct PipelineRasterizationConservativeStateCreateFlagsEXT(Equatable):
     fn __rand__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineRasterizationConservativeStateCreateFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Bool:
         return self & other == self
@@ -11082,8 +11082,8 @@ struct DescriptorBindingFlags(Equatable):
     fn __rand__(self, other: DescriptorBindingFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DescriptorBindingFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DescriptorBindingFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DescriptorBindingFlags) -> Bool:
         return self & other == self
@@ -11155,8 +11155,8 @@ struct ConditionalRenderingFlagsEXT(Equatable):
     fn __rand__(self, other: ConditionalRenderingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ConditionalRenderingFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ConditionalRenderingFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ConditionalRenderingFlagsEXT) -> Bool:
         return self & other == self
@@ -11220,8 +11220,8 @@ struct ResolveModeFlags(Equatable):
     fn __rand__(self, other: ResolveModeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ResolveModeFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ResolveModeFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ResolveModeFlags) -> Bool:
         return self & other == self
@@ -11297,8 +11297,8 @@ struct PipelineRasterizationStateStreamCreateFlagsEXT(Equatable):
     fn __rand__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineRasterizationStateStreamCreateFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Bool:
         return self & other == self
@@ -11358,8 +11358,8 @@ struct PipelineRasterizationDepthClipStateCreateFlagsEXT(Equatable):
     fn __rand__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PipelineRasterizationDepthClipStateCreateFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Bool:
         return self & other == self
@@ -11419,8 +11419,8 @@ struct SwapchainImageUsageFlagsANDROID(Equatable):
     fn __rand__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SwapchainImageUsageFlagBitsANDROID) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SwapchainImageUsageFlagsANDROID) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SwapchainImageUsageFlagsANDROID) -> Bool:
         return self & other == self
@@ -11484,8 +11484,8 @@ struct ToolPurposeFlags(Equatable):
     fn __rand__(self, other: ToolPurposeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ToolPurposeFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ToolPurposeFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ToolPurposeFlags) -> Bool:
         return self & other == self
@@ -11561,8 +11561,8 @@ struct SubmitFlags(Equatable):
     fn __rand__(self, other: SubmitFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SubmitFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SubmitFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SubmitFlags) -> Bool:
         return self & other == self
@@ -11626,8 +11626,8 @@ struct ImageFormatConstraintsFlagsFUCHSIA(Equatable):
     fn __rand__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ImageFormatConstraintsFlagBitsFUCHSIA) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Bool:
         return self & other == self
@@ -11687,8 +11687,8 @@ struct HostImageCopyFlags(Equatable):
     fn __rand__(self, other: HostImageCopyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: HostImageCopyFlagBits) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: HostImageCopyFlags) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: HostImageCopyFlags) -> Bool:
         return self & other == self
@@ -11752,8 +11752,8 @@ struct PartitionedAccelerationStructureInstanceFlagsNV(Equatable):
     fn __rand__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PartitionedAccelerationStructureInstanceFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Bool:
         return self & other == self
@@ -11825,8 +11825,8 @@ struct ImageConstraintsInfoFlagsFUCHSIA(Equatable):
     fn __rand__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ImageConstraintsInfoFlagBitsFUCHSIA) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Bool:
         return self & other == self
@@ -11898,8 +11898,8 @@ struct GraphicsPipelineLibraryFlagsEXT(Equatable):
     fn __rand__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: GraphicsPipelineLibraryFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: GraphicsPipelineLibraryFlagsEXT) -> Bool:
         return self & other == self
@@ -11969,8 +11969,8 @@ struct ImageCompressionFlagsEXT(Equatable):
     fn __rand__(self, other: ImageCompressionFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ImageCompressionFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ImageCompressionFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ImageCompressionFlagsEXT) -> Bool:
         return self & other == self
@@ -12040,8 +12040,8 @@ struct ImageCompressionFixedRateFlagsEXT(Equatable):
     fn __rand__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ImageCompressionFixedRateFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ImageCompressionFixedRateFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ImageCompressionFixedRateFlagsEXT) -> Bool:
         return self & other == self
@@ -12153,8 +12153,8 @@ struct ExportMetalObjectTypeFlagsEXT(Equatable):
     fn __rand__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ExportMetalObjectTypeFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ExportMetalObjectTypeFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ExportMetalObjectTypeFlagsEXT) -> Bool:
         return self & other == self
@@ -12228,8 +12228,8 @@ struct DeviceAddressBindingFlagsEXT(Equatable):
     fn __rand__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: DeviceAddressBindingFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: DeviceAddressBindingFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: DeviceAddressBindingFlagsEXT) -> Bool:
         return self & other == self
@@ -12293,8 +12293,8 @@ struct OpticalFlowGridSizeFlagsNV(Equatable):
     fn __rand__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: OpticalFlowGridSizeFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: OpticalFlowGridSizeFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: OpticalFlowGridSizeFlagsNV) -> Bool:
         return self & other == self
@@ -12366,8 +12366,8 @@ struct OpticalFlowUsageFlagsNV(Equatable):
     fn __rand__(self, other: OpticalFlowUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: OpticalFlowUsageFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: OpticalFlowUsageFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: OpticalFlowUsageFlagsNV) -> Bool:
         return self & other == self
@@ -12441,8 +12441,8 @@ struct OpticalFlowSessionCreateFlagsNV(Equatable):
     fn __rand__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: OpticalFlowSessionCreateFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: OpticalFlowSessionCreateFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: OpticalFlowSessionCreateFlagsNV) -> Bool:
         return self & other == self
@@ -12514,8 +12514,8 @@ struct OpticalFlowExecuteFlagsNV(Equatable):
     fn __rand__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: OpticalFlowExecuteFlagBitsNV) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: OpticalFlowExecuteFlagsNV) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: OpticalFlowExecuteFlagsNV) -> Bool:
         return self & other == self
@@ -12579,8 +12579,8 @@ struct FrameBoundaryFlagsEXT(Equatable):
     fn __rand__(self, other: FrameBoundaryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: FrameBoundaryFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: FrameBoundaryFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: FrameBoundaryFlagsEXT) -> Bool:
         return self & other == self
@@ -12644,8 +12644,8 @@ struct PresentScalingFlagsKHR(Equatable):
     fn __rand__(self, other: PresentScalingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PresentScalingFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PresentScalingFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PresentScalingFlagsKHR) -> Bool:
         return self & other == self
@@ -12713,8 +12713,8 @@ struct PresentGravityFlagsKHR(Equatable):
     fn __rand__(self, other: PresentGravityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PresentGravityFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PresentGravityFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PresentGravityFlagsKHR) -> Bool:
         return self & other == self
@@ -12782,8 +12782,8 @@ struct ShaderCreateFlagsEXT(Equatable):
     fn __rand__(self, other: ShaderCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: ShaderCreateFlagBitsEXT) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: ShaderCreateFlagsEXT) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: ShaderCreateFlagsEXT) -> Bool:
         return self & other == self
@@ -12883,8 +12883,8 @@ struct TileShadingRenderPassFlagsQCOM(Equatable):
     fn __rand__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: TileShadingRenderPassFlagBitsQCOM) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: TileShadingRenderPassFlagsQCOM) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: TileShadingRenderPassFlagsQCOM) -> Bool:
         return self & other == self
@@ -12950,8 +12950,8 @@ struct PhysicalDeviceSchedulingControlsFlagsARM(Equatable):
     fn __rand__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: PhysicalDeviceSchedulingControlsFlagBitsARM) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Bool:
         return self & other == self
@@ -13015,8 +13015,8 @@ struct SurfaceCreateFlagsOHOS(Equatable):
     fn __rand__(self, other: SurfaceCreateFlagsOHOS) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: SurfaceCreateFlagBitsOHOS) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: SurfaceCreateFlagsOHOS) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: SurfaceCreateFlagsOHOS) -> Bool:
         return self & other == self
@@ -13076,8 +13076,8 @@ struct VideoCodecOperationFlagsKHR(Equatable):
     fn __rand__(self, other: VideoCodecOperationFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoCodecOperationFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoCodecOperationFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoCodecOperationFlagsKHR) -> Bool:
         return self & other == self
@@ -13155,8 +13155,8 @@ struct VideoCapabilityFlagsKHR(Equatable):
     fn __rand__(self, other: VideoCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoCapabilityFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoCapabilityFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoCapabilityFlagsKHR) -> Bool:
         return self & other == self
@@ -13222,8 +13222,8 @@ struct VideoSessionCreateFlagsKHR(Equatable):
     fn __rand__(self, other: VideoSessionCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoSessionCreateFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoSessionCreateFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoSessionCreateFlagsKHR) -> Bool:
         return self & other == self
@@ -13297,8 +13297,8 @@ struct VideoSessionParametersCreateFlagsKHR(Equatable):
     fn __rand__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoSessionParametersCreateFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoSessionParametersCreateFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoSessionParametersCreateFlagsKHR) -> Bool:
         return self & other == self
@@ -13362,8 +13362,8 @@ struct VideoBeginCodingFlagsKHR(Equatable):
     fn __rand__(self, other: VideoBeginCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoBeginCodingFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoBeginCodingFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoBeginCodingFlagsKHR) -> Bool:
         return self & other == self
@@ -13423,8 +13423,8 @@ struct VideoEndCodingFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEndCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEndCodingFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEndCodingFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEndCodingFlagsKHR) -> Bool:
         return self & other == self
@@ -13484,8 +13484,8 @@ struct VideoCodingControlFlagsKHR(Equatable):
     fn __rand__(self, other: VideoCodingControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoCodingControlFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoCodingControlFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoCodingControlFlagsKHR) -> Bool:
         return self & other == self
@@ -13553,8 +13553,8 @@ struct VideoDecodeUsageFlagsKHR(Equatable):
     fn __rand__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoDecodeUsageFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoDecodeUsageFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoDecodeUsageFlagsKHR) -> Bool:
         return self & other == self
@@ -13624,8 +13624,8 @@ struct VideoDecodeCapabilityFlagsKHR(Equatable):
     fn __rand__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoDecodeCapabilityFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoDecodeCapabilityFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoDecodeCapabilityFlagsKHR) -> Bool:
         return self & other == self
@@ -13691,8 +13691,8 @@ struct VideoDecodeFlagsKHR(Equatable):
     fn __rand__(self, other: VideoDecodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoDecodeFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoDecodeFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoDecodeFlagsKHR) -> Bool:
         return self & other == self
@@ -13752,8 +13752,8 @@ struct VideoDecodeH264PictureLayoutFlagsKHR(Equatable):
     fn __rand__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoDecodeH264PictureLayoutFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Bool:
         return self & other == self
@@ -13821,8 +13821,8 @@ struct VideoEncodeFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeFlagsKHR) -> Bool:
         return self & other == self
@@ -13890,8 +13890,8 @@ struct VideoEncodeUsageFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeUsageFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeUsageFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeUsageFlagsKHR) -> Bool:
         return self & other == self
@@ -13963,8 +13963,8 @@ struct VideoEncodeContentFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeContentFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeContentFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeContentFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeContentFlagsKHR) -> Bool:
         return self & other == self
@@ -14034,8 +14034,8 @@ struct VideoEncodeCapabilityFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeCapabilityFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeCapabilityFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeCapabilityFlagsKHR) -> Bool:
         return self & other == self
@@ -14105,8 +14105,8 @@ struct VideoEncodeFeedbackFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeFeedbackFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeFeedbackFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeFeedbackFlagsKHR) -> Bool:
         return self & other == self
@@ -14188,8 +14188,8 @@ struct VideoEncodeRateControlFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeRateControlFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeRateControlFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeRateControlFlagsKHR) -> Bool:
         return self & other == self
@@ -14249,8 +14249,8 @@ struct VideoEncodeRateControlModeFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeRateControlModeFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeRateControlModeFlagsKHR) -> Bool:
         return self & other == self
@@ -14320,8 +14320,8 @@ struct VideoEncodeIntraRefreshModeFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeIntraRefreshModeFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Bool:
         return self & other == self
@@ -14393,8 +14393,8 @@ struct VideoChromaSubsamplingFlagsKHR(Equatable):
     fn __rand__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoChromaSubsamplingFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoChromaSubsamplingFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoChromaSubsamplingFlagsKHR) -> Bool:
         return self & other == self
@@ -14466,8 +14466,8 @@ struct VideoComponentBitDepthFlagsKHR(Equatable):
     fn __rand__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoComponentBitDepthFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoComponentBitDepthFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoComponentBitDepthFlagsKHR) -> Bool:
         return self & other == self
@@ -14537,8 +14537,8 @@ struct VideoEncodeH264CapabilityFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeH264CapabilityFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Bool:
         return self & other == self
@@ -14622,8 +14622,8 @@ struct VideoEncodeH264StdFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeH264StdFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeH264StdFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeH264StdFlagsKHR) -> Bool:
         return self & other == self
@@ -14725,8 +14725,8 @@ struct VideoEncodeH264RateControlFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeH264RateControlFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeH264RateControlFlagsKHR) -> Bool:
         return self & other == self
@@ -14798,8 +14798,8 @@ struct VideoEncodeH265CapabilityFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeH265CapabilityFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Bool:
         return self & other == self
@@ -14885,8 +14885,8 @@ struct VideoEncodeH265StdFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeH265StdFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeH265StdFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeH265StdFlagsKHR) -> Bool:
         return self & other == self
@@ -14990,8 +14990,8 @@ struct VideoEncodeH265RateControlFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeH265RateControlFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeH265RateControlFlagsKHR) -> Bool:
         return self & other == self
@@ -15063,8 +15063,8 @@ struct VideoEncodeH265CtbSizeFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeH265CtbSizeFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Bool:
         return self & other == self
@@ -15132,8 +15132,8 @@ struct VideoEncodeH265TransformBlockSizeFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeH265TransformBlockSizeFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Bool:
         return self & other == self
@@ -15203,8 +15203,8 @@ struct VideoEncodeAV1CapabilityFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeAV1CapabilityFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Bool:
         return self & other == self
@@ -15278,8 +15278,8 @@ struct VideoEncodeAV1StdFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeAV1StdFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeAV1StdFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeAV1StdFlagsKHR) -> Bool:
         return self & other == self
@@ -15349,8 +15349,8 @@ struct VideoEncodeAV1RateControlFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeAV1RateControlFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Bool:
         return self & other == self
@@ -15420,8 +15420,8 @@ struct VideoEncodeAV1SuperblockSizeFlagsKHR(Equatable):
     fn __rand__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: VideoEncodeAV1SuperblockSizeFlagBitsKHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Bool:
         return self & other == self
@@ -15487,8 +15487,8 @@ struct AccessFlags3KHR(Equatable):
     fn __rand__(self, other: AccessFlags3KHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, bit: AccessFlagBits3KHR) -> Bool:
-        return Bool(self.value() & bit.value())
+    fn __contains__(self, other: AccessFlags3KHR) -> Bool:
+        return self.is_superset(other)
 
     fn is_subset(self, other: AccessFlags3KHR) -> Bool:
         return self & other == self
