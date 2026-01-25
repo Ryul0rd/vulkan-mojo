@@ -1446,7 +1446,15 @@ def strip_enum_value_prefix(enum_name: str, value_name: str, tags: List[Registry
     # Strip the prefix from the value name
     prefix = prefix if value_name.startswith(prefix) else "VK_"
     result = value_name.removeprefix(prefix)
-    if result and result[0].isdigit():
+
+    # strip extension suffix
+    for tag in tag_names:
+        suffix = f"_{tag}"
+        if result.endswith(suffix):
+            result = result.removesuffix(suffix)
+            break
+
+    if result[0].isdigit():
         result = "N_" + result
     return result
 
@@ -1673,10 +1681,8 @@ def flag_bit_mojo_name(enum_name: str, value_name: str, tags: List[RegistryTag])
     tag_names = sorted([tag.name for tag in tags], key=lambda tag: len(tag), reverse=True)
     prefix = enum_name
     
-    enum_tag: Optional[str] = None
     for tag in tag_names:
         if prefix.endswith(tag):
-            enum_tag = tag
             prefix = prefix.removesuffix(tag)
             break
             
@@ -1686,17 +1692,13 @@ def flag_bit_mojo_name(enum_name: str, value_name: str, tags: List[RegistryTag])
     prefix = prefix if value_name.startswith(prefix) else "VK_"
     result = value_name.removeprefix(prefix)
     
-    value_tag: Optional[str] = None
     for tag in tag_names:
         suffix = f"_{tag}"
         if result.endswith(suffix):
-            value_tag = tag
             result = result.removesuffix(suffix)
             break
             
     result = result.removesuffix("_BIT")
-    if value_tag is not None and value_tag != enum_tag:
-        result = f"{result}_{value_tag}"
     if result and result[0].isdigit():
         result = "N_" + result
     return result
