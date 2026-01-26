@@ -5,12 +5,12 @@ from vk.core_functions import GlobalFunctions
 
 struct DisplayTiming(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_refresh_cycle_duration_google: fn(
+    var _get_refresh_cycle_duration: fn(
         device: Device,
         swapchain: SwapchainKHR,
         p_display_timing_properties: Ptr[RefreshCycleDurationGOOGLE, MutAnyOrigin],
     ) -> Result
-    var _get_past_presentation_timing_google: fn(
+    var _get_past_presentation_timing: fn(
         device: Device,
         swapchain: SwapchainKHR,
         p_presentation_timing_count: Ptr[UInt32, MutAnyOrigin],
@@ -22,14 +22,14 @@ struct DisplayTiming(Copyable):
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
-        self._get_refresh_cycle_duration_google = Ptr(to=get_device_proc_addr(
+        self._get_refresh_cycle_duration = Ptr(to=get_device_proc_addr(
             device, "vkGetRefreshCycleDurationGOOGLE".as_c_string_slice()
-        )).bitcast[type_of(self._get_refresh_cycle_duration_google)]()[]
-        self._get_past_presentation_timing_google = Ptr(to=get_device_proc_addr(
+        )).bitcast[type_of(self._get_refresh_cycle_duration)]()[]
+        self._get_past_presentation_timing = Ptr(to=get_device_proc_addr(
             device, "vkGetPastPresentationTimingGOOGLE".as_c_string_slice()
-        )).bitcast[type_of(self._get_past_presentation_timing_google)]()[]
+        )).bitcast[type_of(self._get_past_presentation_timing)]()[]
 
-    fn get_refresh_cycle_duration_google(
+    fn get_refresh_cycle_duration(
         self,
         device: Device,
         swapchain: SwapchainKHR,
@@ -39,9 +39,9 @@ struct DisplayTiming(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRefreshCycleDurationGOOGLE.html
         """
-        return self._get_refresh_cycle_duration_google(device, swapchain, Ptr(to=display_timing_properties))
+        return self._get_refresh_cycle_duration(device, swapchain, Ptr(to=display_timing_properties))
 
-    fn get_past_presentation_timing_google[p_presentation_timings_origin: MutOrigin = MutAnyOrigin](
+    fn get_past_presentation_timing[p_presentation_timings_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         swapchain: SwapchainKHR,
@@ -52,14 +52,14 @@ struct DisplayTiming(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPastPresentationTimingGOOGLE.html
         """
-        return self._get_past_presentation_timing_google(
+        return self._get_past_presentation_timing(
             device,
             swapchain,
             Ptr(to=presentation_timing_count),
             Ptr(to=p_presentation_timings).bitcast[Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin]]()[],
         )
 
-    fn get_past_presentation_timing_google[p_presentation_timings_origin: MutOrigin = MutAnyOrigin](
+    fn get_past_presentation_timing[p_presentation_timings_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, swapchain: SwapchainKHR
     ) -> ListResult[PastPresentationTimingGOOGLE]:
         """See official vulkan docs for details.
@@ -70,13 +70,11 @@ struct DisplayTiming(Copyable):
         var count: UInt32 = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
-            result = self._get_past_presentation_timing_google(
+            result = self._get_past_presentation_timing(
         device, swapchain, Ptr(to=count), Ptr[PastPresentationTimingGOOGLE, MutOrigin.external]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-                result = self._get_past_presentation_timing_google(
-        device, swapchain, Ptr(to=count), list.unsafe_ptr()
-    )
+                result = self._get_past_presentation_timing(device, swapchain, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return ListResult(list^, result)

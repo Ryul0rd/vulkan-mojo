@@ -2208,8 +2208,14 @@ def collect_commands_by_version(
     return version_commands, cumulative_list
 
 
-def command_to_mojo_name(registry_command: RegistryCommand) -> str:
-    return pascal_to_snake(registry_command.name.removeprefix("vk"))
+def command_to_mojo_name(registry_command: RegistryCommand, tags: List[RegistryTag]) -> str:
+    snake_name = pascal_to_snake(registry_command.name.removeprefix("vk"))
+    tag_names = sorted([tag.name.lower() for tag in tags], key=len, reverse=True)
+    for tag in tag_names:
+        suffix = f"_{tag}"
+        if snake_name.endswith(suffix):
+            return snake_name.removesuffix(suffix)
+    return snake_name
 
 
 def command_to_mojo_fn_type(registry_command: RegistryCommand) -> MojoFnType:
@@ -2224,9 +2230,13 @@ def command_to_mojo_fn_type(registry_command: RegistryCommand) -> MojoFnType:
     return MojoFnType(return_type, arguments)
 
 
-def registry_command_to_mojo_methods(registry_command: RegistryCommand, version_added: Optional[Version]=None) -> List[MojoMethod]:
+def registry_command_to_mojo_methods(
+    registry_command: RegistryCommand,
+    tags: List[RegistryTag],
+    version_added: Optional[Version] = None,
+) -> List[MojoMethod]:
     native_name = registry_command.name
-    name = command_to_mojo_name(registry_command)
+    name = command_to_mojo_name(registry_command, tags)
     return_type = parse_c_type(registry_command.return_type)
     
     parameters: List[MojoParameter] = []
@@ -2387,7 +2397,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
         fields: List[MojoField] = []
         for command in vc.commands:
             fields.append(MojoField(
-                name=command_to_mojo_name(command),
+                name=command_to_mojo_name(command, registry.tags),
                 type=command_to_mojo_fn_type(command),
             ))
         
@@ -2399,7 +2409,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
                 f']("vkGetInstanceProcAddr")',
             ]
             for command in vc.commands:
-                mojo_name = command_to_mojo_name(command)
+                mojo_name = command_to_mojo_name(command, registry.tags)
                 init_body_lines.extend((
                     f'self.{mojo_name} = Ptr(to=get_instance_proc_addr(',
                     f'    Instance.NULL, "{command.name}".as_c_string_slice()',
@@ -2417,7 +2427,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
                 f']("vkGet{handle_type}ProcAddr")',
             ]
             for command in vc.commands:
-                mojo_name = command_to_mojo_name(command)
+                mojo_name = command_to_mojo_name(command, registry.tags)
                 init_body_lines.extend((
                     f'self.{mojo_name} = Ptr(to=get_{vc.level}_proc_addr(',
                     f'    {vc.level}, "{command.name}".as_c_string_slice()',
@@ -2492,7 +2502,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
                 docstring_lines=[],
             ))
         for version_added, command in cvc.commands:
-            methods.extend(registry_command_to_mojo_methods(command, version_added))
+            methods.extend(registry_command_to_mojo_methods(command, registry.tags, version_added))
         
         core_command_loaders.append(MojoStruct(
             name=struct_name,
@@ -2561,7 +2571,7 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
             f']("vkGet{extension.type.capitalize()}ProcAddr")',
         ))
         for required_command in required_commands:
-            mojo_name = command_to_mojo_name(required_command)
+            mojo_name = command_to_mojo_name(required_command, registry.tags)
             init_body_lines.extend((
                 f'self._{mojo_name} = Ptr(to=get_{extension.type}_proc_addr(',
                 f'    {extension.type}, "{required_command.name}".as_c_string_slice()',
@@ -2584,10 +2594,10 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
         fields = [MojoField("_dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"]))]
         for required_command in required_commands:
             fields.append(MojoField(
-                name = "_" + command_to_mojo_name(required_command),
+                name = "_" + command_to_mojo_name(required_command, registry.tags),
                 type = command_to_mojo_fn_type(required_command),
             ))
-            methods.extend(registry_command_to_mojo_methods(required_command))
+            methods.extend(registry_command_to_mojo_methods(required_command, registry.tags))
         
         extension_loaders_by_tag[tag].append(MojoStruct(name, traits, fields, methods))
 
