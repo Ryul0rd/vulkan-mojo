@@ -2157,3 +2157,29 @@ struct CooperativeMatrix2(Copyable):
     )
         list._len = Int(count)
         return ListResult(list^, result)
+
+
+struct ComputeOccupancyPriority(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _cmd_set_compute_occupancy_priority_nv: fn(
+        command_buffer: CommandBuffer,
+        p_parameters: Ptr[ComputeOccupancyPriorityParametersNV, ImmutAnyOrigin],
+    )
+
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetDeviceProcAddr")
+        self._cmd_set_compute_occupancy_priority_nv = Ptr(to=get_device_proc_addr(
+            device, "vkCmdSetComputeOccupancyPriorityNV".as_c_string_slice()
+        )).bitcast[type_of(self._cmd_set_compute_occupancy_priority_nv)]()[]
+
+    fn cmd_set_compute_occupancy_priority_nv(
+        self, command_buffer: CommandBuffer, parameters: ComputeOccupancyPriorityParametersNV
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetComputeOccupancyPriorityNV.html
+        """
+        return self._cmd_set_compute_occupancy_priority_nv(command_buffer, Ptr(to=parameters))

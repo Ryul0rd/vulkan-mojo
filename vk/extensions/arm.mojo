@@ -644,3 +644,46 @@ struct DataGraph(Copyable):
             Ptr(to=queue_family_data_graph_processing_engine_info),
             Ptr(to=queue_family_data_graph_processing_engine_properties),
         )
+
+
+struct PerformanceCountersByRegion(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _enumerate_physical_device_queue_family_performance_counters_by_region_arm: fn(
+        physical_device: PhysicalDevice,
+        queue_family_index: UInt32,
+        p_counter_count: Ptr[UInt32, MutAnyOrigin],
+        p_counters: Ptr[PerformanceCounterARM, MutAnyOrigin],
+        p_counter_descriptions: Ptr[PerformanceCounterDescriptionARM, MutAnyOrigin],
+    ) -> Result
+
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetDeviceProcAddr")
+        self._enumerate_physical_device_queue_family_performance_counters_by_region_arm = Ptr(to=get_device_proc_addr(
+            device, "vkEnumeratePhysicalDeviceQueueFamilyPerformanceCountersByRegionARM".as_c_string_slice()
+        )).bitcast[type_of(self._enumerate_physical_device_queue_family_performance_counters_by_region_arm)]()[]
+
+    fn enumerate_physical_device_queue_family_performance_counters_by_region_arm[
+        p_counters_origin: MutOrigin = MutAnyOrigin,
+        p_counter_descriptions_origin: MutOrigin = MutAnyOrigin,
+    ](
+        self,
+        physical_device: PhysicalDevice,
+        queue_family_index: UInt32,
+        mut counter_count: UInt32,
+        p_counters: Ptr[PerformanceCounterARM, p_counters_origin],
+        p_counter_descriptions: Ptr[PerformanceCounterDescriptionARM, p_counter_descriptions_origin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumeratePhysicalDeviceQueueFamilyPerformanceCountersByRegionARM.html
+        """
+        return self._enumerate_physical_device_queue_family_performance_counters_by_region_arm(
+            physical_device,
+            queue_family_index,
+            Ptr(to=counter_count),
+            Ptr(to=p_counters).bitcast[Ptr[PerformanceCounterARM, MutAnyOrigin]]()[],
+            Ptr(to=p_counter_descriptions).bitcast[Ptr[PerformanceCounterDescriptionARM, MutAnyOrigin]]()[],
+        )

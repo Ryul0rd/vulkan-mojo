@@ -918,6 +918,223 @@ struct DebugUtils(Copyable):
         )
 
 
+struct DescriptorHeap(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _write_sampler_descriptors_ext: fn(
+        device: Device,
+        sampler_count: UInt32,
+        p_samplers: Ptr[SamplerCreateInfo, ImmutAnyOrigin],
+        p_descriptors: Ptr[HostAddressRangeEXT, ImmutAnyOrigin],
+    ) -> Result
+    var _write_resource_descriptors_ext: fn(
+        device: Device,
+        resource_count: UInt32,
+        p_resources: Ptr[ResourceDescriptorInfoEXT, ImmutAnyOrigin],
+        p_descriptors: Ptr[HostAddressRangeEXT, ImmutAnyOrigin],
+    ) -> Result
+    var _cmd_bind_sampler_heap_ext: fn(
+        command_buffer: CommandBuffer, p_bind_info: Ptr[BindHeapInfoEXT, ImmutAnyOrigin]
+    )
+    var _cmd_bind_resource_heap_ext: fn(
+        command_buffer: CommandBuffer, p_bind_info: Ptr[BindHeapInfoEXT, ImmutAnyOrigin]
+    )
+    var _cmd_push_data_ext: fn(
+        command_buffer: CommandBuffer, p_push_data_info: Ptr[PushDataInfoEXT, ImmutAnyOrigin]
+    )
+    var _get_image_opaque_capture_data_ext: fn(
+        device: Device,
+        image_count: UInt32,
+        p_images: Ptr[Image, ImmutAnyOrigin],
+        p_datas: Ptr[HostAddressRangeEXT, MutAnyOrigin],
+    ) -> Result
+    var _get_physical_device_descriptor_size_ext: fn(
+        physical_device: PhysicalDevice, descriptor_type: DescriptorType
+    ) -> DeviceSize
+    var _register_custom_border_color_ext: fn(
+        device: Device,
+        p_border_color: Ptr[SamplerCustomBorderColorCreateInfoEXT, ImmutAnyOrigin],
+        request_index: Bool32,
+        p_index: Ptr[UInt32, MutAnyOrigin],
+    ) -> Result
+    var _unregister_custom_border_color_ext: fn(device: Device, index: UInt32)
+    var _get_tensor_opaque_capture_data_arm: fn(
+        device: Device,
+        tensor_count: UInt32,
+        p_tensors: Ptr[TensorARM, ImmutAnyOrigin],
+        p_datas: Ptr[HostAddressRangeEXT, MutAnyOrigin],
+    ) -> Result
+
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetDeviceProcAddr")
+        self._write_sampler_descriptors_ext = Ptr(to=get_device_proc_addr(
+            device, "vkWriteSamplerDescriptorsEXT".as_c_string_slice()
+        )).bitcast[type_of(self._write_sampler_descriptors_ext)]()[]
+        self._write_resource_descriptors_ext = Ptr(to=get_device_proc_addr(
+            device, "vkWriteResourceDescriptorsEXT".as_c_string_slice()
+        )).bitcast[type_of(self._write_resource_descriptors_ext)]()[]
+        self._cmd_bind_sampler_heap_ext = Ptr(to=get_device_proc_addr(
+            device, "vkCmdBindSamplerHeapEXT".as_c_string_slice()
+        )).bitcast[type_of(self._cmd_bind_sampler_heap_ext)]()[]
+        self._cmd_bind_resource_heap_ext = Ptr(to=get_device_proc_addr(
+            device, "vkCmdBindResourceHeapEXT".as_c_string_slice()
+        )).bitcast[type_of(self._cmd_bind_resource_heap_ext)]()[]
+        self._cmd_push_data_ext = Ptr(to=get_device_proc_addr(
+            device, "vkCmdPushDataEXT".as_c_string_slice()
+        )).bitcast[type_of(self._cmd_push_data_ext)]()[]
+        self._get_image_opaque_capture_data_ext = Ptr(to=get_device_proc_addr(
+            device, "vkGetImageOpaqueCaptureDataEXT".as_c_string_slice()
+        )).bitcast[type_of(self._get_image_opaque_capture_data_ext)]()[]
+        self._get_physical_device_descriptor_size_ext = Ptr(to=get_device_proc_addr(
+            device, "vkGetPhysicalDeviceDescriptorSizeEXT".as_c_string_slice()
+        )).bitcast[type_of(self._get_physical_device_descriptor_size_ext)]()[]
+        self._register_custom_border_color_ext = Ptr(to=get_device_proc_addr(
+            device, "vkRegisterCustomBorderColorEXT".as_c_string_slice()
+        )).bitcast[type_of(self._register_custom_border_color_ext)]()[]
+        self._unregister_custom_border_color_ext = Ptr(to=get_device_proc_addr(
+            device, "vkUnregisterCustomBorderColorEXT".as_c_string_slice()
+        )).bitcast[type_of(self._unregister_custom_border_color_ext)]()[]
+        self._get_tensor_opaque_capture_data_arm = Ptr(to=get_device_proc_addr(
+            device, "vkGetTensorOpaqueCaptureDataARM".as_c_string_slice()
+        )).bitcast[type_of(self._get_tensor_opaque_capture_data_arm)]()[]
+
+    fn write_sampler_descriptors_ext[
+        p_samplers_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_descriptors_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
+        self,
+        device: Device,
+        sampler_count: UInt32,
+        p_samplers: Ptr[SamplerCreateInfo, p_samplers_origin],
+        p_descriptors: Ptr[HostAddressRangeEXT, p_descriptors_origin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkWriteSamplerDescriptorsEXT.html
+        """
+        return self._write_sampler_descriptors_ext(
+            device,
+            sampler_count,
+            Ptr(to=p_samplers).bitcast[Ptr[SamplerCreateInfo, ImmutAnyOrigin]]()[],
+            Ptr(to=p_descriptors).bitcast[Ptr[HostAddressRangeEXT, ImmutAnyOrigin]]()[],
+        )
+
+    fn write_resource_descriptors_ext[
+        p_resources_origin: ImmutOrigin = ImmutAnyOrigin,
+        p_descriptors_origin: ImmutOrigin = ImmutAnyOrigin,
+    ](
+        self,
+        device: Device,
+        resource_count: UInt32,
+        p_resources: Ptr[ResourceDescriptorInfoEXT, p_resources_origin],
+        p_descriptors: Ptr[HostAddressRangeEXT, p_descriptors_origin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkWriteResourceDescriptorsEXT.html
+        """
+        return self._write_resource_descriptors_ext(
+            device,
+            resource_count,
+            Ptr(to=p_resources).bitcast[Ptr[ResourceDescriptorInfoEXT, ImmutAnyOrigin]]()[],
+            Ptr(to=p_descriptors).bitcast[Ptr[HostAddressRangeEXT, ImmutAnyOrigin]]()[],
+        )
+
+    fn cmd_bind_sampler_heap_ext(self, command_buffer: CommandBuffer, bind_info: BindHeapInfoEXT):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindSamplerHeapEXT.html
+        """
+        return self._cmd_bind_sampler_heap_ext(command_buffer, Ptr(to=bind_info))
+
+    fn cmd_bind_resource_heap_ext(self, command_buffer: CommandBuffer, bind_info: BindHeapInfoEXT):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindResourceHeapEXT.html
+        """
+        return self._cmd_bind_resource_heap_ext(command_buffer, Ptr(to=bind_info))
+
+    fn cmd_push_data_ext(self, command_buffer: CommandBuffer, push_data_info: PushDataInfoEXT):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDataEXT.html
+        """
+        return self._cmd_push_data_ext(command_buffer, Ptr(to=push_data_info))
+
+    fn get_image_opaque_capture_data_ext[
+        p_images_origin: ImmutOrigin = ImmutAnyOrigin, p_datas_origin: MutOrigin = MutAnyOrigin
+    ](
+        self,
+        device: Device,
+        image_count: UInt32,
+        p_images: Ptr[Image, p_images_origin],
+        p_datas: Ptr[HostAddressRangeEXT, p_datas_origin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageOpaqueCaptureDataEXT.html
+        """
+        return self._get_image_opaque_capture_data_ext(
+            device,
+            image_count,
+            Ptr(to=p_images).bitcast[Ptr[Image, ImmutAnyOrigin]]()[],
+            Ptr(to=p_datas).bitcast[Ptr[HostAddressRangeEXT, MutAnyOrigin]]()[],
+        )
+
+    fn get_physical_device_descriptor_size_ext(
+        self, physical_device: PhysicalDevice, descriptor_type: DescriptorType
+    ) -> DeviceSize:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceDescriptorSizeEXT.html
+        """
+        return self._get_physical_device_descriptor_size_ext(physical_device, descriptor_type)
+
+    fn register_custom_border_color_ext(
+        self,
+        device: Device,
+        border_color: SamplerCustomBorderColorCreateInfoEXT,
+        request_index: Bool32,
+        mut index: UInt32,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkRegisterCustomBorderColorEXT.html
+        """
+        return self._register_custom_border_color_ext(
+            device, Ptr(to=border_color), request_index, Ptr(to=index)
+        )
+
+    fn unregister_custom_border_color_ext(self, device: Device, index: UInt32):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkUnregisterCustomBorderColorEXT.html
+        """
+        return self._unregister_custom_border_color_ext(device, index)
+
+    fn get_tensor_opaque_capture_data_arm[
+        p_tensors_origin: ImmutOrigin = ImmutAnyOrigin, p_datas_origin: MutOrigin = MutAnyOrigin
+    ](
+        self,
+        device: Device,
+        tensor_count: UInt32,
+        p_tensors: Ptr[TensorARM, p_tensors_origin],
+        p_datas: Ptr[HostAddressRangeEXT, p_datas_origin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorOpaqueCaptureDataARM.html
+        """
+        return self._get_tensor_opaque_capture_data_arm(
+            device,
+            tensor_count,
+            Ptr(to=p_tensors).bitcast[Ptr[TensorARM, ImmutAnyOrigin]]()[],
+            Ptr(to=p_datas).bitcast[Ptr[HostAddressRangeEXT, MutAnyOrigin]]()[],
+        )
+
+
 struct SampleLocations(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_sample_locations_ext: fn(
@@ -1257,6 +1474,111 @@ struct CalibratedTimestamps(Copyable):
             Ptr(to=p_timestamp_infos).bitcast[Ptr[CalibratedTimestampInfoKHR, ImmutAnyOrigin]]()[],
             Ptr(to=p_timestamps).bitcast[Ptr[UInt64, MutAnyOrigin]]()[],
             Ptr(to=max_deviation),
+        )
+
+
+struct PresentTiming(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _set_swapchain_present_timing_queue_size_ext: fn(
+        device: Device, swapchain: SwapchainKHR, size: UInt32
+    ) -> Result
+    var _get_swapchain_timing_properties_ext: fn(
+        device: Device,
+        swapchain: SwapchainKHR,
+        p_swapchain_timing_properties: Ptr[SwapchainTimingPropertiesEXT, MutAnyOrigin],
+        p_swapchain_timing_properties_counter: Ptr[UInt64, MutAnyOrigin],
+    ) -> Result
+    var _get_swapchain_time_domain_properties_ext: fn(
+        device: Device,
+        swapchain: SwapchainKHR,
+        p_swapchain_time_domain_properties: Ptr[SwapchainTimeDomainPropertiesEXT, MutAnyOrigin],
+        p_time_domains_counter: Ptr[UInt64, MutAnyOrigin],
+    ) -> Result
+    var _get_past_presentation_timing_ext: fn(
+        device: Device,
+        p_past_presentation_timing_info: Ptr[PastPresentationTimingInfoEXT, ImmutAnyOrigin],
+        p_past_presentation_timing_properties: Ptr[PastPresentationTimingPropertiesEXT, MutAnyOrigin],
+    ) -> Result
+
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetDeviceProcAddr")
+        self._set_swapchain_present_timing_queue_size_ext = Ptr(to=get_device_proc_addr(
+            device, "vkSetSwapchainPresentTimingQueueSizeEXT".as_c_string_slice()
+        )).bitcast[type_of(self._set_swapchain_present_timing_queue_size_ext)]()[]
+        self._get_swapchain_timing_properties_ext = Ptr(to=get_device_proc_addr(
+            device, "vkGetSwapchainTimingPropertiesEXT".as_c_string_slice()
+        )).bitcast[type_of(self._get_swapchain_timing_properties_ext)]()[]
+        self._get_swapchain_time_domain_properties_ext = Ptr(to=get_device_proc_addr(
+            device, "vkGetSwapchainTimeDomainPropertiesEXT".as_c_string_slice()
+        )).bitcast[type_of(self._get_swapchain_time_domain_properties_ext)]()[]
+        self._get_past_presentation_timing_ext = Ptr(to=get_device_proc_addr(
+            device, "vkGetPastPresentationTimingEXT".as_c_string_slice()
+        )).bitcast[type_of(self._get_past_presentation_timing_ext)]()[]
+
+    fn set_swapchain_present_timing_queue_size_ext(
+        self, device: Device, swapchain: SwapchainKHR, size: UInt32
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetSwapchainPresentTimingQueueSizeEXT.html
+        """
+        return self._set_swapchain_present_timing_queue_size_ext(device, swapchain, size)
+
+    fn get_swapchain_timing_properties_ext[
+        p_swapchain_timing_properties_counter_origin: MutOrigin = MutAnyOrigin
+    ](
+        self,
+        device: Device,
+        swapchain: SwapchainKHR,
+        mut swapchain_timing_properties: SwapchainTimingPropertiesEXT,
+        p_swapchain_timing_properties_counter: Ptr[UInt64, p_swapchain_timing_properties_counter_origin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSwapchainTimingPropertiesEXT.html
+        """
+        return self._get_swapchain_timing_properties_ext(
+            device,
+            swapchain,
+            Ptr(to=swapchain_timing_properties),
+            Ptr(to=p_swapchain_timing_properties_counter).bitcast[Ptr[UInt64, MutAnyOrigin]]()[],
+        )
+
+    fn get_swapchain_time_domain_properties_ext[
+        p_time_domains_counter_origin: MutOrigin = MutAnyOrigin
+    ](
+        self,
+        device: Device,
+        swapchain: SwapchainKHR,
+        mut swapchain_time_domain_properties: SwapchainTimeDomainPropertiesEXT,
+        p_time_domains_counter: Ptr[UInt64, p_time_domains_counter_origin],
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetSwapchainTimeDomainPropertiesEXT.html
+        """
+        return self._get_swapchain_time_domain_properties_ext(
+            device,
+            swapchain,
+            Ptr(to=swapchain_time_domain_properties),
+            Ptr(to=p_time_domains_counter).bitcast[Ptr[UInt64, MutAnyOrigin]]()[],
+        )
+
+    fn get_past_presentation_timing_ext(
+        self,
+        device: Device,
+        past_presentation_timing_info: PastPresentationTimingInfoEXT,
+        mut past_presentation_timing_properties: PastPresentationTimingPropertiesEXT,
+    ) -> Result:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPastPresentationTimingEXT.html
+        """
+        return self._get_past_presentation_timing_ext(
+            device, Ptr(to=past_presentation_timing_info), Ptr(to=past_presentation_timing_properties)
         )
 
 
@@ -4865,6 +5187,65 @@ struct AttachmentFeedbackLoopDynamicState(Copyable):
         return self._cmd_set_attachment_feedback_loop_enable_ext(command_buffer, aspect_mask)
 
 
+struct MemoryDecompression(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _cmd_decompress_memory_ext: fn(
+        command_buffer: CommandBuffer,
+        p_decompress_memory_info_ext: Ptr[DecompressMemoryInfoEXT, ImmutAnyOrigin],
+    )
+    var _cmd_decompress_memory_indirect_count_ext: fn(
+        command_buffer: CommandBuffer,
+        decompression_method: MemoryDecompressionMethodFlagsEXT,
+        indirect_commands_address: DeviceAddress,
+        indirect_commands_count_address: DeviceAddress,
+        max_decompression_count: UInt32,
+        stride: UInt32,
+    )
+
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetDeviceProcAddr")
+        self._cmd_decompress_memory_ext = Ptr(to=get_device_proc_addr(
+            device, "vkCmdDecompressMemoryEXT".as_c_string_slice()
+        )).bitcast[type_of(self._cmd_decompress_memory_ext)]()[]
+        self._cmd_decompress_memory_indirect_count_ext = Ptr(to=get_device_proc_addr(
+            device, "vkCmdDecompressMemoryIndirectCountEXT".as_c_string_slice()
+        )).bitcast[type_of(self._cmd_decompress_memory_indirect_count_ext)]()[]
+
+    fn cmd_decompress_memory_ext(
+        self, command_buffer: CommandBuffer, decompress_memory_info_ext: DecompressMemoryInfoEXT
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDecompressMemoryEXT.html
+        """
+        return self._cmd_decompress_memory_ext(command_buffer, Ptr(to=decompress_memory_info_ext))
+
+    fn cmd_decompress_memory_indirect_count_ext(
+        self,
+        command_buffer: CommandBuffer,
+        decompression_method: MemoryDecompressionMethodFlagsEXT,
+        indirect_commands_address: DeviceAddress,
+        indirect_commands_count_address: DeviceAddress,
+        max_decompression_count: UInt32,
+        stride: UInt32,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDecompressMemoryIndirectCountEXT.html
+        """
+        return self._cmd_decompress_memory_indirect_count_ext(
+            command_buffer,
+            decompression_method,
+            indirect_commands_address,
+            indirect_commands_count_address,
+            max_decompression_count,
+            stride,
+        )
+
+
 struct DeviceGeneratedCommands(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_generated_commands_memory_requirements_ext: fn(
@@ -5198,8 +5579,8 @@ struct ExternalMemoryMetal(Copyable):
 
 struct FragmentDensityMapOffset(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_end_rendering_2_ext: fn(
-        command_buffer: CommandBuffer, p_rendering_end_info: Ptr[RenderingEndInfoEXT, ImmutAnyOrigin]
+    var _cmd_end_rendering_2_khr: fn(
+        command_buffer: CommandBuffer, p_rendering_end_info: Ptr[RenderingEndInfoKHR, ImmutAnyOrigin]
     )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -5207,20 +5588,53 @@ struct FragmentDensityMapOffset(Copyable):
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
-        self._cmd_end_rendering_2_ext = Ptr(to=get_device_proc_addr(
-            device, "vkCmdEndRendering2EXT".as_c_string_slice()
-        )).bitcast[type_of(self._cmd_end_rendering_2_ext)]()[]
+        self._cmd_end_rendering_2_khr = Ptr(to=get_device_proc_addr(
+            device, "vkCmdEndRendering2KHR".as_c_string_slice()
+        )).bitcast[type_of(self._cmd_end_rendering_2_khr)]()[]
 
-    fn cmd_end_rendering_2_ext[p_rendering_end_info_origin: ImmutOrigin = ImmutAnyOrigin](
+    fn cmd_end_rendering_2_khr[p_rendering_end_info_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
-        p_rendering_end_info: Ptr[RenderingEndInfoEXT, p_rendering_end_info_origin],
+        p_rendering_end_info: Ptr[RenderingEndInfoKHR, p_rendering_end_info_origin],
     ):
         """See official vulkan docs for details.
         
-        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRendering2EXT.html
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRendering2KHR.html
         """
-        return self._cmd_end_rendering_2_ext(
+        return self._cmd_end_rendering_2_khr(
             command_buffer,
-            Ptr(to=p_rendering_end_info).bitcast[Ptr[RenderingEndInfoEXT, ImmutAnyOrigin]]()[],
+            Ptr(to=p_rendering_end_info).bitcast[Ptr[RenderingEndInfoKHR, ImmutAnyOrigin]]()[],
+        )
+
+
+struct CustomResolve(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _cmd_begin_custom_resolve_ext: fn(
+        command_buffer: CommandBuffer,
+        p_begin_custom_resolve_info: Ptr[BeginCustomResolveInfoEXT, ImmutAnyOrigin],
+    )
+
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetDeviceProcAddr")
+        self._cmd_begin_custom_resolve_ext = Ptr(to=get_device_proc_addr(
+            device, "vkCmdBeginCustomResolveEXT".as_c_string_slice()
+        )).bitcast[type_of(self._cmd_begin_custom_resolve_ext)]()[]
+
+    fn cmd_begin_custom_resolve_ext[
+        p_begin_custom_resolve_info_origin: ImmutOrigin = ImmutAnyOrigin
+    ](
+        self,
+        command_buffer: CommandBuffer,
+        p_begin_custom_resolve_info: Ptr[BeginCustomResolveInfoEXT, p_begin_custom_resolve_info_origin],
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginCustomResolveEXT.html
+        """
+        return self._cmd_begin_custom_resolve_ext(
+            command_buffer,
+            Ptr(to=p_begin_custom_resolve_info).bitcast[Ptr[BeginCustomResolveInfoEXT, ImmutAnyOrigin]]()[],
         )

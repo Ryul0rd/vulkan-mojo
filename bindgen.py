@@ -181,9 +181,14 @@ def parse_types(xml_registry: Element) -> List[RegistryType]:
             name = assert_type(str, type_el.attrib.get("name"))
             types.append(RegistryEnum(name=name))
         elif category == "bitmask":
-            api = type_el.attrib.get("api") or "vulkan"
-            if api not in ("vulkan", "vulkansc"):
-                raise ValueError("Unexpected value")
+            apis = (type_el.attrib.get("api") or "vulkan").split(",")
+            if "vulkan" in apis:
+                api = "vulkan"
+            elif "vulkansc" in apis:
+                api = "vulkansc"
+            else:
+                raise ValueError(f"Unexpected api value: {apis}")
+
             # "bitvalues" is an old name for "requires"
             requires = type_el.attrib.get("requires") or type_el.attrib.get("bitvalues")
             type = type_el.findtext("type")
@@ -217,7 +222,14 @@ def parse_types(xml_registry: Element) -> List[RegistryType]:
             returned_only = type_el.attrib.get("returnedonly") == "true"
             types.append(RegistryStruct(name, struct_members, returned_only))
         elif category == "funcpointer":
-            types.append(RegistryFuncpointer("".join(type_el.itertext())))
+            proto = assert_type(Element, type_el.find("proto"))
+            name = assert_type(str, proto.findtext("name"))
+            ret_type = "".join(proto.itertext()).replace(name, "").strip()
+            params: List[str] = []
+            for param in type_el.findall("param"):
+                params.append(" ".join("".join(param.itertext()).split()))
+            args = ", ".join(params) if params else "void"
+            types.append(RegistryFuncpointer(f"typedef {ret_type} (VKAPI_PTR *{name})({args});"))
         elif category == "union":
             name = type_el.attrib["name"]
             union_members = ["".join(member_el.itertext()) for member_el in type_el.findall("member")]
@@ -482,6 +494,8 @@ def parse_features(xml_registry: Element) -> List[RegistryFeature]:
         depends = feature_el.attrib.get("depends") or ""
         api: List[Literal["vulkan", "vulkansc"]] = []
         for api_el in assert_type(str, feature_el.attrib.get("api")).split(","):
+            if api_el == "vulkanbase":
+                continue
             if api_el not in ("vulkan", "vulkansc"):
                 raise ValueError("Unexpected api")
             api.append(api_el)
@@ -1097,7 +1111,7 @@ def bind_constants(files: Dict[str, str], registry: Registry):
             mojo_type = "UInt64" if "L" in suffix else "UInt32"
             value = f"~{mojo_type}({num})"
         elif constant.type == "float":
-            value = value.rstrip("F")
+            value = value.rstrip("Ff")
         constants.append(MojoConstant(
             name=name,
             type=type,
@@ -1284,6 +1298,8 @@ def bind_unions(files: Dict[str, str], registry: Registry):
         "IndirectCommandsTokenDataEXT": "UInt",
         "DescriptorDataEXT": "UInt64",
         "AccelerationStructureMotionInstanceDataNV": "UInt64",
+        "ResourceDescriptorDataEXT": "UInt",
+        "DescriptorMappingSourceDataEXT": "UInt",
     }
     # lower aliases
     aliases: List[MojoTypeAlias] = []
@@ -1851,6 +1867,7 @@ def bind_external_types(files: Dict[str, str], registry: Registry):
         MojoWrapperExternalType("zx_handle_t", "UInt32"),
         # OpenHarmony / OHOS (WSI)
         MojoOpaqueExternalType("OHNativeWindow"),
+        MojoOpaqueExternalType("OH_NativeBuffer"),
         # Google Games Platform (GGP)
         MojoWrapperExternalType("GgpStreamDescriptor", "UInt32"),
         MojoWrapperExternalType("GgpFrameToken", "UInt32"),

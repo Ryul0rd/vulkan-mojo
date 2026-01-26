@@ -5526,3 +5526,79 @@ struct Maintenance6(Copyable):
         return self._cmd_bind_descriptor_buffer_embedded_samplers_2_ext(
             command_buffer, Ptr(to=bind_descriptor_buffer_embedded_samplers_info)
         )
+
+
+struct CopyMemoryIndirect(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _cmd_copy_memory_indirect_khr: fn(
+        command_buffer: CommandBuffer,
+        p_copy_memory_indirect_info: Ptr[CopyMemoryIndirectInfoKHR, ImmutAnyOrigin],
+    )
+    var _cmd_copy_memory_to_image_indirect_khr: fn(
+        command_buffer: CommandBuffer,
+        p_copy_memory_to_image_indirect_info: Ptr[CopyMemoryToImageIndirectInfoKHR, ImmutAnyOrigin],
+    )
+
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetDeviceProcAddr")
+        self._cmd_copy_memory_indirect_khr = Ptr(to=get_device_proc_addr(
+            device, "vkCmdCopyMemoryIndirectKHR".as_c_string_slice()
+        )).bitcast[type_of(self._cmd_copy_memory_indirect_khr)]()[]
+        self._cmd_copy_memory_to_image_indirect_khr = Ptr(to=get_device_proc_addr(
+            device, "vkCmdCopyMemoryToImageIndirectKHR".as_c_string_slice()
+        )).bitcast[type_of(self._cmd_copy_memory_to_image_indirect_khr)]()[]
+
+    fn cmd_copy_memory_indirect_khr(
+        self, command_buffer: CommandBuffer, copy_memory_indirect_info: CopyMemoryIndirectInfoKHR
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMemoryIndirectKHR.html
+        """
+        return self._cmd_copy_memory_indirect_khr(command_buffer, Ptr(to=copy_memory_indirect_info))
+
+    fn cmd_copy_memory_to_image_indirect_khr(
+        self,
+        command_buffer: CommandBuffer,
+        copy_memory_to_image_indirect_info: CopyMemoryToImageIndirectInfoKHR,
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMemoryToImageIndirectKHR.html
+        """
+        return self._cmd_copy_memory_to_image_indirect_khr(
+            command_buffer, Ptr(to=copy_memory_to_image_indirect_info)
+        )
+
+
+struct Maintenance10(Copyable):
+    var _dlhandle: ArcPointer[OwnedDLHandle]
+    var _cmd_end_rendering_2_khr: fn(
+        command_buffer: CommandBuffer, p_rendering_end_info: Ptr[RenderingEndInfoKHR, ImmutAnyOrigin]
+    )
+
+    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+        self._dlhandle = global_functions.get_dlhandle()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
+            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+        ]("vkGetDeviceProcAddr")
+        self._cmd_end_rendering_2_khr = Ptr(to=get_device_proc_addr(
+            device, "vkCmdEndRendering2KHR".as_c_string_slice()
+        )).bitcast[type_of(self._cmd_end_rendering_2_khr)]()[]
+
+    fn cmd_end_rendering_2_khr[p_rendering_end_info_origin: ImmutOrigin = ImmutAnyOrigin](
+        self,
+        command_buffer: CommandBuffer,
+        p_rendering_end_info: Ptr[RenderingEndInfoKHR, p_rendering_end_info_origin],
+    ):
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRendering2KHR.html
+        """
+        return self._cmd_end_rendering_2_khr(
+            command_buffer,
+            Ptr(to=p_rendering_end_info).bitcast[Ptr[RenderingEndInfoKHR, ImmutAnyOrigin]]()[],
+        )

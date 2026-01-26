@@ -164,6 +164,10 @@ struct OHNativeWindow:
     pass
 
 
+struct OH_NativeBuffer:
+    pass
+
+
 @register_passable("trivial")
 struct GgpStreamDescriptor:
     var _value: UInt32

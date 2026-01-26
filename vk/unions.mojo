@@ -522,3 +522,127 @@ struct AccelerationStructureMotionInstanceDataNV(ImplicitlyCopyable):
             src = Ptr(to=value).bitcast[Byte](),
             count = size_of[AccelerationStructureSRTMotionInstanceNV](),
         )
+
+
+struct ResourceDescriptorDataEXT(ImplicitlyCopyable):
+    comptime _size = max(
+        size_of[Ptr[ImageDescriptorInfoEXT, ImmutAnyOrigin]](),
+        size_of[Ptr[TexelBufferDescriptorInfoEXT, ImmutAnyOrigin]](),
+        size_of[Ptr[DeviceAddressRangeEXT, ImmutAnyOrigin]](),
+        size_of[Ptr[TensorViewCreateInfoARM, ImmutAnyOrigin]](),
+    )
+    comptime _AlignType = UInt
+    comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
+    var _value: Self._InnerType
+
+    fn __init__(out self, value: Ptr[ImageDescriptorInfoEXT, ImmutAnyOrigin]):
+        self._value = zero_init[Self._InnerType]()
+        memcpy(
+            dest = Ptr(to=self._value).bitcast[Byte](),
+            src = Ptr(to=value).bitcast[Byte](),
+            count = size_of[Ptr[ImageDescriptorInfoEXT, ImmutAnyOrigin]](),
+        )
+
+    fn __init__(out self, value: Ptr[TexelBufferDescriptorInfoEXT, ImmutAnyOrigin]):
+        self._value = zero_init[Self._InnerType]()
+        memcpy(
+            dest = Ptr(to=self._value).bitcast[Byte](),
+            src = Ptr(to=value).bitcast[Byte](),
+            count = size_of[Ptr[TexelBufferDescriptorInfoEXT, ImmutAnyOrigin]](),
+        )
+
+    fn __init__(out self, value: Ptr[DeviceAddressRangeEXT, ImmutAnyOrigin]):
+        self._value = zero_init[Self._InnerType]()
+        memcpy(
+            dest = Ptr(to=self._value).bitcast[Byte](),
+            src = Ptr(to=value).bitcast[Byte](),
+            count = size_of[Ptr[DeviceAddressRangeEXT, ImmutAnyOrigin]](),
+        )
+
+    fn __init__(out self, value: Ptr[TensorViewCreateInfoARM, ImmutAnyOrigin]):
+        self._value = zero_init[Self._InnerType]()
+        memcpy(
+            dest = Ptr(to=self._value).bitcast[Byte](),
+            src = Ptr(to=value).bitcast[Byte](),
+            count = size_of[Ptr[TensorViewCreateInfoARM, ImmutAnyOrigin]](),
+        )
+
+
+struct DescriptorMappingSourceDataEXT(ImplicitlyCopyable):
+    comptime _size = max(
+        size_of[DescriptorMappingSourceConstantOffsetEXT](),
+        size_of[DescriptorMappingSourcePushIndexEXT](),
+        size_of[DescriptorMappingSourceIndirectIndexEXT](),
+        size_of[DescriptorMappingSourceIndirectIndexArrayEXT](),
+        size_of[DescriptorMappingSourceHeapDataEXT](),
+        size_of[UInt32](),
+        size_of[DescriptorMappingSourceIndirectAddressEXT](),
+        size_of[DescriptorMappingSourceShaderRecordIndexEXT](),
+    )
+    comptime _AlignType = UInt
+    comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
+    var _value: Self._InnerType
+
+    fn __init__(out self, value: DescriptorMappingSourceConstantOffsetEXT):
+        self._value = zero_init[Self._InnerType]()
+        memcpy(
+            dest = Ptr(to=self._value).bitcast[Byte](),
+            src = Ptr(to=value).bitcast[Byte](),
+            count = size_of[DescriptorMappingSourceConstantOffsetEXT](),
+        )
+
+    fn __init__(out self, value: DescriptorMappingSourcePushIndexEXT):
+        self._value = zero_init[Self._InnerType]()
+        memcpy(
+            dest = Ptr(to=self._value).bitcast[Byte](),
+            src = Ptr(to=value).bitcast[Byte](),
+            count = size_of[DescriptorMappingSourcePushIndexEXT](),
+        )
+
+    fn __init__(out self, value: DescriptorMappingSourceIndirectIndexEXT):
+        self._value = zero_init[Self._InnerType]()
+        memcpy(
+            dest = Ptr(to=self._value).bitcast[Byte](),
+            src = Ptr(to=value).bitcast[Byte](),
+            count = size_of[DescriptorMappingSourceIndirectIndexEXT](),
+        )
+
+    fn __init__(out self, value: DescriptorMappingSourceIndirectIndexArrayEXT):
+        self._value = zero_init[Self._InnerType]()
+        memcpy(
+            dest = Ptr(to=self._value).bitcast[Byte](),
+            src = Ptr(to=value).bitcast[Byte](),
+            count = size_of[DescriptorMappingSourceIndirectIndexArrayEXT](),
+        )
+
+    fn __init__(out self, value: DescriptorMappingSourceHeapDataEXT):
+        self._value = zero_init[Self._InnerType]()
+        memcpy(
+            dest = Ptr(to=self._value).bitcast[Byte](),
+            src = Ptr(to=value).bitcast[Byte](),
+            count = size_of[DescriptorMappingSourceHeapDataEXT](),
+        )
+
+    fn __init__(out self, value: UInt32):
+        self._value = zero_init[Self._InnerType]()
+        memcpy(
+            dest = Ptr(to=self._value).bitcast[Byte](),
+            src = Ptr(to=value).bitcast[Byte](),
+            count = size_of[UInt32](),
+        )
+
+    fn __init__(out self, value: DescriptorMappingSourceIndirectAddressEXT):
+        self._value = zero_init[Self._InnerType]()
+        memcpy(
+            dest = Ptr(to=self._value).bitcast[Byte](),
+            src = Ptr(to=value).bitcast[Byte](),
+            count = size_of[DescriptorMappingSourceIndirectAddressEXT](),
+        )
+
+    fn __init__(out self, value: DescriptorMappingSourceShaderRecordIndexEXT):
+        self._value = zero_init[Self._InnerType]()
+        memcpy(
+            dest = Ptr(to=self._value).bitcast[Byte](),
+            src = Ptr(to=value).bitcast[Byte](),
+            count = size_of[DescriptorMappingSourceShaderRecordIndexEXT](),
+        )

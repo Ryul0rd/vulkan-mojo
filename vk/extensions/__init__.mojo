@@ -15,5 +15,5 @@ import .qcom
 import .huawei
 import .qnx
 import .valve
-import .arm
 import .ohos
+import .arm

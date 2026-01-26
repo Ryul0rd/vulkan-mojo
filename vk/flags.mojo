@@ -9,6 +9,7 @@ comptime SemaphoreWaitFlagsKHR = SemaphoreWaitFlags
 comptime AccessFlags2KHR = AccessFlags2
 comptime PipelineStageFlags2KHR = PipelineStageFlags2
 comptime FormatFeatureFlags2KHR = FormatFeatureFlags2
+comptime MemoryDecompressionMethodFlagsNV = MemoryDecompressionMethodFlagsEXT
 comptime RenderingFlagsKHR = RenderingFlags
 comptime PipelineCreateFlags2KHR = PipelineCreateFlags2
 comptime BufferUsageFlags2KHR = BufferUsageFlags2
@@ -1373,7 +1374,7 @@ struct DeviceQueueCreateFlags(Equatable):
 
     comptime PROTECTED = Self(value = DeviceQueueCreateFlagBits.PROTECTED.value())
     comptime RESERVED_1 = Self(value = DeviceQueueCreateFlagBits.RESERVED_1.value())
-    comptime RESERVED_2 = Self(value = DeviceQueueCreateFlagBits.RESERVED_2.value())
+    comptime INTERNALLY_SYNCHRONIZED = Self(value = DeviceQueueCreateFlagBits.INTERNALLY_SYNCHRONIZED.value())
 
 
 @register_passable("trivial")
@@ -1394,7 +1395,7 @@ struct DeviceQueueCreateFlagBits(Equatable):
 
     comptime PROTECTED = Self(value = 1 << 0)
     comptime RESERVED_1 = Self(value = 1 << 1)
-    comptime RESERVED_2 = Self(value = 1 << 2)
+    comptime INTERNALLY_SYNCHRONIZED = Self(value = 1 << 2)
 
 
 @register_passable("trivial")
@@ -1449,6 +1450,7 @@ struct QueueFlags(Equatable):
     comptime VIDEO_ENCODE = Self(value = QueueFlagBits.VIDEO_ENCODE.value())
     comptime RESERVED_7 = Self(value = QueueFlagBits.RESERVED_7.value())
     comptime OPTICAL_FLOW = Self(value = QueueFlagBits.OPTICAL_FLOW.value())
+    comptime RESERVED_9 = Self(value = QueueFlagBits.RESERVED_9.value())
     comptime DATA_GRAPH = Self(value = QueueFlagBits.DATA_GRAPH.value())
     comptime RESERVED_11 = Self(value = QueueFlagBits.RESERVED_11.value())
     comptime RESERVED_12 = Self(value = QueueFlagBits.RESERVED_12.value())
@@ -1480,6 +1482,7 @@ struct QueueFlagBits(Equatable):
     comptime VIDEO_ENCODE = Self(value = 1 << 6)
     comptime RESERVED_7 = Self(value = 1 << 7)
     comptime OPTICAL_FLOW = Self(value = 1 << 8)
+    comptime RESERVED_9 = Self(value = 1 << 9)
     comptime DATA_GRAPH = Self(value = 1 << 10)
     comptime RESERVED_11 = Self(value = 1 << 11)
     comptime RESERVED_12 = Self(value = 1 << 12)
@@ -1825,7 +1828,7 @@ struct BufferUsageFlags(Equatable):
     comptime EXECUTION_GRAPH_SCRATCH = Self(value = BufferUsageFlagBits.EXECUTION_GRAPH_SCRATCH.value())
     comptime PUSH_DESCRIPTORS_DESCRIPTOR_BUFFER = Self(value = BufferUsageFlagBits.PUSH_DESCRIPTORS_DESCRIPTOR_BUFFER.value())
     comptime TILE_MEMORY = Self(value = BufferUsageFlagBits.TILE_MEMORY.value())
-    comptime RESERVED_28 = Self(value = BufferUsageFlagBits.RESERVED_28.value())
+    comptime DESCRIPTOR_HEAP = Self(value = BufferUsageFlagBits.DESCRIPTOR_HEAP.value())
 
 
 @register_passable("trivial")
@@ -1871,7 +1874,7 @@ struct BufferUsageFlagBits(Equatable):
     comptime EXECUTION_GRAPH_SCRATCH = Self(value = 1 << 25)
     comptime PUSH_DESCRIPTORS_DESCRIPTOR_BUFFER = Self(value = 1 << 26)
     comptime TILE_MEMORY = Self(value = 1 << 27)
-    comptime RESERVED_28 = Self(value = 1 << 28)
+    comptime DESCRIPTOR_HEAP = Self(value = 1 << 28)
 
 
 @register_passable("trivial")
@@ -2012,6 +2015,7 @@ struct ShaderStageFlags(Equatable):
     comptime CALLABLE = Self(value = ShaderStageFlagBits.CALLABLE.value())
     comptime SUBPASS_SHADING = Self(value = ShaderStageFlagBits.SUBPASS_SHADING.value())
     comptime RESERVED_15 = Self(value = ShaderStageFlagBits.RESERVED_15.value())
+    comptime RESERVED_16 = Self(value = ShaderStageFlagBits.RESERVED_16.value())
     comptime CLUSTER_CULLING = Self(value = ShaderStageFlagBits.CLUSTER_CULLING.value())
 
 
@@ -2047,6 +2051,7 @@ struct ShaderStageFlagBits(Equatable):
     comptime CALLABLE = Self(value = 1 << 13)
     comptime SUBPASS_SHADING = Self(value = 1 << 14)
     comptime RESERVED_15 = Self(value = 1 << 15)
+    comptime RESERVED_16 = Self(value = 1 << 16)
     comptime CLUSTER_CULLING = Self(value = 1 << 19)
 
 
@@ -2109,6 +2114,8 @@ struct ImageUsageFlags(Equatable):
     comptime VIDEO_ENCODE_DST = Self(value = ImageUsageFlagBits.VIDEO_ENCODE_DST.value())
     comptime VIDEO_ENCODE_SRC = Self(value = ImageUsageFlagBits.VIDEO_ENCODE_SRC.value())
     comptime VIDEO_ENCODE_DPB = Self(value = ImageUsageFlagBits.VIDEO_ENCODE_DPB.value())
+    comptime RESERVED_16 = Self(value = ImageUsageFlagBits.RESERVED_16.value())
+    comptime RESERVED_27 = Self(value = ImageUsageFlagBits.RESERVED_27.value())
     comptime INVOCATION_MASK = Self(value = ImageUsageFlagBits.INVOCATION_MASK.value())
     comptime ATTACHMENT_FEEDBACK_LOOP = Self(value = ImageUsageFlagBits.ATTACHMENT_FEEDBACK_LOOP.value())
     comptime SAMPLE_WEIGHT = Self(value = ImageUsageFlagBits.SAMPLE_WEIGHT.value())
@@ -2156,6 +2163,8 @@ struct ImageUsageFlagBits(Equatable):
     comptime VIDEO_ENCODE_DST = Self(value = 1 << 13)
     comptime VIDEO_ENCODE_SRC = Self(value = 1 << 14)
     comptime VIDEO_ENCODE_DPB = Self(value = 1 << 15)
+    comptime RESERVED_16 = Self(value = 1 << 16)
+    comptime RESERVED_27 = Self(value = 1 << 17)
     comptime INVOCATION_MASK = Self(value = 1 << 18)
     comptime ATTACHMENT_FEEDBACK_LOOP = Self(value = 1 << 19)
     comptime SAMPLE_WEIGHT = Self(value = 1 << 20)
@@ -2229,7 +2238,7 @@ struct ImageCreateFlags(Equatable):
     comptime SAMPLE_LOCATIONS_COMPATIBLE_DEPTH = Self(value = ImageCreateFlagBits.SAMPLE_LOCATIONS_COMPATIBLE_DEPTH.value())
     comptime CORNER_SAMPLED = Self(value = ImageCreateFlagBits.CORNER_SAMPLED.value())
     comptime SUBSAMPLED = Self(value = ImageCreateFlagBits.SUBSAMPLED.value())
-    comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = ImageCreateFlagBits.DESCRIPTOR_BUFFER_CAPTURE_REPLAY.value())
+    comptime DESCRIPTOR_HEAP_CAPTURE_REPLAY = Self(value = ImageCreateFlagBits.DESCRIPTOR_HEAP_CAPTURE_REPLAY.value())
     comptime N_2D_VIEW_COMPATIBLE = Self(value = ImageCreateFlagBits.N_2D_VIEW_COMPATIBLE.value())
     comptime MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED = Self(value = ImageCreateFlagBits.MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED.value())
     comptime VIDEO_PROFILE_INDEPENDENT = Self(value = ImageCreateFlagBits.VIDEO_PROFILE_INDEPENDENT.value())
@@ -2268,7 +2277,7 @@ struct ImageCreateFlagBits(Equatable):
     comptime SAMPLE_LOCATIONS_COMPATIBLE_DEPTH = Self(value = 1 << 12)
     comptime CORNER_SAMPLED = Self(value = 1 << 13)
     comptime SUBSAMPLED = Self(value = 1 << 14)
-    comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = 1 << 16)
+    comptime DESCRIPTOR_HEAP_CAPTURE_REPLAY = Self(value = 1 << 16)
     comptime N_2D_VIEW_COMPATIBLE = Self(value = 1 << 17)
     comptime MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED = Self(value = 1 << 18)
     comptime VIDEO_PROFILE_INDEPENDENT = Self(value = 1 << 20)
@@ -3301,6 +3310,8 @@ struct CommandBufferUsageFlags(Equatable):
     comptime ONE_TIME_SUBMIT = Self(value = CommandBufferUsageFlagBits.ONE_TIME_SUBMIT.value())
     comptime RENDER_PASS_CONTINUE = Self(value = CommandBufferUsageFlagBits.RENDER_PASS_CONTINUE.value())
     comptime SIMULTANEOUS_USE = Self(value = CommandBufferUsageFlagBits.SIMULTANEOUS_USE.value())
+    comptime RESERVED_3 = Self(value = CommandBufferUsageFlagBits.RESERVED_3.value())
+    comptime RESERVED_4 = Self(value = CommandBufferUsageFlagBits.RESERVED_4.value())
 
 
 @register_passable("trivial")
@@ -3322,6 +3333,8 @@ struct CommandBufferUsageFlagBits(Equatable):
     comptime ONE_TIME_SUBMIT = Self(value = 1 << 0)
     comptime RENDER_PASS_CONTINUE = Self(value = 1 << 1)
     comptime SIMULTANEOUS_USE = Self(value = 1 << 2)
+    comptime RESERVED_3 = Self(value = 1 << 3)
+    comptime RESERVED_4 = Self(value = 1 << 4)
 
 
 @register_passable("trivial")
@@ -3600,6 +3613,7 @@ struct ImageAspectFlags(Equatable):
     comptime MEMORY_PLANE_1 = Self(value = ImageAspectFlagBits.MEMORY_PLANE_1.value())
     comptime MEMORY_PLANE_2 = Self(value = ImageAspectFlagBits.MEMORY_PLANE_2.value())
     comptime MEMORY_PLANE_3 = Self(value = ImageAspectFlagBits.MEMORY_PLANE_3.value())
+    comptime RESERVED_11 = Self(value = ImageAspectFlagBits.RESERVED_11.value())
 
 
 @register_passable("trivial")
@@ -3630,6 +3644,7 @@ struct ImageAspectFlagBits(Equatable):
     comptime MEMORY_PLANE_1 = Self(value = 1 << 8)
     comptime MEMORY_PLANE_2 = Self(value = 1 << 9)
     comptime MEMORY_PLANE_3 = Self(value = 1 << 10)
+    comptime RESERVED_11 = Self(value = 1 << 11)
 
 
 @register_passable("trivial")
@@ -3811,8 +3826,7 @@ struct SubpassDescriptionFlags(Equatable):
 
     comptime PER_VIEW_ATTRIBUTES = Self(value = SubpassDescriptionFlagBits.PER_VIEW_ATTRIBUTES.value())
     comptime PER_VIEW_POSITION_X_ONLY = Self(value = SubpassDescriptionFlagBits.PER_VIEW_POSITION_X_ONLY.value())
-    comptime FRAGMENT_REGION = Self(value = SubpassDescriptionFlagBits.FRAGMENT_REGION.value())
-    comptime SHADER_RESOLVE = Self(value = SubpassDescriptionFlagBits.SHADER_RESOLVE.value())
+    comptime CUSTOM_RESOLVE = Self(value = SubpassDescriptionFlagBits.CUSTOM_RESOLVE.value())
     comptime ENABLE_LEGACY_DITHERING = Self(value = SubpassDescriptionFlagBits.ENABLE_LEGACY_DITHERING.value())
     comptime TILE_SHADING_APRON = Self(value = SubpassDescriptionFlagBits.TILE_SHADING_APRON.value())
 
@@ -3835,8 +3849,7 @@ struct SubpassDescriptionFlagBits(Equatable):
 
     comptime PER_VIEW_ATTRIBUTES = Self(value = 1 << 0)
     comptime PER_VIEW_POSITION_X_ONLY = Self(value = 1 << 1)
-    comptime FRAGMENT_REGION = Self(value = 1 << 2)
-    comptime SHADER_RESOLVE = Self(value = 1 << 3)
+    comptime CUSTOM_RESOLVE = Self(value = 1 << 3)
     comptime ENABLE_LEGACY_DITHERING = Self(value = 1 << 7)
     comptime TILE_SHADING_APRON = Self(value = 1 << 8)
 
@@ -4073,8 +4086,8 @@ struct AttachmentDescriptionFlags(Equatable):
         return self & other == other
 
     comptime MAY_ALIAS = Self(value = AttachmentDescriptionFlagBits.MAY_ALIAS.value())
-    comptime RESERVED_1 = Self(value = AttachmentDescriptionFlagBits.RESERVED_1.value())
-    comptime RESERVED_2 = Self(value = AttachmentDescriptionFlagBits.RESERVED_2.value())
+    comptime RESOLVE_SKIP_TRANSFER_FUNCTION = Self(value = AttachmentDescriptionFlagBits.RESOLVE_SKIP_TRANSFER_FUNCTION.value())
+    comptime RESOLVE_ENABLE_TRANSFER_FUNCTION = Self(value = AttachmentDescriptionFlagBits.RESOLVE_ENABLE_TRANSFER_FUNCTION.value())
 
 
 @register_passable("trivial")
@@ -4094,8 +4107,8 @@ struct AttachmentDescriptionFlagBits(Equatable):
         return AttachmentDescriptionFlags(value = self._value | other._value)
 
     comptime MAY_ALIAS = Self(value = 1 << 0)
-    comptime RESERVED_1 = Self(value = 1 << 1)
-    comptime RESERVED_2 = Self(value = 1 << 2)
+    comptime RESOLVE_SKIP_TRANSFER_FUNCTION = Self(value = 1 << 1)
+    comptime RESOLVE_ENABLE_TRANSFER_FUNCTION = Self(value = 1 << 2)
 
 
 @register_passable("trivial")
@@ -4498,7 +4511,6 @@ struct SubgroupFeatureFlags(Equatable):
     comptime SHUFFLE_RELATIVE = Self(value = SubgroupFeatureFlagBits.SHUFFLE_RELATIVE.value())
     comptime CLUSTERED = Self(value = SubgroupFeatureFlagBits.CLUSTERED.value())
     comptime QUAD = Self(value = SubgroupFeatureFlagBits.QUAD.value())
-    comptime PARTITIONED = Self(value = SubgroupFeatureFlagBits.PARTITIONED.value())
     comptime ROTATE = Self(value = SubgroupFeatureFlagBits.ROTATE.value())
     comptime ROTATE_CLUSTERED = Self(value = SubgroupFeatureFlagBits.ROTATE_CLUSTERED.value())
 
@@ -4527,7 +4539,6 @@ struct SubgroupFeatureFlagBits(Equatable):
     comptime SHUFFLE_RELATIVE = Self(value = 1 << 5)
     comptime CLUSTERED = Self(value = 1 << 6)
     comptime QUAD = Self(value = 1 << 7)
-    comptime PARTITIONED = Self(value = 1 << 8)
     comptime ROTATE = Self(value = 1 << 9)
     comptime ROTATE_CLUSTERED = Self(value = 1 << 10)
 
@@ -5072,6 +5083,7 @@ struct BuildAccelerationStructureFlagsKHR(Equatable):
     comptime ALLOW_DISABLE_OPACITY_MICROMAPS = Self(value = BuildAccelerationStructureFlagBitsKHR.ALLOW_DISABLE_OPACITY_MICROMAPS.value())
     comptime ALLOW_OPACITY_MICROMAP_DATA_UPDATE = Self(value = BuildAccelerationStructureFlagBitsKHR.ALLOW_OPACITY_MICROMAP_DATA_UPDATE.value())
     comptime ALLOW_DISPLACEMENT_MICROMAP_UPDATE = Self(value = BuildAccelerationStructureFlagBitsKHR.ALLOW_DISPLACEMENT_MICROMAP_UPDATE.value())
+    comptime RESERVED_10 = Self(value = BuildAccelerationStructureFlagBitsKHR.RESERVED_10.value())
     comptime ALLOW_DATA_ACCESS = Self(value = BuildAccelerationStructureFlagBitsKHR.ALLOW_DATA_ACCESS.value())
     comptime ALLOW_CLUSTER_OPACITY_MICROMAPS = Self(value = BuildAccelerationStructureFlagBitsKHR.ALLOW_CLUSTER_OPACITY_MICROMAPS.value())
 
@@ -5102,6 +5114,7 @@ struct BuildAccelerationStructureFlagBitsKHR(Equatable):
     comptime ALLOW_DISABLE_OPACITY_MICROMAPS = Self(value = 1 << 7)
     comptime ALLOW_OPACITY_MICROMAP_DATA_UPDATE = Self(value = 1 << 8)
     comptime ALLOW_DISPLACEMENT_MICROMAP_UPDATE = Self(value = 1 << 9)
+    comptime RESERVED_10 = Self(value = 1 << 10)
     comptime ALLOW_DATA_ACCESS = Self(value = 1 << 11)
     comptime ALLOW_CLUSTER_OPACITY_MICROMAPS = Self(value = 1 << 12)
 
@@ -5908,13 +5921,14 @@ struct AccessFlags2(Equatable):
     comptime RESERVED_50 = Self(value = AccessFlagBits2.RESERVED_50.value())
     comptime SHADER_TILE_ATTACHMENT_READ = Self(value = AccessFlagBits2.SHADER_TILE_ATTACHMENT_READ.value())
     comptime SHADER_TILE_ATTACHMENT_WRITE = Self(value = AccessFlagBits2.SHADER_TILE_ATTACHMENT_WRITE.value())
-    comptime RESERVED_55 = Self(value = AccessFlagBits2.RESERVED_55.value())
-    comptime RESERVED_56 = Self(value = AccessFlagBits2.RESERVED_56.value())
-    comptime RESERVED_57 = Self(value = AccessFlagBits2.RESERVED_57.value())
-    comptime RESERVED_58 = Self(value = AccessFlagBits2.RESERVED_58.value())
-    comptime RESERVED_59 = Self(value = AccessFlagBits2.RESERVED_59.value())
+    comptime MEMORY_DECOMPRESSION_READ = Self(value = AccessFlagBits2.MEMORY_DECOMPRESSION_READ.value())
+    comptime MEMORY_DECOMPRESSION_WRITE = Self(value = AccessFlagBits2.MEMORY_DECOMPRESSION_WRITE.value())
+    comptime SAMPLER_HEAP_READ = Self(value = AccessFlagBits2.SAMPLER_HEAP_READ.value())
+    comptime RESOURCE_HEAP_READ = Self(value = AccessFlagBits2.RESOURCE_HEAP_READ.value())
     comptime RESERVED_60 = Self(value = AccessFlagBits2.RESERVED_60.value())
     comptime RESERVED_61 = Self(value = AccessFlagBits2.RESERVED_61.value())
+    comptime RESERVED_62 = Self(value = AccessFlagBits2.RESERVED_62.value())
+    comptime RESERVED_63 = Self(value = AccessFlagBits2.RESERVED_63.value())
 
 
 @register_passable("trivial")
@@ -5981,13 +5995,14 @@ struct AccessFlagBits2(Equatable):
     comptime RESERVED_50 = Self(value = 1 << 50)
     comptime SHADER_TILE_ATTACHMENT_READ = Self(value = 1 << 51)
     comptime SHADER_TILE_ATTACHMENT_WRITE = Self(value = 1 << 52)
-    comptime RESERVED_55 = Self(value = 1 << 55)
-    comptime RESERVED_56 = Self(value = 1 << 56)
-    comptime RESERVED_57 = Self(value = 1 << 57)
-    comptime RESERVED_58 = Self(value = 1 << 58)
-    comptime RESERVED_59 = Self(value = 1 << 59)
+    comptime MEMORY_DECOMPRESSION_READ = Self(value = 1 << 55)
+    comptime MEMORY_DECOMPRESSION_WRITE = Self(value = 1 << 56)
+    comptime SAMPLER_HEAP_READ = Self(value = 1 << 57)
+    comptime RESOURCE_HEAP_READ = Self(value = 1 << 58)
     comptime RESERVED_60 = Self(value = 1 << 60)
     comptime RESERVED_61 = Self(value = 1 << 61)
+    comptime RESERVED_62 = Self(value = 1 << 62)
+    comptime RESERVED_63 = Self(value = 1 << 63)
 
 
 @register_passable("trivial")
@@ -6075,9 +6090,11 @@ struct PipelineStageFlags2(Equatable):
     comptime DATA_GRAPH = Self(value = PipelineStageFlagBits2.DATA_GRAPH.value())
     comptime RESERVED_43 = Self(value = PipelineStageFlagBits2.RESERVED_43.value())
     comptime CONVERT_COOPERATIVE_VECTOR_MATRIX = Self(value = PipelineStageFlagBits2.CONVERT_COOPERATIVE_VECTOR_MATRIX.value())
-    comptime RESERVED_45 = Self(value = PipelineStageFlagBits2.RESERVED_45.value())
-    comptime RESERVED_46 = Self(value = PipelineStageFlagBits2.RESERVED_46.value())
+    comptime MEMORY_DECOMPRESSION = Self(value = PipelineStageFlagBits2.MEMORY_DECOMPRESSION.value())
+    comptime COPY_INDIRECT = Self(value = PipelineStageFlagBits2.COPY_INDIRECT.value())
     comptime RESERVED_47 = Self(value = PipelineStageFlagBits2.RESERVED_47.value())
+    comptime RESERVED_48 = Self(value = PipelineStageFlagBits2.RESERVED_48.value())
+    comptime RESERVED_49 = Self(value = PipelineStageFlagBits2.RESERVED_49.value())
 
 
 @register_passable("trivial")
@@ -6138,9 +6155,11 @@ struct PipelineStageFlagBits2(Equatable):
     comptime DATA_GRAPH = Self(value = 1 << 42)
     comptime RESERVED_43 = Self(value = 1 << 43)
     comptime CONVERT_COOPERATIVE_VECTOR_MATRIX = Self(value = 1 << 44)
-    comptime RESERVED_45 = Self(value = 1 << 45)
-    comptime RESERVED_46 = Self(value = 1 << 46)
+    comptime MEMORY_DECOMPRESSION = Self(value = 1 << 45)
+    comptime COPY_INDIRECT = Self(value = 1 << 46)
     comptime RESERVED_47 = Self(value = 1 << 47)
+    comptime RESERVED_48 = Self(value = 1 << 48)
+    comptime RESERVED_49 = Self(value = 1 << 49)
 
 
 @register_passable("trivial")
@@ -6352,21 +6371,23 @@ struct FormatFeatureFlags2(Equatable):
     comptime OPTICAL_FLOW_VECTOR = Self(value = FormatFeatureFlagBits2.OPTICAL_FLOW_VECTOR.value())
     comptime OPTICAL_FLOW_COST = Self(value = FormatFeatureFlagBits2.OPTICAL_FLOW_COST.value())
     comptime TENSOR_IMAGE_ALIASING = Self(value = FormatFeatureFlagBits2.TENSOR_IMAGE_ALIASING.value())
+    comptime RESERVED_44 = Self(value = FormatFeatureFlagBits2.RESERVED_44.value())
     comptime HOST_IMAGE_TRANSFER = Self(value = FormatFeatureFlagBits2.HOST_IMAGE_TRANSFER.value())
     comptime RESERVED_47 = Self(value = FormatFeatureFlagBits2.RESERVED_47.value())
     comptime TENSOR_DATA_GRAPH = Self(value = FormatFeatureFlagBits2.TENSOR_DATA_GRAPH.value())
     comptime VIDEO_ENCODE_QUANTIZATION_DELTA_MAP = Self(value = FormatFeatureFlagBits2.VIDEO_ENCODE_QUANTIZATION_DELTA_MAP.value())
     comptime VIDEO_ENCODE_EMPHASIS_MAP = Self(value = FormatFeatureFlagBits2.VIDEO_ENCODE_EMPHASIS_MAP.value())
     comptime ACCELERATION_STRUCTURE_RADIUS_BUFFER = Self(value = FormatFeatureFlagBits2.ACCELERATION_STRUCTURE_RADIUS_BUFFER.value())
-    comptime RESERVED_52 = Self(value = FormatFeatureFlagBits2.RESERVED_52.value())
-    comptime RESERVED_53 = Self(value = FormatFeatureFlagBits2.RESERVED_53.value())
-    comptime RESERVED_54 = Self(value = FormatFeatureFlagBits2.RESERVED_54.value())
-    comptime RESERVED_55 = Self(value = FormatFeatureFlagBits2.RESERVED_55.value())
+    comptime DEPTH_COPY_ON_COMPUTE_QUEUE = Self(value = FormatFeatureFlagBits2.DEPTH_COPY_ON_COMPUTE_QUEUE.value())
+    comptime DEPTH_COPY_ON_TRANSFER_QUEUE = Self(value = FormatFeatureFlagBits2.DEPTH_COPY_ON_TRANSFER_QUEUE.value())
+    comptime STENCIL_COPY_ON_COMPUTE_QUEUE = Self(value = FormatFeatureFlagBits2.STENCIL_COPY_ON_COMPUTE_QUEUE.value())
+    comptime STENCIL_COPY_ON_TRANSFER_QUEUE = Self(value = FormatFeatureFlagBits2.STENCIL_COPY_ON_TRANSFER_QUEUE.value())
     comptime RESERVED_56 = Self(value = FormatFeatureFlagBits2.RESERVED_56.value())
     comptime RESERVED_57 = Self(value = FormatFeatureFlagBits2.RESERVED_57.value())
     comptime RESERVED_58 = Self(value = FormatFeatureFlagBits2.RESERVED_58.value())
-    comptime RESERVED_59 = Self(value = FormatFeatureFlagBits2.RESERVED_59.value())
+    comptime COPY_IMAGE_INDIRECT_DST = Self(value = FormatFeatureFlagBits2.COPY_IMAGE_INDIRECT_DST.value())
     comptime RESERVED_60 = Self(value = FormatFeatureFlagBits2.RESERVED_60.value())
+    comptime RESERVED_61 = Self(value = FormatFeatureFlagBits2.RESERVED_61.value())
 
 
 @register_passable("trivial")
@@ -6429,21 +6450,23 @@ struct FormatFeatureFlagBits2(Equatable):
     comptime OPTICAL_FLOW_VECTOR = Self(value = 1 << 41)
     comptime OPTICAL_FLOW_COST = Self(value = 1 << 42)
     comptime TENSOR_IMAGE_ALIASING = Self(value = 1 << 43)
+    comptime RESERVED_44 = Self(value = 1 << 44)
     comptime HOST_IMAGE_TRANSFER = Self(value = 1 << 46)
     comptime RESERVED_47 = Self(value = 1 << 47)
     comptime TENSOR_DATA_GRAPH = Self(value = 1 << 48)
     comptime VIDEO_ENCODE_QUANTIZATION_DELTA_MAP = Self(value = 1 << 49)
     comptime VIDEO_ENCODE_EMPHASIS_MAP = Self(value = 1 << 50)
     comptime ACCELERATION_STRUCTURE_RADIUS_BUFFER = Self(value = 1 << 51)
-    comptime RESERVED_52 = Self(value = 1 << 52)
-    comptime RESERVED_53 = Self(value = 1 << 53)
-    comptime RESERVED_54 = Self(value = 1 << 54)
-    comptime RESERVED_55 = Self(value = 1 << 55)
+    comptime DEPTH_COPY_ON_COMPUTE_QUEUE = Self(value = 1 << 52)
+    comptime DEPTH_COPY_ON_TRANSFER_QUEUE = Self(value = 1 << 53)
+    comptime STENCIL_COPY_ON_COMPUTE_QUEUE = Self(value = 1 << 54)
+    comptime STENCIL_COPY_ON_TRANSFER_QUEUE = Self(value = 1 << 55)
     comptime RESERVED_56 = Self(value = 1 << 56)
     comptime RESERVED_57 = Self(value = 1 << 57)
     comptime RESERVED_58 = Self(value = 1 << 58)
-    comptime RESERVED_59 = Self(value = 1 << 59)
+    comptime COPY_IMAGE_INDIRECT_DST = Self(value = 1 << 59)
     comptime RESERVED_60 = Self(value = 1 << 60)
+    comptime RESERVED_61 = Self(value = 1 << 61)
 
 
 @register_passable("trivial")
@@ -6494,9 +6517,9 @@ struct RenderingFlags(Equatable):
     comptime RESUMING = Self(value = RenderingFlagBits.RESUMING.value())
     comptime ENABLE_LEGACY_DITHERING = Self(value = RenderingFlagBits.ENABLE_LEGACY_DITHERING.value())
     comptime PER_LAYER_FRAGMENT_DENSITY = Self(value = RenderingFlagBits.PER_LAYER_FRAGMENT_DENSITY.value())
-    comptime RESERVED_6 = Self(value = RenderingFlagBits.RESERVED_6.value())
-    comptime RESERVED_7 = Self(value = RenderingFlagBits.RESERVED_7.value())
-    comptime RESERVED_8 = Self(value = RenderingFlagBits.RESERVED_8.value())
+    comptime FRAGMENT_REGION = Self(value = RenderingFlagBits.FRAGMENT_REGION.value())
+    comptime CUSTOM_RESOLVE = Self(value = RenderingFlagBits.CUSTOM_RESOLVE.value())
+    comptime LOCAL_READ_CONCURRENT_ACCESS_CONTROL = Self(value = RenderingFlagBits.LOCAL_READ_CONCURRENT_ACCESS_CONTROL.value())
     comptime RESERVED_9 = Self(value = RenderingFlagBits.RESERVED_9.value())
 
 
@@ -6521,18 +6544,18 @@ struct RenderingFlagBits(Equatable):
     comptime RESUMING = Self(value = 1 << 2)
     comptime ENABLE_LEGACY_DITHERING = Self(value = 1 << 3)
     comptime PER_LAYER_FRAGMENT_DENSITY = Self(value = 1 << 5)
-    comptime RESERVED_6 = Self(value = 1 << 6)
-    comptime RESERVED_7 = Self(value = 1 << 7)
-    comptime RESERVED_8 = Self(value = 1 << 8)
+    comptime FRAGMENT_REGION = Self(value = 1 << 6)
+    comptime CUSTOM_RESOLVE = Self(value = 1 << 7)
+    comptime LOCAL_READ_CONCURRENT_ACCESS_CONTROL = Self(value = 1 << 8)
     comptime RESERVED_9 = Self(value = 1 << 9)
 
 
 @register_passable("trivial")
-struct MemoryDecompressionMethodFlagsNV(Equatable):
+struct MemoryDecompressionMethodFlagsEXT(Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: MemoryDecompressionMethodFlagBitsNV):
+    fn __init__(out self, *bits: MemoryDecompressionMethodFlagBitsEXT):
         self._value = 0
         for bit in bits:
             self._value |= bit.value()
@@ -6549,32 +6572,32 @@ struct MemoryDecompressionMethodFlagsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MemoryDecompressionMethodFlagsNV) -> Self:
+    fn __or__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MemoryDecompressionMethodFlagsNV) -> Self:
+    fn __ror__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __and__(self, other: MemoryDecompressionMethodFlagsNV) -> Self:
+    fn __and__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MemoryDecompressionMethodFlagsNV) -> Self:
+    fn __rand__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __contains__(self, other: MemoryDecompressionMethodFlagsNV) -> Bool:
+    fn __contains__(self, other: MemoryDecompressionMethodFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: MemoryDecompressionMethodFlagsNV) -> Bool:
+    fn is_subset(self, other: MemoryDecompressionMethodFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MemoryDecompressionMethodFlagsNV) -> Bool:
+    fn is_superset(self, other: MemoryDecompressionMethodFlagsEXT) -> Bool:
         return self & other == other
 
-    comptime GDEFLATE_1_0 = Self(value = MemoryDecompressionMethodFlagBitsNV.GDEFLATE_1_0.value())
+    comptime GDEFLATE_1_0 = Self(value = MemoryDecompressionMethodFlagBitsEXT.GDEFLATE_1_0.value())
 
 
 @register_passable("trivial")
-struct MemoryDecompressionMethodFlagBitsNV(Equatable):
+struct MemoryDecompressionMethodFlagBitsEXT(Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):
@@ -6586,8 +6609,8 @@ struct MemoryDecompressionMethodFlagBitsNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> MemoryDecompressionMethodFlagsNV:
-        return MemoryDecompressionMethodFlagsNV(value = self._value | other._value)
+    fn __or__(self, other: Self) -> MemoryDecompressionMethodFlagsEXT:
+        return MemoryDecompressionMethodFlagsEXT(value = self._value | other._value)
 
     comptime GDEFLATE_1_0 = Self(value = 1 << 0)
 
@@ -7000,17 +7023,16 @@ struct PipelineCreateFlags2(Equatable):
     comptime RAY_TRACING_ALLOW_SPHERES_AND_LINEAR_SWEPT_SPHERES = Self(value = PipelineCreateFlagBits2.RAY_TRACING_ALLOW_SPHERES_AND_LINEAR_SWEPT_SPHERES.value())
     comptime ENABLE_LEGACY_DITHERING = Self(value = PipelineCreateFlagBits2.ENABLE_LEGACY_DITHERING.value())
     comptime RESERVED_35 = Self(value = PipelineCreateFlagBits2.RESERVED_35.value())
-    comptime PIPELINE_CREATE_RESERVED_36 = Self(value = PipelineCreateFlagBits2.PIPELINE_CREATE_RESERVED_36.value())
+    comptime DESCRIPTOR_HEAP = Self(value = PipelineCreateFlagBits2.DESCRIPTOR_HEAP.value())
     comptime DISALLOW_OPACITY_MICROMAP = Self(value = PipelineCreateFlagBits2.DISALLOW_OPACITY_MICROMAP.value())
-    comptime PIPELINE_CREATE_RESERVED_39 = Self(value = PipelineCreateFlagBits2.PIPELINE_CREATE_RESERVED_39.value())
     comptime PER_LAYER_FRAGMENT_DENSITY = Self(value = PipelineCreateFlagBits2.PER_LAYER_FRAGMENT_DENSITY.value())
     comptime RESERVED_41 = Self(value = PipelineCreateFlagBits2.RESERVED_41.value())
-    comptime RESERVED_42 = Self(value = PipelineCreateFlagBits2.RESERVED_42.value())
-    comptime RESERVED_43 = Self(value = PipelineCreateFlagBits2.RESERVED_43.value())
+    comptime N_64_BIT_INDEXING = Self(value = PipelineCreateFlagBits2.N_64_BIT_INDEXING.value())
     comptime PIPELINE_CREATE_RESERVED_44 = Self(value = PipelineCreateFlagBits2.PIPELINE_CREATE_RESERVED_44.value())
     comptime RESERVED_45 = Self(value = PipelineCreateFlagBits2.RESERVED_45.value())
     comptime RESERVED_46 = Self(value = PipelineCreateFlagBits2.RESERVED_46.value())
     comptime RESERVED_47 = Self(value = PipelineCreateFlagBits2.RESERVED_47.value())
+    comptime RESERVED_48 = Self(value = PipelineCreateFlagBits2.RESERVED_48.value())
 
 
 @register_passable("trivial")
@@ -7065,17 +7087,16 @@ struct PipelineCreateFlagBits2(Equatable):
     comptime RAY_TRACING_ALLOW_SPHERES_AND_LINEAR_SWEPT_SPHERES = Self(value = 1 << 33)
     comptime ENABLE_LEGACY_DITHERING = Self(value = 1 << 34)
     comptime RESERVED_35 = Self(value = 1 << 35)
-    comptime PIPELINE_CREATE_RESERVED_36 = Self(value = 1 << 36)
+    comptime DESCRIPTOR_HEAP = Self(value = 1 << 36)
     comptime DISALLOW_OPACITY_MICROMAP = Self(value = 1 << 37)
-    comptime PIPELINE_CREATE_RESERVED_39 = Self(value = 1 << 39)
     comptime PER_LAYER_FRAGMENT_DENSITY = Self(value = 1 << 40)
     comptime RESERVED_41 = Self(value = 1 << 41)
-    comptime RESERVED_42 = Self(value = 1 << 42)
-    comptime RESERVED_43 = Self(value = 1 << 43)
+    comptime N_64_BIT_INDEXING = Self(value = 1 << 43)
     comptime PIPELINE_CREATE_RESERVED_44 = Self(value = 1 << 44)
     comptime RESERVED_45 = Self(value = 1 << 45)
     comptime RESERVED_46 = Self(value = 1 << 46)
     comptime RESERVED_47 = Self(value = 1 << 47)
+    comptime RESERVED_48 = Self(value = 1 << 48)
 
 
 @register_passable("trivial")
@@ -7148,14 +7169,15 @@ struct BufferUsageFlags2(Equatable):
     comptime EXECUTION_GRAPH_SCRATCH = Self(value = BufferUsageFlagBits2.EXECUTION_GRAPH_SCRATCH.value())
     comptime PUSH_DESCRIPTORS_DESCRIPTOR_BUFFER = Self(value = BufferUsageFlagBits2.PUSH_DESCRIPTORS_DESCRIPTOR_BUFFER.value())
     comptime TILE_MEMORY = Self(value = BufferUsageFlagBits2.TILE_MEMORY.value())
-    comptime RESERVED_28 = Self(value = BufferUsageFlagBits2.RESERVED_28.value())
+    comptime DESCRIPTOR_HEAP = Self(value = BufferUsageFlagBits2.DESCRIPTOR_HEAP.value())
     comptime DATA_GRAPH_FOREIGN_DESCRIPTOR = Self(value = BufferUsageFlagBits2.DATA_GRAPH_FOREIGN_DESCRIPTOR.value())
     comptime PREPROCESS_BUFFER = Self(value = BufferUsageFlagBits2.PREPROCESS_BUFFER.value())
-    comptime RESERVED_32 = Self(value = BufferUsageFlagBits2.RESERVED_32.value())
+    comptime MEMORY_DECOMPRESSION = Self(value = BufferUsageFlagBits2.MEMORY_DECOMPRESSION.value())
     comptime COMPRESSED_DATA_DGF1 = Self(value = BufferUsageFlagBits2.COMPRESSED_DATA_DGF1.value())
     comptime RESERVED_34 = Self(value = BufferUsageFlagBits2.RESERVED_34.value())
     comptime RESERVED_35 = Self(value = BufferUsageFlagBits2.RESERVED_35.value())
     comptime RESERVED_36 = Self(value = BufferUsageFlagBits2.RESERVED_36.value())
+    comptime RESERVED_37 = Self(value = BufferUsageFlagBits2.RESERVED_37.value())
 
 
 @register_passable("trivial")
@@ -7201,14 +7223,84 @@ struct BufferUsageFlagBits2(Equatable):
     comptime EXECUTION_GRAPH_SCRATCH = Self(value = 1 << 25)
     comptime PUSH_DESCRIPTORS_DESCRIPTOR_BUFFER = Self(value = 1 << 26)
     comptime TILE_MEMORY = Self(value = 1 << 27)
-    comptime RESERVED_28 = Self(value = 1 << 28)
+    comptime DESCRIPTOR_HEAP = Self(value = 1 << 28)
     comptime DATA_GRAPH_FOREIGN_DESCRIPTOR = Self(value = 1 << 29)
     comptime PREPROCESS_BUFFER = Self(value = 1 << 31)
-    comptime RESERVED_32 = Self(value = 1 << 32)
+    comptime MEMORY_DECOMPRESSION = Self(value = 1 << 32)
     comptime COMPRESSED_DATA_DGF1 = Self(value = 1 << 33)
     comptime RESERVED_34 = Self(value = 1 << 34)
     comptime RESERVED_35 = Self(value = 1 << 35)
     comptime RESERVED_36 = Self(value = 1 << 36)
+    comptime RESERVED_37 = Self(value = 1 << 37)
+
+
+@register_passable("trivial")
+struct AddressCopyFlagsKHR(Equatable):
+    var _value: UInt32
+
+    @implicit
+    fn __init__(out self, *bits: AddressCopyFlagBitsKHR):
+        self._value = 0
+        for bit in bits:
+            self._value |= bit.value()
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: AddressCopyFlagsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __ror__(self, other: AddressCopyFlagsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: AddressCopyFlagsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: AddressCopyFlagsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __contains__(self, other: AddressCopyFlagsKHR) -> Bool:
+        return self.is_superset(other)
+
+    fn is_subset(self, other: AddressCopyFlagsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: AddressCopyFlagsKHR) -> Bool:
+        return self & other == other
+
+    comptime DEVICE_LOCAL = Self(value = AddressCopyFlagBitsKHR.DEVICE_LOCAL.value())
+    comptime SPARSE = Self(value = AddressCopyFlagBitsKHR.SPARSE.value())
+    comptime PROTECTED = Self(value = AddressCopyFlagBitsKHR.PROTECTED.value())
+
+
+@register_passable("trivial")
+struct AddressCopyFlagBitsKHR(Equatable):
+    var _value: UInt32
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: Self) -> AddressCopyFlagsKHR:
+        return AddressCopyFlagsKHR(value = self._value | other._value)
+
+    comptime DEVICE_LOCAL = Self(value = 1 << 0)
+    comptime SPARSE = Self(value = 1 << 1)
+    comptime PROTECTED = Self(value = 1 << 2)
 
 
 @register_passable("trivial")
@@ -7257,7 +7349,7 @@ struct TensorCreateFlagsARM(Equatable):
     comptime MUTABLE_FORMAT = Self(value = TensorCreateFlagBitsARM.MUTABLE_FORMAT.value())
     comptime PROTECTED = Self(value = TensorCreateFlagBitsARM.PROTECTED.value())
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = TensorCreateFlagBitsARM.DESCRIPTOR_BUFFER_CAPTURE_REPLAY.value())
-    comptime RESERVED_3 = Self(value = TensorCreateFlagBitsARM.RESERVED_3.value())
+    comptime DESCRIPTOR_HEAP_CAPTURE_REPLAY = Self(value = TensorCreateFlagBitsARM.DESCRIPTOR_HEAP_CAPTURE_REPLAY.value())
 
 
 @register_passable("trivial")
@@ -7279,7 +7371,7 @@ struct TensorCreateFlagBitsARM(Equatable):
     comptime MUTABLE_FORMAT = Self(value = 1 << 0)
     comptime PROTECTED = Self(value = 1 << 1)
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = 1 << 2)
-    comptime RESERVED_3 = Self(value = 1 << 3)
+    comptime DESCRIPTOR_HEAP_CAPTURE_REPLAY = Self(value = 1 << 3)
 
 
 @register_passable("trivial")
@@ -7754,6 +7846,91 @@ struct VideoEncodeRgbChromaOffsetFlagBitsVALVE(Equatable):
 
 
 @register_passable("trivial")
+struct SpirvResourceTypeFlagsEXT(Equatable):
+    var _value: UInt32
+
+    @implicit
+    fn __init__(out self, *bits: SpirvResourceTypeFlagBitsEXT):
+        self._value = 0
+        for bit in bits:
+            self._value |= bit.value()
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __ror__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __contains__(self, other: SpirvResourceTypeFlagsEXT) -> Bool:
+        return self.is_superset(other)
+
+    fn is_subset(self, other: SpirvResourceTypeFlagsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SpirvResourceTypeFlagsEXT) -> Bool:
+        return self & other == other
+
+    comptime ALL = Self(value = SpirvResourceTypeFlagBitsEXT.ALL.value())
+    comptime SAMPLER = Self(value = SpirvResourceTypeFlagBitsEXT.SAMPLER.value())
+    comptime SAMPLED_IMAGE = Self(value = SpirvResourceTypeFlagBitsEXT.SAMPLED_IMAGE.value())
+    comptime READ_ONLY_IMAGE = Self(value = SpirvResourceTypeFlagBitsEXT.READ_ONLY_IMAGE.value())
+    comptime READ_WRITE_IMAGE = Self(value = SpirvResourceTypeFlagBitsEXT.READ_WRITE_IMAGE.value())
+    comptime COMBINED_SAMPLED_IMAGE = Self(value = SpirvResourceTypeFlagBitsEXT.COMBINED_SAMPLED_IMAGE.value())
+    comptime UNIFORM_BUFFER = Self(value = SpirvResourceTypeFlagBitsEXT.UNIFORM_BUFFER.value())
+    comptime READ_ONLY_STORAGE_BUFFER = Self(value = SpirvResourceTypeFlagBitsEXT.READ_ONLY_STORAGE_BUFFER.value())
+    comptime READ_WRITE_STORAGE_BUFFER = Self(value = SpirvResourceTypeFlagBitsEXT.READ_WRITE_STORAGE_BUFFER.value())
+    comptime ACCELERATION_STRUCTURE = Self(value = SpirvResourceTypeFlagBitsEXT.ACCELERATION_STRUCTURE.value())
+    comptime TENSOR = Self(value = SpirvResourceTypeFlagBitsEXT.TENSOR.value())
+
+
+@register_passable("trivial")
+struct SpirvResourceTypeFlagBitsEXT(Equatable):
+    var _value: UInt32
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: Self) -> SpirvResourceTypeFlagsEXT:
+        return SpirvResourceTypeFlagsEXT(value = self._value | other._value)
+
+    comptime ALL = Self(value = 2147483647)
+    comptime SAMPLER = Self(value = 1 << 0)
+    comptime SAMPLED_IMAGE = Self(value = 1 << 1)
+    comptime READ_ONLY_IMAGE = Self(value = 1 << 2)
+    comptime READ_WRITE_IMAGE = Self(value = 1 << 3)
+    comptime COMBINED_SAMPLED_IMAGE = Self(value = 1 << 4)
+    comptime UNIFORM_BUFFER = Self(value = 1 << 5)
+    comptime READ_ONLY_STORAGE_BUFFER = Self(value = 1 << 6)
+    comptime READ_WRITE_STORAGE_BUFFER = Self(value = 1 << 7)
+    comptime ACCELERATION_STRUCTURE = Self(value = 1 << 8)
+    comptime TENSOR = Self(value = 1 << 9)
+
+
+@register_passable("trivial")
 struct CompositeAlphaFlagsKHR(Equatable):
     var _value: UInt32
 
@@ -8027,6 +8204,7 @@ struct SwapchainCreateFlagsKHR(Equatable):
     comptime PRESENT_ID_2 = Self(value = SwapchainCreateFlagBitsKHR.PRESENT_ID_2.value())
     comptime PRESENT_WAIT_2 = Self(value = SwapchainCreateFlagBitsKHR.PRESENT_WAIT_2.value())
     comptime RESERVED_8 = Self(value = SwapchainCreateFlagBitsKHR.RESERVED_8.value())
+    comptime PRESENT_TIMING = Self(value = SwapchainCreateFlagBitsKHR.PRESENT_TIMING.value())
 
 
 @register_passable("trivial")
@@ -8053,6 +8231,7 @@ struct SwapchainCreateFlagBitsKHR(Equatable):
     comptime PRESENT_ID_2 = Self(value = 1 << 6)
     comptime PRESENT_WAIT_2 = Self(value = 1 << 7)
     comptime RESERVED_8 = Self(value = 1 << 8)
+    comptime PRESENT_TIMING = Self(value = 1 << 9)
 
 
 @register_passable("trivial")
@@ -9649,7 +9828,7 @@ struct ExternalMemoryHandleTypeFlags(Equatable):
     comptime RDMA_ADDRESS = Self(value = ExternalMemoryHandleTypeFlagBits.RDMA_ADDRESS.value())
     comptime SCI_BUF = Self(value = ExternalMemoryHandleTypeFlagBits.SCI_BUF.value())
     comptime SCREEN_BUFFER = Self(value = ExternalMemoryHandleTypeFlagBits.SCREEN_BUFFER.value())
-    comptime N_590 = Self(value = ExternalMemoryHandleTypeFlagBits.N_590.value())
+    comptime OH_NATIVE_BUFFER = Self(value = ExternalMemoryHandleTypeFlagBits.OH_NATIVE_BUFFER.value())
     comptime MTLBUFFER = Self(value = ExternalMemoryHandleTypeFlagBits.MTLBUFFER.value())
     comptime MTLTEXTURE = Self(value = ExternalMemoryHandleTypeFlagBits.MTLTEXTURE.value())
     comptime MTLHEAP = Self(value = ExternalMemoryHandleTypeFlagBits.MTLHEAP.value())
@@ -9686,7 +9865,7 @@ struct ExternalMemoryHandleTypeFlagBits(Equatable):
     comptime RDMA_ADDRESS = Self(value = 1 << 12)
     comptime SCI_BUF = Self(value = 1 << 13)
     comptime SCREEN_BUFFER = Self(value = 1 << 14)
-    comptime N_590 = Self(value = 1 << 15)
+    comptime OH_NATIVE_BUFFER = Self(value = 1 << 15)
     comptime MTLBUFFER = Self(value = 1 << 16)
     comptime MTLTEXTURE = Self(value = 1 << 17)
     comptime MTLHEAP = Self(value = 1 << 18)
@@ -11181,7 +11360,7 @@ struct ResolveModeFlags(Equatable):
     comptime MIN = Self(value = ResolveModeFlagBits.MIN.value())
     comptime MAX = Self(value = ResolveModeFlagBits.MAX.value())
     comptime EXTERNAL_FORMAT_DOWNSAMPLE = Self(value = ResolveModeFlagBits.EXTERNAL_FORMAT_DOWNSAMPLE.value())
-    comptime RESERVED_5 = Self(value = ResolveModeFlagBits.RESERVED_5.value())
+    comptime CUSTOM = Self(value = ResolveModeFlagBits.CUSTOM.value())
 
 
 @register_passable("trivial")
@@ -11206,7 +11385,7 @@ struct ResolveModeFlagBits(Equatable):
     comptime MIN = Self(value = 1 << 2)
     comptime MAX = Self(value = 1 << 3)
     comptime EXTERNAL_FORMAT_DOWNSAMPLE = Self(value = 1 << 4)
-    comptime RESERVED_5 = Self(value = 1 << 5)
+    comptime CUSTOM = Self(value = 1 << 5)
 
 
 @register_passable("trivial")
@@ -12141,6 +12320,142 @@ struct ExportMetalObjectTypeFlagBitsEXT(Equatable):
 
 
 @register_passable("trivial")
+struct RenderingAttachmentFlagsKHR(Equatable):
+    var _value: UInt32
+
+    @implicit
+    fn __init__(out self, *bits: RenderingAttachmentFlagBitsKHR):
+        self._value = 0
+        for bit in bits:
+            self._value |= bit.value()
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: RenderingAttachmentFlagsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __ror__(self, other: RenderingAttachmentFlagsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: RenderingAttachmentFlagsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: RenderingAttachmentFlagsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __contains__(self, other: RenderingAttachmentFlagsKHR) -> Bool:
+        return self.is_superset(other)
+
+    fn is_subset(self, other: RenderingAttachmentFlagsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: RenderingAttachmentFlagsKHR) -> Bool:
+        return self & other == other
+
+    comptime INPUT_ATTACHMENT_FEEDBACK = Self(value = RenderingAttachmentFlagBitsKHR.INPUT_ATTACHMENT_FEEDBACK.value())
+    comptime RESOLVE_SKIP_TRANSFER_FUNCTION = Self(value = RenderingAttachmentFlagBitsKHR.RESOLVE_SKIP_TRANSFER_FUNCTION.value())
+    comptime RESOLVE_ENABLE_TRANSFER_FUNCTION = Self(value = RenderingAttachmentFlagBitsKHR.RESOLVE_ENABLE_TRANSFER_FUNCTION.value())
+
+
+@register_passable("trivial")
+struct RenderingAttachmentFlagBitsKHR(Equatable):
+    var _value: UInt32
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: Self) -> RenderingAttachmentFlagsKHR:
+        return RenderingAttachmentFlagsKHR(value = self._value | other._value)
+
+    comptime INPUT_ATTACHMENT_FEEDBACK = Self(value = 1 << 0)
+    comptime RESOLVE_SKIP_TRANSFER_FUNCTION = Self(value = 1 << 1)
+    comptime RESOLVE_ENABLE_TRANSFER_FUNCTION = Self(value = 1 << 2)
+
+
+@register_passable("trivial")
+struct ResolveImageFlagsKHR(Equatable):
+    var _value: UInt32
+
+    @implicit
+    fn __init__(out self, *bits: ResolveImageFlagBitsKHR):
+        self._value = 0
+        for bit in bits:
+            self._value |= bit.value()
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: ResolveImageFlagsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __ror__(self, other: ResolveImageFlagsKHR) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: ResolveImageFlagsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: ResolveImageFlagsKHR) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __contains__(self, other: ResolveImageFlagsKHR) -> Bool:
+        return self.is_superset(other)
+
+    fn is_subset(self, other: ResolveImageFlagsKHR) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: ResolveImageFlagsKHR) -> Bool:
+        return self & other == other
+
+    comptime SKIP_TRANSFER_FUNCTION = Self(value = ResolveImageFlagBitsKHR.SKIP_TRANSFER_FUNCTION.value())
+    comptime ENABLE_TRANSFER_FUNCTION = Self(value = ResolveImageFlagBitsKHR.ENABLE_TRANSFER_FUNCTION.value())
+
+
+@register_passable("trivial")
+struct ResolveImageFlagBitsKHR(Equatable):
+    var _value: UInt32
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: Self) -> ResolveImageFlagsKHR:
+        return ResolveImageFlagsKHR(value = self._value | other._value)
+
+    comptime SKIP_TRANSFER_FUNCTION = Self(value = 1 << 0)
+    comptime ENABLE_TRANSFER_FUNCTION = Self(value = 1 << 1)
+
+
+@register_passable("trivial")
 struct DeviceAddressBindingFlagsEXT(Equatable):
     var _value: UInt32
 
@@ -12747,12 +13062,9 @@ struct ShaderCreateFlagsEXT(Equatable):
     comptime INDIRECT_BINDABLE = Self(value = ShaderCreateFlagBitsEXT.INDIRECT_BINDABLE.value())
     comptime RESERVED_8 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_8.value())
     comptime RESERVED_9 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_9.value())
-    comptime RESERVED_10 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_10.value())
-    comptime RESERVED_11 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_11.value())
+    comptime DESCRIPTOR_HEAP = Self(value = ShaderCreateFlagBitsEXT.DESCRIPTOR_HEAP.value())
     comptime RESERVED_12 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_12.value())
-    comptime RESERVED_13 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_13.value())
-    comptime RESERVED_14 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_14.value())
-    comptime RESERVED_15 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_15.value())
+    comptime N_64_BIT_INDEXING = Self(value = ShaderCreateFlagBitsEXT.N_64_BIT_INDEXING.value())
     comptime RESERVED_16 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_16.value())
     comptime RESERVED_17 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_17.value())
     comptime RESERVED_18 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_18.value())
@@ -12784,12 +13096,9 @@ struct ShaderCreateFlagBitsEXT(Equatable):
     comptime INDIRECT_BINDABLE = Self(value = 1 << 7)
     comptime RESERVED_8 = Self(value = 1 << 8)
     comptime RESERVED_9 = Self(value = 1 << 9)
-    comptime RESERVED_10 = Self(value = 1 << 10)
-    comptime RESERVED_11 = Self(value = 1 << 11)
+    comptime DESCRIPTOR_HEAP = Self(value = 1 << 10)
     comptime RESERVED_12 = Self(value = 1 << 12)
-    comptime RESERVED_13 = Self(value = 1 << 13)
-    comptime RESERVED_14 = Self(value = 1 << 14)
-    comptime RESERVED_15 = Self(value = 1 << 15)
+    comptime N_64_BIT_INDEXING = Self(value = 1 << 15)
     comptime RESERVED_16 = Self(value = 1 << 16)
     comptime RESERVED_17 = Self(value = 1 << 17)
     comptime RESERVED_18 = Self(value = 1 << 18)
@@ -12986,6 +13295,337 @@ struct SurfaceCreateFlagBitsOHOS(Equatable):
 
     fn __or__(self, other: Self) -> SurfaceCreateFlagsOHOS:
         return SurfaceCreateFlagsOHOS(value = self._value | other._value)
+
+
+@register_passable("trivial")
+struct PresentStageFlagsEXT(Equatable):
+    var _value: UInt32
+
+    @implicit
+    fn __init__(out self, *bits: PresentStageFlagBitsEXT):
+        self._value = 0
+        for bit in bits:
+            self._value |= bit.value()
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: PresentStageFlagsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __ror__(self, other: PresentStageFlagsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PresentStageFlagsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PresentStageFlagsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __contains__(self, other: PresentStageFlagsEXT) -> Bool:
+        return self.is_superset(other)
+
+    fn is_subset(self, other: PresentStageFlagsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PresentStageFlagsEXT) -> Bool:
+        return self & other == other
+
+    comptime QUEUE_OPERATIONS_END = Self(value = PresentStageFlagBitsEXT.QUEUE_OPERATIONS_END.value())
+    comptime REQUEST_DEQUEUED = Self(value = PresentStageFlagBitsEXT.REQUEST_DEQUEUED.value())
+    comptime IMAGE_FIRST_PIXEL_OUT = Self(value = PresentStageFlagBitsEXT.IMAGE_FIRST_PIXEL_OUT.value())
+    comptime IMAGE_FIRST_PIXEL_VISIBLE = Self(value = PresentStageFlagBitsEXT.IMAGE_FIRST_PIXEL_VISIBLE.value())
+
+
+@register_passable("trivial")
+struct PresentStageFlagBitsEXT(Equatable):
+    var _value: UInt32
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: Self) -> PresentStageFlagsEXT:
+        return PresentStageFlagsEXT(value = self._value | other._value)
+
+    comptime QUEUE_OPERATIONS_END = Self(value = 1 << 0)
+    comptime REQUEST_DEQUEUED = Self(value = 1 << 1)
+    comptime IMAGE_FIRST_PIXEL_OUT = Self(value = 1 << 2)
+    comptime IMAGE_FIRST_PIXEL_VISIBLE = Self(value = 1 << 3)
+
+
+@register_passable("trivial")
+struct PastPresentationTimingFlagsEXT(Equatable):
+    var _value: UInt32
+
+    @implicit
+    fn __init__(out self, *bits: PastPresentationTimingFlagBitsEXT):
+        self._value = 0
+        for bit in bits:
+            self._value |= bit.value()
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: PastPresentationTimingFlagsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __ror__(self, other: PastPresentationTimingFlagsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PastPresentationTimingFlagsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PastPresentationTimingFlagsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __contains__(self, other: PastPresentationTimingFlagsEXT) -> Bool:
+        return self.is_superset(other)
+
+    fn is_subset(self, other: PastPresentationTimingFlagsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PastPresentationTimingFlagsEXT) -> Bool:
+        return self & other == other
+
+    comptime ALLOW_PARTIAL_RESULTS = Self(value = PastPresentationTimingFlagBitsEXT.ALLOW_PARTIAL_RESULTS.value())
+    comptime ALLOW_OUT_OF_ORDER_RESULTS = Self(value = PastPresentationTimingFlagBitsEXT.ALLOW_OUT_OF_ORDER_RESULTS.value())
+
+
+@register_passable("trivial")
+struct PastPresentationTimingFlagBitsEXT(Equatable):
+    var _value: UInt32
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: Self) -> PastPresentationTimingFlagsEXT:
+        return PastPresentationTimingFlagsEXT(value = self._value | other._value)
+
+    comptime ALLOW_PARTIAL_RESULTS = Self(value = 1 << 0)
+    comptime ALLOW_OUT_OF_ORDER_RESULTS = Self(value = 1 << 1)
+
+
+@register_passable("trivial")
+struct PresentTimingInfoFlagsEXT(Equatable):
+    var _value: UInt32
+
+    @implicit
+    fn __init__(out self, *bits: PresentTimingInfoFlagBitsEXT):
+        self._value = 0
+        for bit in bits:
+            self._value |= bit.value()
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: PresentTimingInfoFlagsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __ror__(self, other: PresentTimingInfoFlagsEXT) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PresentTimingInfoFlagsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PresentTimingInfoFlagsEXT) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __contains__(self, other: PresentTimingInfoFlagsEXT) -> Bool:
+        return self.is_superset(other)
+
+    fn is_subset(self, other: PresentTimingInfoFlagsEXT) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PresentTimingInfoFlagsEXT) -> Bool:
+        return self & other == other
+
+    comptime PRESENT_AT_RELATIVE_TIME = Self(value = PresentTimingInfoFlagBitsEXT.PRESENT_AT_RELATIVE_TIME.value())
+    comptime PRESENT_AT_NEAREST_REFRESH_CYCLE = Self(value = PresentTimingInfoFlagBitsEXT.PRESENT_AT_NEAREST_REFRESH_CYCLE.value())
+
+
+@register_passable("trivial")
+struct PresentTimingInfoFlagBitsEXT(Equatable):
+    var _value: UInt32
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: Self) -> PresentTimingInfoFlagsEXT:
+        return PresentTimingInfoFlagsEXT(value = self._value | other._value)
+
+    comptime PRESENT_AT_RELATIVE_TIME = Self(value = 1 << 0)
+    comptime PRESENT_AT_NEAREST_REFRESH_CYCLE = Self(value = 1 << 1)
+
+
+@register_passable("trivial")
+struct SwapchainImageUsageFlagsOHOS(Equatable):
+    var _value: UInt32
+
+    @implicit
+    fn __init__(out self, *bits: SwapchainImageUsageFlagBitsOHOS):
+        self._value = 0
+        for bit in bits:
+            self._value |= bit.value()
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __ror__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __contains__(self, other: SwapchainImageUsageFlagsOHOS) -> Bool:
+        return self.is_superset(other)
+
+    fn is_subset(self, other: SwapchainImageUsageFlagsOHOS) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: SwapchainImageUsageFlagsOHOS) -> Bool:
+        return self & other == other
+
+    comptime SHARED = Self(value = SwapchainImageUsageFlagBitsOHOS.SHARED.value())
+
+
+@register_passable("trivial")
+struct SwapchainImageUsageFlagBitsOHOS(Equatable):
+    var _value: UInt32
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: Self) -> SwapchainImageUsageFlagsOHOS:
+        return SwapchainImageUsageFlagsOHOS(value = self._value | other._value)
+
+    comptime SHARED = Self(value = 1 << 0)
+
+
+@register_passable("trivial")
+struct PerformanceCounterDescriptionFlagsARM(Equatable):
+    var _value: UInt32
+
+    @implicit
+    fn __init__(out self, *bits: PerformanceCounterDescriptionFlagBitsARM):
+        self._value = 0
+        for bit in bits:
+            self._value |= bit.value()
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __bool__(self) -> Bool:
+        return Bool(self._value)
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __ror__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
+        return Self(value = self.value() | other.value())
+
+    fn __and__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __rand__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
+        return Self(value = self.value() & other.value())
+
+    fn __contains__(self, other: PerformanceCounterDescriptionFlagsARM) -> Bool:
+        return self.is_superset(other)
+
+    fn is_subset(self, other: PerformanceCounterDescriptionFlagsARM) -> Bool:
+        return self & other == self
+
+    fn is_superset(self, other: PerformanceCounterDescriptionFlagsARM) -> Bool:
+        return self & other == other
+
+
+@register_passable("trivial")
+struct PerformanceCounterDescriptionFlagBitsARM(Equatable):
+    var _value: UInt32
+
+    fn __init__(out self, *, value: UInt32):
+        self._value = value
+
+    fn value(self) -> UInt32:
+        return self._value
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    fn __or__(self, other: Self) -> PerformanceCounterDescriptionFlagsARM:
+        return PerformanceCounterDescriptionFlagsARM(value = self._value | other._value)
 
 
 @register_passable("trivial")

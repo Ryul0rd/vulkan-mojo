@@ -1,3 +1,4 @@
+comptime RayTracingInvocationReorderModeNV = RayTracingInvocationReorderModeEXT
 comptime PrivateDataSlotCreateFlagBitsEXT = PrivateDataSlotCreateFlagBits
 comptime DescriptorUpdateTemplateTypeKHR = DescriptorUpdateTemplateType
 comptime PointClippingBehaviorKHR = PointClippingBehavior
@@ -26,6 +27,7 @@ comptime FormatFeatureFlagBits2KHR = FormatFeatureFlagBits2
 comptime RenderingFlagBitsKHR = RenderingFlagBits
 comptime PipelineRobustnessBufferBehaviorEXT = PipelineRobustnessBufferBehavior
 comptime PipelineRobustnessImageBehaviorEXT = PipelineRobustnessImageBehavior
+comptime MemoryDecompressionMethodFlagBitsNV = MemoryDecompressionMethodFlagBitsEXT
 comptime PipelineCreateFlagBits2KHR = PipelineCreateFlagBits2
 comptime BufferUsageFlagBits2KHR = BufferUsageFlagBits2
 comptime ScopeNV = ScopeKHR
@@ -357,6 +359,7 @@ struct PipelineCacheHeaderVersion(Equatable):
 
     comptime ONE = PipelineCacheHeaderVersion(value = 1)
     comptime SAFETY_CRITICAL_ONE = PipelineCacheHeaderVersion(value = 1000298001)
+    comptime DATA_GRAPH = PipelineCacheHeaderVersion(value = 1000629000)
 
 
 @register_passable("trivial")
@@ -1395,6 +1398,21 @@ struct StructureType(Equatable):
     comptime EXECUTION_GRAPH_PIPELINE_SCRATCH_SIZE = StructureType(value = 1000134002)
     comptime EXECUTION_GRAPH_PIPELINE_CREATE_INFO = StructureType(value = 1000134003)
     comptime PIPELINE_SHADER_STAGE_NODE_CREATE_INFO = StructureType(value = 1000134004)
+    comptime TEXEL_BUFFER_DESCRIPTOR_INFO = StructureType(value = 1000135000)
+    comptime IMAGE_DESCRIPTOR_INFO = StructureType(value = 1000135001)
+    comptime RESOURCE_DESCRIPTOR_INFO = StructureType(value = 1000135002)
+    comptime BIND_HEAP_INFO = StructureType(value = 1000135003)
+    comptime PUSH_DATA_INFO = StructureType(value = 1000135004)
+    comptime DESCRIPTOR_SET_AND_BINDING_MAPPING = StructureType(value = 1000135005)
+    comptime SHADER_DESCRIPTOR_SET_AND_BINDING_MAPPING_INFO = StructureType(value = 1000135006)
+    comptime OPAQUE_CAPTURE_DATA_CREATE_INFO = StructureType(value = 1000135007)
+    comptime PHYSICAL_DEVICE_DESCRIPTOR_HEAP_PROPERTIES = StructureType(value = 1000135008)
+    comptime PHYSICAL_DEVICE_DESCRIPTOR_HEAP_FEATURES = StructureType(value = 1000135009)
+    comptime COMMAND_BUFFER_INHERITANCE_DESCRIPTOR_HEAP_INFO = StructureType(value = 1000135010)
+    comptime SAMPLER_CUSTOM_BORDER_COLOR_INDEX_CREATE_INFO = StructureType(value = 1000135011)
+    comptime INDIRECT_COMMANDS_LAYOUT_PUSH_DATA_TOKEN = StructureType(value = 1000135012)
+    comptime SUBSAMPLED_IMAGE_FORMAT_PROPERTIES = StructureType(value = 1000135013)
+    comptime PHYSICAL_DEVICE_DESCRIPTOR_HEAP_TENSOR_PROPERTIES = StructureType(value = 1000135014)
     comptime PHYSICAL_DEVICE_INLINE_UNIFORM_BLOCK_FEATURES = StructureType(value = 1000138000)
     comptime PHYSICAL_DEVICE_INLINE_UNIFORM_BLOCK_PROPERTIES = StructureType(value = 1000138001)
     comptime WRITE_DESCRIPTOR_SET_INLINE_UNIFORM_BLOCK = StructureType(value = 1000138002)
@@ -1521,6 +1539,16 @@ struct StructureType(Equatable):
     comptime TIMELINE_SEMAPHORE_SUBMIT_INFO = StructureType(value = 1000207003)
     comptime SEMAPHORE_WAIT_INFO = StructureType(value = 1000207004)
     comptime SEMAPHORE_SIGNAL_INFO = StructureType(value = 1000207005)
+    comptime PHYSICAL_DEVICE_PRESENT_TIMING_FEATURES = StructureType(value = 1000208000)
+    comptime SWAPCHAIN_TIMING_PROPERTIES = StructureType(value = 1000208001)
+    comptime SWAPCHAIN_TIME_DOMAIN_PROPERTIES = StructureType(value = 1000208002)
+    comptime PRESENT_TIMINGS_INFO = StructureType(value = 1000208003)
+    comptime PRESENT_TIMING_INFO = StructureType(value = 1000208004)
+    comptime PAST_PRESENTATION_TIMING_INFO = StructureType(value = 1000208005)
+    comptime PAST_PRESENTATION_TIMING_PROPERTIES = StructureType(value = 1000208006)
+    comptime PAST_PRESENTATION_TIMING = StructureType(value = 1000208007)
+    comptime PRESENT_TIMING_SURFACE_CAPABILITIES = StructureType(value = 1000208008)
+    comptime SWAPCHAIN_CALIBRATED_TIMESTAMP_INFO = StructureType(value = 1000208009)
     comptime PHYSICAL_DEVICE_SHADER_INTEGER_FUNCTIONS_2_FEATURES = StructureType(value = 1000209000)
     comptime QUERY_POOL_PERFORMANCE_QUERY_CREATE_INFO = StructureType(value = 1000210000)
     comptime INITIALIZE_PERFORMANCE_API_INFO = StructureType(value = 1000210001)
@@ -1656,6 +1684,7 @@ struct StructureType(Equatable):
     comptime SAMPLER_CUSTOM_BORDER_COLOR_CREATE_INFO = StructureType(value = 1000287000)
     comptime PHYSICAL_DEVICE_CUSTOM_BORDER_COLOR_PROPERTIES = StructureType(value = 1000287001)
     comptime PHYSICAL_DEVICE_CUSTOM_BORDER_COLOR_FEATURES = StructureType(value = 1000287002)
+    comptime PHYSICAL_DEVICE_TEXTURE_COMPRESSION_ASTC_3D_FEATURES = StructureType(value = 1000288000)
     comptime PIPELINE_LIBRARY_CREATE_INFO = StructureType(value = 1000290000)
     comptime PHYSICAL_DEVICE_PRESENT_BARRIER_FEATURES = StructureType(value = 1000292000)
     comptime SURFACE_CAPABILITIES_PRESENT_BARRIER = StructureType(value = 1000292001)
@@ -1919,6 +1948,11 @@ struct StructureType(Equatable):
     comptime IMAGE_VIEW_SAMPLE_WEIGHT_CREATE_INFO = StructureType(value = 1000440002)
     comptime PHYSICAL_DEVICE_NESTED_COMMAND_BUFFER_FEATURES = StructureType(value = 1000451000)
     comptime PHYSICAL_DEVICE_NESTED_COMMAND_BUFFER_PROPERTIES = StructureType(value = 1000451001)
+    comptime NATIVE_BUFFER_USAGE = StructureType(value = 1000452000)
+    comptime NATIVE_BUFFER_PROPERTIES = StructureType(value = 1000452001)
+    comptime NATIVE_BUFFER_FORMAT_PROPERTIES = StructureType(value = 1000452002)
+    comptime IMPORT_NATIVE_BUFFER_INFO = StructureType(value = 1000452003)
+    comptime MEMORY_GET_NATIVE_BUFFER_INFO = StructureType(value = 1000452004)
     comptime EXTERNAL_MEMORY_ACQUIRE_UNMODIFIED = StructureType(value = 1000453000)
     comptime PHYSICAL_DEVICE_EXTENDED_DYNAMIC_STATE_3_FEATURES = StructureType(value = 1000455000)
     comptime PHYSICAL_DEVICE_EXTENDED_DYNAMIC_STATE_3_PROPERTIES = StructureType(value = 1000455001)
@@ -2023,6 +2057,7 @@ struct StructureType(Equatable):
     comptime PHYSICAL_DEVICE_SHADER_CORE_BUILTINS_PROPERTIES = StructureType(value = 1000497001)
     comptime PHYSICAL_DEVICE_PIPELINE_LIBRARY_GROUP_HANDLES_FEATURES = StructureType(value = 1000498000)
     comptime PHYSICAL_DEVICE_DYNAMIC_RENDERING_UNUSED_ATTACHMENTS_FEATURES = StructureType(value = 1000499000)
+    comptime PHYSICAL_DEVICE_INTERNALLY_SYNCHRONIZED_QUEUES_FEATURES = StructureType(value = 1000504000)
     comptime LATENCY_SLEEP_MODE_INFO = StructureType(value = 1000505000)
     comptime LATENCY_SLEEP_INFO = StructureType(value = 1000505001)
     comptime SET_LATENCY_MARKER_INFO = StructureType(value = 1000505002)
@@ -2113,6 +2148,9 @@ struct StructureType(Equatable):
     comptime TILE_MEMORY_REQUIREMENTS = StructureType(value = 1000547002)
     comptime TILE_MEMORY_BIND_INFO = StructureType(value = 1000547003)
     comptime TILE_MEMORY_SIZE_INFO = StructureType(value = 1000547004)
+    comptime COPY_MEMORY_INDIRECT_INFO = StructureType(value = 1000549002)
+    comptime COPY_MEMORY_TO_IMAGE_INDIRECT_INFO = StructureType(value = 1000549003)
+    comptime DECOMPRESS_MEMORY_INFO = StructureType(value = 1000550002)
     comptime DISPLAY_SURFACE_STEREO_CREATE_INFO = StructureType(value = 1000551000)
     comptime DISPLAY_MODE_STEREO_PROPERTIES = StructureType(value = 1000551001)
     comptime VIDEO_ENCODE_INTRA_REFRESH_CAPABILITIES = StructureType(value = 1000552000)
@@ -2173,6 +2211,10 @@ struct StructureType(Equatable):
     comptime PHYSICAL_DEVICE_IMAGE_ALIGNMENT_CONTROL_FEATURES = StructureType(value = 1000575000)
     comptime PHYSICAL_DEVICE_IMAGE_ALIGNMENT_CONTROL_PROPERTIES = StructureType(value = 1000575001)
     comptime IMAGE_ALIGNMENT_CONTROL_CREATE_INFO = StructureType(value = 1000575002)
+    comptime PHYSICAL_DEVICE_SHADER_FMA_FEATURES = StructureType(value = 1000579000)
+    comptime PUSH_CONSTANT_BANK_INFO = StructureType(value = 1000580000)
+    comptime PHYSICAL_DEVICE_PUSH_CONSTANT_BANK_FEATURES = StructureType(value = 1000580001)
+    comptime PHYSICAL_DEVICE_PUSH_CONSTANT_BANK_PROPERTIES = StructureType(value = 1000580002)
     comptime PHYSICAL_DEVICE_DEPTH_CLAMP_CONTROL_FEATURES = StructureType(value = 1000582000)
     comptime PIPELINE_VIEWPORT_DEPTH_CLAMP_CONTROL_CREATE_INFO = StructureType(value = 1000582001)
     comptime PHYSICAL_DEVICE_MAINTENANCE_9_FEATURES = StructureType(value = 1000584000)
@@ -2191,6 +2233,9 @@ struct StructureType(Equatable):
     comptime IMPORT_MEMORY_METAL_HANDLE_INFO = StructureType(value = 1000602000)
     comptime MEMORY_METAL_HANDLE_PROPERTIES = StructureType(value = 1000602001)
     comptime MEMORY_GET_METAL_HANDLE_INFO = StructureType(value = 1000602002)
+    comptime PHYSICAL_DEVICE_PERFORMANCE_COUNTERS_BY_REGION_FEATURES = StructureType(value = 1000605000)
+    comptime PHYSICAL_DEVICE_PERFORMANCE_COUNTERS_BY_REGION_PROPERTIES = StructureType(value = 1000605001)
+    comptime RENDER_PASS_PERFORMANCE_COUNTERS_BY_REGION_BEGIN_INFO = StructureType(value = 1000605004)
     comptime PHYSICAL_DEVICE_VERTEX_ATTRIBUTE_ROBUSTNESS_FEATURES = StructureType(value = 1000608000)
     comptime PHYSICAL_DEVICE_FORMAT_PACK_FEATURES = StructureType(value = 1000609000)
     comptime PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_LAYERED_FEATURES = StructureType(value = 1000611000)
@@ -2200,7 +2245,23 @@ struct StructureType(Equatable):
     comptime PHYSICAL_DEVICE_PRESENT_METERING_FEATURES = StructureType(value = 1000613001)
     comptime RENDERING_END_INFO = StructureType(value = 1000619003)
     comptime PHYSICAL_DEVICE_ZERO_INITIALIZE_DEVICE_MEMORY_FEATURES = StructureType(value = 1000620000)
+    comptime PHYSICAL_DEVICE_SHADER_64_BIT_INDEXING_FEATURES = StructureType(value = 1000627000)
+    comptime PHYSICAL_DEVICE_CUSTOM_RESOLVE_FEATURES = StructureType(value = 1000628000)
+    comptime BEGIN_CUSTOM_RESOLVE_INFO = StructureType(value = 1000628001)
+    comptime CUSTOM_RESOLVE_CREATE_INFO = StructureType(value = 1000628002)
+    comptime PHYSICAL_DEVICE_DATA_GRAPH_MODEL_FEATURES = StructureType(value = 1000629000)
+    comptime DATA_GRAPH_PIPELINE_BUILTIN_MODEL_CREATE_INFO = StructureType(value = 1000629001)
+    comptime PHYSICAL_DEVICE_MAINTENANCE_10_FEATURES = StructureType(value = 1000630000)
+    comptime PHYSICAL_DEVICE_MAINTENANCE_10_PROPERTIES = StructureType(value = 1000630001)
+    comptime RENDERING_ATTACHMENT_FLAGS_INFO = StructureType(value = 1000630002)
+    comptime RESOLVE_IMAGE_MODE_INFO = StructureType(value = 1000630004)
+    comptime PHYSICAL_DEVICE_SHADER_LONG_VECTOR_FEATURES = StructureType(value = 1000635000)
+    comptime PHYSICAL_DEVICE_SHADER_LONG_VECTOR_PROPERTIES = StructureType(value = 1000635001)
     comptime PHYSICAL_DEVICE_PIPELINE_CACHE_INCREMENTAL_MODE_FEATURES = StructureType(value = 1000637000)
+    comptime PHYSICAL_DEVICE_SHADER_UNIFORM_BUFFER_UNSIZED_ARRAY_FEATURES = StructureType(value = 1000642000)
+    comptime COMPUTE_OCCUPANCY_PRIORITY_PARAMETERS = StructureType(value = 1000645000)
+    comptime PHYSICAL_DEVICE_COMPUTE_OCCUPANCY_PRIORITY_FEATURES = StructureType(value = 1000645001)
+    comptime PHYSICAL_DEVICE_SHADER_SUBGROUP_PARTITIONED_FEATURES = StructureType(value = 1000662000)
     comptime SURFACE_CREATE_INFO = StructureType(value = 1000685000)
 
 
@@ -2257,6 +2318,7 @@ struct Result(Equatable, Writable):
         -1000158000: "VK_ERROR_INVALID_DRM_FORMAT_MODIFIER_PLANE_LAYOUT_EXT: None",
         -1000161000: "VK_ERROR_FRAGMENTATION: None",
         -1000174001: "VK_ERROR_NOT_PERMITTED: None",
+        -1000208000: "VK_ERROR_PRESENT_TIMING_QUEUE_FULL_EXT: None",
         -1000255000: "VK_ERROR_FULL_SCREEN_EXCLUSIVE_MODE_LOST_EXT: None",
         -1000257000: "VK_ERROR_INVALID_DEVICE_ADDRESS_EXT: None",
         -1000257000: "VK_ERROR_INVALID_OPAQUE_CAPTURE_ADDRESS: None",
@@ -2339,6 +2401,7 @@ struct Result(Equatable, Writable):
     comptime ERROR_INVALID_DRM_FORMAT_MODIFIER_PLANE_LAYOUT = Result(value = -1000158000)
     comptime ERROR_FRAGMENTATION = Result(value = -1000161000)
     comptime ERROR_NOT_PERMITTED = Result(value = -1000174001)
+    comptime ERROR_PRESENT_TIMING_QUEUE_FULL = Result(value = -1000208000)
     comptime ERROR_FULL_SCREEN_EXCLUSIVE_MODE_LOST = Result(value = -1000255000)
     comptime ERROR_INVALID_DEVICE_ADDRESS = Result(value = -1000257000)
     comptime ERROR_INVALID_OPAQUE_CAPTURE_ADDRESS = Result(value = -1000257000)
@@ -2543,7 +2606,7 @@ struct ObjectType(Equatable):
 
 
 @register_passable("trivial")
-struct RayTracingInvocationReorderModeNV(Equatable):
+struct RayTracingInvocationReorderModeEXT(Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2555,8 +2618,8 @@ struct RayTracingInvocationReorderModeNV(Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    comptime NONE = RayTracingInvocationReorderModeNV(value = 0)
-    comptime REORDER = RayTracingInvocationReorderModeNV(value = 1)
+    comptime NONE = RayTracingInvocationReorderModeEXT(value = 0)
+    comptime REORDER = RayTracingInvocationReorderModeEXT(value = 1)
 
 
 @register_passable("trivial")
@@ -2752,6 +2815,8 @@ struct TimeDomainKHR(Equatable):
     comptime CLOCK_MONOTONIC = TimeDomainKHR(value = 1)
     comptime CLOCK_MONOTONIC_RAW = TimeDomainKHR(value = 2)
     comptime QUERY_PERFORMANCE_COUNTER = TimeDomainKHR(value = 3)
+    comptime PRESENT_STAGE_LOCAL = TimeDomainKHR(value = 1000208000)
+    comptime SWAPCHAIN_LOCAL = TimeDomainKHR(value = 1000208001)
 
 
 @register_passable("trivial")
@@ -3010,6 +3075,7 @@ struct IndirectCommandsTokenTypeNV(Equatable):
     comptime DRAW_INDEXED = IndirectCommandsTokenTypeNV(value = 5)
     comptime DRAW = IndirectCommandsTokenTypeNV(value = 6)
     comptime DRAW_TASKS = IndirectCommandsTokenTypeNV(value = 7)
+    comptime PUSH_DATA = IndirectCommandsTokenTypeNV(value = 1000135000)
     comptime DRAW_MESH_TASKS = IndirectCommandsTokenTypeNV(value = 1000328000)
     comptime PIPELINE = IndirectCommandsTokenTypeNV(value = 1000428003)
     comptime DISPATCH = IndirectCommandsTokenTypeNV(value = 1000428004)
@@ -3401,6 +3467,7 @@ struct DriverId(Equatable):
     comptime IMAGINATION_OPEN_SOURCE = DriverId(value = 25)
     comptime MESA_HONEYKRISP = DriverId(value = 26)
     comptime VULKAN_SC_EMULATION_ON_VULKAN = DriverId(value = 27)
+    comptime MESA_KOSMICKRISP = DriverId(value = 28)
 
 
 @register_passable("trivial")
@@ -4487,6 +4554,8 @@ struct IndirectCommandsTokenTypeEXT(Equatable):
     comptime DRAW_INDEXED_COUNT = IndirectCommandsTokenTypeEXT(value = 7)
     comptime DRAW_COUNT = IndirectCommandsTokenTypeEXT(value = 8)
     comptime DISPATCH = IndirectCommandsTokenTypeEXT(value = 9)
+    comptime PUSH_DATA = IndirectCommandsTokenTypeEXT(value = 1000135000)
+    comptime PUSH_DATA_SEQUENCE_INDEX = IndirectCommandsTokenTypeEXT(value = 1000135001)
     comptime DRAW_MESH_TASKS_NV = IndirectCommandsTokenTypeEXT(value = 1000202002)
     comptime DRAW_MESH_TASKS_COUNT_NV = IndirectCommandsTokenTypeEXT(value = 1000202003)
     comptime DRAW_MESH_TASKS = IndirectCommandsTokenTypeEXT(value = 1000328000)
@@ -4847,6 +4916,8 @@ struct PhysicalDeviceDataGraphProcessingEngineTypeARM(Equatable):
         return self._value == other._value
 
     comptime DEFAULT = PhysicalDeviceDataGraphProcessingEngineTypeARM(value = 0)
+    comptime NEURAL = PhysicalDeviceDataGraphProcessingEngineTypeARM(value = 1000629000)
+    comptime COMPUTE = PhysicalDeviceDataGraphProcessingEngineTypeARM(value = 1000629001)
 
 
 @register_passable("trivial")
@@ -4863,3 +4934,47 @@ struct PhysicalDeviceDataGraphOperationTypeARM(Equatable):
         return self._value == other._value
 
     comptime SPIRV_EXTENDED_INSTRUCTION_SET = PhysicalDeviceDataGraphOperationTypeARM(value = 0)
+    comptime NEURAL_MODEL = PhysicalDeviceDataGraphOperationTypeARM(value = 1000629000)
+    comptime BUILTIN_MODEL = PhysicalDeviceDataGraphOperationTypeARM(value = 1000629001)
+
+
+@register_passable("trivial")
+struct DataGraphModelCacheTypeQCOM(Equatable):
+    var _value: Int32
+
+    fn __init__(out self, *, value: Int32):
+        self._value = value
+
+    fn value(self) -> Int32:
+        return self._value
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    comptime GENERIC_BINARY = DataGraphModelCacheTypeQCOM(value = 0)
+
+
+@register_passable("trivial")
+struct DescriptorMappingSourceEXT(Equatable):
+    var _value: Int32
+
+    fn __init__(out self, *, value: Int32):
+        self._value = value
+
+    fn value(self) -> Int32:
+        return self._value
+
+    fn __eq__(self, other: Self) -> Bool:
+        return self._value == other._value
+
+    comptime HEAP_WITH_CONSTANT_OFFSET = DescriptorMappingSourceEXT(value = 0)
+    comptime HEAP_WITH_PUSH_INDEX = DescriptorMappingSourceEXT(value = 1)
+    comptime HEAP_WITH_INDIRECT_INDEX = DescriptorMappingSourceEXT(value = 2)
+    comptime HEAP_WITH_INDIRECT_INDEX_ARRAY = DescriptorMappingSourceEXT(value = 3)
+    comptime RESOURCE_HEAP_DATA = DescriptorMappingSourceEXT(value = 4)
+    comptime PUSH_DATA = DescriptorMappingSourceEXT(value = 5)
+    comptime PUSH_ADDRESS = DescriptorMappingSourceEXT(value = 6)
+    comptime INDIRECT_ADDRESS = DescriptorMappingSourceEXT(value = 7)
+    comptime HEAP_WITH_SHADER_RECORD_INDEX = DescriptorMappingSourceEXT(value = 8)
+    comptime SHADER_RECORD_DATA = DescriptorMappingSourceEXT(value = 9)
+    comptime SHADER_RECORD_ADDRESS = DescriptorMappingSourceEXT(value = 10)

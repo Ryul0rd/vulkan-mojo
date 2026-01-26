@@ -133,6 +133,9 @@ struct ImageViewHandle(Copyable):
         image_view: ImageView,
         p_properties: Ptr[ImageViewAddressPropertiesNVX, MutAnyOrigin],
     ) -> Result
+    var _get_device_combined_image_sampler_index_nvx: fn(
+        device: Device, image_view_index: UInt64, sampler_index: UInt64
+    ) -> UInt64
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -148,6 +151,9 @@ struct ImageViewHandle(Copyable):
         self._get_image_view_address_nvx = Ptr(to=get_device_proc_addr(
             device, "vkGetImageViewAddressNVX".as_c_string_slice()
         )).bitcast[type_of(self._get_image_view_address_nvx)]()[]
+        self._get_device_combined_image_sampler_index_nvx = Ptr(to=get_device_proc_addr(
+            device, "vkGetDeviceCombinedImageSamplerIndexNVX".as_c_string_slice()
+        )).bitcast[type_of(self._get_device_combined_image_sampler_index_nvx)]()[]
 
     fn get_image_view_handle_nvx(self, device: Device, info: ImageViewHandleInfoNVX) -> UInt32:
         """See official vulkan docs for details.
@@ -171,3 +177,12 @@ struct ImageViewHandle(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewAddressNVX.html
         """
         return self._get_image_view_address_nvx(device, image_view, Ptr(to=properties))
+
+    fn get_device_combined_image_sampler_index_nvx(
+        self, device: Device, image_view_index: UInt64, sampler_index: UInt64
+    ) -> UInt64:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceCombinedImageSamplerIndexNVX.html
+        """
+        return self._get_device_combined_image_sampler_index_nvx(device, image_view_index, sampler_index)
