@@ -603,7 +603,7 @@ def parse_extensions(xml_registry: Element) -> List[RegistryExtension]:
 # --------------------------------
 
 
-MojoOriginLiteral = Literal["MutOrigin.external", "ImmutOrigin.external", "MutAnyOrigin", "ImmutAnyOrigin"]
+MojoOriginLiteral = Literal["MutExternalOrigin", "ImmutExternalOrigin", "MutAnyOrigin", "ImmutAnyOrigin"]
 
 
 @dataclass
@@ -831,9 +831,9 @@ def convert_origins_to_external(mojo_type: MojoType) -> MojoType:
     if isinstance(mojo_type, MojoPointerType):
         new_origin = mojo_type.origin
         if new_origin == "MutAnyOrigin":
-            new_origin = "MutOrigin.external"
+            new_origin = "MutExternalOrigin"
         elif new_origin == "ImmutAnyOrigin":
-            new_origin = "ImmutOrigin.external"
+            new_origin = "ImmutExternalOrigin"
         return MojoPointerType(
             pointee_type=convert_origins_to_external(mojo_type.pointee_type),
             origin=new_origin
@@ -842,9 +842,9 @@ def convert_origins_to_external(mojo_type: MojoType) -> MojoType:
         new_params: List[MojoOriginLiteral | MojoParametricOrigin | str] = []
         for p in mojo_type.parameters:
             if p == "MutAnyOrigin":
-                new_params.append("MutOrigin.external")
+                new_params.append("MutExternalOrigin")
             elif p == "ImmutAnyOrigin":
-                new_params.append("ImmutOrigin.external")
+                new_params.append("ImmutExternalOrigin")
             else:
                 new_params.append(p)
         return MojoBaseType(mojo_type.name, new_params)
@@ -914,7 +914,7 @@ def as_parametric_type(name: str, mojo_type: MojoType, parameters: List[MojoPara
 
     if isinstance(mojo_type, MojoPointerType):
         param_name = get_unique_name(f"{name}_origin")
-        is_mutable = mojo_type.origin in ("MutAnyOrigin", "MutOrigin.external")
+        is_mutable = mojo_type.origin in ("MutAnyOrigin", "MutExternalOrigin")
         parameters.append(MojoParameter(
             name=param_name,
             type="MutOrigin" if is_mutable else "ImmutOrigin",
@@ -929,7 +929,7 @@ def as_parametric_type(name: str, mojo_type: MojoType, parameters: List[MojoPara
     elif isinstance(mojo_type, MojoBaseType) and mojo_type.name == "CStringSlice":
         param_name = get_unique_name(f"{name}_origin")
         # CStringSlice has 1 param
-        is_mutable = mojo_type.parameters[0] in ("MutAnyOrigin", "MutOrigin.external")
+        is_mutable = mojo_type.parameters[0] in ("MutAnyOrigin", "MutExternalOrigin")
         parameters.append(MojoParameter(
             name=param_name,
             type="MutOrigin" if is_mutable else "ImmutOrigin",
@@ -941,6 +941,106 @@ def as_parametric_type(name: str, mojo_type: MojoType, parameters: List[MojoPara
         )
         
     return mojo_type
+
+
+def lower_struct(struct: RegistryStruct, struct_names: Set[str], registry: Registry) -> MojoStruct:
+    physical_fields, logical_fields = parse_members(struct.members)
+    fields = [MojoField(field.name, field.type) for field in physical_fields]
+    traits = ["Copyable", "Equatable"]
+    init_body_lines: List[str] = []
+    for field in logical_fields:
+        if isinstance(field, PackedLogicalField):
+            if field.first_in_group:
+                init_body_lines.append(f"self._packed{field.group_index} = 0")
+        elif isinstance(field.type, MojoBaseType) and field.type.name in struct_names or isinstance(field.type, MojoArrayType):
+            init_body_lines.append(f"self.{field.name} = {field.name}.copy()")
+        elif isinstance(field.type, MojoPointerType) or (isinstance(field.type, MojoBaseType) and field.type.name == "CStringSlice"):
+            init_body_lines.append(f"self.{field.name} = Ptr(to={field.name}).bitcast[type_of(self.{field.name})]()[]")
+        else:
+            init_body_lines.append(f"self.{field.name} = {field.name}")
+    for field in logical_fields:
+        if isinstance(field, PackedLogicalField):
+            init_body_lines.append(f"self.set_{field.name}({field.name})")
+
+    init_parameters: List[MojoParameter] = []
+    init_arguments: List[MojoArgument] = []
+    for field in logical_fields:
+        if isinstance(field, PackedLogicalField):
+            init_arguments.append(MojoArgument(field.name, MojoBaseType("UInt32"), default_value="zero_init[UInt32]()"))
+        elif isinstance(field.type, MojoPointerType) or (isinstance(field.type, MojoBaseType) and field.type.name == "CStringSlice"):
+            arg_type = as_parametric_type(field.name, field.type, init_parameters)
+            init_arguments.append(MojoArgument(field.name, arg_type, default_value=f"zero_init[{arg_type}]()"))
+        elif field.default_value is not None:
+            if isinstance(field.type, MojoBaseType) and field.default_value.startswith("VK_"):
+                c_enum_name = "Vk" + field.type.name
+                stripped_name = strip_enum_value_prefix(c_enum_name, field.default_value, registry.tags)
+                default_val_str = f"{field.type.name}.{stripped_name}"
+            else:
+                default_val_str = field.default_value
+            init_arguments.append(MojoArgument(field.name, field.type, default_value=default_val_str))
+        else:
+            init_arguments.append(MojoArgument(field.name, field.type, default_value=f"zero_init[{field.type}]()"))
+
+    methods: List[MojoMethod] = []
+    methods.append(MojoMethod(
+        name="__init__",
+        return_type=MojoBaseType("NoneType"),
+        self_ref_kind="out",
+        parameters=init_parameters,
+        arguments=init_arguments,
+        body_lines=init_body_lines,
+        docstring_lines=[],
+    ))
+    # getter for char array
+    for field in physical_fields:
+        is_array_string = (
+            isinstance(field.type, MojoArrayType)
+            and isinstance(field.type.element_type, MojoBaseType)
+            and field.type.element_type.name == "c_char"
+        )
+        if is_array_string:
+            methods.append(MojoMethod(
+                name=f"{field.name}_slice",
+                return_type=MojoBaseType("CStringSlice", [f"origin_of(self.{field.name})"]),
+                self_ref_kind="ref",
+                parameters=[],
+                arguments=[],
+                body_lines=[
+                    f"return CStringSlice[origin_of(self.{field.name})](unsafe_from_ptr = self.{field.name}.unsafe_ptr())"
+                ],
+                docstring_lines=[],
+            ))
+    # getters and setters for packed fields
+    for field in logical_fields:
+        if not isinstance(field, PackedLogicalField):
+            continue
+        physical_field_name = f"_packed{field.group_index}"
+        width = field.bit_width
+        offset = field.bit_offset
+        methods.append(MojoMethod(
+            name=f"get_{field.name}",
+            return_type=MojoBaseType("UInt32"),
+            self_ref_kind="ref",
+            parameters=[],
+            arguments=[],
+            body_lines=[f"return get_packed_value[width={width}, offset={offset}](self.{physical_field_name})"],
+            docstring_lines=[],
+        ))
+        methods.append(MojoMethod(
+            name=f"set_{field.name}",
+            return_type=MojoBaseType("NoneType"),
+            self_ref_kind="mut",
+            parameters=[],
+            arguments=[MojoArgument("new_value", MojoBaseType("UInt32"))],
+            body_lines=[f"set_packed_value[width={width}, offset={offset}](self.{physical_field_name}, new_value)"],
+            docstring_lines=[],
+        ))
+    return MojoStruct(
+        name=c_type_name_to_mojo(struct.name),
+        traits=traits,
+        fields=fields,
+        methods=methods,
+    )
 
 
 def bind_structs(files: Dict[str, str], registry: Registry):
@@ -984,104 +1084,7 @@ def bind_structs(files: Dict[str, str], registry: Registry):
             continue
         if registry_type.name not in enabled_type_names:
             continue
-        registry_struct = registry_type
-
-        physical_fields, logical_fields = parse_members(registry_struct.members)
-        fields = [MojoField(field.name, field.type) for field in physical_fields]
-        init_body_lines: List[str] = []
-        for field in logical_fields:
-            if isinstance(field, PackedLogicalField):
-                if field.first_in_group:
-                    init_body_lines.append(f"self._packed{field.group_index} = 0")
-            elif isinstance(field.type, MojoBaseType) and field.type.name in struct_names:
-                init_body_lines.append(f"self.{field.name} = {field.name}.copy()")
-            elif isinstance(field.type, MojoPointerType) or (isinstance(field.type, MojoBaseType) and field.type.name == "CStringSlice"):
-                init_body_lines.append(f"self.{field.name} = Ptr(to={field.name}).bitcast[type_of(self.{field.name})]()[]")
-            else:
-                init_body_lines.append(f"self.{field.name} = {field.name}")
-        for field in logical_fields:
-            if isinstance(field, PackedLogicalField):
-                init_body_lines.append(f"self.set_{field.name}({field.name})")
-        
-        init_parameters: List[MojoParameter] = []
-        init_arguments: List[MojoArgument] = []
-        for field in logical_fields:
-            if isinstance(field, PackedLogicalField):
-                init_arguments.append(MojoArgument(field.name, MojoBaseType("UInt32"), default_value="zero_init[UInt32]()"))
-            elif isinstance(field.type, MojoPointerType) or (isinstance(field.type, MojoBaseType) and field.type.name == "CStringSlice"):
-                arg_type = as_parametric_type(field.name, field.type, init_parameters)
-                init_arguments.append(MojoArgument(field.name, arg_type, default_value=f"zero_init[{arg_type}]()"))
-            elif field.default_value is not None:
-                if isinstance(field.type, MojoBaseType) and field.default_value.startswith("VK_"):
-                    c_enum_name = "Vk" + field.type.name
-                    stripped_name = strip_enum_value_prefix(c_enum_name, field.default_value, registry.tags)
-                    default_val_str = f"{field.type.name}.{stripped_name}"
-                else:
-                    default_val_str = field.default_value
-                init_arguments.append(MojoArgument(field.name, field.type, default_value=default_val_str))
-            else:
-                init_arguments.append(MojoArgument(field.name, field.type, default_value=f"zero_init[{field.type}]()"))
-        
-        methods: List[MojoMethod] = []
-        methods.append(MojoMethod(
-            name="__init__",
-            return_type=MojoBaseType("NoneType"),
-            self_ref_kind="out",
-            parameters=init_parameters,
-            arguments=init_arguments,
-            body_lines=init_body_lines,
-            docstring_lines=[],
-        ))
-        # getter for char array
-        for field in physical_fields:
-            is_array_string = (
-                isinstance(field.type, MojoArrayType)
-                and isinstance(field.type.element_type, MojoBaseType)
-                and field.type.element_type.name == "c_char"
-            )
-            if is_array_string:
-                methods.append(MojoMethod(
-                    name=f"{field.name}_slice",
-                    return_type=MojoBaseType("CStringSlice", [f"origin_of(self.{field.name})"]),
-                    self_ref_kind="ref",
-                    parameters=[],
-                    arguments=[],
-                    body_lines=[
-                        f"return CStringSlice[origin_of(self.{field.name})](unsafe_from_ptr = self.{field.name}.unsafe_ptr())"
-                    ],
-                    docstring_lines=[],
-                ))
-        # getters and setters for packed fields
-        for field in logical_fields:
-            if not isinstance(field, PackedLogicalField):
-                continue
-            physical_field_name = f"_packed{field.group_index}"
-            width = field.bit_width
-            offset = field.bit_offset
-            methods.append(MojoMethod(
-                name=f"get_{field.name}",
-                return_type=MojoBaseType("UInt32"),
-                self_ref_kind="ref",
-                parameters=[],
-                arguments=[],
-                body_lines=[f"return get_packed_value[width={width}, offset={offset}](self.{physical_field_name})"],
-                docstring_lines=[],
-            ))
-            methods.append(MojoMethod(
-                name=f"set_{field.name}",
-                return_type=MojoBaseType("NoneType"),
-                self_ref_kind="mut",
-                parameters=[],
-                arguments=[MojoArgument("new_value", MojoBaseType("UInt32"))],
-                body_lines=[f"set_packed_value[width={width}, offset={offset}](self.{physical_field_name}, new_value)"],
-                docstring_lines=[],
-            ))
-        structs.append(MojoStruct(
-            name=c_type_name_to_mojo(registry_struct.name),
-            traits=["Copyable"],
-            fields=fields,
-            methods=methods,
-        ))
+        structs.append(lower_struct(registry_type, struct_names, registry))
 
     # emission
     parts: List[str] = []
@@ -1182,7 +1185,7 @@ def bind_basetypes(files: Dict[str, str], registry: Registry):
         MojoBasetypeAlias("SampleMask", MojoBaseType("UInt32")),
         MojoBasetypeAlias("DeviceSize", MojoBaseType("UInt64")),
         MojoBasetypeAlias("DeviceAddress", MojoBaseType("UInt64")),
-        MojoBasetypeAlias("RemoteAddressNV", MojoPointerType(MojoBaseType("NoneType"), "MutOrigin.external")),
+        MojoBasetypeAlias("RemoteAddressNV", MojoPointerType(MojoBaseType("NoneType"), "MutExternalOrigin")),
     ]
     
     # Emission
@@ -1290,7 +1293,6 @@ class MojoUnion:
             f"    comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]\n",
             f"    var _value: Self._InnerType\n",
         )))
-
         for type in unique_types:
             parts.append(
                 f"\n"
@@ -1302,6 +1304,11 @@ class MojoUnion:
                 f"            count = size_of[{type}](),\n"
                 f"        )\n"
             )
+        parts.append(
+            f"\n"
+            f"    fn __copyinit__(out self, other: Self):\n"
+            f"        self._value = other._value.copy()\n"
+        )
         return "".join(parts)
 
 
@@ -1390,8 +1397,7 @@ class MojoEnum:
             return self.emit_result()
         parts: List[str] = []
         parts.append(
-            f'@register_passable("trivial")\n'
-            f"struct {self.name}(Equatable):\n"
+            f"struct {self.name}(TrivialRegisterType, Equatable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"\n"
             f"    fn __init__(out self, *, value: {self.underlying_type}):\n"
@@ -1411,8 +1417,7 @@ class MojoEnum:
     def emit_result(self) -> str:
         parts: List[str] = []
         parts.append(
-            '@register_passable("trivial")\n'
-            "struct Result(Equatable, Writable):\n"
+            "struct Result(TrivialRegisterType, Equatable, Writable):\n"
             "    var _value: Int32\n"
             "\n"
             "    comptime _descriptions: Dict[Int32, StaticString] = {\n"
@@ -1617,15 +1622,12 @@ class MojoFlags:
     def __str__(self) -> str:
         parts: List[str] = []
         parts.append(
-            f'@register_passable("trivial")\n'
-            f"struct {self.name}(Equatable):\n"
+            f"struct {self.name}(TrivialRegisterType, Equatable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"\n"
             f"    @implicit\n"
-            f"    fn __init__(out self, *bits: {self.bits_name}):\n"
-            f"        self._value = 0\n"
-            f"        for bit in bits:\n"
-            f"            self._value |= bit.value()\n"
+            f"    fn __init__(out self, bit: {self.bits_name}):\n"
+            f"        self._value = bit._value\n"
             f"\n"
             f"    fn __init__(out self, *, value: {self.underlying_type}):\n"
             f"        self._value = value\n"
@@ -1678,8 +1680,7 @@ class MojoFlagBits:
     def __str__(self) -> str:
         parts: List[str] = []
         parts.append(
-            f'@register_passable("trivial")\n'
-            f"struct {self.name}(Equatable):\n"
+            f"struct {self.name}(TrivialRegisterType, Equatable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"\n"
             f"    fn __init__(out self, *, value: {self.underlying_type}):\n"
@@ -1846,8 +1847,7 @@ class MojoWrapperExternalType:
 
     def __str__(self) -> str:
         return (
-            f'@register_passable("trivial")\n'
-            f"struct {self.name}:\n"
+            f"struct {self.name}(TrivialRegisterType):\n"
             f"    var _value: {self.underlying_type}\n"
             f"\n"
             f"    fn __init__(out self, *, value: {self.underlying_type}):\n"
@@ -2092,8 +2092,7 @@ class MojoHandle:
 
     def __str__(self) -> str:
         return (
-            f'@register_passable("trivial")\n'
-            f"struct {self.name}(Equatable, Writable):\n"
+            f"struct {self.name}(TrivialRegisterType, Equatable, Writable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"    comptime NULL = Self(value = 0)\n"
             f"\n"
@@ -2359,7 +2358,7 @@ def registry_command_to_mojo_methods(
     
     # Handle casts (e.g. if data is void* but element is UInt8)
     needs_cast = elem_type != data_type.pointee_type
-    ptr_null = f"Ptr[{data_type.pointee_type}, MutOrigin.external]()"
+    ptr_null = f"Ptr[{data_type.pointee_type}, MutExternalOrigin]()"
     ptr_list = f"list.unsafe_ptr(){'.bitcast['+str(data_type.pointee_type)+']()' if needs_cast else ''}"
 
     # Pre-generate calls

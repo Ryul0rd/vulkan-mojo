@@ -443,7 +443,7 @@ struct DataGraph(Copyable):
         device,
         Ptr(to=info),
         Ptr(to=count),
-        Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutOrigin.external](),
+        Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -546,7 +546,7 @@ struct DataGraph(Copyable):
         device,
         Ptr(to=pipeline_info),
         Ptr(to=count),
-        Ptr[DataGraphPipelinePropertyARM, MutOrigin.external](),
+        Ptr[DataGraphPipelinePropertyARM, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -611,7 +611,7 @@ struct DataGraph(Copyable):
         physical_device,
         queue_family_index,
         Ptr(to=count),
-        Ptr[QueueFamilyDataGraphPropertiesARM, MutOrigin.external](),
+        Ptr[QueueFamilyDataGraphPropertiesARM, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))

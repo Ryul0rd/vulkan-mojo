@@ -126,7 +126,7 @@ struct Surface(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_surface_formats(
-        physical_device, surface, Ptr(to=count), Ptr[SurfaceFormatKHR, MutOrigin.external]()
+        physical_device, surface, Ptr(to=count), Ptr[SurfaceFormatKHR, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -166,7 +166,7 @@ struct Surface(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_surface_present_modes(
-        physical_device, surface, Ptr(to=count), Ptr[PresentModeKHR, MutOrigin.external]()
+        physical_device, surface, Ptr(to=count), Ptr[PresentModeKHR, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -317,7 +317,7 @@ struct Swapchain(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_swapchain_images(
-        device, swapchain, Ptr(to=count), Ptr[Image, MutOrigin.external]()
+        device, swapchain, Ptr(to=count), Ptr[Image, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -399,7 +399,7 @@ struct Swapchain(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_present_rectangles(
-        physical_device, surface, Ptr(to=count), Ptr[Rect2D, MutOrigin.external]()
+        physical_device, surface, Ptr(to=count), Ptr[Rect2D, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -518,7 +518,7 @@ struct Display(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_display_properties(
-        physical_device, Ptr(to=count), Ptr[DisplayPropertiesKHR, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[DisplayPropertiesKHR, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -556,7 +556,7 @@ struct Display(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_display_plane_properties(
-        physical_device, Ptr(to=count), Ptr[DisplayPlanePropertiesKHR, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[DisplayPlanePropertiesKHR, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -596,7 +596,7 @@ struct Display(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_display_plane_supported_displays(
-        physical_device, plane_index, Ptr(to=count), Ptr[DisplayKHR, MutOrigin.external]()
+        physical_device, plane_index, Ptr(to=count), Ptr[DisplayKHR, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -636,7 +636,7 @@ struct Display(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_display_mode_properties(
-        physical_device, display, Ptr(to=count), Ptr[DisplayModePropertiesKHR, MutOrigin.external]()
+        physical_device, display, Ptr(to=count), Ptr[DisplayModePropertiesKHR, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1167,7 +1167,7 @@ struct VideoQueue(Copyable):
         physical_device,
         Ptr(to=video_format_info),
         Ptr(to=count),
-        Ptr[VideoFormatPropertiesKHR, MutOrigin.external](),
+        Ptr[VideoFormatPropertiesKHR, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1246,7 +1246,7 @@ struct VideoQueue(Copyable):
         device,
         video_session,
         Ptr(to=count),
-        Ptr[VideoSessionMemoryRequirementsKHR, MutOrigin.external](),
+        Ptr[VideoSessionMemoryRequirementsKHR, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1542,7 +1542,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._get_physical_device_queue_family_properties_2(
-    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._get_physical_device_queue_family_properties_2(
@@ -1597,7 +1597,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
     physical_device,
     Ptr(to=format_info),
     Ptr(to=count),
-    Ptr[SparseImageFormatProperties2, MutOrigin.external](),
+    Ptr[SparseImageFormatProperties2, MutExternalOrigin](),
 )
         list.reserve(Int(count))
         self._get_physical_device_sparse_image_format_properties_2(
@@ -1771,7 +1771,7 @@ struct DeviceGroup(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_present_rectangles(
-        physical_device, surface, Ptr(to=count), Ptr[Rect2D, MutOrigin.external]()
+        physical_device, surface, Ptr(to=count), Ptr[Rect2D, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1863,7 +1863,7 @@ struct DeviceGroupCreation(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._enumerate_physical_device_groups(
-        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
+        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2710,7 +2710,7 @@ struct GetSurfaceCapabilities2(Copyable):
         physical_device,
         Ptr(to=surface_info),
         Ptr(to=count),
-        Ptr[SurfaceFormat2KHR, MutOrigin.external](),
+        Ptr[SurfaceFormat2KHR, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2791,7 +2791,7 @@ struct GetDisplayProperties2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_display_properties_2(
-        physical_device, Ptr(to=count), Ptr[DisplayProperties2KHR, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[DisplayProperties2KHR, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2833,7 +2833,7 @@ struct GetDisplayProperties2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_display_plane_properties_2(
-        physical_device, Ptr(to=count), Ptr[DisplayPlaneProperties2KHR, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[DisplayPlaneProperties2KHR, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2873,10 +2873,7 @@ struct GetDisplayProperties2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_display_mode_properties_2(
-        physical_device,
-        display,
-        Ptr(to=count),
-        Ptr[DisplayModeProperties2KHR, MutOrigin.external](),
+        physical_device, display, Ptr(to=count), Ptr[DisplayModeProperties2KHR, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2991,7 +2988,7 @@ struct GetMemoryRequirements2(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._get_image_sparse_memory_requirements_2(
-    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._get_image_sparse_memory_requirements_2(device, Ptr(to=info), Ptr(to=count), list.unsafe_ptr())
@@ -3959,7 +3956,7 @@ struct FragmentShadingRate(Copyable):
             result = self._get_physical_device_fragment_shading_rates(
         physical_device,
         Ptr(to=count),
-        Ptr[PhysicalDeviceFragmentShadingRateKHR, MutOrigin.external](),
+        Ptr[PhysicalDeviceFragmentShadingRateKHR, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -4272,7 +4269,7 @@ struct PipelineExecutableProperties(Copyable):
         device,
         Ptr(to=pipeline_info),
         Ptr(to=count),
-        Ptr[PipelineExecutablePropertiesKHR, MutOrigin.external](),
+        Ptr[PipelineExecutablePropertiesKHR, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -4315,7 +4312,7 @@ struct PipelineExecutableProperties(Copyable):
         device,
         Ptr(to=executable_info),
         Ptr(to=count),
-        Ptr[PipelineExecutableStatisticKHR, MutOrigin.external](),
+        Ptr[PipelineExecutableStatisticKHR, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -4362,7 +4359,7 @@ struct PipelineExecutableProperties(Copyable):
         device,
         Ptr(to=executable_info),
         Ptr(to=count),
-        Ptr[PipelineExecutableInternalRepresentationKHR, MutOrigin.external](),
+        Ptr[PipelineExecutableInternalRepresentationKHR, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -4510,7 +4507,7 @@ struct VideoEncodeQueue(Copyable):
         Ptr(to=video_session_parameters_info),
         Ptr(to=p_feedback_info).bitcast[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutAnyOrigin]]()[],
         Ptr(to=count),
-        Ptr[NoneType, MutOrigin.external](),
+        Ptr[NoneType, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -4872,7 +4869,7 @@ struct Maintenance4(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._get_device_image_sparse_memory_requirements(
-    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._get_device_image_sparse_memory_requirements(
@@ -5142,7 +5139,7 @@ struct PipelineBinary(Copyable):
         Ptr(to=info),
         Ptr(to=pipeline_binary_key),
         Ptr(to=count),
-        Ptr[NoneType, MutOrigin.external](),
+        Ptr[NoneType, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -5245,7 +5242,7 @@ struct CooperativeMatrix(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_cooperative_matrix_properties(
-        physical_device, Ptr(to=count), Ptr[CooperativeMatrixPropertiesKHR, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[CooperativeMatrixPropertiesKHR, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -5343,7 +5340,7 @@ struct CalibratedTimestamps(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_calibrateable_time_domains(
-        physical_device, Ptr(to=count), Ptr[TimeDomainKHR, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[TimeDomainKHR, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))

@@ -131,12 +131,7 @@ struct ShaderInfo(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_shader_info(
-        device,
-        pipeline,
-        shader_stage,
-        info_type,
-        Ptr(to=count),
-        Ptr[NoneType, MutOrigin.external](),
+        device, pipeline, shader_stage, info_type, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))

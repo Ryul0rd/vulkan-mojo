@@ -41,6 +41,9 @@ struct ClearColorValue(ImplicitlyCopyable):
             count = size_of[InlineArray[UInt32, Int(4)]](),
         )
 
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
+
 
 struct ClearValue(ImplicitlyCopyable):
     comptime _size = max(
@@ -66,6 +69,9 @@ struct ClearValue(ImplicitlyCopyable):
             src = Ptr(to=value).bitcast[Byte](),
             count = size_of[ClearDepthStencilValue](),
         )
+
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
 
 
 struct ClusterAccelerationStructureOpInputNV(ImplicitlyCopyable):
@@ -101,6 +107,9 @@ struct ClusterAccelerationStructureOpInputNV(ImplicitlyCopyable):
             src = Ptr(to=value).bitcast[Byte](),
             count = size_of[Ptr[ClusterAccelerationStructureMoveObjectsInputNV, MutAnyOrigin]](),
         )
+
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
 
 
 struct PerformanceCounterResultKHR(ImplicitlyCopyable):
@@ -164,6 +173,9 @@ struct PerformanceCounterResultKHR(ImplicitlyCopyable):
             count = size_of[Float64](),
         )
 
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
+
 
 struct PerformanceValueDataINTEL(ImplicitlyCopyable):
     comptime _size = max(
@@ -217,6 +229,9 @@ struct PerformanceValueDataINTEL(ImplicitlyCopyable):
             count = size_of[CStringSlice[ImmutAnyOrigin]](),
         )
 
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
+
 
 struct PipelineExecutableStatisticValueKHR(ImplicitlyCopyable):
     comptime _size = max(
@@ -261,6 +276,9 @@ struct PipelineExecutableStatisticValueKHR(ImplicitlyCopyable):
             count = size_of[Float64](),
         )
 
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
+
 
 struct DeviceOrHostAddressKHR(ImplicitlyCopyable):
     comptime _size = max(
@@ -286,6 +304,9 @@ struct DeviceOrHostAddressKHR(ImplicitlyCopyable):
             src = Ptr(to=value).bitcast[Byte](),
             count = size_of[Ptr[NoneType, MutAnyOrigin]](),
         )
+
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
 
 
 struct DeviceOrHostAddressConstKHR(ImplicitlyCopyable):
@@ -313,6 +334,9 @@ struct DeviceOrHostAddressConstKHR(ImplicitlyCopyable):
             count = size_of[Ptr[NoneType, ImmutAnyOrigin]](),
         )
 
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
+
 
 struct DeviceOrHostAddressConstAMDX(ImplicitlyCopyable):
     comptime _size = max(
@@ -338,6 +362,9 @@ struct DeviceOrHostAddressConstAMDX(ImplicitlyCopyable):
             src = Ptr(to=value).bitcast[Byte](),
             count = size_of[Ptr[NoneType, ImmutAnyOrigin]](),
         )
+
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
 
 
 struct AccelerationStructureGeometryDataKHR(ImplicitlyCopyable):
@@ -374,6 +401,9 @@ struct AccelerationStructureGeometryDataKHR(ImplicitlyCopyable):
             count = size_of[AccelerationStructureGeometryInstancesDataKHR](),
         )
 
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
+
 
 struct IndirectExecutionSetInfoEXT(ImplicitlyCopyable):
     comptime _size = max(
@@ -399,6 +429,9 @@ struct IndirectExecutionSetInfoEXT(ImplicitlyCopyable):
             src = Ptr(to=value).bitcast[Byte](),
             count = size_of[Ptr[IndirectExecutionSetShaderInfoEXT, ImmutAnyOrigin]](),
         )
+
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
 
 
 struct IndirectCommandsTokenDataEXT(ImplicitlyCopyable):
@@ -444,6 +477,9 @@ struct IndirectCommandsTokenDataEXT(ImplicitlyCopyable):
             count = size_of[Ptr[IndirectCommandsExecutionSetTokenEXT, ImmutAnyOrigin]](),
         )
 
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
+
 
 struct DescriptorDataEXT(ImplicitlyCopyable):
     comptime _size = max(
@@ -488,6 +524,9 @@ struct DescriptorDataEXT(ImplicitlyCopyable):
             count = size_of[DeviceAddress](),
         )
 
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
+
 
 struct AccelerationStructureMotionInstanceDataNV(ImplicitlyCopyable):
     comptime _size = max(
@@ -522,6 +561,9 @@ struct AccelerationStructureMotionInstanceDataNV(ImplicitlyCopyable):
             src = Ptr(to=value).bitcast[Byte](),
             count = size_of[AccelerationStructureSRTMotionInstanceNV](),
         )
+
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
 
 
 struct ResourceDescriptorDataEXT(ImplicitlyCopyable):
@@ -566,6 +608,9 @@ struct ResourceDescriptorDataEXT(ImplicitlyCopyable):
             src = Ptr(to=value).bitcast[Byte](),
             count = size_of[Ptr[TensorViewCreateInfoARM, ImmutAnyOrigin]](),
         )
+
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()
 
 
 struct DescriptorMappingSourceDataEXT(ImplicitlyCopyable):
@@ -646,3 +691,6 @@ struct DescriptorMappingSourceDataEXT(ImplicitlyCopyable):
             src = Ptr(to=value).bitcast[Byte](),
             count = size_of[DescriptorMappingSourceShaderRecordIndexEXT](),
         )
+
+    fn __copyinit__(out self, other: Self):
+        self._value = other._value.copy()

@@ -278,9 +278,9 @@ comptime RenderingInputAttachmentIndexInfoKHR = RenderingInputAttachmentIndexInf
 comptime PhysicalDevicePresentModeFifoLatestReadyFeaturesEXT = PhysicalDevicePresentModeFifoLatestReadyFeaturesKHR
 
 
-struct BaseOutStructure(Copyable):
+struct BaseOutStructure(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[BaseOutStructure, MutOrigin.external]
+    var p_next: Ptr[BaseOutStructure, MutExternalOrigin]
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
         out self,
@@ -291,9 +291,9 @@ struct BaseOutStructure(Copyable):
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
 
 
-struct BaseInStructure(Copyable):
+struct BaseInStructure(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[BaseInStructure, ImmutOrigin.external]
+    var p_next: Ptr[BaseInStructure, ImmutExternalOrigin]
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -304,7 +304,7 @@ struct BaseInStructure(Copyable):
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
 
 
-struct Offset2D(Copyable):
+struct Offset2D(Copyable, Equatable):
     var x: Int32
     var y: Int32
 
@@ -313,7 +313,7 @@ struct Offset2D(Copyable):
         self.y = y
 
 
-struct Offset3D(Copyable):
+struct Offset3D(Copyable, Equatable):
     var x: Int32
     var y: Int32
     var z: Int32
@@ -329,7 +329,7 @@ struct Offset3D(Copyable):
         self.z = z
 
 
-struct Extent2D(Copyable):
+struct Extent2D(Copyable, Equatable):
     var width: UInt32
     var height: UInt32
 
@@ -340,7 +340,7 @@ struct Extent2D(Copyable):
         self.height = height
 
 
-struct Extent3D(Copyable):
+struct Extent3D(Copyable, Equatable):
     var width: UInt32
     var height: UInt32
     var depth: UInt32
@@ -356,7 +356,7 @@ struct Extent3D(Copyable):
         self.depth = depth
 
 
-struct Viewport(Copyable):
+struct Viewport(Copyable, Equatable):
     var x: Float32
     var y: Float32
     var width: Float32
@@ -381,7 +381,7 @@ struct Viewport(Copyable):
         self.max_depth = max_depth
 
 
-struct Rect2D(Copyable):
+struct Rect2D(Copyable, Equatable):
     var offset: Offset2D
     var extent: Extent2D
 
@@ -392,7 +392,7 @@ struct Rect2D(Copyable):
         self.extent = extent.copy()
 
 
-struct ClearRect(Copyable):
+struct ClearRect(Copyable, Equatable):
     var rect: Rect2D
     var base_array_layer: UInt32
     var layer_count: UInt32
@@ -408,7 +408,7 @@ struct ClearRect(Copyable):
         self.layer_count = layer_count
 
 
-struct ComponentMapping(Copyable):
+struct ComponentMapping(Copyable, Equatable):
     var r: ComponentSwizzle
     var g: ComponentSwizzle
     var b: ComponentSwizzle
@@ -427,7 +427,7 @@ struct ComponentMapping(Copyable):
         self.a = a
 
 
-struct PhysicalDeviceProperties(Copyable):
+struct PhysicalDeviceProperties(Copyable, Equatable):
     var api_version: Version
     var driver_version: Version
     var vendor_id: UInt32
@@ -455,8 +455,8 @@ struct PhysicalDeviceProperties(Copyable):
         self.vendor_id = vendor_id
         self.device_id = device_id
         self.device_type = device_type
-        self.device_name = device_name
-        self.pipeline_cache_uuid = pipeline_cache_uuid
+        self.device_name = device_name.copy()
+        self.pipeline_cache_uuid = pipeline_cache_uuid.copy()
         self.limits = limits.copy()
         self.sparse_properties = sparse_properties.copy()
 
@@ -464,7 +464,7 @@ struct PhysicalDeviceProperties(Copyable):
         return CStringSlice[origin_of(self.device_name)](unsafe_from_ptr = self.device_name.unsafe_ptr())
 
 
-struct ExtensionProperties(Copyable):
+struct ExtensionProperties(Copyable, Equatable):
     var extension_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]
     var spec_version: Version
 
@@ -473,14 +473,14 @@ struct ExtensionProperties(Copyable):
         extension_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)] = zero_init[InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]](),
         spec_version: Version = zero_init[Version](),
     ):
-        self.extension_name = extension_name
+        self.extension_name = extension_name.copy()
         self.spec_version = spec_version
 
     fn extension_name_slice(self) -> CStringSlice[origin_of(self.extension_name)]:
         return CStringSlice[origin_of(self.extension_name)](unsafe_from_ptr = self.extension_name.unsafe_ptr())
 
 
-struct LayerProperties(Copyable):
+struct LayerProperties(Copyable, Equatable):
     var layer_name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]
     var spec_version: Version
     var implementation_version: Version
@@ -493,10 +493,10 @@ struct LayerProperties(Copyable):
         implementation_version: Version = zero_init[Version](),
         description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)] = zero_init[InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]](),
     ):
-        self.layer_name = layer_name
+        self.layer_name = layer_name.copy()
         self.spec_version = spec_version
         self.implementation_version = implementation_version
-        self.description = description
+        self.description = description.copy()
 
     fn layer_name_slice(self) -> CStringSlice[origin_of(self.layer_name)]:
         return CStringSlice[origin_of(self.layer_name)](unsafe_from_ptr = self.layer_name.unsafe_ptr())
@@ -505,12 +505,12 @@ struct LayerProperties(Copyable):
         return CStringSlice[origin_of(self.description)](unsafe_from_ptr = self.description.unsafe_ptr())
 
 
-struct ApplicationInfo(Copyable):
+struct ApplicationInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_application_name: CStringSlice[ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_application_name: CStringSlice[ImmutExternalOrigin]
     var application_version: Version
-    var p_engine_name: CStringSlice[ImmutOrigin.external]
+    var p_engine_name: CStringSlice[ImmutExternalOrigin]
     var engine_version: Version
     var api_version: Version
 
@@ -537,8 +537,8 @@ struct ApplicationInfo(Copyable):
         self.api_version = api_version
 
 
-struct AllocationCallbacks(Copyable):
-    var p_user_data: Ptr[NoneType, MutOrigin.external]
+struct AllocationCallbacks(Copyable, Equatable):
+    var p_user_data: Ptr[NoneType, MutExternalOrigin]
     var pfn_allocation: PFN_vkAllocationFunction
     var pfn_reallocation: PFN_vkReallocationFunction
     var pfn_free: PFN_vkFreeFunction
@@ -562,13 +562,13 @@ struct AllocationCallbacks(Copyable):
         self.pfn_internal_free = pfn_internal_free
 
 
-struct DeviceQueueCreateInfo(Copyable):
+struct DeviceQueueCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DeviceQueueCreateFlags
     var queue_family_index: UInt32
     var queue_count: UInt32
-    var p_queue_priorities: Ptr[Float32, ImmutOrigin.external]
+    var p_queue_priorities: Ptr[Float32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -590,17 +590,17 @@ struct DeviceQueueCreateInfo(Copyable):
         self.p_queue_priorities = Ptr(to=p_queue_priorities).bitcast[type_of(self.p_queue_priorities)]()[]
 
 
-struct DeviceCreateInfo(Copyable):
+struct DeviceCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DeviceCreateFlags
     var queue_create_info_count: UInt32
-    var p_queue_create_infos: Ptr[DeviceQueueCreateInfo, ImmutOrigin.external]
+    var p_queue_create_infos: Ptr[DeviceQueueCreateInfo, ImmutExternalOrigin]
     var enabled_layer_count: UInt32
-    var pp_enabled_layer_names: Ptr[CStringSlice[ImmutOrigin.external], ImmutOrigin.external]
+    var pp_enabled_layer_names: Ptr[CStringSlice[ImmutExternalOrigin], ImmutExternalOrigin]
     var enabled_extension_count: UInt32
-    var pp_enabled_extension_names: Ptr[CStringSlice[ImmutOrigin.external], ImmutOrigin.external]
-    var p_enabled_features: Ptr[PhysicalDeviceFeatures, ImmutOrigin.external]
+    var pp_enabled_extension_names: Ptr[CStringSlice[ImmutExternalOrigin], ImmutExternalOrigin]
+    var p_enabled_features: Ptr[PhysicalDeviceFeatures, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -635,15 +635,15 @@ struct DeviceCreateInfo(Copyable):
         self.p_enabled_features = Ptr(to=p_enabled_features).bitcast[type_of(self.p_enabled_features)]()[]
 
 
-struct InstanceCreateInfo(Copyable):
+struct InstanceCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: InstanceCreateFlags
-    var p_application_info: Ptr[ApplicationInfo, ImmutOrigin.external]
+    var p_application_info: Ptr[ApplicationInfo, ImmutExternalOrigin]
     var enabled_layer_count: UInt32
-    var pp_enabled_layer_names: Ptr[CStringSlice[ImmutOrigin.external], ImmutOrigin.external]
+    var pp_enabled_layer_names: Ptr[CStringSlice[ImmutExternalOrigin], ImmutExternalOrigin]
     var enabled_extension_count: UInt32
-    var pp_enabled_extension_names: Ptr[CStringSlice[ImmutOrigin.external], ImmutOrigin.external]
+    var pp_enabled_extension_names: Ptr[CStringSlice[ImmutExternalOrigin], ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -673,7 +673,7 @@ struct InstanceCreateInfo(Copyable):
         self.pp_enabled_extension_names = Ptr(to=pp_enabled_extension_names).bitcast[type_of(self.pp_enabled_extension_names)]()[]
 
 
-struct QueueFamilyProperties(Copyable):
+struct QueueFamilyProperties(Copyable, Equatable):
     var queue_flags: QueueFlags
     var queue_count: UInt32
     var timestamp_valid_bits: UInt32
@@ -692,7 +692,7 @@ struct QueueFamilyProperties(Copyable):
         self.min_image_transfer_granularity = min_image_transfer_granularity.copy()
 
 
-struct PhysicalDeviceMemoryProperties(Copyable):
+struct PhysicalDeviceMemoryProperties(Copyable, Equatable):
     var memory_type_count: UInt32
     var memory_types: InlineArray[MemoryType, Int(MAX_MEMORY_TYPES)]
     var memory_heap_count: UInt32
@@ -706,14 +706,14 @@ struct PhysicalDeviceMemoryProperties(Copyable):
         memory_heaps: InlineArray[MemoryHeap, Int(MAX_MEMORY_HEAPS)] = zero_init[InlineArray[MemoryHeap, Int(MAX_MEMORY_HEAPS)]](),
     ):
         self.memory_type_count = memory_type_count
-        self.memory_types = memory_types
+        self.memory_types = memory_types.copy()
         self.memory_heap_count = memory_heap_count
-        self.memory_heaps = memory_heaps
+        self.memory_heaps = memory_heaps.copy()
 
 
-struct MemoryAllocateInfo(Copyable):
+struct MemoryAllocateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var allocation_size: DeviceSize
     var memory_type_index: UInt32
 
@@ -730,7 +730,7 @@ struct MemoryAllocateInfo(Copyable):
         self.memory_type_index = memory_type_index
 
 
-struct MemoryRequirements(Copyable):
+struct MemoryRequirements(Copyable, Equatable):
     var size: DeviceSize
     var alignment: DeviceSize
     var memory_type_bits: UInt32
@@ -746,7 +746,7 @@ struct MemoryRequirements(Copyable):
         self.memory_type_bits = memory_type_bits
 
 
-struct SparseImageFormatProperties(Copyable):
+struct SparseImageFormatProperties(Copyable, Equatable):
     var aspect_mask: ImageAspectFlags
     var image_granularity: Extent3D
     var flags: SparseImageFormatFlags
@@ -762,7 +762,7 @@ struct SparseImageFormatProperties(Copyable):
         self.flags = flags
 
 
-struct SparseImageMemoryRequirements(Copyable):
+struct SparseImageMemoryRequirements(Copyable, Equatable):
     var format_properties: SparseImageFormatProperties
     var image_mip_tail_first_lod: UInt32
     var image_mip_tail_size: DeviceSize
@@ -784,7 +784,7 @@ struct SparseImageMemoryRequirements(Copyable):
         self.image_mip_tail_stride = image_mip_tail_stride
 
 
-struct MemoryType(Copyable):
+struct MemoryType(Copyable, Equatable):
     var property_flags: MemoryPropertyFlags
     var heap_index: UInt32
 
@@ -797,7 +797,7 @@ struct MemoryType(Copyable):
         self.heap_index = heap_index
 
 
-struct MemoryHeap(Copyable):
+struct MemoryHeap(Copyable, Equatable):
     var size: DeviceSize
     var flags: MemoryHeapFlags
 
@@ -810,9 +810,9 @@ struct MemoryHeap(Copyable):
         self.flags = flags
 
 
-struct MappedMemoryRange(Copyable):
+struct MappedMemoryRange(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var memory: DeviceMemory
     var offset: DeviceSize
     var size: DeviceSize
@@ -832,7 +832,7 @@ struct MappedMemoryRange(Copyable):
         self.size = size
 
 
-struct FormatProperties(Copyable):
+struct FormatProperties(Copyable, Equatable):
     var linear_tiling_features: FormatFeatureFlags
     var optimal_tiling_features: FormatFeatureFlags
     var buffer_features: FormatFeatureFlags
@@ -848,7 +848,7 @@ struct FormatProperties(Copyable):
         self.buffer_features = buffer_features
 
 
-struct ImageFormatProperties(Copyable):
+struct ImageFormatProperties(Copyable, Equatable):
     var max_extent: Extent3D
     var max_mip_levels: UInt32
     var max_array_layers: UInt32
@@ -870,7 +870,7 @@ struct ImageFormatProperties(Copyable):
         self.max_resource_size = max_resource_size
 
 
-struct DescriptorBufferInfo(Copyable):
+struct DescriptorBufferInfo(Copyable, Equatable):
     var buffer: Buffer
     var offset: DeviceSize
     var range: DeviceSize
@@ -886,7 +886,7 @@ struct DescriptorBufferInfo(Copyable):
         self.range = range
 
 
-struct DescriptorImageInfo(Copyable):
+struct DescriptorImageInfo(Copyable, Equatable):
     var sampler: Sampler
     var image_view: ImageView
     var image_layout: ImageLayout
@@ -902,17 +902,17 @@ struct DescriptorImageInfo(Copyable):
         self.image_layout = image_layout
 
 
-struct WriteDescriptorSet(Copyable):
+struct WriteDescriptorSet(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var dst_set: DescriptorSet
     var dst_binding: UInt32
     var dst_array_element: UInt32
     var descriptor_count: UInt32
     var descriptor_type: DescriptorType
-    var p_image_info: Ptr[DescriptorImageInfo, ImmutOrigin.external]
-    var p_buffer_info: Ptr[DescriptorBufferInfo, ImmutOrigin.external]
-    var p_texel_buffer_view: Ptr[BufferView, ImmutOrigin.external]
+    var p_image_info: Ptr[DescriptorImageInfo, ImmutExternalOrigin]
+    var p_buffer_info: Ptr[DescriptorBufferInfo, ImmutExternalOrigin]
+    var p_texel_buffer_view: Ptr[BufferView, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -944,9 +944,9 @@ struct WriteDescriptorSet(Copyable):
         self.p_texel_buffer_view = Ptr(to=p_texel_buffer_view).bitcast[type_of(self.p_texel_buffer_view)]()[]
 
 
-struct CopyDescriptorSet(Copyable):
+struct CopyDescriptorSet(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_set: DescriptorSet
     var src_binding: UInt32
     var src_array_element: UInt32
@@ -978,9 +978,9 @@ struct CopyDescriptorSet(Copyable):
         self.descriptor_count = descriptor_count
 
 
-struct BufferUsageFlags2CreateInfo(Copyable):
+struct BufferUsageFlags2CreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var usage: BufferUsageFlags2
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -994,15 +994,15 @@ struct BufferUsageFlags2CreateInfo(Copyable):
         self.usage = usage
 
 
-struct BufferCreateInfo(Copyable):
+struct BufferCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: BufferCreateFlags
     var size: DeviceSize
     var usage: BufferUsageFlags
     var sharing_mode: SharingMode
     var queue_family_index_count: UInt32
-    var p_queue_family_indices: Ptr[UInt32, ImmutOrigin.external]
+    var p_queue_family_indices: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -1028,9 +1028,9 @@ struct BufferCreateInfo(Copyable):
         self.p_queue_family_indices = Ptr(to=p_queue_family_indices).bitcast[type_of(self.p_queue_family_indices)]()[]
 
 
-struct BufferViewCreateInfo(Copyable):
+struct BufferViewCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: BufferViewCreateFlags
     var buffer: Buffer
     var format: Format
@@ -1056,7 +1056,7 @@ struct BufferViewCreateInfo(Copyable):
         self.range = range
 
 
-struct ImageSubresource(Copyable):
+struct ImageSubresource(Copyable, Equatable):
     var aspect_mask: ImageAspectFlags
     var mip_level: UInt32
     var array_layer: UInt32
@@ -1072,7 +1072,7 @@ struct ImageSubresource(Copyable):
         self.array_layer = array_layer
 
 
-struct ImageSubresourceLayers(Copyable):
+struct ImageSubresourceLayers(Copyable, Equatable):
     var aspect_mask: ImageAspectFlags
     var mip_level: UInt32
     var base_array_layer: UInt32
@@ -1091,7 +1091,7 @@ struct ImageSubresourceLayers(Copyable):
         self.layer_count = layer_count
 
 
-struct ImageSubresourceRange(Copyable):
+struct ImageSubresourceRange(Copyable, Equatable):
     var aspect_mask: ImageAspectFlags
     var base_mip_level: UInt32
     var level_count: UInt32
@@ -1113,9 +1113,9 @@ struct ImageSubresourceRange(Copyable):
         self.layer_count = layer_count
 
 
-struct MemoryBarrier(Copyable):
+struct MemoryBarrier(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_access_mask: AccessFlags
     var dst_access_mask: AccessFlags
 
@@ -1132,9 +1132,9 @@ struct MemoryBarrier(Copyable):
         self.dst_access_mask = dst_access_mask
 
 
-struct BufferMemoryBarrier(Copyable):
+struct BufferMemoryBarrier(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_access_mask: AccessFlags
     var dst_access_mask: AccessFlags
     var src_queue_family_index: UInt32
@@ -1166,9 +1166,9 @@ struct BufferMemoryBarrier(Copyable):
         self.size = size
 
 
-struct ImageMemoryBarrier(Copyable):
+struct ImageMemoryBarrier(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_access_mask: AccessFlags
     var dst_access_mask: AccessFlags
     var old_layout: ImageLayout
@@ -1203,9 +1203,9 @@ struct ImageMemoryBarrier(Copyable):
         self.subresource_range = subresource_range.copy()
 
 
-struct ImageCreateInfo(Copyable):
+struct ImageCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: ImageCreateFlags
     var image_type: ImageType
     var format: Format
@@ -1217,7 +1217,7 @@ struct ImageCreateInfo(Copyable):
     var usage: ImageUsageFlags
     var sharing_mode: SharingMode
     var queue_family_index_count: UInt32
-    var p_queue_family_indices: Ptr[UInt32, ImmutOrigin.external]
+    var p_queue_family_indices: Ptr[UInt32, ImmutExternalOrigin]
     var initial_layout: ImageLayout
 
     fn __init__[
@@ -1258,7 +1258,7 @@ struct ImageCreateInfo(Copyable):
         self.initial_layout = initial_layout
 
 
-struct SubresourceLayout(Copyable):
+struct SubresourceLayout(Copyable, Equatable):
     var offset: DeviceSize
     var size: DeviceSize
     var row_pitch: DeviceSize
@@ -1280,9 +1280,9 @@ struct SubresourceLayout(Copyable):
         self.depth_pitch = depth_pitch
 
 
-struct ImageViewCreateInfo(Copyable):
+struct ImageViewCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: ImageViewCreateFlags
     var image: Image
     var view_type: ImageViewType
@@ -1311,7 +1311,7 @@ struct ImageViewCreateInfo(Copyable):
         self.subresource_range = subresource_range.copy()
 
 
-struct BufferCopy(Copyable):
+struct BufferCopy(Copyable, Equatable):
     var src_offset: DeviceSize
     var dst_offset: DeviceSize
     var size: DeviceSize
@@ -1327,7 +1327,7 @@ struct BufferCopy(Copyable):
         self.size = size
 
 
-struct SparseMemoryBind(Copyable):
+struct SparseMemoryBind(Copyable, Equatable):
     var resource_offset: DeviceSize
     var size: DeviceSize
     var memory: DeviceMemory
@@ -1349,7 +1349,7 @@ struct SparseMemoryBind(Copyable):
         self.flags = flags
 
 
-struct SparseImageMemoryBind(Copyable):
+struct SparseImageMemoryBind(Copyable, Equatable):
     var subresource: ImageSubresource
     var offset: Offset3D
     var extent: Extent3D
@@ -1374,10 +1374,10 @@ struct SparseImageMemoryBind(Copyable):
         self.flags = flags
 
 
-struct SparseBufferMemoryBindInfo(Copyable):
+struct SparseBufferMemoryBindInfo(Copyable, Equatable):
     var buffer: Buffer
     var bind_count: UInt32
-    var p_binds: Ptr[SparseMemoryBind, ImmutOrigin.external]
+    var p_binds: Ptr[SparseMemoryBind, ImmutExternalOrigin]
 
     fn __init__[p_binds_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -1390,10 +1390,10 @@ struct SparseBufferMemoryBindInfo(Copyable):
         self.p_binds = Ptr(to=p_binds).bitcast[type_of(self.p_binds)]()[]
 
 
-struct SparseImageOpaqueMemoryBindInfo(Copyable):
+struct SparseImageOpaqueMemoryBindInfo(Copyable, Equatable):
     var image: Image
     var bind_count: UInt32
-    var p_binds: Ptr[SparseMemoryBind, ImmutOrigin.external]
+    var p_binds: Ptr[SparseMemoryBind, ImmutExternalOrigin]
 
     fn __init__[p_binds_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -1406,10 +1406,10 @@ struct SparseImageOpaqueMemoryBindInfo(Copyable):
         self.p_binds = Ptr(to=p_binds).bitcast[type_of(self.p_binds)]()[]
 
 
-struct SparseImageMemoryBindInfo(Copyable):
+struct SparseImageMemoryBindInfo(Copyable, Equatable):
     var image: Image
     var bind_count: UInt32
-    var p_binds: Ptr[SparseImageMemoryBind, ImmutOrigin.external]
+    var p_binds: Ptr[SparseImageMemoryBind, ImmutExternalOrigin]
 
     fn __init__[p_binds_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -1422,19 +1422,19 @@ struct SparseImageMemoryBindInfo(Copyable):
         self.p_binds = Ptr(to=p_binds).bitcast[type_of(self.p_binds)]()[]
 
 
-struct BindSparseInfo(Copyable):
+struct BindSparseInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var wait_semaphore_count: UInt32
-    var p_wait_semaphores: Ptr[Semaphore, ImmutOrigin.external]
+    var p_wait_semaphores: Ptr[Semaphore, ImmutExternalOrigin]
     var buffer_bind_count: UInt32
-    var p_buffer_binds: Ptr[SparseBufferMemoryBindInfo, ImmutOrigin.external]
+    var p_buffer_binds: Ptr[SparseBufferMemoryBindInfo, ImmutExternalOrigin]
     var image_opaque_bind_count: UInt32
-    var p_image_opaque_binds: Ptr[SparseImageOpaqueMemoryBindInfo, ImmutOrigin.external]
+    var p_image_opaque_binds: Ptr[SparseImageOpaqueMemoryBindInfo, ImmutExternalOrigin]
     var image_bind_count: UInt32
-    var p_image_binds: Ptr[SparseImageMemoryBindInfo, ImmutOrigin.external]
+    var p_image_binds: Ptr[SparseImageMemoryBindInfo, ImmutExternalOrigin]
     var signal_semaphore_count: UInt32
-    var p_signal_semaphores: Ptr[Semaphore, ImmutOrigin.external]
+    var p_signal_semaphores: Ptr[Semaphore, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -1472,7 +1472,7 @@ struct BindSparseInfo(Copyable):
         self.p_signal_semaphores = Ptr(to=p_signal_semaphores).bitcast[type_of(self.p_signal_semaphores)]()[]
 
 
-struct ImageCopy(Copyable):
+struct ImageCopy(Copyable, Equatable):
     var src_subresource: ImageSubresourceLayers
     var src_offset: Offset3D
     var dst_subresource: ImageSubresourceLayers
@@ -1494,7 +1494,7 @@ struct ImageCopy(Copyable):
         self.extent = extent.copy()
 
 
-struct ImageBlit(Copyable):
+struct ImageBlit(Copyable, Equatable):
     var src_subresource: ImageSubresourceLayers
     var src_offsets: InlineArray[Offset3D, Int(2)]
     var dst_subresource: ImageSubresourceLayers
@@ -1508,12 +1508,12 @@ struct ImageBlit(Copyable):
         dst_offsets: InlineArray[Offset3D, Int(2)] = zero_init[InlineArray[Offset3D, Int(2)]](),
     ):
         self.src_subresource = src_subresource.copy()
-        self.src_offsets = src_offsets
+        self.src_offsets = src_offsets.copy()
         self.dst_subresource = dst_subresource.copy()
-        self.dst_offsets = dst_offsets
+        self.dst_offsets = dst_offsets.copy()
 
 
-struct BufferImageCopy(Copyable):
+struct BufferImageCopy(Copyable, Equatable):
     var buffer_offset: DeviceSize
     var buffer_row_length: UInt32
     var buffer_image_height: UInt32
@@ -1538,7 +1538,7 @@ struct BufferImageCopy(Copyable):
         self.image_extent = image_extent.copy()
 
 
-struct StridedDeviceAddressRangeKHR(Copyable):
+struct StridedDeviceAddressRangeKHR(Copyable, Equatable):
     var address: DeviceAddress
     var size: DeviceSize
     var stride: DeviceSize
@@ -1554,7 +1554,7 @@ struct StridedDeviceAddressRangeKHR(Copyable):
         self.stride = stride
 
 
-struct CopyMemoryIndirectCommandKHR(Copyable):
+struct CopyMemoryIndirectCommandKHR(Copyable, Equatable):
     var src_address: DeviceAddress
     var dst_address: DeviceAddress
     var size: DeviceSize
@@ -1570,9 +1570,9 @@ struct CopyMemoryIndirectCommandKHR(Copyable):
         self.size = size
 
 
-struct CopyMemoryIndirectInfoKHR(Copyable):
+struct CopyMemoryIndirectInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_copy_flags: AddressCopyFlagsKHR
     var dst_copy_flags: AddressCopyFlagsKHR
     var copy_count: UInt32
@@ -1595,7 +1595,7 @@ struct CopyMemoryIndirectInfoKHR(Copyable):
         self.copy_address_range = copy_address_range.copy()
 
 
-struct CopyMemoryToImageIndirectCommandKHR(Copyable):
+struct CopyMemoryToImageIndirectCommandKHR(Copyable, Equatable):
     var src_address: DeviceAddress
     var buffer_row_length: UInt32
     var buffer_image_height: UInt32
@@ -1620,15 +1620,15 @@ struct CopyMemoryToImageIndirectCommandKHR(Copyable):
         self.image_extent = image_extent.copy()
 
 
-struct CopyMemoryToImageIndirectInfoKHR(Copyable):
+struct CopyMemoryToImageIndirectInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_copy_flags: AddressCopyFlagsKHR
     var copy_count: UInt32
     var copy_address_range: StridedDeviceAddressRangeKHR
     var dst_image: Image
     var dst_image_layout: ImageLayout
-    var p_image_subresources: Ptr[ImageSubresourceLayers, ImmutOrigin.external]
+    var p_image_subresources: Ptr[ImageSubresourceLayers, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -1654,7 +1654,7 @@ struct CopyMemoryToImageIndirectInfoKHR(Copyable):
         self.p_image_subresources = Ptr(to=p_image_subresources).bitcast[type_of(self.p_image_subresources)]()[]
 
 
-struct ImageResolve(Copyable):
+struct ImageResolve(Copyable, Equatable):
     var src_subresource: ImageSubresourceLayers
     var src_offset: Offset3D
     var dst_subresource: ImageSubresourceLayers
@@ -1676,12 +1676,12 @@ struct ImageResolve(Copyable):
         self.extent = extent.copy()
 
 
-struct ShaderModuleCreateInfo(Copyable):
+struct ShaderModuleCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: ShaderModuleCreateFlags
     var code_size: UInt
-    var p_code: Ptr[UInt32, ImmutOrigin.external]
+    var p_code: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_code_origin: ImmutOrigin = ImmutAnyOrigin
@@ -1700,12 +1700,12 @@ struct ShaderModuleCreateInfo(Copyable):
         self.p_code = Ptr(to=p_code).bitcast[type_of(self.p_code)]()[]
 
 
-struct DescriptorSetLayoutBinding(Copyable):
+struct DescriptorSetLayoutBinding(Copyable, Equatable):
     var binding: UInt32
     var descriptor_type: DescriptorType
     var descriptor_count: UInt32
     var stage_flags: ShaderStageFlags
-    var p_immutable_samplers: Ptr[Sampler, ImmutOrigin.external]
+    var p_immutable_samplers: Ptr[Sampler, ImmutExternalOrigin]
 
     fn __init__[p_immutable_samplers_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -1722,12 +1722,12 @@ struct DescriptorSetLayoutBinding(Copyable):
         self.p_immutable_samplers = Ptr(to=p_immutable_samplers).bitcast[type_of(self.p_immutable_samplers)]()[]
 
 
-struct DescriptorSetLayoutCreateInfo(Copyable):
+struct DescriptorSetLayoutCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DescriptorSetLayoutCreateFlags
     var binding_count: UInt32
-    var p_bindings: Ptr[DescriptorSetLayoutBinding, ImmutOrigin.external]
+    var p_bindings: Ptr[DescriptorSetLayoutBinding, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -1747,7 +1747,7 @@ struct DescriptorSetLayoutCreateInfo(Copyable):
         self.p_bindings = Ptr(to=p_bindings).bitcast[type_of(self.p_bindings)]()[]
 
 
-struct DescriptorPoolSize(Copyable):
+struct DescriptorPoolSize(Copyable, Equatable):
     var type: DescriptorType
     var descriptor_count: UInt32
 
@@ -1760,13 +1760,13 @@ struct DescriptorPoolSize(Copyable):
         self.descriptor_count = descriptor_count
 
 
-struct DescriptorPoolCreateInfo(Copyable):
+struct DescriptorPoolCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DescriptorPoolCreateFlags
     var max_sets: UInt32
     var pool_size_count: UInt32
-    var p_pool_sizes: Ptr[DescriptorPoolSize, ImmutOrigin.external]
+    var p_pool_sizes: Ptr[DescriptorPoolSize, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -1788,12 +1788,12 @@ struct DescriptorPoolCreateInfo(Copyable):
         self.p_pool_sizes = Ptr(to=p_pool_sizes).bitcast[type_of(self.p_pool_sizes)]()[]
 
 
-struct DescriptorSetAllocateInfo(Copyable):
+struct DescriptorSetAllocateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var descriptor_pool: DescriptorPool
     var descriptor_set_count: UInt32
-    var p_set_layouts: Ptr[DescriptorSetLayout, ImmutOrigin.external]
+    var p_set_layouts: Ptr[DescriptorSetLayout, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -1813,7 +1813,7 @@ struct DescriptorSetAllocateInfo(Copyable):
         self.p_set_layouts = Ptr(to=p_set_layouts).bitcast[type_of(self.p_set_layouts)]()[]
 
 
-struct SpecializationMapEntry(Copyable):
+struct SpecializationMapEntry(Copyable, Equatable):
     var constant_id: UInt32
     var offset: UInt32
     var size: UInt
@@ -1829,11 +1829,11 @@ struct SpecializationMapEntry(Copyable):
         self.size = size
 
 
-struct SpecializationInfo(Copyable):
+struct SpecializationInfo(Copyable, Equatable):
     var map_entry_count: UInt32
-    var p_map_entries: Ptr[SpecializationMapEntry, ImmutOrigin.external]
+    var p_map_entries: Ptr[SpecializationMapEntry, ImmutExternalOrigin]
     var data_size: UInt
-    var p_data: Ptr[NoneType, ImmutOrigin.external]
+    var p_data: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_map_entries_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -1851,14 +1851,14 @@ struct SpecializationInfo(Copyable):
         self.p_data = Ptr(to=p_data).bitcast[type_of(self.p_data)]()[]
 
 
-struct PipelineShaderStageCreateInfo(Copyable):
+struct PipelineShaderStageCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineShaderStageCreateFlags
     var stage: ShaderStageFlagBits
     var module: ShaderModule
-    var p_name: CStringSlice[ImmutOrigin.external]
-    var p_specialization_info: Ptr[SpecializationInfo, ImmutOrigin.external]
+    var p_name: CStringSlice[ImmutExternalOrigin]
+    var p_specialization_info: Ptr[SpecializationInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -1883,9 +1883,9 @@ struct PipelineShaderStageCreateInfo(Copyable):
         self.p_specialization_info = Ptr(to=p_specialization_info).bitcast[type_of(self.p_specialization_info)]()[]
 
 
-struct ComputePipelineCreateInfo(Copyable):
+struct ComputePipelineCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineCreateFlags
     var stage: PipelineShaderStageCreateInfo
     var layout: PipelineLayout
@@ -1911,9 +1911,9 @@ struct ComputePipelineCreateInfo(Copyable):
         self.base_pipeline_index = base_pipeline_index
 
 
-struct ComputePipelineIndirectBufferInfoNV(Copyable):
+struct ComputePipelineIndirectBufferInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var device_address: DeviceAddress
     var size: DeviceSize
     var pipeline_device_address_capture_replay: DeviceAddress
@@ -1933,9 +1933,9 @@ struct ComputePipelineIndirectBufferInfoNV(Copyable):
         self.pipeline_device_address_capture_replay = pipeline_device_address_capture_replay
 
 
-struct PipelineCreateFlags2CreateInfo(Copyable):
+struct PipelineCreateFlags2CreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineCreateFlags2
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -1949,7 +1949,7 @@ struct PipelineCreateFlags2CreateInfo(Copyable):
         self.flags = flags
 
 
-struct VertexInputBindingDescription(Copyable):
+struct VertexInputBindingDescription(Copyable, Equatable):
     var binding: UInt32
     var stride: UInt32
     var input_rate: VertexInputRate
@@ -1965,7 +1965,7 @@ struct VertexInputBindingDescription(Copyable):
         self.input_rate = input_rate
 
 
-struct VertexInputAttributeDescription(Copyable):
+struct VertexInputAttributeDescription(Copyable, Equatable):
     var location: UInt32
     var binding: UInt32
     var format: Format
@@ -1984,14 +1984,14 @@ struct VertexInputAttributeDescription(Copyable):
         self.offset = offset
 
 
-struct PipelineVertexInputStateCreateInfo(Copyable):
+struct PipelineVertexInputStateCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineVertexInputStateCreateFlags
     var vertex_binding_description_count: UInt32
-    var p_vertex_binding_descriptions: Ptr[VertexInputBindingDescription, ImmutOrigin.external]
+    var p_vertex_binding_descriptions: Ptr[VertexInputBindingDescription, ImmutExternalOrigin]
     var vertex_attribute_description_count: UInt32
-    var p_vertex_attribute_descriptions: Ptr[VertexInputAttributeDescription, ImmutOrigin.external]
+    var p_vertex_attribute_descriptions: Ptr[VertexInputAttributeDescription, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -2016,9 +2016,9 @@ struct PipelineVertexInputStateCreateInfo(Copyable):
         self.p_vertex_attribute_descriptions = Ptr(to=p_vertex_attribute_descriptions).bitcast[type_of(self.p_vertex_attribute_descriptions)]()[]
 
 
-struct PipelineInputAssemblyStateCreateInfo(Copyable):
+struct PipelineInputAssemblyStateCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineInputAssemblyStateCreateFlags
     var topology: PrimitiveTopology
     var primitive_restart_enable: Bool32
@@ -2038,9 +2038,9 @@ struct PipelineInputAssemblyStateCreateInfo(Copyable):
         self.primitive_restart_enable = primitive_restart_enable
 
 
-struct PipelineTessellationStateCreateInfo(Copyable):
+struct PipelineTessellationStateCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineTessellationStateCreateFlags
     var patch_control_points: UInt32
 
@@ -2057,14 +2057,14 @@ struct PipelineTessellationStateCreateInfo(Copyable):
         self.patch_control_points = patch_control_points
 
 
-struct PipelineViewportStateCreateInfo(Copyable):
+struct PipelineViewportStateCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineViewportStateCreateFlags
     var viewport_count: UInt32
-    var p_viewports: Ptr[Viewport, ImmutOrigin.external]
+    var p_viewports: Ptr[Viewport, ImmutExternalOrigin]
     var scissor_count: UInt32
-    var p_scissors: Ptr[Rect2D, ImmutOrigin.external]
+    var p_scissors: Ptr[Rect2D, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -2089,9 +2089,9 @@ struct PipelineViewportStateCreateInfo(Copyable):
         self.p_scissors = Ptr(to=p_scissors).bitcast[type_of(self.p_scissors)]()[]
 
 
-struct PipelineRasterizationStateCreateInfo(Copyable):
+struct PipelineRasterizationStateCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineRasterizationStateCreateFlags
     var depth_clamp_enable: Bool32
     var rasterizer_discard_enable: Bool32
@@ -2135,14 +2135,14 @@ struct PipelineRasterizationStateCreateInfo(Copyable):
         self.line_width = line_width
 
 
-struct PipelineMultisampleStateCreateInfo(Copyable):
+struct PipelineMultisampleStateCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineMultisampleStateCreateFlags
     var rasterization_samples: SampleCountFlagBits
     var sample_shading_enable: Bool32
     var min_sample_shading: Float32
-    var p_sample_mask: Ptr[SampleMask, ImmutOrigin.external]
+    var p_sample_mask: Ptr[SampleMask, ImmutExternalOrigin]
     var alpha_to_coverage_enable: Bool32
     var alpha_to_one_enable: Bool32
 
@@ -2172,7 +2172,7 @@ struct PipelineMultisampleStateCreateInfo(Copyable):
         self.alpha_to_one_enable = alpha_to_one_enable
 
 
-struct PipelineColorBlendAttachmentState(Copyable):
+struct PipelineColorBlendAttachmentState(Copyable, Equatable):
     var blend_enable: Bool32
     var src_color_blend_factor: BlendFactor
     var dst_color_blend_factor: BlendFactor
@@ -2203,14 +2203,14 @@ struct PipelineColorBlendAttachmentState(Copyable):
         self.color_write_mask = color_write_mask
 
 
-struct PipelineColorBlendStateCreateInfo(Copyable):
+struct PipelineColorBlendStateCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineColorBlendStateCreateFlags
     var logic_op_enable: Bool32
     var logic_op: LogicOp
     var attachment_count: UInt32
-    var p_attachments: Ptr[PipelineColorBlendAttachmentState, ImmutOrigin.external]
+    var p_attachments: Ptr[PipelineColorBlendAttachmentState, ImmutExternalOrigin]
     var blend_constants: InlineArray[Float32, Int(4)]
 
     fn __init__[
@@ -2234,15 +2234,15 @@ struct PipelineColorBlendStateCreateInfo(Copyable):
         self.logic_op = logic_op
         self.attachment_count = attachment_count
         self.p_attachments = Ptr(to=p_attachments).bitcast[type_of(self.p_attachments)]()[]
-        self.blend_constants = blend_constants
+        self.blend_constants = blend_constants.copy()
 
 
-struct PipelineDynamicStateCreateInfo(Copyable):
+struct PipelineDynamicStateCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineDynamicStateCreateFlags
     var dynamic_state_count: UInt32
-    var p_dynamic_states: Ptr[DynamicState, ImmutOrigin.external]
+    var p_dynamic_states: Ptr[DynamicState, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -2262,7 +2262,7 @@ struct PipelineDynamicStateCreateInfo(Copyable):
         self.p_dynamic_states = Ptr(to=p_dynamic_states).bitcast[type_of(self.p_dynamic_states)]()[]
 
 
-struct StencilOpState(Copyable):
+struct StencilOpState(Copyable, Equatable):
     var fail_op: StencilOp
     var pass_op: StencilOp
     var depth_fail_op: StencilOp
@@ -2290,9 +2290,9 @@ struct StencilOpState(Copyable):
         self.reference = reference
 
 
-struct PipelineDepthStencilStateCreateInfo(Copyable):
+struct PipelineDepthStencilStateCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineDepthStencilStateCreateFlags
     var depth_test_enable: Bool32
     var depth_write_enable: Bool32
@@ -2333,21 +2333,21 @@ struct PipelineDepthStencilStateCreateInfo(Copyable):
         self.max_depth_bounds = max_depth_bounds
 
 
-struct GraphicsPipelineCreateInfo(Copyable):
+struct GraphicsPipelineCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineCreateFlags
     var stage_count: UInt32
-    var p_stages: Ptr[PipelineShaderStageCreateInfo, ImmutOrigin.external]
-    var p_vertex_input_state: Ptr[PipelineVertexInputStateCreateInfo, ImmutOrigin.external]
-    var p_input_assembly_state: Ptr[PipelineInputAssemblyStateCreateInfo, ImmutOrigin.external]
-    var p_tessellation_state: Ptr[PipelineTessellationStateCreateInfo, ImmutOrigin.external]
-    var p_viewport_state: Ptr[PipelineViewportStateCreateInfo, ImmutOrigin.external]
-    var p_rasterization_state: Ptr[PipelineRasterizationStateCreateInfo, ImmutOrigin.external]
-    var p_multisample_state: Ptr[PipelineMultisampleStateCreateInfo, ImmutOrigin.external]
-    var p_depth_stencil_state: Ptr[PipelineDepthStencilStateCreateInfo, ImmutOrigin.external]
-    var p_color_blend_state: Ptr[PipelineColorBlendStateCreateInfo, ImmutOrigin.external]
-    var p_dynamic_state: Ptr[PipelineDynamicStateCreateInfo, ImmutOrigin.external]
+    var p_stages: Ptr[PipelineShaderStageCreateInfo, ImmutExternalOrigin]
+    var p_vertex_input_state: Ptr[PipelineVertexInputStateCreateInfo, ImmutExternalOrigin]
+    var p_input_assembly_state: Ptr[PipelineInputAssemblyStateCreateInfo, ImmutExternalOrigin]
+    var p_tessellation_state: Ptr[PipelineTessellationStateCreateInfo, ImmutExternalOrigin]
+    var p_viewport_state: Ptr[PipelineViewportStateCreateInfo, ImmutExternalOrigin]
+    var p_rasterization_state: Ptr[PipelineRasterizationStateCreateInfo, ImmutExternalOrigin]
+    var p_multisample_state: Ptr[PipelineMultisampleStateCreateInfo, ImmutExternalOrigin]
+    var p_depth_stencil_state: Ptr[PipelineDepthStencilStateCreateInfo, ImmutExternalOrigin]
+    var p_color_blend_state: Ptr[PipelineColorBlendStateCreateInfo, ImmutExternalOrigin]
+    var p_dynamic_state: Ptr[PipelineDynamicStateCreateInfo, ImmutExternalOrigin]
     var layout: PipelineLayout
     var render_pass: RenderPass
     var subpass: UInt32
@@ -2409,12 +2409,12 @@ struct GraphicsPipelineCreateInfo(Copyable):
         self.base_pipeline_index = base_pipeline_index
 
 
-struct PipelineCacheCreateInfo(Copyable):
+struct PipelineCacheCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineCacheCreateFlags
     var initial_data_size: UInt
-    var p_initial_data: Ptr[NoneType, ImmutOrigin.external]
+    var p_initial_data: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -2434,7 +2434,7 @@ struct PipelineCacheCreateInfo(Copyable):
         self.p_initial_data = Ptr(to=p_initial_data).bitcast[type_of(self.p_initial_data)]()[]
 
 
-struct PipelineCacheHeaderVersionOne(Copyable):
+struct PipelineCacheHeaderVersionOne(Copyable, Equatable):
     var header_size: UInt32
     var header_version: PipelineCacheHeaderVersion
     var vendor_id: UInt32
@@ -2453,10 +2453,10 @@ struct PipelineCacheHeaderVersionOne(Copyable):
         self.header_version = header_version
         self.vendor_id = vendor_id
         self.device_id = device_id
-        self.pipeline_cache_uuid = pipeline_cache_uuid
+        self.pipeline_cache_uuid = pipeline_cache_uuid.copy()
 
 
-struct PipelineCacheStageValidationIndexEntry(Copyable):
+struct PipelineCacheStageValidationIndexEntry(Copyable, Equatable):
     var code_size: UInt64
     var code_offset: UInt64
 
@@ -2467,7 +2467,7 @@ struct PipelineCacheStageValidationIndexEntry(Copyable):
         self.code_offset = code_offset
 
 
-struct PipelineCacheSafetyCriticalIndexEntry(Copyable):
+struct PipelineCacheSafetyCriticalIndexEntry(Copyable, Equatable):
     var pipeline_identifier: InlineArray[UInt8, Int(UUID_SIZE)]
     var pipeline_memory_size: UInt64
     var json_size: UInt64
@@ -2486,7 +2486,7 @@ struct PipelineCacheSafetyCriticalIndexEntry(Copyable):
         stage_index_stride: UInt32 = zero_init[UInt32](),
         stage_index_offset: UInt64 = zero_init[UInt64](),
     ):
-        self.pipeline_identifier = pipeline_identifier
+        self.pipeline_identifier = pipeline_identifier.copy()
         self.pipeline_memory_size = pipeline_memory_size
         self.json_size = json_size
         self.json_offset = json_offset
@@ -2495,7 +2495,7 @@ struct PipelineCacheSafetyCriticalIndexEntry(Copyable):
         self.stage_index_offset = stage_index_offset
 
 
-struct PipelineCacheHeaderVersionSafetyCriticalOne(Copyable):
+struct PipelineCacheHeaderVersionSafetyCriticalOne(Copyable, Equatable):
     var header_version_one: PipelineCacheHeaderVersionOne
     var validation_version: PipelineCacheValidationVersion
     var implementation_data: UInt32
@@ -2520,7 +2520,7 @@ struct PipelineCacheHeaderVersionSafetyCriticalOne(Copyable):
         self.pipeline_index_offset = pipeline_index_offset
 
 
-struct PipelineCacheHeaderVersionDataGraphQCOM(Copyable):
+struct PipelineCacheHeaderVersionDataGraphQCOM(Copyable, Equatable):
     var header_size: UInt32
     var header_version: PipelineCacheHeaderVersion
     var cache_type: DataGraphModelCacheTypeQCOM
@@ -2539,10 +2539,10 @@ struct PipelineCacheHeaderVersionDataGraphQCOM(Copyable):
         self.header_version = header_version
         self.cache_type = cache_type
         self.cache_version = cache_version
-        self.toolchain_version = toolchain_version
+        self.toolchain_version = toolchain_version.copy()
 
 
-struct PushConstantRange(Copyable):
+struct PushConstantRange(Copyable, Equatable):
     var stage_flags: ShaderStageFlags
     var offset: UInt32
     var size: UInt32
@@ -2558,12 +2558,12 @@ struct PushConstantRange(Copyable):
         self.size = size
 
 
-struct PipelineBinaryCreateInfoKHR(Copyable):
+struct PipelineBinaryCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_keys_and_data_info: Ptr[PipelineBinaryKeysAndDataKHR, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_keys_and_data_info: Ptr[PipelineBinaryKeysAndDataKHR, ImmutExternalOrigin]
     var pipeline: Pipeline
-    var p_pipeline_create_info: Ptr[PipelineCreateInfoKHR, ImmutOrigin.external]
+    var p_pipeline_create_info: Ptr[PipelineCreateInfoKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -2584,11 +2584,11 @@ struct PipelineBinaryCreateInfoKHR(Copyable):
         self.p_pipeline_create_info = Ptr(to=p_pipeline_create_info).bitcast[type_of(self.p_pipeline_create_info)]()[]
 
 
-struct PipelineBinaryHandlesInfoKHR(Copyable):
+struct PipelineBinaryHandlesInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var pipeline_binary_count: UInt32
-    var p_pipeline_binaries: Ptr[PipelineBinaryKHR, MutOrigin.external]
+    var p_pipeline_binaries: Ptr[PipelineBinaryKHR, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -2606,9 +2606,9 @@ struct PipelineBinaryHandlesInfoKHR(Copyable):
         self.p_pipeline_binaries = Ptr(to=p_pipeline_binaries).bitcast[type_of(self.p_pipeline_binaries)]()[]
 
 
-struct PipelineBinaryDataKHR(Copyable):
+struct PipelineBinaryDataKHR(Copyable, Equatable):
     var data_size: UInt
-    var p_data: Ptr[NoneType, MutOrigin.external]
+    var p_data: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[p_data_origin: MutOrigin = MutAnyOrigin](
         out self,
@@ -2619,10 +2619,10 @@ struct PipelineBinaryDataKHR(Copyable):
         self.p_data = Ptr(to=p_data).bitcast[type_of(self.p_data)]()[]
 
 
-struct PipelineBinaryKeysAndDataKHR(Copyable):
+struct PipelineBinaryKeysAndDataKHR(Copyable, Equatable):
     var binary_count: UInt32
-    var p_pipeline_binary_keys: Ptr[PipelineBinaryKeyKHR, ImmutOrigin.external]
-    var p_pipeline_binary_data: Ptr[PipelineBinaryDataKHR, ImmutOrigin.external]
+    var p_pipeline_binary_keys: Ptr[PipelineBinaryKeyKHR, ImmutExternalOrigin]
+    var p_pipeline_binary_data: Ptr[PipelineBinaryDataKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_pipeline_binary_keys_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -2638,9 +2638,9 @@ struct PipelineBinaryKeysAndDataKHR(Copyable):
         self.p_pipeline_binary_data = Ptr(to=p_pipeline_binary_data).bitcast[type_of(self.p_pipeline_binary_data)]()[]
 
 
-struct PipelineBinaryKeyKHR(Copyable):
+struct PipelineBinaryKeyKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var key_size: UInt32
     var key: InlineArray[UInt8, Int(MAX_PIPELINE_BINARY_KEY_SIZE_KHR)]
 
@@ -2654,14 +2654,14 @@ struct PipelineBinaryKeyKHR(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.key_size = key_size
-        self.key = key
+        self.key = key.copy()
 
 
-struct PipelineBinaryInfoKHR(Copyable):
+struct PipelineBinaryInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var binary_count: UInt32
-    var p_pipeline_binaries: Ptr[PipelineBinaryKHR, ImmutOrigin.external]
+    var p_pipeline_binaries: Ptr[PipelineBinaryKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -2679,9 +2679,9 @@ struct PipelineBinaryInfoKHR(Copyable):
         self.p_pipeline_binaries = Ptr(to=p_pipeline_binaries).bitcast[type_of(self.p_pipeline_binaries)]()[]
 
 
-struct ReleaseCapturedPipelineDataInfoKHR(Copyable):
+struct ReleaseCapturedPipelineDataInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline: Pipeline
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -2695,9 +2695,9 @@ struct ReleaseCapturedPipelineDataInfoKHR(Copyable):
         self.pipeline = pipeline
 
 
-struct PipelineBinaryDataInfoKHR(Copyable):
+struct PipelineBinaryDataInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline_binary: PipelineBinaryKHR
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -2711,9 +2711,9 @@ struct PipelineBinaryDataInfoKHR(Copyable):
         self.pipeline_binary = pipeline_binary
 
 
-struct PipelineCreateInfoKHR(Copyable):
+struct PipelineCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
         out self,
@@ -2724,14 +2724,14 @@ struct PipelineCreateInfoKHR(Copyable):
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
 
 
-struct PipelineLayoutCreateInfo(Copyable):
+struct PipelineLayoutCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineLayoutCreateFlags
     var set_layout_count: UInt32
-    var p_set_layouts: Ptr[DescriptorSetLayout, ImmutOrigin.external]
+    var p_set_layouts: Ptr[DescriptorSetLayout, ImmutExternalOrigin]
     var push_constant_range_count: UInt32
-    var p_push_constant_ranges: Ptr[PushConstantRange, ImmutOrigin.external]
+    var p_push_constant_ranges: Ptr[PushConstantRange, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -2756,9 +2756,9 @@ struct PipelineLayoutCreateInfo(Copyable):
         self.p_push_constant_ranges = Ptr(to=p_push_constant_ranges).bitcast[type_of(self.p_push_constant_ranges)]()[]
 
 
-struct SamplerCreateInfo(Copyable):
+struct SamplerCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: SamplerCreateFlags
     var mag_filter: Filter
     var min_filter: Filter
@@ -2817,9 +2817,9 @@ struct SamplerCreateInfo(Copyable):
         self.unnormalized_coordinates = unnormalized_coordinates
 
 
-struct CommandPoolCreateInfo(Copyable):
+struct CommandPoolCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: CommandPoolCreateFlags
     var queue_family_index: UInt32
 
@@ -2836,9 +2836,9 @@ struct CommandPoolCreateInfo(Copyable):
         self.queue_family_index = queue_family_index
 
 
-struct CommandBufferAllocateInfo(Copyable):
+struct CommandBufferAllocateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var command_pool: CommandPool
     var level: CommandBufferLevel
     var command_buffer_count: UInt32
@@ -2858,9 +2858,9 @@ struct CommandBufferAllocateInfo(Copyable):
         self.command_buffer_count = command_buffer_count
 
 
-struct CommandBufferInheritanceInfo(Copyable):
+struct CommandBufferInheritanceInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var render_pass: RenderPass
     var subpass: UInt32
     var framebuffer: Framebuffer
@@ -2889,11 +2889,11 @@ struct CommandBufferInheritanceInfo(Copyable):
         self.pipeline_statistics = pipeline_statistics
 
 
-struct CommandBufferBeginInfo(Copyable):
+struct CommandBufferBeginInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: CommandBufferUsageFlags
-    var p_inheritance_info: Ptr[CommandBufferInheritanceInfo, ImmutOrigin.external]
+    var p_inheritance_info: Ptr[CommandBufferInheritanceInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -2911,14 +2911,14 @@ struct CommandBufferBeginInfo(Copyable):
         self.p_inheritance_info = Ptr(to=p_inheritance_info).bitcast[type_of(self.p_inheritance_info)]()[]
 
 
-struct RenderPassBeginInfo(Copyable):
+struct RenderPassBeginInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var render_pass: RenderPass
     var framebuffer: Framebuffer
     var render_area: Rect2D
     var clear_value_count: UInt32
-    var p_clear_values: Ptr[ClearValue, ImmutOrigin.external]
+    var p_clear_values: Ptr[ClearValue, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -2942,7 +2942,7 @@ struct RenderPassBeginInfo(Copyable):
         self.p_clear_values = Ptr(to=p_clear_values).bitcast[type_of(self.p_clear_values)]()[]
 
 
-struct ClearDepthStencilValue(Copyable):
+struct ClearDepthStencilValue(Copyable, Equatable):
     var depth: Float32
     var stencil: UInt32
 
@@ -2953,7 +2953,7 @@ struct ClearDepthStencilValue(Copyable):
         self.stencil = stencil
 
 
-struct ClearAttachment(Copyable):
+struct ClearAttachment(Copyable, Equatable):
     var aspect_mask: ImageAspectFlags
     var color_attachment: UInt32
     var clear_value: ClearValue
@@ -2969,7 +2969,7 @@ struct ClearAttachment(Copyable):
         self.clear_value = clear_value
 
 
-struct AttachmentDescription(Copyable):
+struct AttachmentDescription(Copyable, Equatable):
     var flags: AttachmentDescriptionFlags
     var format: Format
     var samples: SampleCountFlagBits
@@ -3003,7 +3003,7 @@ struct AttachmentDescription(Copyable):
         self.final_layout = final_layout
 
 
-struct AttachmentReference(Copyable):
+struct AttachmentReference(Copyable, Equatable):
     var attachment: UInt32
     var layout: ImageLayout
 
@@ -3016,17 +3016,17 @@ struct AttachmentReference(Copyable):
         self.layout = layout
 
 
-struct SubpassDescription(Copyable):
+struct SubpassDescription(Copyable, Equatable):
     var flags: SubpassDescriptionFlags
     var pipeline_bind_point: PipelineBindPoint
     var input_attachment_count: UInt32
-    var p_input_attachments: Ptr[AttachmentReference, ImmutOrigin.external]
+    var p_input_attachments: Ptr[AttachmentReference, ImmutExternalOrigin]
     var color_attachment_count: UInt32
-    var p_color_attachments: Ptr[AttachmentReference, ImmutOrigin.external]
-    var p_resolve_attachments: Ptr[AttachmentReference, ImmutOrigin.external]
-    var p_depth_stencil_attachment: Ptr[AttachmentReference, ImmutOrigin.external]
+    var p_color_attachments: Ptr[AttachmentReference, ImmutExternalOrigin]
+    var p_resolve_attachments: Ptr[AttachmentReference, ImmutExternalOrigin]
+    var p_depth_stencil_attachment: Ptr[AttachmentReference, ImmutExternalOrigin]
     var preserve_attachment_count: UInt32
-    var p_preserve_attachments: Ptr[UInt32, ImmutOrigin.external]
+    var p_preserve_attachments: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_input_attachments_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -3059,7 +3059,7 @@ struct SubpassDescription(Copyable):
         self.p_preserve_attachments = Ptr(to=p_preserve_attachments).bitcast[type_of(self.p_preserve_attachments)]()[]
 
 
-struct SubpassDependency(Copyable):
+struct SubpassDependency(Copyable, Equatable):
     var src_subpass: UInt32
     var dst_subpass: UInt32
     var src_stage_mask: PipelineStageFlags
@@ -3087,16 +3087,16 @@ struct SubpassDependency(Copyable):
         self.dependency_flags = dependency_flags
 
 
-struct RenderPassCreateInfo(Copyable):
+struct RenderPassCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: RenderPassCreateFlags
     var attachment_count: UInt32
-    var p_attachments: Ptr[AttachmentDescription, ImmutOrigin.external]
+    var p_attachments: Ptr[AttachmentDescription, ImmutExternalOrigin]
     var subpass_count: UInt32
-    var p_subpasses: Ptr[SubpassDescription, ImmutOrigin.external]
+    var p_subpasses: Ptr[SubpassDescription, ImmutExternalOrigin]
     var dependency_count: UInt32
-    var p_dependencies: Ptr[SubpassDependency, ImmutOrigin.external]
+    var p_dependencies: Ptr[SubpassDependency, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -3126,9 +3126,9 @@ struct RenderPassCreateInfo(Copyable):
         self.p_dependencies = Ptr(to=p_dependencies).bitcast[type_of(self.p_dependencies)]()[]
 
 
-struct EventCreateInfo(Copyable):
+struct EventCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: EventCreateFlags
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -3142,9 +3142,9 @@ struct EventCreateInfo(Copyable):
         self.flags = flags
 
 
-struct FenceCreateInfo(Copyable):
+struct FenceCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: FenceCreateFlags
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -3158,7 +3158,7 @@ struct FenceCreateInfo(Copyable):
         self.flags = flags
 
 
-struct PhysicalDeviceFeatures(Copyable):
+struct PhysicalDeviceFeatures(Copyable, Equatable):
     var robust_buffer_access: Bool32
     var full_draw_index_uint_32: Bool32
     var image_cube_array: Bool32
@@ -3330,7 +3330,7 @@ struct PhysicalDeviceFeatures(Copyable):
         self.inherited_queries = inherited_queries
 
 
-struct PhysicalDeviceSparseProperties(Copyable):
+struct PhysicalDeviceSparseProperties(Copyable, Equatable):
     var residency_standard_2d_block_shape: Bool32
     var residency_standard_2d_multisample_block_shape: Bool32
     var residency_standard_3d_block_shape: Bool32
@@ -3352,7 +3352,7 @@ struct PhysicalDeviceSparseProperties(Copyable):
         self.residency_non_resident_strict = residency_non_resident_strict
 
 
-struct PhysicalDeviceLimits(Copyable):
+struct PhysicalDeviceLimits(Copyable, Equatable):
     var max_image_dimension_1d: UInt32
     var max_image_dimension_2d: UInt32
     var max_image_dimension_3d: UInt32
@@ -3621,9 +3621,9 @@ struct PhysicalDeviceLimits(Copyable):
         self.max_fragment_dual_src_attachments = max_fragment_dual_src_attachments
         self.max_fragment_combined_output_resources = max_fragment_combined_output_resources
         self.max_compute_shared_memory_size = max_compute_shared_memory_size
-        self.max_compute_work_group_count = max_compute_work_group_count
+        self.max_compute_work_group_count = max_compute_work_group_count.copy()
         self.max_compute_work_group_invocations = max_compute_work_group_invocations
-        self.max_compute_work_group_size = max_compute_work_group_size
+        self.max_compute_work_group_size = max_compute_work_group_size.copy()
         self.sub_pixel_precision_bits = sub_pixel_precision_bits
         self.sub_texel_precision_bits = sub_texel_precision_bits
         self.mipmap_precision_bits = mipmap_precision_bits
@@ -3632,8 +3632,8 @@ struct PhysicalDeviceLimits(Copyable):
         self.max_sampler_lod_bias = max_sampler_lod_bias
         self.max_sampler_anisotropy = max_sampler_anisotropy
         self.max_viewports = max_viewports
-        self.max_viewport_dimensions = max_viewport_dimensions
-        self.viewport_bounds_range = viewport_bounds_range
+        self.max_viewport_dimensions = max_viewport_dimensions.copy()
+        self.viewport_bounds_range = viewport_bounds_range.copy()
         self.viewport_sub_pixel_bits = viewport_sub_pixel_bits
         self.min_memory_map_alignment = min_memory_map_alignment
         self.min_texel_buffer_offset_alignment = min_texel_buffer_offset_alignment
@@ -3666,8 +3666,8 @@ struct PhysicalDeviceLimits(Copyable):
         self.max_cull_distances = max_cull_distances
         self.max_combined_clip_and_cull_distances = max_combined_clip_and_cull_distances
         self.discrete_queue_priorities = discrete_queue_priorities
-        self.point_size_range = point_size_range
-        self.line_width_range = line_width_range
+        self.point_size_range = point_size_range.copy()
+        self.line_width_range = line_width_range.copy()
         self.point_size_granularity = point_size_granularity
         self.line_width_granularity = line_width_granularity
         self.strict_lines = strict_lines
@@ -3677,9 +3677,9 @@ struct PhysicalDeviceLimits(Copyable):
         self.non_coherent_atom_size = non_coherent_atom_size
 
 
-struct SemaphoreCreateInfo(Copyable):
+struct SemaphoreCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: SemaphoreCreateFlags
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -3693,9 +3693,9 @@ struct SemaphoreCreateInfo(Copyable):
         self.flags = flags
 
 
-struct QueryPoolCreateInfo(Copyable):
+struct QueryPoolCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: QueryPoolCreateFlags
     var query_type: QueryType
     var query_count: UInt32
@@ -3718,13 +3718,13 @@ struct QueryPoolCreateInfo(Copyable):
         self.pipeline_statistics = pipeline_statistics
 
 
-struct FramebufferCreateInfo(Copyable):
+struct FramebufferCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: FramebufferCreateFlags
     var render_pass: RenderPass
     var attachment_count: UInt32
-    var p_attachments: Ptr[ImageView, ImmutOrigin.external]
+    var p_attachments: Ptr[ImageView, ImmutExternalOrigin]
     var width: UInt32
     var height: UInt32
     var layers: UInt32
@@ -3755,7 +3755,7 @@ struct FramebufferCreateInfo(Copyable):
         self.layers = layers
 
 
-struct DrawIndirectCommand(Copyable):
+struct DrawIndirectCommand(Copyable, Equatable):
     var vertex_count: UInt32
     var instance_count: UInt32
     var first_vertex: UInt32
@@ -3774,7 +3774,7 @@ struct DrawIndirectCommand(Copyable):
         self.first_instance = first_instance
 
 
-struct DrawIndexedIndirectCommand(Copyable):
+struct DrawIndexedIndirectCommand(Copyable, Equatable):
     var index_count: UInt32
     var instance_count: UInt32
     var first_index: UInt32
@@ -3796,7 +3796,7 @@ struct DrawIndexedIndirectCommand(Copyable):
         self.first_instance = first_instance
 
 
-struct DispatchIndirectCommand(Copyable):
+struct DispatchIndirectCommand(Copyable, Equatable):
     var x: UInt32
     var y: UInt32
     var z: UInt32
@@ -3812,7 +3812,7 @@ struct DispatchIndirectCommand(Copyable):
         self.z = z
 
 
-struct MultiDrawInfoEXT(Copyable):
+struct MultiDrawInfoEXT(Copyable, Equatable):
     var first_vertex: UInt32
     var vertex_count: UInt32
 
@@ -3825,7 +3825,7 @@ struct MultiDrawInfoEXT(Copyable):
         self.vertex_count = vertex_count
 
 
-struct MultiDrawIndexedInfoEXT(Copyable):
+struct MultiDrawIndexedInfoEXT(Copyable, Equatable):
     var first_index: UInt32
     var index_count: UInt32
     var vertex_offset: Int32
@@ -3841,16 +3841,16 @@ struct MultiDrawIndexedInfoEXT(Copyable):
         self.vertex_offset = vertex_offset
 
 
-struct SubmitInfo(Copyable):
+struct SubmitInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var wait_semaphore_count: UInt32
-    var p_wait_semaphores: Ptr[Semaphore, ImmutOrigin.external]
-    var p_wait_dst_stage_mask: Ptr[PipelineStageFlags, ImmutOrigin.external]
+    var p_wait_semaphores: Ptr[Semaphore, ImmutExternalOrigin]
+    var p_wait_dst_stage_mask: Ptr[PipelineStageFlags, ImmutExternalOrigin]
     var command_buffer_count: UInt32
-    var p_command_buffers: Ptr[CommandBuffer, ImmutOrigin.external]
+    var p_command_buffers: Ptr[CommandBuffer, ImmutExternalOrigin]
     var signal_semaphore_count: UInt32
-    var p_signal_semaphores: Ptr[Semaphore, ImmutOrigin.external]
+    var p_signal_semaphores: Ptr[Semaphore, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -3881,9 +3881,9 @@ struct SubmitInfo(Copyable):
         self.p_signal_semaphores = Ptr(to=p_signal_semaphores).bitcast[type_of(self.p_signal_semaphores)]()[]
 
 
-struct DisplayPropertiesKHR(Copyable):
+struct DisplayPropertiesKHR(Copyable, Equatable):
     var display: DisplayKHR
-    var display_name: CStringSlice[ImmutOrigin.external]
+    var display_name: CStringSlice[ImmutExternalOrigin]
     var physical_dimensions: Extent2D
     var physical_resolution: Extent2D
     var supported_transforms: SurfaceTransformFlagsKHR
@@ -3909,7 +3909,7 @@ struct DisplayPropertiesKHR(Copyable):
         self.persistent_content = persistent_content
 
 
-struct DisplayPlanePropertiesKHR(Copyable):
+struct DisplayPlanePropertiesKHR(Copyable, Equatable):
     var current_display: DisplayKHR
     var current_stack_index: UInt32
 
@@ -3922,7 +3922,7 @@ struct DisplayPlanePropertiesKHR(Copyable):
         self.current_stack_index = current_stack_index
 
 
-struct DisplayModeParametersKHR(Copyable):
+struct DisplayModeParametersKHR(Copyable, Equatable):
     var visible_region: Extent2D
     var refresh_rate: UInt32
 
@@ -3935,7 +3935,7 @@ struct DisplayModeParametersKHR(Copyable):
         self.refresh_rate = refresh_rate
 
 
-struct DisplayModePropertiesKHR(Copyable):
+struct DisplayModePropertiesKHR(Copyable, Equatable):
     var display_mode: DisplayModeKHR
     var parameters: DisplayModeParametersKHR
 
@@ -3948,9 +3948,9 @@ struct DisplayModePropertiesKHR(Copyable):
         self.parameters = parameters.copy()
 
 
-struct DisplayModeCreateInfoKHR(Copyable):
+struct DisplayModeCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DisplayModeCreateFlagsKHR
     var parameters: DisplayModeParametersKHR
 
@@ -3967,7 +3967,7 @@ struct DisplayModeCreateInfoKHR(Copyable):
         self.parameters = parameters.copy()
 
 
-struct DisplayPlaneCapabilitiesKHR(Copyable):
+struct DisplayPlaneCapabilitiesKHR(Copyable, Equatable):
     var supported_alpha: DisplayPlaneAlphaFlagsKHR
     var min_src_position: Offset2D
     var max_src_position: Offset2D
@@ -4001,9 +4001,9 @@ struct DisplayPlaneCapabilitiesKHR(Copyable):
         self.max_dst_extent = max_dst_extent.copy()
 
 
-struct DisplaySurfaceCreateInfoKHR(Copyable):
+struct DisplaySurfaceCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DisplaySurfaceCreateFlagsKHR
     var display_mode: DisplayModeKHR
     var plane_index: UInt32
@@ -4038,9 +4038,9 @@ struct DisplaySurfaceCreateInfoKHR(Copyable):
         self.image_extent = image_extent.copy()
 
 
-struct DisplaySurfaceStereoCreateInfoNV(Copyable):
+struct DisplaySurfaceStereoCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var stereo_type: DisplaySurfaceStereoTypeNV
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -4054,9 +4054,9 @@ struct DisplaySurfaceStereoCreateInfoNV(Copyable):
         self.stereo_type = stereo_type
 
 
-struct DisplayPresentInfoKHR(Copyable):
+struct DisplayPresentInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_rect: Rect2D
     var dst_rect: Rect2D
     var persistent: Bool32
@@ -4076,7 +4076,7 @@ struct DisplayPresentInfoKHR(Copyable):
         self.persistent = persistent
 
 
-struct SurfaceCapabilitiesKHR(Copyable):
+struct SurfaceCapabilitiesKHR(Copyable, Equatable):
     var min_image_count: UInt32
     var max_image_count: UInt32
     var current_extent: Extent2D
@@ -4113,11 +4113,11 @@ struct SurfaceCapabilitiesKHR(Copyable):
         self.supported_usage_flags = supported_usage_flags
 
 
-struct AndroidSurfaceCreateInfoKHR(Copyable):
+struct AndroidSurfaceCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: AndroidSurfaceCreateFlagsKHR
-    var window: Ptr[ANativeWindow, MutOrigin.external]
+    var window: Ptr[ANativeWindow, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, window_origin: MutOrigin = MutAnyOrigin
@@ -4134,11 +4134,11 @@ struct AndroidSurfaceCreateInfoKHR(Copyable):
         self.window = Ptr(to=window).bitcast[type_of(self.window)]()[]
 
 
-struct ViSurfaceCreateInfoNN(Copyable):
+struct ViSurfaceCreateInfoNN(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: ViSurfaceCreateFlagsNN
-    var window: Ptr[NoneType, MutOrigin.external]
+    var window: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, window_origin: MutOrigin = MutAnyOrigin
@@ -4155,12 +4155,12 @@ struct ViSurfaceCreateInfoNN(Copyable):
         self.window = Ptr(to=window).bitcast[type_of(self.window)]()[]
 
 
-struct WaylandSurfaceCreateInfoKHR(Copyable):
+struct WaylandSurfaceCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: WaylandSurfaceCreateFlagsKHR
-    var display: Ptr[wl_display, MutOrigin.external]
-    var surface: Ptr[wl_surface, MutOrigin.external]
+    var display: Ptr[wl_display, MutExternalOrigin]
+    var surface: Ptr[wl_surface, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -4181,9 +4181,9 @@ struct WaylandSurfaceCreateInfoKHR(Copyable):
         self.surface = Ptr(to=surface).bitcast[type_of(self.surface)]()[]
 
 
-struct Win32SurfaceCreateInfoKHR(Copyable):
+struct Win32SurfaceCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: Win32SurfaceCreateFlagsKHR
     var hinstance: HINSTANCE
     var hwnd: HWND
@@ -4203,11 +4203,11 @@ struct Win32SurfaceCreateInfoKHR(Copyable):
         self.hwnd = hwnd
 
 
-struct XlibSurfaceCreateInfoKHR(Copyable):
+struct XlibSurfaceCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: XlibSurfaceCreateFlagsKHR
-    var dpy: Ptr[Display, MutOrigin.external]
+    var dpy: Ptr[Display, MutExternalOrigin]
     var window: Window
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin, dpy_origin: MutOrigin = MutAnyOrigin](
@@ -4225,11 +4225,11 @@ struct XlibSurfaceCreateInfoKHR(Copyable):
         self.window = window
 
 
-struct XcbSurfaceCreateInfoKHR(Copyable):
+struct XcbSurfaceCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: XcbSurfaceCreateFlagsKHR
-    var connection: Ptr[xcb_connection_t, MutOrigin.external]
+    var connection: Ptr[xcb_connection_t, MutExternalOrigin]
     var window: xcb_window_t
 
     fn __init__[
@@ -4249,12 +4249,12 @@ struct XcbSurfaceCreateInfoKHR(Copyable):
         self.window = window
 
 
-struct DirectFBSurfaceCreateInfoEXT(Copyable):
+struct DirectFBSurfaceCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DirectFBSurfaceCreateFlagsEXT
-    var dfb: Ptr[IDirectFB, MutOrigin.external]
-    var surface: Ptr[IDirectFBSurface, MutOrigin.external]
+    var dfb: Ptr[IDirectFB, MutExternalOrigin]
+    var surface: Ptr[IDirectFBSurface, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -4275,9 +4275,9 @@ struct DirectFBSurfaceCreateInfoEXT(Copyable):
         self.surface = Ptr(to=surface).bitcast[type_of(self.surface)]()[]
 
 
-struct ImagePipeSurfaceCreateInfoFUCHSIA(Copyable):
+struct ImagePipeSurfaceCreateInfoFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: ImagePipeSurfaceCreateFlagsFUCHSIA
     var image_pipe_handle: zx_handle_t
 
@@ -4294,9 +4294,9 @@ struct ImagePipeSurfaceCreateInfoFUCHSIA(Copyable):
         self.image_pipe_handle = image_pipe_handle
 
 
-struct StreamDescriptorSurfaceCreateInfoGGP(Copyable):
+struct StreamDescriptorSurfaceCreateInfoGGP(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: StreamDescriptorSurfaceCreateFlagsGGP
     var stream_descriptor: GgpStreamDescriptor
 
@@ -4313,9 +4313,9 @@ struct StreamDescriptorSurfaceCreateInfoGGP(Copyable):
         self.stream_descriptor = stream_descriptor
 
 
-struct ScreenSurfaceCreateInfoQNX(Copyable):
+struct ScreenSurfaceCreateInfoQNX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: ScreenSurfaceCreateFlagsQNX
     var context: screen_context_t
     var window: screen_window_t
@@ -4335,7 +4335,7 @@ struct ScreenSurfaceCreateInfoQNX(Copyable):
         self.window = window
 
 
-struct SurfaceFormatKHR(Copyable):
+struct SurfaceFormatKHR(Copyable, Equatable):
     var format: Format
     var color_space: ColorSpaceKHR
 
@@ -4348,9 +4348,9 @@ struct SurfaceFormatKHR(Copyable):
         self.color_space = color_space
 
 
-struct SwapchainCreateInfoKHR(Copyable):
+struct SwapchainCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: SwapchainCreateFlagsKHR
     var surface: SurfaceKHR
     var min_image_count: UInt32
@@ -4361,7 +4361,7 @@ struct SwapchainCreateInfoKHR(Copyable):
     var image_usage: ImageUsageFlags
     var image_sharing_mode: SharingMode
     var queue_family_index_count: UInt32
-    var p_queue_family_indices: Ptr[UInt32, ImmutOrigin.external]
+    var p_queue_family_indices: Ptr[UInt32, ImmutExternalOrigin]
     var pre_transform: SurfaceTransformFlagBitsKHR
     var composite_alpha: CompositeAlphaFlagBitsKHR
     var present_mode: PresentModeKHR
@@ -4412,15 +4412,15 @@ struct SwapchainCreateInfoKHR(Copyable):
         self.old_swapchain = old_swapchain
 
 
-struct PresentInfoKHR(Copyable):
+struct PresentInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var wait_semaphore_count: UInt32
-    var p_wait_semaphores: Ptr[Semaphore, ImmutOrigin.external]
+    var p_wait_semaphores: Ptr[Semaphore, ImmutExternalOrigin]
     var swapchain_count: UInt32
-    var p_swapchains: Ptr[SwapchainKHR, ImmutOrigin.external]
-    var p_image_indices: Ptr[UInt32, ImmutOrigin.external]
-    var p_results: Ptr[Result, MutOrigin.external]
+    var p_swapchains: Ptr[SwapchainKHR, ImmutExternalOrigin]
+    var p_image_indices: Ptr[UInt32, ImmutExternalOrigin]
+    var p_results: Ptr[Result, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -4449,12 +4449,12 @@ struct PresentInfoKHR(Copyable):
         self.p_results = Ptr(to=p_results).bitcast[type_of(self.p_results)]()[]
 
 
-struct DebugReportCallbackCreateInfoEXT(Copyable):
+struct DebugReportCallbackCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DebugReportFlagsEXT
     var pfn_callback: PFN_vkDebugReportCallbackEXT
-    var p_user_data: Ptr[NoneType, MutOrigin.external]
+    var p_user_data: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_user_data_origin: MutOrigin = MutAnyOrigin
@@ -4473,11 +4473,11 @@ struct DebugReportCallbackCreateInfoEXT(Copyable):
         self.p_user_data = Ptr(to=p_user_data).bitcast[type_of(self.p_user_data)]()[]
 
 
-struct ValidationFlagsEXT(Copyable):
+struct ValidationFlagsEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var disabled_validation_check_count: UInt32
-    var p_disabled_validation_checks: Ptr[ValidationCheckEXT, ImmutOrigin.external]
+    var p_disabled_validation_checks: Ptr[ValidationCheckEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -4495,13 +4495,13 @@ struct ValidationFlagsEXT(Copyable):
         self.p_disabled_validation_checks = Ptr(to=p_disabled_validation_checks).bitcast[type_of(self.p_disabled_validation_checks)]()[]
 
 
-struct ValidationFeaturesEXT(Copyable):
+struct ValidationFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var enabled_validation_feature_count: UInt32
-    var p_enabled_validation_features: Ptr[ValidationFeatureEnableEXT, ImmutOrigin.external]
+    var p_enabled_validation_features: Ptr[ValidationFeatureEnableEXT, ImmutExternalOrigin]
     var disabled_validation_feature_count: UInt32
-    var p_disabled_validation_features: Ptr[ValidationFeatureDisableEXT, ImmutOrigin.external]
+    var p_disabled_validation_features: Ptr[ValidationFeatureDisableEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -4524,11 +4524,11 @@ struct ValidationFeaturesEXT(Copyable):
         self.p_disabled_validation_features = Ptr(to=p_disabled_validation_features).bitcast[type_of(self.p_disabled_validation_features)]()[]
 
 
-struct LayerSettingsCreateInfoEXT(Copyable):
+struct LayerSettingsCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var setting_count: UInt32
-    var p_settings: Ptr[LayerSettingEXT, ImmutOrigin.external]
+    var p_settings: Ptr[LayerSettingEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -4546,12 +4546,12 @@ struct LayerSettingsCreateInfoEXT(Copyable):
         self.p_settings = Ptr(to=p_settings).bitcast[type_of(self.p_settings)]()[]
 
 
-struct LayerSettingEXT(Copyable):
-    var p_layer_name: CStringSlice[ImmutOrigin.external]
-    var p_setting_name: CStringSlice[ImmutOrigin.external]
+struct LayerSettingEXT(Copyable, Equatable):
+    var p_layer_name: CStringSlice[ImmutExternalOrigin]
+    var p_setting_name: CStringSlice[ImmutExternalOrigin]
     var type: LayerSettingTypeEXT
     var value_count: UInt32
-    var p_values: Ptr[NoneType, ImmutOrigin.external]
+    var p_values: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_layer_name_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -4572,9 +4572,9 @@ struct LayerSettingEXT(Copyable):
         self.p_values = Ptr(to=p_values).bitcast[type_of(self.p_values)]()[]
 
 
-struct PipelineRasterizationStateRasterizationOrderAMD(Copyable):
+struct PipelineRasterizationStateRasterizationOrderAMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var rasterization_order: RasterizationOrderAMD
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -4588,12 +4588,12 @@ struct PipelineRasterizationStateRasterizationOrderAMD(Copyable):
         self.rasterization_order = rasterization_order
 
 
-struct DebugMarkerObjectNameInfoEXT(Copyable):
+struct DebugMarkerObjectNameInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var object_type: DebugReportObjectTypeEXT
     var object: UInt64
-    var p_object_name: CStringSlice[ImmutOrigin.external]
+    var p_object_name: CStringSlice[ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -4613,14 +4613,14 @@ struct DebugMarkerObjectNameInfoEXT(Copyable):
         self.p_object_name = Ptr(to=p_object_name).bitcast[type_of(self.p_object_name)]()[]
 
 
-struct DebugMarkerObjectTagInfoEXT(Copyable):
+struct DebugMarkerObjectTagInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var object_type: DebugReportObjectTypeEXT
     var object: UInt64
     var tag_name: UInt64
     var tag_size: UInt
-    var p_tag: Ptr[NoneType, ImmutOrigin.external]
+    var p_tag: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_tag_origin: ImmutOrigin = ImmutAnyOrigin
@@ -4643,10 +4643,10 @@ struct DebugMarkerObjectTagInfoEXT(Copyable):
         self.p_tag = Ptr(to=p_tag).bitcast[type_of(self.p_tag)]()[]
 
 
-struct DebugMarkerMarkerInfoEXT(Copyable):
+struct DebugMarkerMarkerInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_marker_name: CStringSlice[ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_marker_name: CStringSlice[ImmutExternalOrigin]
     var color: InlineArray[Float32, Int(4)]
 
     fn __init__[
@@ -4662,12 +4662,12 @@ struct DebugMarkerMarkerInfoEXT(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.p_marker_name = Ptr(to=p_marker_name).bitcast[type_of(self.p_marker_name)]()[]
-        self.color = color
+        self.color = color.copy()
 
 
-struct DedicatedAllocationImageCreateInfoNV(Copyable):
+struct DedicatedAllocationImageCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var dedicated_allocation: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -4681,9 +4681,9 @@ struct DedicatedAllocationImageCreateInfoNV(Copyable):
         self.dedicated_allocation = dedicated_allocation
 
 
-struct DedicatedAllocationBufferCreateInfoNV(Copyable):
+struct DedicatedAllocationBufferCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var dedicated_allocation: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -4697,9 +4697,9 @@ struct DedicatedAllocationBufferCreateInfoNV(Copyable):
         self.dedicated_allocation = dedicated_allocation
 
 
-struct DedicatedAllocationMemoryAllocateInfoNV(Copyable):
+struct DedicatedAllocationMemoryAllocateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image: Image
     var buffer: Buffer
 
@@ -4716,7 +4716,7 @@ struct DedicatedAllocationMemoryAllocateInfoNV(Copyable):
         self.buffer = buffer
 
 
-struct ExternalImageFormatPropertiesNV(Copyable):
+struct ExternalImageFormatPropertiesNV(Copyable, Equatable):
     var image_format_properties: ImageFormatProperties
     var external_memory_features: ExternalMemoryFeatureFlagsNV
     var export_from_imported_handle_types: ExternalMemoryHandleTypeFlagsNV
@@ -4735,9 +4735,9 @@ struct ExternalImageFormatPropertiesNV(Copyable):
         self.compatible_handle_types = compatible_handle_types
 
 
-struct ExternalMemoryImageCreateInfoNV(Copyable):
+struct ExternalMemoryImageCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_types: ExternalMemoryHandleTypeFlagsNV
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -4751,9 +4751,9 @@ struct ExternalMemoryImageCreateInfoNV(Copyable):
         self.handle_types = handle_types
 
 
-struct ExportMemoryAllocateInfoNV(Copyable):
+struct ExportMemoryAllocateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_types: ExternalMemoryHandleTypeFlagsNV
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -4767,9 +4767,9 @@ struct ExportMemoryAllocateInfoNV(Copyable):
         self.handle_types = handle_types
 
 
-struct ImportMemoryWin32HandleInfoNV(Copyable):
+struct ImportMemoryWin32HandleInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_type: ExternalMemoryHandleTypeFlagsNV
     var handle: HANDLE
 
@@ -4786,10 +4786,10 @@ struct ImportMemoryWin32HandleInfoNV(Copyable):
         self.handle = handle
 
 
-struct ExportMemoryWin32HandleInfoNV(Copyable):
+struct ExportMemoryWin32HandleInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_attributes: Ptr[SECURITY_ATTRIBUTES, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_attributes: Ptr[SECURITY_ATTRIBUTES, ImmutExternalOrigin]
     var dw_access: DWORD
 
     fn __init__[
@@ -4808,16 +4808,16 @@ struct ExportMemoryWin32HandleInfoNV(Copyable):
         self.dw_access = dw_access
 
 
-struct Win32KeyedMutexAcquireReleaseInfoNV(Copyable):
+struct Win32KeyedMutexAcquireReleaseInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var acquire_count: UInt32
-    var p_acquire_syncs: Ptr[DeviceMemory, ImmutOrigin.external]
-    var p_acquire_keys: Ptr[UInt64, ImmutOrigin.external]
-    var p_acquire_timeout_milliseconds: Ptr[UInt32, ImmutOrigin.external]
+    var p_acquire_syncs: Ptr[DeviceMemory, ImmutExternalOrigin]
+    var p_acquire_keys: Ptr[UInt64, ImmutExternalOrigin]
+    var p_acquire_timeout_milliseconds: Ptr[UInt32, ImmutExternalOrigin]
     var release_count: UInt32
-    var p_release_syncs: Ptr[DeviceMemory, ImmutOrigin.external]
-    var p_release_keys: Ptr[UInt64, ImmutOrigin.external]
+    var p_release_syncs: Ptr[DeviceMemory, ImmutExternalOrigin]
+    var p_release_keys: Ptr[UInt64, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -4849,9 +4849,9 @@ struct Win32KeyedMutexAcquireReleaseInfoNV(Copyable):
         self.p_release_keys = Ptr(to=p_release_keys).bitcast[type_of(self.p_release_keys)]()[]
 
 
-struct PhysicalDeviceDeviceGeneratedCommandsFeaturesNV(Copyable):
+struct PhysicalDeviceDeviceGeneratedCommandsFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var device_generated_commands: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -4865,9 +4865,9 @@ struct PhysicalDeviceDeviceGeneratedCommandsFeaturesNV(Copyable):
         self.device_generated_commands = device_generated_commands
 
 
-struct PushConstantBankInfoNV(Copyable):
+struct PushConstantBankInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var bank: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -4881,9 +4881,9 @@ struct PushConstantBankInfoNV(Copyable):
         self.bank = bank
 
 
-struct PhysicalDevicePushConstantBankFeaturesNV(Copyable):
+struct PhysicalDevicePushConstantBankFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var push_constant_bank: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -4897,9 +4897,9 @@ struct PhysicalDevicePushConstantBankFeaturesNV(Copyable):
         self.push_constant_bank = push_constant_bank
 
 
-struct PhysicalDevicePushConstantBankPropertiesNV(Copyable):
+struct PhysicalDevicePushConstantBankPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_graphics_push_constant_banks: UInt32
     var max_compute_push_constant_banks: UInt32
     var max_graphics_push_data_banks: UInt32
@@ -4922,9 +4922,9 @@ struct PhysicalDevicePushConstantBankPropertiesNV(Copyable):
         self.max_compute_push_data_banks = max_compute_push_data_banks
 
 
-struct PhysicalDeviceDeviceGeneratedCommandsComputeFeaturesNV(Copyable):
+struct PhysicalDeviceDeviceGeneratedCommandsComputeFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var device_generated_compute: Bool32
     var device_generated_compute_pipelines: Bool32
     var device_generated_compute_capture_replay: Bool32
@@ -4944,9 +4944,9 @@ struct PhysicalDeviceDeviceGeneratedCommandsComputeFeaturesNV(Copyable):
         self.device_generated_compute_capture_replay = device_generated_compute_capture_replay
 
 
-struct DevicePrivateDataCreateInfo(Copyable):
+struct DevicePrivateDataCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var private_data_slot_request_count: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -4960,9 +4960,9 @@ struct DevicePrivateDataCreateInfo(Copyable):
         self.private_data_slot_request_count = private_data_slot_request_count
 
 
-struct PrivateDataSlotCreateInfo(Copyable):
+struct PrivateDataSlotCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PrivateDataSlotCreateFlags
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -4976,9 +4976,9 @@ struct PrivateDataSlotCreateInfo(Copyable):
         self.flags = flags
 
 
-struct PhysicalDevicePrivateDataFeatures(Copyable):
+struct PhysicalDevicePrivateDataFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var private_data: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -4992,9 +4992,9 @@ struct PhysicalDevicePrivateDataFeatures(Copyable):
         self.private_data = private_data
 
 
-struct PhysicalDeviceDeviceGeneratedCommandsPropertiesNV(Copyable):
+struct PhysicalDeviceDeviceGeneratedCommandsPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_graphics_shader_group_count: UInt32
     var max_indirect_sequence_count: UInt32
     var max_indirect_commands_token_count: UInt32
@@ -5032,9 +5032,9 @@ struct PhysicalDeviceDeviceGeneratedCommandsPropertiesNV(Copyable):
         self.min_indirect_commands_buffer_offset_alignment = min_indirect_commands_buffer_offset_alignment
 
 
-struct PhysicalDeviceClusterAccelerationStructureFeaturesNV(Copyable):
+struct PhysicalDeviceClusterAccelerationStructureFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var cluster_acceleration_structure: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -5048,9 +5048,9 @@ struct PhysicalDeviceClusterAccelerationStructureFeaturesNV(Copyable):
         self.cluster_acceleration_structure = cluster_acceleration_structure
 
 
-struct PhysicalDeviceClusterAccelerationStructurePropertiesNV(Copyable):
+struct PhysicalDeviceClusterAccelerationStructurePropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_vertices_per_cluster: UInt32
     var max_triangles_per_cluster: UInt32
     var cluster_scratch_byte_alignment: UInt32
@@ -5085,7 +5085,7 @@ struct PhysicalDeviceClusterAccelerationStructurePropertiesNV(Copyable):
         self.max_cluster_geometry_index = max_cluster_geometry_index
 
 
-struct StridedDeviceAddressNV(Copyable):
+struct StridedDeviceAddressNV(Copyable, Equatable):
     var start_address: DeviceAddress
     var stride_in_bytes: DeviceSize
 
@@ -5098,9 +5098,9 @@ struct StridedDeviceAddressNV(Copyable):
         self.stride_in_bytes = stride_in_bytes
 
 
-struct RayTracingPipelineClusterAccelerationStructureCreateInfoNV(Copyable):
+struct RayTracingPipelineClusterAccelerationStructureCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var allow_cluster_acceleration_structure: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -5114,7 +5114,7 @@ struct RayTracingPipelineClusterAccelerationStructureCreateInfoNV(Copyable):
         self.allow_cluster_acceleration_structure = allow_cluster_acceleration_structure
 
 
-struct ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV(Copyable):
+struct ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV(Copyable, Equatable):
     var _packed0: UInt32
 
     fn __init__(
@@ -5147,14 +5147,14 @@ struct ClusterAccelerationStructureGeometryIndexAndGeometryFlagsNV(Copyable):
         set_packed_value[width=3, offset=29](self._packed0, new_value)
 
 
-struct ClusterAccelerationStructureMoveObjectsInfoNV(Copyable):
+struct ClusterAccelerationStructureMoveObjectsInfoNV(Copyable, Equatable):
     var src_acceleration_structure: DeviceAddress
 
     fn __init__(out self, src_acceleration_structure: DeviceAddress = zero_init[DeviceAddress]()):
         self.src_acceleration_structure = src_acceleration_structure
 
 
-struct ClusterAccelerationStructureBuildClustersBottomLevelInfoNV(Copyable):
+struct ClusterAccelerationStructureBuildClustersBottomLevelInfoNV(Copyable, Equatable):
     var cluster_references_count: UInt32
     var cluster_references_stride: UInt32
     var cluster_references: DeviceAddress
@@ -5170,14 +5170,14 @@ struct ClusterAccelerationStructureBuildClustersBottomLevelInfoNV(Copyable):
         self.cluster_references = cluster_references
 
 
-struct ClusterAccelerationStructureGetTemplateIndicesInfoNV(Copyable):
+struct ClusterAccelerationStructureGetTemplateIndicesInfoNV(Copyable, Equatable):
     var cluster_template_address: DeviceAddress
 
     fn __init__(out self, cluster_template_address: DeviceAddress = zero_init[DeviceAddress]()):
         self.cluster_template_address = cluster_template_address
 
 
-struct ClusterAccelerationStructureBuildTriangleClusterInfoNV(Copyable):
+struct ClusterAccelerationStructureBuildTriangleClusterInfoNV(Copyable, Equatable):
     var cluster_id: UInt32
     var cluster_flags: ClusterAccelerationStructureClusterFlagsNV
     var _packed0: UInt32
@@ -5262,7 +5262,7 @@ struct ClusterAccelerationStructureBuildTriangleClusterInfoNV(Copyable):
         set_packed_value[width=4, offset=28](self._packed0, new_value)
 
 
-struct ClusterAccelerationStructureBuildTriangleClusterTemplateInfoNV(Copyable):
+struct ClusterAccelerationStructureBuildTriangleClusterTemplateInfoNV(Copyable, Equatable):
     var cluster_id: UInt32
     var cluster_flags: ClusterAccelerationStructureClusterFlagsNV
     var _packed0: UInt32
@@ -5350,7 +5350,7 @@ struct ClusterAccelerationStructureBuildTriangleClusterTemplateInfoNV(Copyable):
         set_packed_value[width=4, offset=28](self._packed0, new_value)
 
 
-struct ClusterAccelerationStructureInstantiateClusterInfoNV(Copyable):
+struct ClusterAccelerationStructureInstantiateClusterInfoNV(Copyable, Equatable):
     var cluster_id_offset: UInt32
     var _packed0: UInt32
     var cluster_template_address: DeviceAddress
@@ -5384,9 +5384,9 @@ struct ClusterAccelerationStructureInstantiateClusterInfoNV(Copyable):
         set_packed_value[width=8, offset=24](self._packed0, new_value)
 
 
-struct ClusterAccelerationStructureClustersBottomLevelInputNV(Copyable):
+struct ClusterAccelerationStructureClustersBottomLevelInputNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_total_cluster_count: UInt32
     var max_cluster_count_per_acceleration_structure: UInt32
 
@@ -5403,9 +5403,9 @@ struct ClusterAccelerationStructureClustersBottomLevelInputNV(Copyable):
         self.max_cluster_count_per_acceleration_structure = max_cluster_count_per_acceleration_structure
 
 
-struct ClusterAccelerationStructureTriangleClusterInputNV(Copyable):
+struct ClusterAccelerationStructureTriangleClusterInputNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var vertex_format: Format
     var max_geometry_index_value: UInt32
     var max_cluster_unique_geometry_count: UInt32
@@ -5440,9 +5440,9 @@ struct ClusterAccelerationStructureTriangleClusterInputNV(Copyable):
         self.min_position_truncate_bit_count = min_position_truncate_bit_count
 
 
-struct ClusterAccelerationStructureMoveObjectsInputNV(Copyable):
+struct ClusterAccelerationStructureMoveObjectsInputNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var type: ClusterAccelerationStructureTypeNV
     var no_move_overlap: Bool32
     var max_moved_bytes: DeviceSize
@@ -5462,9 +5462,9 @@ struct ClusterAccelerationStructureMoveObjectsInputNV(Copyable):
         self.max_moved_bytes = max_moved_bytes
 
 
-struct ClusterAccelerationStructureInputInfoNV(Copyable):
+struct ClusterAccelerationStructureInputInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_acceleration_structure_count: UInt32
     var flags: BuildAccelerationStructureFlagsKHR
     var op_type: ClusterAccelerationStructureOpTypeNV
@@ -5490,9 +5490,9 @@ struct ClusterAccelerationStructureInputInfoNV(Copyable):
         self.op_input = op_input
 
 
-struct ClusterAccelerationStructureCommandsInfoNV(Copyable):
+struct ClusterAccelerationStructureCommandsInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var input: ClusterAccelerationStructureInputInfoNV
     var dst_implicit_data: DeviceAddress
     var scratch_data: DeviceAddress
@@ -5527,9 +5527,9 @@ struct ClusterAccelerationStructureCommandsInfoNV(Copyable):
         self.address_resolution_flags = address_resolution_flags
 
 
-struct PhysicalDeviceMultiDrawPropertiesEXT(Copyable):
+struct PhysicalDeviceMultiDrawPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_multi_draw_count: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -5543,13 +5543,13 @@ struct PhysicalDeviceMultiDrawPropertiesEXT(Copyable):
         self.max_multi_draw_count = max_multi_draw_count
 
 
-struct GraphicsShaderGroupCreateInfoNV(Copyable):
+struct GraphicsShaderGroupCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var stage_count: UInt32
-    var p_stages: Ptr[PipelineShaderStageCreateInfo, ImmutOrigin.external]
-    var p_vertex_input_state: Ptr[PipelineVertexInputStateCreateInfo, ImmutOrigin.external]
-    var p_tessellation_state: Ptr[PipelineTessellationStateCreateInfo, ImmutOrigin.external]
+    var p_stages: Ptr[PipelineShaderStageCreateInfo, ImmutExternalOrigin]
+    var p_vertex_input_state: Ptr[PipelineVertexInputStateCreateInfo, ImmutExternalOrigin]
+    var p_tessellation_state: Ptr[PipelineTessellationStateCreateInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -5573,13 +5573,13 @@ struct GraphicsShaderGroupCreateInfoNV(Copyable):
         self.p_tessellation_state = Ptr(to=p_tessellation_state).bitcast[type_of(self.p_tessellation_state)]()[]
 
 
-struct GraphicsPipelineShaderGroupsCreateInfoNV(Copyable):
+struct GraphicsPipelineShaderGroupsCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var group_count: UInt32
-    var p_groups: Ptr[GraphicsShaderGroupCreateInfoNV, ImmutOrigin.external]
+    var p_groups: Ptr[GraphicsShaderGroupCreateInfoNV, ImmutExternalOrigin]
     var pipeline_count: UInt32
-    var p_pipelines: Ptr[Pipeline, ImmutOrigin.external]
+    var p_pipelines: Ptr[Pipeline, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -5602,14 +5602,14 @@ struct GraphicsPipelineShaderGroupsCreateInfoNV(Copyable):
         self.p_pipelines = Ptr(to=p_pipelines).bitcast[type_of(self.p_pipelines)]()[]
 
 
-struct BindShaderGroupIndirectCommandNV(Copyable):
+struct BindShaderGroupIndirectCommandNV(Copyable, Equatable):
     var group_index: UInt32
 
     fn __init__(out self, group_index: UInt32 = zero_init[UInt32]()):
         self.group_index = group_index
 
 
-struct BindIndexBufferIndirectCommandNV(Copyable):
+struct BindIndexBufferIndirectCommandNV(Copyable, Equatable):
     var buffer_address: DeviceAddress
     var size: UInt32
     var index_type: IndexType
@@ -5625,7 +5625,7 @@ struct BindIndexBufferIndirectCommandNV(Copyable):
         self.index_type = index_type
 
 
-struct BindVertexBufferIndirectCommandNV(Copyable):
+struct BindVertexBufferIndirectCommandNV(Copyable, Equatable):
     var buffer_address: DeviceAddress
     var size: UInt32
     var stride: UInt32
@@ -5641,14 +5641,14 @@ struct BindVertexBufferIndirectCommandNV(Copyable):
         self.stride = stride
 
 
-struct SetStateFlagsIndirectCommandNV(Copyable):
+struct SetStateFlagsIndirectCommandNV(Copyable, Equatable):
     var data: UInt32
 
     fn __init__(out self, data: UInt32 = zero_init[UInt32]()):
         self.data = data
 
 
-struct IndirectCommandsStreamNV(Copyable):
+struct IndirectCommandsStreamNV(Copyable, Equatable):
     var buffer: Buffer
     var offset: DeviceSize
 
@@ -5659,9 +5659,9 @@ struct IndirectCommandsStreamNV(Copyable):
         self.offset = offset
 
 
-struct IndirectCommandsLayoutTokenNV(Copyable):
+struct IndirectCommandsLayoutTokenNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var token_type: IndirectCommandsTokenTypeNV
     var stream: UInt32
     var offset: UInt32
@@ -5673,8 +5673,8 @@ struct IndirectCommandsLayoutTokenNV(Copyable):
     var pushconstant_size: UInt32
     var indirect_state_flags: IndirectStateFlagsNV
     var index_type_count: UInt32
-    var p_index_types: Ptr[IndexType, ImmutOrigin.external]
-    var p_index_type_values: Ptr[UInt32, ImmutOrigin.external]
+    var p_index_types: Ptr[IndexType, ImmutExternalOrigin]
+    var p_index_type_values: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -5715,15 +5715,15 @@ struct IndirectCommandsLayoutTokenNV(Copyable):
         self.p_index_type_values = Ptr(to=p_index_type_values).bitcast[type_of(self.p_index_type_values)]()[]
 
 
-struct IndirectCommandsLayoutCreateInfoNV(Copyable):
+struct IndirectCommandsLayoutCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: IndirectCommandsLayoutUsageFlagsNV
     var pipeline_bind_point: PipelineBindPoint
     var token_count: UInt32
-    var p_tokens: Ptr[IndirectCommandsLayoutTokenNV, ImmutOrigin.external]
+    var p_tokens: Ptr[IndirectCommandsLayoutTokenNV, ImmutExternalOrigin]
     var stream_count: UInt32
-    var p_stream_strides: Ptr[UInt32, ImmutOrigin.external]
+    var p_stream_strides: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -5750,14 +5750,14 @@ struct IndirectCommandsLayoutCreateInfoNV(Copyable):
         self.p_stream_strides = Ptr(to=p_stream_strides).bitcast[type_of(self.p_stream_strides)]()[]
 
 
-struct GeneratedCommandsInfoNV(Copyable):
+struct GeneratedCommandsInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var pipeline_bind_point: PipelineBindPoint
     var pipeline: Pipeline
     var indirect_commands_layout: IndirectCommandsLayoutNV
     var stream_count: UInt32
-    var p_streams: Ptr[IndirectCommandsStreamNV, ImmutOrigin.external]
+    var p_streams: Ptr[IndirectCommandsStreamNV, ImmutExternalOrigin]
     var sequences_count: UInt32
     var preprocess_buffer: Buffer
     var preprocess_offset: DeviceSize
@@ -5805,9 +5805,9 @@ struct GeneratedCommandsInfoNV(Copyable):
         self.sequences_index_offset = sequences_index_offset
 
 
-struct GeneratedCommandsMemoryRequirementsInfoNV(Copyable):
+struct GeneratedCommandsMemoryRequirementsInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var pipeline_bind_point: PipelineBindPoint
     var pipeline: Pipeline
     var indirect_commands_layout: IndirectCommandsLayoutNV
@@ -5830,9 +5830,9 @@ struct GeneratedCommandsMemoryRequirementsInfoNV(Copyable):
         self.max_sequences_count = max_sequences_count
 
 
-struct PipelineIndirectDeviceAddressInfoNV(Copyable):
+struct PipelineIndirectDeviceAddressInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var pipeline_bind_point: PipelineBindPoint
     var pipeline: Pipeline
 
@@ -5849,16 +5849,16 @@ struct PipelineIndirectDeviceAddressInfoNV(Copyable):
         self.pipeline = pipeline
 
 
-struct BindPipelineIndirectCommandNV(Copyable):
+struct BindPipelineIndirectCommandNV(Copyable, Equatable):
     var pipeline_address: DeviceAddress
 
     fn __init__(out self, pipeline_address: DeviceAddress = zero_init[DeviceAddress]()):
         self.pipeline_address = pipeline_address
 
 
-struct PhysicalDeviceFeatures2(Copyable):
+struct PhysicalDeviceFeatures2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var features: PhysicalDeviceFeatures
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -5872,9 +5872,9 @@ struct PhysicalDeviceFeatures2(Copyable):
         self.features = features.copy()
 
 
-struct PhysicalDeviceProperties2(Copyable):
+struct PhysicalDeviceProperties2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var properties: PhysicalDeviceProperties
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -5888,9 +5888,9 @@ struct PhysicalDeviceProperties2(Copyable):
         self.properties = properties.copy()
 
 
-struct FormatProperties2(Copyable):
+struct FormatProperties2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var format_properties: FormatProperties
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -5904,9 +5904,9 @@ struct FormatProperties2(Copyable):
         self.format_properties = format_properties.copy()
 
 
-struct ImageFormatProperties2(Copyable):
+struct ImageFormatProperties2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var image_format_properties: ImageFormatProperties
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -5920,9 +5920,9 @@ struct ImageFormatProperties2(Copyable):
         self.image_format_properties = image_format_properties.copy()
 
 
-struct PhysicalDeviceImageFormatInfo2(Copyable):
+struct PhysicalDeviceImageFormatInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var format: Format
     var type: ImageType
     var tiling: ImageTiling
@@ -5948,9 +5948,9 @@ struct PhysicalDeviceImageFormatInfo2(Copyable):
         self.flags = flags
 
 
-struct QueueFamilyProperties2(Copyable):
+struct QueueFamilyProperties2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var queue_family_properties: QueueFamilyProperties
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -5964,9 +5964,9 @@ struct QueueFamilyProperties2(Copyable):
         self.queue_family_properties = queue_family_properties.copy()
 
 
-struct PhysicalDeviceMemoryProperties2(Copyable):
+struct PhysicalDeviceMemoryProperties2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var memory_properties: PhysicalDeviceMemoryProperties
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -5980,9 +5980,9 @@ struct PhysicalDeviceMemoryProperties2(Copyable):
         self.memory_properties = memory_properties.copy()
 
 
-struct SparseImageFormatProperties2(Copyable):
+struct SparseImageFormatProperties2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var properties: SparseImageFormatProperties
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -5996,9 +5996,9 @@ struct SparseImageFormatProperties2(Copyable):
         self.properties = properties.copy()
 
 
-struct PhysicalDeviceSparseImageFormatInfo2(Copyable):
+struct PhysicalDeviceSparseImageFormatInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var format: Format
     var type: ImageType
     var samples: SampleCountFlagBits
@@ -6024,9 +6024,9 @@ struct PhysicalDeviceSparseImageFormatInfo2(Copyable):
         self.tiling = tiling
 
 
-struct PhysicalDevicePushDescriptorProperties(Copyable):
+struct PhysicalDevicePushDescriptorProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_push_descriptors: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -6040,7 +6040,7 @@ struct PhysicalDevicePushDescriptorProperties(Copyable):
         self.max_push_descriptors = max_push_descriptors
 
 
-struct ConformanceVersion(Copyable):
+struct ConformanceVersion(Copyable, Equatable):
     var major: UInt8
     var minor: UInt8
     var subminor: UInt8
@@ -6059,9 +6059,9 @@ struct ConformanceVersion(Copyable):
         self.patch = patch
 
 
-struct PhysicalDeviceDriverProperties(Copyable):
+struct PhysicalDeviceDriverProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var driver_id: DriverId
     var driver_name: InlineArray[c_char, Int(MAX_DRIVER_NAME_SIZE)]
     var driver_info: InlineArray[c_char, Int(MAX_DRIVER_INFO_SIZE)]
@@ -6079,8 +6079,8 @@ struct PhysicalDeviceDriverProperties(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.driver_id = driver_id
-        self.driver_name = driver_name
-        self.driver_info = driver_info
+        self.driver_name = driver_name.copy()
+        self.driver_info = driver_info.copy()
         self.conformance_version = conformance_version.copy()
 
     fn driver_name_slice(self) -> CStringSlice[origin_of(self.driver_name)]:
@@ -6090,11 +6090,11 @@ struct PhysicalDeviceDriverProperties(Copyable):
         return CStringSlice[origin_of(self.driver_info)](unsafe_from_ptr = self.driver_info.unsafe_ptr())
 
 
-struct PresentRegionsKHR(Copyable):
+struct PresentRegionsKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var swapchain_count: UInt32
-    var p_regions: Ptr[PresentRegionKHR, ImmutOrigin.external]
+    var p_regions: Ptr[PresentRegionKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -6112,9 +6112,9 @@ struct PresentRegionsKHR(Copyable):
         self.p_regions = Ptr(to=p_regions).bitcast[type_of(self.p_regions)]()[]
 
 
-struct PresentRegionKHR(Copyable):
+struct PresentRegionKHR(Copyable, Equatable):
     var rectangle_count: UInt32
-    var p_rectangles: Ptr[RectLayerKHR, ImmutOrigin.external]
+    var p_rectangles: Ptr[RectLayerKHR, ImmutExternalOrigin]
 
     fn __init__[p_rectangles_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -6125,7 +6125,7 @@ struct PresentRegionKHR(Copyable):
         self.p_rectangles = Ptr(to=p_rectangles).bitcast[type_of(self.p_rectangles)]()[]
 
 
-struct RectLayerKHR(Copyable):
+struct RectLayerKHR(Copyable, Equatable):
     var offset: Offset2D
     var extent: Extent2D
     var layer: UInt32
@@ -6141,9 +6141,9 @@ struct RectLayerKHR(Copyable):
         self.layer = layer
 
 
-struct PhysicalDeviceVariablePointersFeatures(Copyable):
+struct PhysicalDeviceVariablePointersFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var variable_pointers_storage_buffer: Bool32
     var variable_pointers: Bool32
 
@@ -6160,7 +6160,7 @@ struct PhysicalDeviceVariablePointersFeatures(Copyable):
         self.variable_pointers = variable_pointers
 
 
-struct ExternalMemoryProperties(Copyable):
+struct ExternalMemoryProperties(Copyable, Equatable):
     var external_memory_features: ExternalMemoryFeatureFlags
     var export_from_imported_handle_types: ExternalMemoryHandleTypeFlags
     var compatible_handle_types: ExternalMemoryHandleTypeFlags
@@ -6176,9 +6176,9 @@ struct ExternalMemoryProperties(Copyable):
         self.compatible_handle_types = compatible_handle_types
 
 
-struct PhysicalDeviceExternalImageFormatInfo(Copyable):
+struct PhysicalDeviceExternalImageFormatInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_type: ExternalMemoryHandleTypeFlagBits
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -6192,9 +6192,9 @@ struct PhysicalDeviceExternalImageFormatInfo(Copyable):
         self.handle_type = handle_type
 
 
-struct ExternalImageFormatProperties(Copyable):
+struct ExternalImageFormatProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var external_memory_properties: ExternalMemoryProperties
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -6208,9 +6208,9 @@ struct ExternalImageFormatProperties(Copyable):
         self.external_memory_properties = external_memory_properties.copy()
 
 
-struct PhysicalDeviceExternalBufferInfo(Copyable):
+struct PhysicalDeviceExternalBufferInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: BufferCreateFlags
     var usage: BufferUsageFlags
     var handle_type: ExternalMemoryHandleTypeFlagBits
@@ -6230,9 +6230,9 @@ struct PhysicalDeviceExternalBufferInfo(Copyable):
         self.handle_type = handle_type
 
 
-struct ExternalBufferProperties(Copyable):
+struct ExternalBufferProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var external_memory_properties: ExternalMemoryProperties
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -6246,9 +6246,9 @@ struct ExternalBufferProperties(Copyable):
         self.external_memory_properties = external_memory_properties.copy()
 
 
-struct PhysicalDeviceIDProperties(Copyable):
+struct PhysicalDeviceIDProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var device_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
     var driver_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
     var device_luid: InlineArray[UInt8, Int(LUID_SIZE)]
@@ -6267,16 +6267,16 @@ struct PhysicalDeviceIDProperties(Copyable):
     ):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
-        self.device_uuid = device_uuid
-        self.driver_uuid = driver_uuid
-        self.device_luid = device_luid
+        self.device_uuid = device_uuid.copy()
+        self.driver_uuid = driver_uuid.copy()
+        self.device_luid = device_luid.copy()
         self.device_node_mask = device_node_mask
         self.device_luid_valid = device_luid_valid
 
 
-struct ExternalMemoryImageCreateInfo(Copyable):
+struct ExternalMemoryImageCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_types: ExternalMemoryHandleTypeFlags
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -6290,9 +6290,9 @@ struct ExternalMemoryImageCreateInfo(Copyable):
         self.handle_types = handle_types
 
 
-struct ExternalMemoryBufferCreateInfo(Copyable):
+struct ExternalMemoryBufferCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_types: ExternalMemoryHandleTypeFlags
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -6306,9 +6306,9 @@ struct ExternalMemoryBufferCreateInfo(Copyable):
         self.handle_types = handle_types
 
 
-struct ExportMemoryAllocateInfo(Copyable):
+struct ExportMemoryAllocateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_types: ExternalMemoryHandleTypeFlags
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -6322,9 +6322,9 @@ struct ExportMemoryAllocateInfo(Copyable):
         self.handle_types = handle_types
 
 
-struct ImportMemoryWin32HandleInfoKHR(Copyable):
+struct ImportMemoryWin32HandleInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_type: ExternalMemoryHandleTypeFlagBits
     var handle: HANDLE
     var name: LPCWSTR
@@ -6344,10 +6344,10 @@ struct ImportMemoryWin32HandleInfoKHR(Copyable):
         self.name = name
 
 
-struct ExportMemoryWin32HandleInfoKHR(Copyable):
+struct ExportMemoryWin32HandleInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_attributes: Ptr[SECURITY_ATTRIBUTES, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_attributes: Ptr[SECURITY_ATTRIBUTES, ImmutExternalOrigin]
     var dw_access: DWORD
     var name: LPCWSTR
 
@@ -6369,9 +6369,9 @@ struct ExportMemoryWin32HandleInfoKHR(Copyable):
         self.name = name
 
 
-struct ImportMemoryZirconHandleInfoFUCHSIA(Copyable):
+struct ImportMemoryZirconHandleInfoFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_type: ExternalMemoryHandleTypeFlagBits
     var handle: zx_handle_t
 
@@ -6388,9 +6388,9 @@ struct ImportMemoryZirconHandleInfoFUCHSIA(Copyable):
         self.handle = handle
 
 
-struct MemoryZirconHandlePropertiesFUCHSIA(Copyable):
+struct MemoryZirconHandlePropertiesFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var memory_type_bits: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -6404,9 +6404,9 @@ struct MemoryZirconHandlePropertiesFUCHSIA(Copyable):
         self.memory_type_bits = memory_type_bits
 
 
-struct MemoryGetZirconHandleInfoFUCHSIA(Copyable):
+struct MemoryGetZirconHandleInfoFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var memory: DeviceMemory
     var handle_type: ExternalMemoryHandleTypeFlagBits
 
@@ -6423,9 +6423,9 @@ struct MemoryGetZirconHandleInfoFUCHSIA(Copyable):
         self.handle_type = handle_type
 
 
-struct MemoryWin32HandlePropertiesKHR(Copyable):
+struct MemoryWin32HandlePropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var memory_type_bits: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -6439,9 +6439,9 @@ struct MemoryWin32HandlePropertiesKHR(Copyable):
         self.memory_type_bits = memory_type_bits
 
 
-struct MemoryGetWin32HandleInfoKHR(Copyable):
+struct MemoryGetWin32HandleInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var memory: DeviceMemory
     var handle_type: ExternalMemoryHandleTypeFlagBits
 
@@ -6458,9 +6458,9 @@ struct MemoryGetWin32HandleInfoKHR(Copyable):
         self.handle_type = handle_type
 
 
-struct ImportMemoryFdInfoKHR(Copyable):
+struct ImportMemoryFdInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_type: ExternalMemoryHandleTypeFlagBits
     var fd: Int32
 
@@ -6477,9 +6477,9 @@ struct ImportMemoryFdInfoKHR(Copyable):
         self.fd = fd
 
 
-struct MemoryFdPropertiesKHR(Copyable):
+struct MemoryFdPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var memory_type_bits: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -6493,9 +6493,9 @@ struct MemoryFdPropertiesKHR(Copyable):
         self.memory_type_bits = memory_type_bits
 
 
-struct MemoryGetFdInfoKHR(Copyable):
+struct MemoryGetFdInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var memory: DeviceMemory
     var handle_type: ExternalMemoryHandleTypeFlagBits
 
@@ -6512,16 +6512,16 @@ struct MemoryGetFdInfoKHR(Copyable):
         self.handle_type = handle_type
 
 
-struct Win32KeyedMutexAcquireReleaseInfoKHR(Copyable):
+struct Win32KeyedMutexAcquireReleaseInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var acquire_count: UInt32
-    var p_acquire_syncs: Ptr[DeviceMemory, ImmutOrigin.external]
-    var p_acquire_keys: Ptr[UInt64, ImmutOrigin.external]
-    var p_acquire_timeouts: Ptr[UInt32, ImmutOrigin.external]
+    var p_acquire_syncs: Ptr[DeviceMemory, ImmutExternalOrigin]
+    var p_acquire_keys: Ptr[UInt64, ImmutExternalOrigin]
+    var p_acquire_timeouts: Ptr[UInt32, ImmutExternalOrigin]
     var release_count: UInt32
-    var p_release_syncs: Ptr[DeviceMemory, ImmutOrigin.external]
-    var p_release_keys: Ptr[UInt64, ImmutOrigin.external]
+    var p_release_syncs: Ptr[DeviceMemory, ImmutExternalOrigin]
+    var p_release_keys: Ptr[UInt64, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -6553,11 +6553,11 @@ struct Win32KeyedMutexAcquireReleaseInfoKHR(Copyable):
         self.p_release_keys = Ptr(to=p_release_keys).bitcast[type_of(self.p_release_keys)]()[]
 
 
-struct ImportMemoryMetalHandleInfoEXT(Copyable):
+struct ImportMemoryMetalHandleInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_type: ExternalMemoryHandleTypeFlagBits
-    var handle: Ptr[NoneType, MutOrigin.external]
+    var handle: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, handle_origin: MutOrigin = MutAnyOrigin
@@ -6574,9 +6574,9 @@ struct ImportMemoryMetalHandleInfoEXT(Copyable):
         self.handle = Ptr(to=handle).bitcast[type_of(self.handle)]()[]
 
 
-struct MemoryMetalHandlePropertiesEXT(Copyable):
+struct MemoryMetalHandlePropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var memory_type_bits: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -6590,9 +6590,9 @@ struct MemoryMetalHandlePropertiesEXT(Copyable):
         self.memory_type_bits = memory_type_bits
 
 
-struct MemoryGetMetalHandleInfoEXT(Copyable):
+struct MemoryGetMetalHandleInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var memory: DeviceMemory
     var handle_type: ExternalMemoryHandleTypeFlagBits
 
@@ -6609,9 +6609,9 @@ struct MemoryGetMetalHandleInfoEXT(Copyable):
         self.handle_type = handle_type
 
 
-struct PhysicalDeviceExternalSemaphoreInfo(Copyable):
+struct PhysicalDeviceExternalSemaphoreInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_type: ExternalSemaphoreHandleTypeFlagBits
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -6625,9 +6625,9 @@ struct PhysicalDeviceExternalSemaphoreInfo(Copyable):
         self.handle_type = handle_type
 
 
-struct ExternalSemaphoreProperties(Copyable):
+struct ExternalSemaphoreProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var export_from_imported_handle_types: ExternalSemaphoreHandleTypeFlags
     var compatible_handle_types: ExternalSemaphoreHandleTypeFlags
     var external_semaphore_features: ExternalSemaphoreFeatureFlags
@@ -6647,9 +6647,9 @@ struct ExternalSemaphoreProperties(Copyable):
         self.external_semaphore_features = external_semaphore_features
 
 
-struct ExportSemaphoreCreateInfo(Copyable):
+struct ExportSemaphoreCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_types: ExternalSemaphoreHandleTypeFlags
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -6663,9 +6663,9 @@ struct ExportSemaphoreCreateInfo(Copyable):
         self.handle_types = handle_types
 
 
-struct ImportSemaphoreWin32HandleInfoKHR(Copyable):
+struct ImportSemaphoreWin32HandleInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var semaphore: Semaphore
     var flags: SemaphoreImportFlags
     var handle_type: ExternalSemaphoreHandleTypeFlagBits
@@ -6691,10 +6691,10 @@ struct ImportSemaphoreWin32HandleInfoKHR(Copyable):
         self.name = name
 
 
-struct ExportSemaphoreWin32HandleInfoKHR(Copyable):
+struct ExportSemaphoreWin32HandleInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_attributes: Ptr[SECURITY_ATTRIBUTES, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_attributes: Ptr[SECURITY_ATTRIBUTES, ImmutExternalOrigin]
     var dw_access: DWORD
     var name: LPCWSTR
 
@@ -6716,13 +6716,13 @@ struct ExportSemaphoreWin32HandleInfoKHR(Copyable):
         self.name = name
 
 
-struct D3D12FenceSubmitInfoKHR(Copyable):
+struct D3D12FenceSubmitInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var wait_semaphore_values_count: UInt32
-    var p_wait_semaphore_values: Ptr[UInt64, ImmutOrigin.external]
+    var p_wait_semaphore_values: Ptr[UInt64, ImmutExternalOrigin]
     var signal_semaphore_values_count: UInt32
-    var p_signal_semaphore_values: Ptr[UInt64, ImmutOrigin.external]
+    var p_signal_semaphore_values: Ptr[UInt64, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -6745,9 +6745,9 @@ struct D3D12FenceSubmitInfoKHR(Copyable):
         self.p_signal_semaphore_values = Ptr(to=p_signal_semaphore_values).bitcast[type_of(self.p_signal_semaphore_values)]()[]
 
 
-struct SemaphoreGetWin32HandleInfoKHR(Copyable):
+struct SemaphoreGetWin32HandleInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var semaphore: Semaphore
     var handle_type: ExternalSemaphoreHandleTypeFlagBits
 
@@ -6764,9 +6764,9 @@ struct SemaphoreGetWin32HandleInfoKHR(Copyable):
         self.handle_type = handle_type
 
 
-struct ImportSemaphoreFdInfoKHR(Copyable):
+struct ImportSemaphoreFdInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var semaphore: Semaphore
     var flags: SemaphoreImportFlags
     var handle_type: ExternalSemaphoreHandleTypeFlagBits
@@ -6789,9 +6789,9 @@ struct ImportSemaphoreFdInfoKHR(Copyable):
         self.fd = fd
 
 
-struct SemaphoreGetFdInfoKHR(Copyable):
+struct SemaphoreGetFdInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var semaphore: Semaphore
     var handle_type: ExternalSemaphoreHandleTypeFlagBits
 
@@ -6808,9 +6808,9 @@ struct SemaphoreGetFdInfoKHR(Copyable):
         self.handle_type = handle_type
 
 
-struct ImportSemaphoreZirconHandleInfoFUCHSIA(Copyable):
+struct ImportSemaphoreZirconHandleInfoFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var semaphore: Semaphore
     var flags: SemaphoreImportFlags
     var handle_type: ExternalSemaphoreHandleTypeFlagBits
@@ -6833,9 +6833,9 @@ struct ImportSemaphoreZirconHandleInfoFUCHSIA(Copyable):
         self.zircon_handle = zircon_handle
 
 
-struct SemaphoreGetZirconHandleInfoFUCHSIA(Copyable):
+struct SemaphoreGetZirconHandleInfoFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var semaphore: Semaphore
     var handle_type: ExternalSemaphoreHandleTypeFlagBits
 
@@ -6852,9 +6852,9 @@ struct SemaphoreGetZirconHandleInfoFUCHSIA(Copyable):
         self.handle_type = handle_type
 
 
-struct PhysicalDeviceExternalFenceInfo(Copyable):
+struct PhysicalDeviceExternalFenceInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_type: ExternalFenceHandleTypeFlagBits
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -6868,9 +6868,9 @@ struct PhysicalDeviceExternalFenceInfo(Copyable):
         self.handle_type = handle_type
 
 
-struct ExternalFenceProperties(Copyable):
+struct ExternalFenceProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var export_from_imported_handle_types: ExternalFenceHandleTypeFlags
     var compatible_handle_types: ExternalFenceHandleTypeFlags
     var external_fence_features: ExternalFenceFeatureFlags
@@ -6890,9 +6890,9 @@ struct ExternalFenceProperties(Copyable):
         self.external_fence_features = external_fence_features
 
 
-struct ExportFenceCreateInfo(Copyable):
+struct ExportFenceCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_types: ExternalFenceHandleTypeFlags
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -6906,9 +6906,9 @@ struct ExportFenceCreateInfo(Copyable):
         self.handle_types = handle_types
 
 
-struct ImportFenceWin32HandleInfoKHR(Copyable):
+struct ImportFenceWin32HandleInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var fence: Fence
     var flags: FenceImportFlags
     var handle_type: ExternalFenceHandleTypeFlagBits
@@ -6934,10 +6934,10 @@ struct ImportFenceWin32HandleInfoKHR(Copyable):
         self.name = name
 
 
-struct ExportFenceWin32HandleInfoKHR(Copyable):
+struct ExportFenceWin32HandleInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_attributes: Ptr[SECURITY_ATTRIBUTES, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_attributes: Ptr[SECURITY_ATTRIBUTES, ImmutExternalOrigin]
     var dw_access: DWORD
     var name: LPCWSTR
 
@@ -6959,9 +6959,9 @@ struct ExportFenceWin32HandleInfoKHR(Copyable):
         self.name = name
 
 
-struct FenceGetWin32HandleInfoKHR(Copyable):
+struct FenceGetWin32HandleInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var fence: Fence
     var handle_type: ExternalFenceHandleTypeFlagBits
 
@@ -6978,9 +6978,9 @@ struct FenceGetWin32HandleInfoKHR(Copyable):
         self.handle_type = handle_type
 
 
-struct ImportFenceFdInfoKHR(Copyable):
+struct ImportFenceFdInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var fence: Fence
     var flags: FenceImportFlags
     var handle_type: ExternalFenceHandleTypeFlagBits
@@ -7003,9 +7003,9 @@ struct ImportFenceFdInfoKHR(Copyable):
         self.fd = fd
 
 
-struct FenceGetFdInfoKHR(Copyable):
+struct FenceGetFdInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var fence: Fence
     var handle_type: ExternalFenceHandleTypeFlagBits
 
@@ -7022,9 +7022,9 @@ struct FenceGetFdInfoKHR(Copyable):
         self.handle_type = handle_type
 
 
-struct PhysicalDeviceMultiviewFeatures(Copyable):
+struct PhysicalDeviceMultiviewFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var multiview: Bool32
     var multiview_geometry_shader: Bool32
     var multiview_tessellation_shader: Bool32
@@ -7044,9 +7044,9 @@ struct PhysicalDeviceMultiviewFeatures(Copyable):
         self.multiview_tessellation_shader = multiview_tessellation_shader
 
 
-struct PhysicalDeviceMultiviewProperties(Copyable):
+struct PhysicalDeviceMultiviewProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_multiview_view_count: UInt32
     var max_multiview_instance_index: UInt32
 
@@ -7063,15 +7063,15 @@ struct PhysicalDeviceMultiviewProperties(Copyable):
         self.max_multiview_instance_index = max_multiview_instance_index
 
 
-struct RenderPassMultiviewCreateInfo(Copyable):
+struct RenderPassMultiviewCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var subpass_count: UInt32
-    var p_view_masks: Ptr[UInt32, ImmutOrigin.external]
+    var p_view_masks: Ptr[UInt32, ImmutExternalOrigin]
     var dependency_count: UInt32
-    var p_view_offsets: Ptr[Int32, ImmutOrigin.external]
+    var p_view_offsets: Ptr[Int32, ImmutExternalOrigin]
     var correlation_mask_count: UInt32
-    var p_correlation_masks: Ptr[UInt32, ImmutOrigin.external]
+    var p_correlation_masks: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -7099,9 +7099,9 @@ struct RenderPassMultiviewCreateInfo(Copyable):
         self.p_correlation_masks = Ptr(to=p_correlation_masks).bitcast[type_of(self.p_correlation_masks)]()[]
 
 
-struct SurfaceCapabilities2EXT(Copyable):
+struct SurfaceCapabilities2EXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var min_image_count: UInt32
     var max_image_count: UInt32
     var current_extent: Extent2D
@@ -7145,9 +7145,9 @@ struct SurfaceCapabilities2EXT(Copyable):
         self.supported_surface_counters = supported_surface_counters
 
 
-struct DisplayPowerInfoEXT(Copyable):
+struct DisplayPowerInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var power_state: DisplayPowerStateEXT
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -7161,9 +7161,9 @@ struct DisplayPowerInfoEXT(Copyable):
         self.power_state = power_state
 
 
-struct DeviceEventInfoEXT(Copyable):
+struct DeviceEventInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var device_event: DeviceEventTypeEXT
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -7177,9 +7177,9 @@ struct DeviceEventInfoEXT(Copyable):
         self.device_event = device_event
 
 
-struct DisplayEventInfoEXT(Copyable):
+struct DisplayEventInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var display_event: DisplayEventTypeEXT
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -7193,9 +7193,9 @@ struct DisplayEventInfoEXT(Copyable):
         self.display_event = display_event
 
 
-struct SwapchainCounterCreateInfoEXT(Copyable):
+struct SwapchainCounterCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var surface_counters: SurfaceCounterFlagsEXT
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -7209,9 +7209,9 @@ struct SwapchainCounterCreateInfoEXT(Copyable):
         self.surface_counters = surface_counters
 
 
-struct PhysicalDeviceGroupProperties(Copyable):
+struct PhysicalDeviceGroupProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var physical_device_count: UInt32
     var physical_devices: InlineArray[PhysicalDevice, Int(MAX_DEVICE_GROUP_SIZE)]
     var subset_allocation: Bool32
@@ -7227,13 +7227,13 @@ struct PhysicalDeviceGroupProperties(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.physical_device_count = physical_device_count
-        self.physical_devices = physical_devices
+        self.physical_devices = physical_devices.copy()
         self.subset_allocation = subset_allocation
 
 
-struct MemoryAllocateFlagsInfo(Copyable):
+struct MemoryAllocateFlagsInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: MemoryAllocateFlags
     var device_mask: UInt32
 
@@ -7250,9 +7250,9 @@ struct MemoryAllocateFlagsInfo(Copyable):
         self.device_mask = device_mask
 
 
-struct BindBufferMemoryInfo(Copyable):
+struct BindBufferMemoryInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var buffer: Buffer
     var memory: DeviceMemory
     var memory_offset: DeviceSize
@@ -7272,11 +7272,11 @@ struct BindBufferMemoryInfo(Copyable):
         self.memory_offset = memory_offset
 
 
-struct BindBufferMemoryDeviceGroupInfo(Copyable):
+struct BindBufferMemoryDeviceGroupInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var device_index_count: UInt32
-    var p_device_indices: Ptr[UInt32, ImmutOrigin.external]
+    var p_device_indices: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -7294,9 +7294,9 @@ struct BindBufferMemoryDeviceGroupInfo(Copyable):
         self.p_device_indices = Ptr(to=p_device_indices).bitcast[type_of(self.p_device_indices)]()[]
 
 
-struct BindImageMemoryInfo(Copyable):
+struct BindImageMemoryInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image: Image
     var memory: DeviceMemory
     var memory_offset: DeviceSize
@@ -7316,13 +7316,13 @@ struct BindImageMemoryInfo(Copyable):
         self.memory_offset = memory_offset
 
 
-struct BindImageMemoryDeviceGroupInfo(Copyable):
+struct BindImageMemoryDeviceGroupInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var device_index_count: UInt32
-    var p_device_indices: Ptr[UInt32, ImmutOrigin.external]
+    var p_device_indices: Ptr[UInt32, ImmutExternalOrigin]
     var split_instance_bind_region_count: UInt32
-    var p_split_instance_bind_regions: Ptr[Rect2D, ImmutOrigin.external]
+    var p_split_instance_bind_regions: Ptr[Rect2D, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -7345,12 +7345,12 @@ struct BindImageMemoryDeviceGroupInfo(Copyable):
         self.p_split_instance_bind_regions = Ptr(to=p_split_instance_bind_regions).bitcast[type_of(self.p_split_instance_bind_regions)]()[]
 
 
-struct DeviceGroupRenderPassBeginInfo(Copyable):
+struct DeviceGroupRenderPassBeginInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var device_mask: UInt32
     var device_render_area_count: UInt32
-    var p_device_render_areas: Ptr[Rect2D, ImmutOrigin.external]
+    var p_device_render_areas: Ptr[Rect2D, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -7370,9 +7370,9 @@ struct DeviceGroupRenderPassBeginInfo(Copyable):
         self.p_device_render_areas = Ptr(to=p_device_render_areas).bitcast[type_of(self.p_device_render_areas)]()[]
 
 
-struct DeviceGroupCommandBufferBeginInfo(Copyable):
+struct DeviceGroupCommandBufferBeginInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var device_mask: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -7386,15 +7386,15 @@ struct DeviceGroupCommandBufferBeginInfo(Copyable):
         self.device_mask = device_mask
 
 
-struct DeviceGroupSubmitInfo(Copyable):
+struct DeviceGroupSubmitInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var wait_semaphore_count: UInt32
-    var p_wait_semaphore_device_indices: Ptr[UInt32, ImmutOrigin.external]
+    var p_wait_semaphore_device_indices: Ptr[UInt32, ImmutExternalOrigin]
     var command_buffer_count: UInt32
-    var p_command_buffer_device_masks: Ptr[UInt32, ImmutOrigin.external]
+    var p_command_buffer_device_masks: Ptr[UInt32, ImmutExternalOrigin]
     var signal_semaphore_count: UInt32
-    var p_signal_semaphore_device_indices: Ptr[UInt32, ImmutOrigin.external]
+    var p_signal_semaphore_device_indices: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -7422,9 +7422,9 @@ struct DeviceGroupSubmitInfo(Copyable):
         self.p_signal_semaphore_device_indices = Ptr(to=p_signal_semaphore_device_indices).bitcast[type_of(self.p_signal_semaphore_device_indices)]()[]
 
 
-struct DeviceGroupBindSparseInfo(Copyable):
+struct DeviceGroupBindSparseInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var resource_device_index: UInt32
     var memory_device_index: UInt32
 
@@ -7441,9 +7441,9 @@ struct DeviceGroupBindSparseInfo(Copyable):
         self.memory_device_index = memory_device_index
 
 
-struct DeviceGroupPresentCapabilitiesKHR(Copyable):
+struct DeviceGroupPresentCapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_mask: InlineArray[UInt32, Int(MAX_DEVICE_GROUP_SIZE)]
     var modes: DeviceGroupPresentModeFlagsKHR
 
@@ -7456,13 +7456,13 @@ struct DeviceGroupPresentCapabilitiesKHR(Copyable):
     ):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
-        self.present_mask = present_mask
+        self.present_mask = present_mask.copy()
         self.modes = modes
 
 
-struct ImageSwapchainCreateInfoKHR(Copyable):
+struct ImageSwapchainCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var swapchain: SwapchainKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -7476,9 +7476,9 @@ struct ImageSwapchainCreateInfoKHR(Copyable):
         self.swapchain = swapchain
 
 
-struct BindImageMemorySwapchainInfoKHR(Copyable):
+struct BindImageMemorySwapchainInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var swapchain: SwapchainKHR
     var image_index: UInt32
 
@@ -7495,9 +7495,9 @@ struct BindImageMemorySwapchainInfoKHR(Copyable):
         self.image_index = image_index
 
 
-struct AcquireNextImageInfoKHR(Copyable):
+struct AcquireNextImageInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var swapchain: SwapchainKHR
     var timeout: UInt64
     var semaphore: Semaphore
@@ -7523,11 +7523,11 @@ struct AcquireNextImageInfoKHR(Copyable):
         self.device_mask = device_mask
 
 
-struct DeviceGroupPresentInfoKHR(Copyable):
+struct DeviceGroupPresentInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var swapchain_count: UInt32
-    var p_device_masks: Ptr[UInt32, ImmutOrigin.external]
+    var p_device_masks: Ptr[UInt32, ImmutExternalOrigin]
     var mode: DeviceGroupPresentModeFlagBitsKHR
 
     fn __init__[
@@ -7548,11 +7548,11 @@ struct DeviceGroupPresentInfoKHR(Copyable):
         self.mode = mode
 
 
-struct DeviceGroupDeviceCreateInfo(Copyable):
+struct DeviceGroupDeviceCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var physical_device_count: UInt32
-    var p_physical_devices: Ptr[PhysicalDevice, ImmutOrigin.external]
+    var p_physical_devices: Ptr[PhysicalDevice, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -7570,9 +7570,9 @@ struct DeviceGroupDeviceCreateInfo(Copyable):
         self.p_physical_devices = Ptr(to=p_physical_devices).bitcast[type_of(self.p_physical_devices)]()[]
 
 
-struct DeviceGroupSwapchainCreateInfoKHR(Copyable):
+struct DeviceGroupSwapchainCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var modes: DeviceGroupPresentModeFlagsKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -7586,7 +7586,7 @@ struct DeviceGroupSwapchainCreateInfoKHR(Copyable):
         self.modes = modes
 
 
-struct DescriptorUpdateTemplateEntry(Copyable):
+struct DescriptorUpdateTemplateEntry(Copyable, Equatable):
     var dst_binding: UInt32
     var dst_array_element: UInt32
     var descriptor_count: UInt32
@@ -7611,12 +7611,12 @@ struct DescriptorUpdateTemplateEntry(Copyable):
         self.stride = stride
 
 
-struct DescriptorUpdateTemplateCreateInfo(Copyable):
+struct DescriptorUpdateTemplateCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DescriptorUpdateTemplateCreateFlags
     var descriptor_update_entry_count: UInt32
-    var p_descriptor_update_entries: Ptr[DescriptorUpdateTemplateEntry, ImmutOrigin.external]
+    var p_descriptor_update_entries: Ptr[DescriptorUpdateTemplateEntry, ImmutExternalOrigin]
     var template_type: DescriptorUpdateTemplateType
     var descriptor_set_layout: DescriptorSetLayout
     var pipeline_bind_point: PipelineBindPoint
@@ -7651,7 +7651,7 @@ struct DescriptorUpdateTemplateCreateInfo(Copyable):
         self.set = set
 
 
-struct XYColorEXT(Copyable):
+struct XYColorEXT(Copyable, Equatable):
     var x: Float32
     var y: Float32
 
@@ -7660,9 +7660,9 @@ struct XYColorEXT(Copyable):
         self.y = y
 
 
-struct PhysicalDevicePresentIdFeaturesKHR(Copyable):
+struct PhysicalDevicePresentIdFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_id: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -7676,11 +7676,11 @@ struct PhysicalDevicePresentIdFeaturesKHR(Copyable):
         self.present_id = present_id
 
 
-struct PresentIdKHR(Copyable):
+struct PresentIdKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var swapchain_count: UInt32
-    var p_present_ids: Ptr[UInt64, ImmutOrigin.external]
+    var p_present_ids: Ptr[UInt64, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -7698,9 +7698,9 @@ struct PresentIdKHR(Copyable):
         self.p_present_ids = Ptr(to=p_present_ids).bitcast[type_of(self.p_present_ids)]()[]
 
 
-struct PhysicalDevicePresentId2FeaturesKHR(Copyable):
+struct PhysicalDevicePresentId2FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_id_2: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -7714,11 +7714,11 @@ struct PhysicalDevicePresentId2FeaturesKHR(Copyable):
         self.present_id_2 = present_id_2
 
 
-struct PresentId2KHR(Copyable):
+struct PresentId2KHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var swapchain_count: UInt32
-    var p_present_ids: Ptr[UInt64, ImmutOrigin.external]
+    var p_present_ids: Ptr[UInt64, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -7736,9 +7736,9 @@ struct PresentId2KHR(Copyable):
         self.p_present_ids = Ptr(to=p_present_ids).bitcast[type_of(self.p_present_ids)]()[]
 
 
-struct PresentWait2InfoKHR(Copyable):
+struct PresentWait2InfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var present_id: UInt64
     var timeout: UInt64
 
@@ -7755,9 +7755,9 @@ struct PresentWait2InfoKHR(Copyable):
         self.timeout = timeout
 
 
-struct PhysicalDevicePresentWaitFeaturesKHR(Copyable):
+struct PhysicalDevicePresentWaitFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_wait: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -7771,9 +7771,9 @@ struct PhysicalDevicePresentWaitFeaturesKHR(Copyable):
         self.present_wait = present_wait
 
 
-struct PhysicalDevicePresentWait2FeaturesKHR(Copyable):
+struct PhysicalDevicePresentWait2FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_wait_2: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -7787,9 +7787,9 @@ struct PhysicalDevicePresentWait2FeaturesKHR(Copyable):
         self.present_wait_2 = present_wait_2
 
 
-struct PhysicalDevicePresentTimingFeaturesEXT(Copyable):
+struct PhysicalDevicePresentTimingFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_timing: Bool32
     var present_at_absolute_time: Bool32
     var present_at_relative_time: Bool32
@@ -7809,9 +7809,9 @@ struct PhysicalDevicePresentTimingFeaturesEXT(Copyable):
         self.present_at_relative_time = present_at_relative_time
 
 
-struct PresentTimingSurfaceCapabilitiesEXT(Copyable):
+struct PresentTimingSurfaceCapabilitiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_timing_supported: Bool32
     var present_at_absolute_time_supported: Bool32
     var present_at_relative_time_supported: Bool32
@@ -7834,9 +7834,9 @@ struct PresentTimingSurfaceCapabilitiesEXT(Copyable):
         self.present_stage_queries = present_stage_queries
 
 
-struct SwapchainTimingPropertiesEXT(Copyable):
+struct SwapchainTimingPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var refresh_duration: UInt64
     var refresh_interval: UInt64
 
@@ -7853,12 +7853,12 @@ struct SwapchainTimingPropertiesEXT(Copyable):
         self.refresh_interval = refresh_interval
 
 
-struct SwapchainTimeDomainPropertiesEXT(Copyable):
+struct SwapchainTimeDomainPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var time_domain_count: UInt32
-    var p_time_domains: Ptr[TimeDomainKHR, MutOrigin.external]
-    var p_time_domain_ids: Ptr[UInt64, MutOrigin.external]
+    var p_time_domains: Ptr[TimeDomainKHR, MutExternalOrigin]
+    var p_time_domain_ids: Ptr[UInt64, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin,
@@ -7879,7 +7879,7 @@ struct SwapchainTimeDomainPropertiesEXT(Copyable):
         self.p_time_domain_ids = Ptr(to=p_time_domain_ids).bitcast[type_of(self.p_time_domain_ids)]()[]
 
 
-struct PresentStageTimeEXT(Copyable):
+struct PresentStageTimeEXT(Copyable, Equatable):
     var stage: PresentStageFlagsEXT
     var time: UInt64
 
@@ -7892,9 +7892,9 @@ struct PresentStageTimeEXT(Copyable):
         self.time = time
 
 
-struct PastPresentationTimingInfoEXT(Copyable):
+struct PastPresentationTimingInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PastPresentationTimingFlagsEXT
     var swapchain: SwapchainKHR
 
@@ -7911,13 +7911,13 @@ struct PastPresentationTimingInfoEXT(Copyable):
         self.swapchain = swapchain
 
 
-struct PastPresentationTimingPropertiesEXT(Copyable):
+struct PastPresentationTimingPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var timing_properties_counter: UInt64
     var time_domains_counter: UInt64
     var presentation_timing_count: UInt32
-    var p_presentation_timings: Ptr[PastPresentationTimingEXT, MutOrigin.external]
+    var p_presentation_timings: Ptr[PastPresentationTimingEXT, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin,
@@ -7939,13 +7939,13 @@ struct PastPresentationTimingPropertiesEXT(Copyable):
         self.p_presentation_timings = Ptr(to=p_presentation_timings).bitcast[type_of(self.p_presentation_timings)]()[]
 
 
-struct PastPresentationTimingEXT(Copyable):
+struct PastPresentationTimingEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_id: UInt64
     var target_time: UInt64
     var present_stage_count: UInt32
-    var p_present_stages: Ptr[PresentStageTimeEXT, MutOrigin.external]
+    var p_present_stages: Ptr[PresentStageTimeEXT, MutExternalOrigin]
     var time_domain: TimeDomainKHR
     var time_domain_id: UInt64
     var report_complete: Bool32
@@ -7975,11 +7975,11 @@ struct PastPresentationTimingEXT(Copyable):
         self.report_complete = report_complete
 
 
-struct PresentTimingsInfoEXT(Copyable):
+struct PresentTimingsInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var swapchain_count: UInt32
-    var p_timing_infos: Ptr[PresentTimingInfoEXT, ImmutOrigin.external]
+    var p_timing_infos: Ptr[PresentTimingInfoEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -7997,9 +7997,9 @@ struct PresentTimingsInfoEXT(Copyable):
         self.p_timing_infos = Ptr(to=p_timing_infos).bitcast[type_of(self.p_timing_infos)]()[]
 
 
-struct PresentTimingInfoEXT(Copyable):
+struct PresentTimingInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PresentTimingInfoFlagsEXT
     var target_time: UInt64
     var time_domain_id: UInt64
@@ -8025,9 +8025,9 @@ struct PresentTimingInfoEXT(Copyable):
         self.target_time_domain_present_stage = target_time_domain_present_stage
 
 
-struct SwapchainCalibratedTimestampInfoEXT(Copyable):
+struct SwapchainCalibratedTimestampInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var swapchain: SwapchainKHR
     var present_stage: PresentStageFlagsEXT
     var time_domain_id: UInt64
@@ -8047,9 +8047,9 @@ struct SwapchainCalibratedTimestampInfoEXT(Copyable):
         self.time_domain_id = time_domain_id
 
 
-struct HdrMetadataEXT(Copyable):
+struct HdrMetadataEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var display_primary_red: XYColorEXT
     var display_primary_green: XYColorEXT
     var display_primary_blue: XYColorEXT
@@ -8084,11 +8084,11 @@ struct HdrMetadataEXT(Copyable):
         self.max_frame_average_light_level = max_frame_average_light_level
 
 
-struct HdrVividDynamicMetadataHUAWEI(Copyable):
+struct HdrVividDynamicMetadataHUAWEI(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var dynamic_metadata_size: UInt
-    var p_dynamic_metadata: Ptr[NoneType, ImmutOrigin.external]
+    var p_dynamic_metadata: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -8106,9 +8106,9 @@ struct HdrVividDynamicMetadataHUAWEI(Copyable):
         self.p_dynamic_metadata = Ptr(to=p_dynamic_metadata).bitcast[type_of(self.p_dynamic_metadata)]()[]
 
 
-struct DisplayNativeHdrSurfaceCapabilitiesAMD(Copyable):
+struct DisplayNativeHdrSurfaceCapabilitiesAMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var local_dimming_support: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8122,9 +8122,9 @@ struct DisplayNativeHdrSurfaceCapabilitiesAMD(Copyable):
         self.local_dimming_support = local_dimming_support
 
 
-struct SwapchainDisplayNativeHdrCreateInfoAMD(Copyable):
+struct SwapchainDisplayNativeHdrCreateInfoAMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var local_dimming_enable: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -8138,14 +8138,14 @@ struct SwapchainDisplayNativeHdrCreateInfoAMD(Copyable):
         self.local_dimming_enable = local_dimming_enable
 
 
-struct RefreshCycleDurationGOOGLE(Copyable):
+struct RefreshCycleDurationGOOGLE(Copyable, Equatable):
     var refresh_duration: UInt64
 
     fn __init__(out self, refresh_duration: UInt64 = zero_init[UInt64]()):
         self.refresh_duration = refresh_duration
 
 
-struct PastPresentationTimingGOOGLE(Copyable):
+struct PastPresentationTimingGOOGLE(Copyable, Equatable):
     var present_id: UInt32
     var desired_present_time: UInt64
     var actual_present_time: UInt64
@@ -8167,11 +8167,11 @@ struct PastPresentationTimingGOOGLE(Copyable):
         self.present_margin = present_margin
 
 
-struct PresentTimesInfoGOOGLE(Copyable):
+struct PresentTimesInfoGOOGLE(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var swapchain_count: UInt32
-    var p_times: Ptr[PresentTimeGOOGLE, ImmutOrigin.external]
+    var p_times: Ptr[PresentTimeGOOGLE, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_times_origin: ImmutOrigin = ImmutAnyOrigin
@@ -8188,7 +8188,7 @@ struct PresentTimesInfoGOOGLE(Copyable):
         self.p_times = Ptr(to=p_times).bitcast[type_of(self.p_times)]()[]
 
 
-struct PresentTimeGOOGLE(Copyable):
+struct PresentTimeGOOGLE(Copyable, Equatable):
     var present_id: UInt32
     var desired_present_time: UInt64
 
@@ -8201,11 +8201,11 @@ struct PresentTimeGOOGLE(Copyable):
         self.desired_present_time = desired_present_time
 
 
-struct IOSSurfaceCreateInfoMVK(Copyable):
+struct IOSSurfaceCreateInfoMVK(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: IOSSurfaceCreateFlagsMVK
-    var p_view: Ptr[NoneType, ImmutOrigin.external]
+    var p_view: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_view_origin: ImmutOrigin = ImmutAnyOrigin
@@ -8222,11 +8222,11 @@ struct IOSSurfaceCreateInfoMVK(Copyable):
         self.p_view = Ptr(to=p_view).bitcast[type_of(self.p_view)]()[]
 
 
-struct MacOSSurfaceCreateInfoMVK(Copyable):
+struct MacOSSurfaceCreateInfoMVK(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: MacOSSurfaceCreateFlagsMVK
-    var p_view: Ptr[NoneType, ImmutOrigin.external]
+    var p_view: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_view_origin: ImmutOrigin = ImmutAnyOrigin
@@ -8243,11 +8243,11 @@ struct MacOSSurfaceCreateInfoMVK(Copyable):
         self.p_view = Ptr(to=p_view).bitcast[type_of(self.p_view)]()[]
 
 
-struct MetalSurfaceCreateInfoEXT(Copyable):
+struct MetalSurfaceCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: MetalSurfaceCreateFlagsEXT
-    var p_layer: Ptr[CAMetalLayer, ImmutOrigin.external]
+    var p_layer: Ptr[CAMetalLayer, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_layer_origin: ImmutOrigin = ImmutAnyOrigin
@@ -8264,7 +8264,7 @@ struct MetalSurfaceCreateInfoEXT(Copyable):
         self.p_layer = Ptr(to=p_layer).bitcast[type_of(self.p_layer)]()[]
 
 
-struct ViewportWScalingNV(Copyable):
+struct ViewportWScalingNV(Copyable, Equatable):
     var xcoeff: Float32
     var ycoeff: Float32
 
@@ -8275,12 +8275,12 @@ struct ViewportWScalingNV(Copyable):
         self.ycoeff = ycoeff
 
 
-struct PipelineViewportWScalingStateCreateInfoNV(Copyable):
+struct PipelineViewportWScalingStateCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var viewport_w_scaling_enable: Bool32
     var viewport_count: UInt32
-    var p_viewport_w_scalings: Ptr[ViewportWScalingNV, ImmutOrigin.external]
+    var p_viewport_w_scalings: Ptr[ViewportWScalingNV, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -8300,7 +8300,7 @@ struct PipelineViewportWScalingStateCreateInfoNV(Copyable):
         self.p_viewport_w_scalings = Ptr(to=p_viewport_w_scalings).bitcast[type_of(self.p_viewport_w_scalings)]()[]
 
 
-struct ViewportSwizzleNV(Copyable):
+struct ViewportSwizzleNV(Copyable, Equatable):
     var x: ViewportCoordinateSwizzleNV
     var y: ViewportCoordinateSwizzleNV
     var z: ViewportCoordinateSwizzleNV
@@ -8319,12 +8319,12 @@ struct ViewportSwizzleNV(Copyable):
         self.w = w
 
 
-struct PipelineViewportSwizzleStateCreateInfoNV(Copyable):
+struct PipelineViewportSwizzleStateCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineViewportSwizzleStateCreateFlagsNV
     var viewport_count: UInt32
-    var p_viewport_swizzles: Ptr[ViewportSwizzleNV, ImmutOrigin.external]
+    var p_viewport_swizzles: Ptr[ViewportSwizzleNV, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -8344,9 +8344,9 @@ struct PipelineViewportSwizzleStateCreateInfoNV(Copyable):
         self.p_viewport_swizzles = Ptr(to=p_viewport_swizzles).bitcast[type_of(self.p_viewport_swizzles)]()[]
 
 
-struct PhysicalDeviceDiscardRectanglePropertiesEXT(Copyable):
+struct PhysicalDeviceDiscardRectanglePropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_discard_rectangles: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8360,13 +8360,13 @@ struct PhysicalDeviceDiscardRectanglePropertiesEXT(Copyable):
         self.max_discard_rectangles = max_discard_rectangles
 
 
-struct PipelineDiscardRectangleStateCreateInfoEXT(Copyable):
+struct PipelineDiscardRectangleStateCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineDiscardRectangleStateCreateFlagsEXT
     var discard_rectangle_mode: DiscardRectangleModeEXT
     var discard_rectangle_count: UInt32
-    var p_discard_rectangles: Ptr[Rect2D, ImmutOrigin.external]
+    var p_discard_rectangles: Ptr[Rect2D, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -8388,9 +8388,9 @@ struct PipelineDiscardRectangleStateCreateInfoEXT(Copyable):
         self.p_discard_rectangles = Ptr(to=p_discard_rectangles).bitcast[type_of(self.p_discard_rectangles)]()[]
 
 
-struct PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(Copyable):
+struct PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var per_view_position_all_components: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8404,7 +8404,7 @@ struct PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(Copyable):
         self.per_view_position_all_components = per_view_position_all_components
 
 
-struct InputAttachmentAspectReference(Copyable):
+struct InputAttachmentAspectReference(Copyable, Equatable):
     var subpass: UInt32
     var input_attachment_index: UInt32
     var aspect_mask: ImageAspectFlags
@@ -8420,11 +8420,11 @@ struct InputAttachmentAspectReference(Copyable):
         self.aspect_mask = aspect_mask
 
 
-struct RenderPassInputAttachmentAspectCreateInfo(Copyable):
+struct RenderPassInputAttachmentAspectCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var aspect_reference_count: UInt32
-    var p_aspect_references: Ptr[InputAttachmentAspectReference, ImmutOrigin.external]
+    var p_aspect_references: Ptr[InputAttachmentAspectReference, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -8442,9 +8442,9 @@ struct RenderPassInputAttachmentAspectCreateInfo(Copyable):
         self.p_aspect_references = Ptr(to=p_aspect_references).bitcast[type_of(self.p_aspect_references)]()[]
 
 
-struct PhysicalDeviceSurfaceInfo2KHR(Copyable):
+struct PhysicalDeviceSurfaceInfo2KHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var surface: SurfaceKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -8458,9 +8458,9 @@ struct PhysicalDeviceSurfaceInfo2KHR(Copyable):
         self.surface = surface
 
 
-struct SurfaceCapabilities2KHR(Copyable):
+struct SurfaceCapabilities2KHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var surface_capabilities: SurfaceCapabilitiesKHR
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8474,9 +8474,9 @@ struct SurfaceCapabilities2KHR(Copyable):
         self.surface_capabilities = surface_capabilities.copy()
 
 
-struct SurfaceFormat2KHR(Copyable):
+struct SurfaceFormat2KHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var surface_format: SurfaceFormatKHR
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8490,9 +8490,9 @@ struct SurfaceFormat2KHR(Copyable):
         self.surface_format = surface_format.copy()
 
 
-struct DisplayProperties2KHR(Copyable):
+struct DisplayProperties2KHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var display_properties: DisplayPropertiesKHR
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8506,9 +8506,9 @@ struct DisplayProperties2KHR(Copyable):
         self.display_properties = display_properties.copy()
 
 
-struct DisplayPlaneProperties2KHR(Copyable):
+struct DisplayPlaneProperties2KHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var display_plane_properties: DisplayPlanePropertiesKHR
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8522,9 +8522,9 @@ struct DisplayPlaneProperties2KHR(Copyable):
         self.display_plane_properties = display_plane_properties.copy()
 
 
-struct DisplayModeProperties2KHR(Copyable):
+struct DisplayModeProperties2KHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var display_mode_properties: DisplayModePropertiesKHR
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8538,9 +8538,9 @@ struct DisplayModeProperties2KHR(Copyable):
         self.display_mode_properties = display_mode_properties.copy()
 
 
-struct DisplayModeStereoPropertiesNV(Copyable):
+struct DisplayModeStereoPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var hdmi_3d_supported: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8554,9 +8554,9 @@ struct DisplayModeStereoPropertiesNV(Copyable):
         self.hdmi_3d_supported = hdmi_3d_supported
 
 
-struct DisplayPlaneInfo2KHR(Copyable):
+struct DisplayPlaneInfo2KHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var mode: DisplayModeKHR
     var plane_index: UInt32
 
@@ -8573,9 +8573,9 @@ struct DisplayPlaneInfo2KHR(Copyable):
         self.plane_index = plane_index
 
 
-struct DisplayPlaneCapabilities2KHR(Copyable):
+struct DisplayPlaneCapabilities2KHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var capabilities: DisplayPlaneCapabilitiesKHR
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8589,9 +8589,9 @@ struct DisplayPlaneCapabilities2KHR(Copyable):
         self.capabilities = capabilities.copy()
 
 
-struct SharedPresentSurfaceCapabilitiesKHR(Copyable):
+struct SharedPresentSurfaceCapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shared_present_supported_usage_flags: ImageUsageFlags
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8605,9 +8605,9 @@ struct SharedPresentSurfaceCapabilitiesKHR(Copyable):
         self.shared_present_supported_usage_flags = shared_present_supported_usage_flags
 
 
-struct PhysicalDevice16BitStorageFeatures(Copyable):
+struct PhysicalDevice16BitStorageFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var storage_buffer_16_bit_access: Bool32
     var uniform_and_storage_buffer_16_bit_access: Bool32
     var storage_push_constant_16: Bool32
@@ -8630,9 +8630,9 @@ struct PhysicalDevice16BitStorageFeatures(Copyable):
         self.storage_input_output_16 = storage_input_output_16
 
 
-struct PhysicalDeviceSubgroupProperties(Copyable):
+struct PhysicalDeviceSubgroupProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var subgroup_size: UInt32
     var supported_stages: ShaderStageFlags
     var supported_operations: SubgroupFeatureFlags
@@ -8655,9 +8655,9 @@ struct PhysicalDeviceSubgroupProperties(Copyable):
         self.quad_operations_in_all_stages = quad_operations_in_all_stages
 
 
-struct PhysicalDeviceShaderSubgroupExtendedTypesFeatures(Copyable):
+struct PhysicalDeviceShaderSubgroupExtendedTypesFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_subgroup_extended_types: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8671,9 +8671,9 @@ struct PhysicalDeviceShaderSubgroupExtendedTypesFeatures(Copyable):
         self.shader_subgroup_extended_types = shader_subgroup_extended_types
 
 
-struct BufferMemoryRequirementsInfo2(Copyable):
+struct BufferMemoryRequirementsInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var buffer: Buffer
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -8687,10 +8687,10 @@ struct BufferMemoryRequirementsInfo2(Copyable):
         self.buffer = buffer
 
 
-struct DeviceBufferMemoryRequirements(Copyable):
+struct DeviceBufferMemoryRequirements(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_create_info: Ptr[BufferCreateInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_create_info: Ptr[BufferCreateInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -8706,9 +8706,9 @@ struct DeviceBufferMemoryRequirements(Copyable):
         self.p_create_info = Ptr(to=p_create_info).bitcast[type_of(self.p_create_info)]()[]
 
 
-struct ImageMemoryRequirementsInfo2(Copyable):
+struct ImageMemoryRequirementsInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image: Image
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -8722,9 +8722,9 @@ struct ImageMemoryRequirementsInfo2(Copyable):
         self.image = image
 
 
-struct ImageSparseMemoryRequirementsInfo2(Copyable):
+struct ImageSparseMemoryRequirementsInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image: Image
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -8738,10 +8738,10 @@ struct ImageSparseMemoryRequirementsInfo2(Copyable):
         self.image = image
 
 
-struct DeviceImageMemoryRequirements(Copyable):
+struct DeviceImageMemoryRequirements(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_create_info: Ptr[ImageCreateInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_create_info: Ptr[ImageCreateInfo, ImmutExternalOrigin]
     var plane_aspect: ImageAspectFlagBits
 
     fn __init__[
@@ -8760,9 +8760,9 @@ struct DeviceImageMemoryRequirements(Copyable):
         self.plane_aspect = plane_aspect
 
 
-struct MemoryRequirements2(Copyable):
+struct MemoryRequirements2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var memory_requirements: MemoryRequirements
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8776,9 +8776,9 @@ struct MemoryRequirements2(Copyable):
         self.memory_requirements = memory_requirements.copy()
 
 
-struct SparseImageMemoryRequirements2(Copyable):
+struct SparseImageMemoryRequirements2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var memory_requirements: SparseImageMemoryRequirements
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8792,9 +8792,9 @@ struct SparseImageMemoryRequirements2(Copyable):
         self.memory_requirements = memory_requirements.copy()
 
 
-struct PhysicalDevicePointClippingProperties(Copyable):
+struct PhysicalDevicePointClippingProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var point_clipping_behavior: PointClippingBehavior
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8808,9 +8808,9 @@ struct PhysicalDevicePointClippingProperties(Copyable):
         self.point_clipping_behavior = point_clipping_behavior
 
 
-struct MemoryDedicatedRequirements(Copyable):
+struct MemoryDedicatedRequirements(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var prefers_dedicated_allocation: Bool32
     var requires_dedicated_allocation: Bool32
 
@@ -8827,9 +8827,9 @@ struct MemoryDedicatedRequirements(Copyable):
         self.requires_dedicated_allocation = requires_dedicated_allocation
 
 
-struct MemoryDedicatedAllocateInfo(Copyable):
+struct MemoryDedicatedAllocateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image: Image
     var buffer: Buffer
 
@@ -8846,9 +8846,9 @@ struct MemoryDedicatedAllocateInfo(Copyable):
         self.buffer = buffer
 
 
-struct ImageViewUsageCreateInfo(Copyable):
+struct ImageViewUsageCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var usage: ImageUsageFlags
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -8862,9 +8862,9 @@ struct ImageViewUsageCreateInfo(Copyable):
         self.usage = usage
 
 
-struct ImageViewSlicedCreateInfoEXT(Copyable):
+struct ImageViewSlicedCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var slice_offset: UInt32
     var slice_count: UInt32
 
@@ -8881,9 +8881,9 @@ struct ImageViewSlicedCreateInfoEXT(Copyable):
         self.slice_count = slice_count
 
 
-struct PipelineTessellationDomainOriginStateCreateInfo(Copyable):
+struct PipelineTessellationDomainOriginStateCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var domain_origin: TessellationDomainOrigin
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -8897,9 +8897,9 @@ struct PipelineTessellationDomainOriginStateCreateInfo(Copyable):
         self.domain_origin = domain_origin
 
 
-struct SamplerYcbcrConversionInfo(Copyable):
+struct SamplerYcbcrConversionInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var conversion: SamplerYcbcrConversion
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -8913,9 +8913,9 @@ struct SamplerYcbcrConversionInfo(Copyable):
         self.conversion = conversion
 
 
-struct SamplerYcbcrConversionCreateInfo(Copyable):
+struct SamplerYcbcrConversionCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var format: Format
     var ycbcr_model: SamplerYcbcrModelConversion
     var ycbcr_range: SamplerYcbcrRange
@@ -8950,9 +8950,9 @@ struct SamplerYcbcrConversionCreateInfo(Copyable):
         self.force_explicit_reconstruction = force_explicit_reconstruction
 
 
-struct BindImagePlaneMemoryInfo(Copyable):
+struct BindImagePlaneMemoryInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var plane_aspect: ImageAspectFlagBits
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -8966,9 +8966,9 @@ struct BindImagePlaneMemoryInfo(Copyable):
         self.plane_aspect = plane_aspect
 
 
-struct ImagePlaneMemoryRequirementsInfo(Copyable):
+struct ImagePlaneMemoryRequirementsInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var plane_aspect: ImageAspectFlagBits
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -8982,9 +8982,9 @@ struct ImagePlaneMemoryRequirementsInfo(Copyable):
         self.plane_aspect = plane_aspect
 
 
-struct PhysicalDeviceSamplerYcbcrConversionFeatures(Copyable):
+struct PhysicalDeviceSamplerYcbcrConversionFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var sampler_ycbcr_conversion: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -8998,9 +8998,9 @@ struct PhysicalDeviceSamplerYcbcrConversionFeatures(Copyable):
         self.sampler_ycbcr_conversion = sampler_ycbcr_conversion
 
 
-struct SamplerYcbcrConversionImageFormatProperties(Copyable):
+struct SamplerYcbcrConversionImageFormatProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var combined_image_sampler_descriptor_count: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9014,9 +9014,9 @@ struct SamplerYcbcrConversionImageFormatProperties(Copyable):
         self.combined_image_sampler_descriptor_count = combined_image_sampler_descriptor_count
 
 
-struct TextureLODGatherFormatPropertiesAMD(Copyable):
+struct TextureLODGatherFormatPropertiesAMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var supports_texture_gather_lod_bias_amd: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9030,9 +9030,9 @@ struct TextureLODGatherFormatPropertiesAMD(Copyable):
         self.supports_texture_gather_lod_bias_amd = supports_texture_gather_lod_bias_amd
 
 
-struct ConditionalRenderingBeginInfoEXT(Copyable):
+struct ConditionalRenderingBeginInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var buffer: Buffer
     var offset: DeviceSize
     var flags: ConditionalRenderingFlagsEXT
@@ -9052,9 +9052,9 @@ struct ConditionalRenderingBeginInfoEXT(Copyable):
         self.flags = flags
 
 
-struct ProtectedSubmitInfo(Copyable):
+struct ProtectedSubmitInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var protected_submit: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -9068,9 +9068,9 @@ struct ProtectedSubmitInfo(Copyable):
         self.protected_submit = protected_submit
 
 
-struct PhysicalDeviceProtectedMemoryFeatures(Copyable):
+struct PhysicalDeviceProtectedMemoryFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var protected_memory: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9084,9 +9084,9 @@ struct PhysicalDeviceProtectedMemoryFeatures(Copyable):
         self.protected_memory = protected_memory
 
 
-struct PhysicalDeviceProtectedMemoryProperties(Copyable):
+struct PhysicalDeviceProtectedMemoryProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var protected_no_fault: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9100,9 +9100,9 @@ struct PhysicalDeviceProtectedMemoryProperties(Copyable):
         self.protected_no_fault = protected_no_fault
 
 
-struct DeviceQueueInfo2(Copyable):
+struct DeviceQueueInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DeviceQueueCreateFlags
     var queue_family_index: UInt32
     var queue_index: UInt32
@@ -9122,9 +9122,9 @@ struct DeviceQueueInfo2(Copyable):
         self.queue_index = queue_index
 
 
-struct PipelineCoverageToColorStateCreateInfoNV(Copyable):
+struct PipelineCoverageToColorStateCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineCoverageToColorStateCreateFlagsNV
     var coverage_to_color_enable: Bool32
     var coverage_to_color_location: UInt32
@@ -9144,9 +9144,9 @@ struct PipelineCoverageToColorStateCreateInfoNV(Copyable):
         self.coverage_to_color_location = coverage_to_color_location
 
 
-struct PhysicalDeviceSamplerFilterMinmaxProperties(Copyable):
+struct PhysicalDeviceSamplerFilterMinmaxProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var filter_minmax_single_component_formats: Bool32
     var filter_minmax_image_component_mapping: Bool32
 
@@ -9163,7 +9163,7 @@ struct PhysicalDeviceSamplerFilterMinmaxProperties(Copyable):
         self.filter_minmax_image_component_mapping = filter_minmax_image_component_mapping
 
 
-struct SampleLocationEXT(Copyable):
+struct SampleLocationEXT(Copyable, Equatable):
     var x: Float32
     var y: Float32
 
@@ -9172,13 +9172,13 @@ struct SampleLocationEXT(Copyable):
         self.y = y
 
 
-struct SampleLocationsInfoEXT(Copyable):
+struct SampleLocationsInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var sample_locations_per_pixel: SampleCountFlagBits
     var sample_location_grid_size: Extent2D
     var sample_locations_count: UInt32
-    var p_sample_locations: Ptr[SampleLocationEXT, ImmutOrigin.external]
+    var p_sample_locations: Ptr[SampleLocationEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -9200,7 +9200,7 @@ struct SampleLocationsInfoEXT(Copyable):
         self.p_sample_locations = Ptr(to=p_sample_locations).bitcast[type_of(self.p_sample_locations)]()[]
 
 
-struct AttachmentSampleLocationsEXT(Copyable):
+struct AttachmentSampleLocationsEXT(Copyable, Equatable):
     var attachment_index: UInt32
     var sample_locations_info: SampleLocationsInfoEXT
 
@@ -9213,7 +9213,7 @@ struct AttachmentSampleLocationsEXT(Copyable):
         self.sample_locations_info = sample_locations_info.copy()
 
 
-struct SubpassSampleLocationsEXT(Copyable):
+struct SubpassSampleLocationsEXT(Copyable, Equatable):
     var subpass_index: UInt32
     var sample_locations_info: SampleLocationsInfoEXT
 
@@ -9226,13 +9226,13 @@ struct SubpassSampleLocationsEXT(Copyable):
         self.sample_locations_info = sample_locations_info.copy()
 
 
-struct RenderPassSampleLocationsBeginInfoEXT(Copyable):
+struct RenderPassSampleLocationsBeginInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var attachment_initial_sample_locations_count: UInt32
-    var p_attachment_initial_sample_locations: Ptr[AttachmentSampleLocationsEXT, ImmutOrigin.external]
+    var p_attachment_initial_sample_locations: Ptr[AttachmentSampleLocationsEXT, ImmutExternalOrigin]
     var post_subpass_sample_locations_count: UInt32
-    var p_post_subpass_sample_locations: Ptr[SubpassSampleLocationsEXT, ImmutOrigin.external]
+    var p_post_subpass_sample_locations: Ptr[SubpassSampleLocationsEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -9255,9 +9255,9 @@ struct RenderPassSampleLocationsBeginInfoEXT(Copyable):
         self.p_post_subpass_sample_locations = Ptr(to=p_post_subpass_sample_locations).bitcast[type_of(self.p_post_subpass_sample_locations)]()[]
 
 
-struct PipelineSampleLocationsStateCreateInfoEXT(Copyable):
+struct PipelineSampleLocationsStateCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var sample_locations_enable: Bool32
     var sample_locations_info: SampleLocationsInfoEXT
 
@@ -9274,9 +9274,9 @@ struct PipelineSampleLocationsStateCreateInfoEXT(Copyable):
         self.sample_locations_info = sample_locations_info.copy()
 
 
-struct PhysicalDeviceSampleLocationsPropertiesEXT(Copyable):
+struct PhysicalDeviceSampleLocationsPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var sample_location_sample_counts: SampleCountFlags
     var max_sample_location_grid_size: Extent2D
     var sample_location_coordinate_range: InlineArray[Float32, Int(2)]
@@ -9297,14 +9297,14 @@ struct PhysicalDeviceSampleLocationsPropertiesEXT(Copyable):
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.sample_location_sample_counts = sample_location_sample_counts
         self.max_sample_location_grid_size = max_sample_location_grid_size.copy()
-        self.sample_location_coordinate_range = sample_location_coordinate_range
+        self.sample_location_coordinate_range = sample_location_coordinate_range.copy()
         self.sample_location_sub_pixel_bits = sample_location_sub_pixel_bits
         self.variable_sample_locations = variable_sample_locations
 
 
-struct MultisamplePropertiesEXT(Copyable):
+struct MultisamplePropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_sample_location_grid_size: Extent2D
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9318,9 +9318,9 @@ struct MultisamplePropertiesEXT(Copyable):
         self.max_sample_location_grid_size = max_sample_location_grid_size.copy()
 
 
-struct SamplerReductionModeCreateInfo(Copyable):
+struct SamplerReductionModeCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var reduction_mode: SamplerReductionMode
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -9334,9 +9334,9 @@ struct SamplerReductionModeCreateInfo(Copyable):
         self.reduction_mode = reduction_mode
 
 
-struct PhysicalDeviceBlendOperationAdvancedFeaturesEXT(Copyable):
+struct PhysicalDeviceBlendOperationAdvancedFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var advanced_blend_coherent_operations: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9350,9 +9350,9 @@ struct PhysicalDeviceBlendOperationAdvancedFeaturesEXT(Copyable):
         self.advanced_blend_coherent_operations = advanced_blend_coherent_operations
 
 
-struct PhysicalDeviceMultiDrawFeaturesEXT(Copyable):
+struct PhysicalDeviceMultiDrawFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var multi_draw: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9366,9 +9366,9 @@ struct PhysicalDeviceMultiDrawFeaturesEXT(Copyable):
         self.multi_draw = multi_draw
 
 
-struct PhysicalDeviceBlendOperationAdvancedPropertiesEXT(Copyable):
+struct PhysicalDeviceBlendOperationAdvancedPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var advanced_blend_max_color_attachments: UInt32
     var advanced_blend_independent_blend: Bool32
     var advanced_blend_non_premultiplied_src_color: Bool32
@@ -9397,9 +9397,9 @@ struct PhysicalDeviceBlendOperationAdvancedPropertiesEXT(Copyable):
         self.advanced_blend_all_operations = advanced_blend_all_operations
 
 
-struct PipelineColorBlendAdvancedStateCreateInfoEXT(Copyable):
+struct PipelineColorBlendAdvancedStateCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_premultiplied: Bool32
     var dst_premultiplied: Bool32
     var blend_overlap: BlendOverlapEXT
@@ -9419,9 +9419,9 @@ struct PipelineColorBlendAdvancedStateCreateInfoEXT(Copyable):
         self.blend_overlap = blend_overlap
 
 
-struct PhysicalDeviceInlineUniformBlockFeatures(Copyable):
+struct PhysicalDeviceInlineUniformBlockFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var inline_uniform_block: Bool32
     var descriptor_binding_inline_uniform_block_update_after_bind: Bool32
 
@@ -9438,9 +9438,9 @@ struct PhysicalDeviceInlineUniformBlockFeatures(Copyable):
         self.descriptor_binding_inline_uniform_block_update_after_bind = descriptor_binding_inline_uniform_block_update_after_bind
 
 
-struct PhysicalDeviceInlineUniformBlockProperties(Copyable):
+struct PhysicalDeviceInlineUniformBlockProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_inline_uniform_block_size: UInt32
     var max_per_stage_descriptor_inline_uniform_blocks: UInt32
     var max_per_stage_descriptor_update_after_bind_inline_uniform_blocks: UInt32
@@ -9466,11 +9466,11 @@ struct PhysicalDeviceInlineUniformBlockProperties(Copyable):
         self.max_descriptor_set_update_after_bind_inline_uniform_blocks = max_descriptor_set_update_after_bind_inline_uniform_blocks
 
 
-struct WriteDescriptorSetInlineUniformBlock(Copyable):
+struct WriteDescriptorSetInlineUniformBlock(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var data_size: UInt32
-    var p_data: Ptr[NoneType, ImmutOrigin.external]
+    var p_data: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_data_origin: ImmutOrigin = ImmutAnyOrigin
@@ -9487,9 +9487,9 @@ struct WriteDescriptorSetInlineUniformBlock(Copyable):
         self.p_data = Ptr(to=p_data).bitcast[type_of(self.p_data)]()[]
 
 
-struct DescriptorPoolInlineUniformBlockCreateInfo(Copyable):
+struct DescriptorPoolInlineUniformBlockCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var max_inline_uniform_block_bindings: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -9503,14 +9503,14 @@ struct DescriptorPoolInlineUniformBlockCreateInfo(Copyable):
         self.max_inline_uniform_block_bindings = max_inline_uniform_block_bindings
 
 
-struct PipelineCoverageModulationStateCreateInfoNV(Copyable):
+struct PipelineCoverageModulationStateCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineCoverageModulationStateCreateFlagsNV
     var coverage_modulation_mode: CoverageModulationModeNV
     var coverage_modulation_table_enable: Bool32
     var coverage_modulation_table_count: UInt32
-    var p_coverage_modulation_table: Ptr[Float32, ImmutOrigin.external]
+    var p_coverage_modulation_table: Ptr[Float32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -9534,11 +9534,11 @@ struct PipelineCoverageModulationStateCreateInfoNV(Copyable):
         self.p_coverage_modulation_table = Ptr(to=p_coverage_modulation_table).bitcast[type_of(self.p_coverage_modulation_table)]()[]
 
 
-struct ImageFormatListCreateInfo(Copyable):
+struct ImageFormatListCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var view_format_count: UInt32
-    var p_view_formats: Ptr[Format, ImmutOrigin.external]
+    var p_view_formats: Ptr[Format, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -9556,12 +9556,12 @@ struct ImageFormatListCreateInfo(Copyable):
         self.p_view_formats = Ptr(to=p_view_formats).bitcast[type_of(self.p_view_formats)]()[]
 
 
-struct ValidationCacheCreateInfoEXT(Copyable):
+struct ValidationCacheCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: ValidationCacheCreateFlagsEXT
     var initial_data_size: UInt
-    var p_initial_data: Ptr[NoneType, ImmutOrigin.external]
+    var p_initial_data: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -9581,9 +9581,9 @@ struct ValidationCacheCreateInfoEXT(Copyable):
         self.p_initial_data = Ptr(to=p_initial_data).bitcast[type_of(self.p_initial_data)]()[]
 
 
-struct ShaderModuleValidationCacheCreateInfoEXT(Copyable):
+struct ShaderModuleValidationCacheCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var validation_cache: ValidationCacheEXT
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -9597,9 +9597,9 @@ struct ShaderModuleValidationCacheCreateInfoEXT(Copyable):
         self.validation_cache = validation_cache
 
 
-struct PhysicalDeviceMaintenance3Properties(Copyable):
+struct PhysicalDeviceMaintenance3Properties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_per_set_descriptors: UInt32
     var max_memory_allocation_size: DeviceSize
 
@@ -9616,9 +9616,9 @@ struct PhysicalDeviceMaintenance3Properties(Copyable):
         self.max_memory_allocation_size = max_memory_allocation_size
 
 
-struct PhysicalDeviceMaintenance4Features(Copyable):
+struct PhysicalDeviceMaintenance4Features(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var maintenance_4: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9632,9 +9632,9 @@ struct PhysicalDeviceMaintenance4Features(Copyable):
         self.maintenance_4 = maintenance_4
 
 
-struct PhysicalDeviceMaintenance4Properties(Copyable):
+struct PhysicalDeviceMaintenance4Properties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_buffer_size: DeviceSize
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9648,9 +9648,9 @@ struct PhysicalDeviceMaintenance4Properties(Copyable):
         self.max_buffer_size = max_buffer_size
 
 
-struct PhysicalDeviceMaintenance5Features(Copyable):
+struct PhysicalDeviceMaintenance5Features(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var maintenance_5: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9664,9 +9664,9 @@ struct PhysicalDeviceMaintenance5Features(Copyable):
         self.maintenance_5 = maintenance_5
 
 
-struct PhysicalDeviceMaintenance5Properties(Copyable):
+struct PhysicalDeviceMaintenance5Properties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var early_fragment_multisample_coverage_after_sample_counting: Bool32
     var early_fragment_sample_mask_test_before_sample_counting: Bool32
     var depth_stencil_swizzle_one_support: Bool32
@@ -9695,9 +9695,9 @@ struct PhysicalDeviceMaintenance5Properties(Copyable):
         self.non_strict_wide_lines_use_parallelogram = non_strict_wide_lines_use_parallelogram
 
 
-struct PhysicalDeviceMaintenance6Features(Copyable):
+struct PhysicalDeviceMaintenance6Features(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var maintenance_6: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9711,9 +9711,9 @@ struct PhysicalDeviceMaintenance6Features(Copyable):
         self.maintenance_6 = maintenance_6
 
 
-struct PhysicalDeviceMaintenance6Properties(Copyable):
+struct PhysicalDeviceMaintenance6Properties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var block_texel_view_compatible_multiple_layers: Bool32
     var max_combined_image_sampler_descriptor_count: UInt32
     var fragment_shading_rate_clamp_combiner_inputs: Bool32
@@ -9733,9 +9733,9 @@ struct PhysicalDeviceMaintenance6Properties(Copyable):
         self.fragment_shading_rate_clamp_combiner_inputs = fragment_shading_rate_clamp_combiner_inputs
 
 
-struct PhysicalDeviceMaintenance7FeaturesKHR(Copyable):
+struct PhysicalDeviceMaintenance7FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var maintenance_7: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9749,9 +9749,9 @@ struct PhysicalDeviceMaintenance7FeaturesKHR(Copyable):
         self.maintenance_7 = maintenance_7
 
 
-struct PhysicalDeviceMaintenance7PropertiesKHR(Copyable):
+struct PhysicalDeviceMaintenance7PropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var robust_fragment_shading_rate_attachment_access: Bool32
     var separate_depth_stencil_attachment_access: Bool32
     var max_descriptor_set_total_uniform_buffers_dynamic: UInt32
@@ -9786,11 +9786,11 @@ struct PhysicalDeviceMaintenance7PropertiesKHR(Copyable):
         self.max_descriptor_set_update_after_bind_total_buffers_dynamic = max_descriptor_set_update_after_bind_total_buffers_dynamic
 
 
-struct PhysicalDeviceLayeredApiPropertiesListKHR(Copyable):
+struct PhysicalDeviceLayeredApiPropertiesListKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var layered_api_count: UInt32
-    var p_layered_apis: Ptr[PhysicalDeviceLayeredApiPropertiesKHR, MutOrigin.external]
+    var p_layered_apis: Ptr[PhysicalDeviceLayeredApiPropertiesKHR, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin, p_layered_apis_origin: MutOrigin = MutAnyOrigin
@@ -9807,9 +9807,9 @@ struct PhysicalDeviceLayeredApiPropertiesListKHR(Copyable):
         self.p_layered_apis = Ptr(to=p_layered_apis).bitcast[type_of(self.p_layered_apis)]()[]
 
 
-struct PhysicalDeviceLayeredApiPropertiesKHR(Copyable):
+struct PhysicalDeviceLayeredApiPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var vendor_id: UInt32
     var device_id: UInt32
     var layered_api: PhysicalDeviceLayeredApiKHR
@@ -9829,15 +9829,15 @@ struct PhysicalDeviceLayeredApiPropertiesKHR(Copyable):
         self.vendor_id = vendor_id
         self.device_id = device_id
         self.layered_api = layered_api
-        self.device_name = device_name
+        self.device_name = device_name.copy()
 
     fn device_name_slice(self) -> CStringSlice[origin_of(self.device_name)]:
         return CStringSlice[origin_of(self.device_name)](unsafe_from_ptr = self.device_name.unsafe_ptr())
 
 
-struct PhysicalDeviceLayeredApiVulkanPropertiesKHR(Copyable):
+struct PhysicalDeviceLayeredApiVulkanPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var properties: PhysicalDeviceProperties2
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9851,9 +9851,9 @@ struct PhysicalDeviceLayeredApiVulkanPropertiesKHR(Copyable):
         self.properties = properties.copy()
 
 
-struct PhysicalDeviceMaintenance8FeaturesKHR(Copyable):
+struct PhysicalDeviceMaintenance8FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var maintenance_8: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9867,9 +9867,9 @@ struct PhysicalDeviceMaintenance8FeaturesKHR(Copyable):
         self.maintenance_8 = maintenance_8
 
 
-struct PhysicalDeviceMaintenance9FeaturesKHR(Copyable):
+struct PhysicalDeviceMaintenance9FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var maintenance_9: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9883,9 +9883,9 @@ struct PhysicalDeviceMaintenance9FeaturesKHR(Copyable):
         self.maintenance_9 = maintenance_9
 
 
-struct PhysicalDeviceMaintenance9PropertiesKHR(Copyable):
+struct PhysicalDeviceMaintenance9PropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var image_2d_view_of_3d_sparse: Bool32
     var default_vertex_attribute_value: DefaultVertexAttributeValueKHR
 
@@ -9902,9 +9902,9 @@ struct PhysicalDeviceMaintenance9PropertiesKHR(Copyable):
         self.default_vertex_attribute_value = default_vertex_attribute_value
 
 
-struct PhysicalDeviceMaintenance10PropertiesKHR(Copyable):
+struct PhysicalDeviceMaintenance10PropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var rgba_4_opaque_black_swizzled: Bool32
     var resolve_srgb_format_applies_transfer_function: Bool32
     var resolve_srgb_format_supports_transfer_function_control: Bool32
@@ -9924,9 +9924,9 @@ struct PhysicalDeviceMaintenance10PropertiesKHR(Copyable):
         self.resolve_srgb_format_supports_transfer_function_control = resolve_srgb_format_supports_transfer_function_control
 
 
-struct PhysicalDeviceMaintenance10FeaturesKHR(Copyable):
+struct PhysicalDeviceMaintenance10FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var maintenance_10: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9940,9 +9940,9 @@ struct PhysicalDeviceMaintenance10FeaturesKHR(Copyable):
         self.maintenance_10 = maintenance_10
 
 
-struct QueueFamilyOwnershipTransferPropertiesKHR(Copyable):
+struct QueueFamilyOwnershipTransferPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var optimal_image_transfer_to_queue_families: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -9956,12 +9956,12 @@ struct QueueFamilyOwnershipTransferPropertiesKHR(Copyable):
         self.optimal_image_transfer_to_queue_families = optimal_image_transfer_to_queue_families
 
 
-struct RenderingAreaInfo(Copyable):
+struct RenderingAreaInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var view_mask: UInt32
     var color_attachment_count: UInt32
-    var p_color_attachment_formats: Ptr[Format, ImmutOrigin.external]
+    var p_color_attachment_formats: Ptr[Format, ImmutExternalOrigin]
     var depth_attachment_format: Format
     var stencil_attachment_format: Format
 
@@ -9987,9 +9987,9 @@ struct RenderingAreaInfo(Copyable):
         self.stencil_attachment_format = stencil_attachment_format
 
 
-struct DescriptorSetLayoutSupport(Copyable):
+struct DescriptorSetLayoutSupport(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var supported: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -10003,9 +10003,9 @@ struct DescriptorSetLayoutSupport(Copyable):
         self.supported = supported
 
 
-struct PhysicalDeviceShaderDrawParametersFeatures(Copyable):
+struct PhysicalDeviceShaderDrawParametersFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_draw_parameters: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -10019,9 +10019,9 @@ struct PhysicalDeviceShaderDrawParametersFeatures(Copyable):
         self.shader_draw_parameters = shader_draw_parameters
 
 
-struct PhysicalDeviceShaderFloat16Int8Features(Copyable):
+struct PhysicalDeviceShaderFloat16Int8Features(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_float_16: Bool32
     var shader_int_8: Bool32
 
@@ -10038,9 +10038,9 @@ struct PhysicalDeviceShaderFloat16Int8Features(Copyable):
         self.shader_int_8 = shader_int_8
 
 
-struct PhysicalDeviceFloatControlsProperties(Copyable):
+struct PhysicalDeviceFloatControlsProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var denorm_behavior_independence: ShaderFloatControlsIndependence
     var rounding_mode_independence: ShaderFloatControlsIndependence
     var shader_signed_zero_inf_nan_preserve_float_16: Bool32
@@ -10102,9 +10102,9 @@ struct PhysicalDeviceFloatControlsProperties(Copyable):
         self.shader_rounding_mode_rtz_float_64 = shader_rounding_mode_rtz_float_64
 
 
-struct PhysicalDeviceHostQueryResetFeatures(Copyable):
+struct PhysicalDeviceHostQueryResetFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var host_query_reset: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -10118,7 +10118,7 @@ struct PhysicalDeviceHostQueryResetFeatures(Copyable):
         self.host_query_reset = host_query_reset
 
 
-struct ShaderResourceUsageAMD(Copyable):
+struct ShaderResourceUsageAMD(Copyable, Equatable):
     var num_used_vgprs: UInt32
     var num_used_sgprs: UInt32
     var lds_size_per_local_work_group: UInt32
@@ -10140,7 +10140,7 @@ struct ShaderResourceUsageAMD(Copyable):
         self.scratch_mem_usage_in_bytes = scratch_mem_usage_in_bytes
 
 
-struct ShaderStatisticsInfoAMD(Copyable):
+struct ShaderStatisticsInfoAMD(Copyable, Equatable):
     var shader_stage_mask: ShaderStageFlags
     var resource_usage: ShaderResourceUsageAMD
     var num_physical_vgprs: UInt32
@@ -10165,12 +10165,12 @@ struct ShaderStatisticsInfoAMD(Copyable):
         self.num_physical_sgprs = num_physical_sgprs
         self.num_available_vgprs = num_available_vgprs
         self.num_available_sgprs = num_available_sgprs
-        self.compute_work_group_size = compute_work_group_size
+        self.compute_work_group_size = compute_work_group_size.copy()
 
 
-struct DeviceQueueGlobalPriorityCreateInfo(Copyable):
+struct DeviceQueueGlobalPriorityCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var global_priority: QueueGlobalPriority
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -10184,9 +10184,9 @@ struct DeviceQueueGlobalPriorityCreateInfo(Copyable):
         self.global_priority = global_priority
 
 
-struct PhysicalDeviceGlobalPriorityQueryFeatures(Copyable):
+struct PhysicalDeviceGlobalPriorityQueryFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var global_priority_query: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -10200,9 +10200,9 @@ struct PhysicalDeviceGlobalPriorityQueryFeatures(Copyable):
         self.global_priority_query = global_priority_query
 
 
-struct QueueFamilyGlobalPriorityProperties(Copyable):
+struct QueueFamilyGlobalPriorityProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var priority_count: UInt32
     var priorities: InlineArray[QueueGlobalPriority, Int(MAX_GLOBAL_PRIORITY_SIZE)]
 
@@ -10216,15 +10216,15 @@ struct QueueFamilyGlobalPriorityProperties(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.priority_count = priority_count
-        self.priorities = priorities
+        self.priorities = priorities.copy()
 
 
-struct DebugUtilsObjectNameInfoEXT(Copyable):
+struct DebugUtilsObjectNameInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var object_type: ObjectType
     var object_handle: UInt64
-    var p_object_name: CStringSlice[ImmutOrigin.external]
+    var p_object_name: CStringSlice[ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -10244,14 +10244,14 @@ struct DebugUtilsObjectNameInfoEXT(Copyable):
         self.p_object_name = Ptr(to=p_object_name).bitcast[type_of(self.p_object_name)]()[]
 
 
-struct DebugUtilsObjectTagInfoEXT(Copyable):
+struct DebugUtilsObjectTagInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var object_type: ObjectType
     var object_handle: UInt64
     var tag_name: UInt64
     var tag_size: UInt
-    var p_tag: Ptr[NoneType, ImmutOrigin.external]
+    var p_tag: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_tag_origin: ImmutOrigin = ImmutAnyOrigin
@@ -10274,10 +10274,10 @@ struct DebugUtilsObjectTagInfoEXT(Copyable):
         self.p_tag = Ptr(to=p_tag).bitcast[type_of(self.p_tag)]()[]
 
 
-struct DebugUtilsLabelEXT(Copyable):
+struct DebugUtilsLabelEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_label_name: CStringSlice[ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_label_name: CStringSlice[ImmutExternalOrigin]
     var color: InlineArray[Float32, Int(4)]
 
     fn __init__[
@@ -10293,17 +10293,17 @@ struct DebugUtilsLabelEXT(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.p_label_name = Ptr(to=p_label_name).bitcast[type_of(self.p_label_name)]()[]
-        self.color = color
+        self.color = color.copy()
 
 
-struct DebugUtilsMessengerCreateInfoEXT(Copyable):
+struct DebugUtilsMessengerCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DebugUtilsMessengerCreateFlagsEXT
     var message_severity: DebugUtilsMessageSeverityFlagsEXT
     var message_type: DebugUtilsMessageTypeFlagsEXT
     var pfn_user_callback: PFN_vkDebugUtilsMessengerCallbackEXT
-    var p_user_data: Ptr[NoneType, MutOrigin.external]
+    var p_user_data: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_user_data_origin: MutOrigin = MutAnyOrigin
@@ -10326,19 +10326,19 @@ struct DebugUtilsMessengerCreateInfoEXT(Copyable):
         self.p_user_data = Ptr(to=p_user_data).bitcast[type_of(self.p_user_data)]()[]
 
 
-struct DebugUtilsMessengerCallbackDataEXT(Copyable):
+struct DebugUtilsMessengerCallbackDataEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DebugUtilsMessengerCallbackDataFlagsEXT
-    var p_message_id_name: CStringSlice[ImmutOrigin.external]
+    var p_message_id_name: CStringSlice[ImmutExternalOrigin]
     var message_id_number: Int32
-    var p_message: CStringSlice[ImmutOrigin.external]
+    var p_message: CStringSlice[ImmutExternalOrigin]
     var queue_label_count: UInt32
-    var p_queue_labels: Ptr[DebugUtilsLabelEXT, ImmutOrigin.external]
+    var p_queue_labels: Ptr[DebugUtilsLabelEXT, ImmutExternalOrigin]
     var cmd_buf_label_count: UInt32
-    var p_cmd_buf_labels: Ptr[DebugUtilsLabelEXT, ImmutOrigin.external]
+    var p_cmd_buf_labels: Ptr[DebugUtilsLabelEXT, ImmutExternalOrigin]
     var object_count: UInt32
-    var p_objects: Ptr[DebugUtilsObjectNameInfoEXT, ImmutOrigin.external]
+    var p_objects: Ptr[DebugUtilsObjectNameInfoEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -10376,9 +10376,9 @@ struct DebugUtilsMessengerCallbackDataEXT(Copyable):
         self.p_objects = Ptr(to=p_objects).bitcast[type_of(self.p_objects)]()[]
 
 
-struct PhysicalDeviceDeviceMemoryReportFeaturesEXT(Copyable):
+struct PhysicalDeviceDeviceMemoryReportFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var device_memory_report: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -10392,12 +10392,12 @@ struct PhysicalDeviceDeviceMemoryReportFeaturesEXT(Copyable):
         self.device_memory_report = device_memory_report
 
 
-struct DeviceDeviceMemoryReportCreateInfoEXT(Copyable):
+struct DeviceDeviceMemoryReportCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DeviceMemoryReportFlagsEXT
     var pfn_user_callback: PFN_vkDeviceMemoryReportCallbackEXT
-    var p_user_data: Ptr[NoneType, MutOrigin.external]
+    var p_user_data: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_user_data_origin: MutOrigin = MutAnyOrigin
@@ -10416,9 +10416,9 @@ struct DeviceDeviceMemoryReportCreateInfoEXT(Copyable):
         self.p_user_data = Ptr(to=p_user_data).bitcast[type_of(self.p_user_data)]()[]
 
 
-struct DeviceMemoryReportCallbackDataEXT(Copyable):
+struct DeviceMemoryReportCallbackDataEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: DeviceMemoryReportFlagsEXT
     var type: DeviceMemoryReportEventTypeEXT
     var memory_object_id: UInt64
@@ -10450,11 +10450,11 @@ struct DeviceMemoryReportCallbackDataEXT(Copyable):
         self.heap_index = heap_index
 
 
-struct ImportMemoryHostPointerInfoEXT(Copyable):
+struct ImportMemoryHostPointerInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_type: ExternalMemoryHandleTypeFlagBits
-    var p_host_pointer: Ptr[NoneType, MutOrigin.external]
+    var p_host_pointer: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -10472,9 +10472,9 @@ struct ImportMemoryHostPointerInfoEXT(Copyable):
         self.p_host_pointer = Ptr(to=p_host_pointer).bitcast[type_of(self.p_host_pointer)]()[]
 
 
-struct MemoryHostPointerPropertiesEXT(Copyable):
+struct MemoryHostPointerPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var memory_type_bits: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -10488,9 +10488,9 @@ struct MemoryHostPointerPropertiesEXT(Copyable):
         self.memory_type_bits = memory_type_bits
 
 
-struct PhysicalDeviceExternalMemoryHostPropertiesEXT(Copyable):
+struct PhysicalDeviceExternalMemoryHostPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var min_imported_host_pointer_alignment: DeviceSize
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -10504,9 +10504,9 @@ struct PhysicalDeviceExternalMemoryHostPropertiesEXT(Copyable):
         self.min_imported_host_pointer_alignment = min_imported_host_pointer_alignment
 
 
-struct PhysicalDeviceConservativeRasterizationPropertiesEXT(Copyable):
+struct PhysicalDeviceConservativeRasterizationPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var primitive_overestimation_size: Float32
     var max_extra_primitive_overestimation_size: Float32
     var extra_primitive_overestimation_size_granularity: Float32
@@ -10544,9 +10544,9 @@ struct PhysicalDeviceConservativeRasterizationPropertiesEXT(Copyable):
         self.conservative_rasterization_post_depth_coverage = conservative_rasterization_post_depth_coverage
 
 
-struct CalibratedTimestampInfoKHR(Copyable):
+struct CalibratedTimestampInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var time_domain: TimeDomainKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -10560,9 +10560,9 @@ struct CalibratedTimestampInfoKHR(Copyable):
         self.time_domain = time_domain
 
 
-struct PhysicalDeviceShaderCorePropertiesAMD(Copyable):
+struct PhysicalDeviceShaderCorePropertiesAMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_engine_count: UInt32
     var shader_arrays_per_engine_count: UInt32
     var compute_units_per_shader_array: UInt32
@@ -10615,9 +10615,9 @@ struct PhysicalDeviceShaderCorePropertiesAMD(Copyable):
         self.vgpr_allocation_granularity = vgpr_allocation_granularity
 
 
-struct PhysicalDeviceShaderCoreProperties2AMD(Copyable):
+struct PhysicalDeviceShaderCoreProperties2AMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_core_features: ShaderCorePropertiesFlagsAMD
     var active_compute_unit_count: UInt32
 
@@ -10634,9 +10634,9 @@ struct PhysicalDeviceShaderCoreProperties2AMD(Copyable):
         self.active_compute_unit_count = active_compute_unit_count
 
 
-struct PipelineRasterizationConservativeStateCreateInfoEXT(Copyable):
+struct PipelineRasterizationConservativeStateCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineRasterizationConservativeStateCreateFlagsEXT
     var conservative_rasterization_mode: ConservativeRasterizationModeEXT
     var extra_primitive_overestimation_size: Float32
@@ -10656,9 +10656,9 @@ struct PipelineRasterizationConservativeStateCreateInfoEXT(Copyable):
         self.extra_primitive_overestimation_size = extra_primitive_overestimation_size
 
 
-struct PhysicalDeviceDescriptorIndexingFeatures(Copyable):
+struct PhysicalDeviceDescriptorIndexingFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_input_attachment_array_dynamic_indexing: Bool32
     var shader_uniform_texel_buffer_array_dynamic_indexing: Bool32
     var shader_storage_texel_buffer_array_dynamic_indexing: Bool32
@@ -10729,9 +10729,9 @@ struct PhysicalDeviceDescriptorIndexingFeatures(Copyable):
         self.runtime_descriptor_array = runtime_descriptor_array
 
 
-struct PhysicalDeviceDescriptorIndexingProperties(Copyable):
+struct PhysicalDeviceDescriptorIndexingProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_update_after_bind_descriptors_in_all_pools: UInt32
     var shader_uniform_buffer_array_non_uniform_indexing_native: Bool32
     var shader_sampled_image_array_non_uniform_indexing_native: Bool32
@@ -10811,11 +10811,11 @@ struct PhysicalDeviceDescriptorIndexingProperties(Copyable):
         self.max_descriptor_set_update_after_bind_input_attachments = max_descriptor_set_update_after_bind_input_attachments
 
 
-struct DescriptorSetLayoutBindingFlagsCreateInfo(Copyable):
+struct DescriptorSetLayoutBindingFlagsCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var binding_count: UInt32
-    var p_binding_flags: Ptr[DescriptorBindingFlags, ImmutOrigin.external]
+    var p_binding_flags: Ptr[DescriptorBindingFlags, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -10833,11 +10833,11 @@ struct DescriptorSetLayoutBindingFlagsCreateInfo(Copyable):
         self.p_binding_flags = Ptr(to=p_binding_flags).bitcast[type_of(self.p_binding_flags)]()[]
 
 
-struct DescriptorSetVariableDescriptorCountAllocateInfo(Copyable):
+struct DescriptorSetVariableDescriptorCountAllocateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var descriptor_set_count: UInt32
-    var p_descriptor_counts: Ptr[UInt32, ImmutOrigin.external]
+    var p_descriptor_counts: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -10855,9 +10855,9 @@ struct DescriptorSetVariableDescriptorCountAllocateInfo(Copyable):
         self.p_descriptor_counts = Ptr(to=p_descriptor_counts).bitcast[type_of(self.p_descriptor_counts)]()[]
 
 
-struct DescriptorSetVariableDescriptorCountLayoutSupport(Copyable):
+struct DescriptorSetVariableDescriptorCountLayoutSupport(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_variable_descriptor_count: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -10871,9 +10871,9 @@ struct DescriptorSetVariableDescriptorCountLayoutSupport(Copyable):
         self.max_variable_descriptor_count = max_variable_descriptor_count
 
 
-struct AttachmentDescription2(Copyable):
+struct AttachmentDescription2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: AttachmentDescriptionFlags
     var format: Format
     var samples: SampleCountFlagBits
@@ -10911,9 +10911,9 @@ struct AttachmentDescription2(Copyable):
         self.final_layout = final_layout
 
 
-struct AttachmentReference2(Copyable):
+struct AttachmentReference2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var attachment: UInt32
     var layout: ImageLayout
     var aspect_mask: ImageAspectFlags
@@ -10933,20 +10933,20 @@ struct AttachmentReference2(Copyable):
         self.aspect_mask = aspect_mask
 
 
-struct SubpassDescription2(Copyable):
+struct SubpassDescription2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: SubpassDescriptionFlags
     var pipeline_bind_point: PipelineBindPoint
     var view_mask: UInt32
     var input_attachment_count: UInt32
-    var p_input_attachments: Ptr[AttachmentReference2, ImmutOrigin.external]
+    var p_input_attachments: Ptr[AttachmentReference2, ImmutExternalOrigin]
     var color_attachment_count: UInt32
-    var p_color_attachments: Ptr[AttachmentReference2, ImmutOrigin.external]
-    var p_resolve_attachments: Ptr[AttachmentReference2, ImmutOrigin.external]
-    var p_depth_stencil_attachment: Ptr[AttachmentReference2, ImmutOrigin.external]
+    var p_color_attachments: Ptr[AttachmentReference2, ImmutExternalOrigin]
+    var p_resolve_attachments: Ptr[AttachmentReference2, ImmutExternalOrigin]
+    var p_depth_stencil_attachment: Ptr[AttachmentReference2, ImmutExternalOrigin]
     var preserve_attachment_count: UInt32
-    var p_preserve_attachments: Ptr[UInt32, ImmutOrigin.external]
+    var p_preserve_attachments: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -10986,9 +10986,9 @@ struct SubpassDescription2(Copyable):
         self.p_preserve_attachments = Ptr(to=p_preserve_attachments).bitcast[type_of(self.p_preserve_attachments)]()[]
 
 
-struct SubpassDependency2(Copyable):
+struct SubpassDependency2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_subpass: UInt32
     var dst_subpass: UInt32
     var src_stage_mask: PipelineStageFlags
@@ -11023,18 +11023,18 @@ struct SubpassDependency2(Copyable):
         self.view_offset = view_offset
 
 
-struct RenderPassCreateInfo2(Copyable):
+struct RenderPassCreateInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: RenderPassCreateFlags
     var attachment_count: UInt32
-    var p_attachments: Ptr[AttachmentDescription2, ImmutOrigin.external]
+    var p_attachments: Ptr[AttachmentDescription2, ImmutExternalOrigin]
     var subpass_count: UInt32
-    var p_subpasses: Ptr[SubpassDescription2, ImmutOrigin.external]
+    var p_subpasses: Ptr[SubpassDescription2, ImmutExternalOrigin]
     var dependency_count: UInt32
-    var p_dependencies: Ptr[SubpassDependency2, ImmutOrigin.external]
+    var p_dependencies: Ptr[SubpassDependency2, ImmutExternalOrigin]
     var correlated_view_mask_count: UInt32
-    var p_correlated_view_masks: Ptr[UInt32, ImmutOrigin.external]
+    var p_correlated_view_masks: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -11069,9 +11069,9 @@ struct RenderPassCreateInfo2(Copyable):
         self.p_correlated_view_masks = Ptr(to=p_correlated_view_masks).bitcast[type_of(self.p_correlated_view_masks)]()[]
 
 
-struct SubpassBeginInfo(Copyable):
+struct SubpassBeginInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var contents: SubpassContents
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -11085,9 +11085,9 @@ struct SubpassBeginInfo(Copyable):
         self.contents = contents
 
 
-struct SubpassEndInfo(Copyable):
+struct SubpassEndInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -11098,9 +11098,9 @@ struct SubpassEndInfo(Copyable):
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
 
 
-struct PhysicalDeviceTimelineSemaphoreFeatures(Copyable):
+struct PhysicalDeviceTimelineSemaphoreFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var timeline_semaphore: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -11114,9 +11114,9 @@ struct PhysicalDeviceTimelineSemaphoreFeatures(Copyable):
         self.timeline_semaphore = timeline_semaphore
 
 
-struct PhysicalDeviceTimelineSemaphoreProperties(Copyable):
+struct PhysicalDeviceTimelineSemaphoreProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_timeline_semaphore_value_difference: UInt64
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -11130,9 +11130,9 @@ struct PhysicalDeviceTimelineSemaphoreProperties(Copyable):
         self.max_timeline_semaphore_value_difference = max_timeline_semaphore_value_difference
 
 
-struct SemaphoreTypeCreateInfo(Copyable):
+struct SemaphoreTypeCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var semaphore_type: SemaphoreType
     var initial_value: UInt64
 
@@ -11149,13 +11149,13 @@ struct SemaphoreTypeCreateInfo(Copyable):
         self.initial_value = initial_value
 
 
-struct TimelineSemaphoreSubmitInfo(Copyable):
+struct TimelineSemaphoreSubmitInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var wait_semaphore_value_count: UInt32
-    var p_wait_semaphore_values: Ptr[UInt64, ImmutOrigin.external]
+    var p_wait_semaphore_values: Ptr[UInt64, ImmutExternalOrigin]
     var signal_semaphore_value_count: UInt32
-    var p_signal_semaphore_values: Ptr[UInt64, ImmutOrigin.external]
+    var p_signal_semaphore_values: Ptr[UInt64, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -11178,13 +11178,13 @@ struct TimelineSemaphoreSubmitInfo(Copyable):
         self.p_signal_semaphore_values = Ptr(to=p_signal_semaphore_values).bitcast[type_of(self.p_signal_semaphore_values)]()[]
 
 
-struct SemaphoreWaitInfo(Copyable):
+struct SemaphoreWaitInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: SemaphoreWaitFlags
     var semaphore_count: UInt32
-    var p_semaphores: Ptr[Semaphore, ImmutOrigin.external]
-    var p_values: Ptr[UInt64, ImmutOrigin.external]
+    var p_semaphores: Ptr[Semaphore, ImmutExternalOrigin]
+    var p_values: Ptr[UInt64, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -11207,9 +11207,9 @@ struct SemaphoreWaitInfo(Copyable):
         self.p_values = Ptr(to=p_values).bitcast[type_of(self.p_values)]()[]
 
 
-struct SemaphoreSignalInfo(Copyable):
+struct SemaphoreSignalInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var semaphore: Semaphore
     var value: UInt64
 
@@ -11226,7 +11226,7 @@ struct SemaphoreSignalInfo(Copyable):
         self.value = value
 
 
-struct VertexInputBindingDivisorDescription(Copyable):
+struct VertexInputBindingDivisorDescription(Copyable, Equatable):
     var binding: UInt32
     var divisor: UInt32
 
@@ -11237,11 +11237,11 @@ struct VertexInputBindingDivisorDescription(Copyable):
         self.divisor = divisor
 
 
-struct PipelineVertexInputDivisorStateCreateInfo(Copyable):
+struct PipelineVertexInputDivisorStateCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var vertex_binding_divisor_count: UInt32
-    var p_vertex_binding_divisors: Ptr[VertexInputBindingDivisorDescription, ImmutOrigin.external]
+    var p_vertex_binding_divisors: Ptr[VertexInputBindingDivisorDescription, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -11259,9 +11259,9 @@ struct PipelineVertexInputDivisorStateCreateInfo(Copyable):
         self.p_vertex_binding_divisors = Ptr(to=p_vertex_binding_divisors).bitcast[type_of(self.p_vertex_binding_divisors)]()[]
 
 
-struct PhysicalDeviceVertexAttributeDivisorPropertiesEXT(Copyable):
+struct PhysicalDeviceVertexAttributeDivisorPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_vertex_attrib_divisor: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -11275,9 +11275,9 @@ struct PhysicalDeviceVertexAttributeDivisorPropertiesEXT(Copyable):
         self.max_vertex_attrib_divisor = max_vertex_attrib_divisor
 
 
-struct PhysicalDeviceVertexAttributeDivisorProperties(Copyable):
+struct PhysicalDeviceVertexAttributeDivisorProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_vertex_attrib_divisor: UInt32
     var supports_non_zero_first_instance: Bool32
 
@@ -11294,9 +11294,9 @@ struct PhysicalDeviceVertexAttributeDivisorProperties(Copyable):
         self.supports_non_zero_first_instance = supports_non_zero_first_instance
 
 
-struct PhysicalDevicePCIBusInfoPropertiesEXT(Copyable):
+struct PhysicalDevicePCIBusInfoPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pci_domain: UInt32
     var pci_bus: UInt32
     var pci_device: UInt32
@@ -11319,10 +11319,10 @@ struct PhysicalDevicePCIBusInfoPropertiesEXT(Copyable):
         self.pci_function = pci_function
 
 
-struct ImportAndroidHardwareBufferInfoANDROID(Copyable):
+struct ImportAndroidHardwareBufferInfoANDROID(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var buffer: Ptr[AHardwareBuffer, MutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var buffer: Ptr[AHardwareBuffer, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, buffer_origin: MutOrigin = MutAnyOrigin
@@ -11337,9 +11337,9 @@ struct ImportAndroidHardwareBufferInfoANDROID(Copyable):
         self.buffer = Ptr(to=buffer).bitcast[type_of(self.buffer)]()[]
 
 
-struct AndroidHardwareBufferUsageANDROID(Copyable):
+struct AndroidHardwareBufferUsageANDROID(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var android_hardware_buffer_usage: UInt64
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -11353,9 +11353,9 @@ struct AndroidHardwareBufferUsageANDROID(Copyable):
         self.android_hardware_buffer_usage = android_hardware_buffer_usage
 
 
-struct AndroidHardwareBufferPropertiesANDROID(Copyable):
+struct AndroidHardwareBufferPropertiesANDROID(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var allocation_size: DeviceSize
     var memory_type_bits: UInt32
 
@@ -11372,9 +11372,9 @@ struct AndroidHardwareBufferPropertiesANDROID(Copyable):
         self.memory_type_bits = memory_type_bits
 
 
-struct MemoryGetAndroidHardwareBufferInfoANDROID(Copyable):
+struct MemoryGetAndroidHardwareBufferInfoANDROID(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var memory: DeviceMemory
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -11388,9 +11388,9 @@ struct MemoryGetAndroidHardwareBufferInfoANDROID(Copyable):
         self.memory = memory
 
 
-struct AndroidHardwareBufferFormatPropertiesANDROID(Copyable):
+struct AndroidHardwareBufferFormatPropertiesANDROID(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var format: Format
     var external_format: UInt64
     var format_features: FormatFeatureFlags
@@ -11425,9 +11425,9 @@ struct AndroidHardwareBufferFormatPropertiesANDROID(Copyable):
         self.suggested_y_chroma_offset = suggested_y_chroma_offset
 
 
-struct CommandBufferInheritanceConditionalRenderingInfoEXT(Copyable):
+struct CommandBufferInheritanceConditionalRenderingInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var conditional_rendering_enable: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -11441,9 +11441,9 @@ struct CommandBufferInheritanceConditionalRenderingInfoEXT(Copyable):
         self.conditional_rendering_enable = conditional_rendering_enable
 
 
-struct ExternalFormatANDROID(Copyable):
+struct ExternalFormatANDROID(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var external_format: UInt64
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -11457,9 +11457,9 @@ struct ExternalFormatANDROID(Copyable):
         self.external_format = external_format
 
 
-struct PhysicalDevice8BitStorageFeatures(Copyable):
+struct PhysicalDevice8BitStorageFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var storage_buffer_8_bit_access: Bool32
     var uniform_and_storage_buffer_8_bit_access: Bool32
     var storage_push_constant_8: Bool32
@@ -11479,9 +11479,9 @@ struct PhysicalDevice8BitStorageFeatures(Copyable):
         self.storage_push_constant_8 = storage_push_constant_8
 
 
-struct PhysicalDeviceConditionalRenderingFeaturesEXT(Copyable):
+struct PhysicalDeviceConditionalRenderingFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var conditional_rendering: Bool32
     var inherited_conditional_rendering: Bool32
 
@@ -11498,9 +11498,9 @@ struct PhysicalDeviceConditionalRenderingFeaturesEXT(Copyable):
         self.inherited_conditional_rendering = inherited_conditional_rendering
 
 
-struct PhysicalDeviceVulkanMemoryModelFeatures(Copyable):
+struct PhysicalDeviceVulkanMemoryModelFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var vulkan_memory_model: Bool32
     var vulkan_memory_model_device_scope: Bool32
     var vulkan_memory_model_availability_visibility_chains: Bool32
@@ -11520,9 +11520,9 @@ struct PhysicalDeviceVulkanMemoryModelFeatures(Copyable):
         self.vulkan_memory_model_availability_visibility_chains = vulkan_memory_model_availability_visibility_chains
 
 
-struct PhysicalDeviceShaderAtomicInt64Features(Copyable):
+struct PhysicalDeviceShaderAtomicInt64Features(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_buffer_int_64_atomics: Bool32
     var shader_shared_int_64_atomics: Bool32
 
@@ -11539,9 +11539,9 @@ struct PhysicalDeviceShaderAtomicInt64Features(Copyable):
         self.shader_shared_int_64_atomics = shader_shared_int_64_atomics
 
 
-struct PhysicalDeviceShaderAtomicFloatFeaturesEXT(Copyable):
+struct PhysicalDeviceShaderAtomicFloatFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_buffer_float_32_atomics: Bool32
     var shader_buffer_float_32_atomic_add: Bool32
     var shader_buffer_float_64_atomics: Bool32
@@ -11588,9 +11588,9 @@ struct PhysicalDeviceShaderAtomicFloatFeaturesEXT(Copyable):
         self.sparse_image_float_32_atomic_add = sparse_image_float_32_atomic_add
 
 
-struct PhysicalDeviceShaderAtomicFloat2FeaturesEXT(Copyable):
+struct PhysicalDeviceShaderAtomicFloat2FeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_buffer_float_16_atomics: Bool32
     var shader_buffer_float_16_atomic_add: Bool32
     var shader_buffer_float_16_atomic_min_max: Bool32
@@ -11637,9 +11637,9 @@ struct PhysicalDeviceShaderAtomicFloat2FeaturesEXT(Copyable):
         self.sparse_image_float_32_atomic_min_max = sparse_image_float_32_atomic_min_max
 
 
-struct PhysicalDeviceVertexAttributeDivisorFeatures(Copyable):
+struct PhysicalDeviceVertexAttributeDivisorFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var vertex_attribute_instance_rate_divisor: Bool32
     var vertex_attribute_instance_rate_zero_divisor: Bool32
 
@@ -11656,9 +11656,9 @@ struct PhysicalDeviceVertexAttributeDivisorFeatures(Copyable):
         self.vertex_attribute_instance_rate_zero_divisor = vertex_attribute_instance_rate_zero_divisor
 
 
-struct QueueFamilyCheckpointPropertiesNV(Copyable):
+struct QueueFamilyCheckpointPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var checkpoint_execution_stage_mask: PipelineStageFlags
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -11672,11 +11672,11 @@ struct QueueFamilyCheckpointPropertiesNV(Copyable):
         self.checkpoint_execution_stage_mask = checkpoint_execution_stage_mask
 
 
-struct CheckpointDataNV(Copyable):
+struct CheckpointDataNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var stage: PipelineStageFlagBits
-    var p_checkpoint_marker: Ptr[NoneType, MutOrigin.external]
+    var p_checkpoint_marker: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin,
@@ -11694,9 +11694,9 @@ struct CheckpointDataNV(Copyable):
         self.p_checkpoint_marker = Ptr(to=p_checkpoint_marker).bitcast[type_of(self.p_checkpoint_marker)]()[]
 
 
-struct PhysicalDeviceDepthStencilResolveProperties(Copyable):
+struct PhysicalDeviceDepthStencilResolveProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var supported_depth_resolve_modes: ResolveModeFlags
     var supported_stencil_resolve_modes: ResolveModeFlags
     var independent_resolve_none: Bool32
@@ -11719,12 +11719,12 @@ struct PhysicalDeviceDepthStencilResolveProperties(Copyable):
         self.independent_resolve = independent_resolve
 
 
-struct SubpassDescriptionDepthStencilResolve(Copyable):
+struct SubpassDescriptionDepthStencilResolve(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var depth_resolve_mode: ResolveModeFlagBits
     var stencil_resolve_mode: ResolveModeFlagBits
-    var p_depth_stencil_resolve_attachment: Ptr[AttachmentReference2, ImmutOrigin.external]
+    var p_depth_stencil_resolve_attachment: Ptr[AttachmentReference2, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -11744,9 +11744,9 @@ struct SubpassDescriptionDepthStencilResolve(Copyable):
         self.p_depth_stencil_resolve_attachment = Ptr(to=p_depth_stencil_resolve_attachment).bitcast[type_of(self.p_depth_stencil_resolve_attachment)]()[]
 
 
-struct ImageViewASTCDecodeModeEXT(Copyable):
+struct ImageViewASTCDecodeModeEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var decode_mode: Format
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -11760,9 +11760,9 @@ struct ImageViewASTCDecodeModeEXT(Copyable):
         self.decode_mode = decode_mode
 
 
-struct PhysicalDeviceASTCDecodeFeaturesEXT(Copyable):
+struct PhysicalDeviceASTCDecodeFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var decode_mode_shared_exponent: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -11776,9 +11776,9 @@ struct PhysicalDeviceASTCDecodeFeaturesEXT(Copyable):
         self.decode_mode_shared_exponent = decode_mode_shared_exponent
 
 
-struct PhysicalDeviceTransformFeedbackFeaturesEXT(Copyable):
+struct PhysicalDeviceTransformFeedbackFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var transform_feedback: Bool32
     var geometry_streams: Bool32
 
@@ -11795,9 +11795,9 @@ struct PhysicalDeviceTransformFeedbackFeaturesEXT(Copyable):
         self.geometry_streams = geometry_streams
 
 
-struct PhysicalDeviceTransformFeedbackPropertiesEXT(Copyable):
+struct PhysicalDeviceTransformFeedbackPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_transform_feedback_streams: UInt32
     var max_transform_feedback_buffers: UInt32
     var max_transform_feedback_buffer_size: DeviceSize
@@ -11838,9 +11838,9 @@ struct PhysicalDeviceTransformFeedbackPropertiesEXT(Copyable):
         self.transform_feedback_draw = transform_feedback_draw
 
 
-struct PipelineRasterizationStateStreamCreateInfoEXT(Copyable):
+struct PipelineRasterizationStateStreamCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineRasterizationStateStreamCreateFlagsEXT
     var rasterization_stream: UInt32
 
@@ -11857,9 +11857,9 @@ struct PipelineRasterizationStateStreamCreateInfoEXT(Copyable):
         self.rasterization_stream = rasterization_stream
 
 
-struct PhysicalDeviceRepresentativeFragmentTestFeaturesNV(Copyable):
+struct PhysicalDeviceRepresentativeFragmentTestFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var representative_fragment_test: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -11873,9 +11873,9 @@ struct PhysicalDeviceRepresentativeFragmentTestFeaturesNV(Copyable):
         self.representative_fragment_test = representative_fragment_test
 
 
-struct PipelineRepresentativeFragmentTestStateCreateInfoNV(Copyable):
+struct PipelineRepresentativeFragmentTestStateCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var representative_fragment_test_enable: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -11889,9 +11889,9 @@ struct PipelineRepresentativeFragmentTestStateCreateInfoNV(Copyable):
         self.representative_fragment_test_enable = representative_fragment_test_enable
 
 
-struct PhysicalDeviceExclusiveScissorFeaturesNV(Copyable):
+struct PhysicalDeviceExclusiveScissorFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var exclusive_scissor: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -11905,11 +11905,11 @@ struct PhysicalDeviceExclusiveScissorFeaturesNV(Copyable):
         self.exclusive_scissor = exclusive_scissor
 
 
-struct PipelineViewportExclusiveScissorStateCreateInfoNV(Copyable):
+struct PipelineViewportExclusiveScissorStateCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var exclusive_scissor_count: UInt32
-    var p_exclusive_scissors: Ptr[Rect2D, ImmutOrigin.external]
+    var p_exclusive_scissors: Ptr[Rect2D, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -11927,9 +11927,9 @@ struct PipelineViewportExclusiveScissorStateCreateInfoNV(Copyable):
         self.p_exclusive_scissors = Ptr(to=p_exclusive_scissors).bitcast[type_of(self.p_exclusive_scissors)]()[]
 
 
-struct PhysicalDeviceCornerSampledImageFeaturesNV(Copyable):
+struct PhysicalDeviceCornerSampledImageFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var corner_sampled_image: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -11943,9 +11943,9 @@ struct PhysicalDeviceCornerSampledImageFeaturesNV(Copyable):
         self.corner_sampled_image = corner_sampled_image
 
 
-struct PhysicalDeviceComputeShaderDerivativesFeaturesKHR(Copyable):
+struct PhysicalDeviceComputeShaderDerivativesFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var compute_derivative_group_quads: Bool32
     var compute_derivative_group_linear: Bool32
 
@@ -11962,9 +11962,9 @@ struct PhysicalDeviceComputeShaderDerivativesFeaturesKHR(Copyable):
         self.compute_derivative_group_linear = compute_derivative_group_linear
 
 
-struct PhysicalDeviceComputeShaderDerivativesPropertiesKHR(Copyable):
+struct PhysicalDeviceComputeShaderDerivativesPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var mesh_and_task_shader_derivatives: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -11978,9 +11978,9 @@ struct PhysicalDeviceComputeShaderDerivativesPropertiesKHR(Copyable):
         self.mesh_and_task_shader_derivatives = mesh_and_task_shader_derivatives
 
 
-struct PhysicalDeviceShaderImageFootprintFeaturesNV(Copyable):
+struct PhysicalDeviceShaderImageFootprintFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var image_footprint: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -11994,9 +11994,9 @@ struct PhysicalDeviceShaderImageFootprintFeaturesNV(Copyable):
         self.image_footprint = image_footprint
 
 
-struct PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV(Copyable):
+struct PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var dedicated_allocation_image_aliasing: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -12010,9 +12010,9 @@ struct PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV(Copyable):
         self.dedicated_allocation_image_aliasing = dedicated_allocation_image_aliasing
 
 
-struct PhysicalDeviceCopyMemoryIndirectFeaturesKHR(Copyable):
+struct PhysicalDeviceCopyMemoryIndirectFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var indirect_memory_copy: Bool32
     var indirect_memory_to_image_copy: Bool32
 
@@ -12029,9 +12029,9 @@ struct PhysicalDeviceCopyMemoryIndirectFeaturesKHR(Copyable):
         self.indirect_memory_to_image_copy = indirect_memory_to_image_copy
 
 
-struct PhysicalDeviceCopyMemoryIndirectFeaturesNV(Copyable):
+struct PhysicalDeviceCopyMemoryIndirectFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var indirect_copy: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -12045,9 +12045,9 @@ struct PhysicalDeviceCopyMemoryIndirectFeaturesNV(Copyable):
         self.indirect_copy = indirect_copy
 
 
-struct PhysicalDeviceCopyMemoryIndirectPropertiesKHR(Copyable):
+struct PhysicalDeviceCopyMemoryIndirectPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var supported_queues: QueueFlags
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -12061,9 +12061,9 @@ struct PhysicalDeviceCopyMemoryIndirectPropertiesKHR(Copyable):
         self.supported_queues = supported_queues
 
 
-struct PhysicalDeviceMemoryDecompressionFeaturesEXT(Copyable):
+struct PhysicalDeviceMemoryDecompressionFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var memory_decompression: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -12077,9 +12077,9 @@ struct PhysicalDeviceMemoryDecompressionFeaturesEXT(Copyable):
         self.memory_decompression = memory_decompression
 
 
-struct PhysicalDeviceMemoryDecompressionPropertiesEXT(Copyable):
+struct PhysicalDeviceMemoryDecompressionPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var decompression_methods: MemoryDecompressionMethodFlagsEXT
     var max_decompression_indirect_count: UInt64
 
@@ -12096,9 +12096,9 @@ struct PhysicalDeviceMemoryDecompressionPropertiesEXT(Copyable):
         self.max_decompression_indirect_count = max_decompression_indirect_count
 
 
-struct ShadingRatePaletteNV(Copyable):
+struct ShadingRatePaletteNV(Copyable, Equatable):
     var shading_rate_palette_entry_count: UInt32
-    var p_shading_rate_palette_entries: Ptr[ShadingRatePaletteEntryNV, ImmutOrigin.external]
+    var p_shading_rate_palette_entries: Ptr[ShadingRatePaletteEntryNV, ImmutExternalOrigin]
 
     fn __init__[p_shading_rate_palette_entries_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -12109,12 +12109,12 @@ struct ShadingRatePaletteNV(Copyable):
         self.p_shading_rate_palette_entries = Ptr(to=p_shading_rate_palette_entries).bitcast[type_of(self.p_shading_rate_palette_entries)]()[]
 
 
-struct PipelineViewportShadingRateImageStateCreateInfoNV(Copyable):
+struct PipelineViewportShadingRateImageStateCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var shading_rate_image_enable: Bool32
     var viewport_count: UInt32
-    var p_shading_rate_palettes: Ptr[ShadingRatePaletteNV, ImmutOrigin.external]
+    var p_shading_rate_palettes: Ptr[ShadingRatePaletteNV, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -12134,9 +12134,9 @@ struct PipelineViewportShadingRateImageStateCreateInfoNV(Copyable):
         self.p_shading_rate_palettes = Ptr(to=p_shading_rate_palettes).bitcast[type_of(self.p_shading_rate_palettes)]()[]
 
 
-struct PhysicalDeviceShadingRateImageFeaturesNV(Copyable):
+struct PhysicalDeviceShadingRateImageFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shading_rate_image: Bool32
     var shading_rate_coarse_sample_order: Bool32
 
@@ -12153,9 +12153,9 @@ struct PhysicalDeviceShadingRateImageFeaturesNV(Copyable):
         self.shading_rate_coarse_sample_order = shading_rate_coarse_sample_order
 
 
-struct PhysicalDeviceShadingRateImagePropertiesNV(Copyable):
+struct PhysicalDeviceShadingRateImagePropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shading_rate_texel_size: Extent2D
     var shading_rate_palette_size: UInt32
     var shading_rate_max_coarse_samples: UInt32
@@ -12175,9 +12175,9 @@ struct PhysicalDeviceShadingRateImagePropertiesNV(Copyable):
         self.shading_rate_max_coarse_samples = shading_rate_max_coarse_samples
 
 
-struct PhysicalDeviceInvocationMaskFeaturesHUAWEI(Copyable):
+struct PhysicalDeviceInvocationMaskFeaturesHUAWEI(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var invocation_mask: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -12191,7 +12191,7 @@ struct PhysicalDeviceInvocationMaskFeaturesHUAWEI(Copyable):
         self.invocation_mask = invocation_mask
 
 
-struct CoarseSampleLocationNV(Copyable):
+struct CoarseSampleLocationNV(Copyable, Equatable):
     var pixel_x: UInt32
     var pixel_y: UInt32
     var sample: UInt32
@@ -12207,11 +12207,11 @@ struct CoarseSampleLocationNV(Copyable):
         self.sample = sample
 
 
-struct CoarseSampleOrderCustomNV(Copyable):
+struct CoarseSampleOrderCustomNV(Copyable, Equatable):
     var shading_rate: ShadingRatePaletteEntryNV
     var sample_count: UInt32
     var sample_location_count: UInt32
-    var p_sample_locations: Ptr[CoarseSampleLocationNV, ImmutOrigin.external]
+    var p_sample_locations: Ptr[CoarseSampleLocationNV, ImmutExternalOrigin]
 
     fn __init__[p_sample_locations_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -12226,12 +12226,12 @@ struct CoarseSampleOrderCustomNV(Copyable):
         self.p_sample_locations = Ptr(to=p_sample_locations).bitcast[type_of(self.p_sample_locations)]()[]
 
 
-struct PipelineViewportCoarseSampleOrderStateCreateInfoNV(Copyable):
+struct PipelineViewportCoarseSampleOrderStateCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var sample_order_type: CoarseSampleOrderTypeNV
     var custom_sample_order_count: UInt32
-    var p_custom_sample_orders: Ptr[CoarseSampleOrderCustomNV, ImmutOrigin.external]
+    var p_custom_sample_orders: Ptr[CoarseSampleOrderCustomNV, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -12251,9 +12251,9 @@ struct PipelineViewportCoarseSampleOrderStateCreateInfoNV(Copyable):
         self.p_custom_sample_orders = Ptr(to=p_custom_sample_orders).bitcast[type_of(self.p_custom_sample_orders)]()[]
 
 
-struct PhysicalDeviceMeshShaderFeaturesNV(Copyable):
+struct PhysicalDeviceMeshShaderFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var task_shader: Bool32
     var mesh_shader: Bool32
 
@@ -12270,9 +12270,9 @@ struct PhysicalDeviceMeshShaderFeaturesNV(Copyable):
         self.mesh_shader = mesh_shader
 
 
-struct PhysicalDeviceMeshShaderPropertiesNV(Copyable):
+struct PhysicalDeviceMeshShaderPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_draw_mesh_tasks_count: UInt32
     var max_task_work_group_invocations: UInt32
     var max_task_work_group_size: InlineArray[UInt32, Int(3)]
@@ -12309,11 +12309,11 @@ struct PhysicalDeviceMeshShaderPropertiesNV(Copyable):
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.max_draw_mesh_tasks_count = max_draw_mesh_tasks_count
         self.max_task_work_group_invocations = max_task_work_group_invocations
-        self.max_task_work_group_size = max_task_work_group_size
+        self.max_task_work_group_size = max_task_work_group_size.copy()
         self.max_task_total_memory_size = max_task_total_memory_size
         self.max_task_output_count = max_task_output_count
         self.max_mesh_work_group_invocations = max_mesh_work_group_invocations
-        self.max_mesh_work_group_size = max_mesh_work_group_size
+        self.max_mesh_work_group_size = max_mesh_work_group_size.copy()
         self.max_mesh_total_memory_size = max_mesh_total_memory_size
         self.max_mesh_output_vertices = max_mesh_output_vertices
         self.max_mesh_output_primitives = max_mesh_output_primitives
@@ -12322,7 +12322,7 @@ struct PhysicalDeviceMeshShaderPropertiesNV(Copyable):
         self.mesh_output_per_primitive_granularity = mesh_output_per_primitive_granularity
 
 
-struct DrawMeshTasksIndirectCommandNV(Copyable):
+struct DrawMeshTasksIndirectCommandNV(Copyable, Equatable):
     var task_count: UInt32
     var first_task: UInt32
 
@@ -12333,9 +12333,9 @@ struct DrawMeshTasksIndirectCommandNV(Copyable):
         self.first_task = first_task
 
 
-struct PhysicalDeviceMeshShaderFeaturesEXT(Copyable):
+struct PhysicalDeviceMeshShaderFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var task_shader: Bool32
     var mesh_shader: Bool32
     var multiview_mesh_shader: Bool32
@@ -12361,9 +12361,9 @@ struct PhysicalDeviceMeshShaderFeaturesEXT(Copyable):
         self.mesh_shader_queries = mesh_shader_queries
 
 
-struct PhysicalDeviceMeshShaderPropertiesEXT(Copyable):
+struct PhysicalDeviceMeshShaderPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_task_work_group_total_count: UInt32
     var max_task_work_group_count: InlineArray[UInt32, Int(3)]
     var max_task_work_group_invocations: UInt32
@@ -12429,16 +12429,16 @@ struct PhysicalDeviceMeshShaderPropertiesEXT(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.max_task_work_group_total_count = max_task_work_group_total_count
-        self.max_task_work_group_count = max_task_work_group_count
+        self.max_task_work_group_count = max_task_work_group_count.copy()
         self.max_task_work_group_invocations = max_task_work_group_invocations
-        self.max_task_work_group_size = max_task_work_group_size
+        self.max_task_work_group_size = max_task_work_group_size.copy()
         self.max_task_payload_size = max_task_payload_size
         self.max_task_shared_memory_size = max_task_shared_memory_size
         self.max_task_payload_and_shared_memory_size = max_task_payload_and_shared_memory_size
         self.max_mesh_work_group_total_count = max_mesh_work_group_total_count
-        self.max_mesh_work_group_count = max_mesh_work_group_count
+        self.max_mesh_work_group_count = max_mesh_work_group_count.copy()
         self.max_mesh_work_group_invocations = max_mesh_work_group_invocations
-        self.max_mesh_work_group_size = max_mesh_work_group_size
+        self.max_mesh_work_group_size = max_mesh_work_group_size.copy()
         self.max_mesh_shared_memory_size = max_mesh_shared_memory_size
         self.max_mesh_payload_and_shared_memory_size = max_mesh_payload_and_shared_memory_size
         self.max_mesh_output_memory_size = max_mesh_output_memory_size
@@ -12458,7 +12458,7 @@ struct PhysicalDeviceMeshShaderPropertiesEXT(Copyable):
         self.prefers_compact_primitive_output = prefers_compact_primitive_output
 
 
-struct DrawMeshTasksIndirectCommandEXT(Copyable):
+struct DrawMeshTasksIndirectCommandEXT(Copyable, Equatable):
     var group_count_x: UInt32
     var group_count_y: UInt32
     var group_count_z: UInt32
@@ -12474,9 +12474,9 @@ struct DrawMeshTasksIndirectCommandEXT(Copyable):
         self.group_count_z = group_count_z
 
 
-struct RayTracingShaderGroupCreateInfoNV(Copyable):
+struct RayTracingShaderGroupCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var type: RayTracingShaderGroupTypeKHR
     var general_shader: UInt32
     var closest_hit_shader: UInt32
@@ -12502,15 +12502,15 @@ struct RayTracingShaderGroupCreateInfoNV(Copyable):
         self.intersection_shader = intersection_shader
 
 
-struct RayTracingShaderGroupCreateInfoKHR(Copyable):
+struct RayTracingShaderGroupCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var type: RayTracingShaderGroupTypeKHR
     var general_shader: UInt32
     var closest_hit_shader: UInt32
     var any_hit_shader: UInt32
     var intersection_shader: UInt32
-    var p_shader_group_capture_replay_handle: Ptr[NoneType, ImmutOrigin.external]
+    var p_shader_group_capture_replay_handle: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -12536,14 +12536,14 @@ struct RayTracingShaderGroupCreateInfoKHR(Copyable):
         self.p_shader_group_capture_replay_handle = Ptr(to=p_shader_group_capture_replay_handle).bitcast[type_of(self.p_shader_group_capture_replay_handle)]()[]
 
 
-struct RayTracingPipelineCreateInfoNV(Copyable):
+struct RayTracingPipelineCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineCreateFlags
     var stage_count: UInt32
-    var p_stages: Ptr[PipelineShaderStageCreateInfo, ImmutOrigin.external]
+    var p_stages: Ptr[PipelineShaderStageCreateInfo, ImmutExternalOrigin]
     var group_count: UInt32
-    var p_groups: Ptr[RayTracingShaderGroupCreateInfoNV, ImmutOrigin.external]
+    var p_groups: Ptr[RayTracingShaderGroupCreateInfoNV, ImmutExternalOrigin]
     var max_recursion_depth: UInt32
     var layout: PipelineLayout
     var base_pipeline_handle: Pipeline
@@ -12580,18 +12580,18 @@ struct RayTracingPipelineCreateInfoNV(Copyable):
         self.base_pipeline_index = base_pipeline_index
 
 
-struct RayTracingPipelineCreateInfoKHR(Copyable):
+struct RayTracingPipelineCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineCreateFlags
     var stage_count: UInt32
-    var p_stages: Ptr[PipelineShaderStageCreateInfo, ImmutOrigin.external]
+    var p_stages: Ptr[PipelineShaderStageCreateInfo, ImmutExternalOrigin]
     var group_count: UInt32
-    var p_groups: Ptr[RayTracingShaderGroupCreateInfoKHR, ImmutOrigin.external]
+    var p_groups: Ptr[RayTracingShaderGroupCreateInfoKHR, ImmutExternalOrigin]
     var max_pipeline_ray_recursion_depth: UInt32
-    var p_library_info: Ptr[PipelineLibraryCreateInfoKHR, ImmutOrigin.external]
-    var p_library_interface: Ptr[RayTracingPipelineInterfaceCreateInfoKHR, ImmutOrigin.external]
-    var p_dynamic_state: Ptr[PipelineDynamicStateCreateInfo, ImmutOrigin.external]
+    var p_library_info: Ptr[PipelineLibraryCreateInfoKHR, ImmutExternalOrigin]
+    var p_library_interface: Ptr[RayTracingPipelineInterfaceCreateInfoKHR, ImmutExternalOrigin]
+    var p_dynamic_state: Ptr[PipelineDynamicStateCreateInfo, ImmutExternalOrigin]
     var layout: PipelineLayout
     var base_pipeline_handle: Pipeline
     var base_pipeline_index: Int32
@@ -12636,9 +12636,9 @@ struct RayTracingPipelineCreateInfoKHR(Copyable):
         self.base_pipeline_index = base_pipeline_index
 
 
-struct GeometryTrianglesNV(Copyable):
+struct GeometryTrianglesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var vertex_data: Buffer
     var vertex_offset: DeviceSize
     var vertex_count: UInt32
@@ -12682,9 +12682,9 @@ struct GeometryTrianglesNV(Copyable):
         self.transform_offset = transform_offset
 
 
-struct GeometryAABBNV(Copyable):
+struct GeometryAABBNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var aabb_data: Buffer
     var num_aab_bs: UInt32
     var stride: UInt32
@@ -12707,7 +12707,7 @@ struct GeometryAABBNV(Copyable):
         self.offset = offset
 
 
-struct GeometryDataNV(Copyable):
+struct GeometryDataNV(Copyable, Equatable):
     var triangles: GeometryTrianglesNV
     var aabbs: GeometryAABBNV
 
@@ -12720,9 +12720,9 @@ struct GeometryDataNV(Copyable):
         self.aabbs = aabbs.copy()
 
 
-struct GeometryNV(Copyable):
+struct GeometryNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var geometry_type: GeometryTypeKHR
     var geometry: GeometryDataNV
     var flags: GeometryFlagsKHR
@@ -12742,14 +12742,14 @@ struct GeometryNV(Copyable):
         self.flags = flags
 
 
-struct AccelerationStructureInfoNV(Copyable):
+struct AccelerationStructureInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var type: AccelerationStructureTypeNV
     var flags: BuildAccelerationStructureFlagsNV
     var instance_count: UInt32
     var geometry_count: UInt32
-    var p_geometries: Ptr[GeometryNV, ImmutOrigin.external]
+    var p_geometries: Ptr[GeometryNV, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -12773,9 +12773,9 @@ struct AccelerationStructureInfoNV(Copyable):
         self.p_geometries = Ptr(to=p_geometries).bitcast[type_of(self.p_geometries)]()[]
 
 
-struct AccelerationStructureCreateInfoNV(Copyable):
+struct AccelerationStructureCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var compacted_size: DeviceSize
     var info: AccelerationStructureInfoNV
 
@@ -12792,14 +12792,14 @@ struct AccelerationStructureCreateInfoNV(Copyable):
         self.info = info.copy()
 
 
-struct BindAccelerationStructureMemoryInfoNV(Copyable):
+struct BindAccelerationStructureMemoryInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var acceleration_structure: AccelerationStructureNV
     var memory: DeviceMemory
     var memory_offset: DeviceSize
     var device_index_count: UInt32
-    var p_device_indices: Ptr[UInt32, ImmutOrigin.external]
+    var p_device_indices: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -12823,11 +12823,11 @@ struct BindAccelerationStructureMemoryInfoNV(Copyable):
         self.p_device_indices = Ptr(to=p_device_indices).bitcast[type_of(self.p_device_indices)]()[]
 
 
-struct WriteDescriptorSetAccelerationStructureKHR(Copyable):
+struct WriteDescriptorSetAccelerationStructureKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var acceleration_structure_count: UInt32
-    var p_acceleration_structures: Ptr[AccelerationStructureKHR, ImmutOrigin.external]
+    var p_acceleration_structures: Ptr[AccelerationStructureKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -12845,11 +12845,11 @@ struct WriteDescriptorSetAccelerationStructureKHR(Copyable):
         self.p_acceleration_structures = Ptr(to=p_acceleration_structures).bitcast[type_of(self.p_acceleration_structures)]()[]
 
 
-struct WriteDescriptorSetAccelerationStructureNV(Copyable):
+struct WriteDescriptorSetAccelerationStructureNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var acceleration_structure_count: UInt32
-    var p_acceleration_structures: Ptr[AccelerationStructureNV, ImmutOrigin.external]
+    var p_acceleration_structures: Ptr[AccelerationStructureNV, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -12867,9 +12867,9 @@ struct WriteDescriptorSetAccelerationStructureNV(Copyable):
         self.p_acceleration_structures = Ptr(to=p_acceleration_structures).bitcast[type_of(self.p_acceleration_structures)]()[]
 
 
-struct AccelerationStructureMemoryRequirementsInfoNV(Copyable):
+struct AccelerationStructureMemoryRequirementsInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var type: AccelerationStructureMemoryRequirementsTypeNV
     var acceleration_structure: AccelerationStructureNV
 
@@ -12886,9 +12886,9 @@ struct AccelerationStructureMemoryRequirementsInfoNV(Copyable):
         self.acceleration_structure = acceleration_structure
 
 
-struct PhysicalDeviceAccelerationStructureFeaturesKHR(Copyable):
+struct PhysicalDeviceAccelerationStructureFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var acceleration_structure: Bool32
     var acceleration_structure_capture_replay: Bool32
     var acceleration_structure_indirect_build: Bool32
@@ -12914,9 +12914,9 @@ struct PhysicalDeviceAccelerationStructureFeaturesKHR(Copyable):
         self.descriptor_binding_acceleration_structure_update_after_bind = descriptor_binding_acceleration_structure_update_after_bind
 
 
-struct PhysicalDeviceRayTracingPipelineFeaturesKHR(Copyable):
+struct PhysicalDeviceRayTracingPipelineFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ray_tracing_pipeline: Bool32
     var ray_tracing_pipeline_shader_group_handle_capture_replay: Bool32
     var ray_tracing_pipeline_shader_group_handle_capture_replay_mixed: Bool32
@@ -12942,9 +12942,9 @@ struct PhysicalDeviceRayTracingPipelineFeaturesKHR(Copyable):
         self.ray_traversal_primitive_culling = ray_traversal_primitive_culling
 
 
-struct PhysicalDeviceRayQueryFeaturesKHR(Copyable):
+struct PhysicalDeviceRayQueryFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ray_query: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -12958,9 +12958,9 @@ struct PhysicalDeviceRayQueryFeaturesKHR(Copyable):
         self.ray_query = ray_query
 
 
-struct PhysicalDeviceAccelerationStructurePropertiesKHR(Copyable):
+struct PhysicalDeviceAccelerationStructurePropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_geometry_count: UInt64
     var max_instance_count: UInt64
     var max_primitive_count: UInt64
@@ -12995,9 +12995,9 @@ struct PhysicalDeviceAccelerationStructurePropertiesKHR(Copyable):
         self.min_acceleration_structure_scratch_offset_alignment = min_acceleration_structure_scratch_offset_alignment
 
 
-struct PhysicalDeviceRayTracingPipelinePropertiesKHR(Copyable):
+struct PhysicalDeviceRayTracingPipelinePropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_group_handle_size: UInt32
     var max_ray_recursion_depth: UInt32
     var max_shader_group_stride: UInt32
@@ -13032,9 +13032,9 @@ struct PhysicalDeviceRayTracingPipelinePropertiesKHR(Copyable):
         self.max_ray_hit_attribute_size = max_ray_hit_attribute_size
 
 
-struct PhysicalDeviceRayTracingPropertiesNV(Copyable):
+struct PhysicalDeviceRayTracingPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_group_handle_size: UInt32
     var max_recursion_depth: UInt32
     var max_shader_group_stride: UInt32
@@ -13069,7 +13069,7 @@ struct PhysicalDeviceRayTracingPropertiesNV(Copyable):
         self.max_descriptor_set_acceleration_structures = max_descriptor_set_acceleration_structures
 
 
-struct StridedDeviceAddressRegionKHR(Copyable):
+struct StridedDeviceAddressRegionKHR(Copyable, Equatable):
     var device_address: DeviceAddress
     var stride: DeviceSize
     var size: DeviceSize
@@ -13085,7 +13085,7 @@ struct StridedDeviceAddressRegionKHR(Copyable):
         self.size = size
 
 
-struct TraceRaysIndirectCommandKHR(Copyable):
+struct TraceRaysIndirectCommandKHR(Copyable, Equatable):
     var width: UInt32
     var height: UInt32
     var depth: UInt32
@@ -13101,7 +13101,7 @@ struct TraceRaysIndirectCommandKHR(Copyable):
         self.depth = depth
 
 
-struct TraceRaysIndirectCommand2KHR(Copyable):
+struct TraceRaysIndirectCommand2KHR(Copyable, Equatable):
     var raygen_shader_record_address: DeviceAddress
     var raygen_shader_record_size: DeviceSize
     var miss_shader_binding_table_address: DeviceAddress
@@ -13150,9 +13150,9 @@ struct TraceRaysIndirectCommand2KHR(Copyable):
         self.depth = depth
 
 
-struct PhysicalDeviceRayTracingMaintenance1FeaturesKHR(Copyable):
+struct PhysicalDeviceRayTracingMaintenance1FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ray_tracing_maintenance_1: Bool32
     var ray_tracing_pipeline_trace_rays_indirect_2: Bool32
 
@@ -13169,11 +13169,11 @@ struct PhysicalDeviceRayTracingMaintenance1FeaturesKHR(Copyable):
         self.ray_tracing_pipeline_trace_rays_indirect_2 = ray_tracing_pipeline_trace_rays_indirect_2
 
 
-struct DrmFormatModifierPropertiesListEXT(Copyable):
+struct DrmFormatModifierPropertiesListEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var drm_format_modifier_count: UInt32
-    var p_drm_format_modifier_properties: Ptr[DrmFormatModifierPropertiesEXT, MutOrigin.external]
+    var p_drm_format_modifier_properties: Ptr[DrmFormatModifierPropertiesEXT, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin,
@@ -13191,7 +13191,7 @@ struct DrmFormatModifierPropertiesListEXT(Copyable):
         self.p_drm_format_modifier_properties = Ptr(to=p_drm_format_modifier_properties).bitcast[type_of(self.p_drm_format_modifier_properties)]()[]
 
 
-struct DrmFormatModifierPropertiesEXT(Copyable):
+struct DrmFormatModifierPropertiesEXT(Copyable, Equatable):
     var drm_format_modifier: UInt64
     var drm_format_modifier_plane_count: UInt32
     var drm_format_modifier_tiling_features: FormatFeatureFlags
@@ -13207,13 +13207,13 @@ struct DrmFormatModifierPropertiesEXT(Copyable):
         self.drm_format_modifier_tiling_features = drm_format_modifier_tiling_features
 
 
-struct PhysicalDeviceImageDrmFormatModifierInfoEXT(Copyable):
+struct PhysicalDeviceImageDrmFormatModifierInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var drm_format_modifier: UInt64
     var sharing_mode: SharingMode
     var queue_family_index_count: UInt32
-    var p_queue_family_indices: Ptr[UInt32, ImmutOrigin.external]
+    var p_queue_family_indices: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -13235,11 +13235,11 @@ struct PhysicalDeviceImageDrmFormatModifierInfoEXT(Copyable):
         self.p_queue_family_indices = Ptr(to=p_queue_family_indices).bitcast[type_of(self.p_queue_family_indices)]()[]
 
 
-struct ImageDrmFormatModifierListCreateInfoEXT(Copyable):
+struct ImageDrmFormatModifierListCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var drm_format_modifier_count: UInt32
-    var p_drm_format_modifiers: Ptr[UInt64, ImmutOrigin.external]
+    var p_drm_format_modifiers: Ptr[UInt64, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -13257,12 +13257,12 @@ struct ImageDrmFormatModifierListCreateInfoEXT(Copyable):
         self.p_drm_format_modifiers = Ptr(to=p_drm_format_modifiers).bitcast[type_of(self.p_drm_format_modifiers)]()[]
 
 
-struct ImageDrmFormatModifierExplicitCreateInfoEXT(Copyable):
+struct ImageDrmFormatModifierExplicitCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var drm_format_modifier: UInt64
     var drm_format_modifier_plane_count: UInt32
-    var p_plane_layouts: Ptr[SubresourceLayout, ImmutOrigin.external]
+    var p_plane_layouts: Ptr[SubresourceLayout, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -13282,9 +13282,9 @@ struct ImageDrmFormatModifierExplicitCreateInfoEXT(Copyable):
         self.p_plane_layouts = Ptr(to=p_plane_layouts).bitcast[type_of(self.p_plane_layouts)]()[]
 
 
-struct ImageDrmFormatModifierPropertiesEXT(Copyable):
+struct ImageDrmFormatModifierPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var drm_format_modifier: UInt64
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13298,9 +13298,9 @@ struct ImageDrmFormatModifierPropertiesEXT(Copyable):
         self.drm_format_modifier = drm_format_modifier
 
 
-struct ImageStencilUsageCreateInfo(Copyable):
+struct ImageStencilUsageCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var stencil_usage: ImageUsageFlags
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -13314,9 +13314,9 @@ struct ImageStencilUsageCreateInfo(Copyable):
         self.stencil_usage = stencil_usage
 
 
-struct DeviceMemoryOverallocationCreateInfoAMD(Copyable):
+struct DeviceMemoryOverallocationCreateInfoAMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var overallocation_behavior: MemoryOverallocationBehaviorAMD
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -13330,9 +13330,9 @@ struct DeviceMemoryOverallocationCreateInfoAMD(Copyable):
         self.overallocation_behavior = overallocation_behavior
 
 
-struct PhysicalDeviceFragmentDensityMapFeaturesEXT(Copyable):
+struct PhysicalDeviceFragmentDensityMapFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var fragment_density_map: Bool32
     var fragment_density_map_dynamic: Bool32
     var fragment_density_map_non_subsampled_images: Bool32
@@ -13352,9 +13352,9 @@ struct PhysicalDeviceFragmentDensityMapFeaturesEXT(Copyable):
         self.fragment_density_map_non_subsampled_images = fragment_density_map_non_subsampled_images
 
 
-struct PhysicalDeviceFragmentDensityMap2FeaturesEXT(Copyable):
+struct PhysicalDeviceFragmentDensityMap2FeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var fragment_density_map_deferred: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13368,9 +13368,9 @@ struct PhysicalDeviceFragmentDensityMap2FeaturesEXT(Copyable):
         self.fragment_density_map_deferred = fragment_density_map_deferred
 
 
-struct PhysicalDeviceFragmentDensityMapOffsetFeaturesEXT(Copyable):
+struct PhysicalDeviceFragmentDensityMapOffsetFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var fragment_density_map_offset: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13384,9 +13384,9 @@ struct PhysicalDeviceFragmentDensityMapOffsetFeaturesEXT(Copyable):
         self.fragment_density_map_offset = fragment_density_map_offset
 
 
-struct PhysicalDeviceFragmentDensityMapPropertiesEXT(Copyable):
+struct PhysicalDeviceFragmentDensityMapPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var min_fragment_density_texel_size: Extent2D
     var max_fragment_density_texel_size: Extent2D
     var fragment_density_invocations: Bool32
@@ -13406,9 +13406,9 @@ struct PhysicalDeviceFragmentDensityMapPropertiesEXT(Copyable):
         self.fragment_density_invocations = fragment_density_invocations
 
 
-struct PhysicalDeviceFragmentDensityMap2PropertiesEXT(Copyable):
+struct PhysicalDeviceFragmentDensityMap2PropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var subsampled_loads: Bool32
     var subsampled_coarse_reconstruction_early_access: Bool32
     var max_subsampled_array_layers: UInt32
@@ -13431,9 +13431,9 @@ struct PhysicalDeviceFragmentDensityMap2PropertiesEXT(Copyable):
         self.max_descriptor_set_subsampled_samplers = max_descriptor_set_subsampled_samplers
 
 
-struct PhysicalDeviceFragmentDensityMapOffsetPropertiesEXT(Copyable):
+struct PhysicalDeviceFragmentDensityMapOffsetPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var fragment_density_offset_granularity: Extent2D
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13447,9 +13447,9 @@ struct PhysicalDeviceFragmentDensityMapOffsetPropertiesEXT(Copyable):
         self.fragment_density_offset_granularity = fragment_density_offset_granularity.copy()
 
 
-struct RenderPassFragmentDensityMapCreateInfoEXT(Copyable):
+struct RenderPassFragmentDensityMapCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var fragment_density_map_attachment: AttachmentReference
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -13463,11 +13463,11 @@ struct RenderPassFragmentDensityMapCreateInfoEXT(Copyable):
         self.fragment_density_map_attachment = fragment_density_map_attachment.copy()
 
 
-struct RenderPassFragmentDensityMapOffsetEndInfoEXT(Copyable):
+struct RenderPassFragmentDensityMapOffsetEndInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var fragment_density_offset_count: UInt32
-    var p_fragment_density_offsets: Ptr[Offset2D, ImmutOrigin.external]
+    var p_fragment_density_offsets: Ptr[Offset2D, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -13485,9 +13485,9 @@ struct RenderPassFragmentDensityMapOffsetEndInfoEXT(Copyable):
         self.p_fragment_density_offsets = Ptr(to=p_fragment_density_offsets).bitcast[type_of(self.p_fragment_density_offsets)]()[]
 
 
-struct PhysicalDeviceScalarBlockLayoutFeatures(Copyable):
+struct PhysicalDeviceScalarBlockLayoutFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var scalar_block_layout: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13501,9 +13501,9 @@ struct PhysicalDeviceScalarBlockLayoutFeatures(Copyable):
         self.scalar_block_layout = scalar_block_layout
 
 
-struct SurfaceProtectedCapabilitiesKHR(Copyable):
+struct SurfaceProtectedCapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var supports_protected: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13517,9 +13517,9 @@ struct SurfaceProtectedCapabilitiesKHR(Copyable):
         self.supports_protected = supports_protected
 
 
-struct PhysicalDeviceUniformBufferStandardLayoutFeatures(Copyable):
+struct PhysicalDeviceUniformBufferStandardLayoutFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var uniform_buffer_standard_layout: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13533,9 +13533,9 @@ struct PhysicalDeviceUniformBufferStandardLayoutFeatures(Copyable):
         self.uniform_buffer_standard_layout = uniform_buffer_standard_layout
 
 
-struct PhysicalDeviceDepthClipEnableFeaturesEXT(Copyable):
+struct PhysicalDeviceDepthClipEnableFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var depth_clip_enable: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13549,9 +13549,9 @@ struct PhysicalDeviceDepthClipEnableFeaturesEXT(Copyable):
         self.depth_clip_enable = depth_clip_enable
 
 
-struct PipelineRasterizationDepthClipStateCreateInfoEXT(Copyable):
+struct PipelineRasterizationDepthClipStateCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineRasterizationDepthClipStateCreateFlagsEXT
     var depth_clip_enable: Bool32
 
@@ -13568,9 +13568,9 @@ struct PipelineRasterizationDepthClipStateCreateInfoEXT(Copyable):
         self.depth_clip_enable = depth_clip_enable
 
 
-struct PhysicalDeviceMemoryBudgetPropertiesEXT(Copyable):
+struct PhysicalDeviceMemoryBudgetPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var heap_budget: InlineArray[DeviceSize, Int(MAX_MEMORY_HEAPS)]
     var heap_usage: InlineArray[DeviceSize, Int(MAX_MEMORY_HEAPS)]
 
@@ -13583,13 +13583,13 @@ struct PhysicalDeviceMemoryBudgetPropertiesEXT(Copyable):
     ):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
-        self.heap_budget = heap_budget
-        self.heap_usage = heap_usage
+        self.heap_budget = heap_budget.copy()
+        self.heap_usage = heap_usage.copy()
 
 
-struct PhysicalDeviceMemoryPriorityFeaturesEXT(Copyable):
+struct PhysicalDeviceMemoryPriorityFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var memory_priority: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13603,9 +13603,9 @@ struct PhysicalDeviceMemoryPriorityFeaturesEXT(Copyable):
         self.memory_priority = memory_priority
 
 
-struct MemoryPriorityAllocateInfoEXT(Copyable):
+struct MemoryPriorityAllocateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var priority: Float32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -13619,9 +13619,9 @@ struct MemoryPriorityAllocateInfoEXT(Copyable):
         self.priority = priority
 
 
-struct PhysicalDevicePageableDeviceLocalMemoryFeaturesEXT(Copyable):
+struct PhysicalDevicePageableDeviceLocalMemoryFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pageable_device_local_memory: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13635,9 +13635,9 @@ struct PhysicalDevicePageableDeviceLocalMemoryFeaturesEXT(Copyable):
         self.pageable_device_local_memory = pageable_device_local_memory
 
 
-struct PhysicalDeviceBufferDeviceAddressFeatures(Copyable):
+struct PhysicalDeviceBufferDeviceAddressFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var buffer_device_address: Bool32
     var buffer_device_address_capture_replay: Bool32
     var buffer_device_address_multi_device: Bool32
@@ -13657,9 +13657,9 @@ struct PhysicalDeviceBufferDeviceAddressFeatures(Copyable):
         self.buffer_device_address_multi_device = buffer_device_address_multi_device
 
 
-struct PhysicalDeviceBufferDeviceAddressFeaturesEXT(Copyable):
+struct PhysicalDeviceBufferDeviceAddressFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var buffer_device_address: Bool32
     var buffer_device_address_capture_replay: Bool32
     var buffer_device_address_multi_device: Bool32
@@ -13679,9 +13679,9 @@ struct PhysicalDeviceBufferDeviceAddressFeaturesEXT(Copyable):
         self.buffer_device_address_multi_device = buffer_device_address_multi_device
 
 
-struct BufferDeviceAddressInfo(Copyable):
+struct BufferDeviceAddressInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var buffer: Buffer
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -13695,9 +13695,9 @@ struct BufferDeviceAddressInfo(Copyable):
         self.buffer = buffer
 
 
-struct BufferOpaqueCaptureAddressCreateInfo(Copyable):
+struct BufferOpaqueCaptureAddressCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var opaque_capture_address: UInt64
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -13711,9 +13711,9 @@ struct BufferOpaqueCaptureAddressCreateInfo(Copyable):
         self.opaque_capture_address = opaque_capture_address
 
 
-struct BufferDeviceAddressCreateInfoEXT(Copyable):
+struct BufferDeviceAddressCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var device_address: DeviceAddress
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -13727,9 +13727,9 @@ struct BufferDeviceAddressCreateInfoEXT(Copyable):
         self.device_address = device_address
 
 
-struct PhysicalDeviceImageViewImageFormatInfoEXT(Copyable):
+struct PhysicalDeviceImageViewImageFormatInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var image_view_type: ImageViewType
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13743,9 +13743,9 @@ struct PhysicalDeviceImageViewImageFormatInfoEXT(Copyable):
         self.image_view_type = image_view_type
 
 
-struct FilterCubicImageViewImageFormatPropertiesEXT(Copyable):
+struct FilterCubicImageViewImageFormatPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var filter_cubic: Bool32
     var filter_cubic_minmax: Bool32
 
@@ -13762,9 +13762,9 @@ struct FilterCubicImageViewImageFormatPropertiesEXT(Copyable):
         self.filter_cubic_minmax = filter_cubic_minmax
 
 
-struct PhysicalDeviceImagelessFramebufferFeatures(Copyable):
+struct PhysicalDeviceImagelessFramebufferFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var imageless_framebuffer: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13778,11 +13778,11 @@ struct PhysicalDeviceImagelessFramebufferFeatures(Copyable):
         self.imageless_framebuffer = imageless_framebuffer
 
 
-struct FramebufferAttachmentsCreateInfo(Copyable):
+struct FramebufferAttachmentsCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var attachment_image_info_count: UInt32
-    var p_attachment_image_infos: Ptr[FramebufferAttachmentImageInfo, ImmutOrigin.external]
+    var p_attachment_image_infos: Ptr[FramebufferAttachmentImageInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -13800,16 +13800,16 @@ struct FramebufferAttachmentsCreateInfo(Copyable):
         self.p_attachment_image_infos = Ptr(to=p_attachment_image_infos).bitcast[type_of(self.p_attachment_image_infos)]()[]
 
 
-struct FramebufferAttachmentImageInfo(Copyable):
+struct FramebufferAttachmentImageInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: ImageCreateFlags
     var usage: ImageUsageFlags
     var width: UInt32
     var height: UInt32
     var layer_count: UInt32
     var view_format_count: UInt32
-    var p_view_formats: Ptr[Format, ImmutOrigin.external]
+    var p_view_formats: Ptr[Format, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -13837,11 +13837,11 @@ struct FramebufferAttachmentImageInfo(Copyable):
         self.p_view_formats = Ptr(to=p_view_formats).bitcast[type_of(self.p_view_formats)]()[]
 
 
-struct RenderPassAttachmentBeginInfo(Copyable):
+struct RenderPassAttachmentBeginInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var attachment_count: UInt32
-    var p_attachments: Ptr[ImageView, ImmutOrigin.external]
+    var p_attachments: Ptr[ImageView, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -13859,9 +13859,9 @@ struct RenderPassAttachmentBeginInfo(Copyable):
         self.p_attachments = Ptr(to=p_attachments).bitcast[type_of(self.p_attachments)]()[]
 
 
-struct PhysicalDeviceTextureCompressionASTCHDRFeatures(Copyable):
+struct PhysicalDeviceTextureCompressionASTCHDRFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var texture_compression_astc_hdr: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13875,9 +13875,9 @@ struct PhysicalDeviceTextureCompressionASTCHDRFeatures(Copyable):
         self.texture_compression_astc_hdr = texture_compression_astc_hdr
 
 
-struct PhysicalDeviceCooperativeMatrixFeaturesNV(Copyable):
+struct PhysicalDeviceCooperativeMatrixFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var cooperative_matrix: Bool32
     var cooperative_matrix_robust_buffer_access: Bool32
 
@@ -13894,9 +13894,9 @@ struct PhysicalDeviceCooperativeMatrixFeaturesNV(Copyable):
         self.cooperative_matrix_robust_buffer_access = cooperative_matrix_robust_buffer_access
 
 
-struct PhysicalDeviceCooperativeMatrixPropertiesNV(Copyable):
+struct PhysicalDeviceCooperativeMatrixPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var cooperative_matrix_supported_stages: ShaderStageFlags
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13910,9 +13910,9 @@ struct PhysicalDeviceCooperativeMatrixPropertiesNV(Copyable):
         self.cooperative_matrix_supported_stages = cooperative_matrix_supported_stages
 
 
-struct CooperativeMatrixPropertiesNV(Copyable):
+struct CooperativeMatrixPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var m_size: UInt32
     var n_size: UInt32
     var k_size: UInt32
@@ -13947,9 +13947,9 @@ struct CooperativeMatrixPropertiesNV(Copyable):
         self.scope = scope
 
 
-struct PhysicalDeviceYcbcrImageArraysFeaturesEXT(Copyable):
+struct PhysicalDeviceYcbcrImageArraysFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ycbcr_image_arrays: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -13963,9 +13963,9 @@ struct PhysicalDeviceYcbcrImageArraysFeaturesEXT(Copyable):
         self.ycbcr_image_arrays = ycbcr_image_arrays
 
 
-struct ImageViewHandleInfoNVX(Copyable):
+struct ImageViewHandleInfoNVX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image_view: ImageView
     var descriptor_type: DescriptorType
     var sampler: Sampler
@@ -13985,9 +13985,9 @@ struct ImageViewHandleInfoNVX(Copyable):
         self.sampler = sampler
 
 
-struct ImageViewAddressPropertiesNVX(Copyable):
+struct ImageViewAddressPropertiesNVX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var device_address: DeviceAddress
     var size: DeviceSize
 
@@ -14004,9 +14004,9 @@ struct ImageViewAddressPropertiesNVX(Copyable):
         self.size = size
 
 
-struct PresentFrameTokenGGP(Copyable):
+struct PresentFrameTokenGGP(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var frame_token: GgpFrameToken
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -14020,7 +14020,7 @@ struct PresentFrameTokenGGP(Copyable):
         self.frame_token = frame_token
 
 
-struct PipelineCreationFeedback(Copyable):
+struct PipelineCreationFeedback(Copyable, Equatable):
     var flags: PipelineCreationFeedbackFlags
     var duration: UInt64
 
@@ -14033,12 +14033,12 @@ struct PipelineCreationFeedback(Copyable):
         self.duration = duration
 
 
-struct PipelineCreationFeedbackCreateInfo(Copyable):
+struct PipelineCreationFeedbackCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_pipeline_creation_feedback: Ptr[PipelineCreationFeedback, MutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_pipeline_creation_feedback: Ptr[PipelineCreationFeedback, MutExternalOrigin]
     var pipeline_stage_creation_feedback_count: UInt32
-    var p_pipeline_stage_creation_feedbacks: Ptr[PipelineCreationFeedback, MutOrigin.external]
+    var p_pipeline_stage_creation_feedbacks: Ptr[PipelineCreationFeedback, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -14059,9 +14059,9 @@ struct PipelineCreationFeedbackCreateInfo(Copyable):
         self.p_pipeline_stage_creation_feedbacks = Ptr(to=p_pipeline_stage_creation_feedbacks).bitcast[type_of(self.p_pipeline_stage_creation_feedbacks)]()[]
 
 
-struct SurfaceFullScreenExclusiveInfoEXT(Copyable):
+struct SurfaceFullScreenExclusiveInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var full_screen_exclusive: FullScreenExclusiveEXT
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14075,9 +14075,9 @@ struct SurfaceFullScreenExclusiveInfoEXT(Copyable):
         self.full_screen_exclusive = full_screen_exclusive
 
 
-struct SurfaceFullScreenExclusiveWin32InfoEXT(Copyable):
+struct SurfaceFullScreenExclusiveWin32InfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var hmonitor: HMONITOR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -14091,9 +14091,9 @@ struct SurfaceFullScreenExclusiveWin32InfoEXT(Copyable):
         self.hmonitor = hmonitor
 
 
-struct SurfaceCapabilitiesFullScreenExclusiveEXT(Copyable):
+struct SurfaceCapabilitiesFullScreenExclusiveEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var full_screen_exclusive_supported: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14107,9 +14107,9 @@ struct SurfaceCapabilitiesFullScreenExclusiveEXT(Copyable):
         self.full_screen_exclusive_supported = full_screen_exclusive_supported
 
 
-struct PhysicalDevicePresentBarrierFeaturesNV(Copyable):
+struct PhysicalDevicePresentBarrierFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_barrier: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14123,9 +14123,9 @@ struct PhysicalDevicePresentBarrierFeaturesNV(Copyable):
         self.present_barrier = present_barrier
 
 
-struct SurfaceCapabilitiesPresentBarrierNV(Copyable):
+struct SurfaceCapabilitiesPresentBarrierNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_barrier_supported: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14139,9 +14139,9 @@ struct SurfaceCapabilitiesPresentBarrierNV(Copyable):
         self.present_barrier_supported = present_barrier_supported
 
 
-struct SwapchainPresentBarrierCreateInfoNV(Copyable):
+struct SwapchainPresentBarrierCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_barrier_enable: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14155,9 +14155,9 @@ struct SwapchainPresentBarrierCreateInfoNV(Copyable):
         self.present_barrier_enable = present_barrier_enable
 
 
-struct PhysicalDevicePerformanceQueryFeaturesKHR(Copyable):
+struct PhysicalDevicePerformanceQueryFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var performance_counter_query_pools: Bool32
     var performance_counter_multiple_query_pools: Bool32
 
@@ -14174,9 +14174,9 @@ struct PhysicalDevicePerformanceQueryFeaturesKHR(Copyable):
         self.performance_counter_multiple_query_pools = performance_counter_multiple_query_pools
 
 
-struct PhysicalDevicePerformanceQueryPropertiesKHR(Copyable):
+struct PhysicalDevicePerformanceQueryPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var allow_command_buffer_query_copies: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14190,9 +14190,9 @@ struct PhysicalDevicePerformanceQueryPropertiesKHR(Copyable):
         self.allow_command_buffer_query_copies = allow_command_buffer_query_copies
 
 
-struct PerformanceCounterKHR(Copyable):
+struct PerformanceCounterKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var unit: PerformanceCounterUnitKHR
     var scope: PerformanceCounterScopeKHR
     var storage: PerformanceCounterStorageKHR
@@ -14212,12 +14212,12 @@ struct PerformanceCounterKHR(Copyable):
         self.unit = unit
         self.scope = scope
         self.storage = storage
-        self.uuid = uuid
+        self.uuid = uuid.copy()
 
 
-struct PerformanceCounterDescriptionKHR(Copyable):
+struct PerformanceCounterDescriptionKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: PerformanceCounterDescriptionFlagsKHR
     var name: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
     var category: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
@@ -14235,9 +14235,9 @@ struct PerformanceCounterDescriptionKHR(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.flags = flags
-        self.name = name
-        self.category = category
-        self.description = description
+        self.name = name.copy()
+        self.category = category.copy()
+        self.description = description.copy()
 
     fn name_slice(self) -> CStringSlice[origin_of(self.name)]:
         return CStringSlice[origin_of(self.name)](unsafe_from_ptr = self.name.unsafe_ptr())
@@ -14249,12 +14249,12 @@ struct PerformanceCounterDescriptionKHR(Copyable):
         return CStringSlice[origin_of(self.description)](unsafe_from_ptr = self.description.unsafe_ptr())
 
 
-struct QueryPoolPerformanceCreateInfoKHR(Copyable):
+struct QueryPoolPerformanceCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var queue_family_index: UInt32
     var counter_index_count: UInt32
-    var p_counter_indices: Ptr[UInt32, ImmutOrigin.external]
+    var p_counter_indices: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -14274,9 +14274,9 @@ struct QueryPoolPerformanceCreateInfoKHR(Copyable):
         self.p_counter_indices = Ptr(to=p_counter_indices).bitcast[type_of(self.p_counter_indices)]()[]
 
 
-struct AcquireProfilingLockInfoKHR(Copyable):
+struct AcquireProfilingLockInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: AcquireProfilingLockFlagsKHR
     var timeout: UInt64
 
@@ -14293,9 +14293,9 @@ struct AcquireProfilingLockInfoKHR(Copyable):
         self.timeout = timeout
 
 
-struct PerformanceQuerySubmitInfoKHR(Copyable):
+struct PerformanceQuerySubmitInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var counter_pass_index: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -14309,9 +14309,9 @@ struct PerformanceQuerySubmitInfoKHR(Copyable):
         self.counter_pass_index = counter_pass_index
 
 
-struct PerformanceQueryReservationInfoKHR(Copyable):
+struct PerformanceQueryReservationInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var max_performance_queries_per_pool: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -14325,9 +14325,9 @@ struct PerformanceQueryReservationInfoKHR(Copyable):
         self.max_performance_queries_per_pool = max_performance_queries_per_pool
 
 
-struct HeadlessSurfaceCreateInfoEXT(Copyable):
+struct HeadlessSurfaceCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: HeadlessSurfaceCreateFlagsEXT
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -14341,9 +14341,9 @@ struct HeadlessSurfaceCreateInfoEXT(Copyable):
         self.flags = flags
 
 
-struct PhysicalDeviceCoverageReductionModeFeaturesNV(Copyable):
+struct PhysicalDeviceCoverageReductionModeFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var coverage_reduction_mode: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14357,9 +14357,9 @@ struct PhysicalDeviceCoverageReductionModeFeaturesNV(Copyable):
         self.coverage_reduction_mode = coverage_reduction_mode
 
 
-struct PipelineCoverageReductionStateCreateInfoNV(Copyable):
+struct PipelineCoverageReductionStateCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineCoverageReductionStateCreateFlagsNV
     var coverage_reduction_mode: CoverageReductionModeNV
 
@@ -14376,9 +14376,9 @@ struct PipelineCoverageReductionStateCreateInfoNV(Copyable):
         self.coverage_reduction_mode = coverage_reduction_mode
 
 
-struct FramebufferMixedSamplesCombinationNV(Copyable):
+struct FramebufferMixedSamplesCombinationNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var coverage_reduction_mode: CoverageReductionModeNV
     var rasterization_samples: SampleCountFlagBits
     var depth_stencil_samples: SampleCountFlags
@@ -14401,9 +14401,9 @@ struct FramebufferMixedSamplesCombinationNV(Copyable):
         self.color_samples = color_samples
 
 
-struct PhysicalDeviceShaderIntegerFunctions2FeaturesINTEL(Copyable):
+struct PhysicalDeviceShaderIntegerFunctions2FeaturesINTEL(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_integer_functions_2: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14417,7 +14417,7 @@ struct PhysicalDeviceShaderIntegerFunctions2FeaturesINTEL(Copyable):
         self.shader_integer_functions_2 = shader_integer_functions_2
 
 
-struct PerformanceValueINTEL(Copyable):
+struct PerformanceValueINTEL(Copyable, Equatable):
     var type: PerformanceValueTypeINTEL
     var data: PerformanceValueDataINTEL
 
@@ -14430,10 +14430,10 @@ struct PerformanceValueINTEL(Copyable):
         self.data = data
 
 
-struct InitializePerformanceApiInfoINTEL(Copyable):
+struct InitializePerformanceApiInfoINTEL(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_user_data: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_user_data: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_user_data_origin: MutOrigin = MutAnyOrigin
@@ -14448,9 +14448,9 @@ struct InitializePerformanceApiInfoINTEL(Copyable):
         self.p_user_data = Ptr(to=p_user_data).bitcast[type_of(self.p_user_data)]()[]
 
 
-struct QueryPoolPerformanceQueryCreateInfoINTEL(Copyable):
+struct QueryPoolPerformanceQueryCreateInfoINTEL(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var performance_counters_sampling: QueryPoolSamplingModeINTEL
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -14464,9 +14464,9 @@ struct QueryPoolPerformanceQueryCreateInfoINTEL(Copyable):
         self.performance_counters_sampling = performance_counters_sampling
 
 
-struct PerformanceMarkerInfoINTEL(Copyable):
+struct PerformanceMarkerInfoINTEL(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var marker: UInt64
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -14480,9 +14480,9 @@ struct PerformanceMarkerInfoINTEL(Copyable):
         self.marker = marker
 
 
-struct PerformanceStreamMarkerInfoINTEL(Copyable):
+struct PerformanceStreamMarkerInfoINTEL(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var marker: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -14496,9 +14496,9 @@ struct PerformanceStreamMarkerInfoINTEL(Copyable):
         self.marker = marker
 
 
-struct PerformanceOverrideInfoINTEL(Copyable):
+struct PerformanceOverrideInfoINTEL(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var type: PerformanceOverrideTypeINTEL
     var enable: Bool32
     var parameter: UInt64
@@ -14518,9 +14518,9 @@ struct PerformanceOverrideInfoINTEL(Copyable):
         self.parameter = parameter
 
 
-struct PerformanceConfigurationAcquireInfoINTEL(Copyable):
+struct PerformanceConfigurationAcquireInfoINTEL(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var type: PerformanceConfigurationTypeINTEL
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -14534,9 +14534,9 @@ struct PerformanceConfigurationAcquireInfoINTEL(Copyable):
         self.type = type
 
 
-struct PhysicalDeviceShaderClockFeaturesKHR(Copyable):
+struct PhysicalDeviceShaderClockFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_subgroup_clock: Bool32
     var shader_device_clock: Bool32
 
@@ -14553,9 +14553,9 @@ struct PhysicalDeviceShaderClockFeaturesKHR(Copyable):
         self.shader_device_clock = shader_device_clock
 
 
-struct PhysicalDeviceIndexTypeUint8Features(Copyable):
+struct PhysicalDeviceIndexTypeUint8Features(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var index_type_uint_8: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14569,9 +14569,9 @@ struct PhysicalDeviceIndexTypeUint8Features(Copyable):
         self.index_type_uint_8 = index_type_uint_8
 
 
-struct PhysicalDeviceShaderSMBuiltinsPropertiesNV(Copyable):
+struct PhysicalDeviceShaderSMBuiltinsPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_sm_count: UInt32
     var shader_warps_per_sm: UInt32
 
@@ -14588,9 +14588,9 @@ struct PhysicalDeviceShaderSMBuiltinsPropertiesNV(Copyable):
         self.shader_warps_per_sm = shader_warps_per_sm
 
 
-struct PhysicalDeviceShaderSMBuiltinsFeaturesNV(Copyable):
+struct PhysicalDeviceShaderSMBuiltinsFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_sm_builtins: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14604,9 +14604,9 @@ struct PhysicalDeviceShaderSMBuiltinsFeaturesNV(Copyable):
         self.shader_sm_builtins = shader_sm_builtins
 
 
-struct PhysicalDeviceFragmentShaderInterlockFeaturesEXT(Copyable):
+struct PhysicalDeviceFragmentShaderInterlockFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var fragment_shader_sample_interlock: Bool32
     var fragment_shader_pixel_interlock: Bool32
     var fragment_shader_shading_rate_interlock: Bool32
@@ -14626,9 +14626,9 @@ struct PhysicalDeviceFragmentShaderInterlockFeaturesEXT(Copyable):
         self.fragment_shader_shading_rate_interlock = fragment_shader_shading_rate_interlock
 
 
-struct PhysicalDeviceSeparateDepthStencilLayoutsFeatures(Copyable):
+struct PhysicalDeviceSeparateDepthStencilLayoutsFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var separate_depth_stencil_layouts: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14642,9 +14642,9 @@ struct PhysicalDeviceSeparateDepthStencilLayoutsFeatures(Copyable):
         self.separate_depth_stencil_layouts = separate_depth_stencil_layouts
 
 
-struct AttachmentReferenceStencilLayout(Copyable):
+struct AttachmentReferenceStencilLayout(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var stencil_layout: ImageLayout
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14658,9 +14658,9 @@ struct AttachmentReferenceStencilLayout(Copyable):
         self.stencil_layout = stencil_layout
 
 
-struct PhysicalDevicePrimitiveTopologyListRestartFeaturesEXT(Copyable):
+struct PhysicalDevicePrimitiveTopologyListRestartFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var primitive_topology_list_restart: Bool32
     var primitive_topology_patch_list_restart: Bool32
 
@@ -14677,9 +14677,9 @@ struct PhysicalDevicePrimitiveTopologyListRestartFeaturesEXT(Copyable):
         self.primitive_topology_patch_list_restart = primitive_topology_patch_list_restart
 
 
-struct AttachmentDescriptionStencilLayout(Copyable):
+struct AttachmentDescriptionStencilLayout(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var stencil_initial_layout: ImageLayout
     var stencil_final_layout: ImageLayout
 
@@ -14696,9 +14696,9 @@ struct AttachmentDescriptionStencilLayout(Copyable):
         self.stencil_final_layout = stencil_final_layout
 
 
-struct PhysicalDevicePipelineExecutablePropertiesFeaturesKHR(Copyable):
+struct PhysicalDevicePipelineExecutablePropertiesFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline_executable_info: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14712,9 +14712,9 @@ struct PhysicalDevicePipelineExecutablePropertiesFeaturesKHR(Copyable):
         self.pipeline_executable_info = pipeline_executable_info
 
 
-struct PipelineInfoKHR(Copyable):
+struct PipelineInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var pipeline: Pipeline
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -14728,9 +14728,9 @@ struct PipelineInfoKHR(Copyable):
         self.pipeline = pipeline
 
 
-struct PipelineExecutablePropertiesKHR(Copyable):
+struct PipelineExecutablePropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var stages: ShaderStageFlags
     var name: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
     var description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
@@ -14748,8 +14748,8 @@ struct PipelineExecutablePropertiesKHR(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.stages = stages
-        self.name = name
-        self.description = description
+        self.name = name.copy()
+        self.description = description.copy()
         self.subgroup_size = subgroup_size
 
     fn name_slice(self) -> CStringSlice[origin_of(self.name)]:
@@ -14759,9 +14759,9 @@ struct PipelineExecutablePropertiesKHR(Copyable):
         return CStringSlice[origin_of(self.description)](unsafe_from_ptr = self.description.unsafe_ptr())
 
 
-struct PipelineExecutableInfoKHR(Copyable):
+struct PipelineExecutableInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var pipeline: Pipeline
     var executable_index: UInt32
 
@@ -14778,9 +14778,9 @@ struct PipelineExecutableInfoKHR(Copyable):
         self.executable_index = executable_index
 
 
-struct PipelineExecutableStatisticKHR(Copyable):
+struct PipelineExecutableStatisticKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var name: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
     var description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
     var format: PipelineExecutableStatisticFormatKHR
@@ -14797,8 +14797,8 @@ struct PipelineExecutableStatisticKHR(Copyable):
     ):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
-        self.name = name
-        self.description = description
+        self.name = name.copy()
+        self.description = description.copy()
         self.format = format
         self.value = value
 
@@ -14809,14 +14809,14 @@ struct PipelineExecutableStatisticKHR(Copyable):
         return CStringSlice[origin_of(self.description)](unsafe_from_ptr = self.description.unsafe_ptr())
 
 
-struct PipelineExecutableInternalRepresentationKHR(Copyable):
+struct PipelineExecutableInternalRepresentationKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var name: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
     var description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
     var is_text: Bool32
     var data_size: UInt
-    var p_data: Ptr[NoneType, MutOrigin.external]
+    var p_data: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin, p_data_origin: MutOrigin = MutAnyOrigin](
         out self,
@@ -14830,8 +14830,8 @@ struct PipelineExecutableInternalRepresentationKHR(Copyable):
     ):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
-        self.name = name
-        self.description = description
+        self.name = name.copy()
+        self.description = description.copy()
         self.is_text = is_text
         self.data_size = data_size
         self.p_data = Ptr(to=p_data).bitcast[type_of(self.p_data)]()[]
@@ -14843,9 +14843,9 @@ struct PipelineExecutableInternalRepresentationKHR(Copyable):
         return CStringSlice[origin_of(self.description)](unsafe_from_ptr = self.description.unsafe_ptr())
 
 
-struct PhysicalDeviceShaderDemoteToHelperInvocationFeatures(Copyable):
+struct PhysicalDeviceShaderDemoteToHelperInvocationFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_demote_to_helper_invocation: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14859,9 +14859,9 @@ struct PhysicalDeviceShaderDemoteToHelperInvocationFeatures(Copyable):
         self.shader_demote_to_helper_invocation = shader_demote_to_helper_invocation
 
 
-struct PhysicalDeviceTexelBufferAlignmentFeaturesEXT(Copyable):
+struct PhysicalDeviceTexelBufferAlignmentFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var texel_buffer_alignment: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14875,9 +14875,9 @@ struct PhysicalDeviceTexelBufferAlignmentFeaturesEXT(Copyable):
         self.texel_buffer_alignment = texel_buffer_alignment
 
 
-struct PhysicalDeviceTexelBufferAlignmentProperties(Copyable):
+struct PhysicalDeviceTexelBufferAlignmentProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var storage_texel_buffer_offset_alignment_bytes: DeviceSize
     var storage_texel_buffer_offset_single_texel_alignment: Bool32
     var uniform_texel_buffer_offset_alignment_bytes: DeviceSize
@@ -14900,9 +14900,9 @@ struct PhysicalDeviceTexelBufferAlignmentProperties(Copyable):
         self.uniform_texel_buffer_offset_single_texel_alignment = uniform_texel_buffer_offset_single_texel_alignment
 
 
-struct PhysicalDeviceSubgroupSizeControlFeatures(Copyable):
+struct PhysicalDeviceSubgroupSizeControlFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var subgroup_size_control: Bool32
     var compute_full_subgroups: Bool32
 
@@ -14919,9 +14919,9 @@ struct PhysicalDeviceSubgroupSizeControlFeatures(Copyable):
         self.compute_full_subgroups = compute_full_subgroups
 
 
-struct PhysicalDeviceSubgroupSizeControlProperties(Copyable):
+struct PhysicalDeviceSubgroupSizeControlProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var min_subgroup_size: UInt32
     var max_subgroup_size: UInt32
     var max_compute_workgroup_subgroups: UInt32
@@ -14944,9 +14944,9 @@ struct PhysicalDeviceSubgroupSizeControlProperties(Copyable):
         self.required_subgroup_size_stages = required_subgroup_size_stages
 
 
-struct PipelineShaderStageRequiredSubgroupSizeCreateInfo(Copyable):
+struct PipelineShaderStageRequiredSubgroupSizeCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var required_subgroup_size: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -14960,9 +14960,9 @@ struct PipelineShaderStageRequiredSubgroupSizeCreateInfo(Copyable):
         self.required_subgroup_size = required_subgroup_size
 
 
-struct SubpassShadingPipelineCreateInfoHUAWEI(Copyable):
+struct SubpassShadingPipelineCreateInfoHUAWEI(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var render_pass: RenderPass
     var subpass: UInt32
 
@@ -14979,9 +14979,9 @@ struct SubpassShadingPipelineCreateInfoHUAWEI(Copyable):
         self.subpass = subpass
 
 
-struct PhysicalDeviceSubpassShadingPropertiesHUAWEI(Copyable):
+struct PhysicalDeviceSubpassShadingPropertiesHUAWEI(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_subpass_shading_workgroup_size_aspect_ratio: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -14995,9 +14995,9 @@ struct PhysicalDeviceSubpassShadingPropertiesHUAWEI(Copyable):
         self.max_subpass_shading_workgroup_size_aspect_ratio = max_subpass_shading_workgroup_size_aspect_ratio
 
 
-struct PhysicalDeviceClusterCullingShaderPropertiesHUAWEI(Copyable):
+struct PhysicalDeviceClusterCullingShaderPropertiesHUAWEI(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_work_group_count: InlineArray[UInt32, Int(3)]
     var max_work_group_size: InlineArray[UInt32, Int(3)]
     var max_output_cluster_count: UInt32
@@ -15014,15 +15014,15 @@ struct PhysicalDeviceClusterCullingShaderPropertiesHUAWEI(Copyable):
     ):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
-        self.max_work_group_count = max_work_group_count
-        self.max_work_group_size = max_work_group_size
+        self.max_work_group_count = max_work_group_count.copy()
+        self.max_work_group_size = max_work_group_size.copy()
         self.max_output_cluster_count = max_output_cluster_count
         self.indirect_buffer_offset_alignment = indirect_buffer_offset_alignment
 
 
-struct MemoryOpaqueCaptureAddressAllocateInfo(Copyable):
+struct MemoryOpaqueCaptureAddressAllocateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var opaque_capture_address: UInt64
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -15036,9 +15036,9 @@ struct MemoryOpaqueCaptureAddressAllocateInfo(Copyable):
         self.opaque_capture_address = opaque_capture_address
 
 
-struct DeviceMemoryOpaqueCaptureAddressInfo(Copyable):
+struct DeviceMemoryOpaqueCaptureAddressInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var memory: DeviceMemory
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -15052,9 +15052,9 @@ struct DeviceMemoryOpaqueCaptureAddressInfo(Copyable):
         self.memory = memory
 
 
-struct PhysicalDeviceLineRasterizationFeatures(Copyable):
+struct PhysicalDeviceLineRasterizationFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var rectangular_lines: Bool32
     var bresenham_lines: Bool32
     var smooth_lines: Bool32
@@ -15083,9 +15083,9 @@ struct PhysicalDeviceLineRasterizationFeatures(Copyable):
         self.stippled_smooth_lines = stippled_smooth_lines
 
 
-struct PhysicalDeviceLineRasterizationProperties(Copyable):
+struct PhysicalDeviceLineRasterizationProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var line_sub_pixel_precision_bits: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -15099,9 +15099,9 @@ struct PhysicalDeviceLineRasterizationProperties(Copyable):
         self.line_sub_pixel_precision_bits = line_sub_pixel_precision_bits
 
 
-struct PipelineRasterizationLineStateCreateInfo(Copyable):
+struct PipelineRasterizationLineStateCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var line_rasterization_mode: LineRasterizationMode
     var stippled_line_enable: Bool32
     var line_stipple_factor: UInt32
@@ -15124,9 +15124,9 @@ struct PipelineRasterizationLineStateCreateInfo(Copyable):
         self.line_stipple_pattern = line_stipple_pattern
 
 
-struct PhysicalDevicePipelineCreationCacheControlFeatures(Copyable):
+struct PhysicalDevicePipelineCreationCacheControlFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline_creation_cache_control: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -15140,9 +15140,9 @@ struct PhysicalDevicePipelineCreationCacheControlFeatures(Copyable):
         self.pipeline_creation_cache_control = pipeline_creation_cache_control
 
 
-struct PhysicalDeviceVulkan11Features(Copyable):
+struct PhysicalDeviceVulkan11Features(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var storage_buffer_16_bit_access: Bool32
     var uniform_and_storage_buffer_16_bit_access: Bool32
     var storage_push_constant_16: Bool32
@@ -15189,9 +15189,9 @@ struct PhysicalDeviceVulkan11Features(Copyable):
         self.shader_draw_parameters = shader_draw_parameters
 
 
-struct PhysicalDeviceVulkan11Properties(Copyable):
+struct PhysicalDeviceVulkan11Properties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var device_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
     var driver_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
     var device_luid: InlineArray[UInt8, Int(LUID_SIZE)]
@@ -15230,9 +15230,9 @@ struct PhysicalDeviceVulkan11Properties(Copyable):
     ):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
-        self.device_uuid = device_uuid
-        self.driver_uuid = driver_uuid
-        self.device_luid = device_luid
+        self.device_uuid = device_uuid.copy()
+        self.driver_uuid = driver_uuid.copy()
+        self.device_luid = device_luid.copy()
         self.device_node_mask = device_node_mask
         self.device_luid_valid = device_luid_valid
         self.subgroup_size = subgroup_size
@@ -15247,9 +15247,9 @@ struct PhysicalDeviceVulkan11Properties(Copyable):
         self.max_memory_allocation_size = max_memory_allocation_size
 
 
-struct PhysicalDeviceVulkan12Features(Copyable):
+struct PhysicalDeviceVulkan12Features(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var sampler_mirror_clamp_to_edge: Bool32
     var draw_indirect_count: Bool32
     var storage_buffer_8_bit_access: Bool32
@@ -15401,9 +15401,9 @@ struct PhysicalDeviceVulkan12Features(Copyable):
         self.subgroup_broadcast_dynamic_id = subgroup_broadcast_dynamic_id
 
 
-struct PhysicalDeviceVulkan12Properties(Copyable):
+struct PhysicalDeviceVulkan12Properties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var driver_id: DriverId
     var driver_name: InlineArray[c_char, Int(MAX_DRIVER_NAME_SIZE)]
     var driver_info: InlineArray[c_char, Int(MAX_DRIVER_INFO_SIZE)]
@@ -15517,8 +15517,8 @@ struct PhysicalDeviceVulkan12Properties(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.driver_id = driver_id
-        self.driver_name = driver_name
-        self.driver_info = driver_info
+        self.driver_name = driver_name.copy()
+        self.driver_info = driver_info.copy()
         self.conformance_version = conformance_version.copy()
         self.denorm_behavior_independence = denorm_behavior_independence
         self.rounding_mode_independence = rounding_mode_independence
@@ -15576,9 +15576,9 @@ struct PhysicalDeviceVulkan12Properties(Copyable):
         return CStringSlice[origin_of(self.driver_info)](unsafe_from_ptr = self.driver_info.unsafe_ptr())
 
 
-struct PhysicalDeviceVulkan13Features(Copyable):
+struct PhysicalDeviceVulkan13Features(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var robust_image_access: Bool32
     var inline_uniform_block: Bool32
     var descriptor_binding_inline_uniform_block_update_after_bind: Bool32
@@ -15634,9 +15634,9 @@ struct PhysicalDeviceVulkan13Features(Copyable):
         self.maintenance_4 = maintenance_4
 
 
-struct PhysicalDeviceVulkan13Properties(Copyable):
+struct PhysicalDeviceVulkan13Properties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var min_subgroup_size: UInt32
     var max_subgroup_size: UInt32
     var max_compute_workgroup_subgroups: UInt32
@@ -15782,9 +15782,9 @@ struct PhysicalDeviceVulkan13Properties(Copyable):
         self.max_buffer_size = max_buffer_size
 
 
-struct PhysicalDeviceVulkan14Features(Copyable):
+struct PhysicalDeviceVulkan14Features(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var global_priority_query: Bool32
     var shader_subgroup_rotate: Bool32
     var shader_subgroup_rotate_clustered: Bool32
@@ -15858,9 +15858,9 @@ struct PhysicalDeviceVulkan14Features(Copyable):
         self.push_descriptor = push_descriptor
 
 
-struct PhysicalDeviceVulkan14Properties(Copyable):
+struct PhysicalDeviceVulkan14Properties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var line_sub_pixel_precision_bits: UInt32
     var max_vertex_attrib_divisor: UInt32
     var supports_non_zero_first_instance: Bool32
@@ -15881,9 +15881,9 @@ struct PhysicalDeviceVulkan14Properties(Copyable):
     var default_robustness_vertex_inputs: PipelineRobustnessBufferBehavior
     var default_robustness_images: PipelineRobustnessImageBehavior
     var copy_src_layout_count: UInt32
-    var p_copy_src_layouts: Ptr[ImageLayout, MutOrigin.external]
+    var p_copy_src_layouts: Ptr[ImageLayout, MutExternalOrigin]
     var copy_dst_layout_count: UInt32
-    var p_copy_dst_layouts: Ptr[ImageLayout, MutOrigin.external]
+    var p_copy_dst_layouts: Ptr[ImageLayout, MutExternalOrigin]
     var optimal_tiling_layout_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
     var identical_memory_type_requirements: Bool32
 
@@ -15946,13 +15946,13 @@ struct PhysicalDeviceVulkan14Properties(Copyable):
         self.p_copy_src_layouts = Ptr(to=p_copy_src_layouts).bitcast[type_of(self.p_copy_src_layouts)]()[]
         self.copy_dst_layout_count = copy_dst_layout_count
         self.p_copy_dst_layouts = Ptr(to=p_copy_dst_layouts).bitcast[type_of(self.p_copy_dst_layouts)]()[]
-        self.optimal_tiling_layout_uuid = optimal_tiling_layout_uuid
+        self.optimal_tiling_layout_uuid = optimal_tiling_layout_uuid.copy()
         self.identical_memory_type_requirements = identical_memory_type_requirements
 
 
-struct PipelineCompilerControlCreateInfoAMD(Copyable):
+struct PipelineCompilerControlCreateInfoAMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var compiler_control_flags: PipelineCompilerControlFlagsAMD
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -15966,9 +15966,9 @@ struct PipelineCompilerControlCreateInfoAMD(Copyable):
         self.compiler_control_flags = compiler_control_flags
 
 
-struct PhysicalDeviceCoherentMemoryFeaturesAMD(Copyable):
+struct PhysicalDeviceCoherentMemoryFeaturesAMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var device_coherent_memory: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -15982,9 +15982,9 @@ struct PhysicalDeviceCoherentMemoryFeaturesAMD(Copyable):
         self.device_coherent_memory = device_coherent_memory
 
 
-struct FaultData(Copyable):
+struct FaultData(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var fault_level: FaultLevel
     var fault_type: FaultType
 
@@ -16001,11 +16001,11 @@ struct FaultData(Copyable):
         self.fault_type = fault_type
 
 
-struct FaultCallbackInfo(Copyable):
+struct FaultCallbackInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var fault_count: UInt32
-    var p_faults: Ptr[FaultData, MutOrigin.external]
+    var p_faults: Ptr[FaultData, MutExternalOrigin]
     var pfn_fault_callback: PFN_vkFaultCallbackFunction
 
     fn __init__[
@@ -16025,9 +16025,9 @@ struct FaultCallbackInfo(Copyable):
         self.pfn_fault_callback = pfn_fault_callback
 
 
-struct PhysicalDeviceToolProperties(Copyable):
+struct PhysicalDeviceToolProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var name: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]
     var version: InlineArray[c_char, Int(MAX_EXTENSION_NAME_SIZE)]
     var purposes: ToolPurposeFlags
@@ -16046,11 +16046,11 @@ struct PhysicalDeviceToolProperties(Copyable):
     ):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
-        self.name = name
-        self.version = version
+        self.name = name.copy()
+        self.version = version.copy()
         self.purposes = purposes
-        self.description = description
-        self.layer = layer
+        self.description = description.copy()
+        self.layer = layer.copy()
 
     fn name_slice(self) -> CStringSlice[origin_of(self.name)]:
         return CStringSlice[origin_of(self.name)](unsafe_from_ptr = self.name.unsafe_ptr())
@@ -16065,9 +16065,9 @@ struct PhysicalDeviceToolProperties(Copyable):
         return CStringSlice[origin_of(self.layer)](unsafe_from_ptr = self.layer.unsafe_ptr())
 
 
-struct SamplerCustomBorderColorCreateInfoEXT(Copyable):
+struct SamplerCustomBorderColorCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var custom_border_color: ClearColorValue
     var format: Format
 
@@ -16084,9 +16084,9 @@ struct SamplerCustomBorderColorCreateInfoEXT(Copyable):
         self.format = format
 
 
-struct PhysicalDeviceCustomBorderColorPropertiesEXT(Copyable):
+struct PhysicalDeviceCustomBorderColorPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_custom_border_color_samplers: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -16100,9 +16100,9 @@ struct PhysicalDeviceCustomBorderColorPropertiesEXT(Copyable):
         self.max_custom_border_color_samplers = max_custom_border_color_samplers
 
 
-struct PhysicalDeviceCustomBorderColorFeaturesEXT(Copyable):
+struct PhysicalDeviceCustomBorderColorFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var custom_border_colors: Bool32
     var custom_border_color_without_format: Bool32
 
@@ -16119,9 +16119,9 @@ struct PhysicalDeviceCustomBorderColorFeaturesEXT(Copyable):
         self.custom_border_color_without_format = custom_border_color_without_format
 
 
-struct SamplerBorderColorComponentMappingCreateInfoEXT(Copyable):
+struct SamplerBorderColorComponentMappingCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var components: ComponentMapping
     var srgb: Bool32
 
@@ -16138,9 +16138,9 @@ struct SamplerBorderColorComponentMappingCreateInfoEXT(Copyable):
         self.srgb = srgb
 
 
-struct PhysicalDeviceBorderColorSwizzleFeaturesEXT(Copyable):
+struct PhysicalDeviceBorderColorSwizzleFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var border_color_swizzle: Bool32
     var border_color_swizzle_from_image: Bool32
 
@@ -16157,9 +16157,9 @@ struct PhysicalDeviceBorderColorSwizzleFeaturesEXT(Copyable):
         self.border_color_swizzle_from_image = border_color_swizzle_from_image
 
 
-struct AccelerationStructureGeometryTrianglesDataKHR(Copyable):
+struct AccelerationStructureGeometryTrianglesDataKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var vertex_format: Format
     var vertex_data: DeviceOrHostAddressConstKHR
     var vertex_stride: DeviceSize
@@ -16191,9 +16191,9 @@ struct AccelerationStructureGeometryTrianglesDataKHR(Copyable):
         self.transform_data = transform_data
 
 
-struct AccelerationStructureGeometryAabbsDataKHR(Copyable):
+struct AccelerationStructureGeometryAabbsDataKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var data: DeviceOrHostAddressConstKHR
     var stride: DeviceSize
 
@@ -16210,9 +16210,9 @@ struct AccelerationStructureGeometryAabbsDataKHR(Copyable):
         self.stride = stride
 
 
-struct AccelerationStructureGeometryInstancesDataKHR(Copyable):
+struct AccelerationStructureGeometryInstancesDataKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var array_of_pointers: Bool32
     var data: DeviceOrHostAddressConstKHR
 
@@ -16229,9 +16229,9 @@ struct AccelerationStructureGeometryInstancesDataKHR(Copyable):
         self.data = data
 
 
-struct AccelerationStructureGeometryLinearSweptSpheresDataNV(Copyable):
+struct AccelerationStructureGeometryLinearSweptSpheresDataNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var vertex_format: Format
     var vertex_data: DeviceOrHostAddressConstKHR
     var vertex_stride: DeviceSize
@@ -16275,9 +16275,9 @@ struct AccelerationStructureGeometryLinearSweptSpheresDataNV(Copyable):
         self.end_caps_mode = end_caps_mode
 
 
-struct AccelerationStructureGeometrySpheresDataNV(Copyable):
+struct AccelerationStructureGeometrySpheresDataNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var vertex_format: Format
     var vertex_data: DeviceOrHostAddressConstKHR
     var vertex_stride: DeviceSize
@@ -16315,9 +16315,9 @@ struct AccelerationStructureGeometrySpheresDataNV(Copyable):
         self.index_stride = index_stride
 
 
-struct AccelerationStructureGeometryKHR(Copyable):
+struct AccelerationStructureGeometryKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var geometry_type: GeometryTypeKHR
     var geometry: AccelerationStructureGeometryDataKHR
     var flags: GeometryFlagsKHR
@@ -16337,17 +16337,17 @@ struct AccelerationStructureGeometryKHR(Copyable):
         self.flags = flags
 
 
-struct AccelerationStructureBuildGeometryInfoKHR(Copyable):
+struct AccelerationStructureBuildGeometryInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var type: AccelerationStructureTypeKHR
     var flags: BuildAccelerationStructureFlagsKHR
     var mode: BuildAccelerationStructureModeKHR
     var src_acceleration_structure: AccelerationStructureKHR
     var dst_acceleration_structure: AccelerationStructureKHR
     var geometry_count: UInt32
-    var p_geometries: Ptr[AccelerationStructureGeometryKHR, ImmutOrigin.external]
-    var pp_geometries: Ptr[Ptr[AccelerationStructureGeometryKHR, ImmutOrigin.external], ImmutOrigin.external]
+    var p_geometries: Ptr[AccelerationStructureGeometryKHR, ImmutExternalOrigin]
+    var pp_geometries: Ptr[Ptr[AccelerationStructureGeometryKHR, ImmutExternalOrigin], ImmutExternalOrigin]
     var scratch_data: DeviceOrHostAddressKHR
 
     fn __init__[
@@ -16382,7 +16382,7 @@ struct AccelerationStructureBuildGeometryInfoKHR(Copyable):
         self.scratch_data = scratch_data
 
 
-struct AccelerationStructureBuildRangeInfoKHR(Copyable):
+struct AccelerationStructureBuildRangeInfoKHR(Copyable, Equatable):
     var primitive_count: UInt32
     var primitive_offset: UInt32
     var first_vertex: UInt32
@@ -16401,9 +16401,9 @@ struct AccelerationStructureBuildRangeInfoKHR(Copyable):
         self.transform_offset = transform_offset
 
 
-struct AccelerationStructureCreateInfoKHR(Copyable):
+struct AccelerationStructureCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var create_flags: AccelerationStructureCreateFlagsKHR
     var buffer: Buffer
     var offset: DeviceSize
@@ -16432,7 +16432,7 @@ struct AccelerationStructureCreateInfoKHR(Copyable):
         self.device_address = device_address
 
 
-struct AabbPositionsKHR(Copyable):
+struct AabbPositionsKHR(Copyable, Equatable):
     var min_x: Float32
     var min_y: Float32
     var min_z: Float32
@@ -16457,17 +16457,17 @@ struct AabbPositionsKHR(Copyable):
         self.max_z = max_z
 
 
-struct TransformMatrixKHR(Copyable):
+struct TransformMatrixKHR(Copyable, Equatable):
     var matrix: InlineArray[InlineArray[Float32, Int(4)], Int(3)]
 
     fn __init__(
         out self,
         matrix: InlineArray[InlineArray[Float32, Int(4)], Int(3)] = zero_init[InlineArray[InlineArray[Float32, Int(4)], Int(3)]](),
     ):
-        self.matrix = matrix
+        self.matrix = matrix.copy()
 
 
-struct AccelerationStructureInstanceKHR(Copyable):
+struct AccelerationStructureInstanceKHR(Copyable, Equatable):
     var transform: TransformMatrixKHR
     var _packed0: UInt32
     var _packed1: UInt32
@@ -16516,9 +16516,9 @@ struct AccelerationStructureInstanceKHR(Copyable):
         set_packed_value[width=8, offset=24](self._packed1, new_value)
 
 
-struct AccelerationStructureDeviceAddressInfoKHR(Copyable):
+struct AccelerationStructureDeviceAddressInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var acceleration_structure: AccelerationStructureKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -16532,10 +16532,10 @@ struct AccelerationStructureDeviceAddressInfoKHR(Copyable):
         self.acceleration_structure = acceleration_structure
 
 
-struct AccelerationStructureVersionInfoKHR(Copyable):
+struct AccelerationStructureVersionInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_version_data: Ptr[UInt8, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_version_data: Ptr[UInt8, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -16551,9 +16551,9 @@ struct AccelerationStructureVersionInfoKHR(Copyable):
         self.p_version_data = Ptr(to=p_version_data).bitcast[type_of(self.p_version_data)]()[]
 
 
-struct CopyAccelerationStructureInfoKHR(Copyable):
+struct CopyAccelerationStructureInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src: AccelerationStructureKHR
     var dst: AccelerationStructureKHR
     var mode: CopyAccelerationStructureModeKHR
@@ -16573,9 +16573,9 @@ struct CopyAccelerationStructureInfoKHR(Copyable):
         self.mode = mode
 
 
-struct CopyAccelerationStructureToMemoryInfoKHR(Copyable):
+struct CopyAccelerationStructureToMemoryInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src: AccelerationStructureKHR
     var dst: DeviceOrHostAddressKHR
     var mode: CopyAccelerationStructureModeKHR
@@ -16595,9 +16595,9 @@ struct CopyAccelerationStructureToMemoryInfoKHR(Copyable):
         self.mode = mode
 
 
-struct CopyMemoryToAccelerationStructureInfoKHR(Copyable):
+struct CopyMemoryToAccelerationStructureInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src: DeviceOrHostAddressConstKHR
     var dst: AccelerationStructureKHR
     var mode: CopyAccelerationStructureModeKHR
@@ -16617,9 +16617,9 @@ struct CopyMemoryToAccelerationStructureInfoKHR(Copyable):
         self.mode = mode
 
 
-struct RayTracingPipelineInterfaceCreateInfoKHR(Copyable):
+struct RayTracingPipelineInterfaceCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var max_pipeline_ray_payload_size: UInt32
     var max_pipeline_ray_hit_attribute_size: UInt32
 
@@ -16636,11 +16636,11 @@ struct RayTracingPipelineInterfaceCreateInfoKHR(Copyable):
         self.max_pipeline_ray_hit_attribute_size = max_pipeline_ray_hit_attribute_size
 
 
-struct PipelineLibraryCreateInfoKHR(Copyable):
+struct PipelineLibraryCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var library_count: UInt32
-    var p_libraries: Ptr[Pipeline, ImmutOrigin.external]
+    var p_libraries: Ptr[Pipeline, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -16658,9 +16658,9 @@ struct PipelineLibraryCreateInfoKHR(Copyable):
         self.p_libraries = Ptr(to=p_libraries).bitcast[type_of(self.p_libraries)]()[]
 
 
-struct PhysicalDeviceExtendedDynamicStateFeaturesEXT(Copyable):
+struct PhysicalDeviceExtendedDynamicStateFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var extended_dynamic_state: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -16674,9 +16674,9 @@ struct PhysicalDeviceExtendedDynamicStateFeaturesEXT(Copyable):
         self.extended_dynamic_state = extended_dynamic_state
 
 
-struct PhysicalDeviceExtendedDynamicState2FeaturesEXT(Copyable):
+struct PhysicalDeviceExtendedDynamicState2FeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var extended_dynamic_state_2: Bool32
     var extended_dynamic_state_2_logic_op: Bool32
     var extended_dynamic_state_2_patch_control_points: Bool32
@@ -16696,9 +16696,9 @@ struct PhysicalDeviceExtendedDynamicState2FeaturesEXT(Copyable):
         self.extended_dynamic_state_2_patch_control_points = extended_dynamic_state_2_patch_control_points
 
 
-struct PhysicalDeviceExtendedDynamicState3FeaturesEXT(Copyable):
+struct PhysicalDeviceExtendedDynamicState3FeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var extended_dynamic_state_3_tessellation_domain_origin: Bool32
     var extended_dynamic_state_3depth_clamp_enable: Bool32
     var extended_dynamic_state_3_polygon_mode: Bool32
@@ -16802,9 +16802,9 @@ struct PhysicalDeviceExtendedDynamicState3FeaturesEXT(Copyable):
         self.extended_dynamic_state_3_shading_rate_image_enable = extended_dynamic_state_3_shading_rate_image_enable
 
 
-struct PhysicalDeviceExtendedDynamicState3PropertiesEXT(Copyable):
+struct PhysicalDeviceExtendedDynamicState3PropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var dynamic_primitive_topology_unrestricted: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -16818,7 +16818,7 @@ struct PhysicalDeviceExtendedDynamicState3PropertiesEXT(Copyable):
         self.dynamic_primitive_topology_unrestricted = dynamic_primitive_topology_unrestricted
 
 
-struct ColorBlendEquationEXT(Copyable):
+struct ColorBlendEquationEXT(Copyable, Equatable):
     var src_color_blend_factor: BlendFactor
     var dst_color_blend_factor: BlendFactor
     var color_blend_op: BlendOp
@@ -16843,7 +16843,7 @@ struct ColorBlendEquationEXT(Copyable):
         self.alpha_blend_op = alpha_blend_op
 
 
-struct ColorBlendAdvancedEXT(Copyable):
+struct ColorBlendAdvancedEXT(Copyable, Equatable):
     var advanced_blend_op: BlendOp
     var src_premultiplied: Bool32
     var dst_premultiplied: Bool32
@@ -16865,9 +16865,9 @@ struct ColorBlendAdvancedEXT(Copyable):
         self.clamp_results = clamp_results
 
 
-struct RenderPassTransformBeginInfoQCOM(Copyable):
+struct RenderPassTransformBeginInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var transform: SurfaceTransformFlagBitsKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -16881,9 +16881,9 @@ struct RenderPassTransformBeginInfoQCOM(Copyable):
         self.transform = transform
 
 
-struct CopyCommandTransformInfoQCOM(Copyable):
+struct CopyCommandTransformInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var transform: SurfaceTransformFlagBitsKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -16897,9 +16897,9 @@ struct CopyCommandTransformInfoQCOM(Copyable):
         self.transform = transform
 
 
-struct CommandBufferInheritanceRenderPassTransformInfoQCOM(Copyable):
+struct CommandBufferInheritanceRenderPassTransformInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var transform: SurfaceTransformFlagBitsKHR
     var render_area: Rect2D
 
@@ -16916,9 +16916,9 @@ struct CommandBufferInheritanceRenderPassTransformInfoQCOM(Copyable):
         self.render_area = render_area.copy()
 
 
-struct PhysicalDevicePartitionedAccelerationStructureFeaturesNV(Copyable):
+struct PhysicalDevicePartitionedAccelerationStructureFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var partitioned_acceleration_structure: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -16932,9 +16932,9 @@ struct PhysicalDevicePartitionedAccelerationStructureFeaturesNV(Copyable):
         self.partitioned_acceleration_structure = partitioned_acceleration_structure
 
 
-struct PhysicalDevicePartitionedAccelerationStructurePropertiesNV(Copyable):
+struct PhysicalDevicePartitionedAccelerationStructurePropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_partition_count: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -16948,7 +16948,7 @@ struct PhysicalDevicePartitionedAccelerationStructurePropertiesNV(Copyable):
         self.max_partition_count = max_partition_count
 
 
-struct BuildPartitionedAccelerationStructureIndirectCommandNV(Copyable):
+struct BuildPartitionedAccelerationStructureIndirectCommandNV(Copyable, Equatable):
     var op_type: PartitionedAccelerationStructureOpTypeNV
     var arg_count: UInt32
     var arg_data: StridedDeviceAddressNV
@@ -16964,9 +16964,9 @@ struct BuildPartitionedAccelerationStructureIndirectCommandNV(Copyable):
         self.arg_data = arg_data.copy()
 
 
-struct PartitionedAccelerationStructureFlagsNV(Copyable):
+struct PartitionedAccelerationStructureFlagsNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var enable_partition_translation: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -16980,7 +16980,7 @@ struct PartitionedAccelerationStructureFlagsNV(Copyable):
         self.enable_partition_translation = enable_partition_translation
 
 
-struct PartitionedAccelerationStructureWriteInstanceDataNV(Copyable):
+struct PartitionedAccelerationStructureWriteInstanceDataNV(Copyable, Equatable):
     var transform: TransformMatrixKHR
     var explicit_aabb: InlineArray[Float32, Int(6)]
     var instance_id: UInt32
@@ -17004,7 +17004,7 @@ struct PartitionedAccelerationStructureWriteInstanceDataNV(Copyable):
         acceleration_structure: DeviceAddress = zero_init[DeviceAddress](),
     ):
         self.transform = transform.copy()
-        self.explicit_aabb = explicit_aabb
+        self.explicit_aabb = explicit_aabb.copy()
         self.instance_id = instance_id
         self.instance_mask = instance_mask
         self.instance_contribution_to_hit_group_index = instance_contribution_to_hit_group_index
@@ -17014,7 +17014,7 @@ struct PartitionedAccelerationStructureWriteInstanceDataNV(Copyable):
         self.acceleration_structure = acceleration_structure
 
 
-struct PartitionedAccelerationStructureUpdateInstanceDataNV(Copyable):
+struct PartitionedAccelerationStructureUpdateInstanceDataNV(Copyable, Equatable):
     var instance_index: UInt32
     var instance_contribution_to_hit_group_index: UInt32
     var acceleration_structure: DeviceAddress
@@ -17030,7 +17030,7 @@ struct PartitionedAccelerationStructureUpdateInstanceDataNV(Copyable):
         self.acceleration_structure = acceleration_structure
 
 
-struct PartitionedAccelerationStructureWritePartitionTranslationDataNV(Copyable):
+struct PartitionedAccelerationStructureWritePartitionTranslationDataNV(Copyable, Equatable):
     var partition_index: UInt32
     var partition_translation: InlineArray[Float32, Int(3)]
 
@@ -17040,14 +17040,14 @@ struct PartitionedAccelerationStructureWritePartitionTranslationDataNV(Copyable)
         partition_translation: InlineArray[Float32, Int(3)] = zero_init[InlineArray[Float32, Int(3)]](),
     ):
         self.partition_index = partition_index
-        self.partition_translation = partition_translation
+        self.partition_translation = partition_translation.copy()
 
 
-struct WriteDescriptorSetPartitionedAccelerationStructureNV(Copyable):
+struct WriteDescriptorSetPartitionedAccelerationStructureNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var acceleration_structure_count: UInt32
-    var p_acceleration_structures: Ptr[DeviceAddress, ImmutOrigin.external]
+    var p_acceleration_structures: Ptr[DeviceAddress, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin,
@@ -17065,9 +17065,9 @@ struct WriteDescriptorSetPartitionedAccelerationStructureNV(Copyable):
         self.p_acceleration_structures = Ptr(to=p_acceleration_structures).bitcast[type_of(self.p_acceleration_structures)]()[]
 
 
-struct PartitionedAccelerationStructureInstancesInputNV(Copyable):
+struct PartitionedAccelerationStructureInstancesInputNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: BuildAccelerationStructureFlagsKHR
     var instance_count: UInt32
     var max_instance_per_partition_count: UInt32
@@ -17093,9 +17093,9 @@ struct PartitionedAccelerationStructureInstancesInputNV(Copyable):
         self.max_instance_in_global_partition_count = max_instance_in_global_partition_count
 
 
-struct BuildPartitionedAccelerationStructureInfoNV(Copyable):
+struct BuildPartitionedAccelerationStructureInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var input: PartitionedAccelerationStructureInstancesInputNV
     var src_acceleration_structure_data: DeviceAddress
     var dst_acceleration_structure_data: DeviceAddress
@@ -17124,9 +17124,9 @@ struct BuildPartitionedAccelerationStructureInfoNV(Copyable):
         self.src_infos_count = src_infos_count
 
 
-struct PhysicalDeviceDiagnosticsConfigFeaturesNV(Copyable):
+struct PhysicalDeviceDiagnosticsConfigFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var diagnostics_config: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -17140,9 +17140,9 @@ struct PhysicalDeviceDiagnosticsConfigFeaturesNV(Copyable):
         self.diagnostics_config = diagnostics_config
 
 
-struct DeviceDiagnosticsConfigCreateInfoNV(Copyable):
+struct DeviceDiagnosticsConfigCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DeviceDiagnosticsConfigFlagsNV
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -17156,9 +17156,9 @@ struct DeviceDiagnosticsConfigCreateInfoNV(Copyable):
         self.flags = flags
 
 
-struct PipelineOfflineCreateInfo(Copyable):
+struct PipelineOfflineCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var pipeline_identifier: InlineArray[UInt8, Int(UUID_SIZE)]
     var match_control: PipelineMatchControl
     var pool_entry_size: DeviceSize
@@ -17173,14 +17173,14 @@ struct PipelineOfflineCreateInfo(Copyable):
     ):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
-        self.pipeline_identifier = pipeline_identifier
+        self.pipeline_identifier = pipeline_identifier.copy()
         self.match_control = match_control
         self.pool_entry_size = pool_entry_size
 
 
-struct PhysicalDeviceZeroInitializeWorkgroupMemoryFeatures(Copyable):
+struct PhysicalDeviceZeroInitializeWorkgroupMemoryFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_zero_initialize_workgroup_memory: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -17194,9 +17194,9 @@ struct PhysicalDeviceZeroInitializeWorkgroupMemoryFeatures(Copyable):
         self.shader_zero_initialize_workgroup_memory = shader_zero_initialize_workgroup_memory
 
 
-struct PhysicalDeviceShaderSubgroupUniformControlFlowFeaturesKHR(Copyable):
+struct PhysicalDeviceShaderSubgroupUniformControlFlowFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_subgroup_uniform_control_flow: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -17210,9 +17210,9 @@ struct PhysicalDeviceShaderSubgroupUniformControlFlowFeaturesKHR(Copyable):
         self.shader_subgroup_uniform_control_flow = shader_subgroup_uniform_control_flow
 
 
-struct PhysicalDeviceRobustness2FeaturesKHR(Copyable):
+struct PhysicalDeviceRobustness2FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var robust_buffer_access_2: Bool32
     var robust_image_access_2: Bool32
     var null_descriptor: Bool32
@@ -17232,9 +17232,9 @@ struct PhysicalDeviceRobustness2FeaturesKHR(Copyable):
         self.null_descriptor = null_descriptor
 
 
-struct PhysicalDeviceRobustness2PropertiesKHR(Copyable):
+struct PhysicalDeviceRobustness2PropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var robust_storage_buffer_access_size_alignment: DeviceSize
     var robust_uniform_buffer_access_size_alignment: DeviceSize
 
@@ -17251,9 +17251,9 @@ struct PhysicalDeviceRobustness2PropertiesKHR(Copyable):
         self.robust_uniform_buffer_access_size_alignment = robust_uniform_buffer_access_size_alignment
 
 
-struct PhysicalDeviceImageRobustnessFeatures(Copyable):
+struct PhysicalDeviceImageRobustnessFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var robust_image_access: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -17267,9 +17267,9 @@ struct PhysicalDeviceImageRobustnessFeatures(Copyable):
         self.robust_image_access = robust_image_access
 
 
-struct PhysicalDeviceWorkgroupMemoryExplicitLayoutFeaturesKHR(Copyable):
+struct PhysicalDeviceWorkgroupMemoryExplicitLayoutFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var workgroup_memory_explicit_layout: Bool32
     var workgroup_memory_explicit_layout_scalar_block_layout: Bool32
     var workgroup_memory_explicit_layout_8_bit_access: Bool32
@@ -17292,9 +17292,9 @@ struct PhysicalDeviceWorkgroupMemoryExplicitLayoutFeaturesKHR(Copyable):
         self.workgroup_memory_explicit_layout_16_bit_access = workgroup_memory_explicit_layout_16_bit_access
 
 
-struct PhysicalDevicePortabilitySubsetFeaturesKHR(Copyable):
+struct PhysicalDevicePortabilitySubsetFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var constant_alpha_color_blend_factors: Bool32
     var events: Bool32
     var image_view_format_reinterpretation: Bool32
@@ -17350,9 +17350,9 @@ struct PhysicalDevicePortabilitySubsetFeaturesKHR(Copyable):
         self.vertex_attribute_access_beyond_stride = vertex_attribute_access_beyond_stride
 
 
-struct PhysicalDevicePortabilitySubsetPropertiesKHR(Copyable):
+struct PhysicalDevicePortabilitySubsetPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var min_vertex_input_binding_stride_alignment: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -17366,9 +17366,9 @@ struct PhysicalDevicePortabilitySubsetPropertiesKHR(Copyable):
         self.min_vertex_input_binding_stride_alignment = min_vertex_input_binding_stride_alignment
 
 
-struct PhysicalDevice4444FormatsFeaturesEXT(Copyable):
+struct PhysicalDevice4444FormatsFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var format_a4_r4_g4_b4: Bool32
     var format_a4_b4_g4_r4: Bool32
 
@@ -17385,9 +17385,9 @@ struct PhysicalDevice4444FormatsFeaturesEXT(Copyable):
         self.format_a4_b4_g4_r4 = format_a4_b4_g4_r4
 
 
-struct PhysicalDeviceSubpassShadingFeaturesHUAWEI(Copyable):
+struct PhysicalDeviceSubpassShadingFeaturesHUAWEI(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var subpass_shading: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -17401,9 +17401,9 @@ struct PhysicalDeviceSubpassShadingFeaturesHUAWEI(Copyable):
         self.subpass_shading = subpass_shading
 
 
-struct PhysicalDeviceClusterCullingShaderFeaturesHUAWEI(Copyable):
+struct PhysicalDeviceClusterCullingShaderFeaturesHUAWEI(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var clusterculling_shader: Bool32
     var multiview_cluster_culling_shader: Bool32
 
@@ -17420,9 +17420,9 @@ struct PhysicalDeviceClusterCullingShaderFeaturesHUAWEI(Copyable):
         self.multiview_cluster_culling_shader = multiview_cluster_culling_shader
 
 
-struct PhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI(Copyable):
+struct PhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var cluster_shading_rate: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -17436,9 +17436,9 @@ struct PhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI(Copyable):
         self.cluster_shading_rate = cluster_shading_rate
 
 
-struct BufferCopy2(Copyable):
+struct BufferCopy2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_offset: DeviceSize
     var dst_offset: DeviceSize
     var size: DeviceSize
@@ -17458,9 +17458,9 @@ struct BufferCopy2(Copyable):
         self.size = size
 
 
-struct ImageCopy2(Copyable):
+struct ImageCopy2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_subresource: ImageSubresourceLayers
     var src_offset: Offset3D
     var dst_subresource: ImageSubresourceLayers
@@ -17486,9 +17486,9 @@ struct ImageCopy2(Copyable):
         self.extent = extent.copy()
 
 
-struct ImageBlit2(Copyable):
+struct ImageBlit2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_subresource: ImageSubresourceLayers
     var src_offsets: InlineArray[Offset3D, Int(2)]
     var dst_subresource: ImageSubresourceLayers
@@ -17506,14 +17506,14 @@ struct ImageBlit2(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.src_subresource = src_subresource.copy()
-        self.src_offsets = src_offsets
+        self.src_offsets = src_offsets.copy()
         self.dst_subresource = dst_subresource.copy()
-        self.dst_offsets = dst_offsets
+        self.dst_offsets = dst_offsets.copy()
 
 
-struct BufferImageCopy2(Copyable):
+struct BufferImageCopy2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var buffer_offset: DeviceSize
     var buffer_row_length: UInt32
     var buffer_image_height: UInt32
@@ -17542,9 +17542,9 @@ struct BufferImageCopy2(Copyable):
         self.image_extent = image_extent.copy()
 
 
-struct ImageResolve2(Copyable):
+struct ImageResolve2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_subresource: ImageSubresourceLayers
     var src_offset: Offset3D
     var dst_subresource: ImageSubresourceLayers
@@ -17570,13 +17570,13 @@ struct ImageResolve2(Copyable):
         self.extent = extent.copy()
 
 
-struct CopyBufferInfo2(Copyable):
+struct CopyBufferInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_buffer: Buffer
     var dst_buffer: Buffer
     var region_count: UInt32
-    var p_regions: Ptr[BufferCopy2, ImmutOrigin.external]
+    var p_regions: Ptr[BufferCopy2, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -17598,15 +17598,15 @@ struct CopyBufferInfo2(Copyable):
         self.p_regions = Ptr(to=p_regions).bitcast[type_of(self.p_regions)]()[]
 
 
-struct CopyImageInfo2(Copyable):
+struct CopyImageInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_image: Image
     var src_image_layout: ImageLayout
     var dst_image: Image
     var dst_image_layout: ImageLayout
     var region_count: UInt32
-    var p_regions: Ptr[ImageCopy2, ImmutOrigin.external]
+    var p_regions: Ptr[ImageCopy2, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -17632,15 +17632,15 @@ struct CopyImageInfo2(Copyable):
         self.p_regions = Ptr(to=p_regions).bitcast[type_of(self.p_regions)]()[]
 
 
-struct BlitImageInfo2(Copyable):
+struct BlitImageInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_image: Image
     var src_image_layout: ImageLayout
     var dst_image: Image
     var dst_image_layout: ImageLayout
     var region_count: UInt32
-    var p_regions: Ptr[ImageBlit2, ImmutOrigin.external]
+    var p_regions: Ptr[ImageBlit2, ImmutExternalOrigin]
     var filter: Filter
 
     fn __init__[
@@ -17669,14 +17669,14 @@ struct BlitImageInfo2(Copyable):
         self.filter = filter
 
 
-struct CopyBufferToImageInfo2(Copyable):
+struct CopyBufferToImageInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_buffer: Buffer
     var dst_image: Image
     var dst_image_layout: ImageLayout
     var region_count: UInt32
-    var p_regions: Ptr[BufferImageCopy2, ImmutOrigin.external]
+    var p_regions: Ptr[BufferImageCopy2, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -17700,14 +17700,14 @@ struct CopyBufferToImageInfo2(Copyable):
         self.p_regions = Ptr(to=p_regions).bitcast[type_of(self.p_regions)]()[]
 
 
-struct CopyImageToBufferInfo2(Copyable):
+struct CopyImageToBufferInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_image: Image
     var src_image_layout: ImageLayout
     var dst_buffer: Buffer
     var region_count: UInt32
-    var p_regions: Ptr[BufferImageCopy2, ImmutOrigin.external]
+    var p_regions: Ptr[BufferImageCopy2, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -17731,15 +17731,15 @@ struct CopyImageToBufferInfo2(Copyable):
         self.p_regions = Ptr(to=p_regions).bitcast[type_of(self.p_regions)]()[]
 
 
-struct ResolveImageInfo2(Copyable):
+struct ResolveImageInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_image: Image
     var src_image_layout: ImageLayout
     var dst_image: Image
     var dst_image_layout: ImageLayout
     var region_count: UInt32
-    var p_regions: Ptr[ImageResolve2, ImmutOrigin.external]
+    var p_regions: Ptr[ImageResolve2, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -17765,9 +17765,9 @@ struct ResolveImageInfo2(Copyable):
         self.p_regions = Ptr(to=p_regions).bitcast[type_of(self.p_regions)]()[]
 
 
-struct PhysicalDeviceShaderImageAtomicInt64FeaturesEXT(Copyable):
+struct PhysicalDeviceShaderImageAtomicInt64FeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_image_int_64_atomics: Bool32
     var sparse_image_int_64_atomics: Bool32
 
@@ -17784,10 +17784,10 @@ struct PhysicalDeviceShaderImageAtomicInt64FeaturesEXT(Copyable):
         self.sparse_image_int_64_atomics = sparse_image_int_64_atomics
 
 
-struct FragmentShadingRateAttachmentInfoKHR(Copyable):
+struct FragmentShadingRateAttachmentInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_fragment_shading_rate_attachment: Ptr[AttachmentReference2, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_fragment_shading_rate_attachment: Ptr[AttachmentReference2, ImmutExternalOrigin]
     var shading_rate_attachment_texel_size: Extent2D
 
     fn __init__[
@@ -17806,9 +17806,9 @@ struct FragmentShadingRateAttachmentInfoKHR(Copyable):
         self.shading_rate_attachment_texel_size = shading_rate_attachment_texel_size.copy()
 
 
-struct PipelineFragmentShadingRateStateCreateInfoKHR(Copyable):
+struct PipelineFragmentShadingRateStateCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var fragment_size: Extent2D
     var combiner_ops: InlineArray[FragmentShadingRateCombinerOpKHR, Int(2)]
 
@@ -17822,12 +17822,12 @@ struct PipelineFragmentShadingRateStateCreateInfoKHR(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.fragment_size = fragment_size.copy()
-        self.combiner_ops = combiner_ops
+        self.combiner_ops = combiner_ops.copy()
 
 
-struct PhysicalDeviceFragmentShadingRateFeaturesKHR(Copyable):
+struct PhysicalDeviceFragmentShadingRateFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline_fragment_shading_rate: Bool32
     var primitive_fragment_shading_rate: Bool32
     var attachment_fragment_shading_rate: Bool32
@@ -17847,9 +17847,9 @@ struct PhysicalDeviceFragmentShadingRateFeaturesKHR(Copyable):
         self.attachment_fragment_shading_rate = attachment_fragment_shading_rate
 
 
-struct PhysicalDeviceFragmentShadingRatePropertiesKHR(Copyable):
+struct PhysicalDeviceFragmentShadingRatePropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var min_fragment_shading_rate_attachment_texel_size: Extent2D
     var max_fragment_shading_rate_attachment_texel_size: Extent2D
     var max_fragment_shading_rate_attachment_texel_size_aspect_ratio: UInt32
@@ -17911,9 +17911,9 @@ struct PhysicalDeviceFragmentShadingRatePropertiesKHR(Copyable):
         self.fragment_shading_rate_strict_multiply_combiner = fragment_shading_rate_strict_multiply_combiner
 
 
-struct PhysicalDeviceFragmentShadingRateKHR(Copyable):
+struct PhysicalDeviceFragmentShadingRateKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var sample_counts: SampleCountFlags
     var fragment_size: Extent2D
 
@@ -17930,9 +17930,9 @@ struct PhysicalDeviceFragmentShadingRateKHR(Copyable):
         self.fragment_size = fragment_size.copy()
 
 
-struct PhysicalDeviceShaderTerminateInvocationFeatures(Copyable):
+struct PhysicalDeviceShaderTerminateInvocationFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_terminate_invocation: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -17946,9 +17946,9 @@ struct PhysicalDeviceShaderTerminateInvocationFeatures(Copyable):
         self.shader_terminate_invocation = shader_terminate_invocation
 
 
-struct PhysicalDeviceFragmentShadingRateEnumsFeaturesNV(Copyable):
+struct PhysicalDeviceFragmentShadingRateEnumsFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var fragment_shading_rate_enums: Bool32
     var supersample_fragment_shading_rates: Bool32
     var no_invocation_fragment_shading_rates: Bool32
@@ -17968,9 +17968,9 @@ struct PhysicalDeviceFragmentShadingRateEnumsFeaturesNV(Copyable):
         self.no_invocation_fragment_shading_rates = no_invocation_fragment_shading_rates
 
 
-struct PhysicalDeviceFragmentShadingRateEnumsPropertiesNV(Copyable):
+struct PhysicalDeviceFragmentShadingRateEnumsPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_fragment_shading_rate_invocation_count: SampleCountFlagBits
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -17984,9 +17984,9 @@ struct PhysicalDeviceFragmentShadingRateEnumsPropertiesNV(Copyable):
         self.max_fragment_shading_rate_invocation_count = max_fragment_shading_rate_invocation_count
 
 
-struct PipelineFragmentShadingRateEnumStateCreateInfoNV(Copyable):
+struct PipelineFragmentShadingRateEnumStateCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var shading_rate_type: FragmentShadingRateTypeNV
     var shading_rate: FragmentShadingRateNV
     var combiner_ops: InlineArray[FragmentShadingRateCombinerOpKHR, Int(2)]
@@ -18003,12 +18003,12 @@ struct PipelineFragmentShadingRateEnumStateCreateInfoNV(Copyable):
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.shading_rate_type = shading_rate_type
         self.shading_rate = shading_rate
-        self.combiner_ops = combiner_ops
+        self.combiner_ops = combiner_ops.copy()
 
 
-struct AccelerationStructureBuildSizesInfoKHR(Copyable):
+struct AccelerationStructureBuildSizesInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var acceleration_structure_size: DeviceSize
     var update_scratch_size: DeviceSize
     var build_scratch_size: DeviceSize
@@ -18028,9 +18028,9 @@ struct AccelerationStructureBuildSizesInfoKHR(Copyable):
         self.build_scratch_size = build_scratch_size
 
 
-struct PhysicalDeviceImage2DViewOf3DFeaturesEXT(Copyable):
+struct PhysicalDeviceImage2DViewOf3DFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var image_2d_view_of_3d: Bool32
     var sampler_2d_view_of_3d: Bool32
 
@@ -18047,9 +18047,9 @@ struct PhysicalDeviceImage2DViewOf3DFeaturesEXT(Copyable):
         self.sampler_2d_view_of_3d = sampler_2d_view_of_3d
 
 
-struct PhysicalDeviceImageSlicedViewOf3DFeaturesEXT(Copyable):
+struct PhysicalDeviceImageSlicedViewOf3DFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var image_sliced_view_of_3d: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18063,9 +18063,9 @@ struct PhysicalDeviceImageSlicedViewOf3DFeaturesEXT(Copyable):
         self.image_sliced_view_of_3d = image_sliced_view_of_3d
 
 
-struct PhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT(Copyable):
+struct PhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var attachment_feedback_loop_dynamic_state: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18079,9 +18079,9 @@ struct PhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT(Copyable):
         self.attachment_feedback_loop_dynamic_state = attachment_feedback_loop_dynamic_state
 
 
-struct PhysicalDeviceLegacyVertexAttributesFeaturesEXT(Copyable):
+struct PhysicalDeviceLegacyVertexAttributesFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var legacy_vertex_attributes: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18095,9 +18095,9 @@ struct PhysicalDeviceLegacyVertexAttributesFeaturesEXT(Copyable):
         self.legacy_vertex_attributes = legacy_vertex_attributes
 
 
-struct PhysicalDeviceLegacyVertexAttributesPropertiesEXT(Copyable):
+struct PhysicalDeviceLegacyVertexAttributesPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var native_unaligned_performance: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18111,9 +18111,9 @@ struct PhysicalDeviceLegacyVertexAttributesPropertiesEXT(Copyable):
         self.native_unaligned_performance = native_unaligned_performance
 
 
-struct PhysicalDeviceMutableDescriptorTypeFeaturesEXT(Copyable):
+struct PhysicalDeviceMutableDescriptorTypeFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var mutable_descriptor_type: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18127,9 +18127,9 @@ struct PhysicalDeviceMutableDescriptorTypeFeaturesEXT(Copyable):
         self.mutable_descriptor_type = mutable_descriptor_type
 
 
-struct MutableDescriptorTypeListEXT(Copyable):
+struct MutableDescriptorTypeListEXT(Copyable, Equatable):
     var descriptor_type_count: UInt32
-    var p_descriptor_types: Ptr[DescriptorType, ImmutOrigin.external]
+    var p_descriptor_types: Ptr[DescriptorType, ImmutExternalOrigin]
 
     fn __init__[p_descriptor_types_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -18140,11 +18140,11 @@ struct MutableDescriptorTypeListEXT(Copyable):
         self.p_descriptor_types = Ptr(to=p_descriptor_types).bitcast[type_of(self.p_descriptor_types)]()[]
 
 
-struct MutableDescriptorTypeCreateInfoEXT(Copyable):
+struct MutableDescriptorTypeCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var mutable_descriptor_type_list_count: UInt32
-    var p_mutable_descriptor_type_lists: Ptr[MutableDescriptorTypeListEXT, ImmutOrigin.external]
+    var p_mutable_descriptor_type_lists: Ptr[MutableDescriptorTypeListEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -18162,9 +18162,9 @@ struct MutableDescriptorTypeCreateInfoEXT(Copyable):
         self.p_mutable_descriptor_type_lists = Ptr(to=p_mutable_descriptor_type_lists).bitcast[type_of(self.p_mutable_descriptor_type_lists)]()[]
 
 
-struct PhysicalDeviceDepthClipControlFeaturesEXT(Copyable):
+struct PhysicalDeviceDepthClipControlFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var depth_clip_control: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18178,9 +18178,9 @@ struct PhysicalDeviceDepthClipControlFeaturesEXT(Copyable):
         self.depth_clip_control = depth_clip_control
 
 
-struct PhysicalDeviceZeroInitializeDeviceMemoryFeaturesEXT(Copyable):
+struct PhysicalDeviceZeroInitializeDeviceMemoryFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var zero_initialize_device_memory: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18194,9 +18194,9 @@ struct PhysicalDeviceZeroInitializeDeviceMemoryFeaturesEXT(Copyable):
         self.zero_initialize_device_memory = zero_initialize_device_memory
 
 
-struct BeginCustomResolveInfoEXT(Copyable):
+struct BeginCustomResolveInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
         out self,
@@ -18207,9 +18207,9 @@ struct BeginCustomResolveInfoEXT(Copyable):
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
 
 
-struct PhysicalDeviceCustomResolveFeaturesEXT(Copyable):
+struct PhysicalDeviceCustomResolveFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var custom_resolve: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18223,12 +18223,12 @@ struct PhysicalDeviceCustomResolveFeaturesEXT(Copyable):
         self.custom_resolve = custom_resolve
 
 
-struct CustomResolveCreateInfoEXT(Copyable):
+struct CustomResolveCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var custom_resolve: Bool32
     var color_attachment_count: UInt32
-    var p_color_attachment_formats: Ptr[Format, ImmutOrigin.external]
+    var p_color_attachment_formats: Ptr[Format, ImmutExternalOrigin]
     var depth_attachment_format: Format
     var stencil_attachment_format: Format
 
@@ -18254,9 +18254,9 @@ struct CustomResolveCreateInfoEXT(Copyable):
         self.stencil_attachment_format = stencil_attachment_format
 
 
-struct PhysicalDeviceDeviceGeneratedCommandsFeaturesEXT(Copyable):
+struct PhysicalDeviceDeviceGeneratedCommandsFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var device_generated_commands: Bool32
     var dynamic_generated_pipeline_layout: Bool32
 
@@ -18273,9 +18273,9 @@ struct PhysicalDeviceDeviceGeneratedCommandsFeaturesEXT(Copyable):
         self.dynamic_generated_pipeline_layout = dynamic_generated_pipeline_layout
 
 
-struct PhysicalDeviceDeviceGeneratedCommandsPropertiesEXT(Copyable):
+struct PhysicalDeviceDeviceGeneratedCommandsPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_indirect_pipeline_count: UInt32
     var max_indirect_shader_object_count: UInt32
     var max_indirect_sequence_count: UInt32
@@ -18322,9 +18322,9 @@ struct PhysicalDeviceDeviceGeneratedCommandsPropertiesEXT(Copyable):
         self.device_generated_commands_multi_draw_indirect_count = device_generated_commands_multi_draw_indirect_count
 
 
-struct GeneratedCommandsPipelineInfoEXT(Copyable):
+struct GeneratedCommandsPipelineInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline: Pipeline
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18338,11 +18338,11 @@ struct GeneratedCommandsPipelineInfoEXT(Copyable):
         self.pipeline = pipeline
 
 
-struct GeneratedCommandsShaderInfoEXT(Copyable):
+struct GeneratedCommandsShaderInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_count: UInt32
-    var p_shaders: Ptr[ShaderEXT, ImmutOrigin.external]
+    var p_shaders: Ptr[ShaderEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin, p_shaders_origin: ImmutOrigin = ImmutAnyOrigin
@@ -18359,9 +18359,9 @@ struct GeneratedCommandsShaderInfoEXT(Copyable):
         self.p_shaders = Ptr(to=p_shaders).bitcast[type_of(self.p_shaders)]()[]
 
 
-struct GeneratedCommandsMemoryRequirementsInfoEXT(Copyable):
+struct GeneratedCommandsMemoryRequirementsInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var indirect_execution_set: IndirectExecutionSetEXT
     var indirect_commands_layout: IndirectCommandsLayoutEXT
     var max_sequence_count: UInt32
@@ -18384,9 +18384,9 @@ struct GeneratedCommandsMemoryRequirementsInfoEXT(Copyable):
         self.max_draw_count = max_draw_count
 
 
-struct IndirectExecutionSetPipelineInfoEXT(Copyable):
+struct IndirectExecutionSetPipelineInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var initial_pipeline: Pipeline
     var max_pipeline_count: UInt32
 
@@ -18403,11 +18403,11 @@ struct IndirectExecutionSetPipelineInfoEXT(Copyable):
         self.max_pipeline_count = max_pipeline_count
 
 
-struct IndirectExecutionSetShaderLayoutInfoEXT(Copyable):
+struct IndirectExecutionSetShaderLayoutInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var set_layout_count: UInt32
-    var p_set_layouts: Ptr[DescriptorSetLayout, ImmutOrigin.external]
+    var p_set_layouts: Ptr[DescriptorSetLayout, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -18425,15 +18425,15 @@ struct IndirectExecutionSetShaderLayoutInfoEXT(Copyable):
         self.p_set_layouts = Ptr(to=p_set_layouts).bitcast[type_of(self.p_set_layouts)]()[]
 
 
-struct IndirectExecutionSetShaderInfoEXT(Copyable):
+struct IndirectExecutionSetShaderInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var shader_count: UInt32
-    var p_initial_shaders: Ptr[ShaderEXT, ImmutOrigin.external]
-    var p_set_layout_infos: Ptr[IndirectExecutionSetShaderLayoutInfoEXT, ImmutOrigin.external]
+    var p_initial_shaders: Ptr[ShaderEXT, ImmutExternalOrigin]
+    var p_set_layout_infos: Ptr[IndirectExecutionSetShaderLayoutInfoEXT, ImmutExternalOrigin]
     var max_shader_count: UInt32
     var push_constant_range_count: UInt32
-    var p_push_constant_ranges: Ptr[PushConstantRange, ImmutOrigin.external]
+    var p_push_constant_ranges: Ptr[PushConstantRange, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -18461,9 +18461,9 @@ struct IndirectExecutionSetShaderInfoEXT(Copyable):
         self.p_push_constant_ranges = Ptr(to=p_push_constant_ranges).bitcast[type_of(self.p_push_constant_ranges)]()[]
 
 
-struct IndirectExecutionSetCreateInfoEXT(Copyable):
+struct IndirectExecutionSetCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var type: IndirectExecutionSetInfoTypeEXT
     var info: IndirectExecutionSetInfoEXT
 
@@ -18480,9 +18480,9 @@ struct IndirectExecutionSetCreateInfoEXT(Copyable):
         self.info = info
 
 
-struct GeneratedCommandsInfoEXT(Copyable):
+struct GeneratedCommandsInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var shader_stages: ShaderStageFlags
     var indirect_execution_set: IndirectExecutionSetEXT
     var indirect_commands_layout: IndirectCommandsLayoutEXT
@@ -18523,9 +18523,9 @@ struct GeneratedCommandsInfoEXT(Copyable):
         self.max_draw_count = max_draw_count
 
 
-struct WriteIndirectExecutionSetPipelineEXT(Copyable):
+struct WriteIndirectExecutionSetPipelineEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var index: UInt32
     var pipeline: Pipeline
 
@@ -18542,9 +18542,9 @@ struct WriteIndirectExecutionSetPipelineEXT(Copyable):
         self.pipeline = pipeline
 
 
-struct WriteIndirectExecutionSetShaderEXT(Copyable):
+struct WriteIndirectExecutionSetShaderEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var index: UInt32
     var shader: ShaderEXT
 
@@ -18561,15 +18561,15 @@ struct WriteIndirectExecutionSetShaderEXT(Copyable):
         self.shader = shader
 
 
-struct IndirectCommandsLayoutCreateInfoEXT(Copyable):
+struct IndirectCommandsLayoutCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: IndirectCommandsLayoutUsageFlagsEXT
     var shader_stages: ShaderStageFlags
     var indirect_stride: UInt32
     var pipeline_layout: PipelineLayout
     var token_count: UInt32
-    var p_tokens: Ptr[IndirectCommandsLayoutTokenEXT, ImmutOrigin.external]
+    var p_tokens: Ptr[IndirectCommandsLayoutTokenEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_tokens_origin: ImmutOrigin = ImmutAnyOrigin
@@ -18594,9 +18594,9 @@ struct IndirectCommandsLayoutCreateInfoEXT(Copyable):
         self.p_tokens = Ptr(to=p_tokens).bitcast[type_of(self.p_tokens)]()[]
 
 
-struct IndirectCommandsLayoutTokenEXT(Copyable):
+struct IndirectCommandsLayoutTokenEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var type: IndirectCommandsTokenTypeEXT
     var data: IndirectCommandsTokenDataEXT
     var offset: UInt32
@@ -18616,7 +18616,7 @@ struct IndirectCommandsLayoutTokenEXT(Copyable):
         self.offset = offset
 
 
-struct DrawIndirectCountIndirectCommandEXT(Copyable):
+struct DrawIndirectCountIndirectCommandEXT(Copyable, Equatable):
     var buffer_address: DeviceAddress
     var stride: UInt32
     var command_count: UInt32
@@ -18632,14 +18632,14 @@ struct DrawIndirectCountIndirectCommandEXT(Copyable):
         self.command_count = command_count
 
 
-struct IndirectCommandsVertexBufferTokenEXT(Copyable):
+struct IndirectCommandsVertexBufferTokenEXT(Copyable, Equatable):
     var vertex_binding_unit: UInt32
 
     fn __init__(out self, vertex_binding_unit: UInt32 = zero_init[UInt32]()):
         self.vertex_binding_unit = vertex_binding_unit
 
 
-struct BindVertexBufferIndirectCommandEXT(Copyable):
+struct BindVertexBufferIndirectCommandEXT(Copyable, Equatable):
     var buffer_address: DeviceAddress
     var size: UInt32
     var stride: UInt32
@@ -18655,7 +18655,7 @@ struct BindVertexBufferIndirectCommandEXT(Copyable):
         self.stride = stride
 
 
-struct IndirectCommandsIndexBufferTokenEXT(Copyable):
+struct IndirectCommandsIndexBufferTokenEXT(Copyable, Equatable):
     var mode: IndirectCommandsInputModeFlagBitsEXT
 
     fn __init__(
@@ -18665,7 +18665,7 @@ struct IndirectCommandsIndexBufferTokenEXT(Copyable):
         self.mode = mode
 
 
-struct BindIndexBufferIndirectCommandEXT(Copyable):
+struct BindIndexBufferIndirectCommandEXT(Copyable, Equatable):
     var buffer_address: DeviceAddress
     var size: UInt32
     var index_type: IndexType
@@ -18681,14 +18681,14 @@ struct BindIndexBufferIndirectCommandEXT(Copyable):
         self.index_type = index_type
 
 
-struct IndirectCommandsPushConstantTokenEXT(Copyable):
+struct IndirectCommandsPushConstantTokenEXT(Copyable, Equatable):
     var update_range: PushConstantRange
 
     fn __init__(out self, update_range: PushConstantRange = zero_init[PushConstantRange]()):
         self.update_range = update_range.copy()
 
 
-struct IndirectCommandsExecutionSetTokenEXT(Copyable):
+struct IndirectCommandsExecutionSetTokenEXT(Copyable, Equatable):
     var type: IndirectExecutionSetInfoTypeEXT
     var shader_stages: ShaderStageFlags
 
@@ -18701,9 +18701,9 @@ struct IndirectCommandsExecutionSetTokenEXT(Copyable):
         self.shader_stages = shader_stages
 
 
-struct PipelineViewportDepthClipControlCreateInfoEXT(Copyable):
+struct PipelineViewportDepthClipControlCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var negative_one_to_one: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -18717,9 +18717,9 @@ struct PipelineViewportDepthClipControlCreateInfoEXT(Copyable):
         self.negative_one_to_one = negative_one_to_one
 
 
-struct PhysicalDeviceDepthClampControlFeaturesEXT(Copyable):
+struct PhysicalDeviceDepthClampControlFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var depth_clamp_control: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18733,11 +18733,11 @@ struct PhysicalDeviceDepthClampControlFeaturesEXT(Copyable):
         self.depth_clamp_control = depth_clamp_control
 
 
-struct PipelineViewportDepthClampControlCreateInfoEXT(Copyable):
+struct PipelineViewportDepthClampControlCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var depth_clamp_mode: DepthClampModeEXT
-    var p_depth_clamp_range: Ptr[DepthClampRangeEXT, ImmutOrigin.external]
+    var p_depth_clamp_range: Ptr[DepthClampRangeEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -18755,9 +18755,9 @@ struct PipelineViewportDepthClampControlCreateInfoEXT(Copyable):
         self.p_depth_clamp_range = Ptr(to=p_depth_clamp_range).bitcast[type_of(self.p_depth_clamp_range)]()[]
 
 
-struct PhysicalDeviceVertexInputDynamicStateFeaturesEXT(Copyable):
+struct PhysicalDeviceVertexInputDynamicStateFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var vertex_input_dynamic_state: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18771,9 +18771,9 @@ struct PhysicalDeviceVertexInputDynamicStateFeaturesEXT(Copyable):
         self.vertex_input_dynamic_state = vertex_input_dynamic_state
 
 
-struct PhysicalDeviceExternalMemoryRDMAFeaturesNV(Copyable):
+struct PhysicalDeviceExternalMemoryRDMAFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var external_memory_rdma: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18787,9 +18787,9 @@ struct PhysicalDeviceExternalMemoryRDMAFeaturesNV(Copyable):
         self.external_memory_rdma = external_memory_rdma
 
 
-struct PhysicalDeviceShaderRelaxedExtendedInstructionFeaturesKHR(Copyable):
+struct PhysicalDeviceShaderRelaxedExtendedInstructionFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_relaxed_extended_instruction: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18803,9 +18803,9 @@ struct PhysicalDeviceShaderRelaxedExtendedInstructionFeaturesKHR(Copyable):
         self.shader_relaxed_extended_instruction = shader_relaxed_extended_instruction
 
 
-struct VertexInputBindingDescription2EXT(Copyable):
+struct VertexInputBindingDescription2EXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var binding: UInt32
     var stride: UInt32
     var input_rate: VertexInputRate
@@ -18828,9 +18828,9 @@ struct VertexInputBindingDescription2EXT(Copyable):
         self.divisor = divisor
 
 
-struct VertexInputAttributeDescription2EXT(Copyable):
+struct VertexInputAttributeDescription2EXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var location: UInt32
     var binding: UInt32
     var format: Format
@@ -18853,9 +18853,9 @@ struct VertexInputAttributeDescription2EXT(Copyable):
         self.offset = offset
 
 
-struct PhysicalDeviceColorWriteEnableFeaturesEXT(Copyable):
+struct PhysicalDeviceColorWriteEnableFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var color_write_enable: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -18869,11 +18869,11 @@ struct PhysicalDeviceColorWriteEnableFeaturesEXT(Copyable):
         self.color_write_enable = color_write_enable
 
 
-struct PipelineColorWriteCreateInfoEXT(Copyable):
+struct PipelineColorWriteCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var attachment_count: UInt32
-    var p_color_write_enables: Ptr[Bool32, ImmutOrigin.external]
+    var p_color_write_enables: Ptr[Bool32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -18891,9 +18891,9 @@ struct PipelineColorWriteCreateInfoEXT(Copyable):
         self.p_color_write_enables = Ptr(to=p_color_write_enables).bitcast[type_of(self.p_color_write_enables)]()[]
 
 
-struct MemoryBarrier2(Copyable):
+struct MemoryBarrier2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_stage_mask: PipelineStageFlags2
     var src_access_mask: AccessFlags2
     var dst_stage_mask: PipelineStageFlags2
@@ -18916,9 +18916,9 @@ struct MemoryBarrier2(Copyable):
         self.dst_access_mask = dst_access_mask
 
 
-struct ImageMemoryBarrier2(Copyable):
+struct ImageMemoryBarrier2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_stage_mask: PipelineStageFlags2
     var src_access_mask: AccessFlags2
     var dst_stage_mask: PipelineStageFlags2
@@ -18959,9 +18959,9 @@ struct ImageMemoryBarrier2(Copyable):
         self.subresource_range = subresource_range.copy()
 
 
-struct BufferMemoryBarrier2(Copyable):
+struct BufferMemoryBarrier2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_stage_mask: PipelineStageFlags2
     var src_access_mask: AccessFlags2
     var dst_stage_mask: PipelineStageFlags2
@@ -18999,9 +18999,9 @@ struct BufferMemoryBarrier2(Copyable):
         self.size = size
 
 
-struct MemoryBarrierAccessFlags3KHR(Copyable):
+struct MemoryBarrierAccessFlags3KHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_access_mask_3: AccessFlags3KHR
     var dst_access_mask_3: AccessFlags3KHR
 
@@ -19018,16 +19018,16 @@ struct MemoryBarrierAccessFlags3KHR(Copyable):
         self.dst_access_mask_3 = dst_access_mask_3
 
 
-struct DependencyInfo(Copyable):
+struct DependencyInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var dependency_flags: DependencyFlags
     var memory_barrier_count: UInt32
-    var p_memory_barriers: Ptr[MemoryBarrier2, ImmutOrigin.external]
+    var p_memory_barriers: Ptr[MemoryBarrier2, ImmutExternalOrigin]
     var buffer_memory_barrier_count: UInt32
-    var p_buffer_memory_barriers: Ptr[BufferMemoryBarrier2, ImmutOrigin.external]
+    var p_buffer_memory_barriers: Ptr[BufferMemoryBarrier2, ImmutExternalOrigin]
     var image_memory_barrier_count: UInt32
-    var p_image_memory_barriers: Ptr[ImageMemoryBarrier2, ImmutOrigin.external]
+    var p_image_memory_barriers: Ptr[ImageMemoryBarrier2, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -19057,9 +19057,9 @@ struct DependencyInfo(Copyable):
         self.p_image_memory_barriers = Ptr(to=p_image_memory_barriers).bitcast[type_of(self.p_image_memory_barriers)]()[]
 
 
-struct SemaphoreSubmitInfo(Copyable):
+struct SemaphoreSubmitInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var semaphore: Semaphore
     var value: UInt64
     var stage_mask: PipelineStageFlags2
@@ -19082,9 +19082,9 @@ struct SemaphoreSubmitInfo(Copyable):
         self.device_index = device_index
 
 
-struct CommandBufferSubmitInfo(Copyable):
+struct CommandBufferSubmitInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var command_buffer: CommandBuffer
     var device_mask: UInt32
 
@@ -19101,16 +19101,16 @@ struct CommandBufferSubmitInfo(Copyable):
         self.device_mask = device_mask
 
 
-struct SubmitInfo2(Copyable):
+struct SubmitInfo2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: SubmitFlags
     var wait_semaphore_info_count: UInt32
-    var p_wait_semaphore_infos: Ptr[SemaphoreSubmitInfo, ImmutOrigin.external]
+    var p_wait_semaphore_infos: Ptr[SemaphoreSubmitInfo, ImmutExternalOrigin]
     var command_buffer_info_count: UInt32
-    var p_command_buffer_infos: Ptr[CommandBufferSubmitInfo, ImmutOrigin.external]
+    var p_command_buffer_infos: Ptr[CommandBufferSubmitInfo, ImmutExternalOrigin]
     var signal_semaphore_info_count: UInt32
-    var p_signal_semaphore_infos: Ptr[SemaphoreSubmitInfo, ImmutOrigin.external]
+    var p_signal_semaphore_infos: Ptr[SemaphoreSubmitInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -19140,9 +19140,9 @@ struct SubmitInfo2(Copyable):
         self.p_signal_semaphore_infos = Ptr(to=p_signal_semaphore_infos).bitcast[type_of(self.p_signal_semaphore_infos)]()[]
 
 
-struct QueueFamilyCheckpointProperties2NV(Copyable):
+struct QueueFamilyCheckpointProperties2NV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var checkpoint_execution_stage_mask: PipelineStageFlags2
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -19156,11 +19156,11 @@ struct QueueFamilyCheckpointProperties2NV(Copyable):
         self.checkpoint_execution_stage_mask = checkpoint_execution_stage_mask
 
 
-struct CheckpointData2NV(Copyable):
+struct CheckpointData2NV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var stage: PipelineStageFlags2
-    var p_checkpoint_marker: Ptr[NoneType, MutOrigin.external]
+    var p_checkpoint_marker: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin,
@@ -19178,9 +19178,9 @@ struct CheckpointData2NV(Copyable):
         self.p_checkpoint_marker = Ptr(to=p_checkpoint_marker).bitcast[type_of(self.p_checkpoint_marker)]()[]
 
 
-struct PhysicalDeviceSynchronization2Features(Copyable):
+struct PhysicalDeviceSynchronization2Features(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var synchronization_2: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -19194,9 +19194,9 @@ struct PhysicalDeviceSynchronization2Features(Copyable):
         self.synchronization_2 = synchronization_2
 
 
-struct PhysicalDeviceUnifiedImageLayoutsFeaturesKHR(Copyable):
+struct PhysicalDeviceUnifiedImageLayoutsFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var unified_image_layouts: Bool32
     var unified_image_layouts_video: Bool32
 
@@ -19213,9 +19213,9 @@ struct PhysicalDeviceUnifiedImageLayoutsFeaturesKHR(Copyable):
         self.unified_image_layouts_video = unified_image_layouts_video
 
 
-struct PhysicalDeviceHostImageCopyFeatures(Copyable):
+struct PhysicalDeviceHostImageCopyFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var host_image_copy: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -19229,13 +19229,13 @@ struct PhysicalDeviceHostImageCopyFeatures(Copyable):
         self.host_image_copy = host_image_copy
 
 
-struct PhysicalDeviceHostImageCopyProperties(Copyable):
+struct PhysicalDeviceHostImageCopyProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var copy_src_layout_count: UInt32
-    var p_copy_src_layouts: Ptr[ImageLayout, MutOrigin.external]
+    var p_copy_src_layouts: Ptr[ImageLayout, MutExternalOrigin]
     var copy_dst_layout_count: UInt32
-    var p_copy_dst_layouts: Ptr[ImageLayout, MutOrigin.external]
+    var p_copy_dst_layouts: Ptr[ImageLayout, MutExternalOrigin]
     var optimal_tiling_layout_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
     var identical_memory_type_requirements: Bool32
 
@@ -19260,14 +19260,14 @@ struct PhysicalDeviceHostImageCopyProperties(Copyable):
         self.p_copy_src_layouts = Ptr(to=p_copy_src_layouts).bitcast[type_of(self.p_copy_src_layouts)]()[]
         self.copy_dst_layout_count = copy_dst_layout_count
         self.p_copy_dst_layouts = Ptr(to=p_copy_dst_layouts).bitcast[type_of(self.p_copy_dst_layouts)]()[]
-        self.optimal_tiling_layout_uuid = optimal_tiling_layout_uuid
+        self.optimal_tiling_layout_uuid = optimal_tiling_layout_uuid.copy()
         self.identical_memory_type_requirements = identical_memory_type_requirements
 
 
-struct MemoryToImageCopy(Copyable):
+struct MemoryToImageCopy(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_host_pointer: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_host_pointer: Ptr[NoneType, ImmutExternalOrigin]
     var memory_row_length: UInt32
     var memory_image_height: UInt32
     var image_subresource: ImageSubresourceLayers
@@ -19298,10 +19298,10 @@ struct MemoryToImageCopy(Copyable):
         self.image_extent = image_extent.copy()
 
 
-struct ImageToMemoryCopy(Copyable):
+struct ImageToMemoryCopy(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_host_pointer: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_host_pointer: Ptr[NoneType, MutExternalOrigin]
     var memory_row_length: UInt32
     var memory_image_height: UInt32
     var image_subresource: ImageSubresourceLayers
@@ -19332,14 +19332,14 @@ struct ImageToMemoryCopy(Copyable):
         self.image_extent = image_extent.copy()
 
 
-struct CopyMemoryToImageInfo(Copyable):
+struct CopyMemoryToImageInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: HostImageCopyFlags
     var dst_image: Image
     var dst_image_layout: ImageLayout
     var region_count: UInt32
-    var p_regions: Ptr[MemoryToImageCopy, ImmutOrigin.external]
+    var p_regions: Ptr[MemoryToImageCopy, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -19363,14 +19363,14 @@ struct CopyMemoryToImageInfo(Copyable):
         self.p_regions = Ptr(to=p_regions).bitcast[type_of(self.p_regions)]()[]
 
 
-struct CopyImageToMemoryInfo(Copyable):
+struct CopyImageToMemoryInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: HostImageCopyFlags
     var src_image: Image
     var src_image_layout: ImageLayout
     var region_count: UInt32
-    var p_regions: Ptr[ImageToMemoryCopy, ImmutOrigin.external]
+    var p_regions: Ptr[ImageToMemoryCopy, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -19394,16 +19394,16 @@ struct CopyImageToMemoryInfo(Copyable):
         self.p_regions = Ptr(to=p_regions).bitcast[type_of(self.p_regions)]()[]
 
 
-struct CopyImageToImageInfo(Copyable):
+struct CopyImageToImageInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: HostImageCopyFlags
     var src_image: Image
     var src_image_layout: ImageLayout
     var dst_image: Image
     var dst_image_layout: ImageLayout
     var region_count: UInt32
-    var p_regions: Ptr[ImageCopy2, ImmutOrigin.external]
+    var p_regions: Ptr[ImageCopy2, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -19431,9 +19431,9 @@ struct CopyImageToImageInfo(Copyable):
         self.p_regions = Ptr(to=p_regions).bitcast[type_of(self.p_regions)]()[]
 
 
-struct HostImageLayoutTransitionInfo(Copyable):
+struct HostImageLayoutTransitionInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image: Image
     var old_layout: ImageLayout
     var new_layout: ImageLayout
@@ -19456,9 +19456,9 @@ struct HostImageLayoutTransitionInfo(Copyable):
         self.subresource_range = subresource_range.copy()
 
 
-struct SubresourceHostMemcpySize(Copyable):
+struct SubresourceHostMemcpySize(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var size: DeviceSize
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -19472,9 +19472,9 @@ struct SubresourceHostMemcpySize(Copyable):
         self.size = size
 
 
-struct HostImageCopyDevicePerformanceQuery(Copyable):
+struct HostImageCopyDevicePerformanceQuery(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var optimal_device_access: Bool32
     var identical_memory_layout: Bool32
 
@@ -19491,9 +19491,9 @@ struct HostImageCopyDevicePerformanceQuery(Copyable):
         self.identical_memory_layout = identical_memory_layout
 
 
-struct PhysicalDeviceVulkanSC10Properties(Copyable):
+struct PhysicalDeviceVulkanSC10Properties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var device_no_dynamic_host_allocations: Bool32
     var device_destroy_frees_memory: Bool32
     var command_pool_multiple_command_buffers_recording: Bool32
@@ -19558,9 +19558,9 @@ struct PhysicalDeviceVulkanSC10Properties(Copyable):
         self.max_command_buffer_size = max_command_buffer_size
 
 
-struct PipelinePoolSize(Copyable):
+struct PipelinePoolSize(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var pool_entry_size: DeviceSize
     var pool_entry_count: UInt32
 
@@ -19577,13 +19577,13 @@ struct PipelinePoolSize(Copyable):
         self.pool_entry_count = pool_entry_count
 
 
-struct DeviceObjectReservationCreateInfo(Copyable):
+struct DeviceObjectReservationCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var pipeline_cache_create_info_count: UInt32
-    var p_pipeline_cache_create_infos: Ptr[PipelineCacheCreateInfo, ImmutOrigin.external]
+    var p_pipeline_cache_create_infos: Ptr[PipelineCacheCreateInfo, ImmutExternalOrigin]
     var pipeline_pool_size_count: UInt32
-    var p_pipeline_pool_sizes: Ptr[PipelinePoolSize, ImmutOrigin.external]
+    var p_pipeline_pool_sizes: Ptr[PipelinePoolSize, ImmutExternalOrigin]
     var semaphore_request_count: UInt32
     var command_buffer_request_count: UInt32
     var fence_request_count: UInt32
@@ -19717,9 +19717,9 @@ struct DeviceObjectReservationCreateInfo(Copyable):
         self.max_immutable_samplers_per_descriptor_set_layout = max_immutable_samplers_per_descriptor_set_layout
 
 
-struct CommandPoolMemoryReservationCreateInfo(Copyable):
+struct CommandPoolMemoryReservationCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var command_pool_reserved_size: DeviceSize
     var command_pool_max_command_buffers: UInt32
 
@@ -19736,9 +19736,9 @@ struct CommandPoolMemoryReservationCreateInfo(Copyable):
         self.command_pool_max_command_buffers = command_pool_max_command_buffers
 
 
-struct CommandPoolMemoryConsumption(Copyable):
+struct CommandPoolMemoryConsumption(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var command_pool_allocated: DeviceSize
     var command_pool_reserved_size: DeviceSize
     var command_buffer_allocated: DeviceSize
@@ -19758,9 +19758,9 @@ struct CommandPoolMemoryConsumption(Copyable):
         self.command_buffer_allocated = command_buffer_allocated
 
 
-struct PhysicalDeviceVulkanSC10Features(Copyable):
+struct PhysicalDeviceVulkanSC10Features(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_atomic_instructions: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -19774,9 +19774,9 @@ struct PhysicalDeviceVulkanSC10Features(Copyable):
         self.shader_atomic_instructions = shader_atomic_instructions
 
 
-struct PhysicalDevicePrimitivesGeneratedQueryFeaturesEXT(Copyable):
+struct PhysicalDevicePrimitivesGeneratedQueryFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var primitives_generated_query: Bool32
     var primitives_generated_query_with_rasterizer_discard: Bool32
     var primitives_generated_query_with_non_zero_streams: Bool32
@@ -19796,9 +19796,9 @@ struct PhysicalDevicePrimitivesGeneratedQueryFeaturesEXT(Copyable):
         self.primitives_generated_query_with_non_zero_streams = primitives_generated_query_with_non_zero_streams
 
 
-struct PhysicalDeviceLegacyDitheringFeaturesEXT(Copyable):
+struct PhysicalDeviceLegacyDitheringFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var legacy_dithering: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -19812,9 +19812,9 @@ struct PhysicalDeviceLegacyDitheringFeaturesEXT(Copyable):
         self.legacy_dithering = legacy_dithering
 
 
-struct PhysicalDeviceMultisampledRenderToSingleSampledFeaturesEXT(Copyable):
+struct PhysicalDeviceMultisampledRenderToSingleSampledFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var multisampled_render_to_single_sampled: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -19828,9 +19828,9 @@ struct PhysicalDeviceMultisampledRenderToSingleSampledFeaturesEXT(Copyable):
         self.multisampled_render_to_single_sampled = multisampled_render_to_single_sampled
 
 
-struct SurfaceCapabilitiesPresentId2KHR(Copyable):
+struct SurfaceCapabilitiesPresentId2KHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_id_2_supported: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -19844,9 +19844,9 @@ struct SurfaceCapabilitiesPresentId2KHR(Copyable):
         self.present_id_2_supported = present_id_2_supported
 
 
-struct SurfaceCapabilitiesPresentWait2KHR(Copyable):
+struct SurfaceCapabilitiesPresentWait2KHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_wait_2_supported: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -19860,9 +19860,9 @@ struct SurfaceCapabilitiesPresentWait2KHR(Copyable):
         self.present_wait_2_supported = present_wait_2_supported
 
 
-struct SubpassResolvePerformanceQueryEXT(Copyable):
+struct SubpassResolvePerformanceQueryEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var optimal: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -19876,9 +19876,9 @@ struct SubpassResolvePerformanceQueryEXT(Copyable):
         self.optimal = optimal
 
 
-struct MultisampledRenderToSingleSampledInfoEXT(Copyable):
+struct MultisampledRenderToSingleSampledInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var multisampled_render_to_single_sampled_enable: Bool32
     var rasterization_samples: SampleCountFlagBits
 
@@ -19895,9 +19895,9 @@ struct MultisampledRenderToSingleSampledInfoEXT(Copyable):
         self.rasterization_samples = rasterization_samples
 
 
-struct PhysicalDevicePipelineProtectedAccessFeatures(Copyable):
+struct PhysicalDevicePipelineProtectedAccessFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline_protected_access: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -19911,9 +19911,9 @@ struct PhysicalDevicePipelineProtectedAccessFeatures(Copyable):
         self.pipeline_protected_access = pipeline_protected_access
 
 
-struct QueueFamilyVideoPropertiesKHR(Copyable):
+struct QueueFamilyVideoPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var video_codec_operations: VideoCodecOperationFlagsKHR
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -19927,9 +19927,9 @@ struct QueueFamilyVideoPropertiesKHR(Copyable):
         self.video_codec_operations = video_codec_operations
 
 
-struct QueueFamilyQueryResultStatusPropertiesKHR(Copyable):
+struct QueueFamilyQueryResultStatusPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var query_result_status_support: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -19943,11 +19943,11 @@ struct QueueFamilyQueryResultStatusPropertiesKHR(Copyable):
         self.query_result_status_support = query_result_status_support
 
 
-struct VideoProfileListInfoKHR(Copyable):
+struct VideoProfileListInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var profile_count: UInt32
-    var p_profiles: Ptr[VideoProfileInfoKHR, ImmutOrigin.external]
+    var p_profiles: Ptr[VideoProfileInfoKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -19965,9 +19965,9 @@ struct VideoProfileListInfoKHR(Copyable):
         self.p_profiles = Ptr(to=p_profiles).bitcast[type_of(self.p_profiles)]()[]
 
 
-struct PhysicalDeviceVideoFormatInfoKHR(Copyable):
+struct PhysicalDeviceVideoFormatInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image_usage: ImageUsageFlags
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -19981,9 +19981,9 @@ struct PhysicalDeviceVideoFormatInfoKHR(Copyable):
         self.image_usage = image_usage
 
 
-struct VideoFormatPropertiesKHR(Copyable):
+struct VideoFormatPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var format: Format
     var component_mapping: ComponentMapping
     var image_create_flags: ImageCreateFlags
@@ -20012,9 +20012,9 @@ struct VideoFormatPropertiesKHR(Copyable):
         self.image_usage_flags = image_usage_flags
 
 
-struct VideoEncodeQuantizationMapCapabilitiesKHR(Copyable):
+struct VideoEncodeQuantizationMapCapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_quantization_map_extent: Extent2D
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -20028,9 +20028,9 @@ struct VideoEncodeQuantizationMapCapabilitiesKHR(Copyable):
         self.max_quantization_map_extent = max_quantization_map_extent.copy()
 
 
-struct VideoEncodeH264QuantizationMapCapabilitiesKHR(Copyable):
+struct VideoEncodeH264QuantizationMapCapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var min_qp_delta: Int32
     var max_qp_delta: Int32
 
@@ -20047,9 +20047,9 @@ struct VideoEncodeH264QuantizationMapCapabilitiesKHR(Copyable):
         self.max_qp_delta = max_qp_delta
 
 
-struct VideoEncodeH265QuantizationMapCapabilitiesKHR(Copyable):
+struct VideoEncodeH265QuantizationMapCapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var min_qp_delta: Int32
     var max_qp_delta: Int32
 
@@ -20066,9 +20066,9 @@ struct VideoEncodeH265QuantizationMapCapabilitiesKHR(Copyable):
         self.max_qp_delta = max_qp_delta
 
 
-struct VideoEncodeAV1QuantizationMapCapabilitiesKHR(Copyable):
+struct VideoEncodeAV1QuantizationMapCapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var min_q_index_delta: Int32
     var max_q_index_delta: Int32
 
@@ -20085,9 +20085,9 @@ struct VideoEncodeAV1QuantizationMapCapabilitiesKHR(Copyable):
         self.max_q_index_delta = max_q_index_delta
 
 
-struct VideoFormatQuantizationMapPropertiesKHR(Copyable):
+struct VideoFormatQuantizationMapPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var quantization_map_texel_size: Extent2D
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -20101,9 +20101,9 @@ struct VideoFormatQuantizationMapPropertiesKHR(Copyable):
         self.quantization_map_texel_size = quantization_map_texel_size.copy()
 
 
-struct VideoFormatH265QuantizationMapPropertiesKHR(Copyable):
+struct VideoFormatH265QuantizationMapPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var compatible_ctb_sizes: VideoEncodeH265CtbSizeFlagsKHR
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -20117,9 +20117,9 @@ struct VideoFormatH265QuantizationMapPropertiesKHR(Copyable):
         self.compatible_ctb_sizes = compatible_ctb_sizes
 
 
-struct VideoFormatAV1QuantizationMapPropertiesKHR(Copyable):
+struct VideoFormatAV1QuantizationMapPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var compatible_superblock_sizes: VideoEncodeAV1SuperblockSizeFlagsKHR
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -20133,9 +20133,9 @@ struct VideoFormatAV1QuantizationMapPropertiesKHR(Copyable):
         self.compatible_superblock_sizes = compatible_superblock_sizes
 
 
-struct VideoProfileInfoKHR(Copyable):
+struct VideoProfileInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var video_codec_operation: VideoCodecOperationFlagBitsKHR
     var chroma_subsampling: VideoChromaSubsamplingFlagsKHR
     var luma_bit_depth: VideoComponentBitDepthFlagsKHR
@@ -20158,9 +20158,9 @@ struct VideoProfileInfoKHR(Copyable):
         self.chroma_bit_depth = chroma_bit_depth
 
 
-struct VideoCapabilitiesKHR(Copyable):
+struct VideoCapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: VideoCapabilityFlagsKHR
     var min_bitstream_buffer_offset_alignment: DeviceSize
     var min_bitstream_buffer_size_alignment: DeviceSize
@@ -20198,9 +20198,9 @@ struct VideoCapabilitiesKHR(Copyable):
         self.std_header_version = std_header_version.copy()
 
 
-struct VideoSessionMemoryRequirementsKHR(Copyable):
+struct VideoSessionMemoryRequirementsKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var memory_bind_index: UInt32
     var memory_requirements: MemoryRequirements
 
@@ -20217,9 +20217,9 @@ struct VideoSessionMemoryRequirementsKHR(Copyable):
         self.memory_requirements = memory_requirements.copy()
 
 
-struct BindVideoSessionMemoryInfoKHR(Copyable):
+struct BindVideoSessionMemoryInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var memory_bind_index: UInt32
     var memory: DeviceMemory
     var memory_offset: DeviceSize
@@ -20242,9 +20242,9 @@ struct BindVideoSessionMemoryInfoKHR(Copyable):
         self.memory_size = memory_size
 
 
-struct VideoPictureResourceInfoKHR(Copyable):
+struct VideoPictureResourceInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var coded_offset: Offset2D
     var coded_extent: Extent2D
     var base_array_layer: UInt32
@@ -20267,11 +20267,11 @@ struct VideoPictureResourceInfoKHR(Copyable):
         self.image_view_binding = image_view_binding
 
 
-struct VideoReferenceSlotInfoKHR(Copyable):
+struct VideoReferenceSlotInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var slot_index: Int32
-    var p_picture_resource: Ptr[VideoPictureResourceInfoKHR, ImmutOrigin.external]
+    var p_picture_resource: Ptr[VideoPictureResourceInfoKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20289,9 +20289,9 @@ struct VideoReferenceSlotInfoKHR(Copyable):
         self.p_picture_resource = Ptr(to=p_picture_resource).bitcast[type_of(self.p_picture_resource)]()[]
 
 
-struct VideoDecodeCapabilitiesKHR(Copyable):
+struct VideoDecodeCapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: VideoDecodeCapabilityFlagsKHR
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -20305,9 +20305,9 @@ struct VideoDecodeCapabilitiesKHR(Copyable):
         self.flags = flags
 
 
-struct VideoDecodeUsageInfoKHR(Copyable):
+struct VideoDecodeUsageInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var video_usage_hints: VideoDecodeUsageFlagsKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -20321,17 +20321,17 @@ struct VideoDecodeUsageInfoKHR(Copyable):
         self.video_usage_hints = video_usage_hints
 
 
-struct VideoDecodeInfoKHR(Copyable):
+struct VideoDecodeInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: VideoDecodeFlagsKHR
     var src_buffer: Buffer
     var src_buffer_offset: DeviceSize
     var src_buffer_range: DeviceSize
     var dst_picture_resource: VideoPictureResourceInfoKHR
-    var p_setup_reference_slot: Ptr[VideoReferenceSlotInfoKHR, ImmutOrigin.external]
+    var p_setup_reference_slot: Ptr[VideoReferenceSlotInfoKHR, ImmutExternalOrigin]
     var reference_slot_count: UInt32
-    var p_reference_slots: Ptr[VideoReferenceSlotInfoKHR, ImmutOrigin.external]
+    var p_reference_slots: Ptr[VideoReferenceSlotInfoKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20362,9 +20362,9 @@ struct VideoDecodeInfoKHR(Copyable):
         self.p_reference_slots = Ptr(to=p_reference_slots).bitcast[type_of(self.p_reference_slots)]()[]
 
 
-struct PhysicalDeviceVideoMaintenance1FeaturesKHR(Copyable):
+struct PhysicalDeviceVideoMaintenance1FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var video_maintenance_1: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -20378,9 +20378,9 @@ struct PhysicalDeviceVideoMaintenance1FeaturesKHR(Copyable):
         self.video_maintenance_1 = video_maintenance_1
 
 
-struct PhysicalDeviceVideoMaintenance2FeaturesKHR(Copyable):
+struct PhysicalDeviceVideoMaintenance2FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var video_maintenance_2: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -20394,9 +20394,9 @@ struct PhysicalDeviceVideoMaintenance2FeaturesKHR(Copyable):
         self.video_maintenance_2 = video_maintenance_2
 
 
-struct VideoInlineQueryInfoKHR(Copyable):
+struct VideoInlineQueryInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var query_pool: QueryPool
     var first_query: UInt32
     var query_count: UInt32
@@ -20416,9 +20416,9 @@ struct VideoInlineQueryInfoKHR(Copyable):
         self.query_count = query_count
 
 
-struct VideoDecodeH264ProfileInfoKHR(Copyable):
+struct VideoDecodeH264ProfileInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var std_profile_idc: StdVideoH264ProfileIdc
     var picture_layout: VideoDecodeH264PictureLayoutFlagBitsKHR
 
@@ -20435,9 +20435,9 @@ struct VideoDecodeH264ProfileInfoKHR(Copyable):
         self.picture_layout = picture_layout
 
 
-struct VideoDecodeH264CapabilitiesKHR(Copyable):
+struct VideoDecodeH264CapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_level_idc: StdVideoH264LevelIdc
     var field_offset_granularity: Offset2D
 
@@ -20454,13 +20454,13 @@ struct VideoDecodeH264CapabilitiesKHR(Copyable):
         self.field_offset_granularity = field_offset_granularity.copy()
 
 
-struct VideoDecodeH264SessionParametersAddInfoKHR(Copyable):
+struct VideoDecodeH264SessionParametersAddInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var std_sps_count: UInt32
-    var p_std_sp_ss: Ptr[StdVideoH264SequenceParameterSet, ImmutOrigin.external]
+    var p_std_sp_ss: Ptr[StdVideoH264SequenceParameterSet, ImmutExternalOrigin]
     var std_pps_count: UInt32
-    var p_std_pp_ss: Ptr[StdVideoH264PictureParameterSet, ImmutOrigin.external]
+    var p_std_pp_ss: Ptr[StdVideoH264PictureParameterSet, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20483,12 +20483,12 @@ struct VideoDecodeH264SessionParametersAddInfoKHR(Copyable):
         self.p_std_pp_ss = Ptr(to=p_std_pp_ss).bitcast[type_of(self.p_std_pp_ss)]()[]
 
 
-struct VideoDecodeH264SessionParametersCreateInfoKHR(Copyable):
+struct VideoDecodeH264SessionParametersCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var max_std_sps_count: UInt32
     var max_std_pps_count: UInt32
-    var p_parameters_add_info: Ptr[VideoDecodeH264SessionParametersAddInfoKHR, ImmutOrigin.external]
+    var p_parameters_add_info: Ptr[VideoDecodeH264SessionParametersAddInfoKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20508,11 +20508,11 @@ struct VideoDecodeH264SessionParametersCreateInfoKHR(Copyable):
         self.p_parameters_add_info = Ptr(to=p_parameters_add_info).bitcast[type_of(self.p_parameters_add_info)]()[]
 
 
-struct VideoDecodeH264InlineSessionParametersInfoKHR(Copyable):
+struct VideoDecodeH264InlineSessionParametersInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_sps: Ptr[StdVideoH264SequenceParameterSet, ImmutOrigin.external]
-    var p_std_pps: Ptr[StdVideoH264PictureParameterSet, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_sps: Ptr[StdVideoH264SequenceParameterSet, ImmutExternalOrigin]
+    var p_std_pps: Ptr[StdVideoH264PictureParameterSet, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20531,12 +20531,12 @@ struct VideoDecodeH264InlineSessionParametersInfoKHR(Copyable):
         self.p_std_pps = Ptr(to=p_std_pps).bitcast[type_of(self.p_std_pps)]()[]
 
 
-struct VideoDecodeH264PictureInfoKHR(Copyable):
+struct VideoDecodeH264PictureInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_picture_info: Ptr[StdVideoDecodeH264PictureInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_picture_info: Ptr[StdVideoDecodeH264PictureInfo, ImmutExternalOrigin]
     var slice_count: UInt32
-    var p_slice_offsets: Ptr[UInt32, ImmutOrigin.external]
+    var p_slice_offsets: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20557,10 +20557,10 @@ struct VideoDecodeH264PictureInfoKHR(Copyable):
         self.p_slice_offsets = Ptr(to=p_slice_offsets).bitcast[type_of(self.p_slice_offsets)]()[]
 
 
-struct VideoDecodeH264DpbSlotInfoKHR(Copyable):
+struct VideoDecodeH264DpbSlotInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_reference_info: Ptr[StdVideoDecodeH264ReferenceInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_reference_info: Ptr[StdVideoDecodeH264ReferenceInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20576,9 +20576,9 @@ struct VideoDecodeH264DpbSlotInfoKHR(Copyable):
         self.p_std_reference_info = Ptr(to=p_std_reference_info).bitcast[type_of(self.p_std_reference_info)]()[]
 
 
-struct VideoDecodeH265ProfileInfoKHR(Copyable):
+struct VideoDecodeH265ProfileInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var std_profile_idc: StdVideoH265ProfileIdc
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -20592,9 +20592,9 @@ struct VideoDecodeH265ProfileInfoKHR(Copyable):
         self.std_profile_idc = std_profile_idc
 
 
-struct VideoDecodeH265CapabilitiesKHR(Copyable):
+struct VideoDecodeH265CapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_level_idc: StdVideoH265LevelIdc
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -20608,15 +20608,15 @@ struct VideoDecodeH265CapabilitiesKHR(Copyable):
         self.max_level_idc = max_level_idc
 
 
-struct VideoDecodeH265SessionParametersAddInfoKHR(Copyable):
+struct VideoDecodeH265SessionParametersAddInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var std_vps_count: UInt32
-    var p_std_vp_ss: Ptr[StdVideoH265VideoParameterSet, ImmutOrigin.external]
+    var p_std_vp_ss: Ptr[StdVideoH265VideoParameterSet, ImmutExternalOrigin]
     var std_sps_count: UInt32
-    var p_std_sp_ss: Ptr[StdVideoH265SequenceParameterSet, ImmutOrigin.external]
+    var p_std_sp_ss: Ptr[StdVideoH265SequenceParameterSet, ImmutExternalOrigin]
     var std_pps_count: UInt32
-    var p_std_pp_ss: Ptr[StdVideoH265PictureParameterSet, ImmutOrigin.external]
+    var p_std_pp_ss: Ptr[StdVideoH265PictureParameterSet, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20644,13 +20644,13 @@ struct VideoDecodeH265SessionParametersAddInfoKHR(Copyable):
         self.p_std_pp_ss = Ptr(to=p_std_pp_ss).bitcast[type_of(self.p_std_pp_ss)]()[]
 
 
-struct VideoDecodeH265SessionParametersCreateInfoKHR(Copyable):
+struct VideoDecodeH265SessionParametersCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var max_std_vps_count: UInt32
     var max_std_sps_count: UInt32
     var max_std_pps_count: UInt32
-    var p_parameters_add_info: Ptr[VideoDecodeH265SessionParametersAddInfoKHR, ImmutOrigin.external]
+    var p_parameters_add_info: Ptr[VideoDecodeH265SessionParametersAddInfoKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20672,12 +20672,12 @@ struct VideoDecodeH265SessionParametersCreateInfoKHR(Copyable):
         self.p_parameters_add_info = Ptr(to=p_parameters_add_info).bitcast[type_of(self.p_parameters_add_info)]()[]
 
 
-struct VideoDecodeH265InlineSessionParametersInfoKHR(Copyable):
+struct VideoDecodeH265InlineSessionParametersInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_vps: Ptr[StdVideoH265VideoParameterSet, ImmutOrigin.external]
-    var p_std_sps: Ptr[StdVideoH265SequenceParameterSet, ImmutOrigin.external]
-    var p_std_pps: Ptr[StdVideoH265PictureParameterSet, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_vps: Ptr[StdVideoH265VideoParameterSet, ImmutExternalOrigin]
+    var p_std_sps: Ptr[StdVideoH265SequenceParameterSet, ImmutExternalOrigin]
+    var p_std_pps: Ptr[StdVideoH265PictureParameterSet, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20699,12 +20699,12 @@ struct VideoDecodeH265InlineSessionParametersInfoKHR(Copyable):
         self.p_std_pps = Ptr(to=p_std_pps).bitcast[type_of(self.p_std_pps)]()[]
 
 
-struct VideoDecodeH265PictureInfoKHR(Copyable):
+struct VideoDecodeH265PictureInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_picture_info: Ptr[StdVideoDecodeH265PictureInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_picture_info: Ptr[StdVideoDecodeH265PictureInfo, ImmutExternalOrigin]
     var slice_segment_count: UInt32
-    var p_slice_segment_offsets: Ptr[UInt32, ImmutOrigin.external]
+    var p_slice_segment_offsets: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20725,10 +20725,10 @@ struct VideoDecodeH265PictureInfoKHR(Copyable):
         self.p_slice_segment_offsets = Ptr(to=p_slice_segment_offsets).bitcast[type_of(self.p_slice_segment_offsets)]()[]
 
 
-struct VideoDecodeH265DpbSlotInfoKHR(Copyable):
+struct VideoDecodeH265DpbSlotInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_reference_info: Ptr[StdVideoDecodeH265ReferenceInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_reference_info: Ptr[StdVideoDecodeH265ReferenceInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20744,9 +20744,9 @@ struct VideoDecodeH265DpbSlotInfoKHR(Copyable):
         self.p_std_reference_info = Ptr(to=p_std_reference_info).bitcast[type_of(self.p_std_reference_info)]()[]
 
 
-struct PhysicalDeviceVideoDecodeVP9FeaturesKHR(Copyable):
+struct PhysicalDeviceVideoDecodeVP9FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var video_decode_vp9: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -20760,9 +20760,9 @@ struct PhysicalDeviceVideoDecodeVP9FeaturesKHR(Copyable):
         self.video_decode_vp9 = video_decode_vp9
 
 
-struct VideoDecodeVP9ProfileInfoKHR(Copyable):
+struct VideoDecodeVP9ProfileInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var std_profile: StdVideoVP9Profile
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -20776,9 +20776,9 @@ struct VideoDecodeVP9ProfileInfoKHR(Copyable):
         self.std_profile = std_profile
 
 
-struct VideoDecodeVP9CapabilitiesKHR(Copyable):
+struct VideoDecodeVP9CapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_level: StdVideoVP9Level
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -20792,10 +20792,10 @@ struct VideoDecodeVP9CapabilitiesKHR(Copyable):
         self.max_level = max_level
 
 
-struct VideoDecodeVP9PictureInfoKHR(Copyable):
+struct VideoDecodeVP9PictureInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_picture_info: Ptr[StdVideoDecodeVP9PictureInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_picture_info: Ptr[StdVideoDecodeVP9PictureInfo, ImmutExternalOrigin]
     var reference_name_slot_indices: InlineArray[Int32, Int(MAX_VIDEO_VP9_REFERENCES_PER_FRAME_KHR)]
     var uncompressed_header_offset: UInt32
     var compressed_header_offset: UInt32
@@ -20817,15 +20817,15 @@ struct VideoDecodeVP9PictureInfoKHR(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.p_std_picture_info = Ptr(to=p_std_picture_info).bitcast[type_of(self.p_std_picture_info)]()[]
-        self.reference_name_slot_indices = reference_name_slot_indices
+        self.reference_name_slot_indices = reference_name_slot_indices.copy()
         self.uncompressed_header_offset = uncompressed_header_offset
         self.compressed_header_offset = compressed_header_offset
         self.tiles_offset = tiles_offset
 
 
-struct VideoDecodeAV1ProfileInfoKHR(Copyable):
+struct VideoDecodeAV1ProfileInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var std_profile: StdVideoAV1Profile
     var film_grain_support: Bool32
 
@@ -20842,9 +20842,9 @@ struct VideoDecodeAV1ProfileInfoKHR(Copyable):
         self.film_grain_support = film_grain_support
 
 
-struct VideoDecodeAV1CapabilitiesKHR(Copyable):
+struct VideoDecodeAV1CapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_level: StdVideoAV1Level
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -20858,10 +20858,10 @@ struct VideoDecodeAV1CapabilitiesKHR(Copyable):
         self.max_level = max_level
 
 
-struct VideoDecodeAV1SessionParametersCreateInfoKHR(Copyable):
+struct VideoDecodeAV1SessionParametersCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_sequence_header: Ptr[StdVideoAV1SequenceHeader, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_sequence_header: Ptr[StdVideoAV1SequenceHeader, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20877,10 +20877,10 @@ struct VideoDecodeAV1SessionParametersCreateInfoKHR(Copyable):
         self.p_std_sequence_header = Ptr(to=p_std_sequence_header).bitcast[type_of(self.p_std_sequence_header)]()[]
 
 
-struct VideoDecodeAV1InlineSessionParametersInfoKHR(Copyable):
+struct VideoDecodeAV1InlineSessionParametersInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_sequence_header: Ptr[StdVideoAV1SequenceHeader, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_sequence_header: Ptr[StdVideoAV1SequenceHeader, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20896,15 +20896,15 @@ struct VideoDecodeAV1InlineSessionParametersInfoKHR(Copyable):
         self.p_std_sequence_header = Ptr(to=p_std_sequence_header).bitcast[type_of(self.p_std_sequence_header)]()[]
 
 
-struct VideoDecodeAV1PictureInfoKHR(Copyable):
+struct VideoDecodeAV1PictureInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_picture_info: Ptr[StdVideoDecodeAV1PictureInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_picture_info: Ptr[StdVideoDecodeAV1PictureInfo, ImmutExternalOrigin]
     var reference_name_slot_indices: InlineArray[Int32, Int(MAX_VIDEO_AV1_REFERENCES_PER_FRAME_KHR)]
     var frame_header_offset: UInt32
     var tile_count: UInt32
-    var p_tile_offsets: Ptr[UInt32, ImmutOrigin.external]
-    var p_tile_sizes: Ptr[UInt32, ImmutOrigin.external]
+    var p_tile_offsets: Ptr[UInt32, ImmutExternalOrigin]
+    var p_tile_sizes: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20925,17 +20925,17 @@ struct VideoDecodeAV1PictureInfoKHR(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.p_std_picture_info = Ptr(to=p_std_picture_info).bitcast[type_of(self.p_std_picture_info)]()[]
-        self.reference_name_slot_indices = reference_name_slot_indices
+        self.reference_name_slot_indices = reference_name_slot_indices.copy()
         self.frame_header_offset = frame_header_offset
         self.tile_count = tile_count
         self.p_tile_offsets = Ptr(to=p_tile_offsets).bitcast[type_of(self.p_tile_offsets)]()[]
         self.p_tile_sizes = Ptr(to=p_tile_sizes).bitcast[type_of(self.p_tile_sizes)]()[]
 
 
-struct VideoDecodeAV1DpbSlotInfoKHR(Copyable):
+struct VideoDecodeAV1DpbSlotInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_reference_info: Ptr[StdVideoDecodeAV1ReferenceInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_reference_info: Ptr[StdVideoDecodeAV1ReferenceInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20951,18 +20951,18 @@ struct VideoDecodeAV1DpbSlotInfoKHR(Copyable):
         self.p_std_reference_info = Ptr(to=p_std_reference_info).bitcast[type_of(self.p_std_reference_info)]()[]
 
 
-struct VideoSessionCreateInfoKHR(Copyable):
+struct VideoSessionCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var queue_family_index: UInt32
     var flags: VideoSessionCreateFlagsKHR
-    var p_video_profile: Ptr[VideoProfileInfoKHR, ImmutOrigin.external]
+    var p_video_profile: Ptr[VideoProfileInfoKHR, ImmutExternalOrigin]
     var picture_format: Format
     var max_coded_extent: Extent2D
     var reference_picture_format: Format
     var max_dpb_slots: UInt32
     var max_active_reference_pictures: UInt32
-    var p_std_header_version: Ptr[ExtensionProperties, ImmutOrigin.external]
+    var p_std_header_version: Ptr[ExtensionProperties, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -20995,9 +20995,9 @@ struct VideoSessionCreateInfoKHR(Copyable):
         self.p_std_header_version = Ptr(to=p_std_header_version).bitcast[type_of(self.p_std_header_version)]()[]
 
 
-struct VideoSessionParametersCreateInfoKHR(Copyable):
+struct VideoSessionParametersCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: VideoSessionParametersCreateFlagsKHR
     var video_session_parameters_template: VideoSessionParametersKHR
     var video_session: VideoSessionKHR
@@ -21017,9 +21017,9 @@ struct VideoSessionParametersCreateInfoKHR(Copyable):
         self.video_session = video_session
 
 
-struct VideoSessionParametersUpdateInfoKHR(Copyable):
+struct VideoSessionParametersUpdateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var update_sequence_count: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -21033,9 +21033,9 @@ struct VideoSessionParametersUpdateInfoKHR(Copyable):
         self.update_sequence_count = update_sequence_count
 
 
-struct VideoEncodeSessionParametersGetInfoKHR(Copyable):
+struct VideoEncodeSessionParametersGetInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var video_session_parameters: VideoSessionParametersKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -21049,9 +21049,9 @@ struct VideoEncodeSessionParametersGetInfoKHR(Copyable):
         self.video_session_parameters = video_session_parameters
 
 
-struct VideoEncodeSessionParametersFeedbackInfoKHR(Copyable):
+struct VideoEncodeSessionParametersFeedbackInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var has_overrides: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -21065,14 +21065,14 @@ struct VideoEncodeSessionParametersFeedbackInfoKHR(Copyable):
         self.has_overrides = has_overrides
 
 
-struct VideoBeginCodingInfoKHR(Copyable):
+struct VideoBeginCodingInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: VideoBeginCodingFlagsKHR
     var video_session: VideoSessionKHR
     var video_session_parameters: VideoSessionParametersKHR
     var reference_slot_count: UInt32
-    var p_reference_slots: Ptr[VideoReferenceSlotInfoKHR, ImmutOrigin.external]
+    var p_reference_slots: Ptr[VideoReferenceSlotInfoKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -21096,9 +21096,9 @@ struct VideoBeginCodingInfoKHR(Copyable):
         self.p_reference_slots = Ptr(to=p_reference_slots).bitcast[type_of(self.p_reference_slots)]()[]
 
 
-struct VideoEndCodingInfoKHR(Copyable):
+struct VideoEndCodingInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: VideoEndCodingFlagsKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -21112,9 +21112,9 @@ struct VideoEndCodingInfoKHR(Copyable):
         self.flags = flags
 
 
-struct VideoCodingControlInfoKHR(Copyable):
+struct VideoCodingControlInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: VideoCodingControlFlagsKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -21128,9 +21128,9 @@ struct VideoCodingControlInfoKHR(Copyable):
         self.flags = flags
 
 
-struct VideoEncodeUsageInfoKHR(Copyable):
+struct VideoEncodeUsageInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var video_usage_hints: VideoEncodeUsageFlagsKHR
     var video_content_hints: VideoEncodeContentFlagsKHR
     var tuning_mode: VideoEncodeTuningModeKHR
@@ -21150,17 +21150,17 @@ struct VideoEncodeUsageInfoKHR(Copyable):
         self.tuning_mode = tuning_mode
 
 
-struct VideoEncodeInfoKHR(Copyable):
+struct VideoEncodeInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: VideoEncodeFlagsKHR
     var dst_buffer: Buffer
     var dst_buffer_offset: DeviceSize
     var dst_buffer_range: DeviceSize
     var src_picture_resource: VideoPictureResourceInfoKHR
-    var p_setup_reference_slot: Ptr[VideoReferenceSlotInfoKHR, ImmutOrigin.external]
+    var p_setup_reference_slot: Ptr[VideoReferenceSlotInfoKHR, ImmutExternalOrigin]
     var reference_slot_count: UInt32
-    var p_reference_slots: Ptr[VideoReferenceSlotInfoKHR, ImmutOrigin.external]
+    var p_reference_slots: Ptr[VideoReferenceSlotInfoKHR, ImmutExternalOrigin]
     var preceding_externally_encoded_bytes: UInt32
 
     fn __init__[
@@ -21194,9 +21194,9 @@ struct VideoEncodeInfoKHR(Copyable):
         self.preceding_externally_encoded_bytes = preceding_externally_encoded_bytes
 
 
-struct VideoEncodeQuantizationMapInfoKHR(Copyable):
+struct VideoEncodeQuantizationMapInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var quantization_map: ImageView
     var quantization_map_extent: Extent2D
 
@@ -21213,9 +21213,9 @@ struct VideoEncodeQuantizationMapInfoKHR(Copyable):
         self.quantization_map_extent = quantization_map_extent.copy()
 
 
-struct VideoEncodeQuantizationMapSessionParametersCreateInfoKHR(Copyable):
+struct VideoEncodeQuantizationMapSessionParametersCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var quantization_map_texel_size: Extent2D
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -21229,9 +21229,9 @@ struct VideoEncodeQuantizationMapSessionParametersCreateInfoKHR(Copyable):
         self.quantization_map_texel_size = quantization_map_texel_size.copy()
 
 
-struct PhysicalDeviceVideoEncodeQuantizationMapFeaturesKHR(Copyable):
+struct PhysicalDeviceVideoEncodeQuantizationMapFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var video_encode_quantization_map: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -21245,9 +21245,9 @@ struct PhysicalDeviceVideoEncodeQuantizationMapFeaturesKHR(Copyable):
         self.video_encode_quantization_map = video_encode_quantization_map
 
 
-struct QueryPoolVideoEncodeFeedbackCreateInfoKHR(Copyable):
+struct QueryPoolVideoEncodeFeedbackCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var encode_feedback_flags: VideoEncodeFeedbackFlagsKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -21261,9 +21261,9 @@ struct QueryPoolVideoEncodeFeedbackCreateInfoKHR(Copyable):
         self.encode_feedback_flags = encode_feedback_flags
 
 
-struct VideoEncodeQualityLevelInfoKHR(Copyable):
+struct VideoEncodeQualityLevelInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var quality_level: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -21277,10 +21277,10 @@ struct VideoEncodeQualityLevelInfoKHR(Copyable):
         self.quality_level = quality_level
 
 
-struct PhysicalDeviceVideoEncodeQualityLevelInfoKHR(Copyable):
+struct PhysicalDeviceVideoEncodeQualityLevelInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_video_profile: Ptr[VideoProfileInfoKHR, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_video_profile: Ptr[VideoProfileInfoKHR, ImmutExternalOrigin]
     var quality_level: UInt32
 
     fn __init__[
@@ -21299,9 +21299,9 @@ struct PhysicalDeviceVideoEncodeQualityLevelInfoKHR(Copyable):
         self.quality_level = quality_level
 
 
-struct VideoEncodeQualityLevelPropertiesKHR(Copyable):
+struct VideoEncodeQualityLevelPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var preferred_rate_control_mode: VideoEncodeRateControlModeFlagBitsKHR
     var preferred_rate_control_layer_count: UInt32
 
@@ -21318,13 +21318,13 @@ struct VideoEncodeQualityLevelPropertiesKHR(Copyable):
         self.preferred_rate_control_layer_count = preferred_rate_control_layer_count
 
 
-struct VideoEncodeRateControlInfoKHR(Copyable):
+struct VideoEncodeRateControlInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: VideoEncodeRateControlFlagsKHR
     var rate_control_mode: VideoEncodeRateControlModeFlagBitsKHR
     var layer_count: UInt32
-    var p_layers: Ptr[VideoEncodeRateControlLayerInfoKHR, ImmutOrigin.external]
+    var p_layers: Ptr[VideoEncodeRateControlLayerInfoKHR, ImmutExternalOrigin]
     var virtual_buffer_size_in_ms: UInt32
     var initial_virtual_buffer_size_in_ms: UInt32
 
@@ -21351,9 +21351,9 @@ struct VideoEncodeRateControlInfoKHR(Copyable):
         self.initial_virtual_buffer_size_in_ms = initial_virtual_buffer_size_in_ms
 
 
-struct VideoEncodeRateControlLayerInfoKHR(Copyable):
+struct VideoEncodeRateControlLayerInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var average_bitrate: UInt64
     var max_bitrate: UInt64
     var frame_rate_numerator: UInt32
@@ -21376,9 +21376,9 @@ struct VideoEncodeRateControlLayerInfoKHR(Copyable):
         self.frame_rate_denominator = frame_rate_denominator
 
 
-struct VideoEncodeCapabilitiesKHR(Copyable):
+struct VideoEncodeCapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: VideoEncodeCapabilityFlagsKHR
     var rate_control_modes: VideoEncodeRateControlModeFlagsKHR
     var max_rate_control_layers: UInt32
@@ -21410,9 +21410,9 @@ struct VideoEncodeCapabilitiesKHR(Copyable):
         self.supported_encode_feedback_flags = supported_encode_feedback_flags
 
 
-struct VideoEncodeH264CapabilitiesKHR(Copyable):
+struct VideoEncodeH264CapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: VideoEncodeH264CapabilityFlagsKHR
     var max_level_idc: StdVideoH264LevelIdc
     var max_slice_count: UInt32
@@ -21462,9 +21462,9 @@ struct VideoEncodeH264CapabilitiesKHR(Copyable):
         self.std_syntax_flags = std_syntax_flags
 
 
-struct VideoEncodeH264QualityLevelPropertiesKHR(Copyable):
+struct VideoEncodeH264QualityLevelPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var preferred_rate_control_flags: VideoEncodeH264RateControlFlagsKHR
     var preferred_gop_frame_count: UInt32
     var preferred_idr_period: UInt32
@@ -21502,9 +21502,9 @@ struct VideoEncodeH264QualityLevelPropertiesKHR(Copyable):
         self.preferred_std_entropy_coding_mode_flag = preferred_std_entropy_coding_mode_flag
 
 
-struct VideoEncodeH264SessionCreateInfoKHR(Copyable):
+struct VideoEncodeH264SessionCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var use_max_level_idc: Bool32
     var max_level_idc: StdVideoH264LevelIdc
 
@@ -21521,13 +21521,13 @@ struct VideoEncodeH264SessionCreateInfoKHR(Copyable):
         self.max_level_idc = max_level_idc
 
 
-struct VideoEncodeH264SessionParametersAddInfoKHR(Copyable):
+struct VideoEncodeH264SessionParametersAddInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var std_sps_count: UInt32
-    var p_std_sp_ss: Ptr[StdVideoH264SequenceParameterSet, ImmutOrigin.external]
+    var p_std_sp_ss: Ptr[StdVideoH264SequenceParameterSet, ImmutExternalOrigin]
     var std_pps_count: UInt32
-    var p_std_pp_ss: Ptr[StdVideoH264PictureParameterSet, ImmutOrigin.external]
+    var p_std_pp_ss: Ptr[StdVideoH264PictureParameterSet, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -21550,12 +21550,12 @@ struct VideoEncodeH264SessionParametersAddInfoKHR(Copyable):
         self.p_std_pp_ss = Ptr(to=p_std_pp_ss).bitcast[type_of(self.p_std_pp_ss)]()[]
 
 
-struct VideoEncodeH264SessionParametersCreateInfoKHR(Copyable):
+struct VideoEncodeH264SessionParametersCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var max_std_sps_count: UInt32
     var max_std_pps_count: UInt32
-    var p_parameters_add_info: Ptr[VideoEncodeH264SessionParametersAddInfoKHR, ImmutOrigin.external]
+    var p_parameters_add_info: Ptr[VideoEncodeH264SessionParametersAddInfoKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -21575,9 +21575,9 @@ struct VideoEncodeH264SessionParametersCreateInfoKHR(Copyable):
         self.p_parameters_add_info = Ptr(to=p_parameters_add_info).bitcast[type_of(self.p_parameters_add_info)]()[]
 
 
-struct VideoEncodeH264SessionParametersGetInfoKHR(Copyable):
+struct VideoEncodeH264SessionParametersGetInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var write_std_sps: Bool32
     var write_std_pps: Bool32
     var std_sps_id: UInt32
@@ -21600,9 +21600,9 @@ struct VideoEncodeH264SessionParametersGetInfoKHR(Copyable):
         self.std_pps_id = std_pps_id
 
 
-struct VideoEncodeH264SessionParametersFeedbackInfoKHR(Copyable):
+struct VideoEncodeH264SessionParametersFeedbackInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var has_std_sps_overrides: Bool32
     var has_std_pps_overrides: Bool32
 
@@ -21619,10 +21619,10 @@ struct VideoEncodeH264SessionParametersFeedbackInfoKHR(Copyable):
         self.has_std_pps_overrides = has_std_pps_overrides
 
 
-struct VideoEncodeH264DpbSlotInfoKHR(Copyable):
+struct VideoEncodeH264DpbSlotInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_reference_info: Ptr[StdVideoEncodeH264ReferenceInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_reference_info: Ptr[StdVideoEncodeH264ReferenceInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -21638,12 +21638,12 @@ struct VideoEncodeH264DpbSlotInfoKHR(Copyable):
         self.p_std_reference_info = Ptr(to=p_std_reference_info).bitcast[type_of(self.p_std_reference_info)]()[]
 
 
-struct VideoEncodeH264PictureInfoKHR(Copyable):
+struct VideoEncodeH264PictureInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var nalu_slice_entry_count: UInt32
-    var p_nalu_slice_entries: Ptr[VideoEncodeH264NaluSliceInfoKHR, ImmutOrigin.external]
-    var p_std_picture_info: Ptr[StdVideoEncodeH264PictureInfo, ImmutOrigin.external]
+    var p_nalu_slice_entries: Ptr[VideoEncodeH264NaluSliceInfoKHR, ImmutExternalOrigin]
+    var p_std_picture_info: Ptr[StdVideoEncodeH264PictureInfo, ImmutExternalOrigin]
     var generate_prefix_nalu: Bool32
 
     fn __init__[
@@ -21667,9 +21667,9 @@ struct VideoEncodeH264PictureInfoKHR(Copyable):
         self.generate_prefix_nalu = generate_prefix_nalu
 
 
-struct VideoEncodeH264ProfileInfoKHR(Copyable):
+struct VideoEncodeH264ProfileInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var std_profile_idc: StdVideoH264ProfileIdc
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -21683,11 +21683,11 @@ struct VideoEncodeH264ProfileInfoKHR(Copyable):
         self.std_profile_idc = std_profile_idc
 
 
-struct VideoEncodeH264NaluSliceInfoKHR(Copyable):
+struct VideoEncodeH264NaluSliceInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var constant_qp: Int32
-    var p_std_slice_header: Ptr[StdVideoEncodeH264SliceHeader, ImmutOrigin.external]
+    var p_std_slice_header: Ptr[StdVideoEncodeH264SliceHeader, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -21705,9 +21705,9 @@ struct VideoEncodeH264NaluSliceInfoKHR(Copyable):
         self.p_std_slice_header = Ptr(to=p_std_slice_header).bitcast[type_of(self.p_std_slice_header)]()[]
 
 
-struct VideoEncodeH264RateControlInfoKHR(Copyable):
+struct VideoEncodeH264RateControlInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: VideoEncodeH264RateControlFlagsKHR
     var gop_frame_count: UInt32
     var idr_period: UInt32
@@ -21733,7 +21733,7 @@ struct VideoEncodeH264RateControlInfoKHR(Copyable):
         self.temporal_layer_count = temporal_layer_count
 
 
-struct VideoEncodeH264QpKHR(Copyable):
+struct VideoEncodeH264QpKHR(Copyable, Equatable):
     var qp_i: Int32
     var qp_p: Int32
     var qp_b: Int32
@@ -21749,7 +21749,7 @@ struct VideoEncodeH264QpKHR(Copyable):
         self.qp_b = qp_b
 
 
-struct VideoEncodeH264FrameSizeKHR(Copyable):
+struct VideoEncodeH264FrameSizeKHR(Copyable, Equatable):
     var frame_i_size: UInt32
     var frame_p_size: UInt32
     var frame_b_size: UInt32
@@ -21765,9 +21765,9 @@ struct VideoEncodeH264FrameSizeKHR(Copyable):
         self.frame_b_size = frame_b_size
 
 
-struct VideoEncodeH264GopRemainingFrameInfoKHR(Copyable):
+struct VideoEncodeH264GopRemainingFrameInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var use_gop_remaining_frames: Bool32
     var gop_remaining_i: UInt32
     var gop_remaining_p: UInt32
@@ -21790,9 +21790,9 @@ struct VideoEncodeH264GopRemainingFrameInfoKHR(Copyable):
         self.gop_remaining_b = gop_remaining_b
 
 
-struct VideoEncodeH264RateControlLayerInfoKHR(Copyable):
+struct VideoEncodeH264RateControlLayerInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var use_min_qp: Bool32
     var min_qp: VideoEncodeH264QpKHR
     var use_max_qp: Bool32
@@ -21821,9 +21821,9 @@ struct VideoEncodeH264RateControlLayerInfoKHR(Copyable):
         self.max_frame_size = max_frame_size.copy()
 
 
-struct VideoEncodeH265CapabilitiesKHR(Copyable):
+struct VideoEncodeH265CapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: VideoEncodeH265CapabilityFlagsKHR
     var max_level_idc: StdVideoH265LevelIdc
     var max_slice_segment_count: UInt32
@@ -21882,9 +21882,9 @@ struct VideoEncodeH265CapabilitiesKHR(Copyable):
         self.std_syntax_flags = std_syntax_flags
 
 
-struct VideoEncodeH265QualityLevelPropertiesKHR(Copyable):
+struct VideoEncodeH265QualityLevelPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var preferred_rate_control_flags: VideoEncodeH265RateControlFlagsKHR
     var preferred_gop_frame_count: UInt32
     var preferred_idr_period: UInt32
@@ -21919,9 +21919,9 @@ struct VideoEncodeH265QualityLevelPropertiesKHR(Copyable):
         self.preferred_max_l1_reference_count = preferred_max_l1_reference_count
 
 
-struct VideoEncodeH265SessionCreateInfoKHR(Copyable):
+struct VideoEncodeH265SessionCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var use_max_level_idc: Bool32
     var max_level_idc: StdVideoH265LevelIdc
 
@@ -21938,15 +21938,15 @@ struct VideoEncodeH265SessionCreateInfoKHR(Copyable):
         self.max_level_idc = max_level_idc
 
 
-struct VideoEncodeH265SessionParametersAddInfoKHR(Copyable):
+struct VideoEncodeH265SessionParametersAddInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var std_vps_count: UInt32
-    var p_std_vp_ss: Ptr[StdVideoH265VideoParameterSet, ImmutOrigin.external]
+    var p_std_vp_ss: Ptr[StdVideoH265VideoParameterSet, ImmutExternalOrigin]
     var std_sps_count: UInt32
-    var p_std_sp_ss: Ptr[StdVideoH265SequenceParameterSet, ImmutOrigin.external]
+    var p_std_sp_ss: Ptr[StdVideoH265SequenceParameterSet, ImmutExternalOrigin]
     var std_pps_count: UInt32
-    var p_std_pp_ss: Ptr[StdVideoH265PictureParameterSet, ImmutOrigin.external]
+    var p_std_pp_ss: Ptr[StdVideoH265PictureParameterSet, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -21974,13 +21974,13 @@ struct VideoEncodeH265SessionParametersAddInfoKHR(Copyable):
         self.p_std_pp_ss = Ptr(to=p_std_pp_ss).bitcast[type_of(self.p_std_pp_ss)]()[]
 
 
-struct VideoEncodeH265SessionParametersCreateInfoKHR(Copyable):
+struct VideoEncodeH265SessionParametersCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var max_std_vps_count: UInt32
     var max_std_sps_count: UInt32
     var max_std_pps_count: UInt32
-    var p_parameters_add_info: Ptr[VideoEncodeH265SessionParametersAddInfoKHR, ImmutOrigin.external]
+    var p_parameters_add_info: Ptr[VideoEncodeH265SessionParametersAddInfoKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -22002,9 +22002,9 @@ struct VideoEncodeH265SessionParametersCreateInfoKHR(Copyable):
         self.p_parameters_add_info = Ptr(to=p_parameters_add_info).bitcast[type_of(self.p_parameters_add_info)]()[]
 
 
-struct VideoEncodeH265SessionParametersGetInfoKHR(Copyable):
+struct VideoEncodeH265SessionParametersGetInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var write_std_vps: Bool32
     var write_std_sps: Bool32
     var write_std_pps: Bool32
@@ -22033,9 +22033,9 @@ struct VideoEncodeH265SessionParametersGetInfoKHR(Copyable):
         self.std_pps_id = std_pps_id
 
 
-struct VideoEncodeH265SessionParametersFeedbackInfoKHR(Copyable):
+struct VideoEncodeH265SessionParametersFeedbackInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var has_std_vps_overrides: Bool32
     var has_std_sps_overrides: Bool32
     var has_std_pps_overrides: Bool32
@@ -22055,12 +22055,12 @@ struct VideoEncodeH265SessionParametersFeedbackInfoKHR(Copyable):
         self.has_std_pps_overrides = has_std_pps_overrides
 
 
-struct VideoEncodeH265PictureInfoKHR(Copyable):
+struct VideoEncodeH265PictureInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var nalu_slice_segment_entry_count: UInt32
-    var p_nalu_slice_segment_entries: Ptr[VideoEncodeH265NaluSliceSegmentInfoKHR, ImmutOrigin.external]
-    var p_std_picture_info: Ptr[StdVideoEncodeH265PictureInfo, ImmutOrigin.external]
+    var p_nalu_slice_segment_entries: Ptr[VideoEncodeH265NaluSliceSegmentInfoKHR, ImmutExternalOrigin]
+    var p_std_picture_info: Ptr[StdVideoEncodeH265PictureInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -22081,11 +22081,11 @@ struct VideoEncodeH265PictureInfoKHR(Copyable):
         self.p_std_picture_info = Ptr(to=p_std_picture_info).bitcast[type_of(self.p_std_picture_info)]()[]
 
 
-struct VideoEncodeH265NaluSliceSegmentInfoKHR(Copyable):
+struct VideoEncodeH265NaluSliceSegmentInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var constant_qp: Int32
-    var p_std_slice_segment_header: Ptr[StdVideoEncodeH265SliceSegmentHeader, ImmutOrigin.external]
+    var p_std_slice_segment_header: Ptr[StdVideoEncodeH265SliceSegmentHeader, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -22103,9 +22103,9 @@ struct VideoEncodeH265NaluSliceSegmentInfoKHR(Copyable):
         self.p_std_slice_segment_header = Ptr(to=p_std_slice_segment_header).bitcast[type_of(self.p_std_slice_segment_header)]()[]
 
 
-struct VideoEncodeH265RateControlInfoKHR(Copyable):
+struct VideoEncodeH265RateControlInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: VideoEncodeH265RateControlFlagsKHR
     var gop_frame_count: UInt32
     var idr_period: UInt32
@@ -22131,7 +22131,7 @@ struct VideoEncodeH265RateControlInfoKHR(Copyable):
         self.sub_layer_count = sub_layer_count
 
 
-struct VideoEncodeH265QpKHR(Copyable):
+struct VideoEncodeH265QpKHR(Copyable, Equatable):
     var qp_i: Int32
     var qp_p: Int32
     var qp_b: Int32
@@ -22147,7 +22147,7 @@ struct VideoEncodeH265QpKHR(Copyable):
         self.qp_b = qp_b
 
 
-struct VideoEncodeH265FrameSizeKHR(Copyable):
+struct VideoEncodeH265FrameSizeKHR(Copyable, Equatable):
     var frame_i_size: UInt32
     var frame_p_size: UInt32
     var frame_b_size: UInt32
@@ -22163,9 +22163,9 @@ struct VideoEncodeH265FrameSizeKHR(Copyable):
         self.frame_b_size = frame_b_size
 
 
-struct VideoEncodeH265GopRemainingFrameInfoKHR(Copyable):
+struct VideoEncodeH265GopRemainingFrameInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var use_gop_remaining_frames: Bool32
     var gop_remaining_i: UInt32
     var gop_remaining_p: UInt32
@@ -22188,9 +22188,9 @@ struct VideoEncodeH265GopRemainingFrameInfoKHR(Copyable):
         self.gop_remaining_b = gop_remaining_b
 
 
-struct VideoEncodeH265RateControlLayerInfoKHR(Copyable):
+struct VideoEncodeH265RateControlLayerInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var use_min_qp: Bool32
     var min_qp: VideoEncodeH265QpKHR
     var use_max_qp: Bool32
@@ -22219,9 +22219,9 @@ struct VideoEncodeH265RateControlLayerInfoKHR(Copyable):
         self.max_frame_size = max_frame_size.copy()
 
 
-struct VideoEncodeH265ProfileInfoKHR(Copyable):
+struct VideoEncodeH265ProfileInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var std_profile_idc: StdVideoH265ProfileIdc
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -22235,10 +22235,10 @@ struct VideoEncodeH265ProfileInfoKHR(Copyable):
         self.std_profile_idc = std_profile_idc
 
 
-struct VideoEncodeH265DpbSlotInfoKHR(Copyable):
+struct VideoEncodeH265DpbSlotInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_reference_info: Ptr[StdVideoEncodeH265ReferenceInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_reference_info: Ptr[StdVideoEncodeH265ReferenceInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -22254,9 +22254,9 @@ struct VideoEncodeH265DpbSlotInfoKHR(Copyable):
         self.p_std_reference_info = Ptr(to=p_std_reference_info).bitcast[type_of(self.p_std_reference_info)]()[]
 
 
-struct VideoEncodeAV1CapabilitiesKHR(Copyable):
+struct VideoEncodeAV1CapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: VideoEncodeAV1CapabilityFlagsKHR
     var max_level: StdVideoAV1Level
     var coded_picture_alignment: Extent2D
@@ -22339,9 +22339,9 @@ struct VideoEncodeAV1CapabilitiesKHR(Copyable):
         self.std_syntax_flags = std_syntax_flags
 
 
-struct VideoEncodeAV1QualityLevelPropertiesKHR(Copyable):
+struct VideoEncodeAV1QualityLevelPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var preferred_rate_control_flags: VideoEncodeAV1RateControlFlagsKHR
     var preferred_gop_frame_count: UInt32
     var preferred_key_frame_period: UInt32
@@ -22397,9 +22397,9 @@ struct VideoEncodeAV1QualityLevelPropertiesKHR(Copyable):
         self.preferred_bidirectional_compound_reference_name_mask = preferred_bidirectional_compound_reference_name_mask
 
 
-struct PhysicalDeviceVideoEncodeAV1FeaturesKHR(Copyable):
+struct PhysicalDeviceVideoEncodeAV1FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var video_encode_av1: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -22413,9 +22413,9 @@ struct PhysicalDeviceVideoEncodeAV1FeaturesKHR(Copyable):
         self.video_encode_av1 = video_encode_av1
 
 
-struct VideoEncodeAV1SessionCreateInfoKHR(Copyable):
+struct VideoEncodeAV1SessionCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var use_max_level: Bool32
     var max_level: StdVideoAV1Level
 
@@ -22432,13 +22432,13 @@ struct VideoEncodeAV1SessionCreateInfoKHR(Copyable):
         self.max_level = max_level
 
 
-struct VideoEncodeAV1SessionParametersCreateInfoKHR(Copyable):
+struct VideoEncodeAV1SessionParametersCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_sequence_header: Ptr[StdVideoAV1SequenceHeader, ImmutOrigin.external]
-    var p_std_decoder_model_info: Ptr[StdVideoEncodeAV1DecoderModelInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_sequence_header: Ptr[StdVideoAV1SequenceHeader, ImmutExternalOrigin]
+    var p_std_decoder_model_info: Ptr[StdVideoEncodeAV1DecoderModelInfo, ImmutExternalOrigin]
     var std_operating_point_count: UInt32
-    var p_std_operating_points: Ptr[StdVideoEncodeAV1OperatingPointInfo, ImmutOrigin.external]
+    var p_std_operating_points: Ptr[StdVideoEncodeAV1OperatingPointInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -22462,10 +22462,10 @@ struct VideoEncodeAV1SessionParametersCreateInfoKHR(Copyable):
         self.p_std_operating_points = Ptr(to=p_std_operating_points).bitcast[type_of(self.p_std_operating_points)]()[]
 
 
-struct VideoEncodeAV1DpbSlotInfoKHR(Copyable):
+struct VideoEncodeAV1DpbSlotInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_std_reference_info: Ptr[StdVideoEncodeAV1ReferenceInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_std_reference_info: Ptr[StdVideoEncodeAV1ReferenceInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -22481,13 +22481,13 @@ struct VideoEncodeAV1DpbSlotInfoKHR(Copyable):
         self.p_std_reference_info = Ptr(to=p_std_reference_info).bitcast[type_of(self.p_std_reference_info)]()[]
 
 
-struct VideoEncodeAV1PictureInfoKHR(Copyable):
+struct VideoEncodeAV1PictureInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var prediction_mode: VideoEncodeAV1PredictionModeKHR
     var rate_control_group: VideoEncodeAV1RateControlGroupKHR
     var constant_q_index: UInt32
-    var p_std_picture_info: Ptr[StdVideoEncodeAV1PictureInfo, ImmutOrigin.external]
+    var p_std_picture_info: Ptr[StdVideoEncodeAV1PictureInfo, ImmutExternalOrigin]
     var reference_name_slot_indices: InlineArray[Int32, Int(MAX_VIDEO_AV1_REFERENCES_PER_FRAME_KHR)]
     var primary_reference_cdf_only: Bool32
     var generate_obu_extension_header: Bool32
@@ -22513,14 +22513,14 @@ struct VideoEncodeAV1PictureInfoKHR(Copyable):
         self.rate_control_group = rate_control_group
         self.constant_q_index = constant_q_index
         self.p_std_picture_info = Ptr(to=p_std_picture_info).bitcast[type_of(self.p_std_picture_info)]()[]
-        self.reference_name_slot_indices = reference_name_slot_indices
+        self.reference_name_slot_indices = reference_name_slot_indices.copy()
         self.primary_reference_cdf_only = primary_reference_cdf_only
         self.generate_obu_extension_header = generate_obu_extension_header
 
 
-struct VideoEncodeAV1ProfileInfoKHR(Copyable):
+struct VideoEncodeAV1ProfileInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var std_profile: StdVideoAV1Profile
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -22534,9 +22534,9 @@ struct VideoEncodeAV1ProfileInfoKHR(Copyable):
         self.std_profile = std_profile
 
 
-struct VideoEncodeAV1RateControlInfoKHR(Copyable):
+struct VideoEncodeAV1RateControlInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: VideoEncodeAV1RateControlFlagsKHR
     var gop_frame_count: UInt32
     var key_frame_period: UInt32
@@ -22562,7 +22562,7 @@ struct VideoEncodeAV1RateControlInfoKHR(Copyable):
         self.temporal_layer_count = temporal_layer_count
 
 
-struct VideoEncodeAV1QIndexKHR(Copyable):
+struct VideoEncodeAV1QIndexKHR(Copyable, Equatable):
     var intra_q_index: UInt32
     var predictive_q_index: UInt32
     var bipredictive_q_index: UInt32
@@ -22578,7 +22578,7 @@ struct VideoEncodeAV1QIndexKHR(Copyable):
         self.bipredictive_q_index = bipredictive_q_index
 
 
-struct VideoEncodeAV1FrameSizeKHR(Copyable):
+struct VideoEncodeAV1FrameSizeKHR(Copyable, Equatable):
     var intra_frame_size: UInt32
     var predictive_frame_size: UInt32
     var bipredictive_frame_size: UInt32
@@ -22594,9 +22594,9 @@ struct VideoEncodeAV1FrameSizeKHR(Copyable):
         self.bipredictive_frame_size = bipredictive_frame_size
 
 
-struct VideoEncodeAV1GopRemainingFrameInfoKHR(Copyable):
+struct VideoEncodeAV1GopRemainingFrameInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var use_gop_remaining_frames: Bool32
     var gop_remaining_intra: UInt32
     var gop_remaining_predictive: UInt32
@@ -22619,9 +22619,9 @@ struct VideoEncodeAV1GopRemainingFrameInfoKHR(Copyable):
         self.gop_remaining_bipredictive = gop_remaining_bipredictive
 
 
-struct VideoEncodeAV1RateControlLayerInfoKHR(Copyable):
+struct VideoEncodeAV1RateControlLayerInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var use_min_q_index: Bool32
     var min_q_index: VideoEncodeAV1QIndexKHR
     var use_max_q_index: Bool32
@@ -22650,9 +22650,9 @@ struct VideoEncodeAV1RateControlLayerInfoKHR(Copyable):
         self.max_frame_size = max_frame_size.copy()
 
 
-struct PhysicalDeviceInheritedViewportScissorFeaturesNV(Copyable):
+struct PhysicalDeviceInheritedViewportScissorFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var inherited_viewport_scissor_2d: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -22666,12 +22666,12 @@ struct PhysicalDeviceInheritedViewportScissorFeaturesNV(Copyable):
         self.inherited_viewport_scissor_2d = inherited_viewport_scissor_2d
 
 
-struct CommandBufferInheritanceViewportScissorInfoNV(Copyable):
+struct CommandBufferInheritanceViewportScissorInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var viewport_scissor_2d: Bool32
     var viewport_depth_count: UInt32
-    var p_viewport_depths: Ptr[Viewport, ImmutOrigin.external]
+    var p_viewport_depths: Ptr[Viewport, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -22691,9 +22691,9 @@ struct CommandBufferInheritanceViewportScissorInfoNV(Copyable):
         self.p_viewport_depths = Ptr(to=p_viewport_depths).bitcast[type_of(self.p_viewport_depths)]()[]
 
 
-struct PhysicalDeviceYcbcr2Plane444FormatsFeaturesEXT(Copyable):
+struct PhysicalDeviceYcbcr2Plane444FormatsFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ycbcr_2_plane_444_formats: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -22707,9 +22707,9 @@ struct PhysicalDeviceYcbcr2Plane444FormatsFeaturesEXT(Copyable):
         self.ycbcr_2_plane_444_formats = ycbcr_2_plane_444_formats
 
 
-struct PhysicalDeviceProvokingVertexFeaturesEXT(Copyable):
+struct PhysicalDeviceProvokingVertexFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var provoking_vertex_last: Bool32
     var transform_feedback_preserves_provoking_vertex: Bool32
 
@@ -22726,9 +22726,9 @@ struct PhysicalDeviceProvokingVertexFeaturesEXT(Copyable):
         self.transform_feedback_preserves_provoking_vertex = transform_feedback_preserves_provoking_vertex
 
 
-struct PhysicalDeviceProvokingVertexPropertiesEXT(Copyable):
+struct PhysicalDeviceProvokingVertexPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var provoking_vertex_mode_per_pipeline: Bool32
     var transform_feedback_preserves_triangle_fan_provoking_vertex: Bool32
 
@@ -22745,9 +22745,9 @@ struct PhysicalDeviceProvokingVertexPropertiesEXT(Copyable):
         self.transform_feedback_preserves_triangle_fan_provoking_vertex = transform_feedback_preserves_triangle_fan_provoking_vertex
 
 
-struct PipelineRasterizationProvokingVertexStateCreateInfoEXT(Copyable):
+struct PipelineRasterizationProvokingVertexStateCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var provoking_vertex_mode: ProvokingVertexModeEXT
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -22761,9 +22761,9 @@ struct PipelineRasterizationProvokingVertexStateCreateInfoEXT(Copyable):
         self.provoking_vertex_mode = provoking_vertex_mode
 
 
-struct VideoEncodeIntraRefreshCapabilitiesKHR(Copyable):
+struct VideoEncodeIntraRefreshCapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var intra_refresh_modes: VideoEncodeIntraRefreshModeFlagsKHR
     var max_intra_refresh_cycle_duration: UInt32
     var max_intra_refresh_active_reference_pictures: UInt32
@@ -22789,9 +22789,9 @@ struct VideoEncodeIntraRefreshCapabilitiesKHR(Copyable):
         self.non_rectangular_intra_refresh_regions = non_rectangular_intra_refresh_regions
 
 
-struct VideoEncodeSessionIntraRefreshCreateInfoKHR(Copyable):
+struct VideoEncodeSessionIntraRefreshCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var intra_refresh_mode: VideoEncodeIntraRefreshModeFlagBitsKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -22805,9 +22805,9 @@ struct VideoEncodeSessionIntraRefreshCreateInfoKHR(Copyable):
         self.intra_refresh_mode = intra_refresh_mode
 
 
-struct VideoEncodeIntraRefreshInfoKHR(Copyable):
+struct VideoEncodeIntraRefreshInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var intra_refresh_cycle_duration: UInt32
     var intra_refresh_index: UInt32
 
@@ -22824,9 +22824,9 @@ struct VideoEncodeIntraRefreshInfoKHR(Copyable):
         self.intra_refresh_index = intra_refresh_index
 
 
-struct VideoReferenceIntraRefreshInfoKHR(Copyable):
+struct VideoReferenceIntraRefreshInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var dirty_intra_refresh_regions: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -22840,9 +22840,9 @@ struct VideoReferenceIntraRefreshInfoKHR(Copyable):
         self.dirty_intra_refresh_regions = dirty_intra_refresh_regions
 
 
-struct PhysicalDeviceVideoEncodeIntraRefreshFeaturesKHR(Copyable):
+struct PhysicalDeviceVideoEncodeIntraRefreshFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var video_encode_intra_refresh: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -22856,11 +22856,11 @@ struct PhysicalDeviceVideoEncodeIntraRefreshFeaturesKHR(Copyable):
         self.video_encode_intra_refresh = video_encode_intra_refresh
 
 
-struct CuModuleCreateInfoNVX(Copyable):
+struct CuModuleCreateInfoNVX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var data_size: UInt
-    var p_data: Ptr[NoneType, ImmutOrigin.external]
+    var p_data: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_data_origin: ImmutOrigin = ImmutAnyOrigin
@@ -22877,9 +22877,9 @@ struct CuModuleCreateInfoNVX(Copyable):
         self.p_data = Ptr(to=p_data).bitcast[type_of(self.p_data)]()[]
 
 
-struct CuModuleTexturingModeCreateInfoNVX(Copyable):
+struct CuModuleTexturingModeCreateInfoNVX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var use_64_bit_texturing: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -22893,11 +22893,11 @@ struct CuModuleTexturingModeCreateInfoNVX(Copyable):
         self.use_64_bit_texturing = use_64_bit_texturing
 
 
-struct CuFunctionCreateInfoNVX(Copyable):
+struct CuFunctionCreateInfoNVX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var module: CuModuleNVX
-    var p_name: CStringSlice[ImmutOrigin.external]
+    var p_name: CStringSlice[ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_name_origin: ImmutOrigin = ImmutAnyOrigin
@@ -22914,9 +22914,9 @@ struct CuFunctionCreateInfoNVX(Copyable):
         self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
 
 
-struct CuLaunchInfoNVX(Copyable):
+struct CuLaunchInfoNVX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var function: CuFunctionNVX
     var grid_dim_x: UInt32
     var grid_dim_y: UInt32
@@ -22926,9 +22926,9 @@ struct CuLaunchInfoNVX(Copyable):
     var block_dim_z: UInt32
     var shared_mem_bytes: UInt32
     var param_count: UInt
-    var p_params: Ptr[Ptr[NoneType, ImmutOrigin.external], ImmutOrigin.external]
+    var p_params: Ptr[Ptr[NoneType, ImmutExternalOrigin], ImmutExternalOrigin]
     var extra_count: UInt
-    var p_extras: Ptr[Ptr[NoneType, ImmutOrigin.external], ImmutOrigin.external]
+    var p_extras: Ptr[Ptr[NoneType, ImmutExternalOrigin], ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -22969,9 +22969,9 @@ struct CuLaunchInfoNVX(Copyable):
         self.p_extras = Ptr(to=p_extras).bitcast[type_of(self.p_extras)]()[]
 
 
-struct PhysicalDeviceDescriptorBufferFeaturesEXT(Copyable):
+struct PhysicalDeviceDescriptorBufferFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var descriptor_buffer: Bool32
     var descriptor_buffer_capture_replay: Bool32
     var descriptor_buffer_image_layout_ignored: Bool32
@@ -22994,9 +22994,9 @@ struct PhysicalDeviceDescriptorBufferFeaturesEXT(Copyable):
         self.descriptor_buffer_push_descriptors = descriptor_buffer_push_descriptors
 
 
-struct PhysicalDeviceDescriptorBufferPropertiesEXT(Copyable):
+struct PhysicalDeviceDescriptorBufferPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var combined_image_sampler_descriptor_single_array: Bool32
     var bufferless_push_descriptors: Bool32
     var allow_sampler_image_view_post_submit_creation: Bool32
@@ -23106,9 +23106,9 @@ struct PhysicalDeviceDescriptorBufferPropertiesEXT(Copyable):
         self.descriptor_buffer_address_space_size = descriptor_buffer_address_space_size
 
 
-struct PhysicalDeviceDescriptorBufferDensityMapPropertiesEXT(Copyable):
+struct PhysicalDeviceDescriptorBufferDensityMapPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var combined_image_sampler_density_map_descriptor_size: UInt
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -23122,9 +23122,9 @@ struct PhysicalDeviceDescriptorBufferDensityMapPropertiesEXT(Copyable):
         self.combined_image_sampler_density_map_descriptor_size = combined_image_sampler_density_map_descriptor_size
 
 
-struct DescriptorAddressInfoEXT(Copyable):
+struct DescriptorAddressInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var address: DeviceAddress
     var range: DeviceSize
     var format: Format
@@ -23144,9 +23144,9 @@ struct DescriptorAddressInfoEXT(Copyable):
         self.format = format
 
 
-struct DescriptorBufferBindingInfoEXT(Copyable):
+struct DescriptorBufferBindingInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var address: DeviceAddress
     var usage: BufferUsageFlags
 
@@ -23163,9 +23163,9 @@ struct DescriptorBufferBindingInfoEXT(Copyable):
         self.usage = usage
 
 
-struct DescriptorBufferBindingPushDescriptorBufferHandleEXT(Copyable):
+struct DescriptorBufferBindingPushDescriptorBufferHandleEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var buffer: Buffer
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -23179,9 +23179,9 @@ struct DescriptorBufferBindingPushDescriptorBufferHandleEXT(Copyable):
         self.buffer = buffer
 
 
-struct DescriptorGetInfoEXT(Copyable):
+struct DescriptorGetInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var type: DescriptorType
     var data: DescriptorDataEXT
 
@@ -23198,9 +23198,9 @@ struct DescriptorGetInfoEXT(Copyable):
         self.data = data
 
 
-struct BufferCaptureDescriptorDataInfoEXT(Copyable):
+struct BufferCaptureDescriptorDataInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var buffer: Buffer
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -23214,9 +23214,9 @@ struct BufferCaptureDescriptorDataInfoEXT(Copyable):
         self.buffer = buffer
 
 
-struct ImageCaptureDescriptorDataInfoEXT(Copyable):
+struct ImageCaptureDescriptorDataInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image: Image
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -23230,9 +23230,9 @@ struct ImageCaptureDescriptorDataInfoEXT(Copyable):
         self.image = image
 
 
-struct ImageViewCaptureDescriptorDataInfoEXT(Copyable):
+struct ImageViewCaptureDescriptorDataInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image_view: ImageView
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -23246,9 +23246,9 @@ struct ImageViewCaptureDescriptorDataInfoEXT(Copyable):
         self.image_view = image_view
 
 
-struct SamplerCaptureDescriptorDataInfoEXT(Copyable):
+struct SamplerCaptureDescriptorDataInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var sampler: Sampler
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -23262,9 +23262,9 @@ struct SamplerCaptureDescriptorDataInfoEXT(Copyable):
         self.sampler = sampler
 
 
-struct AccelerationStructureCaptureDescriptorDataInfoEXT(Copyable):
+struct AccelerationStructureCaptureDescriptorDataInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var acceleration_structure: AccelerationStructureKHR
     var acceleration_structure_nv: AccelerationStructureNV
 
@@ -23281,10 +23281,10 @@ struct AccelerationStructureCaptureDescriptorDataInfoEXT(Copyable):
         self.acceleration_structure_nv = acceleration_structure_nv
 
 
-struct OpaqueCaptureDescriptorDataCreateInfoEXT(Copyable):
+struct OpaqueCaptureDescriptorDataCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var opaque_capture_descriptor_data: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var opaque_capture_descriptor_data: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -23300,9 +23300,9 @@ struct OpaqueCaptureDescriptorDataCreateInfoEXT(Copyable):
         self.opaque_capture_descriptor_data = Ptr(to=opaque_capture_descriptor_data).bitcast[type_of(self.opaque_capture_descriptor_data)]()[]
 
 
-struct PhysicalDeviceShaderIntegerDotProductFeatures(Copyable):
+struct PhysicalDeviceShaderIntegerDotProductFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_integer_dot_product: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -23316,9 +23316,9 @@ struct PhysicalDeviceShaderIntegerDotProductFeatures(Copyable):
         self.shader_integer_dot_product = shader_integer_dot_product
 
 
-struct PhysicalDeviceShaderIntegerDotProductProperties(Copyable):
+struct PhysicalDeviceShaderIntegerDotProductProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var integer_dot_product_8_bit_unsigned_accelerated: Bool32
     var integer_dot_product_8_bit_signed_accelerated: Bool32
     var integer_dot_product_8_bit_mixed_signedness_accelerated: Bool32
@@ -23419,9 +23419,9 @@ struct PhysicalDeviceShaderIntegerDotProductProperties(Copyable):
         self.integer_dot_product_accumulating_saturating_64_bit_mixed_signedness_accelerated = integer_dot_product_accumulating_saturating_64_bit_mixed_signedness_accelerated
 
 
-struct PhysicalDeviceDrmPropertiesEXT(Copyable):
+struct PhysicalDeviceDrmPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var has_primary: Bool32
     var has_render: Bool32
     var primary_major: Int64
@@ -23450,9 +23450,9 @@ struct PhysicalDeviceDrmPropertiesEXT(Copyable):
         self.render_minor = render_minor
 
 
-struct PhysicalDeviceFragmentShaderBarycentricFeaturesKHR(Copyable):
+struct PhysicalDeviceFragmentShaderBarycentricFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var fragment_shader_barycentric: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -23466,9 +23466,9 @@ struct PhysicalDeviceFragmentShaderBarycentricFeaturesKHR(Copyable):
         self.fragment_shader_barycentric = fragment_shader_barycentric
 
 
-struct PhysicalDeviceFragmentShaderBarycentricPropertiesKHR(Copyable):
+struct PhysicalDeviceFragmentShaderBarycentricPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var tri_strip_vertex_order_independent_of_provoking_vertex: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -23482,9 +23482,9 @@ struct PhysicalDeviceFragmentShaderBarycentricPropertiesKHR(Copyable):
         self.tri_strip_vertex_order_independent_of_provoking_vertex = tri_strip_vertex_order_independent_of_provoking_vertex
 
 
-struct PhysicalDeviceShaderFmaFeaturesKHR(Copyable):
+struct PhysicalDeviceShaderFmaFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_fma_float_16: Bool32
     var shader_fma_float_32: Bool32
     var shader_fma_float_64: Bool32
@@ -23504,9 +23504,9 @@ struct PhysicalDeviceShaderFmaFeaturesKHR(Copyable):
         self.shader_fma_float_64 = shader_fma_float_64
 
 
-struct PhysicalDeviceRayTracingMotionBlurFeaturesNV(Copyable):
+struct PhysicalDeviceRayTracingMotionBlurFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ray_tracing_motion_blur: Bool32
     var ray_tracing_motion_blur_pipeline_trace_rays_indirect: Bool32
 
@@ -23523,9 +23523,9 @@ struct PhysicalDeviceRayTracingMotionBlurFeaturesNV(Copyable):
         self.ray_tracing_motion_blur_pipeline_trace_rays_indirect = ray_tracing_motion_blur_pipeline_trace_rays_indirect
 
 
-struct PhysicalDeviceRayTracingValidationFeaturesNV(Copyable):
+struct PhysicalDeviceRayTracingValidationFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ray_tracing_validation: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -23539,9 +23539,9 @@ struct PhysicalDeviceRayTracingValidationFeaturesNV(Copyable):
         self.ray_tracing_validation = ray_tracing_validation
 
 
-struct PhysicalDeviceRayTracingLinearSweptSpheresFeaturesNV(Copyable):
+struct PhysicalDeviceRayTracingLinearSweptSpheresFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var spheres: Bool32
     var linear_swept_spheres: Bool32
 
@@ -23558,9 +23558,9 @@ struct PhysicalDeviceRayTracingLinearSweptSpheresFeaturesNV(Copyable):
         self.linear_swept_spheres = linear_swept_spheres
 
 
-struct AccelerationStructureGeometryMotionTrianglesDataNV(Copyable):
+struct AccelerationStructureGeometryMotionTrianglesDataNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var vertex_data: DeviceOrHostAddressConstKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -23574,9 +23574,9 @@ struct AccelerationStructureGeometryMotionTrianglesDataNV(Copyable):
         self.vertex_data = vertex_data
 
 
-struct AccelerationStructureMotionInfoNV(Copyable):
+struct AccelerationStructureMotionInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var max_instances: UInt32
     var flags: AccelerationStructureMotionInfoFlagsNV
 
@@ -23593,7 +23593,7 @@ struct AccelerationStructureMotionInfoNV(Copyable):
         self.flags = flags
 
 
-struct SRTDataNV(Copyable):
+struct SRTDataNV(Copyable, Equatable):
     var sx: Float32
     var a: Float32
     var b: Float32
@@ -23648,7 +23648,7 @@ struct SRTDataNV(Copyable):
         self.tz = tz
 
 
-struct AccelerationStructureSRTMotionInstanceNV(Copyable):
+struct AccelerationStructureSRTMotionInstanceNV(Copyable, Equatable):
     var transform_t0: SRTDataNV
     var transform_t1: SRTDataNV
     var _packed0: UInt32
@@ -23700,7 +23700,7 @@ struct AccelerationStructureSRTMotionInstanceNV(Copyable):
         set_packed_value[width=8, offset=24](self._packed1, new_value)
 
 
-struct AccelerationStructureMatrixMotionInstanceNV(Copyable):
+struct AccelerationStructureMatrixMotionInstanceNV(Copyable, Equatable):
     var transform_t0: TransformMatrixKHR
     var transform_t1: TransformMatrixKHR
     var _packed0: UInt32
@@ -23752,7 +23752,7 @@ struct AccelerationStructureMatrixMotionInstanceNV(Copyable):
         set_packed_value[width=8, offset=24](self._packed1, new_value)
 
 
-struct AccelerationStructureMotionInstanceNV(Copyable):
+struct AccelerationStructureMotionInstanceNV(Copyable, Equatable):
     var type: AccelerationStructureMotionInstanceTypeNV
     var flags: AccelerationStructureMotionInstanceFlagsNV
     var data: AccelerationStructureMotionInstanceDataNV
@@ -23768,9 +23768,9 @@ struct AccelerationStructureMotionInstanceNV(Copyable):
         self.data = data
 
 
-struct MemoryGetRemoteAddressInfoNV(Copyable):
+struct MemoryGetRemoteAddressInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var memory: DeviceMemory
     var handle_type: ExternalMemoryHandleTypeFlagBits
 
@@ -23787,9 +23787,9 @@ struct MemoryGetRemoteAddressInfoNV(Copyable):
         self.handle_type = handle_type
 
 
-struct ImportMemoryBufferCollectionFUCHSIA(Copyable):
+struct ImportMemoryBufferCollectionFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var collection: BufferCollectionFUCHSIA
     var index: UInt32
 
@@ -23806,9 +23806,9 @@ struct ImportMemoryBufferCollectionFUCHSIA(Copyable):
         self.index = index
 
 
-struct BufferCollectionImageCreateInfoFUCHSIA(Copyable):
+struct BufferCollectionImageCreateInfoFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var collection: BufferCollectionFUCHSIA
     var index: UInt32
 
@@ -23825,9 +23825,9 @@ struct BufferCollectionImageCreateInfoFUCHSIA(Copyable):
         self.index = index
 
 
-struct BufferCollectionBufferCreateInfoFUCHSIA(Copyable):
+struct BufferCollectionBufferCreateInfoFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var collection: BufferCollectionFUCHSIA
     var index: UInt32
 
@@ -23844,9 +23844,9 @@ struct BufferCollectionBufferCreateInfoFUCHSIA(Copyable):
         self.index = index
 
 
-struct BufferCollectionCreateInfoFUCHSIA(Copyable):
+struct BufferCollectionCreateInfoFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var collection_token: zx_handle_t
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -23860,9 +23860,9 @@ struct BufferCollectionCreateInfoFUCHSIA(Copyable):
         self.collection_token = collection_token
 
 
-struct BufferCollectionPropertiesFUCHSIA(Copyable):
+struct BufferCollectionPropertiesFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var memory_type_bits: UInt32
     var buffer_count: UInt32
     var create_info_index: UInt32
@@ -23906,9 +23906,9 @@ struct BufferCollectionPropertiesFUCHSIA(Copyable):
         self.suggested_y_chroma_offset = suggested_y_chroma_offset
 
 
-struct BufferConstraintsInfoFUCHSIA(Copyable):
+struct BufferConstraintsInfoFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var create_info: BufferCreateInfo
     var required_format_features: FormatFeatureFlags
     var buffer_collection_constraints: BufferCollectionConstraintsInfoFUCHSIA
@@ -23928,9 +23928,9 @@ struct BufferConstraintsInfoFUCHSIA(Copyable):
         self.buffer_collection_constraints = buffer_collection_constraints.copy()
 
 
-struct SysmemColorSpaceFUCHSIA(Copyable):
+struct SysmemColorSpaceFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var color_space: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -23944,15 +23944,15 @@ struct SysmemColorSpaceFUCHSIA(Copyable):
         self.color_space = color_space
 
 
-struct ImageFormatConstraintsInfoFUCHSIA(Copyable):
+struct ImageFormatConstraintsInfoFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image_create_info: ImageCreateInfo
     var required_format_features: FormatFeatureFlags
     var flags: ImageFormatConstraintsFlagsFUCHSIA
     var sysmem_pixel_format: UInt64
     var color_space_count: UInt32
-    var p_color_spaces: Ptr[SysmemColorSpaceFUCHSIA, ImmutOrigin.external]
+    var p_color_spaces: Ptr[SysmemColorSpaceFUCHSIA, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -23978,11 +23978,11 @@ struct ImageFormatConstraintsInfoFUCHSIA(Copyable):
         self.p_color_spaces = Ptr(to=p_color_spaces).bitcast[type_of(self.p_color_spaces)]()[]
 
 
-struct ImageConstraintsInfoFUCHSIA(Copyable):
+struct ImageConstraintsInfoFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var format_constraints_count: UInt32
-    var p_format_constraints: Ptr[ImageFormatConstraintsInfoFUCHSIA, ImmutOrigin.external]
+    var p_format_constraints: Ptr[ImageFormatConstraintsInfoFUCHSIA, ImmutExternalOrigin]
     var buffer_collection_constraints: BufferCollectionConstraintsInfoFUCHSIA
     var flags: ImageConstraintsInfoFlagsFUCHSIA
 
@@ -24006,9 +24006,9 @@ struct ImageConstraintsInfoFUCHSIA(Copyable):
         self.flags = flags
 
 
-struct BufferCollectionConstraintsInfoFUCHSIA(Copyable):
+struct BufferCollectionConstraintsInfoFUCHSIA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var min_buffer_count: UInt32
     var max_buffer_count: UInt32
     var min_buffer_count_for_camping: UInt32
@@ -24034,11 +24034,11 @@ struct BufferCollectionConstraintsInfoFUCHSIA(Copyable):
         self.min_buffer_count_for_shared_slack = min_buffer_count_for_shared_slack
 
 
-struct CudaModuleCreateInfoNV(Copyable):
+struct CudaModuleCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var data_size: UInt
-    var p_data: Ptr[NoneType, ImmutOrigin.external]
+    var p_data: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_data_origin: ImmutOrigin = ImmutAnyOrigin
@@ -24055,11 +24055,11 @@ struct CudaModuleCreateInfoNV(Copyable):
         self.p_data = Ptr(to=p_data).bitcast[type_of(self.p_data)]()[]
 
 
-struct CudaFunctionCreateInfoNV(Copyable):
+struct CudaFunctionCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var module: CudaModuleNV
-    var p_name: CStringSlice[ImmutOrigin.external]
+    var p_name: CStringSlice[ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_name_origin: ImmutOrigin = ImmutAnyOrigin
@@ -24076,9 +24076,9 @@ struct CudaFunctionCreateInfoNV(Copyable):
         self.p_name = Ptr(to=p_name).bitcast[type_of(self.p_name)]()[]
 
 
-struct CudaLaunchInfoNV(Copyable):
+struct CudaLaunchInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var function: CudaFunctionNV
     var grid_dim_x: UInt32
     var grid_dim_y: UInt32
@@ -24088,9 +24088,9 @@ struct CudaLaunchInfoNV(Copyable):
     var block_dim_z: UInt32
     var shared_mem_bytes: UInt32
     var param_count: UInt
-    var p_params: Ptr[Ptr[NoneType, ImmutOrigin.external], ImmutOrigin.external]
+    var p_params: Ptr[Ptr[NoneType, ImmutExternalOrigin], ImmutExternalOrigin]
     var extra_count: UInt
-    var p_extras: Ptr[Ptr[NoneType, ImmutOrigin.external], ImmutOrigin.external]
+    var p_extras: Ptr[Ptr[NoneType, ImmutExternalOrigin], ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -24131,9 +24131,9 @@ struct CudaLaunchInfoNV(Copyable):
         self.p_extras = Ptr(to=p_extras).bitcast[type_of(self.p_extras)]()[]
 
 
-struct PhysicalDeviceRGBA10X6FormatsFeaturesEXT(Copyable):
+struct PhysicalDeviceRGBA10X6FormatsFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var format_rgba_10_x_6_without_y_cb_cr_sampler: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24147,9 +24147,9 @@ struct PhysicalDeviceRGBA10X6FormatsFeaturesEXT(Copyable):
         self.format_rgba_10_x_6_without_y_cb_cr_sampler = format_rgba_10_x_6_without_y_cb_cr_sampler
 
 
-struct FormatProperties3(Copyable):
+struct FormatProperties3(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var linear_tiling_features: FormatFeatureFlags2
     var optimal_tiling_features: FormatFeatureFlags2
     var buffer_features: FormatFeatureFlags2
@@ -24169,11 +24169,11 @@ struct FormatProperties3(Copyable):
         self.buffer_features = buffer_features
 
 
-struct DrmFormatModifierPropertiesList2EXT(Copyable):
+struct DrmFormatModifierPropertiesList2EXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var drm_format_modifier_count: UInt32
-    var p_drm_format_modifier_properties: Ptr[DrmFormatModifierProperties2EXT, MutOrigin.external]
+    var p_drm_format_modifier_properties: Ptr[DrmFormatModifierProperties2EXT, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin,
@@ -24191,7 +24191,7 @@ struct DrmFormatModifierPropertiesList2EXT(Copyable):
         self.p_drm_format_modifier_properties = Ptr(to=p_drm_format_modifier_properties).bitcast[type_of(self.p_drm_format_modifier_properties)]()[]
 
 
-struct DrmFormatModifierProperties2EXT(Copyable):
+struct DrmFormatModifierProperties2EXT(Copyable, Equatable):
     var drm_format_modifier: UInt64
     var drm_format_modifier_plane_count: UInt32
     var drm_format_modifier_tiling_features: FormatFeatureFlags2
@@ -24207,9 +24207,9 @@ struct DrmFormatModifierProperties2EXT(Copyable):
         self.drm_format_modifier_tiling_features = drm_format_modifier_tiling_features
 
 
-struct AndroidHardwareBufferFormatProperties2ANDROID(Copyable):
+struct AndroidHardwareBufferFormatProperties2ANDROID(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var format: Format
     var external_format: UInt64
     var format_features: FormatFeatureFlags2
@@ -24244,12 +24244,12 @@ struct AndroidHardwareBufferFormatProperties2ANDROID(Copyable):
         self.suggested_y_chroma_offset = suggested_y_chroma_offset
 
 
-struct PipelineRenderingCreateInfo(Copyable):
+struct PipelineRenderingCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var view_mask: UInt32
     var color_attachment_count: UInt32
-    var p_color_attachment_formats: Ptr[Format, ImmutOrigin.external]
+    var p_color_attachment_formats: Ptr[Format, ImmutExternalOrigin]
     var depth_attachment_format: Format
     var stencil_attachment_format: Format
 
@@ -24275,17 +24275,17 @@ struct PipelineRenderingCreateInfo(Copyable):
         self.stencil_attachment_format = stencil_attachment_format
 
 
-struct RenderingInfo(Copyable):
+struct RenderingInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: RenderingFlags
     var render_area: Rect2D
     var layer_count: UInt32
     var view_mask: UInt32
     var color_attachment_count: UInt32
-    var p_color_attachments: Ptr[RenderingAttachmentInfo, ImmutOrigin.external]
-    var p_depth_attachment: Ptr[RenderingAttachmentInfo, ImmutOrigin.external]
-    var p_stencil_attachment: Ptr[RenderingAttachmentInfo, ImmutOrigin.external]
+    var p_color_attachments: Ptr[RenderingAttachmentInfo, ImmutExternalOrigin]
+    var p_depth_attachment: Ptr[RenderingAttachmentInfo, ImmutExternalOrigin]
+    var p_stencil_attachment: Ptr[RenderingAttachmentInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -24317,9 +24317,9 @@ struct RenderingInfo(Copyable):
         self.p_stencil_attachment = Ptr(to=p_stencil_attachment).bitcast[type_of(self.p_stencil_attachment)]()[]
 
 
-struct RenderingEndInfoKHR(Copyable):
+struct RenderingEndInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -24330,9 +24330,9 @@ struct RenderingEndInfoKHR(Copyable):
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
 
 
-struct RenderingAttachmentInfo(Copyable):
+struct RenderingAttachmentInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image_view: ImageView
     var image_layout: ImageLayout
     var resolve_mode: ResolveModeFlagBits
@@ -24367,9 +24367,9 @@ struct RenderingAttachmentInfo(Copyable):
         self.clear_value = clear_value
 
 
-struct RenderingFragmentShadingRateAttachmentInfoKHR(Copyable):
+struct RenderingFragmentShadingRateAttachmentInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image_view: ImageView
     var image_layout: ImageLayout
     var shading_rate_attachment_texel_size: Extent2D
@@ -24389,9 +24389,9 @@ struct RenderingFragmentShadingRateAttachmentInfoKHR(Copyable):
         self.shading_rate_attachment_texel_size = shading_rate_attachment_texel_size.copy()
 
 
-struct RenderingFragmentDensityMapAttachmentInfoEXT(Copyable):
+struct RenderingFragmentDensityMapAttachmentInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image_view: ImageView
     var image_layout: ImageLayout
 
@@ -24408,9 +24408,9 @@ struct RenderingFragmentDensityMapAttachmentInfoEXT(Copyable):
         self.image_layout = image_layout
 
 
-struct PhysicalDeviceDynamicRenderingFeatures(Copyable):
+struct PhysicalDeviceDynamicRenderingFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var dynamic_rendering: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24424,13 +24424,13 @@ struct PhysicalDeviceDynamicRenderingFeatures(Copyable):
         self.dynamic_rendering = dynamic_rendering
 
 
-struct CommandBufferInheritanceRenderingInfo(Copyable):
+struct CommandBufferInheritanceRenderingInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: RenderingFlags
     var view_mask: UInt32
     var color_attachment_count: UInt32
-    var p_color_attachment_formats: Ptr[Format, ImmutOrigin.external]
+    var p_color_attachment_formats: Ptr[Format, ImmutExternalOrigin]
     var depth_attachment_format: Format
     var stencil_attachment_format: Format
     var rasterization_samples: SampleCountFlagBits
@@ -24461,11 +24461,11 @@ struct CommandBufferInheritanceRenderingInfo(Copyable):
         self.rasterization_samples = rasterization_samples
 
 
-struct AttachmentSampleCountInfoAMD(Copyable):
+struct AttachmentSampleCountInfoAMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var color_attachment_count: UInt32
-    var p_color_attachment_samples: Ptr[SampleCountFlagBits, ImmutOrigin.external]
+    var p_color_attachment_samples: Ptr[SampleCountFlagBits, ImmutExternalOrigin]
     var depth_stencil_attachment_samples: SampleCountFlagBits
 
     fn __init__[
@@ -24486,9 +24486,9 @@ struct AttachmentSampleCountInfoAMD(Copyable):
         self.depth_stencil_attachment_samples = depth_stencil_attachment_samples
 
 
-struct MultiviewPerViewAttributesInfoNVX(Copyable):
+struct MultiviewPerViewAttributesInfoNVX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var per_view_attributes: Bool32
     var per_view_attributes_position_x_only: Bool32
 
@@ -24505,9 +24505,9 @@ struct MultiviewPerViewAttributesInfoNVX(Copyable):
         self.per_view_attributes_position_x_only = per_view_attributes_position_x_only
 
 
-struct PhysicalDeviceImageViewMinLodFeaturesEXT(Copyable):
+struct PhysicalDeviceImageViewMinLodFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var min_lod: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24521,9 +24521,9 @@ struct PhysicalDeviceImageViewMinLodFeaturesEXT(Copyable):
         self.min_lod = min_lod
 
 
-struct ImageViewMinLodCreateInfoEXT(Copyable):
+struct ImageViewMinLodCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var min_lod: Float32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -24537,9 +24537,9 @@ struct ImageViewMinLodCreateInfoEXT(Copyable):
         self.min_lod = min_lod
 
 
-struct PhysicalDeviceRasterizationOrderAttachmentAccessFeaturesEXT(Copyable):
+struct PhysicalDeviceRasterizationOrderAttachmentAccessFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var rasterization_order_color_attachment_access: Bool32
     var rasterization_order_depth_attachment_access: Bool32
     var rasterization_order_stencil_attachment_access: Bool32
@@ -24559,9 +24559,9 @@ struct PhysicalDeviceRasterizationOrderAttachmentAccessFeaturesEXT(Copyable):
         self.rasterization_order_stencil_attachment_access = rasterization_order_stencil_attachment_access
 
 
-struct PhysicalDeviceLinearColorAttachmentFeaturesNV(Copyable):
+struct PhysicalDeviceLinearColorAttachmentFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var linear_color_attachment: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24575,9 +24575,9 @@ struct PhysicalDeviceLinearColorAttachmentFeaturesNV(Copyable):
         self.linear_color_attachment = linear_color_attachment
 
 
-struct PhysicalDeviceGraphicsPipelineLibraryFeaturesEXT(Copyable):
+struct PhysicalDeviceGraphicsPipelineLibraryFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var graphics_pipeline_library: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24591,9 +24591,9 @@ struct PhysicalDeviceGraphicsPipelineLibraryFeaturesEXT(Copyable):
         self.graphics_pipeline_library = graphics_pipeline_library
 
 
-struct PhysicalDevicePipelineBinaryFeaturesKHR(Copyable):
+struct PhysicalDevicePipelineBinaryFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline_binaries: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24607,9 +24607,9 @@ struct PhysicalDevicePipelineBinaryFeaturesKHR(Copyable):
         self.pipeline_binaries = pipeline_binaries
 
 
-struct DevicePipelineBinaryInternalCacheControlKHR(Copyable):
+struct DevicePipelineBinaryInternalCacheControlKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var disable_internal_cache: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -24623,9 +24623,9 @@ struct DevicePipelineBinaryInternalCacheControlKHR(Copyable):
         self.disable_internal_cache = disable_internal_cache
 
 
-struct PhysicalDevicePipelineBinaryPropertiesKHR(Copyable):
+struct PhysicalDevicePipelineBinaryPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline_binary_internal_cache: Bool32
     var pipeline_binary_internal_cache_control: Bool32
     var pipeline_binary_prefers_internal_cache: Bool32
@@ -24651,9 +24651,9 @@ struct PhysicalDevicePipelineBinaryPropertiesKHR(Copyable):
         self.pipeline_binary_compressed_data = pipeline_binary_compressed_data
 
 
-struct PhysicalDeviceGraphicsPipelineLibraryPropertiesEXT(Copyable):
+struct PhysicalDeviceGraphicsPipelineLibraryPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var graphics_pipeline_library_fast_linking: Bool32
     var graphics_pipeline_library_independent_interpolation_decoration: Bool32
 
@@ -24670,9 +24670,9 @@ struct PhysicalDeviceGraphicsPipelineLibraryPropertiesEXT(Copyable):
         self.graphics_pipeline_library_independent_interpolation_decoration = graphics_pipeline_library_independent_interpolation_decoration
 
 
-struct GraphicsPipelineLibraryCreateInfoEXT(Copyable):
+struct GraphicsPipelineLibraryCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: GraphicsPipelineLibraryFlagsEXT
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -24686,9 +24686,9 @@ struct GraphicsPipelineLibraryCreateInfoEXT(Copyable):
         self.flags = flags
 
 
-struct PhysicalDeviceDescriptorSetHostMappingFeaturesVALVE(Copyable):
+struct PhysicalDeviceDescriptorSetHostMappingFeaturesVALVE(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var descriptor_set_host_mapping: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24702,9 +24702,9 @@ struct PhysicalDeviceDescriptorSetHostMappingFeaturesVALVE(Copyable):
         self.descriptor_set_host_mapping = descriptor_set_host_mapping
 
 
-struct DescriptorSetBindingReferenceVALVE(Copyable):
+struct DescriptorSetBindingReferenceVALVE(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var descriptor_set_layout: DescriptorSetLayout
     var binding: UInt32
 
@@ -24721,9 +24721,9 @@ struct DescriptorSetBindingReferenceVALVE(Copyable):
         self.binding = binding
 
 
-struct DescriptorSetLayoutHostMappingInfoVALVE(Copyable):
+struct DescriptorSetLayoutHostMappingInfoVALVE(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var descriptor_offset: UInt
     var descriptor_size: UInt32
 
@@ -24740,9 +24740,9 @@ struct DescriptorSetLayoutHostMappingInfoVALVE(Copyable):
         self.descriptor_size = descriptor_size
 
 
-struct PhysicalDeviceNestedCommandBufferFeaturesEXT(Copyable):
+struct PhysicalDeviceNestedCommandBufferFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var nested_command_buffer: Bool32
     var nested_command_buffer_rendering: Bool32
     var nested_command_buffer_simultaneous_use: Bool32
@@ -24762,9 +24762,9 @@ struct PhysicalDeviceNestedCommandBufferFeaturesEXT(Copyable):
         self.nested_command_buffer_simultaneous_use = nested_command_buffer_simultaneous_use
 
 
-struct PhysicalDeviceNestedCommandBufferPropertiesEXT(Copyable):
+struct PhysicalDeviceNestedCommandBufferPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_command_buffer_nesting_level: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24778,9 +24778,9 @@ struct PhysicalDeviceNestedCommandBufferPropertiesEXT(Copyable):
         self.max_command_buffer_nesting_level = max_command_buffer_nesting_level
 
 
-struct PhysicalDeviceShaderModuleIdentifierFeaturesEXT(Copyable):
+struct PhysicalDeviceShaderModuleIdentifierFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_module_identifier: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24794,9 +24794,9 @@ struct PhysicalDeviceShaderModuleIdentifierFeaturesEXT(Copyable):
         self.shader_module_identifier = shader_module_identifier
 
 
-struct PhysicalDeviceShaderModuleIdentifierPropertiesEXT(Copyable):
+struct PhysicalDeviceShaderModuleIdentifierPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_module_identifier_algorithm_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24807,14 +24807,14 @@ struct PhysicalDeviceShaderModuleIdentifierPropertiesEXT(Copyable):
     ):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
-        self.shader_module_identifier_algorithm_uuid = shader_module_identifier_algorithm_uuid
+        self.shader_module_identifier_algorithm_uuid = shader_module_identifier_algorithm_uuid.copy()
 
 
-struct PipelineShaderStageModuleIdentifierCreateInfoEXT(Copyable):
+struct PipelineShaderStageModuleIdentifierCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var identifier_size: UInt32
-    var p_identifier: Ptr[UInt8, ImmutOrigin.external]
+    var p_identifier: Ptr[UInt8, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -24832,9 +24832,9 @@ struct PipelineShaderStageModuleIdentifierCreateInfoEXT(Copyable):
         self.p_identifier = Ptr(to=p_identifier).bitcast[type_of(self.p_identifier)]()[]
 
 
-struct ShaderModuleIdentifierEXT(Copyable):
+struct ShaderModuleIdentifierEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var identifier_size: UInt32
     var identifier: InlineArray[UInt8, Int(MAX_SHADER_MODULE_IDENTIFIER_SIZE_EXT)]
 
@@ -24848,15 +24848,15 @@ struct ShaderModuleIdentifierEXT(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.identifier_size = identifier_size
-        self.identifier = identifier
+        self.identifier = identifier.copy()
 
 
-struct ImageCompressionControlEXT(Copyable):
+struct ImageCompressionControlEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: ImageCompressionFlagsEXT
     var compression_control_plane_count: UInt32
-    var p_fixed_rate_flags: Ptr[ImageCompressionFixedRateFlagsEXT, MutOrigin.external]
+    var p_fixed_rate_flags: Ptr[ImageCompressionFixedRateFlagsEXT, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -24876,9 +24876,9 @@ struct ImageCompressionControlEXT(Copyable):
         self.p_fixed_rate_flags = Ptr(to=p_fixed_rate_flags).bitcast[type_of(self.p_fixed_rate_flags)]()[]
 
 
-struct PhysicalDeviceImageCompressionControlFeaturesEXT(Copyable):
+struct PhysicalDeviceImageCompressionControlFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var image_compression_control: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24892,9 +24892,9 @@ struct PhysicalDeviceImageCompressionControlFeaturesEXT(Copyable):
         self.image_compression_control = image_compression_control
 
 
-struct ImageCompressionPropertiesEXT(Copyable):
+struct ImageCompressionPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var image_compression_flags: ImageCompressionFlagsEXT
     var image_compression_fixed_rate_flags: ImageCompressionFixedRateFlagsEXT
 
@@ -24911,9 +24911,9 @@ struct ImageCompressionPropertiesEXT(Copyable):
         self.image_compression_fixed_rate_flags = image_compression_fixed_rate_flags
 
 
-struct PhysicalDeviceImageCompressionControlSwapchainFeaturesEXT(Copyable):
+struct PhysicalDeviceImageCompressionControlSwapchainFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var image_compression_control_swapchain: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24927,9 +24927,9 @@ struct PhysicalDeviceImageCompressionControlSwapchainFeaturesEXT(Copyable):
         self.image_compression_control_swapchain = image_compression_control_swapchain
 
 
-struct ImageSubresource2(Copyable):
+struct ImageSubresource2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var image_subresource: ImageSubresource
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24943,9 +24943,9 @@ struct ImageSubresource2(Copyable):
         self.image_subresource = image_subresource.copy()
 
 
-struct SubresourceLayout2(Copyable):
+struct SubresourceLayout2(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var subresource_layout: SubresourceLayout
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -24959,9 +24959,9 @@ struct SubresourceLayout2(Copyable):
         self.subresource_layout = subresource_layout.copy()
 
 
-struct RenderPassCreationControlEXT(Copyable):
+struct RenderPassCreationControlEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var disallow_merging: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -24975,17 +24975,17 @@ struct RenderPassCreationControlEXT(Copyable):
         self.disallow_merging = disallow_merging
 
 
-struct RenderPassCreationFeedbackInfoEXT(Copyable):
+struct RenderPassCreationFeedbackInfoEXT(Copyable, Equatable):
     var post_merge_subpass_count: UInt32
 
     fn __init__(out self, post_merge_subpass_count: UInt32 = zero_init[UInt32]()):
         self.post_merge_subpass_count = post_merge_subpass_count
 
 
-struct RenderPassCreationFeedbackCreateInfoEXT(Copyable):
+struct RenderPassCreationFeedbackCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_render_pass_feedback: Ptr[RenderPassCreationFeedbackInfoEXT, MutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_render_pass_feedback: Ptr[RenderPassCreationFeedbackInfoEXT, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -25001,7 +25001,7 @@ struct RenderPassCreationFeedbackCreateInfoEXT(Copyable):
         self.p_render_pass_feedback = Ptr(to=p_render_pass_feedback).bitcast[type_of(self.p_render_pass_feedback)]()[]
 
 
-struct RenderPassSubpassFeedbackInfoEXT(Copyable):
+struct RenderPassSubpassFeedbackInfoEXT(Copyable, Equatable):
     var subpass_merge_status: SubpassMergeStatusEXT
     var description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
     var post_merge_index: UInt32
@@ -25013,17 +25013,17 @@ struct RenderPassSubpassFeedbackInfoEXT(Copyable):
         post_merge_index: UInt32 = zero_init[UInt32](),
     ):
         self.subpass_merge_status = subpass_merge_status
-        self.description = description
+        self.description = description.copy()
         self.post_merge_index = post_merge_index
 
     fn description_slice(self) -> CStringSlice[origin_of(self.description)]:
         return CStringSlice[origin_of(self.description)](unsafe_from_ptr = self.description.unsafe_ptr())
 
 
-struct RenderPassSubpassFeedbackCreateInfoEXT(Copyable):
+struct RenderPassSubpassFeedbackCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_subpass_feedback: Ptr[RenderPassSubpassFeedbackInfoEXT, MutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_subpass_feedback: Ptr[RenderPassSubpassFeedbackInfoEXT, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -25039,9 +25039,9 @@ struct RenderPassSubpassFeedbackCreateInfoEXT(Copyable):
         self.p_subpass_feedback = Ptr(to=p_subpass_feedback).bitcast[type_of(self.p_subpass_feedback)]()[]
 
 
-struct PhysicalDeviceSubpassMergeFeedbackFeaturesEXT(Copyable):
+struct PhysicalDeviceSubpassMergeFeedbackFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var subpass_merge_feedback: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -25055,16 +25055,16 @@ struct PhysicalDeviceSubpassMergeFeedbackFeaturesEXT(Copyable):
         self.subpass_merge_feedback = subpass_merge_feedback
 
 
-struct MicromapBuildInfoEXT(Copyable):
+struct MicromapBuildInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var type: MicromapTypeEXT
     var flags: BuildMicromapFlagsEXT
     var mode: BuildMicromapModeEXT
     var dst_micromap: MicromapEXT
     var usage_counts_count: UInt32
-    var p_usage_counts: Ptr[MicromapUsageEXT, ImmutOrigin.external]
-    var pp_usage_counts: Ptr[Ptr[MicromapUsageEXT, ImmutOrigin.external], ImmutOrigin.external]
+    var p_usage_counts: Ptr[MicromapUsageEXT, ImmutExternalOrigin]
+    var pp_usage_counts: Ptr[Ptr[MicromapUsageEXT, ImmutExternalOrigin], ImmutExternalOrigin]
     var data: DeviceOrHostAddressConstKHR
     var scratch_data: DeviceOrHostAddressKHR
     var triangle_array: DeviceOrHostAddressConstKHR
@@ -25106,9 +25106,9 @@ struct MicromapBuildInfoEXT(Copyable):
         self.triangle_array_stride = triangle_array_stride
 
 
-struct MicromapCreateInfoEXT(Copyable):
+struct MicromapCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var create_flags: MicromapCreateFlagsEXT
     var buffer: Buffer
     var offset: DeviceSize
@@ -25137,10 +25137,10 @@ struct MicromapCreateInfoEXT(Copyable):
         self.device_address = device_address
 
 
-struct MicromapVersionInfoEXT(Copyable):
+struct MicromapVersionInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_version_data: Ptr[UInt8, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_version_data: Ptr[UInt8, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -25156,9 +25156,9 @@ struct MicromapVersionInfoEXT(Copyable):
         self.p_version_data = Ptr(to=p_version_data).bitcast[type_of(self.p_version_data)]()[]
 
 
-struct CopyMicromapInfoEXT(Copyable):
+struct CopyMicromapInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src: MicromapEXT
     var dst: MicromapEXT
     var mode: CopyMicromapModeEXT
@@ -25178,9 +25178,9 @@ struct CopyMicromapInfoEXT(Copyable):
         self.mode = mode
 
 
-struct CopyMicromapToMemoryInfoEXT(Copyable):
+struct CopyMicromapToMemoryInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src: MicromapEXT
     var dst: DeviceOrHostAddressKHR
     var mode: CopyMicromapModeEXT
@@ -25200,9 +25200,9 @@ struct CopyMicromapToMemoryInfoEXT(Copyable):
         self.mode = mode
 
 
-struct CopyMemoryToMicromapInfoEXT(Copyable):
+struct CopyMemoryToMicromapInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src: DeviceOrHostAddressConstKHR
     var dst: MicromapEXT
     var mode: CopyMicromapModeEXT
@@ -25222,9 +25222,9 @@ struct CopyMemoryToMicromapInfoEXT(Copyable):
         self.mode = mode
 
 
-struct MicromapBuildSizesInfoEXT(Copyable):
+struct MicromapBuildSizesInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var micromap_size: DeviceSize
     var build_scratch_size: DeviceSize
     var discardable: Bool32
@@ -25244,7 +25244,7 @@ struct MicromapBuildSizesInfoEXT(Copyable):
         self.discardable = discardable
 
 
-struct MicromapUsageEXT(Copyable):
+struct MicromapUsageEXT(Copyable, Equatable):
     var count: UInt32
     var subdivision_level: UInt32
     var format: UInt32
@@ -25260,7 +25260,7 @@ struct MicromapUsageEXT(Copyable):
         self.format = format
 
 
-struct MicromapTriangleEXT(Copyable):
+struct MicromapTriangleEXT(Copyable, Equatable):
     var data_offset: UInt32
     var subdivision_level: UInt16
     var format: UInt16
@@ -25276,9 +25276,9 @@ struct MicromapTriangleEXT(Copyable):
         self.format = format
 
 
-struct PhysicalDeviceOpacityMicromapFeaturesEXT(Copyable):
+struct PhysicalDeviceOpacityMicromapFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var micromap: Bool32
     var micromap_capture_replay: Bool32
     var micromap_host_commands: Bool32
@@ -25298,9 +25298,9 @@ struct PhysicalDeviceOpacityMicromapFeaturesEXT(Copyable):
         self.micromap_host_commands = micromap_host_commands
 
 
-struct PhysicalDeviceOpacityMicromapPropertiesEXT(Copyable):
+struct PhysicalDeviceOpacityMicromapPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_opacity_2_state_subdivision_level: UInt32
     var max_opacity_4_state_subdivision_level: UInt32
 
@@ -25317,16 +25317,16 @@ struct PhysicalDeviceOpacityMicromapPropertiesEXT(Copyable):
         self.max_opacity_4_state_subdivision_level = max_opacity_4_state_subdivision_level
 
 
-struct AccelerationStructureTrianglesOpacityMicromapEXT(Copyable):
+struct AccelerationStructureTrianglesOpacityMicromapEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var index_type: IndexType
     var index_buffer: DeviceOrHostAddressConstKHR
     var index_stride: DeviceSize
     var base_triangle: UInt32
     var usage_counts_count: UInt32
-    var p_usage_counts: Ptr[MicromapUsageEXT, ImmutOrigin.external]
-    var pp_usage_counts: Ptr[Ptr[MicromapUsageEXT, ImmutOrigin.external], ImmutOrigin.external]
+    var p_usage_counts: Ptr[MicromapUsageEXT, ImmutExternalOrigin]
+    var pp_usage_counts: Ptr[Ptr[MicromapUsageEXT, ImmutExternalOrigin], ImmutExternalOrigin]
     var micromap: MicromapEXT
 
     fn __init__[
@@ -25359,9 +25359,9 @@ struct AccelerationStructureTrianglesOpacityMicromapEXT(Copyable):
         self.micromap = micromap
 
 
-struct PhysicalDeviceDisplacementMicromapFeaturesNV(Copyable):
+struct PhysicalDeviceDisplacementMicromapFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var displacement_micromap: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -25375,9 +25375,9 @@ struct PhysicalDeviceDisplacementMicromapFeaturesNV(Copyable):
         self.displacement_micromap = displacement_micromap
 
 
-struct PhysicalDeviceDisplacementMicromapPropertiesNV(Copyable):
+struct PhysicalDeviceDisplacementMicromapPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_displacement_micromap_subdivision_level: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -25391,9 +25391,9 @@ struct PhysicalDeviceDisplacementMicromapPropertiesNV(Copyable):
         self.max_displacement_micromap_subdivision_level = max_displacement_micromap_subdivision_level
 
 
-struct AccelerationStructureTrianglesDisplacementMicromapNV(Copyable):
+struct AccelerationStructureTrianglesDisplacementMicromapNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var displacement_bias_and_scale_format: Format
     var displacement_vector_format: Format
     var displacement_bias_and_scale_buffer: DeviceOrHostAddressConstKHR
@@ -25407,8 +25407,8 @@ struct AccelerationStructureTrianglesDisplacementMicromapNV(Copyable):
     var index_stride: DeviceSize
     var base_triangle: UInt32
     var usage_counts_count: UInt32
-    var p_usage_counts: Ptr[MicromapUsageEXT, ImmutOrigin.external]
-    var pp_usage_counts: Ptr[Ptr[MicromapUsageEXT, ImmutOrigin.external], ImmutOrigin.external]
+    var p_usage_counts: Ptr[MicromapUsageEXT, ImmutExternalOrigin]
+    var pp_usage_counts: Ptr[Ptr[MicromapUsageEXT, ImmutExternalOrigin], ImmutExternalOrigin]
     var micromap: MicromapEXT
 
     fn __init__[
@@ -25457,9 +25457,9 @@ struct AccelerationStructureTrianglesDisplacementMicromapNV(Copyable):
         self.micromap = micromap
 
 
-struct PipelinePropertiesIdentifierEXT(Copyable):
+struct PipelinePropertiesIdentifierEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline_identifier: InlineArray[UInt8, Int(UUID_SIZE)]
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -25470,12 +25470,12 @@ struct PipelinePropertiesIdentifierEXT(Copyable):
     ):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
-        self.pipeline_identifier = pipeline_identifier
+        self.pipeline_identifier = pipeline_identifier.copy()
 
 
-struct PhysicalDevicePipelinePropertiesFeaturesEXT(Copyable):
+struct PhysicalDevicePipelinePropertiesFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline_properties_identifier: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -25489,9 +25489,9 @@ struct PhysicalDevicePipelinePropertiesFeaturesEXT(Copyable):
         self.pipeline_properties_identifier = pipeline_properties_identifier
 
 
-struct PhysicalDeviceShaderEarlyAndLateFragmentTestsFeaturesAMD(Copyable):
+struct PhysicalDeviceShaderEarlyAndLateFragmentTestsFeaturesAMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_early_and_late_fragment_tests: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -25505,9 +25505,9 @@ struct PhysicalDeviceShaderEarlyAndLateFragmentTestsFeaturesAMD(Copyable):
         self.shader_early_and_late_fragment_tests = shader_early_and_late_fragment_tests
 
 
-struct ExternalMemoryAcquireUnmodifiedEXT(Copyable):
+struct ExternalMemoryAcquireUnmodifiedEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var acquire_unmodified_memory: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -25521,9 +25521,9 @@ struct ExternalMemoryAcquireUnmodifiedEXT(Copyable):
         self.acquire_unmodified_memory = acquire_unmodified_memory
 
 
-struct ExportMetalObjectCreateInfoEXT(Copyable):
+struct ExportMetalObjectCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var export_object_type: ExportMetalObjectTypeFlagBitsEXT
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -25537,9 +25537,9 @@ struct ExportMetalObjectCreateInfoEXT(Copyable):
         self.export_object_type = export_object_type
 
 
-struct ExportMetalObjectsInfoEXT(Copyable):
+struct ExportMetalObjectsInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -25550,9 +25550,9 @@ struct ExportMetalObjectsInfoEXT(Copyable):
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
 
 
-struct ExportMetalDeviceInfoEXT(Copyable):
+struct ExportMetalDeviceInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var mtl_device: MTLDevice_id
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -25566,9 +25566,9 @@ struct ExportMetalDeviceInfoEXT(Copyable):
         self.mtl_device = mtl_device
 
 
-struct ExportMetalCommandQueueInfoEXT(Copyable):
+struct ExportMetalCommandQueueInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var queue: Queue
     var mtl_command_queue: MTLCommandQueue_id
 
@@ -25585,9 +25585,9 @@ struct ExportMetalCommandQueueInfoEXT(Copyable):
         self.mtl_command_queue = mtl_command_queue
 
 
-struct ExportMetalBufferInfoEXT(Copyable):
+struct ExportMetalBufferInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var memory: DeviceMemory
     var mtl_buffer: MTLBuffer_id
 
@@ -25604,9 +25604,9 @@ struct ExportMetalBufferInfoEXT(Copyable):
         self.mtl_buffer = mtl_buffer
 
 
-struct ImportMetalBufferInfoEXT(Copyable):
+struct ImportMetalBufferInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var mtl_buffer: MTLBuffer_id
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -25620,9 +25620,9 @@ struct ImportMetalBufferInfoEXT(Copyable):
         self.mtl_buffer = mtl_buffer
 
 
-struct ExportMetalTextureInfoEXT(Copyable):
+struct ExportMetalTextureInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image: Image
     var image_view: ImageView
     var buffer_view: BufferView
@@ -25648,9 +25648,9 @@ struct ExportMetalTextureInfoEXT(Copyable):
         self.mtl_texture = mtl_texture
 
 
-struct ImportMetalTextureInfoEXT(Copyable):
+struct ImportMetalTextureInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var plane: ImageAspectFlagBits
     var mtl_texture: MTLTexture_id
 
@@ -25667,9 +25667,9 @@ struct ImportMetalTextureInfoEXT(Copyable):
         self.mtl_texture = mtl_texture
 
 
-struct ExportMetalIOSurfaceInfoEXT(Copyable):
+struct ExportMetalIOSurfaceInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var image: Image
     var io_surface: IOSurfaceRef
 
@@ -25686,9 +25686,9 @@ struct ExportMetalIOSurfaceInfoEXT(Copyable):
         self.io_surface = io_surface
 
 
-struct ImportMetalIOSurfaceInfoEXT(Copyable):
+struct ImportMetalIOSurfaceInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var io_surface: IOSurfaceRef
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -25702,9 +25702,9 @@ struct ImportMetalIOSurfaceInfoEXT(Copyable):
         self.io_surface = io_surface
 
 
-struct ExportMetalSharedEventInfoEXT(Copyable):
+struct ExportMetalSharedEventInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var semaphore: Semaphore
     var event: Event
     var mtl_shared_event: MTLSharedEvent_id
@@ -25724,9 +25724,9 @@ struct ExportMetalSharedEventInfoEXT(Copyable):
         self.mtl_shared_event = mtl_shared_event
 
 
-struct ImportMetalSharedEventInfoEXT(Copyable):
+struct ImportMetalSharedEventInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var mtl_shared_event: MTLSharedEvent_id
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -25740,9 +25740,9 @@ struct ImportMetalSharedEventInfoEXT(Copyable):
         self.mtl_shared_event = mtl_shared_event
 
 
-struct PhysicalDeviceNonSeamlessCubeMapFeaturesEXT(Copyable):
+struct PhysicalDeviceNonSeamlessCubeMapFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var non_seamless_cube_map: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -25756,9 +25756,9 @@ struct PhysicalDeviceNonSeamlessCubeMapFeaturesEXT(Copyable):
         self.non_seamless_cube_map = non_seamless_cube_map
 
 
-struct PhysicalDevicePipelineRobustnessFeatures(Copyable):
+struct PhysicalDevicePipelineRobustnessFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline_robustness: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -25772,9 +25772,9 @@ struct PhysicalDevicePipelineRobustnessFeatures(Copyable):
         self.pipeline_robustness = pipeline_robustness
 
 
-struct PipelineRobustnessCreateInfo(Copyable):
+struct PipelineRobustnessCreateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var storage_buffers: PipelineRobustnessBufferBehavior
     var uniform_buffers: PipelineRobustnessBufferBehavior
     var vertex_inputs: PipelineRobustnessBufferBehavior
@@ -25797,9 +25797,9 @@ struct PipelineRobustnessCreateInfo(Copyable):
         self.images = images
 
 
-struct PhysicalDevicePipelineRobustnessProperties(Copyable):
+struct PhysicalDevicePipelineRobustnessProperties(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var default_robustness_storage_buffers: PipelineRobustnessBufferBehavior
     var default_robustness_uniform_buffers: PipelineRobustnessBufferBehavior
     var default_robustness_vertex_inputs: PipelineRobustnessBufferBehavior
@@ -25822,9 +25822,9 @@ struct PhysicalDevicePipelineRobustnessProperties(Copyable):
         self.default_robustness_images = default_robustness_images
 
 
-struct ImageViewSampleWeightCreateInfoQCOM(Copyable):
+struct ImageViewSampleWeightCreateInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var filter_center: Offset2D
     var filter_size: Extent2D
     var num_phases: UInt32
@@ -25844,9 +25844,9 @@ struct ImageViewSampleWeightCreateInfoQCOM(Copyable):
         self.num_phases = num_phases
 
 
-struct PhysicalDeviceImageProcessingFeaturesQCOM(Copyable):
+struct PhysicalDeviceImageProcessingFeaturesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var texture_sample_weighted: Bool32
     var texture_box_filter: Bool32
     var texture_block_match: Bool32
@@ -25866,9 +25866,9 @@ struct PhysicalDeviceImageProcessingFeaturesQCOM(Copyable):
         self.texture_block_match = texture_block_match
 
 
-struct PhysicalDeviceImageProcessingPropertiesQCOM(Copyable):
+struct PhysicalDeviceImageProcessingPropertiesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_weight_filter_phases: UInt32
     var max_weight_filter_dimension: Extent2D
     var max_block_match_region: Extent2D
@@ -25891,9 +25891,9 @@ struct PhysicalDeviceImageProcessingPropertiesQCOM(Copyable):
         self.max_box_filter_block_size = max_box_filter_block_size.copy()
 
 
-struct PhysicalDeviceTilePropertiesFeaturesQCOM(Copyable):
+struct PhysicalDeviceTilePropertiesFeaturesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var tile_properties: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -25907,9 +25907,9 @@ struct PhysicalDeviceTilePropertiesFeaturesQCOM(Copyable):
         self.tile_properties = tile_properties
 
 
-struct TilePropertiesQCOM(Copyable):
+struct TilePropertiesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var tile_size: Extent3D
     var apron_size: Extent2D
     var origin: Offset2D
@@ -25929,9 +25929,9 @@ struct TilePropertiesQCOM(Copyable):
         self.origin = origin.copy()
 
 
-struct TileMemoryBindInfoQCOM(Copyable):
+struct TileMemoryBindInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var memory: DeviceMemory
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -25945,9 +25945,9 @@ struct TileMemoryBindInfoQCOM(Copyable):
         self.memory = memory
 
 
-struct PhysicalDeviceAmigoProfilingFeaturesSEC(Copyable):
+struct PhysicalDeviceAmigoProfilingFeaturesSEC(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var amigo_profiling: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -25961,9 +25961,9 @@ struct PhysicalDeviceAmigoProfilingFeaturesSEC(Copyable):
         self.amigo_profiling = amigo_profiling
 
 
-struct AmigoProfilingSubmitInfoSEC(Copyable):
+struct AmigoProfilingSubmitInfoSEC(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var first_draw_timestamp: UInt64
     var swap_buffer_timestamp: UInt64
 
@@ -25980,9 +25980,9 @@ struct AmigoProfilingSubmitInfoSEC(Copyable):
         self.swap_buffer_timestamp = swap_buffer_timestamp
 
 
-struct PhysicalDeviceAttachmentFeedbackLoopLayoutFeaturesEXT(Copyable):
+struct PhysicalDeviceAttachmentFeedbackLoopLayoutFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var attachment_feedback_loop_layout: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -25996,9 +25996,9 @@ struct PhysicalDeviceAttachmentFeedbackLoopLayoutFeaturesEXT(Copyable):
         self.attachment_feedback_loop_layout = attachment_feedback_loop_layout
 
 
-struct AttachmentFeedbackLoopInfoEXT(Copyable):
+struct AttachmentFeedbackLoopInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var feedback_loop_enable: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -26012,9 +26012,9 @@ struct AttachmentFeedbackLoopInfoEXT(Copyable):
         self.feedback_loop_enable = feedback_loop_enable
 
 
-struct PhysicalDeviceAddressBindingReportFeaturesEXT(Copyable):
+struct PhysicalDeviceAddressBindingReportFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var report_address_binding: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26028,9 +26028,9 @@ struct PhysicalDeviceAddressBindingReportFeaturesEXT(Copyable):
         self.report_address_binding = report_address_binding
 
 
-struct RenderingAttachmentFlagsInfoKHR(Copyable):
+struct RenderingAttachmentFlagsInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: RenderingAttachmentFlagsKHR
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -26044,9 +26044,9 @@ struct RenderingAttachmentFlagsInfoKHR(Copyable):
         self.flags = flags
 
 
-struct ResolveImageModeInfoKHR(Copyable):
+struct ResolveImageModeInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: ResolveImageFlagsKHR
     var resolve_mode: ResolveModeFlagBits
     var stencil_resolve_mode: ResolveModeFlagBits
@@ -26066,9 +26066,9 @@ struct ResolveImageModeInfoKHR(Copyable):
         self.stencil_resolve_mode = stencil_resolve_mode
 
 
-struct DeviceAddressBindingCallbackDataEXT(Copyable):
+struct DeviceAddressBindingCallbackDataEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: DeviceAddressBindingFlagsEXT
     var base_address: DeviceAddress
     var size: DeviceSize
@@ -26091,9 +26091,9 @@ struct DeviceAddressBindingCallbackDataEXT(Copyable):
         self.binding_type = binding_type
 
 
-struct PhysicalDeviceOpticalFlowFeaturesNV(Copyable):
+struct PhysicalDeviceOpticalFlowFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var optical_flow: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26107,9 +26107,9 @@ struct PhysicalDeviceOpticalFlowFeaturesNV(Copyable):
         self.optical_flow = optical_flow
 
 
-struct PhysicalDeviceOpticalFlowPropertiesNV(Copyable):
+struct PhysicalDeviceOpticalFlowPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var supported_output_grid_sizes: OpticalFlowGridSizeFlagsNV
     var supported_hint_grid_sizes: OpticalFlowGridSizeFlagsNV
     var hint_supported: Bool32
@@ -26153,9 +26153,9 @@ struct PhysicalDeviceOpticalFlowPropertiesNV(Copyable):
         self.max_num_regions_of_interest = max_num_regions_of_interest
 
 
-struct OpticalFlowImageFormatInfoNV(Copyable):
+struct OpticalFlowImageFormatInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var usage: OpticalFlowUsageFlagsNV
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -26169,9 +26169,9 @@ struct OpticalFlowImageFormatInfoNV(Copyable):
         self.usage = usage
 
 
-struct OpticalFlowImageFormatPropertiesNV(Copyable):
+struct OpticalFlowImageFormatPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var format: Format
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26185,9 +26185,9 @@ struct OpticalFlowImageFormatPropertiesNV(Copyable):
         self.format = format
 
 
-struct OpticalFlowSessionCreateInfoNV(Copyable):
+struct OpticalFlowSessionCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var width: UInt32
     var height: UInt32
     var image_format: Format
@@ -26225,12 +26225,12 @@ struct OpticalFlowSessionCreateInfoNV(Copyable):
         self.flags = flags
 
 
-struct OpticalFlowSessionCreatePrivateDataInfoNV(Copyable):
+struct OpticalFlowSessionCreatePrivateDataInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var id: UInt32
     var size: UInt32
-    var p_private_data: Ptr[NoneType, ImmutOrigin.external]
+    var p_private_data: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin,
@@ -26250,12 +26250,12 @@ struct OpticalFlowSessionCreatePrivateDataInfoNV(Copyable):
         self.p_private_data = Ptr(to=p_private_data).bitcast[type_of(self.p_private_data)]()[]
 
 
-struct OpticalFlowExecuteInfoNV(Copyable):
+struct OpticalFlowExecuteInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: OpticalFlowExecuteFlagsNV
     var region_count: UInt32
-    var p_regions: Ptr[Rect2D, ImmutOrigin.external]
+    var p_regions: Ptr[Rect2D, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin, p_regions_origin: ImmutOrigin = ImmutAnyOrigin
@@ -26274,9 +26274,9 @@ struct OpticalFlowExecuteInfoNV(Copyable):
         self.p_regions = Ptr(to=p_regions).bitcast[type_of(self.p_regions)]()[]
 
 
-struct PhysicalDeviceFaultFeaturesEXT(Copyable):
+struct PhysicalDeviceFaultFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var device_fault: Bool32
     var device_fault_vendor_binary: Bool32
 
@@ -26293,7 +26293,7 @@ struct PhysicalDeviceFaultFeaturesEXT(Copyable):
         self.device_fault_vendor_binary = device_fault_vendor_binary
 
 
-struct DeviceFaultAddressInfoEXT(Copyable):
+struct DeviceFaultAddressInfoEXT(Copyable, Equatable):
     var address_type: DeviceFaultAddressTypeEXT
     var reported_address: DeviceAddress
     var address_precision: DeviceSize
@@ -26309,7 +26309,7 @@ struct DeviceFaultAddressInfoEXT(Copyable):
         self.address_precision = address_precision
 
 
-struct DeviceFaultVendorInfoEXT(Copyable):
+struct DeviceFaultVendorInfoEXT(Copyable, Equatable):
     var description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
     var vendor_fault_code: UInt64
     var vendor_fault_data: UInt64
@@ -26320,7 +26320,7 @@ struct DeviceFaultVendorInfoEXT(Copyable):
         vendor_fault_code: UInt64 = zero_init[UInt64](),
         vendor_fault_data: UInt64 = zero_init[UInt64](),
     ):
-        self.description = description
+        self.description = description.copy()
         self.vendor_fault_code = vendor_fault_code
         self.vendor_fault_data = vendor_fault_data
 
@@ -26328,9 +26328,9 @@ struct DeviceFaultVendorInfoEXT(Copyable):
         return CStringSlice[origin_of(self.description)](unsafe_from_ptr = self.description.unsafe_ptr())
 
 
-struct DeviceFaultCountsEXT(Copyable):
+struct DeviceFaultCountsEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var address_info_count: UInt32
     var vendor_info_count: UInt32
     var vendor_binary_size: DeviceSize
@@ -26350,13 +26350,13 @@ struct DeviceFaultCountsEXT(Copyable):
         self.vendor_binary_size = vendor_binary_size
 
 
-struct DeviceFaultInfoEXT(Copyable):
+struct DeviceFaultInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var description: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
-    var p_address_infos: Ptr[DeviceFaultAddressInfoEXT, MutOrigin.external]
-    var p_vendor_infos: Ptr[DeviceFaultVendorInfoEXT, MutOrigin.external]
-    var p_vendor_binary_data: Ptr[NoneType, MutOrigin.external]
+    var p_address_infos: Ptr[DeviceFaultAddressInfoEXT, MutExternalOrigin]
+    var p_vendor_infos: Ptr[DeviceFaultVendorInfoEXT, MutExternalOrigin]
+    var p_vendor_binary_data: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin,
@@ -26374,7 +26374,7 @@ struct DeviceFaultInfoEXT(Copyable):
     ):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
-        self.description = description
+        self.description = description.copy()
         self.p_address_infos = Ptr(to=p_address_infos).bitcast[type_of(self.p_address_infos)]()[]
         self.p_vendor_infos = Ptr(to=p_vendor_infos).bitcast[type_of(self.p_vendor_infos)]()[]
         self.p_vendor_binary_data = Ptr(to=p_vendor_binary_data).bitcast[type_of(self.p_vendor_binary_data)]()[]
@@ -26383,7 +26383,7 @@ struct DeviceFaultInfoEXT(Copyable):
         return CStringSlice[origin_of(self.description)](unsafe_from_ptr = self.description.unsafe_ptr())
 
 
-struct DeviceFaultVendorBinaryHeaderVersionOneEXT(Copyable):
+struct DeviceFaultVendorBinaryHeaderVersionOneEXT(Copyable, Equatable):
     var header_size: UInt32
     var header_version: DeviceFaultVendorBinaryHeaderVersionEXT
     var vendor_id: UInt32
@@ -26415,7 +26415,7 @@ struct DeviceFaultVendorBinaryHeaderVersionOneEXT(Copyable):
         self.vendor_id = vendor_id
         self.device_id = device_id
         self.driver_version = driver_version
-        self.pipeline_cache_uuid = pipeline_cache_uuid
+        self.pipeline_cache_uuid = pipeline_cache_uuid.copy()
         self.application_name_offset = application_name_offset
         self.application_version = application_version
         self.engine_name_offset = engine_name_offset
@@ -26423,9 +26423,9 @@ struct DeviceFaultVendorBinaryHeaderVersionOneEXT(Copyable):
         self.api_version = api_version
 
 
-struct PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT(Copyable):
+struct PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline_library_group_handles: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26439,9 +26439,9 @@ struct PhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT(Copyable):
         self.pipeline_library_group_handles = pipeline_library_group_handles
 
 
-struct DepthBiasInfoEXT(Copyable):
+struct DepthBiasInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var depth_bias_constant_factor: Float32
     var depth_bias_clamp: Float32
     var depth_bias_slope_factor: Float32
@@ -26461,9 +26461,9 @@ struct DepthBiasInfoEXT(Copyable):
         self.depth_bias_slope_factor = depth_bias_slope_factor
 
 
-struct DepthBiasRepresentationInfoEXT(Copyable):
+struct DepthBiasRepresentationInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var depth_bias_representation: DepthBiasRepresentationEXT
     var depth_bias_exact: Bool32
 
@@ -26480,7 +26480,7 @@ struct DepthBiasRepresentationInfoEXT(Copyable):
         self.depth_bias_exact = depth_bias_exact
 
 
-struct DecompressMemoryRegionNV(Copyable):
+struct DecompressMemoryRegionNV(Copyable, Equatable):
     var src_address: DeviceAddress
     var dst_address: DeviceAddress
     var compressed_size: DeviceSize
@@ -26502,7 +26502,7 @@ struct DecompressMemoryRegionNV(Copyable):
         self.decompression_method = decompression_method
 
 
-struct DecompressMemoryRegionEXT(Copyable):
+struct DecompressMemoryRegionEXT(Copyable, Equatable):
     var src_address: DeviceAddress
     var dst_address: DeviceAddress
     var compressed_size: DeviceSize
@@ -26521,12 +26521,12 @@ struct DecompressMemoryRegionEXT(Copyable):
         self.decompressed_size = decompressed_size
 
 
-struct DecompressMemoryInfoEXT(Copyable):
+struct DecompressMemoryInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var decompression_method: MemoryDecompressionMethodFlagsEXT
     var region_count: UInt32
-    var p_regions: Ptr[DecompressMemoryRegionEXT, ImmutOrigin.external]
+    var p_regions: Ptr[DecompressMemoryRegionEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -26546,9 +26546,9 @@ struct DecompressMemoryInfoEXT(Copyable):
         self.p_regions = Ptr(to=p_regions).bitcast[type_of(self.p_regions)]()[]
 
 
-struct PhysicalDeviceShaderCoreBuiltinsPropertiesARM(Copyable):
+struct PhysicalDeviceShaderCoreBuiltinsPropertiesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_core_mask: UInt64
     var shader_core_count: UInt32
     var shader_warps_per_core: UInt32
@@ -26568,9 +26568,9 @@ struct PhysicalDeviceShaderCoreBuiltinsPropertiesARM(Copyable):
         self.shader_warps_per_core = shader_warps_per_core
 
 
-struct PhysicalDeviceShaderCoreBuiltinsFeaturesARM(Copyable):
+struct PhysicalDeviceShaderCoreBuiltinsFeaturesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_core_builtins: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26584,18 +26584,18 @@ struct PhysicalDeviceShaderCoreBuiltinsFeaturesARM(Copyable):
         self.shader_core_builtins = shader_core_builtins
 
 
-struct FrameBoundaryEXT(Copyable):
+struct FrameBoundaryEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: FrameBoundaryFlagsEXT
     var frame_id: UInt64
     var image_count: UInt32
-    var p_images: Ptr[Image, ImmutOrigin.external]
+    var p_images: Ptr[Image, ImmutExternalOrigin]
     var buffer_count: UInt32
-    var p_buffers: Ptr[Buffer, ImmutOrigin.external]
+    var p_buffers: Ptr[Buffer, ImmutExternalOrigin]
     var tag_name: UInt64
     var tag_size: UInt
-    var p_tag: Ptr[NoneType, ImmutOrigin.external]
+    var p_tag: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -26629,9 +26629,9 @@ struct FrameBoundaryEXT(Copyable):
         self.p_tag = Ptr(to=p_tag).bitcast[type_of(self.p_tag)]()[]
 
 
-struct PhysicalDeviceFrameBoundaryFeaturesEXT(Copyable):
+struct PhysicalDeviceFrameBoundaryFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var frame_boundary: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26645,9 +26645,9 @@ struct PhysicalDeviceFrameBoundaryFeaturesEXT(Copyable):
         self.frame_boundary = frame_boundary
 
 
-struct PhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT(Copyable):
+struct PhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var dynamic_rendering_unused_attachments: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26661,9 +26661,9 @@ struct PhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT(Copyable):
         self.dynamic_rendering_unused_attachments = dynamic_rendering_unused_attachments
 
 
-struct PhysicalDeviceInternallySynchronizedQueuesFeaturesKHR(Copyable):
+struct PhysicalDeviceInternallySynchronizedQueuesFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var internally_synchronized_queues: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26677,9 +26677,9 @@ struct PhysicalDeviceInternallySynchronizedQueuesFeaturesKHR(Copyable):
         self.internally_synchronized_queues = internally_synchronized_queues
 
 
-struct SurfacePresentModeKHR(Copyable):
+struct SurfacePresentModeKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_mode: PresentModeKHR
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26693,9 +26693,9 @@ struct SurfacePresentModeKHR(Copyable):
         self.present_mode = present_mode
 
 
-struct SurfacePresentScalingCapabilitiesKHR(Copyable):
+struct SurfacePresentScalingCapabilitiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var supported_present_scaling: PresentScalingFlagsKHR
     var supported_present_gravity_x: PresentGravityFlagsKHR
     var supported_present_gravity_y: PresentGravityFlagsKHR
@@ -26721,11 +26721,11 @@ struct SurfacePresentScalingCapabilitiesKHR(Copyable):
         self.max_scaled_image_extent = max_scaled_image_extent.copy()
 
 
-struct SurfacePresentModeCompatibilityKHR(Copyable):
+struct SurfacePresentModeCompatibilityKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_mode_count: UInt32
-    var p_present_modes: Ptr[PresentModeKHR, MutOrigin.external]
+    var p_present_modes: Ptr[PresentModeKHR, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin, p_present_modes_origin: MutOrigin = MutAnyOrigin
@@ -26742,9 +26742,9 @@ struct SurfacePresentModeCompatibilityKHR(Copyable):
         self.p_present_modes = Ptr(to=p_present_modes).bitcast[type_of(self.p_present_modes)]()[]
 
 
-struct PhysicalDeviceSwapchainMaintenance1FeaturesKHR(Copyable):
+struct PhysicalDeviceSwapchainMaintenance1FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var swapchain_maintenance_1: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26758,11 +26758,11 @@ struct PhysicalDeviceSwapchainMaintenance1FeaturesKHR(Copyable):
         self.swapchain_maintenance_1 = swapchain_maintenance_1
 
 
-struct SwapchainPresentFenceInfoKHR(Copyable):
+struct SwapchainPresentFenceInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var swapchain_count: UInt32
-    var p_fences: Ptr[Fence, ImmutOrigin.external]
+    var p_fences: Ptr[Fence, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_fences_origin: ImmutOrigin = ImmutAnyOrigin
@@ -26779,11 +26779,11 @@ struct SwapchainPresentFenceInfoKHR(Copyable):
         self.p_fences = Ptr(to=p_fences).bitcast[type_of(self.p_fences)]()[]
 
 
-struct SwapchainPresentModesCreateInfoKHR(Copyable):
+struct SwapchainPresentModesCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var present_mode_count: UInt32
-    var p_present_modes: Ptr[PresentModeKHR, ImmutOrigin.external]
+    var p_present_modes: Ptr[PresentModeKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -26801,11 +26801,11 @@ struct SwapchainPresentModesCreateInfoKHR(Copyable):
         self.p_present_modes = Ptr(to=p_present_modes).bitcast[type_of(self.p_present_modes)]()[]
 
 
-struct SwapchainPresentModeInfoKHR(Copyable):
+struct SwapchainPresentModeInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var swapchain_count: UInt32
-    var p_present_modes: Ptr[PresentModeKHR, ImmutOrigin.external]
+    var p_present_modes: Ptr[PresentModeKHR, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -26823,9 +26823,9 @@ struct SwapchainPresentModeInfoKHR(Copyable):
         self.p_present_modes = Ptr(to=p_present_modes).bitcast[type_of(self.p_present_modes)]()[]
 
 
-struct SwapchainPresentScalingCreateInfoKHR(Copyable):
+struct SwapchainPresentScalingCreateInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var scaling_behavior: PresentScalingFlagsKHR
     var present_gravity_x: PresentGravityFlagsKHR
     var present_gravity_y: PresentGravityFlagsKHR
@@ -26845,12 +26845,12 @@ struct SwapchainPresentScalingCreateInfoKHR(Copyable):
         self.present_gravity_y = present_gravity_y
 
 
-struct ReleaseSwapchainImagesInfoKHR(Copyable):
+struct ReleaseSwapchainImagesInfoKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var swapchain: SwapchainKHR
     var image_index_count: UInt32
-    var p_image_indices: Ptr[UInt32, ImmutOrigin.external]
+    var p_image_indices: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -26870,9 +26870,9 @@ struct ReleaseSwapchainImagesInfoKHR(Copyable):
         self.p_image_indices = Ptr(to=p_image_indices).bitcast[type_of(self.p_image_indices)]()[]
 
 
-struct PhysicalDeviceDepthBiasControlFeaturesEXT(Copyable):
+struct PhysicalDeviceDepthBiasControlFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var depth_bias_control: Bool32
     var least_representable_value_force_unorm_representation: Bool32
     var float_representation: Bool32
@@ -26895,9 +26895,9 @@ struct PhysicalDeviceDepthBiasControlFeaturesEXT(Copyable):
         self.depth_bias_exact = depth_bias_exact
 
 
-struct PhysicalDeviceRayTracingInvocationReorderFeaturesEXT(Copyable):
+struct PhysicalDeviceRayTracingInvocationReorderFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ray_tracing_invocation_reorder: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26911,9 +26911,9 @@ struct PhysicalDeviceRayTracingInvocationReorderFeaturesEXT(Copyable):
         self.ray_tracing_invocation_reorder = ray_tracing_invocation_reorder
 
 
-struct PhysicalDeviceRayTracingInvocationReorderFeaturesNV(Copyable):
+struct PhysicalDeviceRayTracingInvocationReorderFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ray_tracing_invocation_reorder: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26927,9 +26927,9 @@ struct PhysicalDeviceRayTracingInvocationReorderFeaturesNV(Copyable):
         self.ray_tracing_invocation_reorder = ray_tracing_invocation_reorder
 
 
-struct PhysicalDeviceRayTracingInvocationReorderPropertiesEXT(Copyable):
+struct PhysicalDeviceRayTracingInvocationReorderPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ray_tracing_invocation_reorder_reordering_hint: RayTracingInvocationReorderModeEXT
     var max_shader_binding_table_record_index: UInt32
 
@@ -26946,9 +26946,9 @@ struct PhysicalDeviceRayTracingInvocationReorderPropertiesEXT(Copyable):
         self.max_shader_binding_table_record_index = max_shader_binding_table_record_index
 
 
-struct PhysicalDeviceRayTracingInvocationReorderPropertiesNV(Copyable):
+struct PhysicalDeviceRayTracingInvocationReorderPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ray_tracing_invocation_reorder_reordering_hint: RayTracingInvocationReorderModeEXT
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26962,9 +26962,9 @@ struct PhysicalDeviceRayTracingInvocationReorderPropertiesNV(Copyable):
         self.ray_tracing_invocation_reorder_reordering_hint = ray_tracing_invocation_reorder_reordering_hint
 
 
-struct PhysicalDeviceExtendedSparseAddressSpaceFeaturesNV(Copyable):
+struct PhysicalDeviceExtendedSparseAddressSpaceFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var extended_sparse_address_space: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -26978,9 +26978,9 @@ struct PhysicalDeviceExtendedSparseAddressSpaceFeaturesNV(Copyable):
         self.extended_sparse_address_space = extended_sparse_address_space
 
 
-struct PhysicalDeviceExtendedSparseAddressSpacePropertiesNV(Copyable):
+struct PhysicalDeviceExtendedSparseAddressSpacePropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var extended_sparse_address_space_size: DeviceSize
     var extended_sparse_image_usage_flags: ImageUsageFlags
     var extended_sparse_buffer_usage_flags: BufferUsageFlags
@@ -27000,9 +27000,9 @@ struct PhysicalDeviceExtendedSparseAddressSpacePropertiesNV(Copyable):
         self.extended_sparse_buffer_usage_flags = extended_sparse_buffer_usage_flags
 
 
-struct DirectDriverLoadingInfoLUNARG(Copyable):
+struct DirectDriverLoadingInfoLUNARG(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: DirectDriverLoadingFlagsLUNARG
     var pfn_get_instance_proc_addr: PFN_vkGetInstanceProcAddrLUNARG
 
@@ -27019,12 +27019,12 @@ struct DirectDriverLoadingInfoLUNARG(Copyable):
         self.pfn_get_instance_proc_addr = pfn_get_instance_proc_addr
 
 
-struct DirectDriverLoadingListLUNARG(Copyable):
+struct DirectDriverLoadingListLUNARG(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var mode: DirectDriverLoadingModeLUNARG
     var driver_count: UInt32
-    var p_drivers: Ptr[DirectDriverLoadingInfoLUNARG, ImmutOrigin.external]
+    var p_drivers: Ptr[DirectDriverLoadingInfoLUNARG, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -27044,9 +27044,9 @@ struct DirectDriverLoadingListLUNARG(Copyable):
         self.p_drivers = Ptr(to=p_drivers).bitcast[type_of(self.p_drivers)]()[]
 
 
-struct PhysicalDeviceMultiviewPerViewViewportsFeaturesQCOM(Copyable):
+struct PhysicalDeviceMultiviewPerViewViewportsFeaturesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var multiview_per_view_viewports: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -27060,9 +27060,9 @@ struct PhysicalDeviceMultiviewPerViewViewportsFeaturesQCOM(Copyable):
         self.multiview_per_view_viewports = multiview_per_view_viewports
 
 
-struct PhysicalDeviceRayTracingPositionFetchFeaturesKHR(Copyable):
+struct PhysicalDeviceRayTracingPositionFetchFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ray_tracing_position_fetch: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -27076,11 +27076,11 @@ struct PhysicalDeviceRayTracingPositionFetchFeaturesKHR(Copyable):
         self.ray_tracing_position_fetch = ray_tracing_position_fetch
 
 
-struct DeviceImageSubresourceInfo(Copyable):
+struct DeviceImageSubresourceInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_create_info: Ptr[ImageCreateInfo, ImmutOrigin.external]
-    var p_subresource: Ptr[ImageSubresource2, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_create_info: Ptr[ImageCreateInfo, ImmutExternalOrigin]
+    var p_subresource: Ptr[ImageSubresource2, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -27099,9 +27099,9 @@ struct DeviceImageSubresourceInfo(Copyable):
         self.p_subresource = Ptr(to=p_subresource).bitcast[type_of(self.p_subresource)]()[]
 
 
-struct PhysicalDeviceShaderCorePropertiesARM(Copyable):
+struct PhysicalDeviceShaderCorePropertiesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pixel_rate: UInt32
     var texel_rate: UInt32
     var fma_rate: UInt32
@@ -27121,9 +27121,9 @@ struct PhysicalDeviceShaderCorePropertiesARM(Copyable):
         self.fma_rate = fma_rate
 
 
-struct PhysicalDeviceMultiviewPerViewRenderAreasFeaturesQCOM(Copyable):
+struct PhysicalDeviceMultiviewPerViewRenderAreasFeaturesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var multiview_per_view_render_areas: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -27137,11 +27137,11 @@ struct PhysicalDeviceMultiviewPerViewRenderAreasFeaturesQCOM(Copyable):
         self.multiview_per_view_render_areas = multiview_per_view_render_areas
 
 
-struct MultiviewPerViewRenderAreasRenderPassBeginInfoQCOM(Copyable):
+struct MultiviewPerViewRenderAreasRenderPassBeginInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var per_view_render_area_count: UInt32
-    var p_per_view_render_areas: Ptr[Rect2D, ImmutOrigin.external]
+    var p_per_view_render_areas: Ptr[Rect2D, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -27159,10 +27159,10 @@ struct MultiviewPerViewRenderAreasRenderPassBeginInfoQCOM(Copyable):
         self.p_per_view_render_areas = Ptr(to=p_per_view_render_areas).bitcast[type_of(self.p_per_view_render_areas)]()[]
 
 
-struct QueryLowLatencySupportNV(Copyable):
+struct QueryLowLatencySupportNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_queried_low_latency_data: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_queried_low_latency_data: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -27178,9 +27178,9 @@ struct QueryLowLatencySupportNV(Copyable):
         self.p_queried_low_latency_data = Ptr(to=p_queried_low_latency_data).bitcast[type_of(self.p_queried_low_latency_data)]()[]
 
 
-struct MemoryMapInfo(Copyable):
+struct MemoryMapInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: MemoryMapFlags
     var memory: DeviceMemory
     var offset: DeviceSize
@@ -27203,9 +27203,9 @@ struct MemoryMapInfo(Copyable):
         self.size = size
 
 
-struct MemoryUnmapInfo(Copyable):
+struct MemoryUnmapInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: MemoryUnmapFlags
     var memory: DeviceMemory
 
@@ -27222,9 +27222,9 @@ struct MemoryUnmapInfo(Copyable):
         self.memory = memory
 
 
-struct PhysicalDeviceShaderObjectFeaturesEXT(Copyable):
+struct PhysicalDeviceShaderObjectFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_object: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -27238,9 +27238,9 @@ struct PhysicalDeviceShaderObjectFeaturesEXT(Copyable):
         self.shader_object = shader_object
 
 
-struct PhysicalDeviceShaderObjectPropertiesEXT(Copyable):
+struct PhysicalDeviceShaderObjectPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_binary_uuid: InlineArray[UInt8, Int(UUID_SIZE)]
     var shader_binary_version: Version
 
@@ -27253,25 +27253,25 @@ struct PhysicalDeviceShaderObjectPropertiesEXT(Copyable):
     ):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
-        self.shader_binary_uuid = shader_binary_uuid
+        self.shader_binary_uuid = shader_binary_uuid.copy()
         self.shader_binary_version = shader_binary_version
 
 
-struct ShaderCreateInfoEXT(Copyable):
+struct ShaderCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: ShaderCreateFlagsEXT
     var stage: ShaderStageFlagBits
     var next_stage: ShaderStageFlags
     var code_type: ShaderCodeTypeEXT
     var code_size: UInt
-    var p_code: Ptr[NoneType, ImmutOrigin.external]
-    var p_name: CStringSlice[ImmutOrigin.external]
+    var p_code: Ptr[NoneType, ImmutExternalOrigin]
+    var p_name: CStringSlice[ImmutExternalOrigin]
     var set_layout_count: UInt32
-    var p_set_layouts: Ptr[DescriptorSetLayout, ImmutOrigin.external]
+    var p_set_layouts: Ptr[DescriptorSetLayout, ImmutExternalOrigin]
     var push_constant_range_count: UInt32
-    var p_push_constant_ranges: Ptr[PushConstantRange, ImmutOrigin.external]
-    var p_specialization_info: Ptr[SpecializationInfo, ImmutOrigin.external]
+    var p_push_constant_ranges: Ptr[PushConstantRange, ImmutExternalOrigin]
+    var p_specialization_info: Ptr[SpecializationInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -27313,9 +27313,9 @@ struct ShaderCreateInfoEXT(Copyable):
         self.p_specialization_info = Ptr(to=p_specialization_info).bitcast[type_of(self.p_specialization_info)]()[]
 
 
-struct PhysicalDeviceShaderTileImageFeaturesEXT(Copyable):
+struct PhysicalDeviceShaderTileImageFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_tile_image_color_read_access: Bool32
     var shader_tile_image_depth_read_access: Bool32
     var shader_tile_image_stencil_read_access: Bool32
@@ -27335,9 +27335,9 @@ struct PhysicalDeviceShaderTileImageFeaturesEXT(Copyable):
         self.shader_tile_image_stencil_read_access = shader_tile_image_stencil_read_access
 
 
-struct PhysicalDeviceShaderTileImagePropertiesEXT(Copyable):
+struct PhysicalDeviceShaderTileImagePropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_tile_image_coherent_read_accelerated: Bool32
     var shader_tile_image_read_sample_from_pixel_rate_invocation: Bool32
     var shader_tile_image_read_from_helper_invocation: Bool32
@@ -27357,9 +27357,9 @@ struct PhysicalDeviceShaderTileImagePropertiesEXT(Copyable):
         self.shader_tile_image_read_from_helper_invocation = shader_tile_image_read_from_helper_invocation
 
 
-struct ImportScreenBufferInfoQNX(Copyable):
+struct ImportScreenBufferInfoQNX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var buffer: screen_buffer_t
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -27373,9 +27373,9 @@ struct ImportScreenBufferInfoQNX(Copyable):
         self.buffer = buffer
 
 
-struct ScreenBufferPropertiesQNX(Copyable):
+struct ScreenBufferPropertiesQNX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var allocation_size: DeviceSize
     var memory_type_bits: UInt32
 
@@ -27392,9 +27392,9 @@ struct ScreenBufferPropertiesQNX(Copyable):
         self.memory_type_bits = memory_type_bits
 
 
-struct ScreenBufferFormatPropertiesQNX(Copyable):
+struct ScreenBufferFormatPropertiesQNX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var format: Format
     var external_format: UInt64
     var screen_usage: UInt64
@@ -27432,9 +27432,9 @@ struct ScreenBufferFormatPropertiesQNX(Copyable):
         self.suggested_y_chroma_offset = suggested_y_chroma_offset
 
 
-struct ExternalFormatQNX(Copyable):
+struct ExternalFormatQNX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var external_format: UInt64
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -27448,9 +27448,9 @@ struct ExternalFormatQNX(Copyable):
         self.external_format = external_format
 
 
-struct PhysicalDeviceExternalMemoryScreenBufferFeaturesQNX(Copyable):
+struct PhysicalDeviceExternalMemoryScreenBufferFeaturesQNX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var screen_buffer_import: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -27464,9 +27464,9 @@ struct PhysicalDeviceExternalMemoryScreenBufferFeaturesQNX(Copyable):
         self.screen_buffer_import = screen_buffer_import
 
 
-struct PhysicalDeviceCooperativeMatrixFeaturesKHR(Copyable):
+struct PhysicalDeviceCooperativeMatrixFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var cooperative_matrix: Bool32
     var cooperative_matrix_robust_buffer_access: Bool32
 
@@ -27483,9 +27483,9 @@ struct PhysicalDeviceCooperativeMatrixFeaturesKHR(Copyable):
         self.cooperative_matrix_robust_buffer_access = cooperative_matrix_robust_buffer_access
 
 
-struct CooperativeMatrixPropertiesKHR(Copyable):
+struct CooperativeMatrixPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var m_size: UInt32
     var n_size: UInt32
     var k_size: UInt32
@@ -27523,9 +27523,9 @@ struct CooperativeMatrixPropertiesKHR(Copyable):
         self.scope = scope
 
 
-struct PhysicalDeviceCooperativeMatrixPropertiesKHR(Copyable):
+struct PhysicalDeviceCooperativeMatrixPropertiesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var cooperative_matrix_supported_stages: ShaderStageFlags
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -27539,9 +27539,9 @@ struct PhysicalDeviceCooperativeMatrixPropertiesKHR(Copyable):
         self.cooperative_matrix_supported_stages = cooperative_matrix_supported_stages
 
 
-struct PhysicalDeviceShaderEnqueuePropertiesAMDX(Copyable):
+struct PhysicalDeviceShaderEnqueuePropertiesAMDX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_execution_graph_depth: UInt32
     var max_execution_graph_shader_output_nodes: UInt32
     var max_execution_graph_shader_payload_size: UInt32
@@ -27569,13 +27569,13 @@ struct PhysicalDeviceShaderEnqueuePropertiesAMDX(Copyable):
         self.max_execution_graph_shader_payload_size = max_execution_graph_shader_payload_size
         self.max_execution_graph_shader_payload_count = max_execution_graph_shader_payload_count
         self.execution_graph_dispatch_address_alignment = execution_graph_dispatch_address_alignment
-        self.max_execution_graph_workgroup_count = max_execution_graph_workgroup_count
+        self.max_execution_graph_workgroup_count = max_execution_graph_workgroup_count.copy()
         self.max_execution_graph_workgroups = max_execution_graph_workgroups
 
 
-struct PhysicalDeviceShaderEnqueueFeaturesAMDX(Copyable):
+struct PhysicalDeviceShaderEnqueueFeaturesAMDX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_enqueue: Bool32
     var shader_mesh_enqueue: Bool32
 
@@ -27592,13 +27592,13 @@ struct PhysicalDeviceShaderEnqueueFeaturesAMDX(Copyable):
         self.shader_mesh_enqueue = shader_mesh_enqueue
 
 
-struct ExecutionGraphPipelineCreateInfoAMDX(Copyable):
+struct ExecutionGraphPipelineCreateInfoAMDX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineCreateFlags
     var stage_count: UInt32
-    var p_stages: Ptr[PipelineShaderStageCreateInfo, ImmutOrigin.external]
-    var p_library_info: Ptr[PipelineLibraryCreateInfoKHR, ImmutOrigin.external]
+    var p_stages: Ptr[PipelineShaderStageCreateInfo, ImmutExternalOrigin]
+    var p_library_info: Ptr[PipelineLibraryCreateInfoKHR, ImmutExternalOrigin]
     var layout: PipelineLayout
     var base_pipeline_handle: Pipeline
     var base_pipeline_index: Int32
@@ -27630,10 +27630,10 @@ struct ExecutionGraphPipelineCreateInfoAMDX(Copyable):
         self.base_pipeline_index = base_pipeline_index
 
 
-struct PipelineShaderStageNodeCreateInfoAMDX(Copyable):
+struct PipelineShaderStageNodeCreateInfoAMDX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_name: CStringSlice[ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_name: CStringSlice[ImmutExternalOrigin]
     var index: UInt32
 
     fn __init__[
@@ -27651,9 +27651,9 @@ struct PipelineShaderStageNodeCreateInfoAMDX(Copyable):
         self.index = index
 
 
-struct ExecutionGraphPipelineScratchSizeAMDX(Copyable):
+struct ExecutionGraphPipelineScratchSizeAMDX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var min_size: DeviceSize
     var max_size: DeviceSize
     var size_granularity: DeviceSize
@@ -27673,7 +27673,7 @@ struct ExecutionGraphPipelineScratchSizeAMDX(Copyable):
         self.size_granularity = size_granularity
 
 
-struct DispatchGraphInfoAMDX(Copyable):
+struct DispatchGraphInfoAMDX(Copyable, Equatable):
     var node_index: UInt32
     var payload_count: UInt32
     var payloads: DeviceOrHostAddressConstAMDX
@@ -27692,7 +27692,7 @@ struct DispatchGraphInfoAMDX(Copyable):
         self.payload_stride = payload_stride
 
 
-struct DispatchGraphCountInfoAMDX(Copyable):
+struct DispatchGraphCountInfoAMDX(Copyable, Equatable):
     var count: UInt32
     var infos: DeviceOrHostAddressConstAMDX
     var stride: UInt64
@@ -27708,9 +27708,9 @@ struct DispatchGraphCountInfoAMDX(Copyable):
         self.stride = stride
 
 
-struct PhysicalDeviceAntiLagFeaturesAMD(Copyable):
+struct PhysicalDeviceAntiLagFeaturesAMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var anti_lag: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -27724,12 +27724,12 @@ struct PhysicalDeviceAntiLagFeaturesAMD(Copyable):
         self.anti_lag = anti_lag
 
 
-struct AntiLagDataAMD(Copyable):
+struct AntiLagDataAMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var mode: AntiLagModeAMD
     var max_fps: UInt32
-    var p_presentation_info: Ptr[AntiLagPresentationInfoAMD, ImmutOrigin.external]
+    var p_presentation_info: Ptr[AntiLagPresentationInfoAMD, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -27749,9 +27749,9 @@ struct AntiLagDataAMD(Copyable):
         self.p_presentation_info = Ptr(to=p_presentation_info).bitcast[type_of(self.p_presentation_info)]()[]
 
 
-struct AntiLagPresentationInfoAMD(Copyable):
+struct AntiLagPresentationInfoAMD(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var stage: AntiLagStageAMD
     var frame_index: UInt64
 
@@ -27768,10 +27768,10 @@ struct AntiLagPresentationInfoAMD(Copyable):
         self.frame_index = frame_index
 
 
-struct BindMemoryStatus(Copyable):
+struct BindMemoryStatus(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_result: Ptr[Result, MutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_result: Ptr[Result, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_result_origin: MutOrigin = MutAnyOrigin
@@ -27786,9 +27786,9 @@ struct BindMemoryStatus(Copyable):
         self.p_result = Ptr(to=p_result).bitcast[type_of(self.p_result)]()[]
 
 
-struct PhysicalDeviceTileMemoryHeapFeaturesQCOM(Copyable):
+struct PhysicalDeviceTileMemoryHeapFeaturesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var tile_memory_heap: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -27802,9 +27802,9 @@ struct PhysicalDeviceTileMemoryHeapFeaturesQCOM(Copyable):
         self.tile_memory_heap = tile_memory_heap
 
 
-struct PhysicalDeviceTileMemoryHeapPropertiesQCOM(Copyable):
+struct PhysicalDeviceTileMemoryHeapPropertiesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var queue_submit_boundary: Bool32
     var tile_buffer_transfers: Bool32
 
@@ -27821,9 +27821,9 @@ struct PhysicalDeviceTileMemoryHeapPropertiesQCOM(Copyable):
         self.tile_buffer_transfers = tile_buffer_transfers
 
 
-struct TileMemorySizeInfoQCOM(Copyable):
+struct TileMemorySizeInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var size: DeviceSize
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -27837,9 +27837,9 @@ struct TileMemorySizeInfoQCOM(Copyable):
         self.size = size
 
 
-struct TileMemoryRequirementsQCOM(Copyable):
+struct TileMemoryRequirementsQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var size: DeviceSize
     var alignment: DeviceSize
 
@@ -27856,16 +27856,16 @@ struct TileMemoryRequirementsQCOM(Copyable):
         self.alignment = alignment
 
 
-struct BindDescriptorSetsInfo(Copyable):
+struct BindDescriptorSetsInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var stage_flags: ShaderStageFlags
     var layout: PipelineLayout
     var first_set: UInt32
     var descriptor_set_count: UInt32
-    var p_descriptor_sets: Ptr[DescriptorSet, ImmutOrigin.external]
+    var p_descriptor_sets: Ptr[DescriptorSet, ImmutExternalOrigin]
     var dynamic_offset_count: UInt32
-    var p_dynamic_offsets: Ptr[UInt32, ImmutOrigin.external]
+    var p_dynamic_offsets: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -27894,14 +27894,14 @@ struct BindDescriptorSetsInfo(Copyable):
         self.p_dynamic_offsets = Ptr(to=p_dynamic_offsets).bitcast[type_of(self.p_dynamic_offsets)]()[]
 
 
-struct PushConstantsInfo(Copyable):
+struct PushConstantsInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var layout: PipelineLayout
     var stage_flags: ShaderStageFlags
     var offset: UInt32
     var size: UInt32
-    var p_values: Ptr[NoneType, ImmutOrigin.external]
+    var p_values: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_values_origin: ImmutOrigin = ImmutAnyOrigin
@@ -27924,14 +27924,14 @@ struct PushConstantsInfo(Copyable):
         self.p_values = Ptr(to=p_values).bitcast[type_of(self.p_values)]()[]
 
 
-struct PushDescriptorSetInfo(Copyable):
+struct PushDescriptorSetInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var stage_flags: ShaderStageFlags
     var layout: PipelineLayout
     var set: UInt32
     var descriptor_write_count: UInt32
-    var p_descriptor_writes: Ptr[WriteDescriptorSet, ImmutOrigin.external]
+    var p_descriptor_writes: Ptr[WriteDescriptorSet, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -27955,13 +27955,13 @@ struct PushDescriptorSetInfo(Copyable):
         self.p_descriptor_writes = Ptr(to=p_descriptor_writes).bitcast[type_of(self.p_descriptor_writes)]()[]
 
 
-struct PushDescriptorSetWithTemplateInfo(Copyable):
+struct PushDescriptorSetWithTemplateInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var descriptor_update_template: DescriptorUpdateTemplate
     var layout: PipelineLayout
     var set: UInt32
-    var p_data: Ptr[NoneType, ImmutOrigin.external]
+    var p_data: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_data_origin: ImmutOrigin = ImmutAnyOrigin
@@ -27982,15 +27982,15 @@ struct PushDescriptorSetWithTemplateInfo(Copyable):
         self.p_data = Ptr(to=p_data).bitcast[type_of(self.p_data)]()[]
 
 
-struct SetDescriptorBufferOffsetsInfoEXT(Copyable):
+struct SetDescriptorBufferOffsetsInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var stage_flags: ShaderStageFlags
     var layout: PipelineLayout
     var first_set: UInt32
     var set_count: UInt32
-    var p_buffer_indices: Ptr[UInt32, ImmutOrigin.external]
-    var p_offsets: Ptr[DeviceSize, ImmutOrigin.external]
+    var p_buffer_indices: Ptr[UInt32, ImmutExternalOrigin]
+    var p_offsets: Ptr[DeviceSize, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -28017,9 +28017,9 @@ struct SetDescriptorBufferOffsetsInfoEXT(Copyable):
         self.p_offsets = Ptr(to=p_offsets).bitcast[type_of(self.p_offsets)]()[]
 
 
-struct BindDescriptorBufferEmbeddedSamplersInfoEXT(Copyable):
+struct BindDescriptorBufferEmbeddedSamplersInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var stage_flags: ShaderStageFlags
     var layout: PipelineLayout
     var set: UInt32
@@ -28039,9 +28039,9 @@ struct BindDescriptorBufferEmbeddedSamplersInfoEXT(Copyable):
         self.set = set
 
 
-struct PhysicalDeviceCubicClampFeaturesQCOM(Copyable):
+struct PhysicalDeviceCubicClampFeaturesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var cubic_range_clamp: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28055,9 +28055,9 @@ struct PhysicalDeviceCubicClampFeaturesQCOM(Copyable):
         self.cubic_range_clamp = cubic_range_clamp
 
 
-struct PhysicalDeviceYcbcrDegammaFeaturesQCOM(Copyable):
+struct PhysicalDeviceYcbcrDegammaFeaturesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ycbcr_degamma: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28071,9 +28071,9 @@ struct PhysicalDeviceYcbcrDegammaFeaturesQCOM(Copyable):
         self.ycbcr_degamma = ycbcr_degamma
 
 
-struct SamplerYcbcrConversionYcbcrDegammaCreateInfoQCOM(Copyable):
+struct SamplerYcbcrConversionYcbcrDegammaCreateInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var enable_y_degamma: Bool32
     var enable_cb_cr_degamma: Bool32
 
@@ -28090,9 +28090,9 @@ struct SamplerYcbcrConversionYcbcrDegammaCreateInfoQCOM(Copyable):
         self.enable_cb_cr_degamma = enable_cb_cr_degamma
 
 
-struct PhysicalDeviceCubicWeightsFeaturesQCOM(Copyable):
+struct PhysicalDeviceCubicWeightsFeaturesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var selectable_cubic_weights: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28106,9 +28106,9 @@ struct PhysicalDeviceCubicWeightsFeaturesQCOM(Copyable):
         self.selectable_cubic_weights = selectable_cubic_weights
 
 
-struct SamplerCubicWeightsCreateInfoQCOM(Copyable):
+struct SamplerCubicWeightsCreateInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var cubic_weights: CubicFilterWeightsQCOM
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -28122,9 +28122,9 @@ struct SamplerCubicWeightsCreateInfoQCOM(Copyable):
         self.cubic_weights = cubic_weights
 
 
-struct BlitImageCubicWeightsInfoQCOM(Copyable):
+struct BlitImageCubicWeightsInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var cubic_weights: CubicFilterWeightsQCOM
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -28138,9 +28138,9 @@ struct BlitImageCubicWeightsInfoQCOM(Copyable):
         self.cubic_weights = cubic_weights
 
 
-struct PhysicalDeviceImageProcessing2FeaturesQCOM(Copyable):
+struct PhysicalDeviceImageProcessing2FeaturesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var texture_block_match_2: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28154,9 +28154,9 @@ struct PhysicalDeviceImageProcessing2FeaturesQCOM(Copyable):
         self.texture_block_match_2 = texture_block_match_2
 
 
-struct PhysicalDeviceImageProcessing2PropertiesQCOM(Copyable):
+struct PhysicalDeviceImageProcessing2PropertiesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_block_match_window: Extent2D
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28170,9 +28170,9 @@ struct PhysicalDeviceImageProcessing2PropertiesQCOM(Copyable):
         self.max_block_match_window = max_block_match_window.copy()
 
 
-struct SamplerBlockMatchWindowCreateInfoQCOM(Copyable):
+struct SamplerBlockMatchWindowCreateInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var window_extent: Extent2D
     var window_compare_mode: BlockMatchWindowCompareModeQCOM
 
@@ -28189,9 +28189,9 @@ struct SamplerBlockMatchWindowCreateInfoQCOM(Copyable):
         self.window_compare_mode = window_compare_mode
 
 
-struct PhysicalDeviceDescriptorPoolOverallocationFeaturesNV(Copyable):
+struct PhysicalDeviceDescriptorPoolOverallocationFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var descriptor_pool_overallocation: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28205,9 +28205,9 @@ struct PhysicalDeviceDescriptorPoolOverallocationFeaturesNV(Copyable):
         self.descriptor_pool_overallocation = descriptor_pool_overallocation
 
 
-struct PhysicalDeviceLayeredDriverPropertiesMSFT(Copyable):
+struct PhysicalDeviceLayeredDriverPropertiesMSFT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var underlying_api: LayeredDriverUnderlyingApiMSFT
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28221,9 +28221,9 @@ struct PhysicalDeviceLayeredDriverPropertiesMSFT(Copyable):
         self.underlying_api = underlying_api
 
 
-struct PhysicalDevicePerStageDescriptorSetFeaturesNV(Copyable):
+struct PhysicalDevicePerStageDescriptorSetFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var per_stage_descriptor_set: Bool32
     var dynamic_pipeline_layout: Bool32
 
@@ -28240,9 +28240,9 @@ struct PhysicalDevicePerStageDescriptorSetFeaturesNV(Copyable):
         self.dynamic_pipeline_layout = dynamic_pipeline_layout
 
 
-struct PhysicalDeviceExternalFormatResolveFeaturesANDROID(Copyable):
+struct PhysicalDeviceExternalFormatResolveFeaturesANDROID(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var external_format_resolve: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28256,9 +28256,9 @@ struct PhysicalDeviceExternalFormatResolveFeaturesANDROID(Copyable):
         self.external_format_resolve = external_format_resolve
 
 
-struct PhysicalDeviceExternalFormatResolvePropertiesANDROID(Copyable):
+struct PhysicalDeviceExternalFormatResolvePropertiesANDROID(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var null_color_attachment_with_external_format_resolve: Bool32
     var external_format_resolve_chroma_offset_x: ChromaLocation
     var external_format_resolve_chroma_offset_y: ChromaLocation
@@ -28278,9 +28278,9 @@ struct PhysicalDeviceExternalFormatResolvePropertiesANDROID(Copyable):
         self.external_format_resolve_chroma_offset_y = external_format_resolve_chroma_offset_y
 
 
-struct AndroidHardwareBufferFormatResolvePropertiesANDROID(Copyable):
+struct AndroidHardwareBufferFormatResolvePropertiesANDROID(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var color_attachment_format: Format
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28294,9 +28294,9 @@ struct AndroidHardwareBufferFormatResolvePropertiesANDROID(Copyable):
         self.color_attachment_format = color_attachment_format
 
 
-struct LatencySleepModeInfoNV(Copyable):
+struct LatencySleepModeInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var low_latency_mode: Bool32
     var low_latency_boost: Bool32
     var minimum_interval_us: UInt32
@@ -28316,9 +28316,9 @@ struct LatencySleepModeInfoNV(Copyable):
         self.minimum_interval_us = minimum_interval_us
 
 
-struct LatencySleepInfoNV(Copyable):
+struct LatencySleepInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var signal_semaphore: Semaphore
     var value: UInt64
 
@@ -28335,9 +28335,9 @@ struct LatencySleepInfoNV(Copyable):
         self.value = value
 
 
-struct SetLatencyMarkerInfoNV(Copyable):
+struct SetLatencyMarkerInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var present_id: UInt64
     var marker: LatencyMarkerNV
 
@@ -28354,11 +28354,11 @@ struct SetLatencyMarkerInfoNV(Copyable):
         self.marker = marker
 
 
-struct GetLatencyMarkerInfoNV(Copyable):
+struct GetLatencyMarkerInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var timing_count: UInt32
-    var p_timings: Ptr[LatencyTimingsFrameReportNV, MutOrigin.external]
+    var p_timings: Ptr[LatencyTimingsFrameReportNV, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_timings_origin: MutOrigin = MutAnyOrigin
@@ -28375,9 +28375,9 @@ struct GetLatencyMarkerInfoNV(Copyable):
         self.p_timings = Ptr(to=p_timings).bitcast[type_of(self.p_timings)]()[]
 
 
-struct LatencyTimingsFrameReportNV(Copyable):
+struct LatencyTimingsFrameReportNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_id: UInt64
     var input_sample_time_us: UInt64
     var sim_start_time_us: UInt64
@@ -28430,9 +28430,9 @@ struct LatencyTimingsFrameReportNV(Copyable):
         self.gpu_render_end_time_us = gpu_render_end_time_us
 
 
-struct OutOfBandQueueTypeInfoNV(Copyable):
+struct OutOfBandQueueTypeInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var queue_type: OutOfBandQueueTypeNV
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -28446,9 +28446,9 @@ struct OutOfBandQueueTypeInfoNV(Copyable):
         self.queue_type = queue_type
 
 
-struct LatencySubmissionPresentIdNV(Copyable):
+struct LatencySubmissionPresentIdNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var present_id: UInt64
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -28462,9 +28462,9 @@ struct LatencySubmissionPresentIdNV(Copyable):
         self.present_id = present_id
 
 
-struct SwapchainLatencyCreateInfoNV(Copyable):
+struct SwapchainLatencyCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var latency_mode_enable: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -28478,11 +28478,11 @@ struct SwapchainLatencyCreateInfoNV(Copyable):
         self.latency_mode_enable = latency_mode_enable
 
 
-struct LatencySurfaceCapabilitiesNV(Copyable):
+struct LatencySurfaceCapabilitiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var present_mode_count: UInt32
-    var p_present_modes: Ptr[PresentModeKHR, MutOrigin.external]
+    var p_present_modes: Ptr[PresentModeKHR, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -28500,9 +28500,9 @@ struct LatencySurfaceCapabilitiesNV(Copyable):
         self.p_present_modes = Ptr(to=p_present_modes).bitcast[type_of(self.p_present_modes)]()[]
 
 
-struct PhysicalDeviceCudaKernelLaunchFeaturesNV(Copyable):
+struct PhysicalDeviceCudaKernelLaunchFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var cuda_kernel_launch_features: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28516,9 +28516,9 @@ struct PhysicalDeviceCudaKernelLaunchFeaturesNV(Copyable):
         self.cuda_kernel_launch_features = cuda_kernel_launch_features
 
 
-struct PhysicalDeviceCudaKernelLaunchPropertiesNV(Copyable):
+struct PhysicalDeviceCudaKernelLaunchPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var compute_capability_minor: UInt32
     var compute_capability_major: UInt32
 
@@ -28535,9 +28535,9 @@ struct PhysicalDeviceCudaKernelLaunchPropertiesNV(Copyable):
         self.compute_capability_major = compute_capability_major
 
 
-struct DeviceQueueShaderCoreControlCreateInfoARM(Copyable):
+struct DeviceQueueShaderCoreControlCreateInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_core_count: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28551,9 +28551,9 @@ struct DeviceQueueShaderCoreControlCreateInfoARM(Copyable):
         self.shader_core_count = shader_core_count
 
 
-struct PhysicalDeviceSchedulingControlsFeaturesARM(Copyable):
+struct PhysicalDeviceSchedulingControlsFeaturesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var scheduling_controls: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28567,9 +28567,9 @@ struct PhysicalDeviceSchedulingControlsFeaturesARM(Copyable):
         self.scheduling_controls = scheduling_controls
 
 
-struct PhysicalDeviceSchedulingControlsPropertiesARM(Copyable):
+struct PhysicalDeviceSchedulingControlsPropertiesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var scheduling_controls_flags: PhysicalDeviceSchedulingControlsFlagsARM
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28583,9 +28583,9 @@ struct PhysicalDeviceSchedulingControlsPropertiesARM(Copyable):
         self.scheduling_controls_flags = scheduling_controls_flags
 
 
-struct PhysicalDeviceRelaxedLineRasterizationFeaturesIMG(Copyable):
+struct PhysicalDeviceRelaxedLineRasterizationFeaturesIMG(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var relaxed_line_rasterization: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28599,9 +28599,9 @@ struct PhysicalDeviceRelaxedLineRasterizationFeaturesIMG(Copyable):
         self.relaxed_line_rasterization = relaxed_line_rasterization
 
 
-struct PhysicalDeviceRenderPassStripedFeaturesARM(Copyable):
+struct PhysicalDeviceRenderPassStripedFeaturesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var render_pass_striped: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28615,9 +28615,9 @@ struct PhysicalDeviceRenderPassStripedFeaturesARM(Copyable):
         self.render_pass_striped = render_pass_striped
 
 
-struct PhysicalDeviceRenderPassStripedPropertiesARM(Copyable):
+struct PhysicalDeviceRenderPassStripedPropertiesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var render_pass_stripe_granularity: Extent2D
     var max_render_pass_stripes: UInt32
 
@@ -28634,9 +28634,9 @@ struct PhysicalDeviceRenderPassStripedPropertiesARM(Copyable):
         self.max_render_pass_stripes = max_render_pass_stripes
 
 
-struct RenderPassStripeInfoARM(Copyable):
+struct RenderPassStripeInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var stripe_area: Rect2D
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -28650,11 +28650,11 @@ struct RenderPassStripeInfoARM(Copyable):
         self.stripe_area = stripe_area.copy()
 
 
-struct RenderPassStripeBeginInfoARM(Copyable):
+struct RenderPassStripeBeginInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var stripe_info_count: UInt32
-    var p_stripe_infos: Ptr[RenderPassStripeInfoARM, ImmutOrigin.external]
+    var p_stripe_infos: Ptr[RenderPassStripeInfoARM, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -28672,11 +28672,11 @@ struct RenderPassStripeBeginInfoARM(Copyable):
         self.p_stripe_infos = Ptr(to=p_stripe_infos).bitcast[type_of(self.p_stripe_infos)]()[]
 
 
-struct RenderPassStripeSubmitInfoARM(Copyable):
+struct RenderPassStripeSubmitInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var stripe_semaphore_info_count: UInt32
-    var p_stripe_semaphore_infos: Ptr[SemaphoreSubmitInfo, ImmutOrigin.external]
+    var p_stripe_semaphore_infos: Ptr[SemaphoreSubmitInfo, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -28694,9 +28694,9 @@ struct RenderPassStripeSubmitInfoARM(Copyable):
         self.p_stripe_semaphore_infos = Ptr(to=p_stripe_semaphore_infos).bitcast[type_of(self.p_stripe_semaphore_infos)]()[]
 
 
-struct PhysicalDevicePipelineOpacityMicromapFeaturesARM(Copyable):
+struct PhysicalDevicePipelineOpacityMicromapFeaturesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline_opacity_micromap: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28710,9 +28710,9 @@ struct PhysicalDevicePipelineOpacityMicromapFeaturesARM(Copyable):
         self.pipeline_opacity_micromap = pipeline_opacity_micromap
 
 
-struct PhysicalDeviceShaderMaximalReconvergenceFeaturesKHR(Copyable):
+struct PhysicalDeviceShaderMaximalReconvergenceFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_maximal_reconvergence: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28726,9 +28726,9 @@ struct PhysicalDeviceShaderMaximalReconvergenceFeaturesKHR(Copyable):
         self.shader_maximal_reconvergence = shader_maximal_reconvergence
 
 
-struct PhysicalDeviceShaderSubgroupRotateFeatures(Copyable):
+struct PhysicalDeviceShaderSubgroupRotateFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_subgroup_rotate: Bool32
     var shader_subgroup_rotate_clustered: Bool32
 
@@ -28745,9 +28745,9 @@ struct PhysicalDeviceShaderSubgroupRotateFeatures(Copyable):
         self.shader_subgroup_rotate_clustered = shader_subgroup_rotate_clustered
 
 
-struct PhysicalDeviceShaderExpectAssumeFeatures(Copyable):
+struct PhysicalDeviceShaderExpectAssumeFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_expect_assume: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28761,9 +28761,9 @@ struct PhysicalDeviceShaderExpectAssumeFeatures(Copyable):
         self.shader_expect_assume = shader_expect_assume
 
 
-struct PhysicalDeviceShaderFloatControls2Features(Copyable):
+struct PhysicalDeviceShaderFloatControls2Features(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_float_controls_2: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28777,9 +28777,9 @@ struct PhysicalDeviceShaderFloatControls2Features(Copyable):
         self.shader_float_controls_2 = shader_float_controls_2
 
 
-struct PhysicalDeviceDynamicRenderingLocalReadFeatures(Copyable):
+struct PhysicalDeviceDynamicRenderingLocalReadFeatures(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var dynamic_rendering_local_read: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28793,11 +28793,11 @@ struct PhysicalDeviceDynamicRenderingLocalReadFeatures(Copyable):
         self.dynamic_rendering_local_read = dynamic_rendering_local_read
 
 
-struct RenderingAttachmentLocationInfo(Copyable):
+struct RenderingAttachmentLocationInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var color_attachment_count: UInt32
-    var p_color_attachment_locations: Ptr[UInt32, ImmutOrigin.external]
+    var p_color_attachment_locations: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -28815,13 +28815,13 @@ struct RenderingAttachmentLocationInfo(Copyable):
         self.p_color_attachment_locations = Ptr(to=p_color_attachment_locations).bitcast[type_of(self.p_color_attachment_locations)]()[]
 
 
-struct RenderingInputAttachmentIndexInfo(Copyable):
+struct RenderingInputAttachmentIndexInfo(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var color_attachment_count: UInt32
-    var p_color_attachment_input_indices: Ptr[UInt32, ImmutOrigin.external]
-    var p_depth_input_attachment_index: Ptr[UInt32, ImmutOrigin.external]
-    var p_stencil_input_attachment_index: Ptr[UInt32, ImmutOrigin.external]
+    var p_color_attachment_input_indices: Ptr[UInt32, ImmutExternalOrigin]
+    var p_depth_input_attachment_index: Ptr[UInt32, ImmutExternalOrigin]
+    var p_stencil_input_attachment_index: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -28845,9 +28845,9 @@ struct RenderingInputAttachmentIndexInfo(Copyable):
         self.p_stencil_input_attachment_index = Ptr(to=p_stencil_input_attachment_index).bitcast[type_of(self.p_stencil_input_attachment_index)]()[]
 
 
-struct PhysicalDeviceShaderQuadControlFeaturesKHR(Copyable):
+struct PhysicalDeviceShaderQuadControlFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_quad_control: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28861,9 +28861,9 @@ struct PhysicalDeviceShaderQuadControlFeaturesKHR(Copyable):
         self.shader_quad_control = shader_quad_control
 
 
-struct PhysicalDeviceShaderAtomicFloat16VectorFeaturesNV(Copyable):
+struct PhysicalDeviceShaderAtomicFloat16VectorFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_float_16_vector_atomics: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28877,9 +28877,9 @@ struct PhysicalDeviceShaderAtomicFloat16VectorFeaturesNV(Copyable):
         self.shader_float_16_vector_atomics = shader_float_16_vector_atomics
 
 
-struct PhysicalDeviceMapMemoryPlacedFeaturesEXT(Copyable):
+struct PhysicalDeviceMapMemoryPlacedFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var memory_map_placed: Bool32
     var memory_map_range_placed: Bool32
     var memory_unmap_reserve: Bool32
@@ -28899,9 +28899,9 @@ struct PhysicalDeviceMapMemoryPlacedFeaturesEXT(Copyable):
         self.memory_unmap_reserve = memory_unmap_reserve
 
 
-struct PhysicalDeviceMapMemoryPlacedPropertiesEXT(Copyable):
+struct PhysicalDeviceMapMemoryPlacedPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var min_placed_memory_map_alignment: DeviceSize
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28915,10 +28915,10 @@ struct PhysicalDeviceMapMemoryPlacedPropertiesEXT(Copyable):
         self.min_placed_memory_map_alignment = min_placed_memory_map_alignment
 
 
-struct MemoryMapPlacedInfoEXT(Copyable):
+struct MemoryMapPlacedInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_placed_address: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_placed_address: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -28934,9 +28934,9 @@ struct MemoryMapPlacedInfoEXT(Copyable):
         self.p_placed_address = Ptr(to=p_placed_address).bitcast[type_of(self.p_placed_address)]()[]
 
 
-struct PhysicalDeviceShaderBfloat16FeaturesKHR(Copyable):
+struct PhysicalDeviceShaderBfloat16FeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_b_float_16_type: Bool32
     var shader_b_float_16dot_product: Bool32
     var shader_b_float_16_cooperative_matrix: Bool32
@@ -28956,9 +28956,9 @@ struct PhysicalDeviceShaderBfloat16FeaturesKHR(Copyable):
         self.shader_b_float_16_cooperative_matrix = shader_b_float_16_cooperative_matrix
 
 
-struct PhysicalDeviceRawAccessChainsFeaturesNV(Copyable):
+struct PhysicalDeviceRawAccessChainsFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_raw_access_chains: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28972,9 +28972,9 @@ struct PhysicalDeviceRawAccessChainsFeaturesNV(Copyable):
         self.shader_raw_access_chains = shader_raw_access_chains
 
 
-struct PhysicalDeviceCommandBufferInheritanceFeaturesNV(Copyable):
+struct PhysicalDeviceCommandBufferInheritanceFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var command_buffer_inheritance: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -28988,9 +28988,9 @@ struct PhysicalDeviceCommandBufferInheritanceFeaturesNV(Copyable):
         self.command_buffer_inheritance = command_buffer_inheritance
 
 
-struct PhysicalDeviceImageAlignmentControlFeaturesMESA(Copyable):
+struct PhysicalDeviceImageAlignmentControlFeaturesMESA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var image_alignment_control: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -29004,9 +29004,9 @@ struct PhysicalDeviceImageAlignmentControlFeaturesMESA(Copyable):
         self.image_alignment_control = image_alignment_control
 
 
-struct PhysicalDeviceImageAlignmentControlPropertiesMESA(Copyable):
+struct PhysicalDeviceImageAlignmentControlPropertiesMESA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var supported_image_alignment_mask: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -29020,9 +29020,9 @@ struct PhysicalDeviceImageAlignmentControlPropertiesMESA(Copyable):
         self.supported_image_alignment_mask = supported_image_alignment_mask
 
 
-struct ImageAlignmentControlCreateInfoMESA(Copyable):
+struct ImageAlignmentControlCreateInfoMESA(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var maximum_requested_alignment: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -29036,9 +29036,9 @@ struct ImageAlignmentControlCreateInfoMESA(Copyable):
         self.maximum_requested_alignment = maximum_requested_alignment
 
 
-struct PhysicalDeviceShaderReplicatedCompositesFeaturesEXT(Copyable):
+struct PhysicalDeviceShaderReplicatedCompositesFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_replicated_composites: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -29052,9 +29052,9 @@ struct PhysicalDeviceShaderReplicatedCompositesFeaturesEXT(Copyable):
         self.shader_replicated_composites = shader_replicated_composites
 
 
-struct PhysicalDevicePresentModeFifoLatestReadyFeaturesKHR(Copyable):
+struct PhysicalDevicePresentModeFifoLatestReadyFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_mode_fifo_latest_ready: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -29068,7 +29068,7 @@ struct PhysicalDevicePresentModeFifoLatestReadyFeaturesKHR(Copyable):
         self.present_mode_fifo_latest_ready = present_mode_fifo_latest_ready
 
 
-struct DepthClampRangeEXT(Copyable):
+struct DepthClampRangeEXT(Copyable, Equatable):
     var min_depth_clamp: Float32
     var max_depth_clamp: Float32
 
@@ -29081,9 +29081,9 @@ struct DepthClampRangeEXT(Copyable):
         self.max_depth_clamp = max_depth_clamp
 
 
-struct PhysicalDeviceCooperativeMatrix2FeaturesNV(Copyable):
+struct PhysicalDeviceCooperativeMatrix2FeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var cooperative_matrix_workgroup_scope: Bool32
     var cooperative_matrix_flexible_dimensions: Bool32
     var cooperative_matrix_reductions: Bool32
@@ -29115,9 +29115,9 @@ struct PhysicalDeviceCooperativeMatrix2FeaturesNV(Copyable):
         self.cooperative_matrix_block_loads = cooperative_matrix_block_loads
 
 
-struct PhysicalDeviceCooperativeMatrix2PropertiesNV(Copyable):
+struct PhysicalDeviceCooperativeMatrix2PropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var cooperative_matrix_workgroup_scope_max_workgroup_size: UInt32
     var cooperative_matrix_flexible_dimensions_max_dimension: UInt32
     var cooperative_matrix_workgroup_scope_reserved_shared_memory: UInt32
@@ -29137,9 +29137,9 @@ struct PhysicalDeviceCooperativeMatrix2PropertiesNV(Copyable):
         self.cooperative_matrix_workgroup_scope_reserved_shared_memory = cooperative_matrix_workgroup_scope_reserved_shared_memory
 
 
-struct CooperativeMatrixFlexibleDimensionsPropertiesNV(Copyable):
+struct CooperativeMatrixFlexibleDimensionsPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var m_granularity: UInt32
     var n_granularity: UInt32
     var k_granularity: UInt32
@@ -29180,9 +29180,9 @@ struct CooperativeMatrixFlexibleDimensionsPropertiesNV(Copyable):
         self.workgroup_invocations = workgroup_invocations
 
 
-struct PhysicalDeviceHdrVividFeaturesHUAWEI(Copyable):
+struct PhysicalDeviceHdrVividFeaturesHUAWEI(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var hdr_vivid: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -29196,9 +29196,9 @@ struct PhysicalDeviceHdrVividFeaturesHUAWEI(Copyable):
         self.hdr_vivid = hdr_vivid
 
 
-struct PhysicalDeviceVertexAttributeRobustnessFeaturesEXT(Copyable):
+struct PhysicalDeviceVertexAttributeRobustnessFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var vertex_attribute_robustness: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -29212,9 +29212,9 @@ struct PhysicalDeviceVertexAttributeRobustnessFeaturesEXT(Copyable):
         self.vertex_attribute_robustness = vertex_attribute_robustness
 
 
-struct PhysicalDeviceDenseGeometryFormatFeaturesAMDX(Copyable):
+struct PhysicalDeviceDenseGeometryFormatFeaturesAMDX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var dense_geometry_format: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -29228,9 +29228,9 @@ struct PhysicalDeviceDenseGeometryFormatFeaturesAMDX(Copyable):
         self.dense_geometry_format = dense_geometry_format
 
 
-struct AccelerationStructureDenseGeometryFormatTrianglesDataAMDX(Copyable):
+struct AccelerationStructureDenseGeometryFormatTrianglesDataAMDX(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var compressed_data: DeviceOrHostAddressConstKHR
     var data_size: DeviceSize
     var num_triangles: UInt32
@@ -29262,9 +29262,9 @@ struct AccelerationStructureDenseGeometryFormatTrianglesDataAMDX(Copyable):
         self.format = format
 
 
-struct PhysicalDeviceDepthClampZeroOneFeaturesKHR(Copyable):
+struct PhysicalDeviceDepthClampZeroOneFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var depth_clamp_zero_one: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -29278,9 +29278,9 @@ struct PhysicalDeviceDepthClampZeroOneFeaturesKHR(Copyable):
         self.depth_clamp_zero_one = depth_clamp_zero_one
 
 
-struct PhysicalDeviceCooperativeVectorFeaturesNV(Copyable):
+struct PhysicalDeviceCooperativeVectorFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var cooperative_vector: Bool32
     var cooperative_vector_training: Bool32
 
@@ -29297,9 +29297,9 @@ struct PhysicalDeviceCooperativeVectorFeaturesNV(Copyable):
         self.cooperative_vector_training = cooperative_vector_training
 
 
-struct CooperativeVectorPropertiesNV(Copyable):
+struct CooperativeVectorPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var input_type: ComponentTypeKHR
     var input_interpretation: ComponentTypeKHR
     var matrix_interpretation: ComponentTypeKHR
@@ -29328,9 +29328,9 @@ struct CooperativeVectorPropertiesNV(Copyable):
         self.transpose = transpose
 
 
-struct PhysicalDeviceCooperativeVectorPropertiesNV(Copyable):
+struct PhysicalDeviceCooperativeVectorPropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var cooperative_vector_supported_stages: ShaderStageFlags
     var cooperative_vector_training_float_16_accumulation: Bool32
     var cooperative_vector_training_float_32_accumulation: Bool32
@@ -29353,12 +29353,12 @@ struct PhysicalDeviceCooperativeVectorPropertiesNV(Copyable):
         self.max_cooperative_vector_components = max_cooperative_vector_components
 
 
-struct ConvertCooperativeVectorMatrixInfoNV(Copyable):
+struct ConvertCooperativeVectorMatrixInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_size: UInt
     var src_data: DeviceOrHostAddressConstKHR
-    var p_dst_size: Ptr[UInt, MutOrigin.external]
+    var p_dst_size: Ptr[UInt, MutExternalOrigin]
     var dst_data: DeviceOrHostAddressKHR
     var src_component_type: ComponentTypeKHR
     var dst_component_type: ComponentTypeKHR
@@ -29404,9 +29404,9 @@ struct ConvertCooperativeVectorMatrixInfoNV(Copyable):
         self.dst_stride = dst_stride
 
 
-struct PhysicalDeviceTileShadingFeaturesQCOM(Copyable):
+struct PhysicalDeviceTileShadingFeaturesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var tile_shading: Bool32
     var tile_shading_fragment_stage: Bool32
     var tile_shading_color_attachments: Bool32
@@ -29459,9 +29459,9 @@ struct PhysicalDeviceTileShadingFeaturesQCOM(Copyable):
         self.tile_shading_image_processing = tile_shading_image_processing
 
 
-struct PhysicalDeviceTileShadingPropertiesQCOM(Copyable):
+struct PhysicalDeviceTileShadingPropertiesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_apron_size: UInt32
     var prefer_non_coherent: Bool32
     var tile_granularity: Extent2D
@@ -29484,9 +29484,9 @@ struct PhysicalDeviceTileShadingPropertiesQCOM(Copyable):
         self.max_tile_shading_rate = max_tile_shading_rate.copy()
 
 
-struct RenderPassTileShadingCreateInfoQCOM(Copyable):
+struct RenderPassTileShadingCreateInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: TileShadingRenderPassFlagsQCOM
     var tile_apron_size: Extent2D
 
@@ -29503,9 +29503,9 @@ struct RenderPassTileShadingCreateInfoQCOM(Copyable):
         self.tile_apron_size = tile_apron_size.copy()
 
 
-struct PerTileBeginInfoQCOM(Copyable):
+struct PerTileBeginInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -29516,9 +29516,9 @@ struct PerTileBeginInfoQCOM(Copyable):
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
 
 
-struct PerTileEndInfoQCOM(Copyable):
+struct PerTileEndInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -29529,9 +29529,9 @@ struct PerTileEndInfoQCOM(Copyable):
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
 
 
-struct DispatchTileInfoQCOM(Copyable):
+struct DispatchTileInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
         out self,
@@ -29542,9 +29542,9 @@ struct DispatchTileInfoQCOM(Copyable):
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
 
 
-struct PhysicalDeviceFragmentDensityMapLayeredPropertiesVALVE(Copyable):
+struct PhysicalDeviceFragmentDensityMapLayeredPropertiesVALVE(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_fragment_density_map_layers: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -29558,9 +29558,9 @@ struct PhysicalDeviceFragmentDensityMapLayeredPropertiesVALVE(Copyable):
         self.max_fragment_density_map_layers = max_fragment_density_map_layers
 
 
-struct PhysicalDeviceFragmentDensityMapLayeredFeaturesVALVE(Copyable):
+struct PhysicalDeviceFragmentDensityMapLayeredFeaturesVALVE(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var fragment_density_map_layered: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -29574,9 +29574,9 @@ struct PhysicalDeviceFragmentDensityMapLayeredFeaturesVALVE(Copyable):
         self.fragment_density_map_layered = fragment_density_map_layered
 
 
-struct PipelineFragmentDensityMapLayeredCreateInfoVALVE(Copyable):
+struct PipelineFragmentDensityMapLayeredCreateInfoVALVE(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var max_fragment_density_map_layers: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -29590,9 +29590,9 @@ struct PipelineFragmentDensityMapLayeredCreateInfoVALVE(Copyable):
         self.max_fragment_density_map_layers = max_fragment_density_map_layers
 
 
-struct SetPresentConfigNV(Copyable):
+struct SetPresentConfigNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var num_frames_per_batch: UInt32
     var present_config_feedback: UInt32
 
@@ -29609,9 +29609,9 @@ struct SetPresentConfigNV(Copyable):
         self.present_config_feedback = present_config_feedback
 
 
-struct PhysicalDevicePresentMeteringFeaturesNV(Copyable):
+struct PhysicalDevicePresentMeteringFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var present_metering: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -29625,9 +29625,9 @@ struct PhysicalDevicePresentMeteringFeaturesNV(Copyable):
         self.present_metering = present_metering
 
 
-struct ExternalComputeQueueDeviceCreateInfoNV(Copyable):
+struct ExternalComputeQueueDeviceCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var reserved_external_queues: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -29641,9 +29641,9 @@ struct ExternalComputeQueueDeviceCreateInfoNV(Copyable):
         self.reserved_external_queues = reserved_external_queues
 
 
-struct ExternalComputeQueueCreateInfoNV(Copyable):
+struct ExternalComputeQueueCreateInfoNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var preferred_queue: Queue
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -29657,9 +29657,9 @@ struct ExternalComputeQueueCreateInfoNV(Copyable):
         self.preferred_queue = preferred_queue
 
 
-struct ExternalComputeQueueDataParamsNV(Copyable):
+struct ExternalComputeQueueDataParamsNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var device_index: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -29673,9 +29673,9 @@ struct ExternalComputeQueueDataParamsNV(Copyable):
         self.device_index = device_index
 
 
-struct PhysicalDeviceExternalComputeQueuePropertiesNV(Copyable):
+struct PhysicalDeviceExternalComputeQueuePropertiesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var external_data_size: UInt32
     var max_external_queues: UInt32
 
@@ -29692,9 +29692,9 @@ struct PhysicalDeviceExternalComputeQueuePropertiesNV(Copyable):
         self.max_external_queues = max_external_queues
 
 
-struct PhysicalDeviceShaderUniformBufferUnsizedArrayFeaturesEXT(Copyable):
+struct PhysicalDeviceShaderUniformBufferUnsizedArrayFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_uniform_buffer_unsized_array: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -29708,9 +29708,9 @@ struct PhysicalDeviceShaderUniformBufferUnsizedArrayFeaturesEXT(Copyable):
         self.shader_uniform_buffer_unsized_array = shader_uniform_buffer_unsized_array
 
 
-struct PhysicalDeviceFormatPackFeaturesARM(Copyable):
+struct PhysicalDeviceFormatPackFeaturesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var format_pack: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -29724,14 +29724,14 @@ struct PhysicalDeviceFormatPackFeaturesARM(Copyable):
         self.format_pack = format_pack
 
 
-struct TensorDescriptionARM(Copyable):
+struct TensorDescriptionARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var tiling: TensorTilingARM
     var format: Format
     var dimension_count: UInt32
-    var p_dimensions: Ptr[Int64, ImmutOrigin.external]
-    var p_strides: Ptr[Int64, ImmutOrigin.external]
+    var p_dimensions: Ptr[Int64, ImmutExternalOrigin]
+    var p_strides: Ptr[Int64, ImmutExternalOrigin]
     var usage: TensorUsageFlagsARM
 
     fn __init__[
@@ -29759,14 +29759,14 @@ struct TensorDescriptionARM(Copyable):
         self.usage = usage
 
 
-struct TensorCreateInfoARM(Copyable):
+struct TensorCreateInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: TensorCreateFlagsARM
-    var p_description: Ptr[TensorDescriptionARM, ImmutOrigin.external]
+    var p_description: Ptr[TensorDescriptionARM, ImmutExternalOrigin]
     var sharing_mode: SharingMode
     var queue_family_index_count: UInt32
-    var p_queue_family_indices: Ptr[UInt32, ImmutOrigin.external]
+    var p_queue_family_indices: Ptr[UInt32, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -29791,9 +29791,9 @@ struct TensorCreateInfoARM(Copyable):
         self.p_queue_family_indices = Ptr(to=p_queue_family_indices).bitcast[type_of(self.p_queue_family_indices)]()[]
 
 
-struct TensorViewCreateInfoARM(Copyable):
+struct TensorViewCreateInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: TensorViewCreateFlagsARM
     var tensor: TensorARM
     var format: Format
@@ -29813,9 +29813,9 @@ struct TensorViewCreateInfoARM(Copyable):
         self.format = format
 
 
-struct TensorMemoryRequirementsInfoARM(Copyable):
+struct TensorMemoryRequirementsInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var tensor: TensorARM
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -29829,9 +29829,9 @@ struct TensorMemoryRequirementsInfoARM(Copyable):
         self.tensor = tensor
 
 
-struct BindTensorMemoryInfoARM(Copyable):
+struct BindTensorMemoryInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var tensor: TensorARM
     var memory: DeviceMemory
     var memory_offset: DeviceSize
@@ -29851,11 +29851,11 @@ struct BindTensorMemoryInfoARM(Copyable):
         self.memory_offset = memory_offset
 
 
-struct WriteDescriptorSetTensorARM(Copyable):
+struct WriteDescriptorSetTensorARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var tensor_view_count: UInt32
-    var p_tensor_views: Ptr[TensorViewARM, ImmutOrigin.external]
+    var p_tensor_views: Ptr[TensorViewARM, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -29873,9 +29873,9 @@ struct WriteDescriptorSetTensorARM(Copyable):
         self.p_tensor_views = Ptr(to=p_tensor_views).bitcast[type_of(self.p_tensor_views)]()[]
 
 
-struct TensorFormatPropertiesARM(Copyable):
+struct TensorFormatPropertiesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var optimal_tiling_tensor_features: FormatFeatureFlags2
     var linear_tiling_tensor_features: FormatFeatureFlags2
 
@@ -29892,9 +29892,9 @@ struct TensorFormatPropertiesARM(Copyable):
         self.linear_tiling_tensor_features = linear_tiling_tensor_features
 
 
-struct PhysicalDeviceTensorPropertiesARM(Copyable):
+struct PhysicalDeviceTensorPropertiesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_tensor_dimension_count: UInt32
     var max_tensor_elements: UInt64
     var max_per_dimension_tensor_elements: UInt64
@@ -29944,9 +29944,9 @@ struct PhysicalDeviceTensorPropertiesARM(Copyable):
         self.shader_tensor_supported_stages = shader_tensor_supported_stages
 
 
-struct TensorMemoryBarrierARM(Copyable):
+struct TensorMemoryBarrierARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_stage_mask: PipelineStageFlags2
     var src_access_mask: AccessFlags2
     var dst_stage_mask: PipelineStageFlags2
@@ -29978,11 +29978,11 @@ struct TensorMemoryBarrierARM(Copyable):
         self.tensor = tensor
 
 
-struct TensorDependencyInfoARM(Copyable):
+struct TensorDependencyInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var tensor_memory_barrier_count: UInt32
-    var p_tensor_memory_barriers: Ptr[TensorMemoryBarrierARM, ImmutOrigin.external]
+    var p_tensor_memory_barriers: Ptr[TensorMemoryBarrierARM, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -30000,9 +30000,9 @@ struct TensorDependencyInfoARM(Copyable):
         self.p_tensor_memory_barriers = Ptr(to=p_tensor_memory_barriers).bitcast[type_of(self.p_tensor_memory_barriers)]()[]
 
 
-struct PhysicalDeviceTensorFeaturesARM(Copyable):
+struct PhysicalDeviceTensorFeaturesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var tensor_non_packed: Bool32
     var shader_tensor_access: Bool32
     var shader_storage_tensor_array_dynamic_indexing: Bool32
@@ -30031,10 +30031,10 @@ struct PhysicalDeviceTensorFeaturesARM(Copyable):
         self.tensors = tensors
 
 
-struct DeviceTensorMemoryRequirementsARM(Copyable):
+struct DeviceTensorMemoryRequirementsARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_create_info: Ptr[TensorCreateInfoARM, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_create_info: Ptr[TensorCreateInfoARM, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -30050,13 +30050,13 @@ struct DeviceTensorMemoryRequirementsARM(Copyable):
         self.p_create_info = Ptr(to=p_create_info).bitcast[type_of(self.p_create_info)]()[]
 
 
-struct CopyTensorInfoARM(Copyable):
+struct CopyTensorInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var src_tensor: TensorARM
     var dst_tensor: TensorARM
     var region_count: UInt32
-    var p_regions: Ptr[TensorCopyARM, ImmutOrigin.external]
+    var p_regions: Ptr[TensorCopyARM, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -30078,13 +30078,13 @@ struct CopyTensorInfoARM(Copyable):
         self.p_regions = Ptr(to=p_regions).bitcast[type_of(self.p_regions)]()[]
 
 
-struct TensorCopyARM(Copyable):
+struct TensorCopyARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var dimension_count: UInt32
-    var p_src_offset: Ptr[UInt64, ImmutOrigin.external]
-    var p_dst_offset: Ptr[UInt64, ImmutOrigin.external]
-    var p_extent: Ptr[UInt64, ImmutOrigin.external]
+    var p_src_offset: Ptr[UInt64, ImmutExternalOrigin]
+    var p_dst_offset: Ptr[UInt64, ImmutExternalOrigin]
+    var p_extent: Ptr[UInt64, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -30108,9 +30108,9 @@ struct TensorCopyARM(Copyable):
         self.p_extent = Ptr(to=p_extent).bitcast[type_of(self.p_extent)]()[]
 
 
-struct MemoryDedicatedAllocateInfoTensorARM(Copyable):
+struct MemoryDedicatedAllocateInfoTensorARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var tensor: TensorARM
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -30124,9 +30124,9 @@ struct MemoryDedicatedAllocateInfoTensorARM(Copyable):
         self.tensor = tensor
 
 
-struct PhysicalDeviceDescriptorBufferTensorPropertiesARM(Copyable):
+struct PhysicalDeviceDescriptorBufferTensorPropertiesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var tensor_capture_replay_descriptor_data_size: UInt
     var tensor_view_capture_replay_descriptor_data_size: UInt
     var tensor_descriptor_size: UInt
@@ -30146,9 +30146,9 @@ struct PhysicalDeviceDescriptorBufferTensorPropertiesARM(Copyable):
         self.tensor_descriptor_size = tensor_descriptor_size
 
 
-struct PhysicalDeviceDescriptorBufferTensorFeaturesARM(Copyable):
+struct PhysicalDeviceDescriptorBufferTensorFeaturesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var descriptor_buffer_tensor_descriptors: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -30162,9 +30162,9 @@ struct PhysicalDeviceDescriptorBufferTensorFeaturesARM(Copyable):
         self.descriptor_buffer_tensor_descriptors = descriptor_buffer_tensor_descriptors
 
 
-struct TensorCaptureDescriptorDataInfoARM(Copyable):
+struct TensorCaptureDescriptorDataInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var tensor: TensorARM
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -30178,9 +30178,9 @@ struct TensorCaptureDescriptorDataInfoARM(Copyable):
         self.tensor = tensor
 
 
-struct TensorViewCaptureDescriptorDataInfoARM(Copyable):
+struct TensorViewCaptureDescriptorDataInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var tensor_view: TensorViewARM
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -30194,9 +30194,9 @@ struct TensorViewCaptureDescriptorDataInfoARM(Copyable):
         self.tensor_view = tensor_view
 
 
-struct DescriptorGetTensorInfoARM(Copyable):
+struct DescriptorGetTensorInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var tensor_view: TensorViewARM
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -30210,11 +30210,11 @@ struct DescriptorGetTensorInfoARM(Copyable):
         self.tensor_view = tensor_view
 
 
-struct FrameBoundaryTensorsARM(Copyable):
+struct FrameBoundaryTensorsARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var tensor_count: UInt32
-    var p_tensors: Ptr[TensorARM, ImmutOrigin.external]
+    var p_tensors: Ptr[TensorARM, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -30232,11 +30232,11 @@ struct FrameBoundaryTensorsARM(Copyable):
         self.p_tensors = Ptr(to=p_tensors).bitcast[type_of(self.p_tensors)]()[]
 
 
-struct PhysicalDeviceExternalTensorInfoARM(Copyable):
+struct PhysicalDeviceExternalTensorInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: TensorCreateFlagsARM
-    var p_description: Ptr[TensorDescriptionARM, ImmutOrigin.external]
+    var p_description: Ptr[TensorDescriptionARM, ImmutExternalOrigin]
     var handle_type: ExternalMemoryHandleTypeFlagBits
 
     fn __init__[
@@ -30257,9 +30257,9 @@ struct PhysicalDeviceExternalTensorInfoARM(Copyable):
         self.handle_type = handle_type
 
 
-struct ExternalTensorPropertiesARM(Copyable):
+struct ExternalTensorPropertiesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var external_memory_properties: ExternalMemoryProperties
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -30273,9 +30273,9 @@ struct ExternalTensorPropertiesARM(Copyable):
         self.external_memory_properties = external_memory_properties.copy()
 
 
-struct ExternalMemoryTensorCreateInfoARM(Copyable):
+struct ExternalMemoryTensorCreateInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var handle_types: ExternalMemoryHandleTypeFlags
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -30289,9 +30289,9 @@ struct ExternalMemoryTensorCreateInfoARM(Copyable):
         self.handle_types = handle_types
 
 
-struct PhysicalDeviceShaderFloat8FeaturesEXT(Copyable):
+struct PhysicalDeviceShaderFloat8FeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_float_8: Bool32
     var shader_float_8_cooperative_matrix: Bool32
 
@@ -30308,11 +30308,11 @@ struct PhysicalDeviceShaderFloat8FeaturesEXT(Copyable):
         self.shader_float_8_cooperative_matrix = shader_float_8_cooperative_matrix
 
 
-struct SurfaceCreateInfoOHOS(Copyable):
+struct SurfaceCreateInfoOHOS(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: SurfaceCreateFlagsOHOS
-    var window: Ptr[OHNativeWindow, MutOrigin.external]
+    var window: Ptr[OHNativeWindow, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, window_origin: MutOrigin = MutAnyOrigin
@@ -30329,9 +30329,9 @@ struct SurfaceCreateInfoOHOS(Copyable):
         self.window = Ptr(to=window).bitcast[type_of(self.window)]()[]
 
 
-struct PhysicalDeviceDataGraphFeaturesARM(Copyable):
+struct PhysicalDeviceDataGraphFeaturesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var data_graph: Bool32
     var data_graph_update_after_bind: Bool32
     var data_graph_specialization_constants: Bool32
@@ -30357,9 +30357,9 @@ struct PhysicalDeviceDataGraphFeaturesARM(Copyable):
         self.data_graph_shader_module = data_graph_shader_module
 
 
-struct DataGraphPipelineConstantTensorSemiStructuredSparsityInfoARM(Copyable):
+struct DataGraphPipelineConstantTensorSemiStructuredSparsityInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var dimension: UInt32
     var zero_count: UInt32
     var group_size: UInt32
@@ -30379,11 +30379,11 @@ struct DataGraphPipelineConstantTensorSemiStructuredSparsityInfoARM(Copyable):
         self.group_size = group_size
 
 
-struct DataGraphPipelineConstantARM(Copyable):
+struct DataGraphPipelineConstantARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var id: UInt32
-    var p_constant_data: Ptr[NoneType, ImmutOrigin.external]
+    var p_constant_data: Ptr[NoneType, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -30401,9 +30401,9 @@ struct DataGraphPipelineConstantARM(Copyable):
         self.p_constant_data = Ptr(to=p_constant_data).bitcast[type_of(self.p_constant_data)]()[]
 
 
-struct DataGraphPipelineResourceInfoARM(Copyable):
+struct DataGraphPipelineResourceInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var descriptor_set: UInt32
     var binding: UInt32
     var array_element: UInt32
@@ -30423,10 +30423,10 @@ struct DataGraphPipelineResourceInfoARM(Copyable):
         self.array_element = array_element
 
 
-struct DataGraphPipelineCompilerControlCreateInfoARM(Copyable):
+struct DataGraphPipelineCompilerControlCreateInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_vendor_options: CStringSlice[ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_vendor_options: CStringSlice[ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -30442,13 +30442,13 @@ struct DataGraphPipelineCompilerControlCreateInfoARM(Copyable):
         self.p_vendor_options = Ptr(to=p_vendor_options).bitcast[type_of(self.p_vendor_options)]()[]
 
 
-struct DataGraphPipelineCreateInfoARM(Copyable):
+struct DataGraphPipelineCreateInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: PipelineCreateFlags2KHR
     var layout: PipelineLayout
     var resource_info_count: UInt32
-    var p_resource_infos: Ptr[DataGraphPipelineResourceInfoARM, ImmutOrigin.external]
+    var p_resource_infos: Ptr[DataGraphPipelineResourceInfoARM, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -30470,14 +30470,14 @@ struct DataGraphPipelineCreateInfoARM(Copyable):
         self.p_resource_infos = Ptr(to=p_resource_infos).bitcast[type_of(self.p_resource_infos)]()[]
 
 
-struct DataGraphPipelineShaderModuleCreateInfoARM(Copyable):
+struct DataGraphPipelineShaderModuleCreateInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var module: ShaderModule
-    var p_name: CStringSlice[ImmutOrigin.external]
-    var p_specialization_info: Ptr[SpecializationInfo, ImmutOrigin.external]
+    var p_name: CStringSlice[ImmutExternalOrigin]
+    var p_specialization_info: Ptr[SpecializationInfo, ImmutExternalOrigin]
     var constant_count: UInt32
-    var p_constants: Ptr[DataGraphPipelineConstantARM, ImmutOrigin.external]
+    var p_constants: Ptr[DataGraphPipelineConstantARM, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -30503,9 +30503,9 @@ struct DataGraphPipelineShaderModuleCreateInfoARM(Copyable):
         self.p_constants = Ptr(to=p_constants).bitcast[type_of(self.p_constants)]()[]
 
 
-struct DataGraphPipelineSessionCreateInfoARM(Copyable):
+struct DataGraphPipelineSessionCreateInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var flags: DataGraphPipelineSessionCreateFlagsARM
     var data_graph_pipeline: Pipeline
 
@@ -30522,9 +30522,9 @@ struct DataGraphPipelineSessionCreateInfoARM(Copyable):
         self.data_graph_pipeline = data_graph_pipeline
 
 
-struct DataGraphPipelineSessionBindPointRequirementsInfoARM(Copyable):
+struct DataGraphPipelineSessionBindPointRequirementsInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var session: DataGraphPipelineSessionARM
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -30538,9 +30538,9 @@ struct DataGraphPipelineSessionBindPointRequirementsInfoARM(Copyable):
         self.session = session
 
 
-struct DataGraphPipelineSessionBindPointRequirementARM(Copyable):
+struct DataGraphPipelineSessionBindPointRequirementARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var bind_point: DataGraphPipelineSessionBindPointARM
     var bind_point_type: DataGraphPipelineSessionBindPointTypeARM
     var num_objects: UInt32
@@ -30560,9 +30560,9 @@ struct DataGraphPipelineSessionBindPointRequirementARM(Copyable):
         self.num_objects = num_objects
 
 
-struct DataGraphPipelineSessionMemoryRequirementsInfoARM(Copyable):
+struct DataGraphPipelineSessionMemoryRequirementsInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var session: DataGraphPipelineSessionARM
     var bind_point: DataGraphPipelineSessionBindPointARM
     var object_index: UInt32
@@ -30582,9 +30582,9 @@ struct DataGraphPipelineSessionMemoryRequirementsInfoARM(Copyable):
         self.object_index = object_index
 
 
-struct BindDataGraphPipelineSessionMemoryInfoARM(Copyable):
+struct BindDataGraphPipelineSessionMemoryInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var session: DataGraphPipelineSessionARM
     var bind_point: DataGraphPipelineSessionBindPointARM
     var object_index: UInt32
@@ -30610,9 +30610,9 @@ struct BindDataGraphPipelineSessionMemoryInfoARM(Copyable):
         self.memory_offset = memory_offset
 
 
-struct DataGraphPipelineInfoARM(Copyable):
+struct DataGraphPipelineInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var data_graph_pipeline: Pipeline
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -30626,13 +30626,13 @@ struct DataGraphPipelineInfoARM(Copyable):
         self.data_graph_pipeline = data_graph_pipeline
 
 
-struct DataGraphPipelinePropertyQueryResultARM(Copyable):
+struct DataGraphPipelinePropertyQueryResultARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var property: DataGraphPipelinePropertyARM
     var is_text: Bool32
     var data_size: UInt
-    var p_data: Ptr[NoneType, MutOrigin.external]
+    var p_data: Ptr[NoneType, MutExternalOrigin]
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin, p_data_origin: MutOrigin = MutAnyOrigin](
         out self,
@@ -30651,11 +30651,11 @@ struct DataGraphPipelinePropertyQueryResultARM(Copyable):
         self.p_data = Ptr(to=p_data).bitcast[type_of(self.p_data)]()[]
 
 
-struct DataGraphPipelineIdentifierCreateInfoARM(Copyable):
+struct DataGraphPipelineIdentifierCreateInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var identifier_size: UInt32
-    var p_identifier: Ptr[UInt8, ImmutOrigin.external]
+    var p_identifier: Ptr[UInt8, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -30673,9 +30673,9 @@ struct DataGraphPipelineIdentifierCreateInfoARM(Copyable):
         self.p_identifier = Ptr(to=p_identifier).bitcast[type_of(self.p_identifier)]()[]
 
 
-struct DataGraphPipelineDispatchInfoARM(Copyable):
+struct DataGraphPipelineDispatchInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: DataGraphPipelineDispatchFlagsARM
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -30689,7 +30689,7 @@ struct DataGraphPipelineDispatchInfoARM(Copyable):
         self.flags = flags
 
 
-struct PhysicalDeviceDataGraphProcessingEngineARM(Copyable):
+struct PhysicalDeviceDataGraphProcessingEngineARM(Copyable, Equatable):
     var type: PhysicalDeviceDataGraphProcessingEngineTypeARM
     var is_foreign: Bool32
 
@@ -30702,7 +30702,7 @@ struct PhysicalDeviceDataGraphProcessingEngineARM(Copyable):
         self.is_foreign = is_foreign
 
 
-struct PhysicalDeviceDataGraphOperationSupportARM(Copyable):
+struct PhysicalDeviceDataGraphOperationSupportARM(Copyable, Equatable):
     var operation_type: PhysicalDeviceDataGraphOperationTypeARM
     var name: InlineArray[c_char, Int(MAX_PHYSICAL_DEVICE_DATA_GRAPH_OPERATION_SET_NAME_SIZE_ARM)]
     var version: Version
@@ -30714,16 +30714,16 @@ struct PhysicalDeviceDataGraphOperationSupportARM(Copyable):
         version: Version = zero_init[Version](),
     ):
         self.operation_type = operation_type
-        self.name = name
+        self.name = name.copy()
         self.version = version
 
     fn name_slice(self) -> CStringSlice[origin_of(self.name)]:
         return CStringSlice[origin_of(self.name)](unsafe_from_ptr = self.name.unsafe_ptr())
 
 
-struct QueueFamilyDataGraphPropertiesARM(Copyable):
+struct QueueFamilyDataGraphPropertiesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var engine: PhysicalDeviceDataGraphProcessingEngineARM
     var operation: PhysicalDeviceDataGraphOperationSupportARM
 
@@ -30740,9 +30740,9 @@ struct QueueFamilyDataGraphPropertiesARM(Copyable):
         self.operation = operation.copy()
 
 
-struct PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM(Copyable):
+struct PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var queue_family_index: UInt32
     var engine_type: PhysicalDeviceDataGraphProcessingEngineTypeARM
 
@@ -30759,9 +30759,9 @@ struct PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM(Copyable):
         self.engine_type = engine_type
 
 
-struct QueueFamilyDataGraphProcessingEnginePropertiesARM(Copyable):
+struct QueueFamilyDataGraphProcessingEnginePropertiesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var foreign_semaphore_handle_types: ExternalSemaphoreHandleTypeFlags
     var foreign_memory_handle_types: ExternalMemoryHandleTypeFlags
 
@@ -30778,11 +30778,11 @@ struct QueueFamilyDataGraphProcessingEnginePropertiesARM(Copyable):
         self.foreign_memory_handle_types = foreign_memory_handle_types
 
 
-struct DataGraphProcessingEngineCreateInfoARM(Copyable):
+struct DataGraphProcessingEngineCreateInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var processing_engine_count: UInt32
-    var p_processing_engines: Ptr[PhysicalDeviceDataGraphProcessingEngineARM, MutOrigin.external]
+    var p_processing_engines: Ptr[PhysicalDeviceDataGraphProcessingEngineARM, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -30800,9 +30800,9 @@ struct DataGraphProcessingEngineCreateInfoARM(Copyable):
         self.p_processing_engines = Ptr(to=p_processing_engines).bitcast[type_of(self.p_processing_engines)]()[]
 
 
-struct PhysicalDevicePipelineCacheIncrementalModeFeaturesSEC(Copyable):
+struct PhysicalDevicePipelineCacheIncrementalModeFeaturesSEC(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var pipeline_cache_incremental_mode: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -30816,10 +30816,10 @@ struct PhysicalDevicePipelineCacheIncrementalModeFeaturesSEC(Copyable):
         self.pipeline_cache_incremental_mode = pipeline_cache_incremental_mode
 
 
-struct DataGraphPipelineBuiltinModelCreateInfoQCOM(Copyable):
+struct DataGraphPipelineBuiltinModelCreateInfoQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_operation: Ptr[PhysicalDeviceDataGraphOperationSupportARM, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_operation: Ptr[PhysicalDeviceDataGraphOperationSupportARM, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -30835,9 +30835,9 @@ struct DataGraphPipelineBuiltinModelCreateInfoQCOM(Copyable):
         self.p_operation = Ptr(to=p_operation).bitcast[type_of(self.p_operation)]()[]
 
 
-struct PhysicalDeviceDataGraphModelFeaturesQCOM(Copyable):
+struct PhysicalDeviceDataGraphModelFeaturesQCOM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var data_graph_model: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -30851,9 +30851,9 @@ struct PhysicalDeviceDataGraphModelFeaturesQCOM(Copyable):
         self.data_graph_model = data_graph_model
 
 
-struct PhysicalDeviceShaderUntypedPointersFeaturesKHR(Copyable):
+struct PhysicalDeviceShaderUntypedPointersFeaturesKHR(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_untyped_pointers: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -30867,9 +30867,9 @@ struct PhysicalDeviceShaderUntypedPointersFeaturesKHR(Copyable):
         self.shader_untyped_pointers = shader_untyped_pointers
 
 
-struct PhysicalDeviceVideoEncodeRgbConversionFeaturesVALVE(Copyable):
+struct PhysicalDeviceVideoEncodeRgbConversionFeaturesVALVE(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var video_encode_rgb_conversion: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -30883,9 +30883,9 @@ struct PhysicalDeviceVideoEncodeRgbConversionFeaturesVALVE(Copyable):
         self.video_encode_rgb_conversion = video_encode_rgb_conversion
 
 
-struct VideoEncodeRgbConversionCapabilitiesVALVE(Copyable):
+struct VideoEncodeRgbConversionCapabilitiesVALVE(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var rgb_models: VideoEncodeRgbModelConversionFlagsVALVE
     var rgb_ranges: VideoEncodeRgbRangeCompressionFlagsVALVE
     var x_chroma_offsets: VideoEncodeRgbChromaOffsetFlagsVALVE
@@ -30908,9 +30908,9 @@ struct VideoEncodeRgbConversionCapabilitiesVALVE(Copyable):
         self.y_chroma_offsets = y_chroma_offsets
 
 
-struct VideoEncodeProfileRgbConversionInfoVALVE(Copyable):
+struct VideoEncodeProfileRgbConversionInfoVALVE(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var perform_encode_rgb_conversion: Bool32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -30924,9 +30924,9 @@ struct VideoEncodeProfileRgbConversionInfoVALVE(Copyable):
         self.perform_encode_rgb_conversion = perform_encode_rgb_conversion
 
 
-struct VideoEncodeSessionRgbConversionCreateInfoVALVE(Copyable):
+struct VideoEncodeSessionRgbConversionCreateInfoVALVE(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var rgb_model: VideoEncodeRgbModelConversionFlagBitsVALVE
     var rgb_range: VideoEncodeRgbRangeCompressionFlagBitsVALVE
     var x_chroma_offset: VideoEncodeRgbChromaOffsetFlagBitsVALVE
@@ -30949,9 +30949,9 @@ struct VideoEncodeSessionRgbConversionCreateInfoVALVE(Copyable):
         self.y_chroma_offset = y_chroma_offset
 
 
-struct PhysicalDeviceShader64BitIndexingFeaturesEXT(Copyable):
+struct PhysicalDeviceShader64BitIndexingFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_64_bit_indexing: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -30965,9 +30965,9 @@ struct PhysicalDeviceShader64BitIndexingFeaturesEXT(Copyable):
         self.shader_64_bit_indexing = shader_64_bit_indexing
 
 
-struct NativeBufferUsageOHOS(Copyable):
+struct NativeBufferUsageOHOS(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var ohos_native_buffer_usage: UInt64
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -30981,9 +30981,9 @@ struct NativeBufferUsageOHOS(Copyable):
         self.ohos_native_buffer_usage = ohos_native_buffer_usage
 
 
-struct NativeBufferPropertiesOHOS(Copyable):
+struct NativeBufferPropertiesOHOS(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var allocation_size: DeviceSize
     var memory_type_bits: UInt32
 
@@ -31000,9 +31000,9 @@ struct NativeBufferPropertiesOHOS(Copyable):
         self.memory_type_bits = memory_type_bits
 
 
-struct NativeBufferFormatPropertiesOHOS(Copyable):
+struct NativeBufferFormatPropertiesOHOS(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var format: Format
     var external_format: UInt64
     var format_features: FormatFeatureFlags
@@ -31037,10 +31037,10 @@ struct NativeBufferFormatPropertiesOHOS(Copyable):
         self.suggested_y_chroma_offset = suggested_y_chroma_offset
 
 
-struct ImportNativeBufferInfoOHOS(Copyable):
+struct ImportNativeBufferInfoOHOS(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var buffer: Ptr[OH_NativeBuffer, MutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var buffer: Ptr[OH_NativeBuffer, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, buffer_origin: MutOrigin = MutAnyOrigin
@@ -31055,9 +31055,9 @@ struct ImportNativeBufferInfoOHOS(Copyable):
         self.buffer = Ptr(to=buffer).bitcast[type_of(self.buffer)]()[]
 
 
-struct MemoryGetNativeBufferInfoOHOS(Copyable):
+struct MemoryGetNativeBufferInfoOHOS(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var memory: DeviceMemory
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -31071,9 +31071,9 @@ struct MemoryGetNativeBufferInfoOHOS(Copyable):
         self.memory = memory
 
 
-struct ExternalFormatOHOS(Copyable):
+struct ExternalFormatOHOS(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var external_format: UInt64
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -31087,9 +31087,9 @@ struct ExternalFormatOHOS(Copyable):
         self.external_format = external_format
 
 
-struct PhysicalDevicePerformanceCountersByRegionFeaturesARM(Copyable):
+struct PhysicalDevicePerformanceCountersByRegionFeaturesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var performance_counters_by_region: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -31103,9 +31103,9 @@ struct PhysicalDevicePerformanceCountersByRegionFeaturesARM(Copyable):
         self.performance_counters_by_region = performance_counters_by_region
 
 
-struct PhysicalDevicePerformanceCountersByRegionPropertiesARM(Copyable):
+struct PhysicalDevicePerformanceCountersByRegionPropertiesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_per_region_performance_counters: UInt32
     var performance_counter_region_size: Extent2D
     var row_stride_alignment: UInt32
@@ -31131,9 +31131,9 @@ struct PhysicalDevicePerformanceCountersByRegionPropertiesARM(Copyable):
         self.identity_transform_order = identity_transform_order
 
 
-struct PerformanceCounterARM(Copyable):
+struct PerformanceCounterARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var counter_id: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -31147,9 +31147,9 @@ struct PerformanceCounterARM(Copyable):
         self.counter_id = counter_id
 
 
-struct PerformanceCounterDescriptionARM(Copyable):
+struct PerformanceCounterDescriptionARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var flags: PerformanceCounterDescriptionFlagsARM
     var name: InlineArray[c_char, Int(MAX_DESCRIPTION_SIZE)]
 
@@ -31163,20 +31163,20 @@ struct PerformanceCounterDescriptionARM(Copyable):
         self.s_type = s_type
         self.p_next = Ptr(to=p_next).bitcast[type_of(self.p_next)]()[]
         self.flags = flags
-        self.name = name
+        self.name = name.copy()
 
     fn name_slice(self) -> CStringSlice[origin_of(self.name)]:
         return CStringSlice[origin_of(self.name)](unsafe_from_ptr = self.name.unsafe_ptr())
 
 
-struct RenderPassPerformanceCountersByRegionBeginInfoARM(Copyable):
+struct RenderPassPerformanceCountersByRegionBeginInfoARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var counter_address_count: UInt32
-    var p_counter_addresses: Ptr[DeviceAddress, ImmutOrigin.external]
+    var p_counter_addresses: Ptr[DeviceAddress, ImmutExternalOrigin]
     var serialize_regions: Bool32
     var counter_index_count: UInt32
-    var p_counter_indices: Ptr[UInt32, MutOrigin.external]
+    var p_counter_indices: Ptr[UInt32, MutExternalOrigin]
 
     fn __init__[
         p_next_origin: MutOrigin = MutAnyOrigin,
@@ -31201,9 +31201,9 @@ struct RenderPassPerformanceCountersByRegionBeginInfoARM(Copyable):
         self.p_counter_indices = Ptr(to=p_counter_indices).bitcast[type_of(self.p_counter_indices)]()[]
 
 
-struct ComputeOccupancyPriorityParametersNV(Copyable):
+struct ComputeOccupancyPriorityParametersNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var occupancy_priority: Float32
     var occupancy_throttling: Float32
 
@@ -31220,9 +31220,9 @@ struct ComputeOccupancyPriorityParametersNV(Copyable):
         self.occupancy_throttling = occupancy_throttling
 
 
-struct PhysicalDeviceComputeOccupancyPriorityFeaturesNV(Copyable):
+struct PhysicalDeviceComputeOccupancyPriorityFeaturesNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var compute_occupancy_priority: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -31236,9 +31236,9 @@ struct PhysicalDeviceComputeOccupancyPriorityFeaturesNV(Copyable):
         self.compute_occupancy_priority = compute_occupancy_priority
 
 
-struct PhysicalDeviceShaderLongVectorFeaturesEXT(Copyable):
+struct PhysicalDeviceShaderLongVectorFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var long_vector: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -31252,9 +31252,9 @@ struct PhysicalDeviceShaderLongVectorFeaturesEXT(Copyable):
         self.long_vector = long_vector
 
 
-struct PhysicalDeviceShaderLongVectorPropertiesEXT(Copyable):
+struct PhysicalDeviceShaderLongVectorPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var max_vector_components: UInt32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -31268,9 +31268,9 @@ struct PhysicalDeviceShaderLongVectorPropertiesEXT(Copyable):
         self.max_vector_components = max_vector_components
 
 
-struct PhysicalDeviceTextureCompressionASTC3DFeaturesEXT(Copyable):
+struct PhysicalDeviceTextureCompressionASTC3DFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var texture_compression_astc_3d: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -31284,9 +31284,9 @@ struct PhysicalDeviceTextureCompressionASTC3DFeaturesEXT(Copyable):
         self.texture_compression_astc_3d = texture_compression_astc_3d
 
 
-struct PhysicalDeviceShaderSubgroupPartitionedFeaturesEXT(Copyable):
+struct PhysicalDeviceShaderSubgroupPartitionedFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var shader_subgroup_partitioned: Bool32
 
     fn __init__[p_next_origin: MutOrigin = MutAnyOrigin](
@@ -31300,8 +31300,8 @@ struct PhysicalDeviceShaderSubgroupPartitionedFeaturesEXT(Copyable):
         self.shader_subgroup_partitioned = shader_subgroup_partitioned
 
 
-struct HostAddressRangeEXT(Copyable):
-    var address: Ptr[NoneType, MutOrigin.external]
+struct HostAddressRangeEXT(Copyable, Equatable):
+    var address: Ptr[NoneType, MutExternalOrigin]
     var size: UInt
 
     fn __init__[address_origin: MutOrigin = MutAnyOrigin](
@@ -31313,8 +31313,8 @@ struct HostAddressRangeEXT(Copyable):
         self.size = size
 
 
-struct HostAddressRangeConstEXT(Copyable):
-    var address: Ptr[NoneType, ImmutOrigin.external]
+struct HostAddressRangeConstEXT(Copyable, Equatable):
+    var address: Ptr[NoneType, ImmutExternalOrigin]
     var size: UInt
 
     fn __init__[address_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -31326,7 +31326,7 @@ struct HostAddressRangeConstEXT(Copyable):
         self.size = size
 
 
-struct DeviceAddressRangeEXT(Copyable):
+struct DeviceAddressRangeEXT(Copyable, Equatable):
     var address: DeviceAddress
     var size: DeviceSize
 
@@ -31339,9 +31339,9 @@ struct DeviceAddressRangeEXT(Copyable):
         self.size = size
 
 
-struct TexelBufferDescriptorInfoEXT(Copyable):
+struct TexelBufferDescriptorInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var format: Format
     var address_range: DeviceAddressRangeEXT
 
@@ -31358,10 +31358,10 @@ struct TexelBufferDescriptorInfoEXT(Copyable):
         self.address_range = address_range.copy()
 
 
-struct ImageDescriptorInfoEXT(Copyable):
+struct ImageDescriptorInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_view: Ptr[ImageViewCreateInfo, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_view: Ptr[ImageViewCreateInfo, ImmutExternalOrigin]
     var layout: ImageLayout
 
     fn __init__[
@@ -31379,9 +31379,9 @@ struct ImageDescriptorInfoEXT(Copyable):
         self.layout = layout
 
 
-struct ResourceDescriptorInfoEXT(Copyable):
+struct ResourceDescriptorInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var type: DescriptorType
     var data: ResourceDescriptorDataEXT
 
@@ -31398,9 +31398,9 @@ struct ResourceDescriptorInfoEXT(Copyable):
         self.data = data
 
 
-struct BindHeapInfoEXT(Copyable):
+struct BindHeapInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var heap_range: DeviceAddressRangeEXT
     var reserved_range_offset: DeviceSize
     var reserved_range_size: DeviceSize
@@ -31420,9 +31420,9 @@ struct BindHeapInfoEXT(Copyable):
         self.reserved_range_size = reserved_range_size
 
 
-struct PushDataInfoEXT(Copyable):
+struct PushDataInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var offset: UInt32
     var data: HostAddressRangeConstEXT
 
@@ -31439,10 +31439,10 @@ struct PushDataInfoEXT(Copyable):
         self.data = data.copy()
 
 
-struct DescriptorMappingSourceConstantOffsetEXT(Copyable):
+struct DescriptorMappingSourceConstantOffsetEXT(Copyable, Equatable):
     var heap_offset: UInt32
     var heap_array_stride: UInt32
-    var p_embedded_sampler: Ptr[SamplerCreateInfo, ImmutOrigin.external]
+    var p_embedded_sampler: Ptr[SamplerCreateInfo, ImmutExternalOrigin]
     var sampler_heap_offset: UInt32
     var sampler_heap_array_stride: UInt32
 
@@ -31461,12 +31461,12 @@ struct DescriptorMappingSourceConstantOffsetEXT(Copyable):
         self.sampler_heap_array_stride = sampler_heap_array_stride
 
 
-struct DescriptorMappingSourcePushIndexEXT(Copyable):
+struct DescriptorMappingSourcePushIndexEXT(Copyable, Equatable):
     var heap_offset: UInt32
     var push_offset: UInt32
     var heap_index_stride: UInt32
     var heap_array_stride: UInt32
-    var p_embedded_sampler: Ptr[SamplerCreateInfo, ImmutOrigin.external]
+    var p_embedded_sampler: Ptr[SamplerCreateInfo, ImmutExternalOrigin]
     var use_combined_image_sampler_index: Bool32
     var sampler_heap_offset: UInt32
     var sampler_push_offset: UInt32
@@ -31498,13 +31498,13 @@ struct DescriptorMappingSourcePushIndexEXT(Copyable):
         self.sampler_heap_array_stride = sampler_heap_array_stride
 
 
-struct DescriptorMappingSourceIndirectIndexEXT(Copyable):
+struct DescriptorMappingSourceIndirectIndexEXT(Copyable, Equatable):
     var heap_offset: UInt32
     var push_offset: UInt32
     var address_offset: UInt32
     var heap_index_stride: UInt32
     var heap_array_stride: UInt32
-    var p_embedded_sampler: Ptr[SamplerCreateInfo, ImmutOrigin.external]
+    var p_embedded_sampler: Ptr[SamplerCreateInfo, ImmutExternalOrigin]
     var use_combined_image_sampler_index: Bool32
     var sampler_heap_offset: UInt32
     var sampler_push_offset: UInt32
@@ -31541,12 +31541,12 @@ struct DescriptorMappingSourceIndirectIndexEXT(Copyable):
         self.sampler_heap_array_stride = sampler_heap_array_stride
 
 
-struct DescriptorMappingSourceIndirectIndexArrayEXT(Copyable):
+struct DescriptorMappingSourceIndirectIndexArrayEXT(Copyable, Equatable):
     var heap_offset: UInt32
     var push_offset: UInt32
     var address_offset: UInt32
     var heap_index_stride: UInt32
-    var p_embedded_sampler: Ptr[SamplerCreateInfo, ImmutOrigin.external]
+    var p_embedded_sampler: Ptr[SamplerCreateInfo, ImmutExternalOrigin]
     var use_combined_image_sampler_index: Bool32
     var sampler_heap_offset: UInt32
     var sampler_push_offset: UInt32
@@ -31578,7 +31578,7 @@ struct DescriptorMappingSourceIndirectIndexArrayEXT(Copyable):
         self.sampler_heap_index_stride = sampler_heap_index_stride
 
 
-struct DescriptorMappingSourceHeapDataEXT(Copyable):
+struct DescriptorMappingSourceHeapDataEXT(Copyable, Equatable):
     var heap_offset: UInt32
     var push_offset: UInt32
 
@@ -31591,12 +31591,12 @@ struct DescriptorMappingSourceHeapDataEXT(Copyable):
         self.push_offset = push_offset
 
 
-struct DescriptorMappingSourceShaderRecordIndexEXT(Copyable):
+struct DescriptorMappingSourceShaderRecordIndexEXT(Copyable, Equatable):
     var heap_offset: UInt32
     var shader_record_offset: UInt32
     var heap_index_stride: UInt32
     var heap_array_stride: UInt32
-    var p_embedded_sampler: Ptr[SamplerCreateInfo, ImmutOrigin.external]
+    var p_embedded_sampler: Ptr[SamplerCreateInfo, ImmutExternalOrigin]
     var use_combined_image_sampler_index: Bool32
     var sampler_heap_offset: UInt32
     var sampler_shader_record_offset: UInt32
@@ -31628,7 +31628,7 @@ struct DescriptorMappingSourceShaderRecordIndexEXT(Copyable):
         self.sampler_heap_array_stride = sampler_heap_array_stride
 
 
-struct DescriptorMappingSourceIndirectAddressEXT(Copyable):
+struct DescriptorMappingSourceIndirectAddressEXT(Copyable, Equatable):
     var push_offset: UInt32
     var address_offset: UInt32
 
@@ -31641,9 +31641,9 @@ struct DescriptorMappingSourceIndirectAddressEXT(Copyable):
         self.address_offset = address_offset
 
 
-struct DescriptorSetAndBindingMappingEXT(Copyable):
+struct DescriptorSetAndBindingMappingEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var descriptor_set: UInt32
     var first_binding: UInt32
     var binding_count: UInt32
@@ -31672,11 +31672,11 @@ struct DescriptorSetAndBindingMappingEXT(Copyable):
         self.source_data = source_data
 
 
-struct ShaderDescriptorSetAndBindingMappingInfoEXT(Copyable):
+struct ShaderDescriptorSetAndBindingMappingInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var mapping_count: UInt32
-    var p_mappings: Ptr[DescriptorSetAndBindingMappingEXT, ImmutOrigin.external]
+    var p_mappings: Ptr[DescriptorSetAndBindingMappingEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -31694,9 +31694,9 @@ struct ShaderDescriptorSetAndBindingMappingInfoEXT(Copyable):
         self.p_mappings = Ptr(to=p_mappings).bitcast[type_of(self.p_mappings)]()[]
 
 
-struct SamplerCustomBorderColorIndexCreateInfoEXT(Copyable):
+struct SamplerCustomBorderColorIndexCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var index: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -31710,10 +31710,10 @@ struct SamplerCustomBorderColorIndexCreateInfoEXT(Copyable):
         self.index = index
 
 
-struct OpaqueCaptureDataCreateInfoEXT(Copyable):
+struct OpaqueCaptureDataCreateInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_data: Ptr[HostAddressRangeConstEXT, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_data: Ptr[HostAddressRangeConstEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin, p_data_origin: ImmutOrigin = ImmutAnyOrigin
@@ -31728,9 +31728,9 @@ struct OpaqueCaptureDataCreateInfoEXT(Copyable):
         self.p_data = Ptr(to=p_data).bitcast[type_of(self.p_data)]()[]
 
 
-struct IndirectCommandsLayoutPushDataTokenNV(Copyable):
+struct IndirectCommandsLayoutPushDataTokenNV(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var push_data_offset: UInt32
     var push_data_size: UInt32
 
@@ -31747,9 +31747,9 @@ struct IndirectCommandsLayoutPushDataTokenNV(Copyable):
         self.push_data_size = push_data_size
 
 
-struct SubsampledImageFormatPropertiesEXT(Copyable):
+struct SubsampledImageFormatPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
     var subsampled_image_descriptor_count: UInt32
 
     fn __init__[p_next_origin: ImmutOrigin = ImmutAnyOrigin](
@@ -31763,9 +31763,9 @@ struct SubsampledImageFormatPropertiesEXT(Copyable):
         self.subsampled_image_descriptor_count = subsampled_image_descriptor_count
 
 
-struct PhysicalDeviceDescriptorHeapFeaturesEXT(Copyable):
+struct PhysicalDeviceDescriptorHeapFeaturesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var descriptor_heap: Bool32
     var descriptor_heap_capture_replay: Bool32
 
@@ -31782,9 +31782,9 @@ struct PhysicalDeviceDescriptorHeapFeaturesEXT(Copyable):
         self.descriptor_heap_capture_replay = descriptor_heap_capture_replay
 
 
-struct PhysicalDeviceDescriptorHeapPropertiesEXT(Copyable):
+struct PhysicalDeviceDescriptorHeapPropertiesEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var sampler_heap_alignment: DeviceSize
     var resource_heap_alignment: DeviceSize
     var max_sampler_heap_size: DeviceSize
@@ -31852,11 +31852,11 @@ struct PhysicalDeviceDescriptorHeapPropertiesEXT(Copyable):
         self.protected_descriptor_heaps = protected_descriptor_heaps
 
 
-struct CommandBufferInheritanceDescriptorHeapInfoEXT(Copyable):
+struct CommandBufferInheritanceDescriptorHeapInfoEXT(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, ImmutOrigin.external]
-    var p_sampler_heap_bind_info: Ptr[BindHeapInfoEXT, ImmutOrigin.external]
-    var p_resource_heap_bind_info: Ptr[BindHeapInfoEXT, ImmutOrigin.external]
+    var p_next: Ptr[NoneType, ImmutExternalOrigin]
+    var p_sampler_heap_bind_info: Ptr[BindHeapInfoEXT, ImmutExternalOrigin]
+    var p_resource_heap_bind_info: Ptr[BindHeapInfoEXT, ImmutExternalOrigin]
 
     fn __init__[
         p_next_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -31875,9 +31875,9 @@ struct CommandBufferInheritanceDescriptorHeapInfoEXT(Copyable):
         self.p_resource_heap_bind_info = Ptr(to=p_resource_heap_bind_info).bitcast[type_of(self.p_resource_heap_bind_info)]()[]
 
 
-struct PhysicalDeviceDescriptorHeapTensorPropertiesARM(Copyable):
+struct PhysicalDeviceDescriptorHeapTensorPropertiesARM(Copyable, Equatable):
     var s_type: StructureType
-    var p_next: Ptr[NoneType, MutOrigin.external]
+    var p_next: Ptr[NoneType, MutExternalOrigin]
     var tensor_descriptor_size: DeviceSize
     var tensor_descriptor_alignment: DeviceSize
     var tensor_capture_replay_opaque_data_size: UInt

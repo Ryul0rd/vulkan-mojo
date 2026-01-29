@@ -1334,7 +1334,7 @@ struct ValidationCache(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_validation_cache_data(
-        device, validation_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+        device, validation_cache, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1441,7 +1441,7 @@ struct CalibratedTimestamps(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_calibrateable_time_domains(
-        physical_device, Ptr(to=count), Ptr[TimeDomainKHR, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[TimeDomainKHR, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1687,7 +1687,7 @@ struct ToolingInfo(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_tool_properties(
-        physical_device, Ptr(to=count), Ptr[PhysicalDeviceToolProperties, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[PhysicalDeviceToolProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1769,7 +1769,7 @@ struct FullScreenExclusive(Copyable):
         physical_device,
         Ptr(to=surface_info),
         Ptr(to=count),
-        Ptr[PresentModeKHR, MutOrigin.external](),
+        Ptr[PresentModeKHR, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -4534,7 +4534,7 @@ struct ShaderObject(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_shader_binary_data(
-        device, shader, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+        device, shader, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))

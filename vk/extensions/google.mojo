@@ -71,7 +71,7 @@ struct DisplayTiming(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_past_presentation_timing(
-        device, swapchain, Ptr(to=count), Ptr[PastPresentationTimingGOOGLE, MutOrigin.external]()
+        device, swapchain, Ptr(to=count), Ptr[PastPresentationTimingGOOGLE, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))

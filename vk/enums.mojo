@@ -55,8 +55,7 @@ comptime MemoryUnmapFlagBitsKHR = MemoryUnmapFlagBits
 comptime DriverIdKHR = DriverId
 
 
-@register_passable("trivial")
-struct ImageLayout(Equatable):
+struct ImageLayout(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -103,8 +102,7 @@ struct ImageLayout(Equatable):
     comptime ZERO_INITIALIZED = ImageLayout(value = 1000620000)
 
 
-@register_passable("trivial")
-struct AttachmentLoadOp(Equatable):
+struct AttachmentLoadOp(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -122,8 +120,7 @@ struct AttachmentLoadOp(Equatable):
     comptime NONE = AttachmentLoadOp(value = 1000400000)
 
 
-@register_passable("trivial")
-struct AttachmentStoreOp(Equatable):
+struct AttachmentStoreOp(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -140,8 +137,7 @@ struct AttachmentStoreOp(Equatable):
     comptime NONE = AttachmentStoreOp(value = 1000301000)
 
 
-@register_passable("trivial")
-struct ImageType(Equatable):
+struct ImageType(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -158,8 +154,7 @@ struct ImageType(Equatable):
     comptime N_3D = ImageType(value = 2)
 
 
-@register_passable("trivial")
-struct ImageTiling(Equatable):
+struct ImageTiling(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -176,8 +171,7 @@ struct ImageTiling(Equatable):
     comptime DRM_FORMAT_MODIFIER = ImageTiling(value = 1000158000)
 
 
-@register_passable("trivial")
-struct ImageViewType(Equatable):
+struct ImageViewType(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -198,8 +192,7 @@ struct ImageViewType(Equatable):
     comptime CUBE_ARRAY = ImageViewType(value = 6)
 
 
-@register_passable("trivial")
-struct CommandBufferLevel(Equatable):
+struct CommandBufferLevel(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -215,8 +208,7 @@ struct CommandBufferLevel(Equatable):
     comptime SECONDARY = CommandBufferLevel(value = 1)
 
 
-@register_passable("trivial")
-struct ComponentSwizzle(Equatable):
+struct ComponentSwizzle(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -237,8 +229,7 @@ struct ComponentSwizzle(Equatable):
     comptime A = ComponentSwizzle(value = 6)
 
 
-@register_passable("trivial")
-struct DescriptorType(Equatable):
+struct DescriptorType(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -270,8 +261,7 @@ struct DescriptorType(Equatable):
     comptime PARTITIONED_ACCELERATION_STRUCTURE = DescriptorType(value = 1000570000)
 
 
-@register_passable("trivial")
-struct QueryType(Equatable):
+struct QueryType(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -300,8 +290,7 @@ struct QueryType(Equatable):
     comptime MICROMAP_COMPACTED_SIZE = QueryType(value = 1000396001)
 
 
-@register_passable("trivial")
-struct BorderColor(Equatable):
+struct BorderColor(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -323,8 +312,7 @@ struct BorderColor(Equatable):
     comptime INT_CUSTOM = BorderColor(value = 1000287004)
 
 
-@register_passable("trivial")
-struct PipelineBindPoint(Equatable):
+struct PipelineBindPoint(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -344,8 +332,7 @@ struct PipelineBindPoint(Equatable):
     comptime DATA_GRAPH = PipelineBindPoint(value = 1000507000)
 
 
-@register_passable("trivial")
-struct PipelineCacheHeaderVersion(Equatable):
+struct PipelineCacheHeaderVersion(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -362,8 +349,7 @@ struct PipelineCacheHeaderVersion(Equatable):
     comptime DATA_GRAPH = PipelineCacheHeaderVersion(value = 1000629000)
 
 
-@register_passable("trivial")
-struct PrimitiveTopology(Equatable):
+struct PrimitiveTopology(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -388,8 +374,7 @@ struct PrimitiveTopology(Equatable):
     comptime PATCH_LIST = PrimitiveTopology(value = 10)
 
 
-@register_passable("trivial")
-struct SharingMode(Equatable):
+struct SharingMode(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -405,8 +390,7 @@ struct SharingMode(Equatable):
     comptime CONCURRENT = SharingMode(value = 1)
 
 
-@register_passable("trivial")
-struct IndexType(Equatable):
+struct IndexType(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -424,8 +408,7 @@ struct IndexType(Equatable):
     comptime UINT8 = IndexType(value = 1000265000)
 
 
-@register_passable("trivial")
-struct Filter(Equatable):
+struct Filter(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -442,8 +425,7 @@ struct Filter(Equatable):
     comptime CUBIC = Filter(value = 1000015000)
 
 
-@register_passable("trivial")
-struct SamplerMipmapMode(Equatable):
+struct SamplerMipmapMode(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -459,8 +441,7 @@ struct SamplerMipmapMode(Equatable):
     comptime LINEAR = SamplerMipmapMode(value = 1)
 
 
-@register_passable("trivial")
-struct SamplerAddressMode(Equatable):
+struct SamplerAddressMode(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -479,8 +460,7 @@ struct SamplerAddressMode(Equatable):
     comptime MIRROR_CLAMP_TO_EDGE = SamplerAddressMode(value = 4)
 
 
-@register_passable("trivial")
-struct CompareOp(Equatable):
+struct CompareOp(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -502,8 +482,7 @@ struct CompareOp(Equatable):
     comptime ALWAYS = CompareOp(value = 7)
 
 
-@register_passable("trivial")
-struct PolygonMode(Equatable):
+struct PolygonMode(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -521,8 +500,7 @@ struct PolygonMode(Equatable):
     comptime FILL_RECTANGLE = PolygonMode(value = 1000153000)
 
 
-@register_passable("trivial")
-struct FrontFace(Equatable):
+struct FrontFace(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -538,8 +516,7 @@ struct FrontFace(Equatable):
     comptime CLOCKWISE = FrontFace(value = 1)
 
 
-@register_passable("trivial")
-struct BlendFactor(Equatable):
+struct BlendFactor(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -572,8 +549,7 @@ struct BlendFactor(Equatable):
     comptime ONE_MINUS_SRC1_ALPHA = BlendFactor(value = 18)
 
 
-@register_passable("trivial")
-struct BlendOp(Equatable):
+struct BlendOp(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -638,8 +614,7 @@ struct BlendOp(Equatable):
     comptime BLUE = BlendOp(value = 1000148045)
 
 
-@register_passable("trivial")
-struct StencilOp(Equatable):
+struct StencilOp(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -661,8 +636,7 @@ struct StencilOp(Equatable):
     comptime DECREMENT_AND_WRAP = StencilOp(value = 7)
 
 
-@register_passable("trivial")
-struct LogicOp(Equatable):
+struct LogicOp(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -692,8 +666,7 @@ struct LogicOp(Equatable):
     comptime SET = LogicOp(value = 15)
 
 
-@register_passable("trivial")
-struct InternalAllocationType(Equatable):
+struct InternalAllocationType(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -708,8 +681,7 @@ struct InternalAllocationType(Equatable):
     comptime EXECUTABLE = InternalAllocationType(value = 0)
 
 
-@register_passable("trivial")
-struct SystemAllocationScope(Equatable):
+struct SystemAllocationScope(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -728,8 +700,7 @@ struct SystemAllocationScope(Equatable):
     comptime INSTANCE = SystemAllocationScope(value = 4)
 
 
-@register_passable("trivial")
-struct PhysicalDeviceType(Equatable):
+struct PhysicalDeviceType(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -748,8 +719,7 @@ struct PhysicalDeviceType(Equatable):
     comptime CPU = PhysicalDeviceType(value = 4)
 
 
-@register_passable("trivial")
-struct VertexInputRate(Equatable):
+struct VertexInputRate(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -765,8 +735,7 @@ struct VertexInputRate(Equatable):
     comptime INSTANCE = VertexInputRate(value = 1)
 
 
-@register_passable("trivial")
-struct Format(Equatable):
+struct Format(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -1076,8 +1045,7 @@ struct Format(Equatable):
     comptime G14X2_B14X2R14X2_2PLANE_422_UNORM_3PACK16 = Format(value = 1000609013)
 
 
-@register_passable("trivial")
-struct StructureType(Equatable):
+struct StructureType(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2265,8 +2233,7 @@ struct StructureType(Equatable):
     comptime SURFACE_CREATE_INFO = StructureType(value = 1000685000)
 
 
-@register_passable("trivial")
-struct SubpassContents(Equatable):
+struct SubpassContents(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2283,8 +2250,7 @@ struct SubpassContents(Equatable):
     comptime INLINE_AND_SECONDARY_COMMAND_BUFFERS = SubpassContents(value = 1000451000)
 
 
-@register_passable("trivial")
-struct Result(Equatable, Writable):
+struct Result(TrivialRegisterType, Equatable, Writable):
     var _value: Int32
 
     comptime _descriptions: Dict[Int32, StaticString] = {
@@ -2428,8 +2394,7 @@ struct Result(Equatable, Writable):
     comptime PIPELINE_BINARY_MISSING = Result(value = 1000483000)
 
 
-@register_passable("trivial")
-struct DynamicState(Equatable):
+struct DynamicState(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2516,8 +2481,7 @@ struct DynamicState(Equatable):
     comptime DEPTH_CLAMP_RANGE = DynamicState(value = 1000582000)
 
 
-@register_passable("trivial")
-struct DescriptorUpdateTemplateType(Equatable):
+struct DescriptorUpdateTemplateType(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2533,8 +2497,7 @@ struct DescriptorUpdateTemplateType(Equatable):
     comptime PUSH_DESCRIPTORS = DescriptorUpdateTemplateType(value = 1)
 
 
-@register_passable("trivial")
-struct ObjectType(Equatable):
+struct ObjectType(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2605,8 +2568,7 @@ struct ObjectType(Equatable):
     comptime INDIRECT_EXECUTION_SET = ObjectType(value = 1000572001)
 
 
-@register_passable("trivial")
-struct RayTracingInvocationReorderModeEXT(Equatable):
+struct RayTracingInvocationReorderModeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2622,8 +2584,7 @@ struct RayTracingInvocationReorderModeEXT(Equatable):
     comptime REORDER = RayTracingInvocationReorderModeEXT(value = 1)
 
 
-@register_passable("trivial")
-struct RayTracingLssIndexingModeNV(Equatable):
+struct RayTracingLssIndexingModeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2639,8 +2600,7 @@ struct RayTracingLssIndexingModeNV(Equatable):
     comptime SUCCESSIVE = RayTracingLssIndexingModeNV(value = 1)
 
 
-@register_passable("trivial")
-struct RayTracingLssPrimitiveEndCapsModeNV(Equatable):
+struct RayTracingLssPrimitiveEndCapsModeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2656,8 +2616,7 @@ struct RayTracingLssPrimitiveEndCapsModeNV(Equatable):
     comptime CHAINED = RayTracingLssPrimitiveEndCapsModeNV(value = 1)
 
 
-@register_passable("trivial")
-struct DirectDriverLoadingModeLUNARG(Equatable):
+struct DirectDriverLoadingModeLUNARG(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2673,8 +2632,7 @@ struct DirectDriverLoadingModeLUNARG(Equatable):
     comptime INCLUSIVE = DirectDriverLoadingModeLUNARG(value = 1)
 
 
-@register_passable("trivial")
-struct AntiLagModeAMD(Equatable):
+struct AntiLagModeAMD(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2691,8 +2649,7 @@ struct AntiLagModeAMD(Equatable):
     comptime OFF = AntiLagModeAMD(value = 2)
 
 
-@register_passable("trivial")
-struct AntiLagStageAMD(Equatable):
+struct AntiLagStageAMD(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2708,8 +2665,7 @@ struct AntiLagStageAMD(Equatable):
     comptime PRESENT = AntiLagStageAMD(value = 1)
 
 
-@register_passable("trivial")
-struct SemaphoreType(Equatable):
+struct SemaphoreType(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2725,8 +2681,7 @@ struct SemaphoreType(Equatable):
     comptime TIMELINE = SemaphoreType(value = 1)
 
 
-@register_passable("trivial")
-struct PresentModeKHR(Equatable):
+struct PresentModeKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2747,8 +2702,7 @@ struct PresentModeKHR(Equatable):
     comptime FIFO_LATEST_READY = PresentModeKHR(value = 1000361000)
 
 
-@register_passable("trivial")
-struct ColorSpaceKHR(Equatable):
+struct ColorSpaceKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2779,8 +2733,7 @@ struct ColorSpaceKHR(Equatable):
     comptime DISPLAY_NATIVE = ColorSpaceKHR(value = 1000213000)
 
 
-@register_passable("trivial")
-struct DisplaySurfaceStereoTypeNV(Equatable):
+struct DisplaySurfaceStereoTypeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2798,8 +2751,7 @@ struct DisplaySurfaceStereoTypeNV(Equatable):
     comptime INBAND_DISPLAYPORT = DisplaySurfaceStereoTypeNV(value = 3)
 
 
-@register_passable("trivial")
-struct TimeDomainKHR(Equatable):
+struct TimeDomainKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2819,8 +2771,7 @@ struct TimeDomainKHR(Equatable):
     comptime SWAPCHAIN_LOCAL = TimeDomainKHR(value = 1000208001)
 
 
-@register_passable("trivial")
-struct DebugReportObjectTypeEXT(Equatable):
+struct DebugReportObjectTypeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2877,8 +2828,7 @@ struct DebugReportObjectTypeEXT(Equatable):
     comptime BUFFER_COLLECTION_FUCHSIA = DebugReportObjectTypeEXT(value = 1000366000)
 
 
-@register_passable("trivial")
-struct DeviceMemoryReportEventTypeEXT(Equatable):
+struct DeviceMemoryReportEventTypeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2897,8 +2847,7 @@ struct DeviceMemoryReportEventTypeEXT(Equatable):
     comptime ALLOCATION_FAILED = DeviceMemoryReportEventTypeEXT(value = 4)
 
 
-@register_passable("trivial")
-struct RasterizationOrderAMD(Equatable):
+struct RasterizationOrderAMD(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2914,8 +2863,7 @@ struct RasterizationOrderAMD(Equatable):
     comptime RELAXED = RasterizationOrderAMD(value = 1)
 
 
-@register_passable("trivial")
-struct ClusterAccelerationStructureTypeNV(Equatable):
+struct ClusterAccelerationStructureTypeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2932,8 +2880,7 @@ struct ClusterAccelerationStructureTypeNV(Equatable):
     comptime TRIANGLE_CLUSTER_TEMPLATE = ClusterAccelerationStructureTypeNV(value = 2)
 
 
-@register_passable("trivial")
-struct ClusterAccelerationStructureOpTypeNV(Equatable):
+struct ClusterAccelerationStructureOpTypeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2953,8 +2900,7 @@ struct ClusterAccelerationStructureOpTypeNV(Equatable):
     comptime GET_CLUSTER_TEMPLATE_INDICES = ClusterAccelerationStructureOpTypeNV(value = 5)
 
 
-@register_passable("trivial")
-struct ClusterAccelerationStructureOpModeNV(Equatable):
+struct ClusterAccelerationStructureOpModeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2971,8 +2917,7 @@ struct ClusterAccelerationStructureOpModeNV(Equatable):
     comptime COMPUTE_SIZES = ClusterAccelerationStructureOpModeNV(value = 2)
 
 
-@register_passable("trivial")
-struct ValidationCheckEXT(Equatable):
+struct ValidationCheckEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -2988,8 +2933,7 @@ struct ValidationCheckEXT(Equatable):
     comptime SHADERS = ValidationCheckEXT(value = 1)
 
 
-@register_passable("trivial")
-struct ValidationFeatureEnableEXT(Equatable):
+struct ValidationFeatureEnableEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3008,8 +2952,7 @@ struct ValidationFeatureEnableEXT(Equatable):
     comptime SYNCHRONIZATION_VALIDATION = ValidationFeatureEnableEXT(value = 4)
 
 
-@register_passable("trivial")
-struct ValidationFeatureDisableEXT(Equatable):
+struct ValidationFeatureDisableEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3031,8 +2974,7 @@ struct ValidationFeatureDisableEXT(Equatable):
     comptime SHADER_VALIDATION_CACHE = ValidationFeatureDisableEXT(value = 7)
 
 
-@register_passable("trivial")
-struct LayerSettingTypeEXT(Equatable):
+struct LayerSettingTypeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3054,8 +2996,7 @@ struct LayerSettingTypeEXT(Equatable):
     comptime STRING = LayerSettingTypeEXT(value = 7)
 
 
-@register_passable("trivial")
-struct IndirectCommandsTokenTypeNV(Equatable):
+struct IndirectCommandsTokenTypeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3081,8 +3022,7 @@ struct IndirectCommandsTokenTypeNV(Equatable):
     comptime DISPATCH = IndirectCommandsTokenTypeNV(value = 1000428004)
 
 
-@register_passable("trivial")
-struct DisplayPowerStateEXT(Equatable):
+struct DisplayPowerStateEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3099,8 +3039,7 @@ struct DisplayPowerStateEXT(Equatable):
     comptime ON = DisplayPowerStateEXT(value = 2)
 
 
-@register_passable("trivial")
-struct DeviceEventTypeEXT(Equatable):
+struct DeviceEventTypeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3115,8 +3054,7 @@ struct DeviceEventTypeEXT(Equatable):
     comptime DISPLAY_HOTPLUG = DeviceEventTypeEXT(value = 0)
 
 
-@register_passable("trivial")
-struct DisplayEventTypeEXT(Equatable):
+struct DisplayEventTypeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3131,8 +3069,7 @@ struct DisplayEventTypeEXT(Equatable):
     comptime FIRST_PIXEL_OUT = DisplayEventTypeEXT(value = 0)
 
 
-@register_passable("trivial")
-struct ViewportCoordinateSwizzleNV(Equatable):
+struct ViewportCoordinateSwizzleNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3154,8 +3091,7 @@ struct ViewportCoordinateSwizzleNV(Equatable):
     comptime NEGATIVE_W = ViewportCoordinateSwizzleNV(value = 7)
 
 
-@register_passable("trivial")
-struct DiscardRectangleModeEXT(Equatable):
+struct DiscardRectangleModeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3171,8 +3107,7 @@ struct DiscardRectangleModeEXT(Equatable):
     comptime EXCLUSIVE = DiscardRectangleModeEXT(value = 1)
 
 
-@register_passable("trivial")
-struct PointClippingBehavior(Equatable):
+struct PointClippingBehavior(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3188,8 +3123,7 @@ struct PointClippingBehavior(Equatable):
     comptime USER_CLIP_PLANES_ONLY = PointClippingBehavior(value = 1)
 
 
-@register_passable("trivial")
-struct SamplerReductionMode(Equatable):
+struct SamplerReductionMode(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3207,8 +3141,7 @@ struct SamplerReductionMode(Equatable):
     comptime WEIGHTED_AVERAGE_RANGECLAMP = SamplerReductionMode(value = 1000521000)
 
 
-@register_passable("trivial")
-struct TessellationDomainOrigin(Equatable):
+struct TessellationDomainOrigin(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3224,8 +3157,7 @@ struct TessellationDomainOrigin(Equatable):
     comptime LOWER_LEFT = TessellationDomainOrigin(value = 1)
 
 
-@register_passable("trivial")
-struct SamplerYcbcrModelConversion(Equatable):
+struct SamplerYcbcrModelConversion(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3244,8 +3176,7 @@ struct SamplerYcbcrModelConversion(Equatable):
     comptime YCBCR_2020 = SamplerYcbcrModelConversion(value = 4)
 
 
-@register_passable("trivial")
-struct SamplerYcbcrRange(Equatable):
+struct SamplerYcbcrRange(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3261,8 +3192,7 @@ struct SamplerYcbcrRange(Equatable):
     comptime ITU_NARROW = SamplerYcbcrRange(value = 1)
 
 
-@register_passable("trivial")
-struct ChromaLocation(Equatable):
+struct ChromaLocation(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3278,8 +3208,7 @@ struct ChromaLocation(Equatable):
     comptime MIDPOINT = ChromaLocation(value = 1)
 
 
-@register_passable("trivial")
-struct BlendOverlapEXT(Equatable):
+struct BlendOverlapEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3296,8 +3225,7 @@ struct BlendOverlapEXT(Equatable):
     comptime CONJOINT = BlendOverlapEXT(value = 2)
 
 
-@register_passable("trivial")
-struct CoverageModulationModeNV(Equatable):
+struct CoverageModulationModeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3315,8 +3243,7 @@ struct CoverageModulationModeNV(Equatable):
     comptime RGBA = CoverageModulationModeNV(value = 3)
 
 
-@register_passable("trivial")
-struct CoverageReductionModeNV(Equatable):
+struct CoverageReductionModeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3332,8 +3259,7 @@ struct CoverageReductionModeNV(Equatable):
     comptime TRUNCATE = CoverageReductionModeNV(value = 1)
 
 
-@register_passable("trivial")
-struct ValidationCacheHeaderVersionEXT(Equatable):
+struct ValidationCacheHeaderVersionEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3348,8 +3274,7 @@ struct ValidationCacheHeaderVersionEXT(Equatable):
     comptime ONE = ValidationCacheHeaderVersionEXT(value = 1)
 
 
-@register_passable("trivial")
-struct ShaderInfoTypeAMD(Equatable):
+struct ShaderInfoTypeAMD(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3366,8 +3291,7 @@ struct ShaderInfoTypeAMD(Equatable):
     comptime DISASSEMBLY = ShaderInfoTypeAMD(value = 2)
 
 
-@register_passable("trivial")
-struct QueueGlobalPriority(Equatable):
+struct QueueGlobalPriority(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3385,8 +3309,7 @@ struct QueueGlobalPriority(Equatable):
     comptime REALTIME = QueueGlobalPriority(value = 1024)
 
 
-@register_passable("trivial")
-struct ConservativeRasterizationModeEXT(Equatable):
+struct ConservativeRasterizationModeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3403,8 +3326,7 @@ struct ConservativeRasterizationModeEXT(Equatable):
     comptime UNDERESTIMATE = ConservativeRasterizationModeEXT(value = 2)
 
 
-@register_passable("trivial")
-struct VendorId(Equatable):
+struct VendorId(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3426,8 +3348,7 @@ struct VendorId(Equatable):
     comptime MOBILEYE = VendorId(value = 65543)
 
 
-@register_passable("trivial")
-struct DriverId(Equatable):
+struct DriverId(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3470,8 +3391,7 @@ struct DriverId(Equatable):
     comptime MESA_KOSMICKRISP = DriverId(value = 28)
 
 
-@register_passable("trivial")
-struct ShadingRatePaletteEntryNV(Equatable):
+struct ShadingRatePaletteEntryNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3497,8 +3417,7 @@ struct ShadingRatePaletteEntryNV(Equatable):
     comptime N_1_INVOCATION_PER_4X4_PIXELS = ShadingRatePaletteEntryNV(value = 11)
 
 
-@register_passable("trivial")
-struct CoarseSampleOrderTypeNV(Equatable):
+struct CoarseSampleOrderTypeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3516,8 +3435,7 @@ struct CoarseSampleOrderTypeNV(Equatable):
     comptime SAMPLE_MAJOR = CoarseSampleOrderTypeNV(value = 3)
 
 
-@register_passable("trivial")
-struct CopyAccelerationStructureModeKHR(Equatable):
+struct CopyAccelerationStructureModeKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3535,8 +3453,7 @@ struct CopyAccelerationStructureModeKHR(Equatable):
     comptime DESERIALIZE = CopyAccelerationStructureModeKHR(value = 3)
 
 
-@register_passable("trivial")
-struct BuildAccelerationStructureModeKHR(Equatable):
+struct BuildAccelerationStructureModeKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3552,8 +3469,7 @@ struct BuildAccelerationStructureModeKHR(Equatable):
     comptime UPDATE = BuildAccelerationStructureModeKHR(value = 1)
 
 
-@register_passable("trivial")
-struct AccelerationStructureTypeKHR(Equatable):
+struct AccelerationStructureTypeKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3570,8 +3486,7 @@ struct AccelerationStructureTypeKHR(Equatable):
     comptime GENERIC = AccelerationStructureTypeKHR(value = 2)
 
 
-@register_passable("trivial")
-struct GeometryTypeKHR(Equatable):
+struct GeometryTypeKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3591,8 +3506,7 @@ struct GeometryTypeKHR(Equatable):
     comptime DENSE_GEOMETRY_FORMAT_TRIANGLES = GeometryTypeKHR(value = 1000478000)
 
 
-@register_passable("trivial")
-struct AccelerationStructureMemoryRequirementsTypeNV(Equatable):
+struct AccelerationStructureMemoryRequirementsTypeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3609,8 +3523,7 @@ struct AccelerationStructureMemoryRequirementsTypeNV(Equatable):
     comptime UPDATE_SCRATCH = AccelerationStructureMemoryRequirementsTypeNV(value = 2)
 
 
-@register_passable("trivial")
-struct AccelerationStructureBuildTypeKHR(Equatable):
+struct AccelerationStructureBuildTypeKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3627,8 +3540,7 @@ struct AccelerationStructureBuildTypeKHR(Equatable):
     comptime HOST_OR_DEVICE = AccelerationStructureBuildTypeKHR(value = 2)
 
 
-@register_passable("trivial")
-struct RayTracingShaderGroupTypeKHR(Equatable):
+struct RayTracingShaderGroupTypeKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3645,8 +3557,7 @@ struct RayTracingShaderGroupTypeKHR(Equatable):
     comptime PROCEDURAL_HIT_GROUP = RayTracingShaderGroupTypeKHR(value = 2)
 
 
-@register_passable("trivial")
-struct AccelerationStructureCompatibilityKHR(Equatable):
+struct AccelerationStructureCompatibilityKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3662,8 +3573,7 @@ struct AccelerationStructureCompatibilityKHR(Equatable):
     comptime INCOMPATIBLE = AccelerationStructureCompatibilityKHR(value = 1)
 
 
-@register_passable("trivial")
-struct ShaderGroupShaderKHR(Equatable):
+struct ShaderGroupShaderKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3681,8 +3591,7 @@ struct ShaderGroupShaderKHR(Equatable):
     comptime INTERSECTION = ShaderGroupShaderKHR(value = 3)
 
 
-@register_passable("trivial")
-struct MemoryOverallocationBehaviorAMD(Equatable):
+struct MemoryOverallocationBehaviorAMD(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3699,8 +3608,7 @@ struct MemoryOverallocationBehaviorAMD(Equatable):
     comptime DISALLOWED = MemoryOverallocationBehaviorAMD(value = 2)
 
 
-@register_passable("trivial")
-struct FullScreenExclusiveEXT(Equatable):
+struct FullScreenExclusiveEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3718,8 +3626,7 @@ struct FullScreenExclusiveEXT(Equatable):
     comptime APPLICATION_CONTROLLED = FullScreenExclusiveEXT(value = 3)
 
 
-@register_passable("trivial")
-struct PerformanceCounterScopeKHR(Equatable):
+struct PerformanceCounterScopeKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3736,8 +3643,7 @@ struct PerformanceCounterScopeKHR(Equatable):
     comptime COMMAND = PerformanceCounterScopeKHR(value = 2)
 
 
-@register_passable("trivial")
-struct PerformanceCounterUnitKHR(Equatable):
+struct PerformanceCounterUnitKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3762,8 +3668,7 @@ struct PerformanceCounterUnitKHR(Equatable):
     comptime CYCLES = PerformanceCounterUnitKHR(value = 10)
 
 
-@register_passable("trivial")
-struct PerformanceCounterStorageKHR(Equatable):
+struct PerformanceCounterStorageKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3783,8 +3688,7 @@ struct PerformanceCounterStorageKHR(Equatable):
     comptime FLOAT64 = PerformanceCounterStorageKHR(value = 5)
 
 
-@register_passable("trivial")
-struct PerformanceConfigurationTypeINTEL(Equatable):
+struct PerformanceConfigurationTypeINTEL(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3799,8 +3703,7 @@ struct PerformanceConfigurationTypeINTEL(Equatable):
     comptime COMMAND_QUEUE_METRICS_DISCOVERY_ACTIVATED = PerformanceConfigurationTypeINTEL(value = 0)
 
 
-@register_passable("trivial")
-struct QueryPoolSamplingModeINTEL(Equatable):
+struct QueryPoolSamplingModeINTEL(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3815,8 +3718,7 @@ struct QueryPoolSamplingModeINTEL(Equatable):
     comptime MANUAL = QueryPoolSamplingModeINTEL(value = 0)
 
 
-@register_passable("trivial")
-struct PerformanceOverrideTypeINTEL(Equatable):
+struct PerformanceOverrideTypeINTEL(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3832,8 +3734,7 @@ struct PerformanceOverrideTypeINTEL(Equatable):
     comptime FLUSH_GPU_CACHES = PerformanceOverrideTypeINTEL(value = 1)
 
 
-@register_passable("trivial")
-struct PerformanceParameterTypeINTEL(Equatable):
+struct PerformanceParameterTypeINTEL(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3849,8 +3750,7 @@ struct PerformanceParameterTypeINTEL(Equatable):
     comptime STREAM_MARKER_VALID_BITS = PerformanceParameterTypeINTEL(value = 1)
 
 
-@register_passable("trivial")
-struct PerformanceValueTypeINTEL(Equatable):
+struct PerformanceValueTypeINTEL(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3869,8 +3769,7 @@ struct PerformanceValueTypeINTEL(Equatable):
     comptime STRING = PerformanceValueTypeINTEL(value = 4)
 
 
-@register_passable("trivial")
-struct ShaderFloatControlsIndependence(Equatable):
+struct ShaderFloatControlsIndependence(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3887,8 +3786,7 @@ struct ShaderFloatControlsIndependence(Equatable):
     comptime NONE = ShaderFloatControlsIndependence(value = 2)
 
 
-@register_passable("trivial")
-struct PipelineExecutableStatisticFormatKHR(Equatable):
+struct PipelineExecutableStatisticFormatKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3906,8 +3804,7 @@ struct PipelineExecutableStatisticFormatKHR(Equatable):
     comptime FLOAT64 = PipelineExecutableStatisticFormatKHR(value = 3)
 
 
-@register_passable("trivial")
-struct LineRasterizationMode(Equatable):
+struct LineRasterizationMode(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3925,8 +3822,7 @@ struct LineRasterizationMode(Equatable):
     comptime RECTANGULAR_SMOOTH = LineRasterizationMode(value = 3)
 
 
-@register_passable("trivial")
-struct FaultLevel(Equatable):
+struct FaultLevel(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3944,8 +3840,7 @@ struct FaultLevel(Equatable):
     comptime WARNING = FaultLevel(value = 3)
 
 
-@register_passable("trivial")
-struct FaultType(Equatable):
+struct FaultType(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3966,8 +3861,7 @@ struct FaultType(Equatable):
     comptime INVALID_API_USAGE = FaultType(value = 6)
 
 
-@register_passable("trivial")
-struct FaultQueryBehavior(Equatable):
+struct FaultQueryBehavior(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3982,8 +3876,7 @@ struct FaultQueryBehavior(Equatable):
     comptime GET_AND_CLEAR_ALL_FAULTS = FaultQueryBehavior(value = 0)
 
 
-@register_passable("trivial")
-struct PipelineMatchControl(Equatable):
+struct PipelineMatchControl(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -3998,8 +3891,7 @@ struct PipelineMatchControl(Equatable):
     comptime APPLICATION_UUID_EXACT_MATCH = PipelineMatchControl(value = 0)
 
 
-@register_passable("trivial")
-struct FragmentShadingRateCombinerOpKHR(Equatable):
+struct FragmentShadingRateCombinerOpKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4018,8 +3910,7 @@ struct FragmentShadingRateCombinerOpKHR(Equatable):
     comptime MUL = FragmentShadingRateCombinerOpKHR(value = 4)
 
 
-@register_passable("trivial")
-struct FragmentShadingRateNV(Equatable):
+struct FragmentShadingRateNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4045,8 +3936,7 @@ struct FragmentShadingRateNV(Equatable):
     comptime NO_INVOCATIONS = FragmentShadingRateNV(value = 15)
 
 
-@register_passable("trivial")
-struct FragmentShadingRateTypeNV(Equatable):
+struct FragmentShadingRateTypeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4062,8 +3952,7 @@ struct FragmentShadingRateTypeNV(Equatable):
     comptime ENUMS = FragmentShadingRateTypeNV(value = 1)
 
 
-@register_passable("trivial")
-struct SubpassMergeStatusEXT(Equatable):
+struct SubpassMergeStatusEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4091,8 +3980,7 @@ struct SubpassMergeStatusEXT(Equatable):
     comptime NOT_MERGED_UNSPECIFIED = SubpassMergeStatusEXT(value = 13)
 
 
-@register_passable("trivial")
-struct SciSyncClientTypeNV(Equatable):
+struct SciSyncClientTypeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4109,8 +3997,7 @@ struct SciSyncClientTypeNV(Equatable):
     comptime SIGNALER_WAITER = SciSyncClientTypeNV(value = 2)
 
 
-@register_passable("trivial")
-struct SciSyncPrimitiveTypeNV(Equatable):
+struct SciSyncPrimitiveTypeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4126,8 +4013,7 @@ struct SciSyncPrimitiveTypeNV(Equatable):
     comptime SEMAPHORE = SciSyncPrimitiveTypeNV(value = 1)
 
 
-@register_passable("trivial")
-struct ProvokingVertexModeEXT(Equatable):
+struct ProvokingVertexModeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4143,8 +4029,7 @@ struct ProvokingVertexModeEXT(Equatable):
     comptime LAST_VERTEX = ProvokingVertexModeEXT(value = 1)
 
 
-@register_passable("trivial")
-struct PipelineCacheValidationVersion(Equatable):
+struct PipelineCacheValidationVersion(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4159,8 +4044,7 @@ struct PipelineCacheValidationVersion(Equatable):
     comptime SAFETY_CRITICAL_ONE = PipelineCacheValidationVersion(value = 1)
 
 
-@register_passable("trivial")
-struct AccelerationStructureMotionInstanceTypeNV(Equatable):
+struct AccelerationStructureMotionInstanceTypeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4177,8 +4061,7 @@ struct AccelerationStructureMotionInstanceTypeNV(Equatable):
     comptime SRT_MOTION = AccelerationStructureMotionInstanceTypeNV(value = 2)
 
 
-@register_passable("trivial")
-struct DeviceAddressBindingTypeEXT(Equatable):
+struct DeviceAddressBindingTypeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4194,8 +4077,7 @@ struct DeviceAddressBindingTypeEXT(Equatable):
     comptime UNBIND = DeviceAddressBindingTypeEXT(value = 1)
 
 
-@register_passable("trivial")
-struct QueryResultStatusKHR(Equatable):
+struct QueryResultStatusKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4213,8 +4095,7 @@ struct QueryResultStatusKHR(Equatable):
     comptime COMPLETE = QueryResultStatusKHR(value = 1)
 
 
-@register_passable("trivial")
-struct VideoEncodeTuningModeKHR(Equatable):
+struct VideoEncodeTuningModeKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4233,8 +4114,7 @@ struct VideoEncodeTuningModeKHR(Equatable):
     comptime LOSSLESS = VideoEncodeTuningModeKHR(value = 4)
 
 
-@register_passable("trivial")
-struct PartitionedAccelerationStructureOpTypeNV(Equatable):
+struct PartitionedAccelerationStructureOpTypeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4251,8 +4131,7 @@ struct PartitionedAccelerationStructureOpTypeNV(Equatable):
     comptime WRITE_PARTITION_TRANSLATION = PartitionedAccelerationStructureOpTypeNV(value = 2)
 
 
-@register_passable("trivial")
-struct VideoEncodeAV1PredictionModeKHR(Equatable):
+struct VideoEncodeAV1PredictionModeKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4270,8 +4149,7 @@ struct VideoEncodeAV1PredictionModeKHR(Equatable):
     comptime BIDIRECTIONAL_COMPOUND = VideoEncodeAV1PredictionModeKHR(value = 3)
 
 
-@register_passable("trivial")
-struct VideoEncodeAV1RateControlGroupKHR(Equatable):
+struct VideoEncodeAV1RateControlGroupKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4288,8 +4166,7 @@ struct VideoEncodeAV1RateControlGroupKHR(Equatable):
     comptime BIPREDICTIVE = VideoEncodeAV1RateControlGroupKHR(value = 2)
 
 
-@register_passable("trivial")
-struct PipelineRobustnessBufferBehavior(Equatable):
+struct PipelineRobustnessBufferBehavior(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4307,8 +4184,7 @@ struct PipelineRobustnessBufferBehavior(Equatable):
     comptime ROBUST_BUFFER_ACCESS_2 = PipelineRobustnessBufferBehavior(value = 3)
 
 
-@register_passable("trivial")
-struct PipelineRobustnessImageBehavior(Equatable):
+struct PipelineRobustnessImageBehavior(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4326,8 +4202,7 @@ struct PipelineRobustnessImageBehavior(Equatable):
     comptime ROBUST_IMAGE_ACCESS_2 = PipelineRobustnessImageBehavior(value = 3)
 
 
-@register_passable("trivial")
-struct OpticalFlowPerformanceLevelNV(Equatable):
+struct OpticalFlowPerformanceLevelNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4345,8 +4220,7 @@ struct OpticalFlowPerformanceLevelNV(Equatable):
     comptime FAST = OpticalFlowPerformanceLevelNV(value = 3)
 
 
-@register_passable("trivial")
-struct OpticalFlowSessionBindingPointNV(Equatable):
+struct OpticalFlowSessionBindingPointNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4369,8 +4243,7 @@ struct OpticalFlowSessionBindingPointNV(Equatable):
     comptime GLOBAL_FLOW = OpticalFlowSessionBindingPointNV(value = 8)
 
 
-@register_passable("trivial")
-struct MicromapTypeEXT(Equatable):
+struct MicromapTypeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4386,8 +4259,7 @@ struct MicromapTypeEXT(Equatable):
     comptime DISPLACEMENT_MICROMAP = MicromapTypeEXT(value = 1000397000)
 
 
-@register_passable("trivial")
-struct CopyMicromapModeEXT(Equatable):
+struct CopyMicromapModeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4405,8 +4277,7 @@ struct CopyMicromapModeEXT(Equatable):
     comptime COMPACT = CopyMicromapModeEXT(value = 3)
 
 
-@register_passable("trivial")
-struct BuildMicromapModeEXT(Equatable):
+struct BuildMicromapModeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4421,8 +4292,7 @@ struct BuildMicromapModeEXT(Equatable):
     comptime BUILD = BuildMicromapModeEXT(value = 0)
 
 
-@register_passable("trivial")
-struct OpacityMicromapFormatEXT(Equatable):
+struct OpacityMicromapFormatEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4438,8 +4308,7 @@ struct OpacityMicromapFormatEXT(Equatable):
     comptime N_4_STATE = OpacityMicromapFormatEXT(value = 2)
 
 
-@register_passable("trivial")
-struct OpacityMicromapSpecialIndexEXT(Equatable):
+struct OpacityMicromapSpecialIndexEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4458,8 +4327,7 @@ struct OpacityMicromapSpecialIndexEXT(Equatable):
     comptime CLUSTER_GEOMETRY_DISABLE_OPACITY_MICROMAP = OpacityMicromapSpecialIndexEXT(value = -5)
 
 
-@register_passable("trivial")
-struct DepthBiasRepresentationEXT(Equatable):
+struct DepthBiasRepresentationEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4476,8 +4344,7 @@ struct DepthBiasRepresentationEXT(Equatable):
     comptime FLOAT = DepthBiasRepresentationEXT(value = 2)
 
 
-@register_passable("trivial")
-struct DeviceFaultAddressTypeEXT(Equatable):
+struct DeviceFaultAddressTypeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4498,8 +4365,7 @@ struct DeviceFaultAddressTypeEXT(Equatable):
     comptime INSTRUCTION_POINTER_FAULT = DeviceFaultAddressTypeEXT(value = 6)
 
 
-@register_passable("trivial")
-struct DeviceFaultVendorBinaryHeaderVersionEXT(Equatable):
+struct DeviceFaultVendorBinaryHeaderVersionEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4514,8 +4380,7 @@ struct DeviceFaultVendorBinaryHeaderVersionEXT(Equatable):
     comptime ONE = DeviceFaultVendorBinaryHeaderVersionEXT(value = 1)
 
 
-@register_passable("trivial")
-struct IndirectExecutionSetInfoTypeEXT(Equatable):
+struct IndirectExecutionSetInfoTypeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4531,8 +4396,7 @@ struct IndirectExecutionSetInfoTypeEXT(Equatable):
     comptime SHADER_OBJECTS = IndirectExecutionSetInfoTypeEXT(value = 1)
 
 
-@register_passable("trivial")
-struct IndirectCommandsTokenTypeEXT(Equatable):
+struct IndirectCommandsTokenTypeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4563,8 +4427,7 @@ struct IndirectCommandsTokenTypeEXT(Equatable):
     comptime TRACE_RAYS2 = IndirectCommandsTokenTypeEXT(value = 1000386004)
 
 
-@register_passable("trivial")
-struct DisplacementMicromapFormatNV(Equatable):
+struct DisplacementMicromapFormatNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4581,8 +4444,7 @@ struct DisplacementMicromapFormatNV(Equatable):
     comptime N_1024_TRIANGLES_128_BYTES = DisplacementMicromapFormatNV(value = 3)
 
 
-@register_passable("trivial")
-struct ShaderCodeTypeEXT(Equatable):
+struct ShaderCodeTypeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4598,8 +4460,7 @@ struct ShaderCodeTypeEXT(Equatable):
     comptime SPIRV = ShaderCodeTypeEXT(value = 1)
 
 
-@register_passable("trivial")
-struct ScopeKHR(Equatable):
+struct ScopeKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4617,8 +4478,7 @@ struct ScopeKHR(Equatable):
     comptime QUEUE_FAMILY = ScopeKHR(value = 5)
 
 
-@register_passable("trivial")
-struct ComponentTypeKHR(Equatable):
+struct ComponentTypeKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4650,8 +4510,7 @@ struct ComponentTypeKHR(Equatable):
     comptime FLOAT_E5M2 = ComponentTypeKHR(value = 1000491003)
 
 
-@register_passable("trivial")
-struct CubicFilterWeightsQCOM(Equatable):
+struct CubicFilterWeightsQCOM(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4669,8 +4528,7 @@ struct CubicFilterWeightsQCOM(Equatable):
     comptime MITCHELL_NETRAVALI = CubicFilterWeightsQCOM(value = 3)
 
 
-@register_passable("trivial")
-struct BlockMatchWindowCompareModeQCOM(Equatable):
+struct BlockMatchWindowCompareModeQCOM(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4686,8 +4544,7 @@ struct BlockMatchWindowCompareModeQCOM(Equatable):
     comptime MAX = BlockMatchWindowCompareModeQCOM(value = 1)
 
 
-@register_passable("trivial")
-struct PhysicalDeviceLayeredApiKHR(Equatable):
+struct PhysicalDeviceLayeredApiKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4706,8 +4563,7 @@ struct PhysicalDeviceLayeredApiKHR(Equatable):
     comptime OPENGLES = PhysicalDeviceLayeredApiKHR(value = 4)
 
 
-@register_passable("trivial")
-struct LayeredDriverUnderlyingApiMSFT(Equatable):
+struct LayeredDriverUnderlyingApiMSFT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4723,8 +4579,7 @@ struct LayeredDriverUnderlyingApiMSFT(Equatable):
     comptime D3D12 = LayeredDriverUnderlyingApiMSFT(value = 1)
 
 
-@register_passable("trivial")
-struct LatencyMarkerNV(Equatable):
+struct LatencyMarkerNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4750,8 +4605,7 @@ struct LatencyMarkerNV(Equatable):
     comptime OUT_OF_BAND_PRESENT_END = LatencyMarkerNV(value = 11)
 
 
-@register_passable("trivial")
-struct OutOfBandQueueTypeNV(Equatable):
+struct OutOfBandQueueTypeNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4767,8 +4621,7 @@ struct OutOfBandQueueTypeNV(Equatable):
     comptime PRESENT = OutOfBandQueueTypeNV(value = 1)
 
 
-@register_passable("trivial")
-struct CompressedTriangleFormatAMDX(Equatable):
+struct CompressedTriangleFormatAMDX(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4783,8 +4636,7 @@ struct CompressedTriangleFormatAMDX(Equatable):
     comptime DGF1 = CompressedTriangleFormatAMDX(value = 0)
 
 
-@register_passable("trivial")
-struct DepthClampModeEXT(Equatable):
+struct DepthClampModeEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4800,8 +4652,7 @@ struct DepthClampModeEXT(Equatable):
     comptime USER_DEFINED_RANGE = DepthClampModeEXT(value = 1)
 
 
-@register_passable("trivial")
-struct CooperativeVectorMatrixLayoutNV(Equatable):
+struct CooperativeVectorMatrixLayoutNV(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4819,8 +4670,7 @@ struct CooperativeVectorMatrixLayoutNV(Equatable):
     comptime TRAINING_OPTIMAL = CooperativeVectorMatrixLayoutNV(value = 3)
 
 
-@register_passable("trivial")
-struct TensorTilingARM(Equatable):
+struct TensorTilingARM(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4836,8 +4686,7 @@ struct TensorTilingARM(Equatable):
     comptime LINEAR = TensorTilingARM(value = 1)
 
 
-@register_passable("trivial")
-struct DefaultVertexAttributeValueKHR(Equatable):
+struct DefaultVertexAttributeValueKHR(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4853,8 +4702,7 @@ struct DefaultVertexAttributeValueKHR(Equatable):
     comptime ZERO_ZERO_ZERO_ONE = DefaultVertexAttributeValueKHR(value = 1)
 
 
-@register_passable("trivial")
-struct DataGraphPipelineSessionBindPointARM(Equatable):
+struct DataGraphPipelineSessionBindPointARM(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4869,8 +4717,7 @@ struct DataGraphPipelineSessionBindPointARM(Equatable):
     comptime TRANSIENT = DataGraphPipelineSessionBindPointARM(value = 0)
 
 
-@register_passable("trivial")
-struct DataGraphPipelineSessionBindPointTypeARM(Equatable):
+struct DataGraphPipelineSessionBindPointTypeARM(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4885,8 +4732,7 @@ struct DataGraphPipelineSessionBindPointTypeARM(Equatable):
     comptime MEMORY = DataGraphPipelineSessionBindPointTypeARM(value = 0)
 
 
-@register_passable("trivial")
-struct DataGraphPipelinePropertyARM(Equatable):
+struct DataGraphPipelinePropertyARM(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4902,8 +4748,7 @@ struct DataGraphPipelinePropertyARM(Equatable):
     comptime IDENTIFIER = DataGraphPipelinePropertyARM(value = 1)
 
 
-@register_passable("trivial")
-struct PhysicalDeviceDataGraphProcessingEngineTypeARM(Equatable):
+struct PhysicalDeviceDataGraphProcessingEngineTypeARM(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4920,8 +4765,7 @@ struct PhysicalDeviceDataGraphProcessingEngineTypeARM(Equatable):
     comptime COMPUTE = PhysicalDeviceDataGraphProcessingEngineTypeARM(value = 1000629001)
 
 
-@register_passable("trivial")
-struct PhysicalDeviceDataGraphOperationTypeARM(Equatable):
+struct PhysicalDeviceDataGraphOperationTypeARM(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4938,8 +4782,7 @@ struct PhysicalDeviceDataGraphOperationTypeARM(Equatable):
     comptime BUILTIN_MODEL = PhysicalDeviceDataGraphOperationTypeARM(value = 1000629001)
 
 
-@register_passable("trivial")
-struct DataGraphModelCacheTypeQCOM(Equatable):
+struct DataGraphModelCacheTypeQCOM(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -4954,8 +4797,7 @@ struct DataGraphModelCacheTypeQCOM(Equatable):
     comptime GENERIC_BINARY = DataGraphModelCacheTypeQCOM(value = 0)
 
 
-@register_passable("trivial")
-struct DescriptorMappingSourceEXT(Equatable):
+struct DescriptorMappingSourceEXT(TrivialRegisterType, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):

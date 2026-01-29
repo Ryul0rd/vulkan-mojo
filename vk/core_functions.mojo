@@ -77,7 +77,7 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
             result = self._v1_0.enumerate_instance_extension_properties(
         Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
         Ptr(to=count),
-        Ptr[ExtensionProperties, MutOrigin.external](),
+        Ptr[ExtensionProperties, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -112,7 +112,7 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_layer_properties(
-        Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+        Ptr(to=count), Ptr[LayerProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -186,7 +186,7 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
             result = self._v1_0.enumerate_instance_extension_properties(
         Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
         Ptr(to=count),
-        Ptr[ExtensionProperties, MutOrigin.external](),
+        Ptr[ExtensionProperties, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -221,7 +221,7 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_layer_properties(
-        Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+        Ptr(to=count), Ptr[LayerProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -302,7 +302,7 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
             result = self._v1_0.enumerate_instance_extension_properties(
         Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
         Ptr(to=count),
-        Ptr[ExtensionProperties, MutOrigin.external](),
+        Ptr[ExtensionProperties, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -337,7 +337,7 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_layer_properties(
-        Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+        Ptr(to=count), Ptr[LayerProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -418,7 +418,7 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
             result = self._v1_0.enumerate_instance_extension_properties(
         Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
         Ptr(to=count),
-        Ptr[ExtensionProperties, MutOrigin.external](),
+        Ptr[ExtensionProperties, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -453,7 +453,7 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_layer_properties(
-        Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+        Ptr(to=count), Ptr[LayerProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -534,7 +534,7 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
             result = self._v1_0.enumerate_instance_extension_properties(
         Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
         Ptr(to=count),
-        Ptr[ExtensionProperties, MutOrigin.external](),
+        Ptr[ExtensionProperties, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -569,7 +569,7 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_layer_properties(
-        Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+        Ptr(to=count), Ptr[LayerProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -632,7 +632,7 @@ struct InstanceFunctionsV1_0(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_physical_devices(
-        instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
+        instance, Ptr(to=count), Ptr[PhysicalDevice, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -720,7 +720,7 @@ struct InstanceFunctionsV1_0(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
@@ -806,7 +806,7 @@ struct InstanceFunctionsV1_0(Copyable):
         physical_device,
         Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
         Ptr(to=count),
-        Ptr[ExtensionProperties, MutOrigin.external](),
+        Ptr[ExtensionProperties, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -847,7 +847,7 @@ struct InstanceFunctionsV1_0(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_layer_properties(
-        physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[LayerProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -910,7 +910,7 @@ struct InstanceFunctionsV1_0(Copyable):
     usage,
     tiling,
     Ptr(to=count),
-    Ptr[SparseImageFormatProperties, MutOrigin.external](),
+    Ptr[SparseImageFormatProperties, MutExternalOrigin](),
 )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
@@ -969,7 +969,7 @@ struct InstanceFunctionsV1_1(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_physical_devices(
-        instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
+        instance, Ptr(to=count), Ptr[PhysicalDevice, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1057,7 +1057,7 @@ struct InstanceFunctionsV1_1(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
@@ -1143,7 +1143,7 @@ struct InstanceFunctionsV1_1(Copyable):
         physical_device,
         Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
         Ptr(to=count),
-        Ptr[ExtensionProperties, MutOrigin.external](),
+        Ptr[ExtensionProperties, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1184,7 +1184,7 @@ struct InstanceFunctionsV1_1(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_layer_properties(
-        physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[LayerProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1247,7 +1247,7 @@ struct InstanceFunctionsV1_1(Copyable):
     usage,
     tiling,
     Ptr(to=count),
-    Ptr[SparseImageFormatProperties, MutOrigin.external](),
+    Ptr[SparseImageFormatProperties, MutExternalOrigin](),
 )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
@@ -1288,7 +1288,7 @@ struct InstanceFunctionsV1_1(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_1.enumerate_physical_device_groups(
-        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
+        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1372,7 +1372,7 @@ struct InstanceFunctionsV1_1(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_queue_family_properties_2(
-    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_queue_family_properties_2(
@@ -1429,7 +1429,7 @@ struct InstanceFunctionsV1_1(Copyable):
     physical_device,
     Ptr(to=format_info),
     Ptr(to=count),
-    Ptr[SparseImageFormatProperties2, MutOrigin.external](),
+    Ptr[SparseImageFormatProperties2, MutExternalOrigin](),
 )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
@@ -1530,7 +1530,7 @@ struct InstanceFunctionsV1_2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_physical_devices(
-        instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
+        instance, Ptr(to=count), Ptr[PhysicalDevice, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1618,7 +1618,7 @@ struct InstanceFunctionsV1_2(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
@@ -1704,7 +1704,7 @@ struct InstanceFunctionsV1_2(Copyable):
         physical_device,
         Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
         Ptr(to=count),
-        Ptr[ExtensionProperties, MutOrigin.external](),
+        Ptr[ExtensionProperties, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1745,7 +1745,7 @@ struct InstanceFunctionsV1_2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_layer_properties(
-        physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[LayerProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1808,7 +1808,7 @@ struct InstanceFunctionsV1_2(Copyable):
     usage,
     tiling,
     Ptr(to=count),
-    Ptr[SparseImageFormatProperties, MutOrigin.external](),
+    Ptr[SparseImageFormatProperties, MutExternalOrigin](),
 )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
@@ -1849,7 +1849,7 @@ struct InstanceFunctionsV1_2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_1.enumerate_physical_device_groups(
-        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
+        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1933,7 +1933,7 @@ struct InstanceFunctionsV1_2(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_queue_family_properties_2(
-    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_queue_family_properties_2(
@@ -1990,7 +1990,7 @@ struct InstanceFunctionsV1_2(Copyable):
     physical_device,
     Ptr(to=format_info),
     Ptr(to=count),
-    Ptr[SparseImageFormatProperties2, MutOrigin.external](),
+    Ptr[SparseImageFormatProperties2, MutExternalOrigin](),
 )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
@@ -2093,7 +2093,7 @@ struct InstanceFunctionsV1_3(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_physical_devices(
-        instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
+        instance, Ptr(to=count), Ptr[PhysicalDevice, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2181,7 +2181,7 @@ struct InstanceFunctionsV1_3(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
@@ -2267,7 +2267,7 @@ struct InstanceFunctionsV1_3(Copyable):
         physical_device,
         Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
         Ptr(to=count),
-        Ptr[ExtensionProperties, MutOrigin.external](),
+        Ptr[ExtensionProperties, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2308,7 +2308,7 @@ struct InstanceFunctionsV1_3(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_layer_properties(
-        physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[LayerProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2371,7 +2371,7 @@ struct InstanceFunctionsV1_3(Copyable):
     usage,
     tiling,
     Ptr(to=count),
-    Ptr[SparseImageFormatProperties, MutOrigin.external](),
+    Ptr[SparseImageFormatProperties, MutExternalOrigin](),
 )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
@@ -2412,7 +2412,7 @@ struct InstanceFunctionsV1_3(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_1.enumerate_physical_device_groups(
-        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
+        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2496,7 +2496,7 @@ struct InstanceFunctionsV1_3(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_queue_family_properties_2(
-    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_queue_family_properties_2(
@@ -2553,7 +2553,7 @@ struct InstanceFunctionsV1_3(Copyable):
     physical_device,
     Ptr(to=format_info),
     Ptr(to=count),
-    Ptr[SparseImageFormatProperties2, MutOrigin.external](),
+    Ptr[SparseImageFormatProperties2, MutExternalOrigin](),
 )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
@@ -2632,7 +2632,7 @@ struct InstanceFunctionsV1_3(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_3.get_physical_device_tool_properties(
-        physical_device, Ptr(to=count), Ptr[PhysicalDeviceToolProperties, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[PhysicalDeviceToolProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2694,7 +2694,7 @@ struct InstanceFunctionsV1_4(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_physical_devices(
-        instance, Ptr(to=count), Ptr[PhysicalDevice, MutOrigin.external]()
+        instance, Ptr(to=count), Ptr[PhysicalDevice, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2782,7 +2782,7 @@ struct InstanceFunctionsV1_4(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutOrigin.external]()
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
@@ -2868,7 +2868,7 @@ struct InstanceFunctionsV1_4(Copyable):
         physical_device,
         Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutAnyOrigin]]()[],
         Ptr(to=count),
-        Ptr[ExtensionProperties, MutOrigin.external](),
+        Ptr[ExtensionProperties, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2909,7 +2909,7 @@ struct InstanceFunctionsV1_4(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_layer_properties(
-        physical_device, Ptr(to=count), Ptr[LayerProperties, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[LayerProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2972,7 +2972,7 @@ struct InstanceFunctionsV1_4(Copyable):
     usage,
     tiling,
     Ptr(to=count),
-    Ptr[SparseImageFormatProperties, MutOrigin.external](),
+    Ptr[SparseImageFormatProperties, MutExternalOrigin](),
 )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
@@ -3013,7 +3013,7 @@ struct InstanceFunctionsV1_4(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_1.enumerate_physical_device_groups(
-        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutOrigin.external]()
+        instance, Ptr(to=count), Ptr[PhysicalDeviceGroupProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -3097,7 +3097,7 @@ struct InstanceFunctionsV1_4(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_queue_family_properties_2(
-    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutOrigin.external]()
+    physical_device, Ptr(to=count), Ptr[QueueFamilyProperties2, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_queue_family_properties_2(
@@ -3154,7 +3154,7 @@ struct InstanceFunctionsV1_4(Copyable):
     physical_device,
     Ptr(to=format_info),
     Ptr(to=count),
-    Ptr[SparseImageFormatProperties2, MutOrigin.external](),
+    Ptr[SparseImageFormatProperties2, MutExternalOrigin](),
 )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
@@ -3233,7 +3233,7 @@ struct InstanceFunctionsV1_4(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_3.get_physical_device_tool_properties(
-        physical_device, Ptr(to=count), Ptr[PhysicalDeviceToolProperties, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[PhysicalDeviceToolProperties, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -3482,7 +3482,7 @@ struct DeviceFunctionsV1_0(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
+    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(device, image, Ptr(to=count), list.unsafe_ptr())
@@ -4290,7 +4290,7 @@ struct DeviceFunctionsV1_0(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
-        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -5381,7 +5381,7 @@ struct DeviceFunctionsV1_1(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
+    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(device, image, Ptr(to=count), list.unsafe_ptr())
@@ -6189,7 +6189,7 @@ struct DeviceFunctionsV1_1(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
-        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -7152,7 +7152,7 @@ struct DeviceFunctionsV1_1(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_1.get_image_sparse_memory_requirements_2(
-    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_1.get_image_sparse_memory_requirements_2(
@@ -7542,7 +7542,7 @@ struct DeviceFunctionsV1_2(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
+    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(device, image, Ptr(to=count), list.unsafe_ptr())
@@ -8350,7 +8350,7 @@ struct DeviceFunctionsV1_2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
-        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -9313,7 +9313,7 @@ struct DeviceFunctionsV1_2(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_1.get_image_sparse_memory_requirements_2(
-    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_1.get_image_sparse_memory_requirements_2(
@@ -9857,7 +9857,7 @@ struct DeviceFunctionsV1_3(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
+    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(device, image, Ptr(to=count), list.unsafe_ptr())
@@ -10665,7 +10665,7 @@ struct DeviceFunctionsV1_3(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
-        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -11628,7 +11628,7 @@ struct DeviceFunctionsV1_3(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_1.get_image_sparse_memory_requirements_2(
-    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_1.get_image_sparse_memory_requirements_2(
@@ -12120,7 +12120,7 @@ struct DeviceFunctionsV1_3(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_3.get_device_image_sparse_memory_requirements(
-    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_3.get_device_image_sparse_memory_requirements(
@@ -12606,7 +12606,7 @@ struct DeviceFunctionsV1_4(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutOrigin.external]()
+    device, image, Ptr(to=count), Ptr[SparseImageMemoryRequirements, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(device, image, Ptr(to=count), list.unsafe_ptr())
@@ -13414,7 +13414,7 @@ struct DeviceFunctionsV1_4(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.get_pipeline_cache_data(
-        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+        device, pipeline_cache, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -14377,7 +14377,7 @@ struct DeviceFunctionsV1_4(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_1.get_image_sparse_memory_requirements_2(
-    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_1.get_image_sparse_memory_requirements_2(
@@ -14869,7 +14869,7 @@ struct DeviceFunctionsV1_4(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_3.get_device_image_sparse_memory_requirements(
-    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutOrigin.external]()
+    device, Ptr(to=info), Ptr(to=count), Ptr[SparseImageMemoryRequirements2, MutExternalOrigin]()
 )
         list.reserve(Int(count))
         self._v1_3.get_device_image_sparse_memory_requirements(

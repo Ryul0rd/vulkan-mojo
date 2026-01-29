@@ -788,7 +788,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
         """
         var list = List[CheckpointDataNV]()
         var count: UInt32 = 0
-        self._get_queue_checkpoint_data(queue, Ptr(to=count), Ptr[CheckpointDataNV, MutOrigin.external]())
+        self._get_queue_checkpoint_data(queue, Ptr(to=count), Ptr[CheckpointDataNV, MutExternalOrigin]())
         list.reserve(Int(count))
         self._get_queue_checkpoint_data(queue, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
@@ -819,9 +819,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
         """
         var list = List[CheckpointData2NV]()
         var count: UInt32 = 0
-        self._get_queue_checkpoint_data_2(
-    queue, Ptr(to=count), Ptr[CheckpointData2NV, MutOrigin.external]()
-)
+        self._get_queue_checkpoint_data_2(queue, Ptr(to=count), Ptr[CheckpointData2NV, MutExternalOrigin]())
         list.reserve(Int(count))
         self._get_queue_checkpoint_data_2(queue, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
@@ -877,7 +875,7 @@ struct CooperativeMatrix(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_cooperative_matrix_properties(
-        physical_device, Ptr(to=count), Ptr[CooperativeMatrixPropertiesNV, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[CooperativeMatrixPropertiesNV, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -939,7 +937,7 @@ struct CoverageReductionMode(Copyable):
             result = self._get_physical_device_supported_framebuffer_mixed_samples_combinations(
         physical_device,
         Ptr(to=count),
-        Ptr[FramebufferMixedSamplesCombinationNV, MutOrigin.external](),
+        Ptr[FramebufferMixedSamplesCombinationNV, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1197,7 +1195,7 @@ struct CudaKernelLaunch(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_cuda_module_cache(
-        device, module, Ptr(to=count), Ptr[NoneType, MutOrigin.external]()
+        device, module, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1644,7 +1642,7 @@ struct OpticalFlow(Copyable):
         physical_device,
         Ptr(to=optical_flow_image_format_info),
         Ptr(to=count),
-        Ptr[OpticalFlowImageFormatPropertiesNV, MutOrigin.external](),
+        Ptr[OpticalFlowImageFormatPropertiesNV, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1776,7 +1774,7 @@ struct CooperativeVector(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_cooperative_vector_properties(
-        physical_device, Ptr(to=count), Ptr[CooperativeVectorPropertiesNV, MutOrigin.external]()
+        physical_device, Ptr(to=count), Ptr[CooperativeVectorPropertiesNV, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2136,7 +2134,7 @@ struct CooperativeMatrix2(Copyable):
             result = self._get_physical_device_cooperative_matrix_flexible_dimensions_properties(
         physical_device,
         Ptr(to=count),
-        Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutOrigin.external](),
+        Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutExternalOrigin](),
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))

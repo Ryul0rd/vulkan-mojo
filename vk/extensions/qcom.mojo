@@ -114,7 +114,7 @@ struct TileProperties(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_framebuffer_tile_properties(
-        device, framebuffer, Ptr(to=count), Ptr[TilePropertiesQCOM, MutOrigin.external]()
+        device, framebuffer, Ptr(to=count), Ptr[TilePropertiesQCOM, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))

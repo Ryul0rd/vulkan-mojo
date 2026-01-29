@@ -33,15 +33,12 @@ comptime PresentScalingFlagsEXT = PresentScalingFlagsKHR
 comptime PresentGravityFlagsEXT = PresentGravityFlagsKHR
 
 
-@register_passable("trivial")
-struct FramebufferCreateFlags(Equatable):
+struct FramebufferCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: FramebufferCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: FramebufferCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -79,8 +76,7 @@ struct FramebufferCreateFlags(Equatable):
     comptime IMAGELESS = Self(value = FramebufferCreateFlagBits.IMAGELESS.value())
 
 
-@register_passable("trivial")
-struct FramebufferCreateFlagBits(Equatable):
+struct FramebufferCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -98,15 +94,12 @@ struct FramebufferCreateFlagBits(Equatable):
     comptime IMAGELESS = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct QueryPoolCreateFlags(Equatable):
+struct QueryPoolCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: QueryPoolCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: QueryPoolCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -144,8 +137,7 @@ struct QueryPoolCreateFlags(Equatable):
     comptime RESET = Self(value = QueryPoolCreateFlagBits.RESET.value())
 
 
-@register_passable("trivial")
-struct QueryPoolCreateFlagBits(Equatable):
+struct QueryPoolCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -163,15 +155,12 @@ struct QueryPoolCreateFlagBits(Equatable):
     comptime RESET = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct RenderPassCreateFlags(Equatable):
+struct RenderPassCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: RenderPassCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: RenderPassCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -212,8 +201,7 @@ struct RenderPassCreateFlags(Equatable):
     comptime RESERVED_3 = Self(value = RenderPassCreateFlagBits.RESERVED_3.value())
 
 
-@register_passable("trivial")
-struct RenderPassCreateFlagBits(Equatable):
+struct RenderPassCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -234,15 +222,12 @@ struct RenderPassCreateFlagBits(Equatable):
     comptime RESERVED_3 = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct SamplerCreateFlags(Equatable):
+struct SamplerCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SamplerCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SamplerCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -284,8 +269,7 @@ struct SamplerCreateFlags(Equatable):
     comptime IMAGE_PROCESSING = Self(value = SamplerCreateFlagBits.IMAGE_PROCESSING.value())
 
 
-@register_passable("trivial")
-struct SamplerCreateFlagBits(Equatable):
+struct SamplerCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -307,15 +291,12 @@ struct SamplerCreateFlagBits(Equatable):
     comptime IMAGE_PROCESSING = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct PipelineLayoutCreateFlags(Equatable):
+struct PipelineLayoutCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineLayoutCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineLayoutCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -354,8 +335,7 @@ struct PipelineLayoutCreateFlags(Equatable):
     comptime INDEPENDENT_SETS = Self(value = PipelineLayoutCreateFlagBits.INDEPENDENT_SETS.value())
 
 
-@register_passable("trivial")
-struct PipelineLayoutCreateFlagBits(Equatable):
+struct PipelineLayoutCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -374,15 +354,12 @@ struct PipelineLayoutCreateFlagBits(Equatable):
     comptime INDEPENDENT_SETS = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct PipelineCacheCreateFlags(Equatable):
+struct PipelineCacheCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineCacheCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineCacheCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -423,8 +400,7 @@ struct PipelineCacheCreateFlags(Equatable):
     comptime INTERNALLY_SYNCHRONIZED_MERGE = Self(value = PipelineCacheCreateFlagBits.INTERNALLY_SYNCHRONIZED_MERGE.value())
 
 
-@register_passable("trivial")
-struct PipelineCacheCreateFlagBits(Equatable):
+struct PipelineCacheCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -445,15 +421,12 @@ struct PipelineCacheCreateFlagBits(Equatable):
     comptime INTERNALLY_SYNCHRONIZED_MERGE = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct PipelineDepthStencilStateCreateFlags(Equatable):
+struct PipelineDepthStencilStateCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineDepthStencilStateCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineDepthStencilStateCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -489,8 +462,7 @@ struct PipelineDepthStencilStateCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineDepthStencilStateCreateFlagBits(Equatable):
+struct PipelineDepthStencilStateCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -506,15 +478,12 @@ struct PipelineDepthStencilStateCreateFlagBits(Equatable):
         return PipelineDepthStencilStateCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineDynamicStateCreateFlags(Equatable):
+struct PipelineDynamicStateCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineDynamicStateCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineDynamicStateCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -550,8 +519,7 @@ struct PipelineDynamicStateCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineDynamicStateCreateFlagBits(Equatable):
+struct PipelineDynamicStateCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -567,15 +535,12 @@ struct PipelineDynamicStateCreateFlagBits(Equatable):
         return PipelineDynamicStateCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineColorBlendStateCreateFlags(Equatable):
+struct PipelineColorBlendStateCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineColorBlendStateCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineColorBlendStateCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -611,8 +576,7 @@ struct PipelineColorBlendStateCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineColorBlendStateCreateFlagBits(Equatable):
+struct PipelineColorBlendStateCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -628,15 +592,12 @@ struct PipelineColorBlendStateCreateFlagBits(Equatable):
         return PipelineColorBlendStateCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineMultisampleStateCreateFlags(Equatable):
+struct PipelineMultisampleStateCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineMultisampleStateCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineMultisampleStateCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -672,8 +633,7 @@ struct PipelineMultisampleStateCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineMultisampleStateCreateFlagBits(Equatable):
+struct PipelineMultisampleStateCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -689,15 +649,12 @@ struct PipelineMultisampleStateCreateFlagBits(Equatable):
         return PipelineMultisampleStateCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineRasterizationStateCreateFlags(Equatable):
+struct PipelineRasterizationStateCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineRasterizationStateCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineRasterizationStateCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -733,8 +690,7 @@ struct PipelineRasterizationStateCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineRasterizationStateCreateFlagBits(Equatable):
+struct PipelineRasterizationStateCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -750,15 +706,12 @@ struct PipelineRasterizationStateCreateFlagBits(Equatable):
         return PipelineRasterizationStateCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineViewportStateCreateFlags(Equatable):
+struct PipelineViewportStateCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineViewportStateCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineViewportStateCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -794,8 +747,7 @@ struct PipelineViewportStateCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineViewportStateCreateFlagBits(Equatable):
+struct PipelineViewportStateCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -811,15 +763,12 @@ struct PipelineViewportStateCreateFlagBits(Equatable):
         return PipelineViewportStateCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineTessellationStateCreateFlags(Equatable):
+struct PipelineTessellationStateCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineTessellationStateCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineTessellationStateCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -855,8 +804,7 @@ struct PipelineTessellationStateCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineTessellationStateCreateFlagBits(Equatable):
+struct PipelineTessellationStateCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -872,15 +820,12 @@ struct PipelineTessellationStateCreateFlagBits(Equatable):
         return PipelineTessellationStateCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineInputAssemblyStateCreateFlags(Equatable):
+struct PipelineInputAssemblyStateCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineInputAssemblyStateCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineInputAssemblyStateCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -916,8 +861,7 @@ struct PipelineInputAssemblyStateCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineInputAssemblyStateCreateFlagBits(Equatable):
+struct PipelineInputAssemblyStateCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -933,15 +877,12 @@ struct PipelineInputAssemblyStateCreateFlagBits(Equatable):
         return PipelineInputAssemblyStateCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineVertexInputStateCreateFlags(Equatable):
+struct PipelineVertexInputStateCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineVertexInputStateCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineVertexInputStateCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -977,8 +918,7 @@ struct PipelineVertexInputStateCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineVertexInputStateCreateFlagBits(Equatable):
+struct PipelineVertexInputStateCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -994,15 +934,12 @@ struct PipelineVertexInputStateCreateFlagBits(Equatable):
         return PipelineVertexInputStateCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineShaderStageCreateFlags(Equatable):
+struct PipelineShaderStageCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineShaderStageCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineShaderStageCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -1042,8 +979,7 @@ struct PipelineShaderStageCreateFlags(Equatable):
     comptime RESERVED_3 = Self(value = PipelineShaderStageCreateFlagBits.RESERVED_3.value())
 
 
-@register_passable("trivial")
-struct PipelineShaderStageCreateFlagBits(Equatable):
+struct PipelineShaderStageCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -1063,15 +999,12 @@ struct PipelineShaderStageCreateFlagBits(Equatable):
     comptime RESERVED_3 = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct DescriptorSetLayoutCreateFlags(Equatable):
+struct DescriptorSetLayoutCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DescriptorSetLayoutCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DescriptorSetLayoutCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -1115,8 +1048,7 @@ struct DescriptorSetLayoutCreateFlags(Equatable):
     comptime INDIRECT_BINDABLE = Self(value = DescriptorSetLayoutCreateFlagBits.INDIRECT_BINDABLE.value())
 
 
-@register_passable("trivial")
-struct DescriptorSetLayoutCreateFlagBits(Equatable):
+struct DescriptorSetLayoutCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -1140,15 +1072,12 @@ struct DescriptorSetLayoutCreateFlagBits(Equatable):
     comptime INDIRECT_BINDABLE = Self(value = 1 << 7)
 
 
-@register_passable("trivial")
-struct BufferViewCreateFlags(Equatable):
+struct BufferViewCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: BufferViewCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: BufferViewCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -1184,8 +1113,7 @@ struct BufferViewCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct BufferViewCreateFlagBits(Equatable):
+struct BufferViewCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -1201,15 +1129,12 @@ struct BufferViewCreateFlagBits(Equatable):
         return BufferViewCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct InstanceCreateFlags(Equatable):
+struct InstanceCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: InstanceCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: InstanceCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -1248,8 +1173,7 @@ struct InstanceCreateFlags(Equatable):
     comptime RESERVED_616 = Self(value = InstanceCreateFlagBits.RESERVED_616.value())
 
 
-@register_passable("trivial")
-struct InstanceCreateFlagBits(Equatable):
+struct InstanceCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -1268,15 +1192,12 @@ struct InstanceCreateFlagBits(Equatable):
     comptime RESERVED_616 = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct DeviceCreateFlags(Equatable):
+struct DeviceCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DeviceCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DeviceCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -1312,8 +1233,7 @@ struct DeviceCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct DeviceCreateFlagBits(Equatable):
+struct DeviceCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -1329,15 +1249,12 @@ struct DeviceCreateFlagBits(Equatable):
         return DeviceCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct DeviceQueueCreateFlags(Equatable):
+struct DeviceQueueCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DeviceQueueCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DeviceQueueCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -1377,8 +1294,7 @@ struct DeviceQueueCreateFlags(Equatable):
     comptime INTERNALLY_SYNCHRONIZED = Self(value = DeviceQueueCreateFlagBits.INTERNALLY_SYNCHRONIZED.value())
 
 
-@register_passable("trivial")
-struct DeviceQueueCreateFlagBits(Equatable):
+struct DeviceQueueCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -1398,15 +1314,12 @@ struct DeviceQueueCreateFlagBits(Equatable):
     comptime INTERNALLY_SYNCHRONIZED = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct QueueFlags(Equatable):
+struct QueueFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: QueueFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: QueueFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -1457,8 +1370,7 @@ struct QueueFlags(Equatable):
     comptime RESERVED_13 = Self(value = QueueFlagBits.RESERVED_13.value())
 
 
-@register_passable("trivial")
-struct QueueFlagBits(Equatable):
+struct QueueFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -1489,15 +1401,12 @@ struct QueueFlagBits(Equatable):
     comptime RESERVED_13 = Self(value = 1 << 13)
 
 
-@register_passable("trivial")
-struct MemoryPropertyFlags(Equatable):
+struct MemoryPropertyFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: MemoryPropertyFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: MemoryPropertyFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -1543,8 +1452,7 @@ struct MemoryPropertyFlags(Equatable):
     comptime RDMA_CAPABLE = Self(value = MemoryPropertyFlagBits.RDMA_CAPABLE.value())
 
 
-@register_passable("trivial")
-struct MemoryPropertyFlagBits(Equatable):
+struct MemoryPropertyFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -1570,15 +1478,12 @@ struct MemoryPropertyFlagBits(Equatable):
     comptime RDMA_CAPABLE = Self(value = 1 << 8)
 
 
-@register_passable("trivial")
-struct MemoryHeapFlags(Equatable):
+struct MemoryHeapFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: MemoryHeapFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: MemoryHeapFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -1619,8 +1524,7 @@ struct MemoryHeapFlags(Equatable):
     comptime TILE_MEMORY = Self(value = MemoryHeapFlagBits.TILE_MEMORY.value())
 
 
-@register_passable("trivial")
-struct MemoryHeapFlagBits(Equatable):
+struct MemoryHeapFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -1641,15 +1545,12 @@ struct MemoryHeapFlagBits(Equatable):
     comptime TILE_MEMORY = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct AccessFlags(Equatable):
+struct AccessFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: AccessFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: AccessFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -1713,8 +1614,7 @@ struct AccessFlags(Equatable):
     comptime TRANSFORM_FEEDBACK_COUNTER_WRITE = Self(value = AccessFlagBits.TRANSFORM_FEEDBACK_COUNTER_WRITE.value())
 
 
-@register_passable("trivial")
-struct AccessFlagBits(Equatable):
+struct AccessFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -1758,15 +1658,12 @@ struct AccessFlagBits(Equatable):
     comptime TRANSFORM_FEEDBACK_COUNTER_WRITE = Self(value = 1 << 27)
 
 
-@register_passable("trivial")
-struct BufferUsageFlags(Equatable):
+struct BufferUsageFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: BufferUsageFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: BufferUsageFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -1831,8 +1728,7 @@ struct BufferUsageFlags(Equatable):
     comptime DESCRIPTOR_HEAP = Self(value = BufferUsageFlagBits.DESCRIPTOR_HEAP.value())
 
 
-@register_passable("trivial")
-struct BufferUsageFlagBits(Equatable):
+struct BufferUsageFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -1877,15 +1773,12 @@ struct BufferUsageFlagBits(Equatable):
     comptime DESCRIPTOR_HEAP = Self(value = 1 << 28)
 
 
-@register_passable("trivial")
-struct BufferCreateFlags(Equatable):
+struct BufferCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: BufferCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: BufferCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -1930,8 +1823,7 @@ struct BufferCreateFlags(Equatable):
     comptime RESERVED_7 = Self(value = BufferCreateFlagBits.RESERVED_7.value())
 
 
-@register_passable("trivial")
-struct BufferCreateFlagBits(Equatable):
+struct BufferCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -1956,15 +1848,12 @@ struct BufferCreateFlagBits(Equatable):
     comptime RESERVED_7 = Self(value = 1 << 7)
 
 
-@register_passable("trivial")
-struct ShaderStageFlags(Equatable):
+struct ShaderStageFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ShaderStageFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ShaderStageFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -2019,8 +1908,7 @@ struct ShaderStageFlags(Equatable):
     comptime CLUSTER_CULLING = Self(value = ShaderStageFlagBits.CLUSTER_CULLING.value())
 
 
-@register_passable("trivial")
-struct ShaderStageFlagBits(Equatable):
+struct ShaderStageFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -2055,15 +1943,12 @@ struct ShaderStageFlagBits(Equatable):
     comptime CLUSTER_CULLING = Self(value = 1 << 19)
 
 
-@register_passable("trivial")
-struct ImageUsageFlags(Equatable):
+struct ImageUsageFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ImageUsageFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ImageUsageFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -2131,8 +2016,7 @@ struct ImageUsageFlags(Equatable):
     comptime RESERVED_30 = Self(value = ImageUsageFlagBits.RESERVED_30.value())
 
 
-@register_passable("trivial")
-struct ImageUsageFlagBits(Equatable):
+struct ImageUsageFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -2180,15 +2064,12 @@ struct ImageUsageFlagBits(Equatable):
     comptime RESERVED_30 = Self(value = 1 << 30)
 
 
-@register_passable("trivial")
-struct ImageCreateFlags(Equatable):
+struct ImageCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ImageCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ImageCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -2246,8 +2127,7 @@ struct ImageCreateFlags(Equatable):
     comptime RESERVED_22 = Self(value = ImageCreateFlagBits.RESERVED_22.value())
 
 
-@register_passable("trivial")
-struct ImageCreateFlagBits(Equatable):
+struct ImageCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -2285,15 +2165,12 @@ struct ImageCreateFlagBits(Equatable):
     comptime RESERVED_22 = Self(value = 1 << 22)
 
 
-@register_passable("trivial")
-struct ImageViewCreateFlags(Equatable):
+struct ImageViewCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ImageViewCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ImageViewCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -2333,8 +2210,7 @@ struct ImageViewCreateFlags(Equatable):
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = ImageViewCreateFlagBits.DESCRIPTOR_BUFFER_CAPTURE_REPLAY.value())
 
 
-@register_passable("trivial")
-struct ImageViewCreateFlagBits(Equatable):
+struct ImageViewCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -2354,15 +2230,12 @@ struct ImageViewCreateFlagBits(Equatable):
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct PipelineCreateFlags(Equatable):
+struct PipelineCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -2430,8 +2303,7 @@ struct PipelineCreateFlags(Equatable):
     comptime PROTECTED_ACCESS_ONLY = Self(value = PipelineCreateFlagBits.PROTECTED_ACCESS_ONLY.value())
 
 
-@register_passable("trivial")
-struct PipelineCreateFlagBits(Equatable):
+struct PipelineCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -2479,15 +2351,12 @@ struct PipelineCreateFlagBits(Equatable):
     comptime PROTECTED_ACCESS_ONLY = Self(value = 1 << 30)
 
 
-@register_passable("trivial")
-struct ColorComponentFlags(Equatable):
+struct ColorComponentFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ColorComponentFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ColorComponentFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -2528,8 +2397,7 @@ struct ColorComponentFlags(Equatable):
     comptime A = Self(value = ColorComponentFlagBits.A.value())
 
 
-@register_passable("trivial")
-struct ColorComponentFlagBits(Equatable):
+struct ColorComponentFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -2550,15 +2418,12 @@ struct ColorComponentFlagBits(Equatable):
     comptime A = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct FenceCreateFlags(Equatable):
+struct FenceCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: FenceCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: FenceCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -2596,8 +2461,7 @@ struct FenceCreateFlags(Equatable):
     comptime SIGNALED = Self(value = FenceCreateFlagBits.SIGNALED.value())
 
 
-@register_passable("trivial")
-struct FenceCreateFlagBits(Equatable):
+struct FenceCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -2615,15 +2479,12 @@ struct FenceCreateFlagBits(Equatable):
     comptime SIGNALED = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct SemaphoreCreateFlags(Equatable):
+struct SemaphoreCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SemaphoreCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SemaphoreCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -2659,8 +2520,7 @@ struct SemaphoreCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct SemaphoreCreateFlagBits(Equatable):
+struct SemaphoreCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -2676,15 +2536,12 @@ struct SemaphoreCreateFlagBits(Equatable):
         return SemaphoreCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct FormatFeatureFlags(Equatable):
+struct FormatFeatureFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: FormatFeatureFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: FormatFeatureFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -2751,8 +2608,7 @@ struct FormatFeatureFlags(Equatable):
     comptime FRAGMENT_SHADING_RATE_ATTACHMENT = Self(value = FormatFeatureFlagBits.FRAGMENT_SHADING_RATE_ATTACHMENT.value())
 
 
-@register_passable("trivial")
-struct FormatFeatureFlagBits(Equatable):
+struct FormatFeatureFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -2799,15 +2655,12 @@ struct FormatFeatureFlagBits(Equatable):
     comptime FRAGMENT_SHADING_RATE_ATTACHMENT = Self(value = 1 << 30)
 
 
-@register_passable("trivial")
-struct QueryControlFlags(Equatable):
+struct QueryControlFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: QueryControlFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: QueryControlFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -2845,8 +2698,7 @@ struct QueryControlFlags(Equatable):
     comptime PRECISE = Self(value = QueryControlFlagBits.PRECISE.value())
 
 
-@register_passable("trivial")
-struct QueryControlFlagBits(Equatable):
+struct QueryControlFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -2864,15 +2716,12 @@ struct QueryControlFlagBits(Equatable):
     comptime PRECISE = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct QueryResultFlags(Equatable):
+struct QueryResultFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: QueryResultFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: QueryResultFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -2914,8 +2763,7 @@ struct QueryResultFlags(Equatable):
     comptime WITH_STATUS = Self(value = QueryResultFlagBits.WITH_STATUS.value())
 
 
-@register_passable("trivial")
-struct QueryResultFlagBits(Equatable):
+struct QueryResultFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -2937,15 +2785,12 @@ struct QueryResultFlagBits(Equatable):
     comptime WITH_STATUS = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct ShaderModuleCreateFlags(Equatable):
+struct ShaderModuleCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ShaderModuleCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ShaderModuleCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -2981,8 +2826,7 @@ struct ShaderModuleCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct ShaderModuleCreateFlagBits(Equatable):
+struct ShaderModuleCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -2998,15 +2842,12 @@ struct ShaderModuleCreateFlagBits(Equatable):
         return ShaderModuleCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct EventCreateFlags(Equatable):
+struct EventCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: EventCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: EventCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -3044,8 +2885,7 @@ struct EventCreateFlags(Equatable):
     comptime DEVICE_ONLY = Self(value = EventCreateFlagBits.DEVICE_ONLY.value())
 
 
-@register_passable("trivial")
-struct EventCreateFlagBits(Equatable):
+struct EventCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -3063,15 +2903,12 @@ struct EventCreateFlagBits(Equatable):
     comptime DEVICE_ONLY = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct CommandPoolCreateFlags(Equatable):
+struct CommandPoolCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: CommandPoolCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: CommandPoolCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -3111,8 +2948,7 @@ struct CommandPoolCreateFlags(Equatable):
     comptime PROTECTED = Self(value = CommandPoolCreateFlagBits.PROTECTED.value())
 
 
-@register_passable("trivial")
-struct CommandPoolCreateFlagBits(Equatable):
+struct CommandPoolCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -3132,15 +2968,12 @@ struct CommandPoolCreateFlagBits(Equatable):
     comptime PROTECTED = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct CommandPoolResetFlags(Equatable):
+struct CommandPoolResetFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: CommandPoolResetFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: CommandPoolResetFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -3179,8 +3012,7 @@ struct CommandPoolResetFlags(Equatable):
     comptime RESERVED_1_BIT_COREAVI = Self(value = CommandPoolResetFlagBits.RESERVED_1_BIT_COREAVI.value())
 
 
-@register_passable("trivial")
-struct CommandPoolResetFlagBits(Equatable):
+struct CommandPoolResetFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -3199,15 +3031,12 @@ struct CommandPoolResetFlagBits(Equatable):
     comptime RESERVED_1_BIT_COREAVI = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct CommandBufferResetFlags(Equatable):
+struct CommandBufferResetFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: CommandBufferResetFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: CommandBufferResetFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -3245,8 +3074,7 @@ struct CommandBufferResetFlags(Equatable):
     comptime RELEASE_RESOURCES = Self(value = CommandBufferResetFlagBits.RELEASE_RESOURCES.value())
 
 
-@register_passable("trivial")
-struct CommandBufferResetFlagBits(Equatable):
+struct CommandBufferResetFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -3264,15 +3092,12 @@ struct CommandBufferResetFlagBits(Equatable):
     comptime RELEASE_RESOURCES = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct CommandBufferUsageFlags(Equatable):
+struct CommandBufferUsageFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: CommandBufferUsageFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: CommandBufferUsageFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -3314,8 +3139,7 @@ struct CommandBufferUsageFlags(Equatable):
     comptime RESERVED_4 = Self(value = CommandBufferUsageFlagBits.RESERVED_4.value())
 
 
-@register_passable("trivial")
-struct CommandBufferUsageFlagBits(Equatable):
+struct CommandBufferUsageFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -3337,15 +3161,12 @@ struct CommandBufferUsageFlagBits(Equatable):
     comptime RESERVED_4 = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct QueryPipelineStatisticFlags(Equatable):
+struct QueryPipelineStatisticFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: QueryPipelineStatisticFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: QueryPipelineStatisticFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -3396,8 +3217,7 @@ struct QueryPipelineStatisticFlags(Equatable):
     comptime CLUSTER_CULLING_SHADER_INVOCATIONS = Self(value = QueryPipelineStatisticFlagBits.CLUSTER_CULLING_SHADER_INVOCATIONS.value())
 
 
-@register_passable("trivial")
-struct QueryPipelineStatisticFlagBits(Equatable):
+struct QueryPipelineStatisticFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -3428,15 +3248,12 @@ struct QueryPipelineStatisticFlagBits(Equatable):
     comptime CLUSTER_CULLING_SHADER_INVOCATIONS = Self(value = 1 << 13)
 
 
-@register_passable("trivial")
-struct MemoryMapFlags(Equatable):
+struct MemoryMapFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: MemoryMapFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: MemoryMapFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -3474,8 +3291,7 @@ struct MemoryMapFlags(Equatable):
     comptime PLACED = Self(value = MemoryMapFlagBits.PLACED.value())
 
 
-@register_passable("trivial")
-struct MemoryMapFlagBits(Equatable):
+struct MemoryMapFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -3493,15 +3309,12 @@ struct MemoryMapFlagBits(Equatable):
     comptime PLACED = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct MemoryUnmapFlags(Equatable):
+struct MemoryUnmapFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: MemoryUnmapFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: MemoryUnmapFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -3539,8 +3352,7 @@ struct MemoryUnmapFlags(Equatable):
     comptime RESERVE = Self(value = MemoryUnmapFlagBits.RESERVE.value())
 
 
-@register_passable("trivial")
-struct MemoryUnmapFlagBits(Equatable):
+struct MemoryUnmapFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -3558,15 +3370,12 @@ struct MemoryUnmapFlagBits(Equatable):
     comptime RESERVE = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct ImageAspectFlags(Equatable):
+struct ImageAspectFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ImageAspectFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ImageAspectFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -3616,8 +3425,7 @@ struct ImageAspectFlags(Equatable):
     comptime RESERVED_11 = Self(value = ImageAspectFlagBits.RESERVED_11.value())
 
 
-@register_passable("trivial")
-struct ImageAspectFlagBits(Equatable):
+struct ImageAspectFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -3647,15 +3455,12 @@ struct ImageAspectFlagBits(Equatable):
     comptime RESERVED_11 = Self(value = 1 << 11)
 
 
-@register_passable("trivial")
-struct SparseMemoryBindFlags(Equatable):
+struct SparseMemoryBindFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SparseMemoryBindFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SparseMemoryBindFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -3693,8 +3498,7 @@ struct SparseMemoryBindFlags(Equatable):
     comptime METADATA = Self(value = SparseMemoryBindFlagBits.METADATA.value())
 
 
-@register_passable("trivial")
-struct SparseMemoryBindFlagBits(Equatable):
+struct SparseMemoryBindFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -3712,15 +3516,12 @@ struct SparseMemoryBindFlagBits(Equatable):
     comptime METADATA = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct SparseImageFormatFlags(Equatable):
+struct SparseImageFormatFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SparseImageFormatFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SparseImageFormatFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -3760,8 +3561,7 @@ struct SparseImageFormatFlags(Equatable):
     comptime NONSTANDARD_BLOCK_SIZE = Self(value = SparseImageFormatFlagBits.NONSTANDARD_BLOCK_SIZE.value())
 
 
-@register_passable("trivial")
-struct SparseImageFormatFlagBits(Equatable):
+struct SparseImageFormatFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -3781,15 +3581,12 @@ struct SparseImageFormatFlagBits(Equatable):
     comptime NONSTANDARD_BLOCK_SIZE = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct SubpassDescriptionFlags(Equatable):
+struct SubpassDescriptionFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SubpassDescriptionFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SubpassDescriptionFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -3831,8 +3628,7 @@ struct SubpassDescriptionFlags(Equatable):
     comptime TILE_SHADING_APRON = Self(value = SubpassDescriptionFlagBits.TILE_SHADING_APRON.value())
 
 
-@register_passable("trivial")
-struct SubpassDescriptionFlagBits(Equatable):
+struct SubpassDescriptionFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -3854,15 +3650,12 @@ struct SubpassDescriptionFlagBits(Equatable):
     comptime TILE_SHADING_APRON = Self(value = 1 << 8)
 
 
-@register_passable("trivial")
-struct PipelineStageFlags(Equatable):
+struct PipelineStageFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineStageFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineStageFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -3923,8 +3716,7 @@ struct PipelineStageFlags(Equatable):
     comptime ACCELERATION_STRUCTURE_BUILD = Self(value = PipelineStageFlagBits.ACCELERATION_STRUCTURE_BUILD.value())
 
 
-@register_passable("trivial")
-struct PipelineStageFlagBits(Equatable):
+struct PipelineStageFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -3965,15 +3757,12 @@ struct PipelineStageFlagBits(Equatable):
     comptime ACCELERATION_STRUCTURE_BUILD = Self(value = 1 << 25)
 
 
-@register_passable("trivial")
-struct SampleCountFlags(Equatable):
+struct SampleCountFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SampleCountFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SampleCountFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4017,8 +3806,7 @@ struct SampleCountFlags(Equatable):
     comptime N_64 = Self(value = SampleCountFlagBits.N_64.value())
 
 
-@register_passable("trivial")
-struct SampleCountFlagBits(Equatable):
+struct SampleCountFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4042,15 +3830,12 @@ struct SampleCountFlagBits(Equatable):
     comptime N_64 = Self(value = 1 << 6)
 
 
-@register_passable("trivial")
-struct AttachmentDescriptionFlags(Equatable):
+struct AttachmentDescriptionFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: AttachmentDescriptionFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: AttachmentDescriptionFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4090,8 +3875,7 @@ struct AttachmentDescriptionFlags(Equatable):
     comptime RESOLVE_ENABLE_TRANSFER_FUNCTION = Self(value = AttachmentDescriptionFlagBits.RESOLVE_ENABLE_TRANSFER_FUNCTION.value())
 
 
-@register_passable("trivial")
-struct AttachmentDescriptionFlagBits(Equatable):
+struct AttachmentDescriptionFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4111,15 +3895,12 @@ struct AttachmentDescriptionFlagBits(Equatable):
     comptime RESOLVE_ENABLE_TRANSFER_FUNCTION = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct StencilFaceFlags(Equatable):
+struct StencilFaceFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: StencilFaceFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: StencilFaceFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4159,8 +3940,7 @@ struct StencilFaceFlags(Equatable):
     comptime BACK = Self(value = StencilFaceFlagBits.BACK.value())
 
 
-@register_passable("trivial")
-struct StencilFaceFlagBits(Equatable):
+struct StencilFaceFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4180,15 +3960,12 @@ struct StencilFaceFlagBits(Equatable):
     comptime BACK = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct CullModeFlags(Equatable):
+struct CullModeFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: CullModeFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: CullModeFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4229,8 +4006,7 @@ struct CullModeFlags(Equatable):
     comptime BACK = Self(value = CullModeFlagBits.BACK.value())
 
 
-@register_passable("trivial")
-struct CullModeFlagBits(Equatable):
+struct CullModeFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4251,15 +4027,12 @@ struct CullModeFlagBits(Equatable):
     comptime BACK = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct DescriptorPoolCreateFlags(Equatable):
+struct DescriptorPoolCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DescriptorPoolCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DescriptorPoolCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4300,8 +4073,7 @@ struct DescriptorPoolCreateFlags(Equatable):
     comptime ALLOW_OVERALLOCATION_POOLS = Self(value = DescriptorPoolCreateFlagBits.ALLOW_OVERALLOCATION_POOLS.value())
 
 
-@register_passable("trivial")
-struct DescriptorPoolCreateFlagBits(Equatable):
+struct DescriptorPoolCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4322,15 +4094,12 @@ struct DescriptorPoolCreateFlagBits(Equatable):
     comptime ALLOW_OVERALLOCATION_POOLS = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct DescriptorPoolResetFlags(Equatable):
+struct DescriptorPoolResetFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DescriptorPoolResetFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DescriptorPoolResetFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4366,8 +4135,7 @@ struct DescriptorPoolResetFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct DescriptorPoolResetFlagBits(Equatable):
+struct DescriptorPoolResetFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4383,15 +4151,12 @@ struct DescriptorPoolResetFlagBits(Equatable):
         return DescriptorPoolResetFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct DependencyFlags(Equatable):
+struct DependencyFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DependencyFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DependencyFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4435,8 +4200,7 @@ struct DependencyFlags(Equatable):
     comptime ASYMMETRIC_EVENT = Self(value = DependencyFlagBits.ASYMMETRIC_EVENT.value())
 
 
-@register_passable("trivial")
-struct DependencyFlagBits(Equatable):
+struct DependencyFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4460,15 +4224,12 @@ struct DependencyFlagBits(Equatable):
     comptime ASYMMETRIC_EVENT = Self(value = 1 << 6)
 
 
-@register_passable("trivial")
-struct SubgroupFeatureFlags(Equatable):
+struct SubgroupFeatureFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SubgroupFeatureFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SubgroupFeatureFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4515,8 +4276,7 @@ struct SubgroupFeatureFlags(Equatable):
     comptime ROTATE_CLUSTERED = Self(value = SubgroupFeatureFlagBits.ROTATE_CLUSTERED.value())
 
 
-@register_passable("trivial")
-struct SubgroupFeatureFlagBits(Equatable):
+struct SubgroupFeatureFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4543,15 +4303,12 @@ struct SubgroupFeatureFlagBits(Equatable):
     comptime ROTATE_CLUSTERED = Self(value = 1 << 10)
 
 
-@register_passable("trivial")
-struct IndirectCommandsLayoutUsageFlagsNV(Equatable):
+struct IndirectCommandsLayoutUsageFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: IndirectCommandsLayoutUsageFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: IndirectCommandsLayoutUsageFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4591,8 +4348,7 @@ struct IndirectCommandsLayoutUsageFlagsNV(Equatable):
     comptime UNORDERED_SEQUENCES = Self(value = IndirectCommandsLayoutUsageFlagBitsNV.UNORDERED_SEQUENCES.value())
 
 
-@register_passable("trivial")
-struct IndirectCommandsLayoutUsageFlagBitsNV(Equatable):
+struct IndirectCommandsLayoutUsageFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4612,15 +4368,12 @@ struct IndirectCommandsLayoutUsageFlagBitsNV(Equatable):
     comptime UNORDERED_SEQUENCES = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct IndirectStateFlagsNV(Equatable):
+struct IndirectStateFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: IndirectStateFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: IndirectStateFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4658,8 +4411,7 @@ struct IndirectStateFlagsNV(Equatable):
     comptime FLAG_FRONTFACE = Self(value = IndirectStateFlagBitsNV.FLAG_FRONTFACE.value())
 
 
-@register_passable("trivial")
-struct IndirectStateFlagBitsNV(Equatable):
+struct IndirectStateFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4677,15 +4429,12 @@ struct IndirectStateFlagBitsNV(Equatable):
     comptime FLAG_FRONTFACE = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct GeometryFlagsKHR(Equatable):
+struct GeometryFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: GeometryFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: GeometryFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4724,8 +4473,7 @@ struct GeometryFlagsKHR(Equatable):
     comptime NO_DUPLICATE_ANY_HIT_INVOCATION = Self(value = GeometryFlagBitsKHR.NO_DUPLICATE_ANY_HIT_INVOCATION.value())
 
 
-@register_passable("trivial")
-struct GeometryFlagBitsKHR(Equatable):
+struct GeometryFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4744,15 +4492,12 @@ struct GeometryFlagBitsKHR(Equatable):
     comptime NO_DUPLICATE_ANY_HIT_INVOCATION = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct GeometryInstanceFlagsKHR(Equatable):
+struct GeometryInstanceFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: GeometryInstanceFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: GeometryInstanceFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4795,8 +4540,7 @@ struct GeometryInstanceFlagsKHR(Equatable):
     comptime DISABLE_OPACITY_MICROMAPS = Self(value = GeometryInstanceFlagBitsKHR.DISABLE_OPACITY_MICROMAPS.value())
 
 
-@register_passable("trivial")
-struct GeometryInstanceFlagBitsKHR(Equatable):
+struct GeometryInstanceFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4819,15 +4563,12 @@ struct GeometryInstanceFlagBitsKHR(Equatable):
     comptime DISABLE_OPACITY_MICROMAPS = Self(value = 1 << 5)
 
 
-@register_passable("trivial")
-struct ClusterAccelerationStructureGeometryFlagsNV(Equatable):
+struct ClusterAccelerationStructureGeometryFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ClusterAccelerationStructureGeometryFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ClusterAccelerationStructureGeometryFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4867,8 +4608,7 @@ struct ClusterAccelerationStructureGeometryFlagsNV(Equatable):
     comptime OPAQUE = Self(value = ClusterAccelerationStructureGeometryFlagBitsNV.OPAQUE.value())
 
 
-@register_passable("trivial")
-struct ClusterAccelerationStructureGeometryFlagBitsNV(Equatable):
+struct ClusterAccelerationStructureGeometryFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4888,15 +4628,12 @@ struct ClusterAccelerationStructureGeometryFlagBitsNV(Equatable):
     comptime OPAQUE = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct ClusterAccelerationStructureClusterFlagsNV(Equatable):
+struct ClusterAccelerationStructureClusterFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ClusterAccelerationStructureClusterFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ClusterAccelerationStructureClusterFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -4934,8 +4671,7 @@ struct ClusterAccelerationStructureClusterFlagsNV(Equatable):
     comptime ALLOW_DISABLE_OPACITY_MICROMAPS = Self(value = ClusterAccelerationStructureClusterFlagBitsNV.ALLOW_DISABLE_OPACITY_MICROMAPS.value())
 
 
-@register_passable("trivial")
-struct ClusterAccelerationStructureClusterFlagBitsNV(Equatable):
+struct ClusterAccelerationStructureClusterFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -4953,15 +4689,12 @@ struct ClusterAccelerationStructureClusterFlagBitsNV(Equatable):
     comptime ALLOW_DISABLE_OPACITY_MICROMAPS = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct ClusterAccelerationStructureAddressResolutionFlagsNV(Equatable):
+struct ClusterAccelerationStructureAddressResolutionFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ClusterAccelerationStructureAddressResolutionFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ClusterAccelerationStructureAddressResolutionFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -5005,8 +4738,7 @@ struct ClusterAccelerationStructureAddressResolutionFlagsNV(Equatable):
     comptime INDIRECTED_SRC_INFOS_COUNT = Self(value = ClusterAccelerationStructureAddressResolutionFlagBitsNV.INDIRECTED_SRC_INFOS_COUNT.value())
 
 
-@register_passable("trivial")
-struct ClusterAccelerationStructureAddressResolutionFlagBitsNV(Equatable):
+struct ClusterAccelerationStructureAddressResolutionFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -5030,15 +4762,12 @@ struct ClusterAccelerationStructureAddressResolutionFlagBitsNV(Equatable):
     comptime INDIRECTED_SRC_INFOS_COUNT = Self(value = 1 << 5)
 
 
-@register_passable("trivial")
-struct BuildAccelerationStructureFlagsKHR(Equatable):
+struct BuildAccelerationStructureFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: BuildAccelerationStructureFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: BuildAccelerationStructureFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -5088,8 +4817,7 @@ struct BuildAccelerationStructureFlagsKHR(Equatable):
     comptime ALLOW_CLUSTER_OPACITY_MICROMAPS = Self(value = BuildAccelerationStructureFlagBitsKHR.ALLOW_CLUSTER_OPACITY_MICROMAPS.value())
 
 
-@register_passable("trivial")
-struct BuildAccelerationStructureFlagBitsKHR(Equatable):
+struct BuildAccelerationStructureFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -5119,15 +4847,12 @@ struct BuildAccelerationStructureFlagBitsKHR(Equatable):
     comptime ALLOW_CLUSTER_OPACITY_MICROMAPS = Self(value = 1 << 12)
 
 
-@register_passable("trivial")
-struct PrivateDataSlotCreateFlags(Equatable):
+struct PrivateDataSlotCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PrivateDataSlotCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PrivateDataSlotCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -5165,8 +4890,7 @@ struct PrivateDataSlotCreateFlags(Equatable):
     comptime RESERVED_0 = Self(value = PrivateDataSlotCreateFlagBits.RESERVED_0.value())
 
 
-@register_passable("trivial")
-struct PrivateDataSlotCreateFlagBits(Equatable):
+struct PrivateDataSlotCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -5184,15 +4908,12 @@ struct PrivateDataSlotCreateFlagBits(Equatable):
     comptime RESERVED_0 = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct AccelerationStructureCreateFlagsKHR(Equatable):
+struct AccelerationStructureCreateFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: AccelerationStructureCreateFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: AccelerationStructureCreateFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -5232,8 +4953,7 @@ struct AccelerationStructureCreateFlagsKHR(Equatable):
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = AccelerationStructureCreateFlagBitsKHR.DESCRIPTOR_BUFFER_CAPTURE_REPLAY.value())
 
 
-@register_passable("trivial")
-struct AccelerationStructureCreateFlagBitsKHR(Equatable):
+struct AccelerationStructureCreateFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -5253,15 +4973,12 @@ struct AccelerationStructureCreateFlagBitsKHR(Equatable):
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct DescriptorUpdateTemplateCreateFlags(Equatable):
+struct DescriptorUpdateTemplateCreateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DescriptorUpdateTemplateCreateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DescriptorUpdateTemplateCreateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -5297,8 +5014,7 @@ struct DescriptorUpdateTemplateCreateFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct DescriptorUpdateTemplateCreateFlagBits(Equatable):
+struct DescriptorUpdateTemplateCreateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -5314,15 +5030,12 @@ struct DescriptorUpdateTemplateCreateFlagBits(Equatable):
         return DescriptorUpdateTemplateCreateFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineCreationFeedbackFlags(Equatable):
+struct PipelineCreationFeedbackFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineCreationFeedbackFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineCreationFeedbackFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -5362,8 +5075,7 @@ struct PipelineCreationFeedbackFlags(Equatable):
     comptime BASE_PIPELINE_ACCELERATION = Self(value = PipelineCreationFeedbackFlagBits.BASE_PIPELINE_ACCELERATION.value())
 
 
-@register_passable("trivial")
-struct PipelineCreationFeedbackFlagBits(Equatable):
+struct PipelineCreationFeedbackFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -5383,15 +5095,12 @@ struct PipelineCreationFeedbackFlagBits(Equatable):
     comptime BASE_PIPELINE_ACCELERATION = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct PerformanceCounterDescriptionFlagsKHR(Equatable):
+struct PerformanceCounterDescriptionFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PerformanceCounterDescriptionFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PerformanceCounterDescriptionFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -5430,8 +5139,7 @@ struct PerformanceCounterDescriptionFlagsKHR(Equatable):
     comptime CONCURRENTLY_IMPACTED = Self(value = PerformanceCounterDescriptionFlagBitsKHR.CONCURRENTLY_IMPACTED.value())
 
 
-@register_passable("trivial")
-struct PerformanceCounterDescriptionFlagBitsKHR(Equatable):
+struct PerformanceCounterDescriptionFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -5450,15 +5158,12 @@ struct PerformanceCounterDescriptionFlagBitsKHR(Equatable):
     comptime CONCURRENTLY_IMPACTED = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct AcquireProfilingLockFlagsKHR(Equatable):
+struct AcquireProfilingLockFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: AcquireProfilingLockFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: AcquireProfilingLockFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -5494,8 +5199,7 @@ struct AcquireProfilingLockFlagsKHR(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct AcquireProfilingLockFlagBitsKHR(Equatable):
+struct AcquireProfilingLockFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -5511,15 +5215,12 @@ struct AcquireProfilingLockFlagBitsKHR(Equatable):
         return AcquireProfilingLockFlagsKHR(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct SemaphoreWaitFlags(Equatable):
+struct SemaphoreWaitFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SemaphoreWaitFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SemaphoreWaitFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -5557,8 +5258,7 @@ struct SemaphoreWaitFlags(Equatable):
     comptime ANY = Self(value = SemaphoreWaitFlagBits.ANY.value())
 
 
-@register_passable("trivial")
-struct SemaphoreWaitFlagBits(Equatable):
+struct SemaphoreWaitFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -5576,15 +5276,12 @@ struct SemaphoreWaitFlagBits(Equatable):
     comptime ANY = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct PipelineCompilerControlFlagsAMD(Equatable):
+struct PipelineCompilerControlFlagsAMD(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineCompilerControlFlagBitsAMD):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineCompilerControlFlagBitsAMD):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -5620,8 +5317,7 @@ struct PipelineCompilerControlFlagsAMD(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineCompilerControlFlagBitsAMD(Equatable):
+struct PipelineCompilerControlFlagBitsAMD(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -5637,15 +5333,12 @@ struct PipelineCompilerControlFlagBitsAMD(Equatable):
         return PipelineCompilerControlFlagsAMD(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct ShaderCorePropertiesFlagsAMD(Equatable):
+struct ShaderCorePropertiesFlagsAMD(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ShaderCorePropertiesFlagBitsAMD):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ShaderCorePropertiesFlagBitsAMD):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -5681,8 +5374,7 @@ struct ShaderCorePropertiesFlagsAMD(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct ShaderCorePropertiesFlagBitsAMD(Equatable):
+struct ShaderCorePropertiesFlagBitsAMD(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -5698,15 +5390,12 @@ struct ShaderCorePropertiesFlagBitsAMD(Equatable):
         return ShaderCorePropertiesFlagsAMD(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct DeviceDiagnosticsConfigFlagsNV(Equatable):
+struct DeviceDiagnosticsConfigFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DeviceDiagnosticsConfigFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DeviceDiagnosticsConfigFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -5747,8 +5436,7 @@ struct DeviceDiagnosticsConfigFlagsNV(Equatable):
     comptime ENABLE_SHADER_ERROR_REPORTING = Self(value = DeviceDiagnosticsConfigFlagBitsNV.ENABLE_SHADER_ERROR_REPORTING.value())
 
 
-@register_passable("trivial")
-struct DeviceDiagnosticsConfigFlagBitsNV(Equatable):
+struct DeviceDiagnosticsConfigFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -5769,15 +5457,12 @@ struct DeviceDiagnosticsConfigFlagBitsNV(Equatable):
     comptime ENABLE_SHADER_ERROR_REPORTING = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct RefreshObjectFlagsKHR(Equatable):
+struct RefreshObjectFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: RefreshObjectFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: RefreshObjectFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -5813,8 +5498,7 @@ struct RefreshObjectFlagsKHR(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct RefreshObjectFlagBitsKHR(Equatable):
+struct RefreshObjectFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -5830,15 +5514,12 @@ struct RefreshObjectFlagBitsKHR(Equatable):
         return RefreshObjectFlagsKHR(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct AccessFlags2(Equatable):
+struct AccessFlags2(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: AccessFlagBits2):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: AccessFlagBits2):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt64):
         self._value = value
@@ -5931,8 +5612,7 @@ struct AccessFlags2(Equatable):
     comptime RESERVED_63 = Self(value = AccessFlagBits2.RESERVED_63.value())
 
 
-@register_passable("trivial")
-struct AccessFlagBits2(Equatable):
+struct AccessFlagBits2(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):
@@ -6005,15 +5685,12 @@ struct AccessFlagBits2(Equatable):
     comptime RESERVED_63 = Self(value = 1 << 63)
 
 
-@register_passable("trivial")
-struct PipelineStageFlags2(Equatable):
+struct PipelineStageFlags2(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: PipelineStageFlagBits2):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineStageFlagBits2):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt64):
         self._value = value
@@ -6097,8 +5774,7 @@ struct PipelineStageFlags2(Equatable):
     comptime RESERVED_49 = Self(value = PipelineStageFlagBits2.RESERVED_49.value())
 
 
-@register_passable("trivial")
-struct PipelineStageFlagBits2(Equatable):
+struct PipelineStageFlagBits2(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):
@@ -6162,15 +5838,12 @@ struct PipelineStageFlagBits2(Equatable):
     comptime RESERVED_49 = Self(value = 1 << 49)
 
 
-@register_passable("trivial")
-struct AccelerationStructureMotionInfoFlagsNV(Equatable):
+struct AccelerationStructureMotionInfoFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: AccelerationStructureMotionInfoFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: AccelerationStructureMotionInfoFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -6206,8 +5879,7 @@ struct AccelerationStructureMotionInfoFlagsNV(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct AccelerationStructureMotionInfoFlagBitsNV(Equatable):
+struct AccelerationStructureMotionInfoFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -6223,15 +5895,12 @@ struct AccelerationStructureMotionInfoFlagBitsNV(Equatable):
         return AccelerationStructureMotionInfoFlagsNV(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct AccelerationStructureMotionInstanceFlagsNV(Equatable):
+struct AccelerationStructureMotionInstanceFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: AccelerationStructureMotionInstanceFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: AccelerationStructureMotionInstanceFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -6267,8 +5936,7 @@ struct AccelerationStructureMotionInstanceFlagsNV(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct AccelerationStructureMotionInstanceFlagBitsNV(Equatable):
+struct AccelerationStructureMotionInstanceFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -6284,15 +5952,12 @@ struct AccelerationStructureMotionInstanceFlagBitsNV(Equatable):
         return AccelerationStructureMotionInstanceFlagsNV(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct FormatFeatureFlags2(Equatable):
+struct FormatFeatureFlags2(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: FormatFeatureFlagBits2):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: FormatFeatureFlagBits2):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt64):
         self._value = value
@@ -6390,8 +6055,7 @@ struct FormatFeatureFlags2(Equatable):
     comptime RESERVED_61 = Self(value = FormatFeatureFlagBits2.RESERVED_61.value())
 
 
-@register_passable("trivial")
-struct FormatFeatureFlagBits2(Equatable):
+struct FormatFeatureFlagBits2(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):
@@ -6469,15 +6133,12 @@ struct FormatFeatureFlagBits2(Equatable):
     comptime RESERVED_61 = Self(value = 1 << 61)
 
 
-@register_passable("trivial")
-struct RenderingFlags(Equatable):
+struct RenderingFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: RenderingFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: RenderingFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -6523,8 +6184,7 @@ struct RenderingFlags(Equatable):
     comptime RESERVED_9 = Self(value = RenderingFlagBits.RESERVED_9.value())
 
 
-@register_passable("trivial")
-struct RenderingFlagBits(Equatable):
+struct RenderingFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -6550,15 +6210,12 @@ struct RenderingFlagBits(Equatable):
     comptime RESERVED_9 = Self(value = 1 << 9)
 
 
-@register_passable("trivial")
-struct MemoryDecompressionMethodFlagsEXT(Equatable):
+struct MemoryDecompressionMethodFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: MemoryDecompressionMethodFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: MemoryDecompressionMethodFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt64):
         self._value = value
@@ -6596,8 +6253,7 @@ struct MemoryDecompressionMethodFlagsEXT(Equatable):
     comptime GDEFLATE_1_0 = Self(value = MemoryDecompressionMethodFlagBitsEXT.GDEFLATE_1_0.value())
 
 
-@register_passable("trivial")
-struct MemoryDecompressionMethodFlagBitsEXT(Equatable):
+struct MemoryDecompressionMethodFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):
@@ -6615,15 +6271,12 @@ struct MemoryDecompressionMethodFlagBitsEXT(Equatable):
     comptime GDEFLATE_1_0 = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct BuildMicromapFlagsEXT(Equatable):
+struct BuildMicromapFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: BuildMicromapFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: BuildMicromapFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -6663,8 +6316,7 @@ struct BuildMicromapFlagsEXT(Equatable):
     comptime ALLOW_COMPACTION = Self(value = BuildMicromapFlagBitsEXT.ALLOW_COMPACTION.value())
 
 
-@register_passable("trivial")
-struct BuildMicromapFlagBitsEXT(Equatable):
+struct BuildMicromapFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -6684,15 +6336,12 @@ struct BuildMicromapFlagBitsEXT(Equatable):
     comptime ALLOW_COMPACTION = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct MicromapCreateFlagsEXT(Equatable):
+struct MicromapCreateFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: MicromapCreateFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: MicromapCreateFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -6730,8 +6379,7 @@ struct MicromapCreateFlagsEXT(Equatable):
     comptime DEVICE_ADDRESS_CAPTURE_REPLAY = Self(value = MicromapCreateFlagBitsEXT.DEVICE_ADDRESS_CAPTURE_REPLAY.value())
 
 
-@register_passable("trivial")
-struct MicromapCreateFlagBitsEXT(Equatable):
+struct MicromapCreateFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -6749,15 +6397,12 @@ struct MicromapCreateFlagBitsEXT(Equatable):
     comptime DEVICE_ADDRESS_CAPTURE_REPLAY = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct IndirectCommandsLayoutUsageFlagsEXT(Equatable):
+struct IndirectCommandsLayoutUsageFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: IndirectCommandsLayoutUsageFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: IndirectCommandsLayoutUsageFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -6796,8 +6441,7 @@ struct IndirectCommandsLayoutUsageFlagsEXT(Equatable):
     comptime UNORDERED_SEQUENCES = Self(value = IndirectCommandsLayoutUsageFlagBitsEXT.UNORDERED_SEQUENCES.value())
 
 
-@register_passable("trivial")
-struct IndirectCommandsLayoutUsageFlagBitsEXT(Equatable):
+struct IndirectCommandsLayoutUsageFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -6816,15 +6460,12 @@ struct IndirectCommandsLayoutUsageFlagBitsEXT(Equatable):
     comptime UNORDERED_SEQUENCES = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct IndirectCommandsInputModeFlagsEXT(Equatable):
+struct IndirectCommandsInputModeFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: IndirectCommandsInputModeFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: IndirectCommandsInputModeFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -6863,8 +6504,7 @@ struct IndirectCommandsInputModeFlagsEXT(Equatable):
     comptime DXGI_INDEX_BUFFER = Self(value = IndirectCommandsInputModeFlagBitsEXT.DXGI_INDEX_BUFFER.value())
 
 
-@register_passable("trivial")
-struct IndirectCommandsInputModeFlagBitsEXT(Equatable):
+struct IndirectCommandsInputModeFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -6883,15 +6523,12 @@ struct IndirectCommandsInputModeFlagBitsEXT(Equatable):
     comptime DXGI_INDEX_BUFFER = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct DirectDriverLoadingFlagsLUNARG(Equatable):
+struct DirectDriverLoadingFlagsLUNARG(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DirectDriverLoadingFlagBitsLUNARG):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DirectDriverLoadingFlagBitsLUNARG):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -6927,8 +6564,7 @@ struct DirectDriverLoadingFlagsLUNARG(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct DirectDriverLoadingFlagBitsLUNARG(Equatable):
+struct DirectDriverLoadingFlagBitsLUNARG(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -6944,15 +6580,12 @@ struct DirectDriverLoadingFlagBitsLUNARG(Equatable):
         return DirectDriverLoadingFlagsLUNARG(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineCreateFlags2(Equatable):
+struct PipelineCreateFlags2(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: PipelineCreateFlagBits2):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineCreateFlagBits2):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt64):
         self._value = value
@@ -7035,8 +6668,7 @@ struct PipelineCreateFlags2(Equatable):
     comptime RESERVED_48 = Self(value = PipelineCreateFlagBits2.RESERVED_48.value())
 
 
-@register_passable("trivial")
-struct PipelineCreateFlagBits2(Equatable):
+struct PipelineCreateFlagBits2(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):
@@ -7099,15 +6731,12 @@ struct PipelineCreateFlagBits2(Equatable):
     comptime RESERVED_48 = Self(value = 1 << 48)
 
 
-@register_passable("trivial")
-struct BufferUsageFlags2(Equatable):
+struct BufferUsageFlags2(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: BufferUsageFlagBits2):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: BufferUsageFlagBits2):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt64):
         self._value = value
@@ -7180,8 +6809,7 @@ struct BufferUsageFlags2(Equatable):
     comptime RESERVED_37 = Self(value = BufferUsageFlagBits2.RESERVED_37.value())
 
 
-@register_passable("trivial")
-struct BufferUsageFlagBits2(Equatable):
+struct BufferUsageFlagBits2(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):
@@ -7234,15 +6862,12 @@ struct BufferUsageFlagBits2(Equatable):
     comptime RESERVED_37 = Self(value = 1 << 37)
 
 
-@register_passable("trivial")
-struct AddressCopyFlagsKHR(Equatable):
+struct AddressCopyFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: AddressCopyFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: AddressCopyFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -7282,8 +6907,7 @@ struct AddressCopyFlagsKHR(Equatable):
     comptime PROTECTED = Self(value = AddressCopyFlagBitsKHR.PROTECTED.value())
 
 
-@register_passable("trivial")
-struct AddressCopyFlagBitsKHR(Equatable):
+struct AddressCopyFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -7303,15 +6927,12 @@ struct AddressCopyFlagBitsKHR(Equatable):
     comptime PROTECTED = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct TensorCreateFlagsARM(Equatable):
+struct TensorCreateFlagsARM(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: TensorCreateFlagBitsARM):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: TensorCreateFlagBitsARM):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt64):
         self._value = value
@@ -7352,8 +6973,7 @@ struct TensorCreateFlagsARM(Equatable):
     comptime DESCRIPTOR_HEAP_CAPTURE_REPLAY = Self(value = TensorCreateFlagBitsARM.DESCRIPTOR_HEAP_CAPTURE_REPLAY.value())
 
 
-@register_passable("trivial")
-struct TensorCreateFlagBitsARM(Equatable):
+struct TensorCreateFlagBitsARM(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):
@@ -7374,15 +6994,12 @@ struct TensorCreateFlagBitsARM(Equatable):
     comptime DESCRIPTOR_HEAP_CAPTURE_REPLAY = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct TensorUsageFlagsARM(Equatable):
+struct TensorUsageFlagsARM(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: TensorUsageFlagBitsARM):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: TensorUsageFlagBitsARM):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt64):
         self._value = value
@@ -7424,8 +7041,7 @@ struct TensorUsageFlagsARM(Equatable):
     comptime DATA_GRAPH = Self(value = TensorUsageFlagBitsARM.DATA_GRAPH.value())
 
 
-@register_passable("trivial")
-struct TensorUsageFlagBitsARM(Equatable):
+struct TensorUsageFlagBitsARM(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):
@@ -7447,15 +7063,12 @@ struct TensorUsageFlagBitsARM(Equatable):
     comptime DATA_GRAPH = Self(value = 1 << 5)
 
 
-@register_passable("trivial")
-struct TensorViewCreateFlagsARM(Equatable):
+struct TensorViewCreateFlagsARM(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: TensorViewCreateFlagBitsARM):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: TensorViewCreateFlagBitsARM):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt64):
         self._value = value
@@ -7493,8 +7106,7 @@ struct TensorViewCreateFlagsARM(Equatable):
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = TensorViewCreateFlagBitsARM.DESCRIPTOR_BUFFER_CAPTURE_REPLAY.value())
 
 
-@register_passable("trivial")
-struct TensorViewCreateFlagBitsARM(Equatable):
+struct TensorViewCreateFlagBitsARM(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):
@@ -7512,15 +7124,12 @@ struct TensorViewCreateFlagBitsARM(Equatable):
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct DataGraphPipelineSessionCreateFlagsARM(Equatable):
+struct DataGraphPipelineSessionCreateFlagsARM(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: DataGraphPipelineSessionCreateFlagBitsARM):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DataGraphPipelineSessionCreateFlagBitsARM):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt64):
         self._value = value
@@ -7558,8 +7167,7 @@ struct DataGraphPipelineSessionCreateFlagsARM(Equatable):
     comptime PROTECTED = Self(value = DataGraphPipelineSessionCreateFlagBitsARM.PROTECTED.value())
 
 
-@register_passable("trivial")
-struct DataGraphPipelineSessionCreateFlagBitsARM(Equatable):
+struct DataGraphPipelineSessionCreateFlagBitsARM(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):
@@ -7577,15 +7185,12 @@ struct DataGraphPipelineSessionCreateFlagBitsARM(Equatable):
     comptime PROTECTED = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct DataGraphPipelineDispatchFlagsARM(Equatable):
+struct DataGraphPipelineDispatchFlagsARM(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: DataGraphPipelineDispatchFlagBitsARM):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DataGraphPipelineDispatchFlagBitsARM):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt64):
         self._value = value
@@ -7621,8 +7226,7 @@ struct DataGraphPipelineDispatchFlagsARM(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct DataGraphPipelineDispatchFlagBitsARM(Equatable):
+struct DataGraphPipelineDispatchFlagBitsARM(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):
@@ -7638,15 +7242,12 @@ struct DataGraphPipelineDispatchFlagBitsARM(Equatable):
         return DataGraphPipelineDispatchFlagsARM(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct VideoEncodeRgbModelConversionFlagsVALVE(Equatable):
+struct VideoEncodeRgbModelConversionFlagsVALVE(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeRgbModelConversionFlagBitsVALVE):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeRgbModelConversionFlagBitsVALVE):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -7688,8 +7289,7 @@ struct VideoEncodeRgbModelConversionFlagsVALVE(Equatable):
     comptime YCBCR_2020 = Self(value = VideoEncodeRgbModelConversionFlagBitsVALVE.YCBCR_2020.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeRgbModelConversionFlagBitsVALVE(Equatable):
+struct VideoEncodeRgbModelConversionFlagBitsVALVE(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -7711,15 +7311,12 @@ struct VideoEncodeRgbModelConversionFlagBitsVALVE(Equatable):
     comptime YCBCR_2020 = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct VideoEncodeRgbRangeCompressionFlagsVALVE(Equatable):
+struct VideoEncodeRgbRangeCompressionFlagsVALVE(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeRgbRangeCompressionFlagBitsVALVE):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeRgbRangeCompressionFlagBitsVALVE):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -7758,8 +7355,7 @@ struct VideoEncodeRgbRangeCompressionFlagsVALVE(Equatable):
     comptime NARROW_RANGE = Self(value = VideoEncodeRgbRangeCompressionFlagBitsVALVE.NARROW_RANGE.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeRgbRangeCompressionFlagBitsVALVE(Equatable):
+struct VideoEncodeRgbRangeCompressionFlagBitsVALVE(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -7778,15 +7374,12 @@ struct VideoEncodeRgbRangeCompressionFlagBitsVALVE(Equatable):
     comptime NARROW_RANGE = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct VideoEncodeRgbChromaOffsetFlagsVALVE(Equatable):
+struct VideoEncodeRgbChromaOffsetFlagsVALVE(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeRgbChromaOffsetFlagBitsVALVE):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeRgbChromaOffsetFlagBitsVALVE):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -7825,8 +7418,7 @@ struct VideoEncodeRgbChromaOffsetFlagsVALVE(Equatable):
     comptime MIDPOINT = Self(value = VideoEncodeRgbChromaOffsetFlagBitsVALVE.MIDPOINT.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeRgbChromaOffsetFlagBitsVALVE(Equatable):
+struct VideoEncodeRgbChromaOffsetFlagBitsVALVE(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -7845,15 +7437,12 @@ struct VideoEncodeRgbChromaOffsetFlagBitsVALVE(Equatable):
     comptime MIDPOINT = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct SpirvResourceTypeFlagsEXT(Equatable):
+struct SpirvResourceTypeFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SpirvResourceTypeFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SpirvResourceTypeFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -7901,8 +7490,7 @@ struct SpirvResourceTypeFlagsEXT(Equatable):
     comptime TENSOR = Self(value = SpirvResourceTypeFlagBitsEXT.TENSOR.value())
 
 
-@register_passable("trivial")
-struct SpirvResourceTypeFlagBitsEXT(Equatable):
+struct SpirvResourceTypeFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -7930,15 +7518,12 @@ struct SpirvResourceTypeFlagBitsEXT(Equatable):
     comptime TENSOR = Self(value = 1 << 9)
 
 
-@register_passable("trivial")
-struct CompositeAlphaFlagsKHR(Equatable):
+struct CompositeAlphaFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: CompositeAlphaFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: CompositeAlphaFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -7979,8 +7564,7 @@ struct CompositeAlphaFlagsKHR(Equatable):
     comptime INHERIT = Self(value = CompositeAlphaFlagBitsKHR.INHERIT.value())
 
 
-@register_passable("trivial")
-struct CompositeAlphaFlagBitsKHR(Equatable):
+struct CompositeAlphaFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8001,15 +7585,12 @@ struct CompositeAlphaFlagBitsKHR(Equatable):
     comptime INHERIT = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct DisplayPlaneAlphaFlagsKHR(Equatable):
+struct DisplayPlaneAlphaFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DisplayPlaneAlphaFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DisplayPlaneAlphaFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8050,8 +7631,7 @@ struct DisplayPlaneAlphaFlagsKHR(Equatable):
     comptime PER_PIXEL_PREMULTIPLIED = Self(value = DisplayPlaneAlphaFlagBitsKHR.PER_PIXEL_PREMULTIPLIED.value())
 
 
-@register_passable("trivial")
-struct DisplayPlaneAlphaFlagBitsKHR(Equatable):
+struct DisplayPlaneAlphaFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8072,15 +7652,12 @@ struct DisplayPlaneAlphaFlagBitsKHR(Equatable):
     comptime PER_PIXEL_PREMULTIPLIED = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct SurfaceTransformFlagsKHR(Equatable):
+struct SurfaceTransformFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SurfaceTransformFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SurfaceTransformFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8126,8 +7703,7 @@ struct SurfaceTransformFlagsKHR(Equatable):
     comptime INHERIT = Self(value = SurfaceTransformFlagBitsKHR.INHERIT.value())
 
 
-@register_passable("trivial")
-struct SurfaceTransformFlagBitsKHR(Equatable):
+struct SurfaceTransformFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8153,15 +7729,12 @@ struct SurfaceTransformFlagBitsKHR(Equatable):
     comptime INHERIT = Self(value = 1 << 8)
 
 
-@register_passable("trivial")
-struct SwapchainCreateFlagsKHR(Equatable):
+struct SwapchainCreateFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SwapchainCreateFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SwapchainCreateFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8207,8 +7780,7 @@ struct SwapchainCreateFlagsKHR(Equatable):
     comptime PRESENT_TIMING = Self(value = SwapchainCreateFlagBitsKHR.PRESENT_TIMING.value())
 
 
-@register_passable("trivial")
-struct SwapchainCreateFlagBitsKHR(Equatable):
+struct SwapchainCreateFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8234,15 +7806,12 @@ struct SwapchainCreateFlagBitsKHR(Equatable):
     comptime PRESENT_TIMING = Self(value = 1 << 9)
 
 
-@register_passable("trivial")
-struct DisplayModeCreateFlagsKHR(Equatable):
+struct DisplayModeCreateFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DisplayModeCreateFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DisplayModeCreateFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8278,8 +7847,7 @@ struct DisplayModeCreateFlagsKHR(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct DisplayModeCreateFlagBitsKHR(Equatable):
+struct DisplayModeCreateFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8295,15 +7863,12 @@ struct DisplayModeCreateFlagBitsKHR(Equatable):
         return DisplayModeCreateFlagsKHR(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct DisplaySurfaceCreateFlagsKHR(Equatable):
+struct DisplaySurfaceCreateFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DisplaySurfaceCreateFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DisplaySurfaceCreateFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8339,8 +7904,7 @@ struct DisplaySurfaceCreateFlagsKHR(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct DisplaySurfaceCreateFlagBitsKHR(Equatable):
+struct DisplaySurfaceCreateFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8356,15 +7920,12 @@ struct DisplaySurfaceCreateFlagBitsKHR(Equatable):
         return DisplaySurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct AndroidSurfaceCreateFlagsKHR(Equatable):
+struct AndroidSurfaceCreateFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: AndroidSurfaceCreateFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: AndroidSurfaceCreateFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8400,8 +7961,7 @@ struct AndroidSurfaceCreateFlagsKHR(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct AndroidSurfaceCreateFlagBitsKHR(Equatable):
+struct AndroidSurfaceCreateFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8417,15 +7977,12 @@ struct AndroidSurfaceCreateFlagBitsKHR(Equatable):
         return AndroidSurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct ViSurfaceCreateFlagsNN(Equatable):
+struct ViSurfaceCreateFlagsNN(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ViSurfaceCreateFlagBitsNN):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ViSurfaceCreateFlagBitsNN):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8461,8 +8018,7 @@ struct ViSurfaceCreateFlagsNN(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct ViSurfaceCreateFlagBitsNN(Equatable):
+struct ViSurfaceCreateFlagBitsNN(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8478,15 +8034,12 @@ struct ViSurfaceCreateFlagBitsNN(Equatable):
         return ViSurfaceCreateFlagsNN(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct WaylandSurfaceCreateFlagsKHR(Equatable):
+struct WaylandSurfaceCreateFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: WaylandSurfaceCreateFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: WaylandSurfaceCreateFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8524,8 +8077,7 @@ struct WaylandSurfaceCreateFlagsKHR(Equatable):
     comptime DISABLE_COLOR_MANAGEMENT = Self(value = WaylandSurfaceCreateFlagBitsKHR.DISABLE_COLOR_MANAGEMENT.value())
 
 
-@register_passable("trivial")
-struct WaylandSurfaceCreateFlagBitsKHR(Equatable):
+struct WaylandSurfaceCreateFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8543,15 +8095,12 @@ struct WaylandSurfaceCreateFlagBitsKHR(Equatable):
     comptime DISABLE_COLOR_MANAGEMENT = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct Win32SurfaceCreateFlagsKHR(Equatable):
+struct Win32SurfaceCreateFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: Win32SurfaceCreateFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: Win32SurfaceCreateFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8587,8 +8136,7 @@ struct Win32SurfaceCreateFlagsKHR(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct Win32SurfaceCreateFlagBitsKHR(Equatable):
+struct Win32SurfaceCreateFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8604,15 +8152,12 @@ struct Win32SurfaceCreateFlagBitsKHR(Equatable):
         return Win32SurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct XlibSurfaceCreateFlagsKHR(Equatable):
+struct XlibSurfaceCreateFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: XlibSurfaceCreateFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: XlibSurfaceCreateFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8648,8 +8193,7 @@ struct XlibSurfaceCreateFlagsKHR(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct XlibSurfaceCreateFlagBitsKHR(Equatable):
+struct XlibSurfaceCreateFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8665,15 +8209,12 @@ struct XlibSurfaceCreateFlagBitsKHR(Equatable):
         return XlibSurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct XcbSurfaceCreateFlagsKHR(Equatable):
+struct XcbSurfaceCreateFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: XcbSurfaceCreateFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: XcbSurfaceCreateFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8709,8 +8250,7 @@ struct XcbSurfaceCreateFlagsKHR(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct XcbSurfaceCreateFlagBitsKHR(Equatable):
+struct XcbSurfaceCreateFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8726,15 +8266,12 @@ struct XcbSurfaceCreateFlagBitsKHR(Equatable):
         return XcbSurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct DirectFBSurfaceCreateFlagsEXT(Equatable):
+struct DirectFBSurfaceCreateFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DirectFBSurfaceCreateFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DirectFBSurfaceCreateFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8770,8 +8307,7 @@ struct DirectFBSurfaceCreateFlagsEXT(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct DirectFBSurfaceCreateFlagBitsEXT(Equatable):
+struct DirectFBSurfaceCreateFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8787,15 +8323,12 @@ struct DirectFBSurfaceCreateFlagBitsEXT(Equatable):
         return DirectFBSurfaceCreateFlagsEXT(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct IOSSurfaceCreateFlagsMVK(Equatable):
+struct IOSSurfaceCreateFlagsMVK(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: IOSSurfaceCreateFlagBitsMVK):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: IOSSurfaceCreateFlagBitsMVK):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8831,8 +8364,7 @@ struct IOSSurfaceCreateFlagsMVK(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct IOSSurfaceCreateFlagBitsMVK(Equatable):
+struct IOSSurfaceCreateFlagBitsMVK(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8848,15 +8380,12 @@ struct IOSSurfaceCreateFlagBitsMVK(Equatable):
         return IOSSurfaceCreateFlagsMVK(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct MacOSSurfaceCreateFlagsMVK(Equatable):
+struct MacOSSurfaceCreateFlagsMVK(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: MacOSSurfaceCreateFlagBitsMVK):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: MacOSSurfaceCreateFlagBitsMVK):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8892,8 +8421,7 @@ struct MacOSSurfaceCreateFlagsMVK(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct MacOSSurfaceCreateFlagBitsMVK(Equatable):
+struct MacOSSurfaceCreateFlagBitsMVK(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8909,15 +8437,12 @@ struct MacOSSurfaceCreateFlagBitsMVK(Equatable):
         return MacOSSurfaceCreateFlagsMVK(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct MetalSurfaceCreateFlagsEXT(Equatable):
+struct MetalSurfaceCreateFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: MetalSurfaceCreateFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: MetalSurfaceCreateFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -8953,8 +8478,7 @@ struct MetalSurfaceCreateFlagsEXT(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct MetalSurfaceCreateFlagBitsEXT(Equatable):
+struct MetalSurfaceCreateFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -8970,15 +8494,12 @@ struct MetalSurfaceCreateFlagBitsEXT(Equatable):
         return MetalSurfaceCreateFlagsEXT(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct ImagePipeSurfaceCreateFlagsFUCHSIA(Equatable):
+struct ImagePipeSurfaceCreateFlagsFUCHSIA(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ImagePipeSurfaceCreateFlagBitsFUCHSIA):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ImagePipeSurfaceCreateFlagBitsFUCHSIA):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9014,8 +8535,7 @@ struct ImagePipeSurfaceCreateFlagsFUCHSIA(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct ImagePipeSurfaceCreateFlagBitsFUCHSIA(Equatable):
+struct ImagePipeSurfaceCreateFlagBitsFUCHSIA(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9031,15 +8551,12 @@ struct ImagePipeSurfaceCreateFlagBitsFUCHSIA(Equatable):
         return ImagePipeSurfaceCreateFlagsFUCHSIA(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct StreamDescriptorSurfaceCreateFlagsGGP(Equatable):
+struct StreamDescriptorSurfaceCreateFlagsGGP(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: StreamDescriptorSurfaceCreateFlagBitsGGP):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: StreamDescriptorSurfaceCreateFlagBitsGGP):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9075,8 +8592,7 @@ struct StreamDescriptorSurfaceCreateFlagsGGP(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct StreamDescriptorSurfaceCreateFlagBitsGGP(Equatable):
+struct StreamDescriptorSurfaceCreateFlagBitsGGP(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9092,15 +8608,12 @@ struct StreamDescriptorSurfaceCreateFlagBitsGGP(Equatable):
         return StreamDescriptorSurfaceCreateFlagsGGP(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct HeadlessSurfaceCreateFlagsEXT(Equatable):
+struct HeadlessSurfaceCreateFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: HeadlessSurfaceCreateFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: HeadlessSurfaceCreateFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9136,8 +8649,7 @@ struct HeadlessSurfaceCreateFlagsEXT(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct HeadlessSurfaceCreateFlagBitsEXT(Equatable):
+struct HeadlessSurfaceCreateFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9153,15 +8665,12 @@ struct HeadlessSurfaceCreateFlagBitsEXT(Equatable):
         return HeadlessSurfaceCreateFlagsEXT(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct ScreenSurfaceCreateFlagsQNX(Equatable):
+struct ScreenSurfaceCreateFlagsQNX(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ScreenSurfaceCreateFlagBitsQNX):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ScreenSurfaceCreateFlagBitsQNX):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9197,8 +8706,7 @@ struct ScreenSurfaceCreateFlagsQNX(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct ScreenSurfaceCreateFlagBitsQNX(Equatable):
+struct ScreenSurfaceCreateFlagBitsQNX(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9214,15 +8722,12 @@ struct ScreenSurfaceCreateFlagBitsQNX(Equatable):
         return ScreenSurfaceCreateFlagsQNX(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PeerMemoryFeatureFlags(Equatable):
+struct PeerMemoryFeatureFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PeerMemoryFeatureFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PeerMemoryFeatureFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9263,8 +8768,7 @@ struct PeerMemoryFeatureFlags(Equatable):
     comptime GENERIC_DST = Self(value = PeerMemoryFeatureFlagBits.GENERIC_DST.value())
 
 
-@register_passable("trivial")
-struct PeerMemoryFeatureFlagBits(Equatable):
+struct PeerMemoryFeatureFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9285,15 +8789,12 @@ struct PeerMemoryFeatureFlagBits(Equatable):
     comptime GENERIC_DST = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct MemoryAllocateFlags(Equatable):
+struct MemoryAllocateFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: MemoryAllocateFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: MemoryAllocateFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9334,8 +8835,7 @@ struct MemoryAllocateFlags(Equatable):
     comptime ZERO_INITIALIZE = Self(value = MemoryAllocateFlagBits.ZERO_INITIALIZE.value())
 
 
-@register_passable("trivial")
-struct MemoryAllocateFlagBits(Equatable):
+struct MemoryAllocateFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9356,15 +8856,12 @@ struct MemoryAllocateFlagBits(Equatable):
     comptime ZERO_INITIALIZE = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct DeviceGroupPresentModeFlagsKHR(Equatable):
+struct DeviceGroupPresentModeFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DeviceGroupPresentModeFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DeviceGroupPresentModeFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9405,8 +8902,7 @@ struct DeviceGroupPresentModeFlagsKHR(Equatable):
     comptime LOCAL_MULTI_DEVICE = Self(value = DeviceGroupPresentModeFlagBitsKHR.LOCAL_MULTI_DEVICE.value())
 
 
-@register_passable("trivial")
-struct DeviceGroupPresentModeFlagBitsKHR(Equatable):
+struct DeviceGroupPresentModeFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9427,15 +8923,12 @@ struct DeviceGroupPresentModeFlagBitsKHR(Equatable):
     comptime LOCAL_MULTI_DEVICE = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct DebugReportFlagsEXT(Equatable):
+struct DebugReportFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DebugReportFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DebugReportFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9477,8 +8970,7 @@ struct DebugReportFlagsEXT(Equatable):
     comptime DEBUG = Self(value = DebugReportFlagBitsEXT.DEBUG.value())
 
 
-@register_passable("trivial")
-struct DebugReportFlagBitsEXT(Equatable):
+struct DebugReportFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9500,15 +8992,12 @@ struct DebugReportFlagBitsEXT(Equatable):
     comptime DEBUG = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct CommandPoolTrimFlags(Equatable):
+struct CommandPoolTrimFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: CommandPoolTrimFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: CommandPoolTrimFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9544,8 +9033,7 @@ struct CommandPoolTrimFlags(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct CommandPoolTrimFlagBits(Equatable):
+struct CommandPoolTrimFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9561,15 +9049,12 @@ struct CommandPoolTrimFlagBits(Equatable):
         return CommandPoolTrimFlags(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct ExternalMemoryHandleTypeFlagsNV(Equatable):
+struct ExternalMemoryHandleTypeFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ExternalMemoryHandleTypeFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ExternalMemoryHandleTypeFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9610,8 +9095,7 @@ struct ExternalMemoryHandleTypeFlagsNV(Equatable):
     comptime D3D11_IMAGE_KMT = Self(value = ExternalMemoryHandleTypeFlagBitsNV.D3D11_IMAGE_KMT.value())
 
 
-@register_passable("trivial")
-struct ExternalMemoryHandleTypeFlagBitsNV(Equatable):
+struct ExternalMemoryHandleTypeFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9632,15 +9116,12 @@ struct ExternalMemoryHandleTypeFlagBitsNV(Equatable):
     comptime D3D11_IMAGE_KMT = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct ClusterAccelerationStructureIndexFormatFlagsNV(Equatable):
+struct ClusterAccelerationStructureIndexFormatFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ClusterAccelerationStructureIndexFormatFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ClusterAccelerationStructureIndexFormatFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9680,8 +9161,7 @@ struct ClusterAccelerationStructureIndexFormatFlagsNV(Equatable):
     comptime N_32BIT = Self(value = ClusterAccelerationStructureIndexFormatFlagBitsNV.N_32BIT.value())
 
 
-@register_passable("trivial")
-struct ClusterAccelerationStructureIndexFormatFlagBitsNV(Equatable):
+struct ClusterAccelerationStructureIndexFormatFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9701,15 +9181,12 @@ struct ClusterAccelerationStructureIndexFormatFlagBitsNV(Equatable):
     comptime N_32BIT = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct ExternalMemoryFeatureFlagsNV(Equatable):
+struct ExternalMemoryFeatureFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ExternalMemoryFeatureFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ExternalMemoryFeatureFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9749,8 +9226,7 @@ struct ExternalMemoryFeatureFlagsNV(Equatable):
     comptime IMPORTABLE = Self(value = ExternalMemoryFeatureFlagBitsNV.IMPORTABLE.value())
 
 
-@register_passable("trivial")
-struct ExternalMemoryFeatureFlagBitsNV(Equatable):
+struct ExternalMemoryFeatureFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9770,15 +9246,12 @@ struct ExternalMemoryFeatureFlagBitsNV(Equatable):
     comptime IMPORTABLE = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct ExternalMemoryHandleTypeFlags(Equatable):
+struct ExternalMemoryHandleTypeFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ExternalMemoryHandleTypeFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ExternalMemoryHandleTypeFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9834,8 +9307,7 @@ struct ExternalMemoryHandleTypeFlags(Equatable):
     comptime MTLHEAP = Self(value = ExternalMemoryHandleTypeFlagBits.MTLHEAP.value())
 
 
-@register_passable("trivial")
-struct ExternalMemoryHandleTypeFlagBits(Equatable):
+struct ExternalMemoryHandleTypeFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9871,15 +9343,12 @@ struct ExternalMemoryHandleTypeFlagBits(Equatable):
     comptime MTLHEAP = Self(value = 1 << 18)
 
 
-@register_passable("trivial")
-struct ExternalMemoryFeatureFlags(Equatable):
+struct ExternalMemoryFeatureFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ExternalMemoryFeatureFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ExternalMemoryFeatureFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9919,8 +9388,7 @@ struct ExternalMemoryFeatureFlags(Equatable):
     comptime IMPORTABLE = Self(value = ExternalMemoryFeatureFlagBits.IMPORTABLE.value())
 
 
-@register_passable("trivial")
-struct ExternalMemoryFeatureFlagBits(Equatable):
+struct ExternalMemoryFeatureFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -9940,15 +9408,12 @@ struct ExternalMemoryFeatureFlagBits(Equatable):
     comptime IMPORTABLE = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct ExternalSemaphoreHandleTypeFlags(Equatable):
+struct ExternalSemaphoreHandleTypeFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ExternalSemaphoreHandleTypeFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ExternalSemaphoreHandleTypeFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -9992,8 +9457,7 @@ struct ExternalSemaphoreHandleTypeFlags(Equatable):
     comptime ZIRCON_EVENT = Self(value = ExternalSemaphoreHandleTypeFlagBits.ZIRCON_EVENT.value())
 
 
-@register_passable("trivial")
-struct ExternalSemaphoreHandleTypeFlagBits(Equatable):
+struct ExternalSemaphoreHandleTypeFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10017,15 +9481,12 @@ struct ExternalSemaphoreHandleTypeFlagBits(Equatable):
     comptime ZIRCON_EVENT = Self(value = 1 << 7)
 
 
-@register_passable("trivial")
-struct ExternalSemaphoreFeatureFlags(Equatable):
+struct ExternalSemaphoreFeatureFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ExternalSemaphoreFeatureFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ExternalSemaphoreFeatureFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10064,8 +9525,7 @@ struct ExternalSemaphoreFeatureFlags(Equatable):
     comptime IMPORTABLE = Self(value = ExternalSemaphoreFeatureFlagBits.IMPORTABLE.value())
 
 
-@register_passable("trivial")
-struct ExternalSemaphoreFeatureFlagBits(Equatable):
+struct ExternalSemaphoreFeatureFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10084,15 +9544,12 @@ struct ExternalSemaphoreFeatureFlagBits(Equatable):
     comptime IMPORTABLE = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct SemaphoreImportFlags(Equatable):
+struct SemaphoreImportFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SemaphoreImportFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SemaphoreImportFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10130,8 +9587,7 @@ struct SemaphoreImportFlags(Equatable):
     comptime TEMPORARY = Self(value = SemaphoreImportFlagBits.TEMPORARY.value())
 
 
-@register_passable("trivial")
-struct SemaphoreImportFlagBits(Equatable):
+struct SemaphoreImportFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10149,15 +9605,12 @@ struct SemaphoreImportFlagBits(Equatable):
     comptime TEMPORARY = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct ExternalFenceHandleTypeFlags(Equatable):
+struct ExternalFenceHandleTypeFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ExternalFenceHandleTypeFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ExternalFenceHandleTypeFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10200,8 +9653,7 @@ struct ExternalFenceHandleTypeFlags(Equatable):
     comptime SCI_SYNC_FENCE = Self(value = ExternalFenceHandleTypeFlagBits.SCI_SYNC_FENCE.value())
 
 
-@register_passable("trivial")
-struct ExternalFenceHandleTypeFlagBits(Equatable):
+struct ExternalFenceHandleTypeFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10224,15 +9676,12 @@ struct ExternalFenceHandleTypeFlagBits(Equatable):
     comptime SCI_SYNC_FENCE = Self(value = 1 << 5)
 
 
-@register_passable("trivial")
-struct ExternalFenceFeatureFlags(Equatable):
+struct ExternalFenceFeatureFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ExternalFenceFeatureFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ExternalFenceFeatureFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10271,8 +9720,7 @@ struct ExternalFenceFeatureFlags(Equatable):
     comptime IMPORTABLE = Self(value = ExternalFenceFeatureFlagBits.IMPORTABLE.value())
 
 
-@register_passable("trivial")
-struct ExternalFenceFeatureFlagBits(Equatable):
+struct ExternalFenceFeatureFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10291,15 +9739,12 @@ struct ExternalFenceFeatureFlagBits(Equatable):
     comptime IMPORTABLE = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct FenceImportFlags(Equatable):
+struct FenceImportFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: FenceImportFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: FenceImportFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10337,8 +9782,7 @@ struct FenceImportFlags(Equatable):
     comptime TEMPORARY = Self(value = FenceImportFlagBits.TEMPORARY.value())
 
 
-@register_passable("trivial")
-struct FenceImportFlagBits(Equatable):
+struct FenceImportFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10356,15 +9800,12 @@ struct FenceImportFlagBits(Equatable):
     comptime TEMPORARY = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct SurfaceCounterFlagsEXT(Equatable):
+struct SurfaceCounterFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SurfaceCounterFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SurfaceCounterFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10402,8 +9843,7 @@ struct SurfaceCounterFlagsEXT(Equatable):
     comptime VBLANK = Self(value = SurfaceCounterFlagBitsEXT.VBLANK.value())
 
 
-@register_passable("trivial")
-struct SurfaceCounterFlagBitsEXT(Equatable):
+struct SurfaceCounterFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10421,15 +9861,12 @@ struct SurfaceCounterFlagBitsEXT(Equatable):
     comptime VBLANK = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct PipelineViewportSwizzleStateCreateFlagsNV(Equatable):
+struct PipelineViewportSwizzleStateCreateFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineViewportSwizzleStateCreateFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineViewportSwizzleStateCreateFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10465,8 +9902,7 @@ struct PipelineViewportSwizzleStateCreateFlagsNV(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineViewportSwizzleStateCreateFlagBitsNV(Equatable):
+struct PipelineViewportSwizzleStateCreateFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10482,15 +9918,12 @@ struct PipelineViewportSwizzleStateCreateFlagBitsNV(Equatable):
         return PipelineViewportSwizzleStateCreateFlagsNV(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineDiscardRectangleStateCreateFlagsEXT(Equatable):
+struct PipelineDiscardRectangleStateCreateFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineDiscardRectangleStateCreateFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineDiscardRectangleStateCreateFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10526,8 +9959,7 @@ struct PipelineDiscardRectangleStateCreateFlagsEXT(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineDiscardRectangleStateCreateFlagBitsEXT(Equatable):
+struct PipelineDiscardRectangleStateCreateFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10543,15 +9975,12 @@ struct PipelineDiscardRectangleStateCreateFlagBitsEXT(Equatable):
         return PipelineDiscardRectangleStateCreateFlagsEXT(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineCoverageToColorStateCreateFlagsNV(Equatable):
+struct PipelineCoverageToColorStateCreateFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineCoverageToColorStateCreateFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineCoverageToColorStateCreateFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10587,8 +10016,7 @@ struct PipelineCoverageToColorStateCreateFlagsNV(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineCoverageToColorStateCreateFlagBitsNV(Equatable):
+struct PipelineCoverageToColorStateCreateFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10604,15 +10032,12 @@ struct PipelineCoverageToColorStateCreateFlagBitsNV(Equatable):
         return PipelineCoverageToColorStateCreateFlagsNV(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineCoverageModulationStateCreateFlagsNV(Equatable):
+struct PipelineCoverageModulationStateCreateFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineCoverageModulationStateCreateFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineCoverageModulationStateCreateFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10648,8 +10073,7 @@ struct PipelineCoverageModulationStateCreateFlagsNV(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineCoverageModulationStateCreateFlagBitsNV(Equatable):
+struct PipelineCoverageModulationStateCreateFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10665,15 +10089,12 @@ struct PipelineCoverageModulationStateCreateFlagBitsNV(Equatable):
         return PipelineCoverageModulationStateCreateFlagsNV(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineCoverageReductionStateCreateFlagsNV(Equatable):
+struct PipelineCoverageReductionStateCreateFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineCoverageReductionStateCreateFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineCoverageReductionStateCreateFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10709,8 +10130,7 @@ struct PipelineCoverageReductionStateCreateFlagsNV(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineCoverageReductionStateCreateFlagBitsNV(Equatable):
+struct PipelineCoverageReductionStateCreateFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10726,15 +10146,12 @@ struct PipelineCoverageReductionStateCreateFlagBitsNV(Equatable):
         return PipelineCoverageReductionStateCreateFlagsNV(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct ValidationCacheCreateFlagsEXT(Equatable):
+struct ValidationCacheCreateFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ValidationCacheCreateFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ValidationCacheCreateFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10770,8 +10187,7 @@ struct ValidationCacheCreateFlagsEXT(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct ValidationCacheCreateFlagBitsEXT(Equatable):
+struct ValidationCacheCreateFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10787,15 +10203,12 @@ struct ValidationCacheCreateFlagBitsEXT(Equatable):
         return ValidationCacheCreateFlagsEXT(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct DebugUtilsMessageSeverityFlagsEXT(Equatable):
+struct DebugUtilsMessageSeverityFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DebugUtilsMessageSeverityFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DebugUtilsMessageSeverityFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10836,8 +10249,7 @@ struct DebugUtilsMessageSeverityFlagsEXT(Equatable):
     comptime ERROR = Self(value = DebugUtilsMessageSeverityFlagBitsEXT.ERROR.value())
 
 
-@register_passable("trivial")
-struct DebugUtilsMessageSeverityFlagBitsEXT(Equatable):
+struct DebugUtilsMessageSeverityFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10858,15 +10270,12 @@ struct DebugUtilsMessageSeverityFlagBitsEXT(Equatable):
     comptime ERROR = Self(value = 1 << 12)
 
 
-@register_passable("trivial")
-struct DebugUtilsMessageTypeFlagsEXT(Equatable):
+struct DebugUtilsMessageTypeFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DebugUtilsMessageTypeFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DebugUtilsMessageTypeFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10907,8 +10316,7 @@ struct DebugUtilsMessageTypeFlagsEXT(Equatable):
     comptime DEVICE_ADDRESS_BINDING = Self(value = DebugUtilsMessageTypeFlagBitsEXT.DEVICE_ADDRESS_BINDING.value())
 
 
-@register_passable("trivial")
-struct DebugUtilsMessageTypeFlagBitsEXT(Equatable):
+struct DebugUtilsMessageTypeFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10929,15 +10337,12 @@ struct DebugUtilsMessageTypeFlagBitsEXT(Equatable):
     comptime DEVICE_ADDRESS_BINDING = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct DebugUtilsMessengerCreateFlagsEXT(Equatable):
+struct DebugUtilsMessengerCreateFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DebugUtilsMessengerCreateFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DebugUtilsMessengerCreateFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -10973,8 +10378,7 @@ struct DebugUtilsMessengerCreateFlagsEXT(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct DebugUtilsMessengerCreateFlagBitsEXT(Equatable):
+struct DebugUtilsMessengerCreateFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -10990,15 +10394,12 @@ struct DebugUtilsMessengerCreateFlagBitsEXT(Equatable):
         return DebugUtilsMessengerCreateFlagsEXT(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct DebugUtilsMessengerCallbackDataFlagsEXT(Equatable):
+struct DebugUtilsMessengerCallbackDataFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DebugUtilsMessengerCallbackDataFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DebugUtilsMessengerCallbackDataFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11034,8 +10435,7 @@ struct DebugUtilsMessengerCallbackDataFlagsEXT(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct DebugUtilsMessengerCallbackDataFlagBitsEXT(Equatable):
+struct DebugUtilsMessengerCallbackDataFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11051,15 +10451,12 @@ struct DebugUtilsMessengerCallbackDataFlagBitsEXT(Equatable):
         return DebugUtilsMessengerCallbackDataFlagsEXT(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct DeviceMemoryReportFlagsEXT(Equatable):
+struct DeviceMemoryReportFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DeviceMemoryReportFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DeviceMemoryReportFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11095,8 +10492,7 @@ struct DeviceMemoryReportFlagsEXT(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct DeviceMemoryReportFlagBitsEXT(Equatable):
+struct DeviceMemoryReportFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11112,15 +10508,12 @@ struct DeviceMemoryReportFlagBitsEXT(Equatable):
         return DeviceMemoryReportFlagsEXT(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineRasterizationConservativeStateCreateFlagsEXT(Equatable):
+struct PipelineRasterizationConservativeStateCreateFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineRasterizationConservativeStateCreateFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineRasterizationConservativeStateCreateFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11156,8 +10549,7 @@ struct PipelineRasterizationConservativeStateCreateFlagsEXT(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineRasterizationConservativeStateCreateFlagBitsEXT(Equatable):
+struct PipelineRasterizationConservativeStateCreateFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11173,15 +10565,12 @@ struct PipelineRasterizationConservativeStateCreateFlagBitsEXT(Equatable):
         return PipelineRasterizationConservativeStateCreateFlagsEXT(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct DescriptorBindingFlags(Equatable):
+struct DescriptorBindingFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DescriptorBindingFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DescriptorBindingFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11223,8 +10612,7 @@ struct DescriptorBindingFlags(Equatable):
     comptime RESERVED_4 = Self(value = DescriptorBindingFlagBits.RESERVED_4.value())
 
 
-@register_passable("trivial")
-struct DescriptorBindingFlagBits(Equatable):
+struct DescriptorBindingFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11246,15 +10634,12 @@ struct DescriptorBindingFlagBits(Equatable):
     comptime RESERVED_4 = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct ConditionalRenderingFlagsEXT(Equatable):
+struct ConditionalRenderingFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ConditionalRenderingFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ConditionalRenderingFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11292,8 +10677,7 @@ struct ConditionalRenderingFlagsEXT(Equatable):
     comptime INVERTED = Self(value = ConditionalRenderingFlagBitsEXT.INVERTED.value())
 
 
-@register_passable("trivial")
-struct ConditionalRenderingFlagBitsEXT(Equatable):
+struct ConditionalRenderingFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11311,15 +10695,12 @@ struct ConditionalRenderingFlagBitsEXT(Equatable):
     comptime INVERTED = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct ResolveModeFlags(Equatable):
+struct ResolveModeFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ResolveModeFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ResolveModeFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11363,8 +10744,7 @@ struct ResolveModeFlags(Equatable):
     comptime CUSTOM = Self(value = ResolveModeFlagBits.CUSTOM.value())
 
 
-@register_passable("trivial")
-struct ResolveModeFlagBits(Equatable):
+struct ResolveModeFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11388,15 +10768,12 @@ struct ResolveModeFlagBits(Equatable):
     comptime CUSTOM = Self(value = 1 << 5)
 
 
-@register_passable("trivial")
-struct PipelineRasterizationStateStreamCreateFlagsEXT(Equatable):
+struct PipelineRasterizationStateStreamCreateFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineRasterizationStateStreamCreateFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineRasterizationStateStreamCreateFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11432,8 +10809,7 @@ struct PipelineRasterizationStateStreamCreateFlagsEXT(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineRasterizationStateStreamCreateFlagBitsEXT(Equatable):
+struct PipelineRasterizationStateStreamCreateFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11449,15 +10825,12 @@ struct PipelineRasterizationStateStreamCreateFlagBitsEXT(Equatable):
         return PipelineRasterizationStateStreamCreateFlagsEXT(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PipelineRasterizationDepthClipStateCreateFlagsEXT(Equatable):
+struct PipelineRasterizationDepthClipStateCreateFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PipelineRasterizationDepthClipStateCreateFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PipelineRasterizationDepthClipStateCreateFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11493,8 +10866,7 @@ struct PipelineRasterizationDepthClipStateCreateFlagsEXT(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PipelineRasterizationDepthClipStateCreateFlagBitsEXT(Equatable):
+struct PipelineRasterizationDepthClipStateCreateFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11510,15 +10882,12 @@ struct PipelineRasterizationDepthClipStateCreateFlagBitsEXT(Equatable):
         return PipelineRasterizationDepthClipStateCreateFlagsEXT(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct SwapchainImageUsageFlagsANDROID(Equatable):
+struct SwapchainImageUsageFlagsANDROID(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SwapchainImageUsageFlagBitsANDROID):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SwapchainImageUsageFlagBitsANDROID):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11556,8 +10925,7 @@ struct SwapchainImageUsageFlagsANDROID(Equatable):
     comptime SHARED = Self(value = SwapchainImageUsageFlagBitsANDROID.SHARED.value())
 
 
-@register_passable("trivial")
-struct SwapchainImageUsageFlagBitsANDROID(Equatable):
+struct SwapchainImageUsageFlagBitsANDROID(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11575,15 +10943,12 @@ struct SwapchainImageUsageFlagBitsANDROID(Equatable):
     comptime SHARED = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct ToolPurposeFlags(Equatable):
+struct ToolPurposeFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ToolPurposeFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ToolPurposeFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11627,8 +10992,7 @@ struct ToolPurposeFlags(Equatable):
     comptime DEBUG_MARKERS = Self(value = ToolPurposeFlagBits.DEBUG_MARKERS.value())
 
 
-@register_passable("trivial")
-struct ToolPurposeFlagBits(Equatable):
+struct ToolPurposeFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11652,15 +11016,12 @@ struct ToolPurposeFlagBits(Equatable):
     comptime DEBUG_MARKERS = Self(value = 1 << 6)
 
 
-@register_passable("trivial")
-struct SubmitFlags(Equatable):
+struct SubmitFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SubmitFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SubmitFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11698,8 +11059,7 @@ struct SubmitFlags(Equatable):
     comptime PROTECTED = Self(value = SubmitFlagBits.PROTECTED.value())
 
 
-@register_passable("trivial")
-struct SubmitFlagBits(Equatable):
+struct SubmitFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11717,15 +11077,12 @@ struct SubmitFlagBits(Equatable):
     comptime PROTECTED = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct ImageFormatConstraintsFlagsFUCHSIA(Equatable):
+struct ImageFormatConstraintsFlagsFUCHSIA(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ImageFormatConstraintsFlagBitsFUCHSIA):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ImageFormatConstraintsFlagBitsFUCHSIA):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11761,8 +11118,7 @@ struct ImageFormatConstraintsFlagsFUCHSIA(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct ImageFormatConstraintsFlagBitsFUCHSIA(Equatable):
+struct ImageFormatConstraintsFlagBitsFUCHSIA(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11778,15 +11134,12 @@ struct ImageFormatConstraintsFlagBitsFUCHSIA(Equatable):
         return ImageFormatConstraintsFlagsFUCHSIA(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct HostImageCopyFlags(Equatable):
+struct HostImageCopyFlags(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: HostImageCopyFlagBits):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: HostImageCopyFlagBits):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11824,8 +11177,7 @@ struct HostImageCopyFlags(Equatable):
     comptime MEMCPY = Self(value = HostImageCopyFlagBits.MEMCPY.value())
 
 
-@register_passable("trivial")
-struct HostImageCopyFlagBits(Equatable):
+struct HostImageCopyFlagBits(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11843,15 +11195,12 @@ struct HostImageCopyFlagBits(Equatable):
     comptime MEMCPY = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct PartitionedAccelerationStructureInstanceFlagsNV(Equatable):
+struct PartitionedAccelerationStructureInstanceFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PartitionedAccelerationStructureInstanceFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PartitionedAccelerationStructureInstanceFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11893,8 +11242,7 @@ struct PartitionedAccelerationStructureInstanceFlagsNV(Equatable):
     comptime FLAG_ENABLE_EXPLICIT_BOUNDING_BOX = Self(value = PartitionedAccelerationStructureInstanceFlagBitsNV.FLAG_ENABLE_EXPLICIT_BOUNDING_BOX.value())
 
 
-@register_passable("trivial")
-struct PartitionedAccelerationStructureInstanceFlagBitsNV(Equatable):
+struct PartitionedAccelerationStructureInstanceFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11916,15 +11264,12 @@ struct PartitionedAccelerationStructureInstanceFlagBitsNV(Equatable):
     comptime FLAG_ENABLE_EXPLICIT_BOUNDING_BOX = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct ImageConstraintsInfoFlagsFUCHSIA(Equatable):
+struct ImageConstraintsInfoFlagsFUCHSIA(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ImageConstraintsInfoFlagBitsFUCHSIA):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ImageConstraintsInfoFlagBitsFUCHSIA):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -11966,8 +11311,7 @@ struct ImageConstraintsInfoFlagsFUCHSIA(Equatable):
     comptime PROTECTED_OPTIONAL = Self(value = ImageConstraintsInfoFlagBitsFUCHSIA.PROTECTED_OPTIONAL.value())
 
 
-@register_passable("trivial")
-struct ImageConstraintsInfoFlagBitsFUCHSIA(Equatable):
+struct ImageConstraintsInfoFlagBitsFUCHSIA(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -11989,15 +11333,12 @@ struct ImageConstraintsInfoFlagBitsFUCHSIA(Equatable):
     comptime PROTECTED_OPTIONAL = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct GraphicsPipelineLibraryFlagsEXT(Equatable):
+struct GraphicsPipelineLibraryFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: GraphicsPipelineLibraryFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: GraphicsPipelineLibraryFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12038,8 +11379,7 @@ struct GraphicsPipelineLibraryFlagsEXT(Equatable):
     comptime FRAGMENT_OUTPUT_INTERFACE = Self(value = GraphicsPipelineLibraryFlagBitsEXT.FRAGMENT_OUTPUT_INTERFACE.value())
 
 
-@register_passable("trivial")
-struct GraphicsPipelineLibraryFlagBitsEXT(Equatable):
+struct GraphicsPipelineLibraryFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -12060,15 +11400,12 @@ struct GraphicsPipelineLibraryFlagBitsEXT(Equatable):
     comptime FRAGMENT_OUTPUT_INTERFACE = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct ImageCompressionFlagsEXT(Equatable):
+struct ImageCompressionFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ImageCompressionFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ImageCompressionFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12109,8 +11446,7 @@ struct ImageCompressionFlagsEXT(Equatable):
     comptime DISABLED = Self(value = ImageCompressionFlagBitsEXT.DISABLED.value())
 
 
-@register_passable("trivial")
-struct ImageCompressionFlagBitsEXT(Equatable):
+struct ImageCompressionFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -12131,15 +11467,12 @@ struct ImageCompressionFlagBitsEXT(Equatable):
     comptime DISABLED = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct ImageCompressionFixedRateFlagsEXT(Equatable):
+struct ImageCompressionFixedRateFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ImageCompressionFixedRateFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ImageCompressionFixedRateFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12201,8 +11534,7 @@ struct ImageCompressionFixedRateFlagsEXT(Equatable):
     comptime N_24BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_24BPC.value())
 
 
-@register_passable("trivial")
-struct ImageCompressionFixedRateFlagBitsEXT(Equatable):
+struct ImageCompressionFixedRateFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -12244,15 +11576,12 @@ struct ImageCompressionFixedRateFlagBitsEXT(Equatable):
     comptime N_24BPC = Self(value = 1 << 23)
 
 
-@register_passable("trivial")
-struct ExportMetalObjectTypeFlagsEXT(Equatable):
+struct ExportMetalObjectTypeFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ExportMetalObjectTypeFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ExportMetalObjectTypeFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12295,8 +11624,7 @@ struct ExportMetalObjectTypeFlagsEXT(Equatable):
     comptime METAL_SHARED_EVENT = Self(value = ExportMetalObjectTypeFlagBitsEXT.METAL_SHARED_EVENT.value())
 
 
-@register_passable("trivial")
-struct ExportMetalObjectTypeFlagBitsEXT(Equatable):
+struct ExportMetalObjectTypeFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -12319,15 +11647,12 @@ struct ExportMetalObjectTypeFlagBitsEXT(Equatable):
     comptime METAL_SHARED_EVENT = Self(value = 1 << 5)
 
 
-@register_passable("trivial")
-struct RenderingAttachmentFlagsKHR(Equatable):
+struct RenderingAttachmentFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: RenderingAttachmentFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: RenderingAttachmentFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12367,8 +11692,7 @@ struct RenderingAttachmentFlagsKHR(Equatable):
     comptime RESOLVE_ENABLE_TRANSFER_FUNCTION = Self(value = RenderingAttachmentFlagBitsKHR.RESOLVE_ENABLE_TRANSFER_FUNCTION.value())
 
 
-@register_passable("trivial")
-struct RenderingAttachmentFlagBitsKHR(Equatable):
+struct RenderingAttachmentFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -12388,15 +11712,12 @@ struct RenderingAttachmentFlagBitsKHR(Equatable):
     comptime RESOLVE_ENABLE_TRANSFER_FUNCTION = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct ResolveImageFlagsKHR(Equatable):
+struct ResolveImageFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ResolveImageFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ResolveImageFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12435,8 +11756,7 @@ struct ResolveImageFlagsKHR(Equatable):
     comptime ENABLE_TRANSFER_FUNCTION = Self(value = ResolveImageFlagBitsKHR.ENABLE_TRANSFER_FUNCTION.value())
 
 
-@register_passable("trivial")
-struct ResolveImageFlagBitsKHR(Equatable):
+struct ResolveImageFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -12455,15 +11775,12 @@ struct ResolveImageFlagBitsKHR(Equatable):
     comptime ENABLE_TRANSFER_FUNCTION = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct DeviceAddressBindingFlagsEXT(Equatable):
+struct DeviceAddressBindingFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: DeviceAddressBindingFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: DeviceAddressBindingFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12501,8 +11818,7 @@ struct DeviceAddressBindingFlagsEXT(Equatable):
     comptime INTERNAL_OBJECT = Self(value = DeviceAddressBindingFlagBitsEXT.INTERNAL_OBJECT.value())
 
 
-@register_passable("trivial")
-struct DeviceAddressBindingFlagBitsEXT(Equatable):
+struct DeviceAddressBindingFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -12520,15 +11836,12 @@ struct DeviceAddressBindingFlagBitsEXT(Equatable):
     comptime INTERNAL_OBJECT = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct OpticalFlowGridSizeFlagsNV(Equatable):
+struct OpticalFlowGridSizeFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: OpticalFlowGridSizeFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: OpticalFlowGridSizeFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12570,8 +11883,7 @@ struct OpticalFlowGridSizeFlagsNV(Equatable):
     comptime N_8X8 = Self(value = OpticalFlowGridSizeFlagBitsNV.N_8X8.value())
 
 
-@register_passable("trivial")
-struct OpticalFlowGridSizeFlagBitsNV(Equatable):
+struct OpticalFlowGridSizeFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -12593,15 +11905,12 @@ struct OpticalFlowGridSizeFlagBitsNV(Equatable):
     comptime N_8X8 = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct OpticalFlowUsageFlagsNV(Equatable):
+struct OpticalFlowUsageFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: OpticalFlowUsageFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: OpticalFlowUsageFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12644,8 +11953,7 @@ struct OpticalFlowUsageFlagsNV(Equatable):
     comptime GLOBAL_FLOW = Self(value = OpticalFlowUsageFlagBitsNV.GLOBAL_FLOW.value())
 
 
-@register_passable("trivial")
-struct OpticalFlowUsageFlagBitsNV(Equatable):
+struct OpticalFlowUsageFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -12668,15 +11976,12 @@ struct OpticalFlowUsageFlagBitsNV(Equatable):
     comptime GLOBAL_FLOW = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct OpticalFlowSessionCreateFlagsNV(Equatable):
+struct OpticalFlowSessionCreateFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: OpticalFlowSessionCreateFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: OpticalFlowSessionCreateFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12718,8 +12023,7 @@ struct OpticalFlowSessionCreateFlagsNV(Equatable):
     comptime BOTH_DIRECTIONS = Self(value = OpticalFlowSessionCreateFlagBitsNV.BOTH_DIRECTIONS.value())
 
 
-@register_passable("trivial")
-struct OpticalFlowSessionCreateFlagBitsNV(Equatable):
+struct OpticalFlowSessionCreateFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -12741,15 +12045,12 @@ struct OpticalFlowSessionCreateFlagBitsNV(Equatable):
     comptime BOTH_DIRECTIONS = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct OpticalFlowExecuteFlagsNV(Equatable):
+struct OpticalFlowExecuteFlagsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: OpticalFlowExecuteFlagBitsNV):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: OpticalFlowExecuteFlagBitsNV):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12787,8 +12088,7 @@ struct OpticalFlowExecuteFlagsNV(Equatable):
     comptime DISABLE_TEMPORAL_HINTS = Self(value = OpticalFlowExecuteFlagBitsNV.DISABLE_TEMPORAL_HINTS.value())
 
 
-@register_passable("trivial")
-struct OpticalFlowExecuteFlagBitsNV(Equatable):
+struct OpticalFlowExecuteFlagBitsNV(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -12806,15 +12106,12 @@ struct OpticalFlowExecuteFlagBitsNV(Equatable):
     comptime DISABLE_TEMPORAL_HINTS = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct FrameBoundaryFlagsEXT(Equatable):
+struct FrameBoundaryFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: FrameBoundaryFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: FrameBoundaryFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12852,8 +12149,7 @@ struct FrameBoundaryFlagsEXT(Equatable):
     comptime FRAME_END = Self(value = FrameBoundaryFlagBitsEXT.FRAME_END.value())
 
 
-@register_passable("trivial")
-struct FrameBoundaryFlagBitsEXT(Equatable):
+struct FrameBoundaryFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -12871,15 +12167,12 @@ struct FrameBoundaryFlagBitsEXT(Equatable):
     comptime FRAME_END = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct PresentScalingFlagsKHR(Equatable):
+struct PresentScalingFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PresentScalingFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PresentScalingFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12919,8 +12212,7 @@ struct PresentScalingFlagsKHR(Equatable):
     comptime STRETCH = Self(value = PresentScalingFlagBitsKHR.STRETCH.value())
 
 
-@register_passable("trivial")
-struct PresentScalingFlagBitsKHR(Equatable):
+struct PresentScalingFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -12940,15 +12232,12 @@ struct PresentScalingFlagBitsKHR(Equatable):
     comptime STRETCH = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct PresentGravityFlagsKHR(Equatable):
+struct PresentGravityFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PresentGravityFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PresentGravityFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -12988,8 +12277,7 @@ struct PresentGravityFlagsKHR(Equatable):
     comptime CENTERED = Self(value = PresentGravityFlagBitsKHR.CENTERED.value())
 
 
-@register_passable("trivial")
-struct PresentGravityFlagBitsKHR(Equatable):
+struct PresentGravityFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13009,15 +12297,12 @@ struct PresentGravityFlagBitsKHR(Equatable):
     comptime CENTERED = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct ShaderCreateFlagsEXT(Equatable):
+struct ShaderCreateFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: ShaderCreateFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: ShaderCreateFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -13070,8 +12355,7 @@ struct ShaderCreateFlagsEXT(Equatable):
     comptime RESERVED_18 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_18.value())
 
 
-@register_passable("trivial")
-struct ShaderCreateFlagBitsEXT(Equatable):
+struct ShaderCreateFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13104,15 +12388,12 @@ struct ShaderCreateFlagBitsEXT(Equatable):
     comptime RESERVED_18 = Self(value = 1 << 18)
 
 
-@register_passable("trivial")
-struct TileShadingRenderPassFlagsQCOM(Equatable):
+struct TileShadingRenderPassFlagsQCOM(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: TileShadingRenderPassFlagBitsQCOM):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: TileShadingRenderPassFlagBitsQCOM):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -13151,8 +12432,7 @@ struct TileShadingRenderPassFlagsQCOM(Equatable):
     comptime PER_TILE_EXECUTION = Self(value = TileShadingRenderPassFlagBitsQCOM.PER_TILE_EXECUTION.value())
 
 
-@register_passable("trivial")
-struct TileShadingRenderPassFlagBitsQCOM(Equatable):
+struct TileShadingRenderPassFlagBitsQCOM(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13171,15 +12451,12 @@ struct TileShadingRenderPassFlagBitsQCOM(Equatable):
     comptime PER_TILE_EXECUTION = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct PhysicalDeviceSchedulingControlsFlagsARM(Equatable):
+struct PhysicalDeviceSchedulingControlsFlagsARM(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: PhysicalDeviceSchedulingControlsFlagBitsARM):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PhysicalDeviceSchedulingControlsFlagBitsARM):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt64):
         self._value = value
@@ -13217,8 +12494,7 @@ struct PhysicalDeviceSchedulingControlsFlagsARM(Equatable):
     comptime SHADER_CORE_COUNT = Self(value = PhysicalDeviceSchedulingControlsFlagBitsARM.SHADER_CORE_COUNT.value())
 
 
-@register_passable("trivial")
-struct PhysicalDeviceSchedulingControlsFlagBitsARM(Equatable):
+struct PhysicalDeviceSchedulingControlsFlagBitsARM(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):
@@ -13236,15 +12512,12 @@ struct PhysicalDeviceSchedulingControlsFlagBitsARM(Equatable):
     comptime SHADER_CORE_COUNT = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct SurfaceCreateFlagsOHOS(Equatable):
+struct SurfaceCreateFlagsOHOS(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SurfaceCreateFlagBitsOHOS):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SurfaceCreateFlagBitsOHOS):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -13280,8 +12553,7 @@ struct SurfaceCreateFlagsOHOS(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct SurfaceCreateFlagBitsOHOS(Equatable):
+struct SurfaceCreateFlagBitsOHOS(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13297,15 +12569,12 @@ struct SurfaceCreateFlagBitsOHOS(Equatable):
         return SurfaceCreateFlagsOHOS(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct PresentStageFlagsEXT(Equatable):
+struct PresentStageFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PresentStageFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PresentStageFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -13346,8 +12615,7 @@ struct PresentStageFlagsEXT(Equatable):
     comptime IMAGE_FIRST_PIXEL_VISIBLE = Self(value = PresentStageFlagBitsEXT.IMAGE_FIRST_PIXEL_VISIBLE.value())
 
 
-@register_passable("trivial")
-struct PresentStageFlagBitsEXT(Equatable):
+struct PresentStageFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13368,15 +12636,12 @@ struct PresentStageFlagBitsEXT(Equatable):
     comptime IMAGE_FIRST_PIXEL_VISIBLE = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct PastPresentationTimingFlagsEXT(Equatable):
+struct PastPresentationTimingFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PastPresentationTimingFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PastPresentationTimingFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -13415,8 +12680,7 @@ struct PastPresentationTimingFlagsEXT(Equatable):
     comptime ALLOW_OUT_OF_ORDER_RESULTS = Self(value = PastPresentationTimingFlagBitsEXT.ALLOW_OUT_OF_ORDER_RESULTS.value())
 
 
-@register_passable("trivial")
-struct PastPresentationTimingFlagBitsEXT(Equatable):
+struct PastPresentationTimingFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13435,15 +12699,12 @@ struct PastPresentationTimingFlagBitsEXT(Equatable):
     comptime ALLOW_OUT_OF_ORDER_RESULTS = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct PresentTimingInfoFlagsEXT(Equatable):
+struct PresentTimingInfoFlagsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PresentTimingInfoFlagBitsEXT):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PresentTimingInfoFlagBitsEXT):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -13482,8 +12743,7 @@ struct PresentTimingInfoFlagsEXT(Equatable):
     comptime PRESENT_AT_NEAREST_REFRESH_CYCLE = Self(value = PresentTimingInfoFlagBitsEXT.PRESENT_AT_NEAREST_REFRESH_CYCLE.value())
 
 
-@register_passable("trivial")
-struct PresentTimingInfoFlagBitsEXT(Equatable):
+struct PresentTimingInfoFlagBitsEXT(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13502,15 +12762,12 @@ struct PresentTimingInfoFlagBitsEXT(Equatable):
     comptime PRESENT_AT_NEAREST_REFRESH_CYCLE = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct SwapchainImageUsageFlagsOHOS(Equatable):
+struct SwapchainImageUsageFlagsOHOS(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: SwapchainImageUsageFlagBitsOHOS):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: SwapchainImageUsageFlagBitsOHOS):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -13548,8 +12805,7 @@ struct SwapchainImageUsageFlagsOHOS(Equatable):
     comptime SHARED = Self(value = SwapchainImageUsageFlagBitsOHOS.SHARED.value())
 
 
-@register_passable("trivial")
-struct SwapchainImageUsageFlagBitsOHOS(Equatable):
+struct SwapchainImageUsageFlagBitsOHOS(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13567,15 +12823,12 @@ struct SwapchainImageUsageFlagBitsOHOS(Equatable):
     comptime SHARED = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct PerformanceCounterDescriptionFlagsARM(Equatable):
+struct PerformanceCounterDescriptionFlagsARM(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: PerformanceCounterDescriptionFlagBitsARM):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: PerformanceCounterDescriptionFlagBitsARM):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -13611,8 +12864,7 @@ struct PerformanceCounterDescriptionFlagsARM(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct PerformanceCounterDescriptionFlagBitsARM(Equatable):
+struct PerformanceCounterDescriptionFlagBitsARM(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13628,15 +12880,12 @@ struct PerformanceCounterDescriptionFlagBitsARM(Equatable):
         return PerformanceCounterDescriptionFlagsARM(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct VideoCodecOperationFlagsKHR(Equatable):
+struct VideoCodecOperationFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoCodecOperationFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoCodecOperationFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -13681,8 +12930,7 @@ struct VideoCodecOperationFlagsKHR(Equatable):
     comptime ENCODE_AV1 = Self(value = VideoCodecOperationFlagBitsKHR.ENCODE_AV1.value())
 
 
-@register_passable("trivial")
-struct VideoCodecOperationFlagBitsKHR(Equatable):
+struct VideoCodecOperationFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13707,15 +12955,12 @@ struct VideoCodecOperationFlagBitsKHR(Equatable):
     comptime ENCODE_AV1 = Self(value = 1 << 18)
 
 
-@register_passable("trivial")
-struct VideoCapabilityFlagsKHR(Equatable):
+struct VideoCapabilityFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoCapabilityFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoCapabilityFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -13754,8 +12999,7 @@ struct VideoCapabilityFlagsKHR(Equatable):
     comptime SEPARATE_REFERENCE_IMAGES = Self(value = VideoCapabilityFlagBitsKHR.SEPARATE_REFERENCE_IMAGES.value())
 
 
-@register_passable("trivial")
-struct VideoCapabilityFlagBitsKHR(Equatable):
+struct VideoCapabilityFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13774,15 +13018,12 @@ struct VideoCapabilityFlagBitsKHR(Equatable):
     comptime SEPARATE_REFERENCE_IMAGES = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct VideoSessionCreateFlagsKHR(Equatable):
+struct VideoSessionCreateFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoSessionCreateFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoSessionCreateFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -13825,8 +13066,7 @@ struct VideoSessionCreateFlagsKHR(Equatable):
     comptime INLINE_SESSION_PARAMETERS = Self(value = VideoSessionCreateFlagBitsKHR.INLINE_SESSION_PARAMETERS.value())
 
 
-@register_passable("trivial")
-struct VideoSessionCreateFlagBitsKHR(Equatable):
+struct VideoSessionCreateFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13849,15 +13089,12 @@ struct VideoSessionCreateFlagBitsKHR(Equatable):
     comptime INLINE_SESSION_PARAMETERS = Self(value = 1 << 5)
 
 
-@register_passable("trivial")
-struct VideoSessionParametersCreateFlagsKHR(Equatable):
+struct VideoSessionParametersCreateFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoSessionParametersCreateFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoSessionParametersCreateFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -13895,8 +13132,7 @@ struct VideoSessionParametersCreateFlagsKHR(Equatable):
     comptime QUANTIZATION_MAP_COMPATIBLE = Self(value = VideoSessionParametersCreateFlagBitsKHR.QUANTIZATION_MAP_COMPATIBLE.value())
 
 
-@register_passable("trivial")
-struct VideoSessionParametersCreateFlagBitsKHR(Equatable):
+struct VideoSessionParametersCreateFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13914,15 +13150,12 @@ struct VideoSessionParametersCreateFlagBitsKHR(Equatable):
     comptime QUANTIZATION_MAP_COMPATIBLE = Self(value = 1 << 0)
 
 
-@register_passable("trivial")
-struct VideoBeginCodingFlagsKHR(Equatable):
+struct VideoBeginCodingFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoBeginCodingFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoBeginCodingFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -13958,8 +13191,7 @@ struct VideoBeginCodingFlagsKHR(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct VideoBeginCodingFlagBitsKHR(Equatable):
+struct VideoBeginCodingFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -13975,15 +13207,12 @@ struct VideoBeginCodingFlagBitsKHR(Equatable):
         return VideoBeginCodingFlagsKHR(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct VideoEndCodingFlagsKHR(Equatable):
+struct VideoEndCodingFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEndCodingFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEndCodingFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14019,8 +13248,7 @@ struct VideoEndCodingFlagsKHR(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct VideoEndCodingFlagBitsKHR(Equatable):
+struct VideoEndCodingFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14036,15 +13264,12 @@ struct VideoEndCodingFlagBitsKHR(Equatable):
         return VideoEndCodingFlagsKHR(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct VideoCodingControlFlagsKHR(Equatable):
+struct VideoCodingControlFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoCodingControlFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoCodingControlFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14084,8 +13309,7 @@ struct VideoCodingControlFlagsKHR(Equatable):
     comptime ENCODE_QUALITY_LEVEL = Self(value = VideoCodingControlFlagBitsKHR.ENCODE_QUALITY_LEVEL.value())
 
 
-@register_passable("trivial")
-struct VideoCodingControlFlagBitsKHR(Equatable):
+struct VideoCodingControlFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14105,15 +13329,12 @@ struct VideoCodingControlFlagBitsKHR(Equatable):
     comptime ENCODE_QUALITY_LEVEL = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct VideoDecodeUsageFlagsKHR(Equatable):
+struct VideoDecodeUsageFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoDecodeUsageFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoDecodeUsageFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14154,8 +13375,7 @@ struct VideoDecodeUsageFlagsKHR(Equatable):
     comptime STREAMING = Self(value = VideoDecodeUsageFlagBitsKHR.STREAMING.value())
 
 
-@register_passable("trivial")
-struct VideoDecodeUsageFlagBitsKHR(Equatable):
+struct VideoDecodeUsageFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14176,15 +13396,12 @@ struct VideoDecodeUsageFlagBitsKHR(Equatable):
     comptime STREAMING = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct VideoDecodeCapabilityFlagsKHR(Equatable):
+struct VideoDecodeCapabilityFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoDecodeCapabilityFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoDecodeCapabilityFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14223,8 +13440,7 @@ struct VideoDecodeCapabilityFlagsKHR(Equatable):
     comptime DPB_AND_OUTPUT_DISTINCT = Self(value = VideoDecodeCapabilityFlagBitsKHR.DPB_AND_OUTPUT_DISTINCT.value())
 
 
-@register_passable("trivial")
-struct VideoDecodeCapabilityFlagBitsKHR(Equatable):
+struct VideoDecodeCapabilityFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14243,15 +13459,12 @@ struct VideoDecodeCapabilityFlagBitsKHR(Equatable):
     comptime DPB_AND_OUTPUT_DISTINCT = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct VideoDecodeFlagsKHR(Equatable):
+struct VideoDecodeFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoDecodeFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoDecodeFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14287,8 +13500,7 @@ struct VideoDecodeFlagsKHR(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct VideoDecodeFlagBitsKHR(Equatable):
+struct VideoDecodeFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14304,15 +13516,12 @@ struct VideoDecodeFlagBitsKHR(Equatable):
         return VideoDecodeFlagsKHR(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct VideoDecodeH264PictureLayoutFlagsKHR(Equatable):
+struct VideoDecodeH264PictureLayoutFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoDecodeH264PictureLayoutFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoDecodeH264PictureLayoutFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14352,8 +13561,7 @@ struct VideoDecodeH264PictureLayoutFlagsKHR(Equatable):
     comptime INTERLACED_SEPARATE_PLANES = Self(value = VideoDecodeH264PictureLayoutFlagBitsKHR.INTERLACED_SEPARATE_PLANES.value())
 
 
-@register_passable("trivial")
-struct VideoDecodeH264PictureLayoutFlagBitsKHR(Equatable):
+struct VideoDecodeH264PictureLayoutFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14373,15 +13581,12 @@ struct VideoDecodeH264PictureLayoutFlagBitsKHR(Equatable):
     comptime INTERLACED_SEPARATE_PLANES = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct VideoEncodeFlagsKHR(Equatable):
+struct VideoEncodeFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14421,8 +13626,7 @@ struct VideoEncodeFlagsKHR(Equatable):
     comptime INTRA_REFRESH = Self(value = VideoEncodeFlagBitsKHR.INTRA_REFRESH.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeFlagBitsKHR(Equatable):
+struct VideoEncodeFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14442,15 +13646,12 @@ struct VideoEncodeFlagBitsKHR(Equatable):
     comptime INTRA_REFRESH = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct VideoEncodeUsageFlagsKHR(Equatable):
+struct VideoEncodeUsageFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeUsageFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeUsageFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14492,8 +13693,7 @@ struct VideoEncodeUsageFlagsKHR(Equatable):
     comptime CONFERENCING = Self(value = VideoEncodeUsageFlagBitsKHR.CONFERENCING.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeUsageFlagBitsKHR(Equatable):
+struct VideoEncodeUsageFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14515,15 +13715,12 @@ struct VideoEncodeUsageFlagBitsKHR(Equatable):
     comptime CONFERENCING = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct VideoEncodeContentFlagsKHR(Equatable):
+struct VideoEncodeContentFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeContentFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeContentFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14564,8 +13761,7 @@ struct VideoEncodeContentFlagsKHR(Equatable):
     comptime RENDERED = Self(value = VideoEncodeContentFlagBitsKHR.RENDERED.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeContentFlagBitsKHR(Equatable):
+struct VideoEncodeContentFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14586,15 +13782,12 @@ struct VideoEncodeContentFlagBitsKHR(Equatable):
     comptime RENDERED = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct VideoEncodeCapabilityFlagsKHR(Equatable):
+struct VideoEncodeCapabilityFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeCapabilityFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeCapabilityFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14635,8 +13828,7 @@ struct VideoEncodeCapabilityFlagsKHR(Equatable):
     comptime EMPHASIS_MAP = Self(value = VideoEncodeCapabilityFlagBitsKHR.EMPHASIS_MAP.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeCapabilityFlagBitsKHR(Equatable):
+struct VideoEncodeCapabilityFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14657,15 +13849,12 @@ struct VideoEncodeCapabilityFlagBitsKHR(Equatable):
     comptime EMPHASIS_MAP = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct VideoEncodeFeedbackFlagsKHR(Equatable):
+struct VideoEncodeFeedbackFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeFeedbackFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeFeedbackFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14712,8 +13901,7 @@ struct VideoEncodeFeedbackFlagsKHR(Equatable):
     comptime RESERVED_9 = Self(value = VideoEncodeFeedbackFlagBitsKHR.RESERVED_9.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeFeedbackFlagBitsKHR(Equatable):
+struct VideoEncodeFeedbackFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14740,15 +13928,12 @@ struct VideoEncodeFeedbackFlagBitsKHR(Equatable):
     comptime RESERVED_9 = Self(value = 1 << 9)
 
 
-@register_passable("trivial")
-struct VideoEncodeRateControlFlagsKHR(Equatable):
+struct VideoEncodeRateControlFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeRateControlFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeRateControlFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14784,8 +13969,7 @@ struct VideoEncodeRateControlFlagsKHR(Equatable):
         return self & other == other
 
 
-@register_passable("trivial")
-struct VideoEncodeRateControlFlagBitsKHR(Equatable):
+struct VideoEncodeRateControlFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14801,15 +13985,12 @@ struct VideoEncodeRateControlFlagBitsKHR(Equatable):
         return VideoEncodeRateControlFlagsKHR(value = self._value | other._value)
 
 
-@register_passable("trivial")
-struct VideoEncodeRateControlModeFlagsKHR(Equatable):
+struct VideoEncodeRateControlModeFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeRateControlModeFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeRateControlModeFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14850,8 +14031,7 @@ struct VideoEncodeRateControlModeFlagsKHR(Equatable):
     comptime VBR = Self(value = VideoEncodeRateControlModeFlagBitsKHR.VBR.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeRateControlModeFlagBitsKHR(Equatable):
+struct VideoEncodeRateControlModeFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14872,15 +14052,12 @@ struct VideoEncodeRateControlModeFlagBitsKHR(Equatable):
     comptime VBR = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct VideoEncodeIntraRefreshModeFlagsKHR(Equatable):
+struct VideoEncodeIntraRefreshModeFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeIntraRefreshModeFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeIntraRefreshModeFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14922,8 +14099,7 @@ struct VideoEncodeIntraRefreshModeFlagsKHR(Equatable):
     comptime BLOCK_COLUMN_BASED = Self(value = VideoEncodeIntraRefreshModeFlagBitsKHR.BLOCK_COLUMN_BASED.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeIntraRefreshModeFlagBitsKHR(Equatable):
+struct VideoEncodeIntraRefreshModeFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14945,15 +14121,12 @@ struct VideoEncodeIntraRefreshModeFlagBitsKHR(Equatable):
     comptime BLOCK_COLUMN_BASED = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct VideoChromaSubsamplingFlagsKHR(Equatable):
+struct VideoChromaSubsamplingFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoChromaSubsamplingFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoChromaSubsamplingFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -14995,8 +14168,7 @@ struct VideoChromaSubsamplingFlagsKHR(Equatable):
     comptime N_444 = Self(value = VideoChromaSubsamplingFlagBitsKHR.N_444.value())
 
 
-@register_passable("trivial")
-struct VideoChromaSubsamplingFlagBitsKHR(Equatable):
+struct VideoChromaSubsamplingFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -15018,15 +14190,12 @@ struct VideoChromaSubsamplingFlagBitsKHR(Equatable):
     comptime N_444 = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct VideoComponentBitDepthFlagsKHR(Equatable):
+struct VideoComponentBitDepthFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoComponentBitDepthFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoComponentBitDepthFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -15067,8 +14236,7 @@ struct VideoComponentBitDepthFlagsKHR(Equatable):
     comptime N_12 = Self(value = VideoComponentBitDepthFlagBitsKHR.N_12.value())
 
 
-@register_passable("trivial")
-struct VideoComponentBitDepthFlagBitsKHR(Equatable):
+struct VideoComponentBitDepthFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -15089,15 +14257,12 @@ struct VideoComponentBitDepthFlagBitsKHR(Equatable):
     comptime N_12 = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct VideoEncodeH264CapabilityFlagsKHR(Equatable):
+struct VideoEncodeH264CapabilityFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeH264CapabilityFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeH264CapabilityFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -15145,8 +14310,7 @@ struct VideoEncodeH264CapabilityFlagsKHR(Equatable):
     comptime B_PICTURE_INTRA_REFRESH = Self(value = VideoEncodeH264CapabilityFlagBitsKHR.B_PICTURE_INTRA_REFRESH.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeH264CapabilityFlagBitsKHR(Equatable):
+struct VideoEncodeH264CapabilityFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -15174,15 +14338,12 @@ struct VideoEncodeH264CapabilityFlagBitsKHR(Equatable):
     comptime B_PICTURE_INTRA_REFRESH = Self(value = 1 << 10)
 
 
-@register_passable("trivial")
-struct VideoEncodeH264StdFlagsKHR(Equatable):
+struct VideoEncodeH264StdFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeH264StdFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeH264StdFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -15239,8 +14400,7 @@ struct VideoEncodeH264StdFlagsKHR(Equatable):
     comptime DIFFERENT_SLICE_QP_DELTA = Self(value = VideoEncodeH264StdFlagBitsKHR.DIFFERENT_SLICE_QP_DELTA.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeH264StdFlagBitsKHR(Equatable):
+struct VideoEncodeH264StdFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -15277,15 +14437,12 @@ struct VideoEncodeH264StdFlagBitsKHR(Equatable):
     comptime DIFFERENT_SLICE_QP_DELTA = Self(value = 1 << 20)
 
 
-@register_passable("trivial")
-struct VideoEncodeH264RateControlFlagsKHR(Equatable):
+struct VideoEncodeH264RateControlFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeH264RateControlFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeH264RateControlFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -15327,8 +14484,7 @@ struct VideoEncodeH264RateControlFlagsKHR(Equatable):
     comptime TEMPORAL_LAYER_PATTERN_DYADIC = Self(value = VideoEncodeH264RateControlFlagBitsKHR.TEMPORAL_LAYER_PATTERN_DYADIC.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeH264RateControlFlagBitsKHR(Equatable):
+struct VideoEncodeH264RateControlFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -15350,15 +14506,12 @@ struct VideoEncodeH264RateControlFlagBitsKHR(Equatable):
     comptime TEMPORAL_LAYER_PATTERN_DYADIC = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct VideoEncodeH265CapabilityFlagsKHR(Equatable):
+struct VideoEncodeH265CapabilityFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeH265CapabilityFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeH265CapabilityFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -15407,8 +14560,7 @@ struct VideoEncodeH265CapabilityFlagsKHR(Equatable):
     comptime B_PICTURE_INTRA_REFRESH = Self(value = VideoEncodeH265CapabilityFlagBitsKHR.B_PICTURE_INTRA_REFRESH.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeH265CapabilityFlagBitsKHR(Equatable):
+struct VideoEncodeH265CapabilityFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -15437,15 +14589,12 @@ struct VideoEncodeH265CapabilityFlagBitsKHR(Equatable):
     comptime B_PICTURE_INTRA_REFRESH = Self(value = 1 << 11)
 
 
-@register_passable("trivial")
-struct VideoEncodeH265StdFlagsKHR(Equatable):
+struct VideoEncodeH265StdFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeH265StdFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeH265StdFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -15503,8 +14652,7 @@ struct VideoEncodeH265StdFlagsKHR(Equatable):
     comptime DIFFERENT_SLICE_QP_DELTA = Self(value = VideoEncodeH265StdFlagBitsKHR.DIFFERENT_SLICE_QP_DELTA.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeH265StdFlagBitsKHR(Equatable):
+struct VideoEncodeH265StdFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -15542,15 +14690,12 @@ struct VideoEncodeH265StdFlagBitsKHR(Equatable):
     comptime DIFFERENT_SLICE_QP_DELTA = Self(value = 1 << 20)
 
 
-@register_passable("trivial")
-struct VideoEncodeH265RateControlFlagsKHR(Equatable):
+struct VideoEncodeH265RateControlFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeH265RateControlFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeH265RateControlFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -15592,8 +14737,7 @@ struct VideoEncodeH265RateControlFlagsKHR(Equatable):
     comptime TEMPORAL_SUB_LAYER_PATTERN_DYADIC = Self(value = VideoEncodeH265RateControlFlagBitsKHR.TEMPORAL_SUB_LAYER_PATTERN_DYADIC.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeH265RateControlFlagBitsKHR(Equatable):
+struct VideoEncodeH265RateControlFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -15615,15 +14759,12 @@ struct VideoEncodeH265RateControlFlagBitsKHR(Equatable):
     comptime TEMPORAL_SUB_LAYER_PATTERN_DYADIC = Self(value = 1 << 4)
 
 
-@register_passable("trivial")
-struct VideoEncodeH265CtbSizeFlagsKHR(Equatable):
+struct VideoEncodeH265CtbSizeFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeH265CtbSizeFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeH265CtbSizeFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -15663,8 +14804,7 @@ struct VideoEncodeH265CtbSizeFlagsKHR(Equatable):
     comptime N_64 = Self(value = VideoEncodeH265CtbSizeFlagBitsKHR.N_64.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeH265CtbSizeFlagBitsKHR(Equatable):
+struct VideoEncodeH265CtbSizeFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -15684,15 +14824,12 @@ struct VideoEncodeH265CtbSizeFlagBitsKHR(Equatable):
     comptime N_64 = Self(value = 1 << 2)
 
 
-@register_passable("trivial")
-struct VideoEncodeH265TransformBlockSizeFlagsKHR(Equatable):
+struct VideoEncodeH265TransformBlockSizeFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeH265TransformBlockSizeFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeH265TransformBlockSizeFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -15733,8 +14870,7 @@ struct VideoEncodeH265TransformBlockSizeFlagsKHR(Equatable):
     comptime N_32 = Self(value = VideoEncodeH265TransformBlockSizeFlagBitsKHR.N_32.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeH265TransformBlockSizeFlagBitsKHR(Equatable):
+struct VideoEncodeH265TransformBlockSizeFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -15755,15 +14891,12 @@ struct VideoEncodeH265TransformBlockSizeFlagBitsKHR(Equatable):
     comptime N_32 = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct VideoEncodeAV1CapabilityFlagsKHR(Equatable):
+struct VideoEncodeAV1CapabilityFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeAV1CapabilityFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeAV1CapabilityFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -15806,8 +14939,7 @@ struct VideoEncodeAV1CapabilityFlagsKHR(Equatable):
     comptime COMPOUND_PREDICTION_INTRA_REFRESH = Self(value = VideoEncodeAV1CapabilityFlagBitsKHR.COMPOUND_PREDICTION_INTRA_REFRESH.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeAV1CapabilityFlagBitsKHR(Equatable):
+struct VideoEncodeAV1CapabilityFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -15830,15 +14962,12 @@ struct VideoEncodeAV1CapabilityFlagBitsKHR(Equatable):
     comptime COMPOUND_PREDICTION_INTRA_REFRESH = Self(value = 1 << 5)
 
 
-@register_passable("trivial")
-struct VideoEncodeAV1StdFlagsKHR(Equatable):
+struct VideoEncodeAV1StdFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeAV1StdFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeAV1StdFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -15879,8 +15008,7 @@ struct VideoEncodeAV1StdFlagsKHR(Equatable):
     comptime DELTA_Q = Self(value = VideoEncodeAV1StdFlagBitsKHR.DELTA_Q.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeAV1StdFlagBitsKHR(Equatable):
+struct VideoEncodeAV1StdFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -15901,15 +15029,12 @@ struct VideoEncodeAV1StdFlagBitsKHR(Equatable):
     comptime DELTA_Q = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct VideoEncodeAV1RateControlFlagsKHR(Equatable):
+struct VideoEncodeAV1RateControlFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeAV1RateControlFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeAV1RateControlFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -15950,8 +15075,7 @@ struct VideoEncodeAV1RateControlFlagsKHR(Equatable):
     comptime REFERENCE_PATTERN_DYADIC = Self(value = VideoEncodeAV1RateControlFlagBitsKHR.REFERENCE_PATTERN_DYADIC.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeAV1RateControlFlagBitsKHR(Equatable):
+struct VideoEncodeAV1RateControlFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -15972,15 +15096,12 @@ struct VideoEncodeAV1RateControlFlagBitsKHR(Equatable):
     comptime REFERENCE_PATTERN_DYADIC = Self(value = 1 << 3)
 
 
-@register_passable("trivial")
-struct VideoEncodeAV1SuperblockSizeFlagsKHR(Equatable):
+struct VideoEncodeAV1SuperblockSizeFlagsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     @implicit
-    fn __init__(out self, *bits: VideoEncodeAV1SuperblockSizeFlagBitsKHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: VideoEncodeAV1SuperblockSizeFlagBitsKHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt32):
         self._value = value
@@ -16019,8 +15140,7 @@ struct VideoEncodeAV1SuperblockSizeFlagsKHR(Equatable):
     comptime N_128 = Self(value = VideoEncodeAV1SuperblockSizeFlagBitsKHR.N_128.value())
 
 
-@register_passable("trivial")
-struct VideoEncodeAV1SuperblockSizeFlagBitsKHR(Equatable):
+struct VideoEncodeAV1SuperblockSizeFlagBitsKHR(TrivialRegisterType, Equatable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -16039,15 +15159,12 @@ struct VideoEncodeAV1SuperblockSizeFlagBitsKHR(Equatable):
     comptime N_128 = Self(value = 1 << 1)
 
 
-@register_passable("trivial")
-struct AccessFlags3KHR(Equatable):
+struct AccessFlags3KHR(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     @implicit
-    fn __init__(out self, *bits: AccessFlagBits3KHR):
-        self._value = 0
-        for bit in bits:
-            self._value |= bit.value()
+    fn __init__(out self, bit: AccessFlagBits3KHR):
+        self._value = bit._value
 
     fn __init__(out self, *, value: UInt64):
         self._value = value
@@ -16085,8 +15202,7 @@ struct AccessFlags3KHR(Equatable):
     comptime NONE = Self(value = AccessFlagBits3KHR.NONE.value())
 
 
-@register_passable("trivial")
-struct AccessFlagBits3KHR(Equatable):
+struct AccessFlagBits3KHR(TrivialRegisterType, Equatable):
     var _value: UInt64
 
     fn __init__(out self, *, value: UInt64):

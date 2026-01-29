@@ -3,8 +3,7 @@ comptime SamplerYcbcrConversionKHR = SamplerYcbcrConversion
 comptime PrivateDataSlotEXT = PrivateDataSlot
 
 
-@register_passable("trivial")
-struct Instance(Equatable, Writable):
+struct Instance(TrivialRegisterType, Equatable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -27,8 +26,7 @@ struct Instance(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct PhysicalDevice(Equatable, Writable):
+struct PhysicalDevice(TrivialRegisterType, Equatable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -51,8 +49,7 @@ struct PhysicalDevice(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct Device(Equatable, Writable):
+struct Device(TrivialRegisterType, Equatable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -75,8 +72,7 @@ struct Device(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct Queue(Equatable, Writable):
+struct Queue(TrivialRegisterType, Equatable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -99,8 +95,7 @@ struct Queue(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct CommandBuffer(Equatable, Writable):
+struct CommandBuffer(TrivialRegisterType, Equatable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -123,8 +118,7 @@ struct CommandBuffer(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct DeviceMemory(Equatable, Writable):
+struct DeviceMemory(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -147,8 +141,7 @@ struct DeviceMemory(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct CommandPool(Equatable, Writable):
+struct CommandPool(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -171,8 +164,7 @@ struct CommandPool(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct Buffer(Equatable, Writable):
+struct Buffer(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -195,8 +187,7 @@ struct Buffer(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct BufferView(Equatable, Writable):
+struct BufferView(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -219,8 +210,7 @@ struct BufferView(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct Image(Equatable, Writable):
+struct Image(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -243,8 +233,7 @@ struct Image(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct ImageView(Equatable, Writable):
+struct ImageView(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -267,8 +256,7 @@ struct ImageView(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct ShaderModule(Equatable, Writable):
+struct ShaderModule(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -291,8 +279,7 @@ struct ShaderModule(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct Pipeline(Equatable, Writable):
+struct Pipeline(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -315,8 +302,7 @@ struct Pipeline(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct PipelineLayout(Equatable, Writable):
+struct PipelineLayout(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -339,8 +325,7 @@ struct PipelineLayout(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct Sampler(Equatable, Writable):
+struct Sampler(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -363,8 +348,7 @@ struct Sampler(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct DescriptorSet(Equatable, Writable):
+struct DescriptorSet(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -387,8 +371,7 @@ struct DescriptorSet(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct DescriptorSetLayout(Equatable, Writable):
+struct DescriptorSetLayout(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -411,8 +394,7 @@ struct DescriptorSetLayout(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct DescriptorPool(Equatable, Writable):
+struct DescriptorPool(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -435,8 +417,7 @@ struct DescriptorPool(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct Fence(Equatable, Writable):
+struct Fence(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -459,8 +440,7 @@ struct Fence(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct Semaphore(Equatable, Writable):
+struct Semaphore(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -483,8 +463,7 @@ struct Semaphore(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct Event(Equatable, Writable):
+struct Event(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -507,8 +486,7 @@ struct Event(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct QueryPool(Equatable, Writable):
+struct QueryPool(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -531,8 +509,7 @@ struct QueryPool(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct Framebuffer(Equatable, Writable):
+struct Framebuffer(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -555,8 +532,7 @@ struct Framebuffer(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct RenderPass(Equatable, Writable):
+struct RenderPass(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -579,8 +555,7 @@ struct RenderPass(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct PipelineCache(Equatable, Writable):
+struct PipelineCache(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -603,8 +578,7 @@ struct PipelineCache(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct PipelineBinaryKHR(Equatable, Writable):
+struct PipelineBinaryKHR(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -627,8 +601,7 @@ struct PipelineBinaryKHR(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct IndirectCommandsLayoutNV(Equatable, Writable):
+struct IndirectCommandsLayoutNV(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -651,8 +624,7 @@ struct IndirectCommandsLayoutNV(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct IndirectCommandsLayoutEXT(Equatable, Writable):
+struct IndirectCommandsLayoutEXT(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -675,8 +647,7 @@ struct IndirectCommandsLayoutEXT(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct IndirectExecutionSetEXT(Equatable, Writable):
+struct IndirectExecutionSetEXT(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -699,8 +670,7 @@ struct IndirectExecutionSetEXT(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct DescriptorUpdateTemplate(Equatable, Writable):
+struct DescriptorUpdateTemplate(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -723,8 +693,7 @@ struct DescriptorUpdateTemplate(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct SamplerYcbcrConversion(Equatable, Writable):
+struct SamplerYcbcrConversion(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -747,8 +716,7 @@ struct SamplerYcbcrConversion(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct ValidationCacheEXT(Equatable, Writable):
+struct ValidationCacheEXT(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -771,8 +739,7 @@ struct ValidationCacheEXT(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct AccelerationStructureKHR(Equatable, Writable):
+struct AccelerationStructureKHR(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -795,8 +762,7 @@ struct AccelerationStructureKHR(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct AccelerationStructureNV(Equatable, Writable):
+struct AccelerationStructureNV(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -819,8 +785,7 @@ struct AccelerationStructureNV(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct PerformanceConfigurationINTEL(Equatable, Writable):
+struct PerformanceConfigurationINTEL(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -843,8 +808,7 @@ struct PerformanceConfigurationINTEL(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct BufferCollectionFUCHSIA(Equatable, Writable):
+struct BufferCollectionFUCHSIA(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -867,8 +831,7 @@ struct BufferCollectionFUCHSIA(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct DeferredOperationKHR(Equatable, Writable):
+struct DeferredOperationKHR(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -891,8 +854,7 @@ struct DeferredOperationKHR(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct PrivateDataSlot(Equatable, Writable):
+struct PrivateDataSlot(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -915,8 +877,7 @@ struct PrivateDataSlot(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct CuModuleNVX(Equatable, Writable):
+struct CuModuleNVX(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -939,8 +900,7 @@ struct CuModuleNVX(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct CuFunctionNVX(Equatable, Writable):
+struct CuFunctionNVX(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -963,8 +923,7 @@ struct CuFunctionNVX(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct OpticalFlowSessionNV(Equatable, Writable):
+struct OpticalFlowSessionNV(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -987,8 +946,7 @@ struct OpticalFlowSessionNV(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct MicromapEXT(Equatable, Writable):
+struct MicromapEXT(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1011,8 +969,7 @@ struct MicromapEXT(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct ShaderEXT(Equatable, Writable):
+struct ShaderEXT(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1035,8 +992,7 @@ struct ShaderEXT(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct TensorARM(Equatable, Writable):
+struct TensorARM(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1059,8 +1015,7 @@ struct TensorARM(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct TensorViewARM(Equatable, Writable):
+struct TensorViewARM(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1083,8 +1038,7 @@ struct TensorViewARM(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct DataGraphPipelineSessionARM(Equatable, Writable):
+struct DataGraphPipelineSessionARM(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1107,8 +1061,7 @@ struct DataGraphPipelineSessionARM(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct DisplayKHR(Equatable, Writable):
+struct DisplayKHR(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1131,8 +1084,7 @@ struct DisplayKHR(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct DisplayModeKHR(Equatable, Writable):
+struct DisplayModeKHR(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1155,8 +1107,7 @@ struct DisplayModeKHR(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct SurfaceKHR(Equatable, Writable):
+struct SurfaceKHR(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1179,8 +1130,7 @@ struct SurfaceKHR(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct SwapchainKHR(Equatable, Writable):
+struct SwapchainKHR(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1203,8 +1153,7 @@ struct SwapchainKHR(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct DebugReportCallbackEXT(Equatable, Writable):
+struct DebugReportCallbackEXT(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1227,8 +1176,7 @@ struct DebugReportCallbackEXT(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct DebugUtilsMessengerEXT(Equatable, Writable):
+struct DebugUtilsMessengerEXT(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1251,8 +1199,7 @@ struct DebugUtilsMessengerEXT(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct VideoSessionKHR(Equatable, Writable):
+struct VideoSessionKHR(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1275,8 +1222,7 @@ struct VideoSessionKHR(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct VideoSessionParametersKHR(Equatable, Writable):
+struct VideoSessionParametersKHR(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1299,8 +1245,7 @@ struct VideoSessionParametersKHR(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct SemaphoreSciSyncPoolNV(Equatable, Writable):
+struct SemaphoreSciSyncPoolNV(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1323,8 +1268,7 @@ struct SemaphoreSciSyncPoolNV(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct CudaModuleNV(Equatable, Writable):
+struct CudaModuleNV(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1347,8 +1291,7 @@ struct CudaModuleNV(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct CudaFunctionNV(Equatable, Writable):
+struct CudaFunctionNV(TrivialRegisterType, Equatable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1371,8 +1314,7 @@ struct CudaFunctionNV(Equatable, Writable):
         writer.write(String(self))
 
 
-@register_passable("trivial")
-struct ExternalComputeQueueNV(Equatable, Writable):
+struct ExternalComputeQueueNV(TrivialRegisterType, Equatable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
