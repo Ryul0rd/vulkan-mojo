@@ -827,6 +827,35 @@ class PackedLogicalField:
 LogicalField = StandardLogicalField | PackedLogicalField
 
 
+def convert_origins_to_external(mojo_type: MojoType) -> MojoType:
+    if isinstance(mojo_type, MojoPointerType):
+        new_origin = mojo_type.origin
+        if new_origin == "MutAnyOrigin":
+            new_origin = "MutOrigin.external"
+        elif new_origin == "ImmutAnyOrigin":
+            new_origin = "ImmutOrigin.external"
+        return MojoPointerType(
+            pointee_type=convert_origins_to_external(mojo_type.pointee_type),
+            origin=new_origin
+        )
+    elif isinstance(mojo_type, MojoBaseType) and mojo_type.name == "CStringSlice":
+        new_params: List[MojoOriginLiteral | MojoParametricOrigin | str] = []
+        for p in mojo_type.parameters:
+            if p == "MutAnyOrigin":
+                new_params.append("MutOrigin.external")
+            elif p == "ImmutAnyOrigin":
+                new_params.append("ImmutOrigin.external")
+            else:
+                new_params.append(p)
+        return MojoBaseType(mojo_type.name, new_params)
+    elif isinstance(mojo_type, MojoArrayType):
+        return MojoArrayType(
+            element_type=convert_origins_to_external(mojo_type.element_type),
+            length=mojo_type.length
+        )
+    return mojo_type
+
+
 def parse_members(members: List[RegistryStructMember]) -> Tuple[List[PhysicalField], List[LogicalField]]:
     physical_fields: List[PhysicalField] = []
     logical_fields: List[LogicalField] = []
@@ -839,6 +868,7 @@ def parse_members(members: List[RegistryStructMember]) -> Tuple[List[PhysicalFie
         if member.comment is not None:
             text = text.removesuffix(member.comment)
         decl = parse_declarator(text)
+        decl.type = convert_origins_to_external(decl.type)
         field_name = pascal_to_snake(decl.name)
         is_version_field = (field_name == "version" or field_name.endswith("_version"))
         if is_version_field and isinstance(decl.type, MojoBaseType) and decl.type.name == "UInt32":
