@@ -1479,12 +1479,10 @@ def strip_enum_value_prefix(enum_name: str, value_name: str, tags: List[Registry
     
     Examples:
         VkResult, VK_SUCCESS -> SUCCESS
-        VkFormat, VK_FORMAT_R8G8B8A8_UNORM -> R8G8B8A8_UNORM
-        VkAccessFlagBits2, VK_ACCESS_2_NONE -> NONE
-        VkDebugReportFlagBitsEXT, VK_DEBUG_REPORT_INFORMATION_BIT_EXT -> INFORMATION_BIT
+        VkSampleCountFlagBits, VK_SAMPLE_COUNT_1_BIT -> COUNT_1
+        VkPipelineCreateFlagBits2, VK_PIPELINE_CREATE_2_64_BIT_INDEXING -> CREATE_64_BIT_INDEXING
     """
     # calculate prefix
-    # VkResult -> VK_RESULT_, VkFormat -> VK_FORMAT_, VkAccessFlagBits2 -> VK_ACCESS_
     tag_names = sorted([tag.name for tag in tags], key=lambda tag: len(tag), reverse=True)
     base_name = enum_name
     for tag in tag_names:
@@ -1493,6 +1491,11 @@ def strip_enum_value_prefix(enum_name: str, value_name: str, tags: List[Registry
             break
     base_name = base_name.removesuffix("FlagBits").replace("FlagBits2", "2")
     prefix = pascal_to_snake(base_name).upper() + "_"
+    
+    parts = prefix.strip("_").split("_")
+    last_word = parts[-1]
+    if last_word.isdigit() and len(parts) >= 2:
+        last_word = parts[-2]
     
     # Strip the prefix from the value name
     prefix = prefix if value_name.startswith(prefix) else "VK_"
@@ -1506,7 +1509,7 @@ def strip_enum_value_prefix(enum_name: str, value_name: str, tags: List[Registry
             break
 
     if result[0].isdigit():
-        result = "N_" + result
+        result = f"{last_word}_{result}"
     return result
 
 
@@ -1722,11 +1725,7 @@ def flag_bit_mojo_name(enum_name: str, value_name: str, tags: List[RegistryTag])
     
     Examples:
         VkFramebufferCreateFlagBits, VK_FRAMEBUFFER_CREATE_IMAGELESS_BIT -> IMAGELESS
-        VkAccessFlagBits2, VK_ACCESS_2_NONE -> NONE
-        # Extension bit in Core enum -> Keep suffix
-        VkImageUsageFlagBits, VK_IMAGE_USAGE_FRAGMENT_DENSITY_MAP_BIT_EXT -> FRAGMENT_DENSITY_MAP_EXT
-        # Extension bit in Extension enum -> Strip suffix
-        VkExternalMemoryHandleTypeFlagBitsNV, VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_BIT_NV -> OPAQUE_WIN32
+        VkPipelineCreateFlagBits2, VK_PIPELINE_CREATE_2_64_BIT_INDEXING -> CREATE_64_BIT_INDEXING
     """
     tag_names = sorted([tag.name for tag in tags], key=lambda tag: len(tag), reverse=True)
     prefix = enum_name
@@ -1739,6 +1738,12 @@ def flag_bit_mojo_name(enum_name: str, value_name: str, tags: List[RegistryTag])
     prefix = re.sub(r'FlagBits(\d+)$', r'\1', prefix)
     prefix = prefix.removesuffix("FlagBits")
     prefix = pascal_to_snake(prefix).upper() + "_"
+
+    parts = prefix.strip("_").split("_")
+    last_word = parts[-1]
+    if last_word.isdigit() and len(parts) >= 2:
+        last_word = parts[-2]
+
     prefix = prefix if value_name.startswith(prefix) else "VK_"
     result = value_name.removeprefix(prefix)
     
@@ -1750,7 +1755,7 @@ def flag_bit_mojo_name(enum_name: str, value_name: str, tags: List[RegistryTag])
             
     result = result.removesuffix("_BIT")
     if result and result[0].isdigit():
-        result = "N_" + result
+        result = f"{last_word}_{result}"
     return result
 
 

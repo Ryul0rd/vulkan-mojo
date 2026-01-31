@@ -149,9 +149,9 @@ struct ImageType(TrivialRegisterType, Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    comptime N_1D = ImageType(value = 0)
-    comptime N_2D = ImageType(value = 1)
-    comptime N_3D = ImageType(value = 2)
+    comptime TYPE_1D = ImageType(value = 0)
+    comptime TYPE_2D = ImageType(value = 1)
+    comptime TYPE_3D = ImageType(value = 2)
 
 
 struct ImageTiling(TrivialRegisterType, Equatable):
@@ -183,12 +183,12 @@ struct ImageViewType(TrivialRegisterType, Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    comptime N_1D = ImageViewType(value = 0)
-    comptime N_2D = ImageViewType(value = 1)
-    comptime N_3D = ImageViewType(value = 2)
+    comptime TYPE_1D = ImageViewType(value = 0)
+    comptime TYPE_2D = ImageViewType(value = 1)
+    comptime TYPE_3D = ImageViewType(value = 2)
     comptime CUBE = ImageViewType(value = 3)
-    comptime N_1D_ARRAY = ImageViewType(value = 4)
-    comptime N_2D_ARRAY = ImageViewType(value = 5)
+    comptime TYPE_1D_ARRAY = ImageViewType(value = 4)
+    comptime TYPE_2D_ARRAY = ImageViewType(value = 5)
     comptime CUBE_ARRAY = ImageViewType(value = 6)
 
 
@@ -3404,17 +3404,17 @@ struct ShadingRatePaletteEntryNV(TrivialRegisterType, Equatable):
         return self._value == other._value
 
     comptime NO_INVOCATIONS = ShadingRatePaletteEntryNV(value = 0)
-    comptime N_16_INVOCATIONS_PER_PIXEL = ShadingRatePaletteEntryNV(value = 1)
-    comptime N_8_INVOCATIONS_PER_PIXEL = ShadingRatePaletteEntryNV(value = 2)
-    comptime N_4_INVOCATIONS_PER_PIXEL = ShadingRatePaletteEntryNV(value = 3)
-    comptime N_2_INVOCATIONS_PER_PIXEL = ShadingRatePaletteEntryNV(value = 4)
-    comptime N_1_INVOCATION_PER_PIXEL = ShadingRatePaletteEntryNV(value = 5)
-    comptime N_1_INVOCATION_PER_2X1_PIXELS = ShadingRatePaletteEntryNV(value = 6)
-    comptime N_1_INVOCATION_PER_1X2_PIXELS = ShadingRatePaletteEntryNV(value = 7)
-    comptime N_1_INVOCATION_PER_2X2_PIXELS = ShadingRatePaletteEntryNV(value = 8)
-    comptime N_1_INVOCATION_PER_4X2_PIXELS = ShadingRatePaletteEntryNV(value = 9)
-    comptime N_1_INVOCATION_PER_2X4_PIXELS = ShadingRatePaletteEntryNV(value = 10)
-    comptime N_1_INVOCATION_PER_4X4_PIXELS = ShadingRatePaletteEntryNV(value = 11)
+    comptime ENTRY_16_INVOCATIONS_PER_PIXEL = ShadingRatePaletteEntryNV(value = 1)
+    comptime ENTRY_8_INVOCATIONS_PER_PIXEL = ShadingRatePaletteEntryNV(value = 2)
+    comptime ENTRY_4_INVOCATIONS_PER_PIXEL = ShadingRatePaletteEntryNV(value = 3)
+    comptime ENTRY_2_INVOCATIONS_PER_PIXEL = ShadingRatePaletteEntryNV(value = 4)
+    comptime ENTRY_1_INVOCATION_PER_PIXEL = ShadingRatePaletteEntryNV(value = 5)
+    comptime ENTRY_1_INVOCATION_PER_2X1_PIXELS = ShadingRatePaletteEntryNV(value = 6)
+    comptime ENTRY_1_INVOCATION_PER_1X2_PIXELS = ShadingRatePaletteEntryNV(value = 7)
+    comptime ENTRY_1_INVOCATION_PER_2X2_PIXELS = ShadingRatePaletteEntryNV(value = 8)
+    comptime ENTRY_1_INVOCATION_PER_4X2_PIXELS = ShadingRatePaletteEntryNV(value = 9)
+    comptime ENTRY_1_INVOCATION_PER_2X4_PIXELS = ShadingRatePaletteEntryNV(value = 10)
+    comptime ENTRY_1_INVOCATION_PER_4X4_PIXELS = ShadingRatePaletteEntryNV(value = 11)
 
 
 struct CoarseSampleOrderTypeNV(TrivialRegisterType, Equatable):
@@ -3781,7 +3781,7 @@ struct ShaderFloatControlsIndependence(TrivialRegisterType, Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    comptime N_32_BIT_ONLY = ShaderFloatControlsIndependence(value = 0)
+    comptime INDEPENDENCE_32_BIT_ONLY = ShaderFloatControlsIndependence(value = 0)
     comptime ALL = ShaderFloatControlsIndependence(value = 1)
     comptime NONE = ShaderFloatControlsIndependence(value = 2)
 
@@ -3922,17 +3922,17 @@ struct FragmentShadingRateNV(TrivialRegisterType, Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    comptime N_1_INVOCATION_PER_PIXEL = FragmentShadingRateNV(value = 0)
-    comptime N_1_INVOCATION_PER_1X2_PIXELS = FragmentShadingRateNV(value = 1)
-    comptime N_1_INVOCATION_PER_2X1_PIXELS = FragmentShadingRateNV(value = 4)
-    comptime N_1_INVOCATION_PER_2X2_PIXELS = FragmentShadingRateNV(value = 5)
-    comptime N_1_INVOCATION_PER_2X4_PIXELS = FragmentShadingRateNV(value = 6)
-    comptime N_1_INVOCATION_PER_4X2_PIXELS = FragmentShadingRateNV(value = 9)
-    comptime N_1_INVOCATION_PER_4X4_PIXELS = FragmentShadingRateNV(value = 10)
-    comptime N_2_INVOCATIONS_PER_PIXEL = FragmentShadingRateNV(value = 11)
-    comptime N_4_INVOCATIONS_PER_PIXEL = FragmentShadingRateNV(value = 12)
-    comptime N_8_INVOCATIONS_PER_PIXEL = FragmentShadingRateNV(value = 13)
-    comptime N_16_INVOCATIONS_PER_PIXEL = FragmentShadingRateNV(value = 14)
+    comptime RATE_1_INVOCATION_PER_PIXEL = FragmentShadingRateNV(value = 0)
+    comptime RATE_1_INVOCATION_PER_1X2_PIXELS = FragmentShadingRateNV(value = 1)
+    comptime RATE_1_INVOCATION_PER_2X1_PIXELS = FragmentShadingRateNV(value = 4)
+    comptime RATE_1_INVOCATION_PER_2X2_PIXELS = FragmentShadingRateNV(value = 5)
+    comptime RATE_1_INVOCATION_PER_2X4_PIXELS = FragmentShadingRateNV(value = 6)
+    comptime RATE_1_INVOCATION_PER_4X2_PIXELS = FragmentShadingRateNV(value = 9)
+    comptime RATE_1_INVOCATION_PER_4X4_PIXELS = FragmentShadingRateNV(value = 10)
+    comptime RATE_2_INVOCATIONS_PER_PIXEL = FragmentShadingRateNV(value = 11)
+    comptime RATE_4_INVOCATIONS_PER_PIXEL = FragmentShadingRateNV(value = 12)
+    comptime RATE_8_INVOCATIONS_PER_PIXEL = FragmentShadingRateNV(value = 13)
+    comptime RATE_16_INVOCATIONS_PER_PIXEL = FragmentShadingRateNV(value = 14)
     comptime NO_INVOCATIONS = FragmentShadingRateNV(value = 15)
 
 
@@ -4304,8 +4304,8 @@ struct OpacityMicromapFormatEXT(TrivialRegisterType, Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    comptime N_2_STATE = OpacityMicromapFormatEXT(value = 1)
-    comptime N_4_STATE = OpacityMicromapFormatEXT(value = 2)
+    comptime FORMAT_2_STATE = OpacityMicromapFormatEXT(value = 1)
+    comptime FORMAT_4_STATE = OpacityMicromapFormatEXT(value = 2)
 
 
 struct OpacityMicromapSpecialIndexEXT(TrivialRegisterType, Equatable):
@@ -4439,9 +4439,9 @@ struct DisplacementMicromapFormatNV(TrivialRegisterType, Equatable):
     fn __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    comptime N_64_TRIANGLES_64_BYTES = DisplacementMicromapFormatNV(value = 1)
-    comptime N_256_TRIANGLES_128_BYTES = DisplacementMicromapFormatNV(value = 2)
-    comptime N_1024_TRIANGLES_128_BYTES = DisplacementMicromapFormatNV(value = 3)
+    comptime FORMAT_64_TRIANGLES_64_BYTES = DisplacementMicromapFormatNV(value = 1)
+    comptime FORMAT_256_TRIANGLES_128_BYTES = DisplacementMicromapFormatNV(value = 2)
+    comptime FORMAT_1024_TRIANGLES_128_BYTES = DisplacementMicromapFormatNV(value = 3)
 
 
 struct ShaderCodeTypeEXT(TrivialRegisterType, Equatable):

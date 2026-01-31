@@ -2199,7 +2199,7 @@ struct ImageCreateFlags(TrivialRegisterType, Equatable):
     comptime SPARSE_ALIASED = Self(value = ImageCreateFlagBits.SPARSE_ALIASED.value())
     comptime MUTABLE_FORMAT = Self(value = ImageCreateFlagBits.MUTABLE_FORMAT.value())
     comptime CUBE_COMPATIBLE = Self(value = ImageCreateFlagBits.CUBE_COMPATIBLE.value())
-    comptime N_2D_ARRAY_COMPATIBLE = Self(value = ImageCreateFlagBits.N_2D_ARRAY_COMPATIBLE.value())
+    comptime CREATE_2D_ARRAY_COMPATIBLE = Self(value = ImageCreateFlagBits.CREATE_2D_ARRAY_COMPATIBLE.value())
     comptime SPLIT_INSTANCE_BIND_REGIONS = Self(value = ImageCreateFlagBits.SPLIT_INSTANCE_BIND_REGIONS.value())
     comptime BLOCK_TEXEL_VIEW_COMPATIBLE = Self(value = ImageCreateFlagBits.BLOCK_TEXEL_VIEW_COMPATIBLE.value())
     comptime EXTENDED_USAGE = Self(value = ImageCreateFlagBits.EXTENDED_USAGE.value())
@@ -2210,7 +2210,7 @@ struct ImageCreateFlags(TrivialRegisterType, Equatable):
     comptime CORNER_SAMPLED = Self(value = ImageCreateFlagBits.CORNER_SAMPLED.value())
     comptime SUBSAMPLED = Self(value = ImageCreateFlagBits.SUBSAMPLED.value())
     comptime DESCRIPTOR_HEAP_CAPTURE_REPLAY = Self(value = ImageCreateFlagBits.DESCRIPTOR_HEAP_CAPTURE_REPLAY.value())
-    comptime N_2D_VIEW_COMPATIBLE = Self(value = ImageCreateFlagBits.N_2D_VIEW_COMPATIBLE.value())
+    comptime CREATE_2D_VIEW_COMPATIBLE = Self(value = ImageCreateFlagBits.CREATE_2D_VIEW_COMPATIBLE.value())
     comptime MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED = Self(value = ImageCreateFlagBits.MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED.value())
     comptime VIDEO_PROFILE_INDEPENDENT = Self(value = ImageCreateFlagBits.VIDEO_PROFILE_INDEPENDENT.value())
     comptime RESERVED_21 = Self(value = ImageCreateFlagBits.RESERVED_21.value())
@@ -2237,7 +2237,7 @@ struct ImageCreateFlagBits(TrivialRegisterType, Equatable):
     comptime SPARSE_ALIASED = Self(value = 1 << 2)
     comptime MUTABLE_FORMAT = Self(value = 1 << 3)
     comptime CUBE_COMPATIBLE = Self(value = 1 << 4)
-    comptime N_2D_ARRAY_COMPATIBLE = Self(value = 1 << 5)
+    comptime CREATE_2D_ARRAY_COMPATIBLE = Self(value = 1 << 5)
     comptime SPLIT_INSTANCE_BIND_REGIONS = Self(value = 1 << 6)
     comptime BLOCK_TEXEL_VIEW_COMPATIBLE = Self(value = 1 << 7)
     comptime EXTENDED_USAGE = Self(value = 1 << 8)
@@ -2248,7 +2248,7 @@ struct ImageCreateFlagBits(TrivialRegisterType, Equatable):
     comptime CORNER_SAMPLED = Self(value = 1 << 13)
     comptime SUBSAMPLED = Self(value = 1 << 14)
     comptime DESCRIPTOR_HEAP_CAPTURE_REPLAY = Self(value = 1 << 16)
-    comptime N_2D_VIEW_COMPATIBLE = Self(value = 1 << 17)
+    comptime CREATE_2D_VIEW_COMPATIBLE = Self(value = 1 << 17)
     comptime MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED = Self(value = 1 << 18)
     comptime VIDEO_PROFILE_INDEPENDENT = Self(value = 1 << 20)
     comptime RESERVED_21 = Self(value = 1 << 21)
@@ -2870,7 +2870,7 @@ struct QueryResultFlags(TrivialRegisterType, Equatable):
     fn is_superset(self, other: QueryResultFlags) -> Bool:
         return self & other == other
 
-    comptime N_64 = Self(value = QueryResultFlagBits.N_64.value())
+    comptime RESULT_64 = Self(value = QueryResultFlagBits.RESULT_64.value())
     comptime WAIT = Self(value = QueryResultFlagBits.WAIT.value())
     comptime WITH_AVAILABILITY = Self(value = QueryResultFlagBits.WITH_AVAILABILITY.value())
     comptime PARTIAL = Self(value = QueryResultFlagBits.PARTIAL.value())
@@ -2892,7 +2892,7 @@ struct QueryResultFlagBits(TrivialRegisterType, Equatable):
     fn __or__(self, other: Self) -> QueryResultFlags:
         return QueryResultFlags(value = self._value | other._value)
 
-    comptime N_64 = Self(value = 1 << 0)
+    comptime RESULT_64 = Self(value = 1 << 0)
     comptime WAIT = Self(value = 1 << 1)
     comptime WITH_AVAILABILITY = Self(value = 1 << 2)
     comptime PARTIAL = Self(value = 1 << 3)
@@ -3956,13 +3956,13 @@ struct SampleCountFlags(TrivialRegisterType, Equatable):
     fn is_superset(self, other: SampleCountFlags) -> Bool:
         return self & other == other
 
-    comptime N_1 = Self(value = SampleCountFlagBits.N_1.value())
-    comptime N_2 = Self(value = SampleCountFlagBits.N_2.value())
-    comptime N_4 = Self(value = SampleCountFlagBits.N_4.value())
-    comptime N_8 = Self(value = SampleCountFlagBits.N_8.value())
-    comptime N_16 = Self(value = SampleCountFlagBits.N_16.value())
-    comptime N_32 = Self(value = SampleCountFlagBits.N_32.value())
-    comptime N_64 = Self(value = SampleCountFlagBits.N_64.value())
+    comptime COUNT_1 = Self(value = SampleCountFlagBits.COUNT_1.value())
+    comptime COUNT_2 = Self(value = SampleCountFlagBits.COUNT_2.value())
+    comptime COUNT_4 = Self(value = SampleCountFlagBits.COUNT_4.value())
+    comptime COUNT_8 = Self(value = SampleCountFlagBits.COUNT_8.value())
+    comptime COUNT_16 = Self(value = SampleCountFlagBits.COUNT_16.value())
+    comptime COUNT_32 = Self(value = SampleCountFlagBits.COUNT_32.value())
+    comptime COUNT_64 = Self(value = SampleCountFlagBits.COUNT_64.value())
 
 
 struct SampleCountFlagBits(TrivialRegisterType, Equatable):
@@ -3980,13 +3980,13 @@ struct SampleCountFlagBits(TrivialRegisterType, Equatable):
     fn __or__(self, other: Self) -> SampleCountFlags:
         return SampleCountFlags(value = self._value | other._value)
 
-    comptime N_1 = Self(value = 1 << 0)
-    comptime N_2 = Self(value = 1 << 1)
-    comptime N_4 = Self(value = 1 << 2)
-    comptime N_8 = Self(value = 1 << 3)
-    comptime N_16 = Self(value = 1 << 4)
-    comptime N_32 = Self(value = 1 << 5)
-    comptime N_64 = Self(value = 1 << 6)
+    comptime COUNT_1 = Self(value = 1 << 0)
+    comptime COUNT_2 = Self(value = 1 << 1)
+    comptime COUNT_4 = Self(value = 1 << 2)
+    comptime COUNT_8 = Self(value = 1 << 3)
+    comptime COUNT_16 = Self(value = 1 << 4)
+    comptime COUNT_32 = Self(value = 1 << 5)
+    comptime COUNT_64 = Self(value = 1 << 6)
 
 
 struct AttachmentDescriptionFlags(TrivialRegisterType, Equatable):
@@ -6936,7 +6936,7 @@ struct PipelineCreateFlags2(TrivialRegisterType, Equatable):
     comptime DISALLOW_OPACITY_MICROMAP = Self(value = PipelineCreateFlagBits2.DISALLOW_OPACITY_MICROMAP.value())
     comptime PER_LAYER_FRAGMENT_DENSITY = Self(value = PipelineCreateFlagBits2.PER_LAYER_FRAGMENT_DENSITY.value())
     comptime RESERVED_41 = Self(value = PipelineCreateFlagBits2.RESERVED_41.value())
-    comptime N_64_BIT_INDEXING = Self(value = PipelineCreateFlagBits2.N_64_BIT_INDEXING.value())
+    comptime CREATE_64_BIT_INDEXING = Self(value = PipelineCreateFlagBits2.CREATE_64_BIT_INDEXING.value())
     comptime PIPELINE_CREATE_RESERVED_44 = Self(value = PipelineCreateFlagBits2.PIPELINE_CREATE_RESERVED_44.value())
     comptime RESERVED_45 = Self(value = PipelineCreateFlagBits2.RESERVED_45.value())
     comptime RESERVED_46 = Self(value = PipelineCreateFlagBits2.RESERVED_46.value())
@@ -6999,7 +6999,7 @@ struct PipelineCreateFlagBits2(TrivialRegisterType, Equatable):
     comptime DISALLOW_OPACITY_MICROMAP = Self(value = 1 << 37)
     comptime PER_LAYER_FRAGMENT_DENSITY = Self(value = 1 << 40)
     comptime RESERVED_41 = Self(value = 1 << 41)
-    comptime N_64_BIT_INDEXING = Self(value = 1 << 43)
+    comptime CREATE_64_BIT_INDEXING = Self(value = 1 << 43)
     comptime PIPELINE_CREATE_RESERVED_44 = Self(value = 1 << 44)
     comptime RESERVED_45 = Self(value = 1 << 45)
     comptime RESERVED_46 = Self(value = 1 << 46)
@@ -9546,9 +9546,9 @@ struct ClusterAccelerationStructureIndexFormatFlagsNV(TrivialRegisterType, Equat
     fn is_superset(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Bool:
         return self & other == other
 
-    comptime N_8BIT = Self(value = ClusterAccelerationStructureIndexFormatFlagBitsNV.N_8BIT.value())
-    comptime N_16BIT = Self(value = ClusterAccelerationStructureIndexFormatFlagBitsNV.N_16BIT.value())
-    comptime N_32BIT = Self(value = ClusterAccelerationStructureIndexFormatFlagBitsNV.N_32BIT.value())
+    comptime FORMAT_8BIT = Self(value = ClusterAccelerationStructureIndexFormatFlagBitsNV.FORMAT_8BIT.value())
+    comptime FORMAT_16BIT = Self(value = ClusterAccelerationStructureIndexFormatFlagBitsNV.FORMAT_16BIT.value())
+    comptime FORMAT_32BIT = Self(value = ClusterAccelerationStructureIndexFormatFlagBitsNV.FORMAT_32BIT.value())
 
 
 struct ClusterAccelerationStructureIndexFormatFlagBitsNV(TrivialRegisterType, Equatable):
@@ -9566,9 +9566,9 @@ struct ClusterAccelerationStructureIndexFormatFlagBitsNV(TrivialRegisterType, Eq
     fn __or__(self, other: Self) -> ClusterAccelerationStructureIndexFormatFlagsNV:
         return ClusterAccelerationStructureIndexFormatFlagsNV(value = self._value | other._value)
 
-    comptime N_8BIT = Self(value = 1 << 0)
-    comptime N_16BIT = Self(value = 1 << 1)
-    comptime N_32BIT = Self(value = 1 << 2)
+    comptime FORMAT_8BIT = Self(value = 1 << 0)
+    comptime FORMAT_16BIT = Self(value = 1 << 1)
+    comptime FORMAT_32BIT = Self(value = 1 << 2)
 
 
 struct ExternalMemoryFeatureFlagsNV(TrivialRegisterType, Equatable):
@@ -12009,30 +12009,30 @@ struct ImageCompressionFixedRateFlagsEXT(TrivialRegisterType, Equatable):
         return self & other == other
 
     comptime NONE = Self(value = ImageCompressionFixedRateFlagBitsEXT.NONE.value())
-    comptime N_1BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_1BPC.value())
-    comptime N_2BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_2BPC.value())
-    comptime N_3BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_3BPC.value())
-    comptime N_4BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_4BPC.value())
-    comptime N_5BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_5BPC.value())
-    comptime N_6BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_6BPC.value())
-    comptime N_7BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_7BPC.value())
-    comptime N_8BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_8BPC.value())
-    comptime N_9BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_9BPC.value())
-    comptime N_10BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_10BPC.value())
-    comptime N_11BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_11BPC.value())
-    comptime N_12BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_12BPC.value())
-    comptime N_13BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_13BPC.value())
-    comptime N_14BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_14BPC.value())
-    comptime N_15BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_15BPC.value())
-    comptime N_16BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_16BPC.value())
-    comptime N_17BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_17BPC.value())
-    comptime N_18BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_18BPC.value())
-    comptime N_19BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_19BPC.value())
-    comptime N_20BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_20BPC.value())
-    comptime N_21BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_21BPC.value())
-    comptime N_22BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_22BPC.value())
-    comptime N_23BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_23BPC.value())
-    comptime N_24BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.N_24BPC.value())
+    comptime RATE_1BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_1BPC.value())
+    comptime RATE_2BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_2BPC.value())
+    comptime RATE_3BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_3BPC.value())
+    comptime RATE_4BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_4BPC.value())
+    comptime RATE_5BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_5BPC.value())
+    comptime RATE_6BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_6BPC.value())
+    comptime RATE_7BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_7BPC.value())
+    comptime RATE_8BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_8BPC.value())
+    comptime RATE_9BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_9BPC.value())
+    comptime RATE_10BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_10BPC.value())
+    comptime RATE_11BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_11BPC.value())
+    comptime RATE_12BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_12BPC.value())
+    comptime RATE_13BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_13BPC.value())
+    comptime RATE_14BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_14BPC.value())
+    comptime RATE_15BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_15BPC.value())
+    comptime RATE_16BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_16BPC.value())
+    comptime RATE_17BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_17BPC.value())
+    comptime RATE_18BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_18BPC.value())
+    comptime RATE_19BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_19BPC.value())
+    comptime RATE_20BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_20BPC.value())
+    comptime RATE_21BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_21BPC.value())
+    comptime RATE_22BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_22BPC.value())
+    comptime RATE_23BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_23BPC.value())
+    comptime RATE_24BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_24BPC.value())
 
 
 struct ImageCompressionFixedRateFlagBitsEXT(TrivialRegisterType, Equatable):
@@ -12051,30 +12051,30 @@ struct ImageCompressionFixedRateFlagBitsEXT(TrivialRegisterType, Equatable):
         return ImageCompressionFixedRateFlagsEXT(value = self._value | other._value)
 
     comptime NONE = Self(value = 0)
-    comptime N_1BPC = Self(value = 1 << 0)
-    comptime N_2BPC = Self(value = 1 << 1)
-    comptime N_3BPC = Self(value = 1 << 2)
-    comptime N_4BPC = Self(value = 1 << 3)
-    comptime N_5BPC = Self(value = 1 << 4)
-    comptime N_6BPC = Self(value = 1 << 5)
-    comptime N_7BPC = Self(value = 1 << 6)
-    comptime N_8BPC = Self(value = 1 << 7)
-    comptime N_9BPC = Self(value = 1 << 8)
-    comptime N_10BPC = Self(value = 1 << 9)
-    comptime N_11BPC = Self(value = 1 << 10)
-    comptime N_12BPC = Self(value = 1 << 11)
-    comptime N_13BPC = Self(value = 1 << 12)
-    comptime N_14BPC = Self(value = 1 << 13)
-    comptime N_15BPC = Self(value = 1 << 14)
-    comptime N_16BPC = Self(value = 1 << 15)
-    comptime N_17BPC = Self(value = 1 << 16)
-    comptime N_18BPC = Self(value = 1 << 17)
-    comptime N_19BPC = Self(value = 1 << 18)
-    comptime N_20BPC = Self(value = 1 << 19)
-    comptime N_21BPC = Self(value = 1 << 20)
-    comptime N_22BPC = Self(value = 1 << 21)
-    comptime N_23BPC = Self(value = 1 << 22)
-    comptime N_24BPC = Self(value = 1 << 23)
+    comptime RATE_1BPC = Self(value = 1 << 0)
+    comptime RATE_2BPC = Self(value = 1 << 1)
+    comptime RATE_3BPC = Self(value = 1 << 2)
+    comptime RATE_4BPC = Self(value = 1 << 3)
+    comptime RATE_5BPC = Self(value = 1 << 4)
+    comptime RATE_6BPC = Self(value = 1 << 5)
+    comptime RATE_7BPC = Self(value = 1 << 6)
+    comptime RATE_8BPC = Self(value = 1 << 7)
+    comptime RATE_9BPC = Self(value = 1 << 8)
+    comptime RATE_10BPC = Self(value = 1 << 9)
+    comptime RATE_11BPC = Self(value = 1 << 10)
+    comptime RATE_12BPC = Self(value = 1 << 11)
+    comptime RATE_13BPC = Self(value = 1 << 12)
+    comptime RATE_14BPC = Self(value = 1 << 13)
+    comptime RATE_15BPC = Self(value = 1 << 14)
+    comptime RATE_16BPC = Self(value = 1 << 15)
+    comptime RATE_17BPC = Self(value = 1 << 16)
+    comptime RATE_18BPC = Self(value = 1 << 17)
+    comptime RATE_19BPC = Self(value = 1 << 18)
+    comptime RATE_20BPC = Self(value = 1 << 19)
+    comptime RATE_21BPC = Self(value = 1 << 20)
+    comptime RATE_22BPC = Self(value = 1 << 21)
+    comptime RATE_23BPC = Self(value = 1 << 22)
+    comptime RATE_24BPC = Self(value = 1 << 23)
 
 
 struct ExportMetalObjectTypeFlagsEXT(TrivialRegisterType, Equatable):
@@ -12393,10 +12393,10 @@ struct OpticalFlowGridSizeFlagsNV(TrivialRegisterType, Equatable):
         return self & other == other
 
     comptime UNKNOWN = Self(value = OpticalFlowGridSizeFlagBitsNV.UNKNOWN.value())
-    comptime N_1X1 = Self(value = OpticalFlowGridSizeFlagBitsNV.N_1X1.value())
-    comptime N_2X2 = Self(value = OpticalFlowGridSizeFlagBitsNV.N_2X2.value())
-    comptime N_4X4 = Self(value = OpticalFlowGridSizeFlagBitsNV.N_4X4.value())
-    comptime N_8X8 = Self(value = OpticalFlowGridSizeFlagBitsNV.N_8X8.value())
+    comptime SIZE_1X1 = Self(value = OpticalFlowGridSizeFlagBitsNV.SIZE_1X1.value())
+    comptime SIZE_2X2 = Self(value = OpticalFlowGridSizeFlagBitsNV.SIZE_2X2.value())
+    comptime SIZE_4X4 = Self(value = OpticalFlowGridSizeFlagBitsNV.SIZE_4X4.value())
+    comptime SIZE_8X8 = Self(value = OpticalFlowGridSizeFlagBitsNV.SIZE_8X8.value())
 
 
 struct OpticalFlowGridSizeFlagBitsNV(TrivialRegisterType, Equatable):
@@ -12415,10 +12415,10 @@ struct OpticalFlowGridSizeFlagBitsNV(TrivialRegisterType, Equatable):
         return OpticalFlowGridSizeFlagsNV(value = self._value | other._value)
 
     comptime UNKNOWN = Self(value = 0)
-    comptime N_1X1 = Self(value = 1 << 0)
-    comptime N_2X2 = Self(value = 1 << 1)
-    comptime N_4X4 = Self(value = 1 << 2)
-    comptime N_8X8 = Self(value = 1 << 3)
+    comptime SIZE_1X1 = Self(value = 1 << 0)
+    comptime SIZE_2X2 = Self(value = 1 << 1)
+    comptime SIZE_4X4 = Self(value = 1 << 2)
+    comptime SIZE_8X8 = Self(value = 1 << 3)
 
 
 struct OpticalFlowUsageFlagsNV(TrivialRegisterType, Equatable):
@@ -12886,7 +12886,7 @@ struct ShaderCreateFlagsEXT(TrivialRegisterType, Equatable):
     comptime RESERVED_9 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_9.value())
     comptime DESCRIPTOR_HEAP = Self(value = ShaderCreateFlagBitsEXT.DESCRIPTOR_HEAP.value())
     comptime RESERVED_12 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_12.value())
-    comptime N_64_BIT_INDEXING = Self(value = ShaderCreateFlagBitsEXT.N_64_BIT_INDEXING.value())
+    comptime CREATE_64_BIT_INDEXING = Self(value = ShaderCreateFlagBitsEXT.CREATE_64_BIT_INDEXING.value())
     comptime RESERVED_16 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_16.value())
     comptime RESERVED_17 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_17.value())
     comptime RESERVED_18 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_18.value())
@@ -12919,7 +12919,7 @@ struct ShaderCreateFlagBitsEXT(TrivialRegisterType, Equatable):
     comptime RESERVED_9 = Self(value = 1 << 9)
     comptime DESCRIPTOR_HEAP = Self(value = 1 << 10)
     comptime RESERVED_12 = Self(value = 1 << 12)
-    comptime N_64_BIT_INDEXING = Self(value = 1 << 15)
+    comptime CREATE_64_BIT_INDEXING = Self(value = 1 << 15)
     comptime RESERVED_16 = Self(value = 1 << 16)
     comptime RESERVED_17 = Self(value = 1 << 17)
     comptime RESERVED_18 = Self(value = 1 << 18)
@@ -14784,9 +14784,9 @@ struct VideoChromaSubsamplingFlagsKHR(TrivialRegisterType, Equatable):
 
     comptime INVALID = Self(value = VideoChromaSubsamplingFlagBitsKHR.INVALID.value())
     comptime MONOCHROME = Self(value = VideoChromaSubsamplingFlagBitsKHR.MONOCHROME.value())
-    comptime N_420 = Self(value = VideoChromaSubsamplingFlagBitsKHR.N_420.value())
-    comptime N_422 = Self(value = VideoChromaSubsamplingFlagBitsKHR.N_422.value())
-    comptime N_444 = Self(value = VideoChromaSubsamplingFlagBitsKHR.N_444.value())
+    comptime SUBSAMPLING_420 = Self(value = VideoChromaSubsamplingFlagBitsKHR.SUBSAMPLING_420.value())
+    comptime SUBSAMPLING_422 = Self(value = VideoChromaSubsamplingFlagBitsKHR.SUBSAMPLING_422.value())
+    comptime SUBSAMPLING_444 = Self(value = VideoChromaSubsamplingFlagBitsKHR.SUBSAMPLING_444.value())
 
 
 struct VideoChromaSubsamplingFlagBitsKHR(TrivialRegisterType, Equatable):
@@ -14806,9 +14806,9 @@ struct VideoChromaSubsamplingFlagBitsKHR(TrivialRegisterType, Equatable):
 
     comptime INVALID = Self(value = 0)
     comptime MONOCHROME = Self(value = 1 << 0)
-    comptime N_420 = Self(value = 1 << 1)
-    comptime N_422 = Self(value = 1 << 2)
-    comptime N_444 = Self(value = 1 << 3)
+    comptime SUBSAMPLING_420 = Self(value = 1 << 1)
+    comptime SUBSAMPLING_422 = Self(value = 1 << 2)
+    comptime SUBSAMPLING_444 = Self(value = 1 << 3)
 
 
 struct VideoComponentBitDepthFlagsKHR(TrivialRegisterType, Equatable):
@@ -14855,9 +14855,9 @@ struct VideoComponentBitDepthFlagsKHR(TrivialRegisterType, Equatable):
         return self & other == other
 
     comptime INVALID = Self(value = VideoComponentBitDepthFlagBitsKHR.INVALID.value())
-    comptime N_8 = Self(value = VideoComponentBitDepthFlagBitsKHR.N_8.value())
-    comptime N_10 = Self(value = VideoComponentBitDepthFlagBitsKHR.N_10.value())
-    comptime N_12 = Self(value = VideoComponentBitDepthFlagBitsKHR.N_12.value())
+    comptime DEPTH_8 = Self(value = VideoComponentBitDepthFlagBitsKHR.DEPTH_8.value())
+    comptime DEPTH_10 = Self(value = VideoComponentBitDepthFlagBitsKHR.DEPTH_10.value())
+    comptime DEPTH_12 = Self(value = VideoComponentBitDepthFlagBitsKHR.DEPTH_12.value())
 
 
 struct VideoComponentBitDepthFlagBitsKHR(TrivialRegisterType, Equatable):
@@ -14876,9 +14876,9 @@ struct VideoComponentBitDepthFlagBitsKHR(TrivialRegisterType, Equatable):
         return VideoComponentBitDepthFlagsKHR(value = self._value | other._value)
 
     comptime INVALID = Self(value = 0)
-    comptime N_8 = Self(value = 1 << 0)
-    comptime N_10 = Self(value = 1 << 2)
-    comptime N_12 = Self(value = 1 << 4)
+    comptime DEPTH_8 = Self(value = 1 << 0)
+    comptime DEPTH_10 = Self(value = 1 << 2)
+    comptime DEPTH_12 = Self(value = 1 << 4)
 
 
 struct VideoEncodeH264CapabilityFlagsKHR(TrivialRegisterType, Equatable):
@@ -15444,9 +15444,9 @@ struct VideoEncodeH265CtbSizeFlagsKHR(TrivialRegisterType, Equatable):
     fn is_superset(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Bool:
         return self & other == other
 
-    comptime N_16 = Self(value = VideoEncodeH265CtbSizeFlagBitsKHR.N_16.value())
-    comptime N_32 = Self(value = VideoEncodeH265CtbSizeFlagBitsKHR.N_32.value())
-    comptime N_64 = Self(value = VideoEncodeH265CtbSizeFlagBitsKHR.N_64.value())
+    comptime SIZE_16 = Self(value = VideoEncodeH265CtbSizeFlagBitsKHR.SIZE_16.value())
+    comptime SIZE_32 = Self(value = VideoEncodeH265CtbSizeFlagBitsKHR.SIZE_32.value())
+    comptime SIZE_64 = Self(value = VideoEncodeH265CtbSizeFlagBitsKHR.SIZE_64.value())
 
 
 struct VideoEncodeH265CtbSizeFlagBitsKHR(TrivialRegisterType, Equatable):
@@ -15464,9 +15464,9 @@ struct VideoEncodeH265CtbSizeFlagBitsKHR(TrivialRegisterType, Equatable):
     fn __or__(self, other: Self) -> VideoEncodeH265CtbSizeFlagsKHR:
         return VideoEncodeH265CtbSizeFlagsKHR(value = self._value | other._value)
 
-    comptime N_16 = Self(value = 1 << 0)
-    comptime N_32 = Self(value = 1 << 1)
-    comptime N_64 = Self(value = 1 << 2)
+    comptime SIZE_16 = Self(value = 1 << 0)
+    comptime SIZE_32 = Self(value = 1 << 1)
+    comptime SIZE_64 = Self(value = 1 << 2)
 
 
 struct VideoEncodeH265TransformBlockSizeFlagsKHR(TrivialRegisterType, Equatable):
@@ -15512,10 +15512,10 @@ struct VideoEncodeH265TransformBlockSizeFlagsKHR(TrivialRegisterType, Equatable)
     fn is_superset(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Bool:
         return self & other == other
 
-    comptime N_4 = Self(value = VideoEncodeH265TransformBlockSizeFlagBitsKHR.N_4.value())
-    comptime N_8 = Self(value = VideoEncodeH265TransformBlockSizeFlagBitsKHR.N_8.value())
-    comptime N_16 = Self(value = VideoEncodeH265TransformBlockSizeFlagBitsKHR.N_16.value())
-    comptime N_32 = Self(value = VideoEncodeH265TransformBlockSizeFlagBitsKHR.N_32.value())
+    comptime SIZE_4 = Self(value = VideoEncodeH265TransformBlockSizeFlagBitsKHR.SIZE_4.value())
+    comptime SIZE_8 = Self(value = VideoEncodeH265TransformBlockSizeFlagBitsKHR.SIZE_8.value())
+    comptime SIZE_16 = Self(value = VideoEncodeH265TransformBlockSizeFlagBitsKHR.SIZE_16.value())
+    comptime SIZE_32 = Self(value = VideoEncodeH265TransformBlockSizeFlagBitsKHR.SIZE_32.value())
 
 
 struct VideoEncodeH265TransformBlockSizeFlagBitsKHR(TrivialRegisterType, Equatable):
@@ -15533,10 +15533,10 @@ struct VideoEncodeH265TransformBlockSizeFlagBitsKHR(TrivialRegisterType, Equatab
     fn __or__(self, other: Self) -> VideoEncodeH265TransformBlockSizeFlagsKHR:
         return VideoEncodeH265TransformBlockSizeFlagsKHR(value = self._value | other._value)
 
-    comptime N_4 = Self(value = 1 << 0)
-    comptime N_8 = Self(value = 1 << 1)
-    comptime N_16 = Self(value = 1 << 2)
-    comptime N_32 = Self(value = 1 << 3)
+    comptime SIZE_4 = Self(value = 1 << 0)
+    comptime SIZE_8 = Self(value = 1 << 1)
+    comptime SIZE_16 = Self(value = 1 << 2)
+    comptime SIZE_32 = Self(value = 1 << 3)
 
 
 struct VideoEncodeAV1CapabilityFlagsKHR(TrivialRegisterType, Equatable):
@@ -15796,8 +15796,8 @@ struct VideoEncodeAV1SuperblockSizeFlagsKHR(TrivialRegisterType, Equatable):
     fn is_superset(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Bool:
         return self & other == other
 
-    comptime N_64 = Self(value = VideoEncodeAV1SuperblockSizeFlagBitsKHR.N_64.value())
-    comptime N_128 = Self(value = VideoEncodeAV1SuperblockSizeFlagBitsKHR.N_128.value())
+    comptime SIZE_64 = Self(value = VideoEncodeAV1SuperblockSizeFlagBitsKHR.SIZE_64.value())
+    comptime SIZE_128 = Self(value = VideoEncodeAV1SuperblockSizeFlagBitsKHR.SIZE_128.value())
 
 
 struct VideoEncodeAV1SuperblockSizeFlagBitsKHR(TrivialRegisterType, Equatable):
@@ -15815,8 +15815,8 @@ struct VideoEncodeAV1SuperblockSizeFlagBitsKHR(TrivialRegisterType, Equatable):
     fn __or__(self, other: Self) -> VideoEncodeAV1SuperblockSizeFlagsKHR:
         return VideoEncodeAV1SuperblockSizeFlagsKHR(value = self._value | other._value)
 
-    comptime N_64 = Self(value = 1 << 0)
-    comptime N_128 = Self(value = 1 << 1)
+    comptime SIZE_64 = Self(value = 1 << 0)
+    comptime SIZE_128 = Self(value = 1 << 1)
 
 
 struct AccessFlags3KHR(TrivialRegisterType, Equatable):
