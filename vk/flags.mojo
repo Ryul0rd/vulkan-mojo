@@ -61,11 +61,17 @@ struct FramebufferCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: FramebufferCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: FramebufferCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: FramebufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: FramebufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: FramebufferCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: FramebufferCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -125,11 +131,17 @@ struct QueryPoolCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: QueryPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: QueryPoolCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: QueryPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: QueryPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: QueryPoolCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: QueryPoolCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -189,11 +201,17 @@ struct RenderPassCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: RenderPassCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: RenderPassCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: RenderPassCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: RenderPassCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: RenderPassCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: RenderPassCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -259,11 +277,17 @@ struct SamplerCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SamplerCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SamplerCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: SamplerCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SamplerCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SamplerCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: SamplerCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -331,11 +355,17 @@ struct PipelineLayoutCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineLayoutCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineLayoutCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineLayoutCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineLayoutCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -397,11 +427,17 @@ struct PipelineCacheCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineCacheCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineCacheCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineCacheCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineCacheCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineCacheCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineCacheCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -467,11 +503,17 @@ struct PipelineDepthStencilStateCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineDepthStencilStateCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineDepthStencilStateCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineDepthStencilStateCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -527,11 +569,17 @@ struct PipelineDynamicStateCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineDynamicStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineDynamicStateCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineDynamicStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineDynamicStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineDynamicStateCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineDynamicStateCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -587,11 +635,17 @@ struct PipelineColorBlendStateCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineColorBlendStateCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineColorBlendStateCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineColorBlendStateCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -647,11 +701,17 @@ struct PipelineMultisampleStateCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineMultisampleStateCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineMultisampleStateCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineMultisampleStateCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -707,11 +767,17 @@ struct PipelineRasterizationStateCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineRasterizationStateCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineRasterizationStateCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineRasterizationStateCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -767,11 +833,17 @@ struct PipelineViewportStateCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineViewportStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineViewportStateCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineViewportStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineViewportStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineViewportStateCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineViewportStateCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -827,11 +899,17 @@ struct PipelineTessellationStateCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineTessellationStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineTessellationStateCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineTessellationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineTessellationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineTessellationStateCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineTessellationStateCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -887,11 +965,17 @@ struct PipelineInputAssemblyStateCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineInputAssemblyStateCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineInputAssemblyStateCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineInputAssemblyStateCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -947,11 +1031,17 @@ struct PipelineVertexInputStateCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineVertexInputStateCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineVertexInputStateCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineVertexInputStateCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -1007,11 +1097,17 @@ struct PipelineShaderStageCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineShaderStageCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineShaderStageCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineShaderStageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineShaderStageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineShaderStageCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineShaderStageCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -1075,11 +1171,17 @@ struct DescriptorSetLayoutCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DescriptorSetLayoutCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DescriptorSetLayoutCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: DescriptorSetLayoutCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -1151,11 +1253,17 @@ struct BufferViewCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: BufferViewCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: BufferViewCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: BufferViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: BufferViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: BufferViewCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: BufferViewCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -1211,11 +1319,17 @@ struct InstanceCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: InstanceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: InstanceCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: InstanceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: InstanceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: InstanceCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: InstanceCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -1277,11 +1391,17 @@ struct DeviceCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DeviceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DeviceCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: DeviceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DeviceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DeviceCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: DeviceCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -1337,11 +1457,17 @@ struct DeviceQueueCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DeviceQueueCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DeviceQueueCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: DeviceQueueCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DeviceQueueCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DeviceQueueCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: DeviceQueueCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -1405,11 +1531,17 @@ struct QueueFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: QueueFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: QueueFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: QueueFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: QueueFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: QueueFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: QueueFlags) -> Bool:
         return self.is_superset(other)
@@ -1495,11 +1627,17 @@ struct MemoryPropertyFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: MemoryPropertyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: MemoryPropertyFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: MemoryPropertyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: MemoryPropertyFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: MemoryPropertyFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: MemoryPropertyFlags) -> Bool:
         return self.is_superset(other)
@@ -1575,11 +1713,17 @@ struct MemoryHeapFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: MemoryHeapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: MemoryHeapFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: MemoryHeapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: MemoryHeapFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: MemoryHeapFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: MemoryHeapFlags) -> Bool:
         return self.is_superset(other)
@@ -1645,11 +1789,17 @@ struct AccessFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: AccessFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: AccessFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: AccessFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: AccessFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: AccessFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: AccessFlags) -> Bool:
         return self.is_superset(other)
@@ -1761,11 +1911,17 @@ struct BufferUsageFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: BufferUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: BufferUsageFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: BufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: BufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: BufferUsageFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: BufferUsageFlags) -> Bool:
         return self.is_superset(other)
@@ -1879,11 +2035,17 @@ struct BufferCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: BufferCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: BufferCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: BufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: BufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: BufferCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: BufferCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -1957,11 +2119,17 @@ struct ShaderStageFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ShaderStageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ShaderStageFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ShaderStageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ShaderStageFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ShaderStageFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ShaderStageFlags) -> Bool:
         return self.is_superset(other)
@@ -2055,11 +2223,17 @@ struct ImageUsageFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ImageUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ImageUsageFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ImageUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ImageUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ImageUsageFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ImageUsageFlags) -> Bool:
         return self.is_superset(other)
@@ -2179,11 +2353,17 @@ struct ImageCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ImageCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ImageCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ImageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ImageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ImageCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ImageCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -2283,11 +2463,17 @@ struct ImageViewCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ImageViewCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ImageViewCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ImageViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ImageViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ImageViewCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ImageViewCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -2351,11 +2537,17 @@ struct PipelineCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -2475,11 +2667,17 @@ struct ColorComponentFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ColorComponentFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ColorComponentFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ColorComponentFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ColorComponentFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ColorComponentFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ColorComponentFlags) -> Bool:
         return self.is_superset(other)
@@ -2545,11 +2743,17 @@ struct FenceCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: FenceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: FenceCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: FenceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: FenceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: FenceCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: FenceCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -2609,11 +2813,17 @@ struct SemaphoreCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SemaphoreCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SemaphoreCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: SemaphoreCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SemaphoreCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SemaphoreCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: SemaphoreCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -2669,11 +2879,17 @@ struct FormatFeatureFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: FormatFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: FormatFeatureFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: FormatFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: FormatFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: FormatFeatureFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: FormatFeatureFlags) -> Bool:
         return self.is_superset(other)
@@ -2791,11 +3007,17 @@ struct QueryControlFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: QueryControlFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: QueryControlFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: QueryControlFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: QueryControlFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: QueryControlFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: QueryControlFlags) -> Bool:
         return self.is_superset(other)
@@ -2855,11 +3077,17 @@ struct QueryResultFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: QueryResultFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: QueryResultFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: QueryResultFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: QueryResultFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: QueryResultFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: QueryResultFlags) -> Bool:
         return self.is_superset(other)
@@ -2927,11 +3155,17 @@ struct ShaderModuleCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ShaderModuleCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ShaderModuleCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ShaderModuleCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ShaderModuleCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ShaderModuleCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ShaderModuleCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -2987,11 +3221,17 @@ struct EventCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: EventCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: EventCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: EventCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: EventCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: EventCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: EventCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -3051,11 +3291,17 @@ struct CommandPoolCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: CommandPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: CommandPoolCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: CommandPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: CommandPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: CommandPoolCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: CommandPoolCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -3119,11 +3365,17 @@ struct CommandPoolResetFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: CommandPoolResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: CommandPoolResetFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: CommandPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: CommandPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: CommandPoolResetFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: CommandPoolResetFlags) -> Bool:
         return self.is_superset(other)
@@ -3185,11 +3437,17 @@ struct CommandBufferResetFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: CommandBufferResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: CommandBufferResetFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: CommandBufferResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: CommandBufferResetFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: CommandBufferResetFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: CommandBufferResetFlags) -> Bool:
         return self.is_superset(other)
@@ -3249,11 +3507,17 @@ struct CommandBufferUsageFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: CommandBufferUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: CommandBufferUsageFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: CommandBufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: CommandBufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: CommandBufferUsageFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: CommandBufferUsageFlags) -> Bool:
         return self.is_superset(other)
@@ -3321,11 +3585,17 @@ struct QueryPipelineStatisticFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: QueryPipelineStatisticFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: QueryPipelineStatisticFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: QueryPipelineStatisticFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: QueryPipelineStatisticFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: QueryPipelineStatisticFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: QueryPipelineStatisticFlags) -> Bool:
         return self.is_superset(other)
@@ -3411,11 +3681,17 @@ struct MemoryMapFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: MemoryMapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: MemoryMapFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: MemoryMapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: MemoryMapFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: MemoryMapFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: MemoryMapFlags) -> Bool:
         return self.is_superset(other)
@@ -3475,11 +3751,17 @@ struct MemoryUnmapFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: MemoryUnmapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: MemoryUnmapFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: MemoryUnmapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: MemoryUnmapFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: MemoryUnmapFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: MemoryUnmapFlags) -> Bool:
         return self.is_superset(other)
@@ -3539,11 +3821,17 @@ struct ImageAspectFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ImageAspectFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ImageAspectFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ImageAspectFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ImageAspectFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ImageAspectFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ImageAspectFlags) -> Bool:
         return self.is_superset(other)
@@ -3627,11 +3915,17 @@ struct SparseMemoryBindFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SparseMemoryBindFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SparseMemoryBindFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: SparseMemoryBindFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SparseMemoryBindFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SparseMemoryBindFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: SparseMemoryBindFlags) -> Bool:
         return self.is_superset(other)
@@ -3691,11 +3985,17 @@ struct SparseImageFormatFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SparseImageFormatFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SparseImageFormatFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: SparseImageFormatFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SparseImageFormatFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SparseImageFormatFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: SparseImageFormatFlags) -> Bool:
         return self.is_superset(other)
@@ -3759,11 +4059,17 @@ struct SubpassDescriptionFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SubpassDescriptionFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SubpassDescriptionFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: SubpassDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SubpassDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SubpassDescriptionFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: SubpassDescriptionFlags) -> Bool:
         return self.is_superset(other)
@@ -3831,11 +4137,17 @@ struct PipelineStageFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineStageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineStageFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineStageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineStageFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineStageFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineStageFlags) -> Bool:
         return self.is_superset(other)
@@ -3941,11 +4253,17 @@ struct SampleCountFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SampleCountFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SampleCountFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: SampleCountFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SampleCountFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SampleCountFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: SampleCountFlags) -> Bool:
         return self.is_superset(other)
@@ -4017,11 +4335,17 @@ struct AttachmentDescriptionFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: AttachmentDescriptionFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: AttachmentDescriptionFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: AttachmentDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: AttachmentDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: AttachmentDescriptionFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: AttachmentDescriptionFlags) -> Bool:
         return self.is_superset(other)
@@ -4085,11 +4409,17 @@ struct StencilFaceFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: StencilFaceFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: StencilFaceFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: StencilFaceFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: StencilFaceFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: StencilFaceFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: StencilFaceFlags) -> Bool:
         return self.is_superset(other)
@@ -4153,11 +4483,17 @@ struct CullModeFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: CullModeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: CullModeFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: CullModeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: CullModeFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: CullModeFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: CullModeFlags) -> Bool:
         return self.is_superset(other)
@@ -4223,11 +4559,17 @@ struct DescriptorPoolCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DescriptorPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DescriptorPoolCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: DescriptorPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DescriptorPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DescriptorPoolCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: DescriptorPoolCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -4293,11 +4635,17 @@ struct DescriptorPoolResetFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DescriptorPoolResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DescriptorPoolResetFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: DescriptorPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DescriptorPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DescriptorPoolResetFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: DescriptorPoolResetFlags) -> Bool:
         return self.is_superset(other)
@@ -4353,11 +4701,17 @@ struct DependencyFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DependencyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DependencyFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: DependencyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DependencyFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DependencyFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: DependencyFlags) -> Bool:
         return self.is_superset(other)
@@ -4429,11 +4783,17 @@ struct SubgroupFeatureFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SubgroupFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SubgroupFeatureFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: SubgroupFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SubgroupFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SubgroupFeatureFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: SubgroupFeatureFlags) -> Bool:
         return self.is_superset(other)
@@ -4511,11 +4871,17 @@ struct IndirectCommandsLayoutUsageFlagsNV(TrivialRegisterType, Equatable):
     fn __ror__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: IndirectCommandsLayoutUsageFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: IndirectCommandsLayoutUsageFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -4579,11 +4945,17 @@ struct IndirectStateFlagsNV(TrivialRegisterType, Equatable):
     fn __ror__(self, other: IndirectStateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: IndirectStateFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: IndirectStateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: IndirectStateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: IndirectStateFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: IndirectStateFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -4643,11 +5015,17 @@ struct GeometryFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: GeometryFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: GeometryFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: GeometryFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: GeometryFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: GeometryFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: GeometryFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -4709,11 +5087,17 @@ struct GeometryInstanceFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: GeometryInstanceFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: GeometryInstanceFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: GeometryInstanceFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: GeometryInstanceFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: GeometryInstanceFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: GeometryInstanceFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -4783,11 +5167,17 @@ struct ClusterAccelerationStructureGeometryFlagsNV(TrivialRegisterType, Equatabl
     fn __ror__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ClusterAccelerationStructureGeometryFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ClusterAccelerationStructureGeometryFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -4851,11 +5241,17 @@ struct ClusterAccelerationStructureClusterFlagsNV(TrivialRegisterType, Equatable
     fn __ror__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ClusterAccelerationStructureClusterFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ClusterAccelerationStructureClusterFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -4915,11 +5311,17 @@ struct ClusterAccelerationStructureAddressResolutionFlagsNV(TrivialRegisterType,
     fn __ror__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ClusterAccelerationStructureAddressResolutionFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ClusterAccelerationStructureAddressResolutionFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -4991,11 +5393,17 @@ struct BuildAccelerationStructureFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: BuildAccelerationStructureFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: BuildAccelerationStructureFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: BuildAccelerationStructureFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -5079,11 +5487,17 @@ struct PrivateDataSlotCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PrivateDataSlotCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PrivateDataSlotCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PrivateDataSlotCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PrivateDataSlotCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PrivateDataSlotCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PrivateDataSlotCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -5143,11 +5557,17 @@ struct AccelerationStructureCreateFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: AccelerationStructureCreateFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: AccelerationStructureCreateFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: AccelerationStructureCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -5211,11 +5631,17 @@ struct DescriptorUpdateTemplateCreateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DescriptorUpdateTemplateCreateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DescriptorUpdateTemplateCreateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: DescriptorUpdateTemplateCreateFlags) -> Bool:
         return self.is_superset(other)
@@ -5271,11 +5697,17 @@ struct PipelineCreationFeedbackFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineCreationFeedbackFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineCreationFeedbackFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineCreationFeedbackFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineCreationFeedbackFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineCreationFeedbackFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineCreationFeedbackFlags) -> Bool:
         return self.is_superset(other)
@@ -5339,11 +5771,17 @@ struct PerformanceCounterDescriptionFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PerformanceCounterDescriptionFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PerformanceCounterDescriptionFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -5405,11 +5843,17 @@ struct AcquireProfilingLockFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: AcquireProfilingLockFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: AcquireProfilingLockFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: AcquireProfilingLockFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -5465,11 +5909,17 @@ struct SemaphoreWaitFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SemaphoreWaitFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SemaphoreWaitFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: SemaphoreWaitFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SemaphoreWaitFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SemaphoreWaitFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: SemaphoreWaitFlags) -> Bool:
         return self.is_superset(other)
@@ -5529,11 +5979,17 @@ struct PipelineCompilerControlFlagsAMD(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineCompilerControlFlagsAMD):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineCompilerControlFlagsAMD):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineCompilerControlFlagsAMD) -> Bool:
         return self.is_superset(other)
@@ -5589,11 +6045,17 @@ struct ShaderCorePropertiesFlagsAMD(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ShaderCorePropertiesFlagsAMD):
+        self._value |= other.value()
+
     fn __and__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ShaderCorePropertiesFlagsAMD):
+        self._value &= other.value()
 
     fn __contains__(self, other: ShaderCorePropertiesFlagsAMD) -> Bool:
         return self.is_superset(other)
@@ -5649,11 +6111,17 @@ struct DeviceDiagnosticsConfigFlagsNV(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DeviceDiagnosticsConfigFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DeviceDiagnosticsConfigFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -5719,11 +6187,17 @@ struct RefreshObjectFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: RefreshObjectFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: RefreshObjectFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: RefreshObjectFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: RefreshObjectFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: RefreshObjectFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: RefreshObjectFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -5779,11 +6253,17 @@ struct AccessFlags2(TrivialRegisterType, Equatable):
     fn __ror__(self, other: AccessFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: AccessFlags2):
+        self._value |= other.value()
+
     fn __and__(self, other: AccessFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: AccessFlags2) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: AccessFlags2):
+        self._value &= other.value()
 
     fn __contains__(self, other: AccessFlags2) -> Bool:
         return self.is_superset(other)
@@ -5953,11 +6433,17 @@ struct PipelineStageFlags2(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineStageFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineStageFlags2):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineStageFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineStageFlags2) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineStageFlags2):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineStageFlags2) -> Bool:
         return self.is_superset(other)
@@ -6109,11 +6595,17 @@ struct AccelerationStructureMotionInfoFlagsNV(TrivialRegisterType, Equatable):
     fn __ror__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: AccelerationStructureMotionInfoFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: AccelerationStructureMotionInfoFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -6169,11 +6661,17 @@ struct AccelerationStructureMotionInstanceFlagsNV(TrivialRegisterType, Equatable
     fn __ror__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: AccelerationStructureMotionInstanceFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: AccelerationStructureMotionInstanceFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -6229,11 +6727,17 @@ struct FormatFeatureFlags2(TrivialRegisterType, Equatable):
     fn __ror__(self, other: FormatFeatureFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: FormatFeatureFlags2):
+        self._value |= other.value()
+
     fn __and__(self, other: FormatFeatureFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: FormatFeatureFlags2) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: FormatFeatureFlags2):
+        self._value &= other.value()
 
     fn __contains__(self, other: FormatFeatureFlags2) -> Bool:
         return self.is_superset(other)
@@ -6413,11 +6917,17 @@ struct RenderingFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: RenderingFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: RenderingFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: RenderingFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: RenderingFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: RenderingFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: RenderingFlags) -> Bool:
         return self.is_superset(other)
@@ -6493,11 +7003,17 @@ struct MemoryDecompressionMethodFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: MemoryDecompressionMethodFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: MemoryDecompressionMethodFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: MemoryDecompressionMethodFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -6557,11 +7073,17 @@ struct BuildMicromapFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: BuildMicromapFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: BuildMicromapFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: BuildMicromapFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: BuildMicromapFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: BuildMicromapFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: BuildMicromapFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -6625,11 +7147,17 @@ struct MicromapCreateFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: MicromapCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: MicromapCreateFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: MicromapCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: MicromapCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: MicromapCreateFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: MicromapCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -6689,11 +7217,17 @@ struct IndirectCommandsLayoutUsageFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: IndirectCommandsLayoutUsageFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: IndirectCommandsLayoutUsageFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -6755,11 +7289,17 @@ struct IndirectCommandsInputModeFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: IndirectCommandsInputModeFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: IndirectCommandsInputModeFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: IndirectCommandsInputModeFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -6821,11 +7361,17 @@ struct DirectDriverLoadingFlagsLUNARG(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DirectDriverLoadingFlagsLUNARG):
+        self._value |= other.value()
+
     fn __and__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DirectDriverLoadingFlagsLUNARG):
+        self._value &= other.value()
 
     fn __contains__(self, other: DirectDriverLoadingFlagsLUNARG) -> Bool:
         return self.is_superset(other)
@@ -6881,11 +7427,17 @@ struct PipelineCreateFlags2(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PipelineCreateFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineCreateFlags2):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineCreateFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineCreateFlags2) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineCreateFlags2):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineCreateFlags2) -> Bool:
         return self.is_superset(other)
@@ -7035,11 +7587,17 @@ struct BufferUsageFlags2(TrivialRegisterType, Equatable):
     fn __ror__(self, other: BufferUsageFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: BufferUsageFlags2):
+        self._value |= other.value()
+
     fn __and__(self, other: BufferUsageFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: BufferUsageFlags2) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: BufferUsageFlags2):
+        self._value &= other.value()
 
     fn __contains__(self, other: BufferUsageFlags2) -> Bool:
         return self.is_superset(other)
@@ -7169,11 +7727,17 @@ struct AddressCopyFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: AddressCopyFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: AddressCopyFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: AddressCopyFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: AddressCopyFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: AddressCopyFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: AddressCopyFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -7237,11 +7801,17 @@ struct TensorCreateFlagsARM(TrivialRegisterType, Equatable):
     fn __ror__(self, other: TensorCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: TensorCreateFlagsARM):
+        self._value |= other.value()
+
     fn __and__(self, other: TensorCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: TensorCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: TensorCreateFlagsARM):
+        self._value &= other.value()
 
     fn __contains__(self, other: TensorCreateFlagsARM) -> Bool:
         return self.is_superset(other)
@@ -7307,11 +7877,17 @@ struct TensorUsageFlagsARM(TrivialRegisterType, Equatable):
     fn __ror__(self, other: TensorUsageFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: TensorUsageFlagsARM):
+        self._value |= other.value()
+
     fn __and__(self, other: TensorUsageFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: TensorUsageFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: TensorUsageFlagsARM):
+        self._value &= other.value()
 
     fn __contains__(self, other: TensorUsageFlagsARM) -> Bool:
         return self.is_superset(other)
@@ -7379,11 +7955,17 @@ struct TensorViewCreateFlagsARM(TrivialRegisterType, Equatable):
     fn __ror__(self, other: TensorViewCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: TensorViewCreateFlagsARM):
+        self._value |= other.value()
+
     fn __and__(self, other: TensorViewCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: TensorViewCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: TensorViewCreateFlagsARM):
+        self._value &= other.value()
 
     fn __contains__(self, other: TensorViewCreateFlagsARM) -> Bool:
         return self.is_superset(other)
@@ -7443,11 +8025,17 @@ struct DataGraphPipelineSessionCreateFlagsARM(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DataGraphPipelineSessionCreateFlagsARM):
+        self._value |= other.value()
+
     fn __and__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DataGraphPipelineSessionCreateFlagsARM):
+        self._value &= other.value()
 
     fn __contains__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Bool:
         return self.is_superset(other)
@@ -7507,11 +8095,17 @@ struct DataGraphPipelineDispatchFlagsARM(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DataGraphPipelineDispatchFlagsARM):
+        self._value |= other.value()
+
     fn __and__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DataGraphPipelineDispatchFlagsARM):
+        self._value &= other.value()
 
     fn __contains__(self, other: DataGraphPipelineDispatchFlagsARM) -> Bool:
         return self.is_superset(other)
@@ -7567,11 +8161,17 @@ struct VideoEncodeRgbModelConversionFlagsVALVE(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeRgbModelConversionFlagsVALVE):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeRgbModelConversionFlagsVALVE):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Bool:
         return self.is_superset(other)
@@ -7639,11 +8239,17 @@ struct VideoEncodeRgbRangeCompressionFlagsVALVE(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeRgbRangeCompressionFlagsVALVE):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeRgbRangeCompressionFlagsVALVE):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Bool:
         return self.is_superset(other)
@@ -7705,11 +8311,17 @@ struct VideoEncodeRgbChromaOffsetFlagsVALVE(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeRgbChromaOffsetFlagsVALVE):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeRgbChromaOffsetFlagsVALVE):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Bool:
         return self.is_superset(other)
@@ -7771,11 +8383,17 @@ struct SpirvResourceTypeFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SpirvResourceTypeFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SpirvResourceTypeFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: SpirvResourceTypeFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -7855,11 +8473,17 @@ struct CompositeAlphaFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: CompositeAlphaFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: CompositeAlphaFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: CompositeAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: CompositeAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: CompositeAlphaFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: CompositeAlphaFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -7925,11 +8549,17 @@ struct DisplayPlaneAlphaFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DisplayPlaneAlphaFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DisplayPlaneAlphaFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: DisplayPlaneAlphaFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -7995,11 +8625,17 @@ struct SurfaceTransformFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SurfaceTransformFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SurfaceTransformFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: SurfaceTransformFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SurfaceTransformFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SurfaceTransformFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: SurfaceTransformFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -8075,11 +8711,17 @@ struct SwapchainCreateFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SwapchainCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SwapchainCreateFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: SwapchainCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SwapchainCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SwapchainCreateFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: SwapchainCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -8155,11 +8797,17 @@ struct DisplayModeCreateFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DisplayModeCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DisplayModeCreateFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: DisplayModeCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DisplayModeCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DisplayModeCreateFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: DisplayModeCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -8215,11 +8863,17 @@ struct DisplaySurfaceCreateFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DisplaySurfaceCreateFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DisplaySurfaceCreateFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: DisplaySurfaceCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -8275,11 +8929,17 @@ struct AndroidSurfaceCreateFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: AndroidSurfaceCreateFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: AndroidSurfaceCreateFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: AndroidSurfaceCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -8335,11 +8995,17 @@ struct ViSurfaceCreateFlagsNN(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ViSurfaceCreateFlagsNN) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ViSurfaceCreateFlagsNN):
+        self._value |= other.value()
+
     fn __and__(self, other: ViSurfaceCreateFlagsNN) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ViSurfaceCreateFlagsNN) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ViSurfaceCreateFlagsNN):
+        self._value &= other.value()
 
     fn __contains__(self, other: ViSurfaceCreateFlagsNN) -> Bool:
         return self.is_superset(other)
@@ -8395,11 +9061,17 @@ struct WaylandSurfaceCreateFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: WaylandSurfaceCreateFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: WaylandSurfaceCreateFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: WaylandSurfaceCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -8459,11 +9131,17 @@ struct Win32SurfaceCreateFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: Win32SurfaceCreateFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: Win32SurfaceCreateFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: Win32SurfaceCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -8519,11 +9197,17 @@ struct XlibSurfaceCreateFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: XlibSurfaceCreateFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: XlibSurfaceCreateFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: XlibSurfaceCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -8579,11 +9263,17 @@ struct XcbSurfaceCreateFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: XcbSurfaceCreateFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: XcbSurfaceCreateFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: XcbSurfaceCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -8639,11 +9329,17 @@ struct DirectFBSurfaceCreateFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DirectFBSurfaceCreateFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DirectFBSurfaceCreateFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -8699,11 +9395,17 @@ struct IOSSurfaceCreateFlagsMVK(TrivialRegisterType, Equatable):
     fn __ror__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: IOSSurfaceCreateFlagsMVK):
+        self._value |= other.value()
+
     fn __and__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: IOSSurfaceCreateFlagsMVK):
+        self._value &= other.value()
 
     fn __contains__(self, other: IOSSurfaceCreateFlagsMVK) -> Bool:
         return self.is_superset(other)
@@ -8759,11 +9461,17 @@ struct MacOSSurfaceCreateFlagsMVK(TrivialRegisterType, Equatable):
     fn __ror__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: MacOSSurfaceCreateFlagsMVK):
+        self._value |= other.value()
+
     fn __and__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: MacOSSurfaceCreateFlagsMVK):
+        self._value &= other.value()
 
     fn __contains__(self, other: MacOSSurfaceCreateFlagsMVK) -> Bool:
         return self.is_superset(other)
@@ -8819,11 +9527,17 @@ struct MetalSurfaceCreateFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: MetalSurfaceCreateFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: MetalSurfaceCreateFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: MetalSurfaceCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -8879,11 +9593,17 @@ struct ImagePipeSurfaceCreateFlagsFUCHSIA(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ImagePipeSurfaceCreateFlagsFUCHSIA):
+        self._value |= other.value()
+
     fn __and__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ImagePipeSurfaceCreateFlagsFUCHSIA):
+        self._value &= other.value()
 
     fn __contains__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Bool:
         return self.is_superset(other)
@@ -8939,11 +9659,17 @@ struct StreamDescriptorSurfaceCreateFlagsGGP(TrivialRegisterType, Equatable):
     fn __ror__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: StreamDescriptorSurfaceCreateFlagsGGP):
+        self._value |= other.value()
+
     fn __and__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: StreamDescriptorSurfaceCreateFlagsGGP):
+        self._value &= other.value()
 
     fn __contains__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Bool:
         return self.is_superset(other)
@@ -8999,11 +9725,17 @@ struct HeadlessSurfaceCreateFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: HeadlessSurfaceCreateFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: HeadlessSurfaceCreateFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -9059,11 +9791,17 @@ struct ScreenSurfaceCreateFlagsQNX(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ScreenSurfaceCreateFlagsQNX):
+        self._value |= other.value()
+
     fn __and__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ScreenSurfaceCreateFlagsQNX):
+        self._value &= other.value()
 
     fn __contains__(self, other: ScreenSurfaceCreateFlagsQNX) -> Bool:
         return self.is_superset(other)
@@ -9119,11 +9857,17 @@ struct PeerMemoryFeatureFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PeerMemoryFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PeerMemoryFeatureFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: PeerMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PeerMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PeerMemoryFeatureFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: PeerMemoryFeatureFlags) -> Bool:
         return self.is_superset(other)
@@ -9189,11 +9933,17 @@ struct MemoryAllocateFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: MemoryAllocateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: MemoryAllocateFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: MemoryAllocateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: MemoryAllocateFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: MemoryAllocateFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: MemoryAllocateFlags) -> Bool:
         return self.is_superset(other)
@@ -9259,11 +10009,17 @@ struct DeviceGroupPresentModeFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DeviceGroupPresentModeFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DeviceGroupPresentModeFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: DeviceGroupPresentModeFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -9329,11 +10085,17 @@ struct DebugReportFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DebugReportFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DebugReportFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: DebugReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DebugReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DebugReportFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: DebugReportFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -9401,11 +10163,17 @@ struct CommandPoolTrimFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: CommandPoolTrimFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: CommandPoolTrimFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: CommandPoolTrimFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: CommandPoolTrimFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: CommandPoolTrimFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: CommandPoolTrimFlags) -> Bool:
         return self.is_superset(other)
@@ -9461,11 +10229,17 @@ struct ExternalMemoryHandleTypeFlagsNV(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ExternalMemoryHandleTypeFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ExternalMemoryHandleTypeFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -9531,11 +10305,17 @@ struct ClusterAccelerationStructureIndexFormatFlagsNV(TrivialRegisterType, Equat
     fn __ror__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ClusterAccelerationStructureIndexFormatFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ClusterAccelerationStructureIndexFormatFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -9599,11 +10379,17 @@ struct ExternalMemoryFeatureFlagsNV(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ExternalMemoryFeatureFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ExternalMemoryFeatureFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: ExternalMemoryFeatureFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -9667,11 +10453,17 @@ struct ExternalMemoryHandleTypeFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ExternalMemoryHandleTypeFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ExternalMemoryHandleTypeFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ExternalMemoryHandleTypeFlags) -> Bool:
         return self.is_superset(other)
@@ -9767,11 +10559,17 @@ struct ExternalMemoryFeatureFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ExternalMemoryFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ExternalMemoryFeatureFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ExternalMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ExternalMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ExternalMemoryFeatureFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ExternalMemoryFeatureFlags) -> Bool:
         return self.is_superset(other)
@@ -9835,11 +10633,17 @@ struct ExternalSemaphoreHandleTypeFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ExternalSemaphoreHandleTypeFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ExternalSemaphoreHandleTypeFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ExternalSemaphoreHandleTypeFlags) -> Bool:
         return self.is_superset(other)
@@ -9911,11 +10715,17 @@ struct ExternalSemaphoreFeatureFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ExternalSemaphoreFeatureFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ExternalSemaphoreFeatureFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ExternalSemaphoreFeatureFlags) -> Bool:
         return self.is_superset(other)
@@ -9977,11 +10787,17 @@ struct SemaphoreImportFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SemaphoreImportFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SemaphoreImportFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: SemaphoreImportFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SemaphoreImportFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SemaphoreImportFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: SemaphoreImportFlags) -> Bool:
         return self.is_superset(other)
@@ -10041,11 +10857,17 @@ struct ExternalFenceHandleTypeFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ExternalFenceHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ExternalFenceHandleTypeFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ExternalFenceHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ExternalFenceHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ExternalFenceHandleTypeFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ExternalFenceHandleTypeFlags) -> Bool:
         return self.is_superset(other)
@@ -10115,11 +10937,17 @@ struct ExternalFenceFeatureFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ExternalFenceFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ExternalFenceFeatureFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ExternalFenceFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ExternalFenceFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ExternalFenceFeatureFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ExternalFenceFeatureFlags) -> Bool:
         return self.is_superset(other)
@@ -10181,11 +11009,17 @@ struct FenceImportFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: FenceImportFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: FenceImportFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: FenceImportFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: FenceImportFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: FenceImportFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: FenceImportFlags) -> Bool:
         return self.is_superset(other)
@@ -10245,11 +11079,17 @@ struct SurfaceCounterFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SurfaceCounterFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SurfaceCounterFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: SurfaceCounterFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SurfaceCounterFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SurfaceCounterFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: SurfaceCounterFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -10309,11 +11149,17 @@ struct PipelineViewportSwizzleStateCreateFlagsNV(TrivialRegisterType, Equatable)
     fn __ror__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineViewportSwizzleStateCreateFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineViewportSwizzleStateCreateFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -10369,11 +11215,17 @@ struct PipelineDiscardRectangleStateCreateFlagsEXT(TrivialRegisterType, Equatabl
     fn __ror__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineDiscardRectangleStateCreateFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineDiscardRectangleStateCreateFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -10429,11 +11281,17 @@ struct PipelineCoverageToColorStateCreateFlagsNV(TrivialRegisterType, Equatable)
     fn __ror__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineCoverageToColorStateCreateFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineCoverageToColorStateCreateFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -10489,11 +11347,17 @@ struct PipelineCoverageModulationStateCreateFlagsNV(TrivialRegisterType, Equatab
     fn __ror__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineCoverageModulationStateCreateFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineCoverageModulationStateCreateFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -10549,11 +11413,17 @@ struct PipelineCoverageReductionStateCreateFlagsNV(TrivialRegisterType, Equatabl
     fn __ror__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineCoverageReductionStateCreateFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineCoverageReductionStateCreateFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -10609,11 +11479,17 @@ struct ValidationCacheCreateFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ValidationCacheCreateFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ValidationCacheCreateFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: ValidationCacheCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -10669,11 +11545,17 @@ struct DebugUtilsMessageSeverityFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DebugUtilsMessageSeverityFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DebugUtilsMessageSeverityFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -10739,11 +11621,17 @@ struct DebugUtilsMessageTypeFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DebugUtilsMessageTypeFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DebugUtilsMessageTypeFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -10809,11 +11697,17 @@ struct DebugUtilsMessengerCreateFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DebugUtilsMessengerCreateFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DebugUtilsMessengerCreateFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -10869,11 +11763,17 @@ struct DebugUtilsMessengerCallbackDataFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DebugUtilsMessengerCallbackDataFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DebugUtilsMessengerCallbackDataFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -10929,11 +11829,17 @@ struct DeviceMemoryReportFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DeviceMemoryReportFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DeviceMemoryReportFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: DeviceMemoryReportFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -10989,11 +11895,17 @@ struct PipelineRasterizationConservativeStateCreateFlagsEXT(TrivialRegisterType,
     fn __ror__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineRasterizationConservativeStateCreateFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineRasterizationConservativeStateCreateFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -11049,11 +11961,17 @@ struct DescriptorBindingFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DescriptorBindingFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DescriptorBindingFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: DescriptorBindingFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DescriptorBindingFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DescriptorBindingFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: DescriptorBindingFlags) -> Bool:
         return self.is_superset(other)
@@ -11121,11 +12039,17 @@ struct ConditionalRenderingFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ConditionalRenderingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ConditionalRenderingFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: ConditionalRenderingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ConditionalRenderingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ConditionalRenderingFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: ConditionalRenderingFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -11185,11 +12109,17 @@ struct ResolveModeFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ResolveModeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ResolveModeFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ResolveModeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ResolveModeFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ResolveModeFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ResolveModeFlags) -> Bool:
         return self.is_superset(other)
@@ -11261,11 +12191,17 @@ struct PipelineRasterizationStateStreamCreateFlagsEXT(TrivialRegisterType, Equat
     fn __ror__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineRasterizationStateStreamCreateFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineRasterizationStateStreamCreateFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -11321,11 +12257,17 @@ struct PipelineRasterizationDepthClipStateCreateFlagsEXT(TrivialRegisterType, Eq
     fn __ror__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -11381,11 +12323,17 @@ struct SwapchainImageUsageFlagsANDROID(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SwapchainImageUsageFlagsANDROID):
+        self._value |= other.value()
+
     fn __and__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SwapchainImageUsageFlagsANDROID):
+        self._value &= other.value()
 
     fn __contains__(self, other: SwapchainImageUsageFlagsANDROID) -> Bool:
         return self.is_superset(other)
@@ -11445,11 +12393,17 @@ struct ToolPurposeFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ToolPurposeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ToolPurposeFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: ToolPurposeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ToolPurposeFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ToolPurposeFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: ToolPurposeFlags) -> Bool:
         return self.is_superset(other)
@@ -11521,11 +12475,17 @@ struct SubmitFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SubmitFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SubmitFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: SubmitFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SubmitFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SubmitFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: SubmitFlags) -> Bool:
         return self.is_superset(other)
@@ -11585,11 +12545,17 @@ struct ImageFormatConstraintsFlagsFUCHSIA(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ImageFormatConstraintsFlagsFUCHSIA):
+        self._value |= other.value()
+
     fn __and__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ImageFormatConstraintsFlagsFUCHSIA):
+        self._value &= other.value()
 
     fn __contains__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Bool:
         return self.is_superset(other)
@@ -11645,11 +12611,17 @@ struct HostImageCopyFlags(TrivialRegisterType, Equatable):
     fn __ror__(self, other: HostImageCopyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: HostImageCopyFlags):
+        self._value |= other.value()
+
     fn __and__(self, other: HostImageCopyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: HostImageCopyFlags) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: HostImageCopyFlags):
+        self._value &= other.value()
 
     fn __contains__(self, other: HostImageCopyFlags) -> Bool:
         return self.is_superset(other)
@@ -11709,11 +12681,17 @@ struct PartitionedAccelerationStructureInstanceFlagsNV(TrivialRegisterType, Equa
     fn __ror__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PartitionedAccelerationStructureInstanceFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PartitionedAccelerationStructureInstanceFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -11781,11 +12759,17 @@ struct ImageConstraintsInfoFlagsFUCHSIA(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ImageConstraintsInfoFlagsFUCHSIA):
+        self._value |= other.value()
+
     fn __and__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ImageConstraintsInfoFlagsFUCHSIA):
+        self._value &= other.value()
 
     fn __contains__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Bool:
         return self.is_superset(other)
@@ -11853,11 +12837,17 @@ struct GraphicsPipelineLibraryFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: GraphicsPipelineLibraryFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: GraphicsPipelineLibraryFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -11923,11 +12913,17 @@ struct ImageCompressionFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ImageCompressionFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ImageCompressionFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: ImageCompressionFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ImageCompressionFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ImageCompressionFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: ImageCompressionFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -11993,11 +12989,17 @@ struct ImageCompressionFixedRateFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ImageCompressionFixedRateFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ImageCompressionFixedRateFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: ImageCompressionFixedRateFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -12105,11 +13107,17 @@ struct ExportMetalObjectTypeFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ExportMetalObjectTypeFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ExportMetalObjectTypeFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: ExportMetalObjectTypeFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -12179,11 +13187,17 @@ struct RenderingAttachmentFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: RenderingAttachmentFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: RenderingAttachmentFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: RenderingAttachmentFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: RenderingAttachmentFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: RenderingAttachmentFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: RenderingAttachmentFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -12247,11 +13261,17 @@ struct ResolveImageFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ResolveImageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ResolveImageFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: ResolveImageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ResolveImageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ResolveImageFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: ResolveImageFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -12313,11 +13333,17 @@ struct DeviceAddressBindingFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: DeviceAddressBindingFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: DeviceAddressBindingFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: DeviceAddressBindingFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -12377,11 +13403,17 @@ struct OpticalFlowGridSizeFlagsNV(TrivialRegisterType, Equatable):
     fn __ror__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: OpticalFlowGridSizeFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: OpticalFlowGridSizeFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: OpticalFlowGridSizeFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -12449,11 +13481,17 @@ struct OpticalFlowUsageFlagsNV(TrivialRegisterType, Equatable):
     fn __ror__(self, other: OpticalFlowUsageFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: OpticalFlowUsageFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: OpticalFlowUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: OpticalFlowUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: OpticalFlowUsageFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: OpticalFlowUsageFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -12523,11 +13561,17 @@ struct OpticalFlowSessionCreateFlagsNV(TrivialRegisterType, Equatable):
     fn __ror__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: OpticalFlowSessionCreateFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: OpticalFlowSessionCreateFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: OpticalFlowSessionCreateFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -12595,11 +13639,17 @@ struct OpticalFlowExecuteFlagsNV(TrivialRegisterType, Equatable):
     fn __ror__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: OpticalFlowExecuteFlagsNV):
+        self._value |= other.value()
+
     fn __and__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: OpticalFlowExecuteFlagsNV):
+        self._value &= other.value()
 
     fn __contains__(self, other: OpticalFlowExecuteFlagsNV) -> Bool:
         return self.is_superset(other)
@@ -12659,11 +13709,17 @@ struct FrameBoundaryFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: FrameBoundaryFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: FrameBoundaryFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: FrameBoundaryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: FrameBoundaryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: FrameBoundaryFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: FrameBoundaryFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -12723,11 +13779,17 @@ struct PresentScalingFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PresentScalingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PresentScalingFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: PresentScalingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PresentScalingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PresentScalingFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: PresentScalingFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -12791,11 +13853,17 @@ struct PresentGravityFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PresentGravityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PresentGravityFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: PresentGravityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PresentGravityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PresentGravityFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: PresentGravityFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -12859,11 +13927,17 @@ struct ShaderCreateFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: ShaderCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: ShaderCreateFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: ShaderCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: ShaderCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: ShaderCreateFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: ShaderCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -12953,11 +14027,17 @@ struct TileShadingRenderPassFlagsQCOM(TrivialRegisterType, Equatable):
     fn __ror__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: TileShadingRenderPassFlagsQCOM):
+        self._value |= other.value()
+
     fn __and__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: TileShadingRenderPassFlagsQCOM):
+        self._value &= other.value()
 
     fn __contains__(self, other: TileShadingRenderPassFlagsQCOM) -> Bool:
         return self.is_superset(other)
@@ -13019,11 +14099,17 @@ struct PhysicalDeviceSchedulingControlsFlagsARM(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PhysicalDeviceSchedulingControlsFlagsARM):
+        self._value |= other.value()
+
     fn __and__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PhysicalDeviceSchedulingControlsFlagsARM):
+        self._value &= other.value()
 
     fn __contains__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Bool:
         return self.is_superset(other)
@@ -13083,11 +14169,17 @@ struct SurfaceCreateFlagsOHOS(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SurfaceCreateFlagsOHOS) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SurfaceCreateFlagsOHOS):
+        self._value |= other.value()
+
     fn __and__(self, other: SurfaceCreateFlagsOHOS) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SurfaceCreateFlagsOHOS) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SurfaceCreateFlagsOHOS):
+        self._value &= other.value()
 
     fn __contains__(self, other: SurfaceCreateFlagsOHOS) -> Bool:
         return self.is_superset(other)
@@ -13143,11 +14235,17 @@ struct PresentStageFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PresentStageFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PresentStageFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: PresentStageFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PresentStageFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PresentStageFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: PresentStageFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -13213,11 +14311,17 @@ struct PastPresentationTimingFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PastPresentationTimingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PastPresentationTimingFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: PastPresentationTimingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PastPresentationTimingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PastPresentationTimingFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: PastPresentationTimingFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -13279,11 +14383,17 @@ struct PresentTimingInfoFlagsEXT(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PresentTimingInfoFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PresentTimingInfoFlagsEXT):
+        self._value |= other.value()
+
     fn __and__(self, other: PresentTimingInfoFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PresentTimingInfoFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PresentTimingInfoFlagsEXT):
+        self._value &= other.value()
 
     fn __contains__(self, other: PresentTimingInfoFlagsEXT) -> Bool:
         return self.is_superset(other)
@@ -13345,11 +14455,17 @@ struct SwapchainImageUsageFlagsOHOS(TrivialRegisterType, Equatable):
     fn __ror__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: SwapchainImageUsageFlagsOHOS):
+        self._value |= other.value()
+
     fn __and__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: SwapchainImageUsageFlagsOHOS):
+        self._value &= other.value()
 
     fn __contains__(self, other: SwapchainImageUsageFlagsOHOS) -> Bool:
         return self.is_superset(other)
@@ -13409,11 +14525,17 @@ struct PerformanceCounterDescriptionFlagsARM(TrivialRegisterType, Equatable):
     fn __ror__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: PerformanceCounterDescriptionFlagsARM):
+        self._value |= other.value()
+
     fn __and__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: PerformanceCounterDescriptionFlagsARM):
+        self._value &= other.value()
 
     fn __contains__(self, other: PerformanceCounterDescriptionFlagsARM) -> Bool:
         return self.is_superset(other)
@@ -13469,11 +14591,17 @@ struct VideoCodecOperationFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoCodecOperationFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoCodecOperationFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoCodecOperationFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoCodecOperationFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoCodecOperationFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoCodecOperationFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -13547,11 +14675,17 @@ struct VideoCapabilityFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoCapabilityFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoCapabilityFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoCapabilityFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -13613,11 +14747,17 @@ struct VideoSessionCreateFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoSessionCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoSessionCreateFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoSessionCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoSessionCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoSessionCreateFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoSessionCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -13687,11 +14827,17 @@ struct VideoSessionParametersCreateFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoSessionParametersCreateFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoSessionParametersCreateFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoSessionParametersCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -13751,11 +14897,17 @@ struct VideoBeginCodingFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoBeginCodingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoBeginCodingFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoBeginCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoBeginCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoBeginCodingFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoBeginCodingFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -13811,11 +14963,17 @@ struct VideoEndCodingFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEndCodingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEndCodingFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEndCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEndCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEndCodingFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEndCodingFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -13871,11 +15029,17 @@ struct VideoCodingControlFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoCodingControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoCodingControlFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoCodingControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoCodingControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoCodingControlFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoCodingControlFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -13939,11 +15103,17 @@ struct VideoDecodeUsageFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoDecodeUsageFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoDecodeUsageFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoDecodeUsageFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14009,11 +15179,17 @@ struct VideoDecodeCapabilityFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoDecodeCapabilityFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoDecodeCapabilityFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoDecodeCapabilityFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14075,11 +15251,17 @@ struct VideoDecodeFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoDecodeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoDecodeFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoDecodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoDecodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoDecodeFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoDecodeFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14135,11 +15317,17 @@ struct VideoDecodeH264PictureLayoutFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoDecodeH264PictureLayoutFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoDecodeH264PictureLayoutFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14203,11 +15391,17 @@ struct VideoEncodeFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14271,11 +15465,17 @@ struct VideoEncodeUsageFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeUsageFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeUsageFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeUsageFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14343,11 +15543,17 @@ struct VideoEncodeContentFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeContentFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeContentFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeContentFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeContentFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeContentFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeContentFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14413,11 +15619,17 @@ struct VideoEncodeCapabilityFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeCapabilityFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeCapabilityFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeCapabilityFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14483,11 +15695,17 @@ struct VideoEncodeFeedbackFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeFeedbackFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeFeedbackFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeFeedbackFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14565,11 +15783,17 @@ struct VideoEncodeRateControlFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeRateControlFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeRateControlFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeRateControlFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14625,11 +15849,17 @@ struct VideoEncodeRateControlModeFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeRateControlModeFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeRateControlModeFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14695,11 +15925,17 @@ struct VideoEncodeIntraRefreshModeFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeIntraRefreshModeFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeIntraRefreshModeFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14767,11 +16003,17 @@ struct VideoChromaSubsamplingFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoChromaSubsamplingFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoChromaSubsamplingFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoChromaSubsamplingFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14839,11 +16081,17 @@ struct VideoComponentBitDepthFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoComponentBitDepthFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoComponentBitDepthFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoComponentBitDepthFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14909,11 +16157,17 @@ struct VideoEncodeH264CapabilityFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeH264CapabilityFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeH264CapabilityFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -14993,11 +16247,17 @@ struct VideoEncodeH264StdFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeH264StdFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeH264StdFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeH264StdFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -15095,11 +16355,17 @@ struct VideoEncodeH264RateControlFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeH264RateControlFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeH264RateControlFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -15167,11 +16433,17 @@ struct VideoEncodeH265CapabilityFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeH265CapabilityFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeH265CapabilityFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -15253,11 +16525,17 @@ struct VideoEncodeH265StdFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeH265StdFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeH265StdFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeH265StdFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -15357,11 +16635,17 @@ struct VideoEncodeH265RateControlFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeH265RateControlFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeH265RateControlFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -15429,11 +16713,17 @@ struct VideoEncodeH265CtbSizeFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeH265CtbSizeFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeH265CtbSizeFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -15497,11 +16787,17 @@ struct VideoEncodeH265TransformBlockSizeFlagsKHR(TrivialRegisterType, Equatable)
     fn __ror__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeH265TransformBlockSizeFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeH265TransformBlockSizeFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -15567,11 +16863,17 @@ struct VideoEncodeAV1CapabilityFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeAV1CapabilityFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeAV1CapabilityFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -15641,11 +16943,17 @@ struct VideoEncodeAV1StdFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeAV1StdFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeAV1StdFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeAV1StdFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -15711,11 +17019,17 @@ struct VideoEncodeAV1RateControlFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeAV1RateControlFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeAV1RateControlFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -15781,11 +17095,17 @@ struct VideoEncodeAV1SuperblockSizeFlagsKHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: VideoEncodeAV1SuperblockSizeFlagsKHR):
+        self._value |= other.value()
+
     fn __and__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: VideoEncodeAV1SuperblockSizeFlagsKHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Bool:
         return self.is_superset(other)
@@ -15847,11 +17167,17 @@ struct AccessFlags3KHR(TrivialRegisterType, Equatable):
     fn __ror__(self, other: AccessFlags3KHR) -> Self:
         return Self(value = self.value() | other.value())
 
+    fn __ior__(mut self, other: AccessFlags3KHR):
+        self._value |= other.value()
+
     fn __and__(self, other: AccessFlags3KHR) -> Self:
         return Self(value = self.value() & other.value())
 
     fn __rand__(self, other: AccessFlags3KHR) -> Self:
         return Self(value = self.value() & other.value())
+
+    fn __iand__(mut self, other: AccessFlags3KHR):
+        self._value &= other.value()
 
     fn __contains__(self, other: AccessFlags3KHR) -> Bool:
         return self.is_superset(other)
