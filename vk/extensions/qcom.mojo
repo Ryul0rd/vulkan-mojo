@@ -7,13 +7,13 @@ struct TileShading(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_dispatch_tile: fn(
         command_buffer: CommandBuffer, p_dispatch_tile_info: Ptr[DispatchTileInfoQCOM, ImmutAnyOrigin]
-    ) -> Byte
+    )
     var _cmd_begin_per_tile_execution: fn(
         command_buffer: CommandBuffer, p_per_tile_begin_info: Ptr[PerTileBeginInfoQCOM, ImmutAnyOrigin]
-    ) -> Byte
+    )
     var _cmd_end_per_tile_execution: fn(
         command_buffer: CommandBuffer, p_per_tile_end_info: Ptr[PerTileEndInfoQCOM, ImmutAnyOrigin]
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -32,7 +32,7 @@ struct TileShading(Copyable):
 
     fn cmd_dispatch_tile(
         self, command_buffer: CommandBuffer, dispatch_tile_info: DispatchTileInfoQCOM
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchTileQCOM.html
@@ -41,7 +41,7 @@ struct TileShading(Copyable):
 
     fn cmd_begin_per_tile_execution(
         self, command_buffer: CommandBuffer, per_tile_begin_info: PerTileBeginInfoQCOM
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginPerTileExecutionQCOM.html
@@ -50,7 +50,7 @@ struct TileShading(Copyable):
 
     fn cmd_end_per_tile_execution(
         self, command_buffer: CommandBuffer, per_tile_end_info: PerTileEndInfoQCOM
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndPerTileExecutionQCOM.html
@@ -141,7 +141,7 @@ struct TileMemoryHeap(Copyable):
     var _cmd_bind_tile_memory: fn(
         command_buffer: CommandBuffer,
         p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, ImmutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -156,7 +156,7 @@ struct TileMemoryHeap(Copyable):
         self,
         command_buffer: CommandBuffer,
         p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, p_tile_memory_bind_info_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindTileMemoryQCOM.html

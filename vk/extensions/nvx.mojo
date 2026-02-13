@@ -19,13 +19,13 @@ struct BinaryImport(Copyable):
     ) -> Result
     var _destroy_cu_module: fn(
         device: Device, module: CuModuleNVX, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    ) -> Byte
+    )
     var _destroy_cu_function: fn(
         device: Device, function: CuFunctionNVX, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    ) -> Byte
+    )
     var _cmd_cu_launch_kernel: fn(
         command_buffer: CommandBuffer, p_launch_info: Ptr[CuLaunchInfoNVX, ImmutAnyOrigin]
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -89,7 +89,7 @@ struct BinaryImport(Copyable):
         device: Device,
         module: CuModuleNVX,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCuModuleNVX.html
@@ -103,7 +103,7 @@ struct BinaryImport(Copyable):
         device: Device,
         function: CuFunctionNVX,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCuFunctionNVX.html
@@ -112,9 +112,7 @@ struct BinaryImport(Copyable):
             device, function, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn cmd_cu_launch_kernel(
-        self, command_buffer: CommandBuffer, launch_info: CuLaunchInfoNVX
-    ) -> Byte:
+    fn cmd_cu_launch_kernel(self, command_buffer: CommandBuffer, launch_info: CuLaunchInfoNVX):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCuLaunchKernelNVX.html

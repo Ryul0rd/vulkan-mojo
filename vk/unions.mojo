@@ -283,7 +283,7 @@ struct PipelineExecutableStatisticValueKHR(ImplicitlyCopyable):
 struct DeviceOrHostAddressKHR(ImplicitlyCopyable):
     comptime _size = max(
         size_of[DeviceAddress](),
-        size_of[Ptr[Byte, MutAnyOrigin]](),
+        size_of[Ptr[NoneType, MutAnyOrigin]](),
     )
     comptime _AlignType = UInt64
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
@@ -297,12 +297,12 @@ struct DeviceOrHostAddressKHR(ImplicitlyCopyable):
             count = size_of[DeviceAddress](),
         )
 
-    fn __init__(out self, value: Ptr[Byte, MutAnyOrigin]):
+    fn __init__(out self, value: Ptr[NoneType, MutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[Byte, MutAnyOrigin]](),
+            count = size_of[Ptr[NoneType, MutAnyOrigin]](),
         )
 
     fn __copyinit__(out self, other: Self):
@@ -312,7 +312,7 @@ struct DeviceOrHostAddressKHR(ImplicitlyCopyable):
 struct DeviceOrHostAddressConstKHR(ImplicitlyCopyable):
     comptime _size = max(
         size_of[DeviceAddress](),
-        size_of[Ptr[Byte, ImmutAnyOrigin]](),
+        size_of[Ptr[NoneType, ImmutAnyOrigin]](),
     )
     comptime _AlignType = UInt64
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
@@ -326,12 +326,12 @@ struct DeviceOrHostAddressConstKHR(ImplicitlyCopyable):
             count = size_of[DeviceAddress](),
         )
 
-    fn __init__(out self, value: Ptr[Byte, ImmutAnyOrigin]):
+    fn __init__(out self, value: Ptr[NoneType, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[Byte, ImmutAnyOrigin]](),
+            count = size_of[Ptr[NoneType, ImmutAnyOrigin]](),
         )
 
     fn __copyinit__(out self, other: Self):
@@ -341,7 +341,7 @@ struct DeviceOrHostAddressConstKHR(ImplicitlyCopyable):
 struct DeviceOrHostAddressConstAMDX(ImplicitlyCopyable):
     comptime _size = max(
         size_of[DeviceAddress](),
-        size_of[Ptr[Byte, ImmutAnyOrigin]](),
+        size_of[Ptr[NoneType, ImmutAnyOrigin]](),
     )
     comptime _AlignType = UInt64
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
@@ -355,12 +355,12 @@ struct DeviceOrHostAddressConstAMDX(ImplicitlyCopyable):
             count = size_of[DeviceAddress](),
         )
 
-    fn __init__(out self, value: Ptr[Byte, ImmutAnyOrigin]):
+    fn __init__(out self, value: Ptr[NoneType, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[Byte, ImmutAnyOrigin]](),
+            count = size_of[Ptr[NoneType, ImmutAnyOrigin]](),
         )
 
     fn __copyinit__(out self, other: Self):
