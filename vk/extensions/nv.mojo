@@ -91,7 +91,7 @@ struct ClipSpaceWScaling(Copyable):
         first_viewport: UInt32,
         viewport_count: UInt32,
         p_viewport_w_scalings: Ptr[ViewportWScalingNV, ImmutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -108,7 +108,7 @@ struct ClipSpaceWScaling(Copyable):
         first_viewport: UInt32,
         viewport_count: UInt32,
         p_viewport_w_scalings: Ptr[ViewportWScalingNV, p_viewport_w_scalings_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWScalingNV.html
@@ -125,19 +125,19 @@ struct ShadingRateImage(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_bind_shading_rate_image: fn(
         command_buffer: CommandBuffer, image_view: ImageView, image_layout: ImageLayout
-    ) -> Byte
+    )
     var _cmd_set_viewport_shading_rate_palette: fn(
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
         p_shading_rate_palettes: Ptr[ShadingRatePaletteNV, ImmutAnyOrigin],
-    ) -> Byte
+    )
     var _cmd_set_coarse_sample_order: fn(
         command_buffer: CommandBuffer,
         sample_order_type: CoarseSampleOrderTypeNV,
         custom_sample_order_count: UInt32,
         p_custom_sample_orders: Ptr[CoarseSampleOrderCustomNV, ImmutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -156,7 +156,7 @@ struct ShadingRateImage(Copyable):
 
     fn cmd_bind_shading_rate_image(
         self, command_buffer: CommandBuffer, image_view: ImageView, image_layout: ImageLayout
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindShadingRateImageNV.html
@@ -171,7 +171,7 @@ struct ShadingRateImage(Copyable):
         first_viewport: UInt32,
         viewport_count: UInt32,
         p_shading_rate_palettes: Ptr[ShadingRatePaletteNV, p_shading_rate_palettes_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportShadingRatePaletteNV.html
@@ -189,7 +189,7 @@ struct ShadingRateImage(Copyable):
         sample_order_type: CoarseSampleOrderTypeNV,
         custom_sample_order_count: UInt32,
         p_custom_sample_orders: Ptr[CoarseSampleOrderCustomNV, p_custom_sample_orders_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoarseSampleOrderNV.html
@@ -214,12 +214,12 @@ struct RayTracing(Copyable):
         device: Device,
         acceleration_structure: AccelerationStructureNV,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    ) -> Byte
+    )
     var _get_acceleration_structure_memory_requirements: fn(
         device: Device,
         p_info: Ptr[AccelerationStructureMemoryRequirementsInfoNV, ImmutAnyOrigin],
         p_memory_requirements: Ptr[MemoryRequirements2KHR, MutAnyOrigin],
-    ) -> Byte
+    )
     var _bind_acceleration_structure_memory: fn(
         device: Device,
         bind_info_count: UInt32,
@@ -235,13 +235,13 @@ struct RayTracing(Copyable):
         src: AccelerationStructureNV,
         scratch: Buffer,
         scratch_offset: DeviceSize,
-    ) -> Byte
+    )
     var _cmd_copy_acceleration_structure: fn(
         command_buffer: CommandBuffer,
         dst: AccelerationStructureNV,
         src: AccelerationStructureNV,
         mode: CopyAccelerationStructureModeKHR,
-    ) -> Byte
+    )
     var _cmd_trace_rays: fn(
         command_buffer: CommandBuffer,
         raygen_shader_binding_table_buffer: Buffer,
@@ -258,7 +258,7 @@ struct RayTracing(Copyable):
         width: UInt32,
         height: UInt32,
         depth: UInt32,
-    ) -> Byte
+    )
     var _create_ray_tracing_pipelines: fn(
         device: Device,
         pipeline_cache: PipelineCache,
@@ -288,7 +288,7 @@ struct RayTracing(Copyable):
         query_type: QueryType,
         query_pool: QueryPool,
         first_query: UInt32,
-    ) -> Byte
+    )
     var _compile_deferred: fn(device: Device, pipeline: Pipeline, shader: UInt32) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -356,7 +356,7 @@ struct RayTracing(Copyable):
         device: Device,
         acceleration_structure: AccelerationStructureNV,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyAccelerationStructureNV.html
@@ -372,7 +372,7 @@ struct RayTracing(Copyable):
         device: Device,
         info: AccelerationStructureMemoryRequirementsInfoNV,
         mut memory_requirements: MemoryRequirements2KHR,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAccelerationStructureMemoryRequirementsNV.html
@@ -408,7 +408,7 @@ struct RayTracing(Copyable):
         src: AccelerationStructureNV,
         scratch: Buffer,
         scratch_offset: DeviceSize,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBuildAccelerationStructureNV.html
@@ -431,7 +431,7 @@ struct RayTracing(Copyable):
         dst: AccelerationStructureNV,
         src: AccelerationStructureNV,
         mode: CopyAccelerationStructureModeKHR,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyAccelerationStructureNV.html
@@ -455,7 +455,7 @@ struct RayTracing(Copyable):
         width: UInt32,
         height: UInt32,
         depth: UInt32,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdTraceRaysNV.html
@@ -551,7 +551,7 @@ struct RayTracing(Copyable):
         query_type: QueryType,
         query_pool: QueryPool,
         first_query: UInt32,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWriteAccelerationStructuresPropertiesNV.html
@@ -575,16 +575,14 @@ struct RayTracing(Copyable):
 
 struct MeshShader(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_draw_mesh_tasks: fn(
-        command_buffer: CommandBuffer, task_count: UInt32, first_task: UInt32
-    ) -> Byte
+    var _cmd_draw_mesh_tasks: fn(command_buffer: CommandBuffer, task_count: UInt32, first_task: UInt32)
     var _cmd_draw_mesh_tasks_indirect: fn(
         command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
         draw_count: UInt32,
         stride: UInt32,
-    ) -> Byte
+    )
     var _cmd_draw_mesh_tasks_indirect_count: fn(
         command_buffer: CommandBuffer,
         buffer: Buffer,
@@ -593,7 +591,7 @@ struct MeshShader(Copyable):
         count_buffer_offset: DeviceSize,
         max_draw_count: UInt32,
         stride: UInt32,
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -612,7 +610,7 @@ struct MeshShader(Copyable):
 
     fn cmd_draw_mesh_tasks(
         self, command_buffer: CommandBuffer, task_count: UInt32, first_task: UInt32
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawMeshTasksNV.html
@@ -626,7 +624,7 @@ struct MeshShader(Copyable):
         offset: DeviceSize,
         draw_count: UInt32,
         stride: UInt32,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawMeshTasksIndirectNV.html
@@ -642,7 +640,7 @@ struct MeshShader(Copyable):
         count_buffer_offset: DeviceSize,
         max_draw_count: UInt32,
         stride: UInt32,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawMeshTasksIndirectCountNV.html
@@ -659,13 +657,13 @@ struct ScissorExclusive(Copyable):
         first_exclusive_scissor: UInt32,
         exclusive_scissor_count: UInt32,
         p_exclusive_scissor_enables: Ptr[Bool32, ImmutAnyOrigin],
-    ) -> Byte
+    )
     var _cmd_set_exclusive_scissor: fn(
         command_buffer: CommandBuffer,
         first_exclusive_scissor: UInt32,
         exclusive_scissor_count: UInt32,
         p_exclusive_scissors: Ptr[Rect2D, ImmutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -687,7 +685,7 @@ struct ScissorExclusive(Copyable):
         first_exclusive_scissor: UInt32,
         exclusive_scissor_count: UInt32,
         p_exclusive_scissor_enables: Ptr[Bool32, p_exclusive_scissor_enables_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetExclusiveScissorEnableNV.html
@@ -705,7 +703,7 @@ struct ScissorExclusive(Copyable):
         first_exclusive_scissor: UInt32,
         exclusive_scissor_count: UInt32,
         p_exclusive_scissors: Ptr[Rect2D, p_exclusive_scissors_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetExclusiveScissorNV.html
@@ -722,17 +720,17 @@ struct DeviceDiagnosticCheckpoints(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_checkpoint: fn(
         command_buffer: CommandBuffer, p_checkpoint_marker: Ptr[Byte, ImmutAnyOrigin]
-    ) -> Byte
+    )
     var _get_queue_checkpoint_data: fn(
         queue: Queue,
         p_checkpoint_data_count: Ptr[UInt32, MutAnyOrigin],
         p_checkpoint_data: Ptr[CheckpointDataNV, MutAnyOrigin],
-    ) -> Byte
+    )
     var _get_queue_checkpoint_data_2: fn(
         queue: Queue,
         p_checkpoint_data_count: Ptr[UInt32, MutAnyOrigin],
         p_checkpoint_data: Ptr[CheckpointData2NV, MutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -753,7 +751,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
         self,
         command_buffer: CommandBuffer,
         p_checkpoint_marker: Ptr[Byte, p_checkpoint_marker_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCheckpointNV.html
@@ -767,7 +765,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
         queue: Queue,
         mut checkpoint_data_count: UInt32,
         p_checkpoint_data: Ptr[CheckpointDataNV, p_checkpoint_data_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointDataNV.html
@@ -778,12 +776,27 @@ struct DeviceDiagnosticCheckpoints(Copyable):
             Ptr(to=p_checkpoint_data).bitcast[Ptr[CheckpointDataNV, MutAnyOrigin]]()[],
         )
 
+    fn get_queue_checkpoint_data[p_checkpoint_data_origin: MutOrigin = MutAnyOrigin](
+        self, queue: Queue
+    ) -> List[CheckpointDataNV]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointDataNV.html
+        """
+        var list = List[CheckpointDataNV]()
+        var count: UInt32 = 0
+        self._get_queue_checkpoint_data(queue, Ptr(to=count), Ptr[CheckpointDataNV, MutExternalOrigin]())
+        list.reserve(Int(count))
+        self._get_queue_checkpoint_data(queue, Ptr(to=count), list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
+
     fn get_queue_checkpoint_data_2[p_checkpoint_data_origin: MutOrigin = MutAnyOrigin](
         self,
         queue: Queue,
         mut checkpoint_data_count: UInt32,
         p_checkpoint_data: Ptr[CheckpointData2NV, p_checkpoint_data_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointData2NV.html
@@ -793,6 +806,21 @@ struct DeviceDiagnosticCheckpoints(Copyable):
             Ptr(to=checkpoint_data_count),
             Ptr(to=p_checkpoint_data).bitcast[Ptr[CheckpointData2NV, MutAnyOrigin]]()[],
         )
+
+    fn get_queue_checkpoint_data_2[p_checkpoint_data_origin: MutOrigin = MutAnyOrigin](
+        self, queue: Queue
+    ) -> List[CheckpointData2NV]:
+        """See official vulkan docs for details.
+        
+        https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetQueueCheckpointData2NV.html
+        """
+        var list = List[CheckpointData2NV]()
+        var count: UInt32 = 0
+        self._get_queue_checkpoint_data_2(queue, Ptr(to=count), Ptr[CheckpointData2NV, MutExternalOrigin]())
+        list.reserve(Int(count))
+        self._get_queue_checkpoint_data_2(queue, Ptr(to=count), list.unsafe_ptr())
+        list._len = Int(count)
+        return list^
 
 
 struct CooperativeMatrix(Copyable):
@@ -923,22 +951,22 @@ struct DeviceGeneratedCommands(Copyable):
         device: Device,
         p_info: Ptr[GeneratedCommandsMemoryRequirementsInfoNV, ImmutAnyOrigin],
         p_memory_requirements: Ptr[MemoryRequirements2, MutAnyOrigin],
-    ) -> Byte
+    )
     var _cmd_preprocess_generated_commands: fn(
         command_buffer: CommandBuffer,
         p_generated_commands_info: Ptr[GeneratedCommandsInfoNV, ImmutAnyOrigin],
-    ) -> Byte
+    )
     var _cmd_execute_generated_commands: fn(
         command_buffer: CommandBuffer,
         is_preprocessed: Bool32,
         p_generated_commands_info: Ptr[GeneratedCommandsInfoNV, ImmutAnyOrigin],
-    ) -> Byte
+    )
     var _cmd_bind_pipeline_shader_group: fn(
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
         pipeline: Pipeline,
         group_index: UInt32,
-    ) -> Byte
+    )
     var _create_indirect_commands_layout: fn(
         device: Device,
         p_create_info: Ptr[IndirectCommandsLayoutCreateInfoNV, ImmutAnyOrigin],
@@ -949,7 +977,7 @@ struct DeviceGeneratedCommands(Copyable):
         device: Device,
         indirect_commands_layout: IndirectCommandsLayoutNV,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -980,7 +1008,7 @@ struct DeviceGeneratedCommands(Copyable):
         device: Device,
         info: GeneratedCommandsMemoryRequirementsInfoNV,
         mut memory_requirements: MemoryRequirements2,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetGeneratedCommandsMemoryRequirementsNV.html
@@ -991,7 +1019,7 @@ struct DeviceGeneratedCommands(Copyable):
 
     fn cmd_preprocess_generated_commands(
         self, command_buffer: CommandBuffer, generated_commands_info: GeneratedCommandsInfoNV
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPreprocessGeneratedCommandsNV.html
@@ -1003,7 +1031,7 @@ struct DeviceGeneratedCommands(Copyable):
         command_buffer: CommandBuffer,
         is_preprocessed: Bool32,
         generated_commands_info: GeneratedCommandsInfoNV,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteGeneratedCommandsNV.html
@@ -1018,7 +1046,7 @@ struct DeviceGeneratedCommands(Copyable):
         pipeline_bind_point: PipelineBindPoint,
         pipeline: Pipeline,
         group_index: UInt32,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindPipelineShaderGroupNV.html
@@ -1050,7 +1078,7 @@ struct DeviceGeneratedCommands(Copyable):
         device: Device,
         indirect_commands_layout: IndirectCommandsLayoutNV,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyIndirectCommandsLayoutNV.html
@@ -1084,13 +1112,13 @@ struct CudaKernelLaunch(Copyable):
     ) -> Result
     var _destroy_cuda_module: fn(
         device: Device, module: CudaModuleNV, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    ) -> Byte
+    )
     var _destroy_cuda_function: fn(
         device: Device, function: CudaFunctionNV, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    ) -> Byte
+    )
     var _cmd_cuda_launch_kernel: fn(
         command_buffer: CommandBuffer, p_launch_info: Ptr[CudaLaunchInfoNV, ImmutAnyOrigin]
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -1192,7 +1220,7 @@ struct CudaKernelLaunch(Copyable):
         device: Device,
         module: CudaModuleNV,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCudaModuleNV.html
@@ -1206,7 +1234,7 @@ struct CudaKernelLaunch(Copyable):
         device: Device,
         function: CudaFunctionNV,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyCudaFunctionNV.html
@@ -1215,9 +1243,7 @@ struct CudaKernelLaunch(Copyable):
             device, function, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn cmd_cuda_launch_kernel(
-        self, command_buffer: CommandBuffer, launch_info: CudaLaunchInfoNV
-    ) -> Byte:
+    fn cmd_cuda_launch_kernel(self, command_buffer: CommandBuffer, launch_info: CudaLaunchInfoNV):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCudaLaunchKernelNV.html
@@ -1231,7 +1257,7 @@ struct FragmentShadingRateEnums(Copyable):
         command_buffer: CommandBuffer,
         shading_rate: FragmentShadingRateNV,
         combiner_ops: InlineArray[FragmentShadingRateCombinerOpKHR, Int(2)],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -1247,7 +1273,7 @@ struct FragmentShadingRateEnums(Copyable):
         command_buffer: CommandBuffer,
         shading_rate: FragmentShadingRateNV,
         combiner_ops: InlineArray[FragmentShadingRateCombinerOpKHR, Int(2)],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetFragmentShadingRateEnumNV.html
@@ -1332,7 +1358,7 @@ struct CopyMemoryIndirect(Copyable):
         copy_buffer_address: DeviceAddress,
         copy_count: UInt32,
         stride: UInt32,
-    ) -> Byte
+    )
     var _cmd_copy_memory_to_image_indirect: fn(
         command_buffer: CommandBuffer,
         copy_buffer_address: DeviceAddress,
@@ -1341,7 +1367,7 @@ struct CopyMemoryIndirect(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         p_image_subresources: Ptr[ImageSubresourceLayers, ImmutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -1361,7 +1387,7 @@ struct CopyMemoryIndirect(Copyable):
         copy_buffer_address: DeviceAddress,
         copy_count: UInt32,
         stride: UInt32,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMemoryIndirectNV.html
@@ -1377,7 +1403,7 @@ struct CopyMemoryIndirect(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         p_image_subresources: Ptr[ImageSubresourceLayers, p_image_subresources_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMemoryToImageIndirectNV.html
@@ -1399,13 +1425,13 @@ struct MemoryDecompression(Copyable):
         command_buffer: CommandBuffer,
         decompress_region_count: UInt32,
         p_decompress_memory_regions: Ptr[DecompressMemoryRegionNV, ImmutAnyOrigin],
-    ) -> Byte
+    )
     var _cmd_decompress_memory_indirect_count: fn(
         command_buffer: CommandBuffer,
         indirect_commands_address: DeviceAddress,
         indirect_commands_count_address: DeviceAddress,
         stride: UInt32,
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -1424,7 +1450,7 @@ struct MemoryDecompression(Copyable):
         command_buffer: CommandBuffer,
         decompress_region_count: UInt32,
         p_decompress_memory_regions: Ptr[DecompressMemoryRegionNV, p_decompress_memory_regions_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDecompressMemoryNV.html
@@ -1441,7 +1467,7 @@ struct MemoryDecompression(Copyable):
         indirect_commands_address: DeviceAddress,
         indirect_commands_count_address: DeviceAddress,
         stride: UInt32,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDecompressMemoryIndirectCountNV.html
@@ -1457,10 +1483,10 @@ struct DeviceGeneratedCommandsCompute(Copyable):
         device: Device,
         p_create_info: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
         p_memory_requirements: Ptr[MemoryRequirements2, MutAnyOrigin],
-    ) -> Byte
+    )
     var _cmd_update_pipeline_indirect_buffer: fn(
         command_buffer: CommandBuffer, pipeline_bind_point: PipelineBindPoint, pipeline: Pipeline
-    ) -> Byte
+    )
     var _get_pipeline_indirect_device_address: fn(
         device: Device, p_info: Ptr[PipelineIndirectDeviceAddressInfoNV, ImmutAnyOrigin]
     ) -> DeviceAddress
@@ -1485,7 +1511,7 @@ struct DeviceGeneratedCommandsCompute(Copyable):
         device: Device,
         create_info: ComputePipelineCreateInfo,
         mut memory_requirements: MemoryRequirements2,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPipelineIndirectMemoryRequirementsNV.html
@@ -1499,7 +1525,7 @@ struct DeviceGeneratedCommandsCompute(Copyable):
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
         pipeline: Pipeline,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdUpdatePipelineIndirectBufferNV.html
@@ -1534,7 +1560,7 @@ struct OpticalFlow(Copyable):
         device: Device,
         session: OpticalFlowSessionNV,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    ) -> Byte
+    )
     var _bind_optical_flow_session_image: fn(
         device: Device,
         session: OpticalFlowSessionNV,
@@ -1546,7 +1572,7 @@ struct OpticalFlow(Copyable):
         command_buffer: CommandBuffer,
         session: OpticalFlowSessionNV,
         p_execute_info: Ptr[OpticalFlowExecuteInfoNV, ImmutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -1641,7 +1667,7 @@ struct OpticalFlow(Copyable):
         device: Device,
         session: OpticalFlowSessionNV,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyOpticalFlowSessionNV.html
@@ -1669,7 +1695,7 @@ struct OpticalFlow(Copyable):
         command_buffer: CommandBuffer,
         session: OpticalFlowSessionNV,
         execute_info: OpticalFlowExecuteInfoNV,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdOpticalFlowExecuteNV.html
@@ -1691,7 +1717,7 @@ struct CooperativeVector(Copyable):
         command_buffer: CommandBuffer,
         info_count: UInt32,
         p_infos: Ptr[ConvertCooperativeVectorMatrixInfoNV, ImmutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -1764,7 +1790,7 @@ struct CooperativeVector(Copyable):
         command_buffer: CommandBuffer,
         info_count: UInt32,
         p_infos: Ptr[ConvertCooperativeVectorMatrixInfoNV, p_infos_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdConvertCooperativeVectorMatrixNV.html
@@ -1790,15 +1816,15 @@ struct LowLatency2(Copyable):
         device: Device,
         swapchain: SwapchainKHR,
         p_latency_marker_info: Ptr[SetLatencyMarkerInfoNV, ImmutAnyOrigin],
-    ) -> Byte
+    )
     var _get_latency_timings: fn(
         device: Device,
         swapchain: SwapchainKHR,
         p_latency_marker_info: Ptr[GetLatencyMarkerInfoNV, MutAnyOrigin],
-    ) -> Byte
+    )
     var _queue_notify_out_of_band: fn(
         queue: Queue, p_queue_type_info: Ptr[OutOfBandQueueTypeInfoNV, ImmutAnyOrigin]
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -1841,7 +1867,7 @@ struct LowLatency2(Copyable):
 
     fn set_latency_marker(
         self, device: Device, swapchain: SwapchainKHR, latency_marker_info: SetLatencyMarkerInfoNV
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetLatencyMarkerNV.html
@@ -1853,16 +1879,14 @@ struct LowLatency2(Copyable):
         device: Device,
         swapchain: SwapchainKHR,
         mut latency_marker_info: GetLatencyMarkerInfoNV,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetLatencyTimingsNV.html
         """
         return self._get_latency_timings(device, swapchain, Ptr(to=latency_marker_info))
 
-    fn queue_notify_out_of_band(
-        self, queue: Queue, queue_type_info: OutOfBandQueueTypeInfoNV
-    ) -> Byte:
+    fn queue_notify_out_of_band(self, queue: Queue, queue_type_info: OutOfBandQueueTypeInfoNV):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueNotifyOutOfBandNV.html
@@ -1882,12 +1906,12 @@ struct ExternalComputeQueue(Copyable):
         device: Device,
         external_queue: ExternalComputeQueueNV,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    ) -> Byte
+    )
     var _get_external_compute_queue_data: fn(
         external_queue: ExternalComputeQueueNV,
         params: Ptr[ExternalComputeQueueDataParamsNV, MutAnyOrigin],
         p_data: Ptr[Byte, MutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -1927,7 +1951,7 @@ struct ExternalComputeQueue(Copyable):
         device: Device,
         external_queue: ExternalComputeQueueNV,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyExternalComputeQueueNV.html
@@ -1943,7 +1967,7 @@ struct ExternalComputeQueue(Copyable):
         external_queue: ExternalComputeQueueNV,
         mut params: ExternalComputeQueueDataParamsNV,
         p_data: Ptr[Byte, p_data_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetExternalComputeQueueDataNV.html
@@ -1959,11 +1983,11 @@ struct ClusterAccelerationStructure(Copyable):
         device: Device,
         p_info: Ptr[ClusterAccelerationStructureInputInfoNV, ImmutAnyOrigin],
         p_size_info: Ptr[AccelerationStructureBuildSizesInfoKHR, MutAnyOrigin],
-    ) -> Byte
+    )
     var _cmd_build_cluster_acceleration_structure_indirect: fn(
         command_buffer: CommandBuffer,
         p_command_infos: Ptr[ClusterAccelerationStructureCommandsInfoNV, ImmutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -1982,7 +2006,7 @@ struct ClusterAccelerationStructure(Copyable):
         device: Device,
         info: ClusterAccelerationStructureInputInfoNV,
         mut size_info: AccelerationStructureBuildSizesInfoKHR,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetClusterAccelerationStructureBuildSizesNV.html
@@ -1993,7 +2017,7 @@ struct ClusterAccelerationStructure(Copyable):
         self,
         command_buffer: CommandBuffer,
         command_infos: ClusterAccelerationStructureCommandsInfoNV,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBuildClusterAccelerationStructureIndirectNV.html
@@ -2009,11 +2033,11 @@ struct PartitionedAccelerationStructure(Copyable):
         device: Device,
         p_info: Ptr[PartitionedAccelerationStructureInstancesInputNV, ImmutAnyOrigin],
         p_size_info: Ptr[AccelerationStructureBuildSizesInfoKHR, MutAnyOrigin],
-    ) -> Byte
+    )
     var _cmd_build_partitioned_acceleration_structures: fn(
         command_buffer: CommandBuffer,
         p_build_info: Ptr[BuildPartitionedAccelerationStructureInfoNV, ImmutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -2032,7 +2056,7 @@ struct PartitionedAccelerationStructure(Copyable):
         device: Device,
         info: PartitionedAccelerationStructureInstancesInputNV,
         mut size_info: AccelerationStructureBuildSizesInfoKHR,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPartitionedAccelerationStructuresBuildSizesNV.html
@@ -2043,7 +2067,7 @@ struct PartitionedAccelerationStructure(Copyable):
 
     fn cmd_build_partitioned_acceleration_structures(
         self, command_buffer: CommandBuffer, build_info: BuildPartitionedAccelerationStructureInfoNV
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBuildPartitionedAccelerationStructuresNV.html
@@ -2118,7 +2142,7 @@ struct ComputeOccupancyPriority(Copyable):
     var _cmd_set_compute_occupancy_priority: fn(
         command_buffer: CommandBuffer,
         p_parameters: Ptr[ComputeOccupancyPriorityParametersNV, ImmutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -2131,7 +2155,7 @@ struct ComputeOccupancyPriority(Copyable):
 
     fn cmd_set_compute_occupancy_priority(
         self, command_buffer: CommandBuffer, parameters: ComputeOccupancyPriorityParametersNV
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetComputeOccupancyPriorityNV.html

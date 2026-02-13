@@ -166,7 +166,7 @@ struct BufferCollection(Copyable):
         device: Device,
         collection: BufferCollectionFUCHSIA,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    ) -> Byte
+    )
     var _get_buffer_collection_properties: fn(
         device: Device,
         collection: BufferCollectionFUCHSIA,
@@ -245,7 +245,7 @@ struct BufferCollection(Copyable):
         device: Device,
         collection: BufferCollectionFUCHSIA,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyBufferCollectionFUCHSIA.html

@@ -9,12 +9,12 @@ struct DescriptorSetHostMapping(Copyable):
         device: Device,
         p_binding_reference: Ptr[DescriptorSetBindingReferenceVALVE, ImmutAnyOrigin],
         p_host_mapping: Ptr[DescriptorSetLayoutHostMappingInfoVALVE, MutAnyOrigin],
-    ) -> Byte
+    )
     var _get_descriptor_set_host_mapping: fn(
         device: Device,
         descriptor_set: DescriptorSet,
         pp_data: Ptr[Ptr[Byte, MutAnyOrigin], MutAnyOrigin],
-    ) -> Byte
+    )
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -33,7 +33,7 @@ struct DescriptorSetHostMapping(Copyable):
         device: Device,
         binding_reference: DescriptorSetBindingReferenceVALVE,
         mut host_mapping: DescriptorSetLayoutHostMappingInfoVALVE,
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutHostMappingInfoVALVE.html
@@ -44,7 +44,7 @@ struct DescriptorSetHostMapping(Copyable):
 
     fn get_descriptor_set_host_mapping[p_data_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, descriptor_set: DescriptorSet, mut p_data: Ptr[Byte, p_data_origin]
-    ) -> Byte:
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetHostMappingVALVE.html
