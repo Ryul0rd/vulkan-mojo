@@ -1185,7 +1185,7 @@ def bind_basetypes(files: Dict[str, str], registry: Registry):
         MojoBasetypeAlias("SampleMask", MojoBaseType("UInt32")),
         MojoBasetypeAlias("DeviceSize", MojoBaseType("UInt64")),
         MojoBasetypeAlias("DeviceAddress", MojoBaseType("UInt64")),
-        MojoBasetypeAlias("RemoteAddressNV", MojoPointerType(MojoBaseType("NoneType"), "MutExternalOrigin")),
+        MojoBasetypeAlias("RemoteAddressNV", MojoPointerType(MojoBaseType("Byte"), "MutExternalOrigin")),
     ]
     
     # Emission
@@ -2293,7 +2293,7 @@ def registry_command_to_mojo_methods(
         is_void_ptr = (
             isinstance(original_arg_type, MojoPointerType)
             and isinstance(original_arg_type.pointee_type, MojoBaseType)
-            and original_arg_type.pointee_type.name == "NoneType"
+            and original_arg_type.pointee_type.name == "Byte"
         )
         if isinstance(original_arg_type, MojoPointerType) and not is_void_ptr and not param.optional and param.len is None:
             original_arg_type = assert_type(MojoPointerType, original_arg_type)
@@ -2775,7 +2775,7 @@ def parse_c_type(c_type_str: str) -> MojoType:
 
 def c_type_name_to_mojo(c_type_name: str) -> str:
     mapping = {
-        "void": "NoneType",
+        "void": "Byte",
         "char": "c_char",
         "size_t": "UInt",
         "int": "Int32",

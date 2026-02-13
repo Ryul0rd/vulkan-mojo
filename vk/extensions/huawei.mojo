@@ -8,7 +8,7 @@ struct SubpassShading(Copyable):
     var _get_device_subpass_shading_max_workgroup_size: fn(
         device: Device, renderpass: RenderPass, p_max_workgroup_size: Ptr[Extent2D, MutAnyOrigin]
     ) -> Result
-    var _cmd_subpass_shading: fn(command_buffer: CommandBuffer)
+    var _cmd_subpass_shading: fn(command_buffer: CommandBuffer) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -38,7 +38,7 @@ struct SubpassShading(Copyable):
             device, renderpass, Ptr(to=p_max_workgroup_size).bitcast[Ptr[Extent2D, MutAnyOrigin]]()[]
         )
 
-    fn cmd_subpass_shading(self, command_buffer: CommandBuffer):
+    fn cmd_subpass_shading(self, command_buffer: CommandBuffer) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSubpassShadingHUAWEI.html
@@ -50,7 +50,7 @@ struct InvocationMask(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_bind_invocation_mask: fn(
         command_buffer: CommandBuffer, image_view: ImageView, image_layout: ImageLayout
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -63,7 +63,7 @@ struct InvocationMask(Copyable):
 
     fn cmd_bind_invocation_mask(
         self, command_buffer: CommandBuffer, image_view: ImageView, image_layout: ImageLayout
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindInvocationMaskHUAWEI.html
@@ -78,10 +78,10 @@ struct ClusterCullingShader(Copyable):
         group_count_x: UInt32,
         group_count_y: UInt32,
         group_count_z: UInt32,
-    )
+    ) -> Byte
     var _cmd_draw_cluster_indirect: fn(
         command_buffer: CommandBuffer, buffer: Buffer, offset: DeviceSize
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -101,7 +101,7 @@ struct ClusterCullingShader(Copyable):
         group_count_x: UInt32,
         group_count_y: UInt32,
         group_count_z: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawClusterHUAWEI.html
@@ -110,7 +110,7 @@ struct ClusterCullingShader(Copyable):
 
     fn cmd_draw_cluster_indirect(
         self, command_buffer: CommandBuffer, buffer: Buffer, offset: DeviceSize
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawClusterIndirectHUAWEI.html

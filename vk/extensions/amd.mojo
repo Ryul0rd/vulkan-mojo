@@ -13,7 +13,7 @@ struct DrawIndirectCount(Copyable):
         count_buffer_offset: DeviceSize,
         max_draw_count: UInt32,
         stride: UInt32,
-    )
+    ) -> Byte
     var _cmd_draw_indexed_indirect_count: fn(
         command_buffer: CommandBuffer,
         buffer: Buffer,
@@ -22,7 +22,7 @@ struct DrawIndirectCount(Copyable):
         count_buffer_offset: DeviceSize,
         max_draw_count: UInt32,
         stride: UInt32,
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -45,7 +45,7 @@ struct DrawIndirectCount(Copyable):
         count_buffer_offset: DeviceSize,
         max_draw_count: UInt32,
         stride: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndirectCount.html
@@ -63,7 +63,7 @@ struct DrawIndirectCount(Copyable):
         count_buffer_offset: DeviceSize,
         max_draw_count: UInt32,
         stride: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndexedIndirectCount.html
@@ -81,7 +81,7 @@ struct ShaderInfo(Copyable):
         shader_stage: ShaderStageFlagBits,
         info_type: ShaderInfoTypeAMD,
         p_info_size: Ptr[UInt, MutAnyOrigin],
-        p_info: Ptr[NoneType, MutAnyOrigin],
+        p_info: Ptr[Byte, MutAnyOrigin],
     ) -> Result
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -100,7 +100,7 @@ struct ShaderInfo(Copyable):
         shader_stage: ShaderStageFlagBits,
         info_type: ShaderInfoTypeAMD,
         mut info_size: UInt,
-        p_info: Ptr[NoneType, p_info_origin],
+        p_info: Ptr[Byte, p_info_origin],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -112,7 +112,7 @@ struct ShaderInfo(Copyable):
             shader_stage,
             info_type,
             Ptr(to=info_size),
-            Ptr(to=p_info).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
+            Ptr(to=p_info).bitcast[Ptr[Byte, MutAnyOrigin]]()[],
         )
 
     fn get_shader_info[p_info_origin: MutOrigin = MutAnyOrigin](
@@ -121,27 +121,22 @@ struct ShaderInfo(Copyable):
         pipeline: Pipeline,
         shader_stage: ShaderStageFlagBits,
         info_type: ShaderInfoTypeAMD,
-    ) -> ListResult[UInt8]:
+    ) -> ListResult[Byte]:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderInfoAMD.html
         """
-        var list = List[UInt8]()
+        var list = List[Byte]()
         var count: UInt = 0
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_shader_info(
-        device, pipeline, shader_stage, info_type, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
+        device, pipeline, shader_stage, info_type, Ptr(to=count), Ptr[Byte, MutExternalOrigin]()
     )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_shader_info(
-        device,
-        pipeline,
-        shader_stage,
-        info_type,
-        Ptr(to=count),
-        list.unsafe_ptr().bitcast[NoneType](),
+        device, pipeline, shader_stage, info_type, Ptr(to=count), list.unsafe_ptr()
     )
         list._len = Int(count)
         return ListResult(list^, result)
@@ -155,14 +150,14 @@ struct BufferMarker(Copyable):
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         marker: UInt32,
-    )
+    ) -> Byte
     var _cmd_write_buffer_marker_2: fn(
         command_buffer: CommandBuffer,
         stage: PipelineStageFlags2,
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         marker: UInt32,
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -183,7 +178,7 @@ struct BufferMarker(Copyable):
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         marker: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWriteBufferMarkerAMD.html
@@ -197,7 +192,7 @@ struct BufferMarker(Copyable):
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         marker: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWriteBufferMarker2AMD.html
@@ -207,7 +202,9 @@ struct BufferMarker(Copyable):
 
 struct DisplayNativeHdr(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _set_local_dimming: fn(device: Device, swap_chain: SwapchainKHR, local_dimming_enable: Bool32)
+    var _set_local_dimming: fn(
+        device: Device, swap_chain: SwapchainKHR, local_dimming_enable: Bool32
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -220,7 +217,7 @@ struct DisplayNativeHdr(Copyable):
 
     fn set_local_dimming(
         self, device: Device, swap_chain: SwapchainKHR, local_dimming_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetLocalDimmingAMD.html
@@ -230,7 +227,7 @@ struct DisplayNativeHdr(Copyable):
 
 struct AntiLag(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _anti_lag_update: fn(device: Device, p_data: Ptr[AntiLagDataAMD, ImmutAnyOrigin])
+    var _anti_lag_update: fn(device: Device, p_data: Ptr[AntiLagDataAMD, ImmutAnyOrigin]) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -241,7 +238,7 @@ struct AntiLag(Copyable):
             device, "vkAntiLagUpdateAMD".as_c_string_slice()
         )).bitcast[type_of(self._anti_lag_update)]()[]
 
-    fn anti_lag_update(self, device: Device, data: AntiLagDataAMD):
+    fn anti_lag_update(self, device: Device, data: AntiLagDataAMD) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAntiLagUpdateAMD.html
