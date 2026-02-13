@@ -5,7 +5,7 @@ comptime PFN_vkInternalAllocationNotification = fn(
     size: UInt,
     allocation_type: InternalAllocationType,
     allocation_scope: SystemAllocationScope,
-)
+) -> Byte
 
 
 comptime PFN_vkInternalFreeNotification = fn(
@@ -13,7 +13,7 @@ comptime PFN_vkInternalFreeNotification = fn(
     size: UInt,
     allocation_type: InternalAllocationType,
     allocation_scope: SystemAllocationScope,
-)
+) -> Byte
 
 
 comptime PFN_vkReallocationFunction = fn(
@@ -35,10 +35,10 @@ comptime PFN_vkAllocationFunction = fn(
 
 comptime PFN_vkFreeFunction = fn(
     p_user_data: Ptr[Byte, MutAnyOrigin], p_memory: Ptr[Byte, MutAnyOrigin]
-)
+) -> Byte
 
 
-comptime PFN_vkVoidFunction = fn()
+comptime PFN_vkVoidFunction = fn() -> Byte
 
 
 comptime PFN_vkDebugReportCallbackEXT = fn(
@@ -63,13 +63,13 @@ comptime PFN_vkDebugUtilsMessengerCallbackEXT = fn(
 
 comptime PFN_vkFaultCallbackFunction = fn(
     unrecorded_faults: Bool32, fault_count: UInt32, p_faults: Ptr[FaultData, ImmutAnyOrigin]
-)
+) -> Byte
 
 
 comptime PFN_vkDeviceMemoryReportCallbackEXT = fn(
     p_callback_data: Ptr[DeviceMemoryReportCallbackDataEXT, ImmutAnyOrigin],
     p_user_data: Ptr[Byte, MutAnyOrigin],
-)
+) -> Byte
 
 
 comptime PFN_vkGetInstanceProcAddrLUNARG = fn(

@@ -2749,11 +2749,7 @@ def parse_declarator(declarator: str) -> ParsedDeclarator:
         pointee_is_const = []
         array_dims = []
 
-    mojo_base_name = c_type_name_to_mojo(base_name)
-    if mojo_base_name == "NoneType" and ptr_level > 0:
-        mojo_base_name = "Byte"
-    
-    type: MojoType = MojoBaseType(mojo_base_name)
+    type: MojoType = MojoBaseType(c_type_name_to_mojo(base_name))
     for i in range(ptr_level):
         origin: MojoOriginLiteral = "MutAnyOrigin" if not pointee_is_const[i] else "ImmutAnyOrigin"
         type = MojoPointerType(pointee_type=type, origin=origin)
@@ -2779,7 +2775,7 @@ def parse_c_type(c_type_str: str) -> MojoType:
 
 def c_type_name_to_mojo(c_type_name: str) -> str:
     mapping = {
-        "void": "NoneType",
+        "void": "Byte",
         "char": "c_char",
         "size_t": "UInt",
         "int": "Int32",

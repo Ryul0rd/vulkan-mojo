@@ -15,7 +15,7 @@ struct DebugReport(Copyable):
         instance: Instance,
         callback: DebugReportCallbackEXT,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _debug_report_message: fn(
         instance: Instance,
         flags: DebugReportFlagsEXT,
@@ -25,7 +25,7 @@ struct DebugReport(Copyable):
         message_code: Int32,
         p_layer_prefix: CStringSlice[ImmutAnyOrigin],
         p_message: CStringSlice[ImmutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
@@ -65,7 +65,7 @@ struct DebugReport(Copyable):
         instance: Instance,
         callback: DebugReportCallbackEXT,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDebugReportCallbackEXT.html
@@ -87,7 +87,7 @@ struct DebugReport(Copyable):
         message_code: Int32,
         p_layer_prefix: CStringSlice[p_layer_prefix_origin],
         p_message: CStringSlice[p_message_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDebugReportMessageEXT.html
@@ -114,11 +114,11 @@ struct DebugMarker(Copyable):
     ) -> Result
     var _cmd_debug_marker_begin: fn(
         command_buffer: CommandBuffer, p_marker_info: Ptr[DebugMarkerMarkerInfoEXT, ImmutAnyOrigin]
-    )
-    var _cmd_debug_marker_end: fn(command_buffer: CommandBuffer)
+    ) -> Byte
+    var _cmd_debug_marker_end: fn(command_buffer: CommandBuffer) -> Byte
     var _cmd_debug_marker_insert: fn(
         command_buffer: CommandBuffer, p_marker_info: Ptr[DebugMarkerMarkerInfoEXT, ImmutAnyOrigin]
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -161,14 +161,14 @@ struct DebugMarker(Copyable):
 
     fn cmd_debug_marker_begin(
         self, command_buffer: CommandBuffer, marker_info: DebugMarkerMarkerInfoEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDebugMarkerBeginEXT.html
         """
         return self._cmd_debug_marker_begin(command_buffer, Ptr(to=marker_info))
 
-    fn cmd_debug_marker_end(self, command_buffer: CommandBuffer):
+    fn cmd_debug_marker_end(self, command_buffer: CommandBuffer) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDebugMarkerEndEXT.html
@@ -177,7 +177,7 @@ struct DebugMarker(Copyable):
 
     fn cmd_debug_marker_insert(
         self, command_buffer: CommandBuffer, marker_info: DebugMarkerMarkerInfoEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDebugMarkerInsertEXT.html
@@ -194,31 +194,31 @@ struct TransformFeedback(Copyable):
         p_buffers: Ptr[Buffer, ImmutAnyOrigin],
         p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
         p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_begin_transform_feedback: fn(
         command_buffer: CommandBuffer,
         first_counter_buffer: UInt32,
         counter_buffer_count: UInt32,
         p_counter_buffers: Ptr[Buffer, ImmutAnyOrigin],
         p_counter_buffer_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_end_transform_feedback: fn(
         command_buffer: CommandBuffer,
         first_counter_buffer: UInt32,
         counter_buffer_count: UInt32,
         p_counter_buffers: Ptr[Buffer, ImmutAnyOrigin],
         p_counter_buffer_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_begin_query_indexed: fn(
         command_buffer: CommandBuffer,
         query_pool: QueryPool,
         query: UInt32,
         flags: QueryControlFlags,
         index: UInt32,
-    )
+    ) -> Byte
     var _cmd_end_query_indexed: fn(
         command_buffer: CommandBuffer, query_pool: QueryPool, query: UInt32, index: UInt32
-    )
+    ) -> Byte
     var _cmd_draw_indirect_byte_count: fn(
         command_buffer: CommandBuffer,
         instance_count: UInt32,
@@ -227,7 +227,7 @@ struct TransformFeedback(Copyable):
         counter_buffer_offset: DeviceSize,
         counter_offset: UInt32,
         vertex_stride: UInt32,
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -265,7 +265,7 @@ struct TransformFeedback(Copyable):
         p_buffers: Ptr[Buffer, p_buffers_origin],
         p_offsets: Ptr[DeviceSize, p_offsets_origin],
         p_sizes: Ptr[DeviceSize, p_sizes_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindTransformFeedbackBuffersEXT.html
@@ -289,7 +289,7 @@ struct TransformFeedback(Copyable):
         counter_buffer_count: UInt32,
         p_counter_buffers: Ptr[Buffer, p_counter_buffers_origin],
         p_counter_buffer_offsets: Ptr[DeviceSize, p_counter_buffer_offsets_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginTransformFeedbackEXT.html
@@ -312,7 +312,7 @@ struct TransformFeedback(Copyable):
         counter_buffer_count: UInt32,
         p_counter_buffers: Ptr[Buffer, p_counter_buffers_origin],
         p_counter_buffer_offsets: Ptr[DeviceSize, p_counter_buffer_offsets_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndTransformFeedbackEXT.html
@@ -332,7 +332,7 @@ struct TransformFeedback(Copyable):
         query: UInt32,
         flags: QueryControlFlags,
         index: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginQueryIndexedEXT.html
@@ -341,7 +341,7 @@ struct TransformFeedback(Copyable):
 
     fn cmd_end_query_indexed(
         self, command_buffer: CommandBuffer, query_pool: QueryPool, query: UInt32, index: UInt32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndQueryIndexedEXT.html
@@ -357,7 +357,7 @@ struct TransformFeedback(Copyable):
         counter_buffer_offset: DeviceSize,
         counter_offset: UInt32,
         vertex_stride: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawIndirectByteCountEXT.html
@@ -378,8 +378,8 @@ struct ConditionalRendering(Copyable):
     var _cmd_begin_conditional_rendering: fn(
         command_buffer: CommandBuffer,
         p_conditional_rendering_begin: Ptr[ConditionalRenderingBeginInfoEXT, ImmutAnyOrigin],
-    )
-    var _cmd_end_conditional_rendering: fn(command_buffer: CommandBuffer)
+    ) -> Byte
+    var _cmd_end_conditional_rendering: fn(command_buffer: CommandBuffer) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -397,14 +397,14 @@ struct ConditionalRendering(Copyable):
         self,
         command_buffer: CommandBuffer,
         conditional_rendering_begin: ConditionalRenderingBeginInfoEXT,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginConditionalRenderingEXT.html
         """
         return self._cmd_begin_conditional_rendering(command_buffer, Ptr(to=conditional_rendering_begin))
 
-    fn cmd_end_conditional_rendering(self, command_buffer: CommandBuffer):
+    fn cmd_end_conditional_rendering(self, command_buffer: CommandBuffer) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndConditionalRenderingEXT.html
@@ -625,13 +625,13 @@ struct DiscardRectangles(Copyable):
         first_discard_rectangle: UInt32,
         discard_rectangle_count: UInt32,
         p_discard_rectangles: Ptr[Rect2D, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_discard_rectangle_enable: fn(
         command_buffer: CommandBuffer, discard_rectangle_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_discard_rectangle_mode: fn(
         command_buffer: CommandBuffer, discard_rectangle_mode: DiscardRectangleModeEXT
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -654,7 +654,7 @@ struct DiscardRectangles(Copyable):
         first_discard_rectangle: UInt32,
         discard_rectangle_count: UInt32,
         p_discard_rectangles: Ptr[Rect2D, p_discard_rectangles_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDiscardRectangleEXT.html
@@ -668,7 +668,7 @@ struct DiscardRectangles(Copyable):
 
     fn cmd_set_discard_rectangle_enable(
         self, command_buffer: CommandBuffer, discard_rectangle_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDiscardRectangleEnableEXT.html
@@ -677,7 +677,7 @@ struct DiscardRectangles(Copyable):
 
     fn cmd_set_discard_rectangle_mode(
         self, command_buffer: CommandBuffer, discard_rectangle_mode: DiscardRectangleModeEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDiscardRectangleModeEXT.html
@@ -692,7 +692,7 @@ struct HdrMetadata(Copyable):
         swapchain_count: UInt32,
         p_swapchains: Ptr[SwapchainKHR, ImmutAnyOrigin],
         p_metadata: Ptr[HdrMetadataEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -712,7 +712,7 @@ struct HdrMetadata(Copyable):
         swapchain_count: UInt32,
         p_swapchains: Ptr[SwapchainKHR, p_swapchains_origin],
         p_metadata: Ptr[HdrMetadataEXT, p_metadata_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetHdrMetadataEXT.html
@@ -735,18 +735,18 @@ struct DebugUtils(Copyable):
     ) -> Result
     var _queue_begin_debug_utils_label: fn(
         queue: Queue, p_label_info: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]
-    )
-    var _queue_end_debug_utils_label: fn(queue: Queue)
+    ) -> Byte
+    var _queue_end_debug_utils_label: fn(queue: Queue) -> Byte
     var _queue_insert_debug_utils_label: fn(
         queue: Queue, p_label_info: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _cmd_begin_debug_utils_label: fn(
         command_buffer: CommandBuffer, p_label_info: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]
-    )
-    var _cmd_end_debug_utils_label: fn(command_buffer: CommandBuffer)
+    ) -> Byte
+    var _cmd_end_debug_utils_label: fn(command_buffer: CommandBuffer) -> Byte
     var _cmd_insert_debug_utils_label: fn(
         command_buffer: CommandBuffer, p_label_info: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _create_debug_utils_messenger: fn(
         instance: Instance,
         p_create_info: Ptr[DebugUtilsMessengerCreateInfoEXT, ImmutAnyOrigin],
@@ -757,13 +757,13 @@ struct DebugUtils(Copyable):
         instance: Instance,
         messenger: DebugUtilsMessengerEXT,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _submit_debug_utils_message: fn(
         instance: Instance,
         message_severity: DebugUtilsMessageSeverityFlagBitsEXT,
         message_types: DebugUtilsMessageTypeFlagsEXT,
         p_callback_data: Ptr[DebugUtilsMessengerCallbackDataEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
@@ -822,21 +822,21 @@ struct DebugUtils(Copyable):
         """
         return self._set_debug_utils_object_tag(device, Ptr(to=tag_info))
 
-    fn queue_begin_debug_utils_label(self, queue: Queue, label_info: DebugUtilsLabelEXT):
+    fn queue_begin_debug_utils_label(self, queue: Queue, label_info: DebugUtilsLabelEXT) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBeginDebugUtilsLabelEXT.html
         """
         return self._queue_begin_debug_utils_label(queue, Ptr(to=label_info))
 
-    fn queue_end_debug_utils_label(self, queue: Queue):
+    fn queue_end_debug_utils_label(self, queue: Queue) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueEndDebugUtilsLabelEXT.html
         """
         return self._queue_end_debug_utils_label(queue)
 
-    fn queue_insert_debug_utils_label(self, queue: Queue, label_info: DebugUtilsLabelEXT):
+    fn queue_insert_debug_utils_label(self, queue: Queue, label_info: DebugUtilsLabelEXT) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueInsertDebugUtilsLabelEXT.html
@@ -845,14 +845,14 @@ struct DebugUtils(Copyable):
 
     fn cmd_begin_debug_utils_label(
         self, command_buffer: CommandBuffer, label_info: DebugUtilsLabelEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginDebugUtilsLabelEXT.html
         """
         return self._cmd_begin_debug_utils_label(command_buffer, Ptr(to=label_info))
 
-    fn cmd_end_debug_utils_label(self, command_buffer: CommandBuffer):
+    fn cmd_end_debug_utils_label(self, command_buffer: CommandBuffer) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndDebugUtilsLabelEXT.html
@@ -861,7 +861,7 @@ struct DebugUtils(Copyable):
 
     fn cmd_insert_debug_utils_label(
         self, command_buffer: CommandBuffer, label_info: DebugUtilsLabelEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdInsertDebugUtilsLabelEXT.html
@@ -891,7 +891,7 @@ struct DebugUtils(Copyable):
         instance: Instance,
         messenger: DebugUtilsMessengerEXT,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDebugUtilsMessengerEXT.html
@@ -906,7 +906,7 @@ struct DebugUtils(Copyable):
         message_severity: DebugUtilsMessageSeverityFlagBitsEXT,
         message_types: DebugUtilsMessageTypeFlagsEXT,
         callback_data: DebugUtilsMessengerCallbackDataEXT,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSubmitDebugUtilsMessageEXT.html
@@ -932,13 +932,13 @@ struct DescriptorHeap(Copyable):
     ) -> Result
     var _cmd_bind_sampler_heap: fn(
         command_buffer: CommandBuffer, p_bind_info: Ptr[BindHeapInfoEXT, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _cmd_bind_resource_heap: fn(
         command_buffer: CommandBuffer, p_bind_info: Ptr[BindHeapInfoEXT, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _cmd_push_data: fn(
         command_buffer: CommandBuffer, p_push_data_info: Ptr[PushDataInfoEXT, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _get_image_opaque_capture_data: fn(
         device: Device,
         image_count: UInt32,
@@ -954,7 +954,7 @@ struct DescriptorHeap(Copyable):
         request_index: Bool32,
         p_index: Ptr[UInt32, MutAnyOrigin],
     ) -> Result
-    var _unregister_custom_border_color: fn(device: Device, index: UInt32)
+    var _unregister_custom_border_color: fn(device: Device, index: UInt32) -> Byte
     var _get_tensor_opaque_capture_data: fn(
         device: Device,
         tensor_count: UInt32,
@@ -1040,21 +1040,25 @@ struct DescriptorHeap(Copyable):
             Ptr(to=p_descriptors).bitcast[Ptr[HostAddressRangeEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_bind_sampler_heap(self, command_buffer: CommandBuffer, bind_info: BindHeapInfoEXT):
+    fn cmd_bind_sampler_heap(
+        self, command_buffer: CommandBuffer, bind_info: BindHeapInfoEXT
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindSamplerHeapEXT.html
         """
         return self._cmd_bind_sampler_heap(command_buffer, Ptr(to=bind_info))
 
-    fn cmd_bind_resource_heap(self, command_buffer: CommandBuffer, bind_info: BindHeapInfoEXT):
+    fn cmd_bind_resource_heap(
+        self, command_buffer: CommandBuffer, bind_info: BindHeapInfoEXT
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindResourceHeapEXT.html
         """
         return self._cmd_bind_resource_heap(command_buffer, Ptr(to=bind_info))
 
-    fn cmd_push_data(self, command_buffer: CommandBuffer, push_data_info: PushDataInfoEXT):
+    fn cmd_push_data(self, command_buffer: CommandBuffer, push_data_info: PushDataInfoEXT) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDataEXT.html
@@ -1105,7 +1109,7 @@ struct DescriptorHeap(Copyable):
             device, Ptr(to=border_color), request_index, Ptr(to=index)
         )
 
-    fn unregister_custom_border_color(self, device: Device, index: UInt32):
+    fn unregister_custom_border_color(self, device: Device, index: UInt32) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUnregisterCustomBorderColorEXT.html
@@ -1138,12 +1142,12 @@ struct SampleLocations(Copyable):
     var _cmd_set_sample_locations: fn(
         command_buffer: CommandBuffer,
         p_sample_locations_info: Ptr[SampleLocationsInfoEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _get_physical_device_multisample_properties: fn(
         physical_device: PhysicalDevice,
         samples: SampleCountFlagBits,
         p_multisample_properties: Ptr[MultisamplePropertiesEXT, MutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -1159,7 +1163,7 @@ struct SampleLocations(Copyable):
 
     fn cmd_set_sample_locations(
         self, command_buffer: CommandBuffer, sample_locations_info: SampleLocationsInfoEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetSampleLocationsEXT.html
@@ -1171,7 +1175,7 @@ struct SampleLocations(Copyable):
         physical_device: PhysicalDevice,
         samples: SampleCountFlagBits,
         mut multisample_properties: MultisamplePropertiesEXT,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceMultisamplePropertiesEXT.html
@@ -1220,7 +1224,7 @@ struct ValidationCache(Copyable):
         device: Device,
         validation_cache: ValidationCacheEXT,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _merge_validation_caches: fn(
         device: Device,
         dst_cache: ValidationCacheEXT,
@@ -1275,7 +1279,7 @@ struct ValidationCache(Copyable):
         device: Device,
         validation_cache: ValidationCacheEXT,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyValidationCacheEXT.html
@@ -1844,7 +1848,7 @@ struct LineRasterization(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_line_stipple: fn(
         command_buffer: CommandBuffer, line_stipple_factor: UInt32, line_stipple_pattern: UInt16
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -1860,7 +1864,7 @@ struct LineRasterization(Copyable):
         command_buffer: CommandBuffer,
         line_stipple_factor: UInt32,
         line_stipple_pattern: UInt16,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLineStipple.html
@@ -1872,7 +1876,7 @@ struct HostQueryReset(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _reset_query_pool: fn(
         device: Device, query_pool: QueryPool, first_query: UInt32, query_count: UInt32
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -1885,7 +1889,7 @@ struct HostQueryReset(Copyable):
 
     fn reset_query_pool(
         self, device: Device, query_pool: QueryPool, first_query: UInt32, query_count: UInt32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkResetQueryPool.html
@@ -1895,19 +1899,19 @@ struct HostQueryReset(Copyable):
 
 struct ExtendedDynamicState(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_cull_mode: fn(command_buffer: CommandBuffer, cull_mode: CullModeFlags)
-    var _cmd_set_front_face: fn(command_buffer: CommandBuffer, front_face: FrontFace)
+    var _cmd_set_cull_mode: fn(command_buffer: CommandBuffer, cull_mode: CullModeFlags) -> Byte
+    var _cmd_set_front_face: fn(command_buffer: CommandBuffer, front_face: FrontFace) -> Byte
     var _cmd_set_primitive_topology: fn(
         command_buffer: CommandBuffer, primitive_topology: PrimitiveTopology
-    )
+    ) -> Byte
     var _cmd_set_viewport_with_count: fn(
         command_buffer: CommandBuffer,
         viewport_count: UInt32,
         p_viewports: Ptr[Viewport, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_scissor_with_count: fn(
         command_buffer: CommandBuffer, scissor_count: UInt32, p_scissors: Ptr[Rect2D, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _cmd_bind_vertex_buffers_2: fn(
         command_buffer: CommandBuffer,
         first_binding: UInt32,
@@ -1916,14 +1920,20 @@ struct ExtendedDynamicState(Copyable):
         p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
         p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
         p_strides: Ptr[DeviceSize, ImmutAnyOrigin],
-    )
-    var _cmd_set_depth_test_enable: fn(command_buffer: CommandBuffer, depth_test_enable: Bool32)
-    var _cmd_set_depth_write_enable: fn(command_buffer: CommandBuffer, depth_write_enable: Bool32)
-    var _cmd_set_depth_compare_op: fn(command_buffer: CommandBuffer, depth_compare_op: CompareOp)
+    ) -> Byte
+    var _cmd_set_depth_test_enable: fn(command_buffer: CommandBuffer, depth_test_enable: Bool32) -> Byte
+    var _cmd_set_depth_write_enable: fn(
+        command_buffer: CommandBuffer, depth_write_enable: Bool32
+    ) -> Byte
+    var _cmd_set_depth_compare_op: fn(
+        command_buffer: CommandBuffer, depth_compare_op: CompareOp
+    ) -> Byte
     var _cmd_set_depth_bounds_test_enable: fn(
         command_buffer: CommandBuffer, depth_bounds_test_enable: Bool32
-    )
-    var _cmd_set_stencil_test_enable: fn(command_buffer: CommandBuffer, stencil_test_enable: Bool32)
+    ) -> Byte
+    var _cmd_set_stencil_test_enable: fn(
+        command_buffer: CommandBuffer, stencil_test_enable: Bool32
+    ) -> Byte
     var _cmd_set_stencil_op: fn(
         command_buffer: CommandBuffer,
         face_mask: StencilFaceFlags,
@@ -1931,7 +1941,7 @@ struct ExtendedDynamicState(Copyable):
         pass_op: StencilOp,
         depth_fail_op: StencilOp,
         compare_op: CompareOp,
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -1975,14 +1985,14 @@ struct ExtendedDynamicState(Copyable):
             device, "vkCmdSetStencilOp".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_stencil_op)]()[]
 
-    fn cmd_set_cull_mode(self, command_buffer: CommandBuffer, cull_mode: CullModeFlags):
+    fn cmd_set_cull_mode(self, command_buffer: CommandBuffer, cull_mode: CullModeFlags) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCullMode.html
         """
         return self._cmd_set_cull_mode(command_buffer, cull_mode)
 
-    fn cmd_set_front_face(self, command_buffer: CommandBuffer, front_face: FrontFace):
+    fn cmd_set_front_face(self, command_buffer: CommandBuffer, front_face: FrontFace) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetFrontFace.html
@@ -1991,7 +2001,7 @@ struct ExtendedDynamicState(Copyable):
 
     fn cmd_set_primitive_topology(
         self, command_buffer: CommandBuffer, primitive_topology: PrimitiveTopology
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPrimitiveTopology.html
@@ -2003,7 +2013,7 @@ struct ExtendedDynamicState(Copyable):
         command_buffer: CommandBuffer,
         viewport_count: UInt32,
         p_viewports: Ptr[Viewport, p_viewports_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWithCount.html
@@ -2017,7 +2027,7 @@ struct ExtendedDynamicState(Copyable):
         command_buffer: CommandBuffer,
         scissor_count: UInt32,
         p_scissors: Ptr[Rect2D, p_scissors_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissorWithCount.html
@@ -2040,7 +2050,7 @@ struct ExtendedDynamicState(Copyable):
         p_offsets: Ptr[DeviceSize, p_offsets_origin],
         p_sizes: Ptr[DeviceSize, p_sizes_origin],
         p_strides: Ptr[DeviceSize, p_strides_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers2.html
@@ -2055,21 +2065,27 @@ struct ExtendedDynamicState(Copyable):
             Ptr(to=p_strides).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_depth_test_enable(self, command_buffer: CommandBuffer, depth_test_enable: Bool32):
+    fn cmd_set_depth_test_enable(
+        self, command_buffer: CommandBuffer, depth_test_enable: Bool32
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthTestEnable.html
         """
         return self._cmd_set_depth_test_enable(command_buffer, depth_test_enable)
 
-    fn cmd_set_depth_write_enable(self, command_buffer: CommandBuffer, depth_write_enable: Bool32):
+    fn cmd_set_depth_write_enable(
+        self, command_buffer: CommandBuffer, depth_write_enable: Bool32
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthWriteEnable.html
         """
         return self._cmd_set_depth_write_enable(command_buffer, depth_write_enable)
 
-    fn cmd_set_depth_compare_op(self, command_buffer: CommandBuffer, depth_compare_op: CompareOp):
+    fn cmd_set_depth_compare_op(
+        self, command_buffer: CommandBuffer, depth_compare_op: CompareOp
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthCompareOp.html
@@ -2078,7 +2094,7 @@ struct ExtendedDynamicState(Copyable):
 
     fn cmd_set_depth_bounds_test_enable(
         self, command_buffer: CommandBuffer, depth_bounds_test_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBoundsTestEnable.html
@@ -2087,7 +2103,7 @@ struct ExtendedDynamicState(Copyable):
 
     fn cmd_set_stencil_test_enable(
         self, command_buffer: CommandBuffer, stencil_test_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilTestEnable.html
@@ -2102,7 +2118,7 @@ struct ExtendedDynamicState(Copyable):
         pass_op: StencilOp,
         depth_fail_op: StencilOp,
         compare_op: CompareOp,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilOp.html
@@ -2133,7 +2149,7 @@ struct HostImageCopy(Copyable):
         image: Image,
         p_subresource: Ptr[ImageSubresource2, ImmutAnyOrigin],
         p_layout: Ptr[SubresourceLayout2, MutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -2205,7 +2221,7 @@ struct HostImageCopy(Copyable):
         image: Image,
         subresource: ImageSubresource2,
         mut layout: SubresourceLayout2,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout2.html
@@ -2242,7 +2258,7 @@ struct DepthBiasControl(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_depth_bias_2: fn(
         command_buffer: CommandBuffer, p_depth_bias_info: Ptr[DepthBiasInfoEXT, ImmutAnyOrigin]
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -2255,7 +2271,7 @@ struct DepthBiasControl(Copyable):
 
     fn cmd_set_depth_bias_2(
         self, command_buffer: CommandBuffer, depth_bias_info: DepthBiasInfoEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBias2EXT.html
@@ -2322,7 +2338,7 @@ struct PrivateData(Copyable):
         device: Device,
         private_data_slot: PrivateDataSlot,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _set_private_data: fn(
         device: Device,
         object_type: ObjectType,
@@ -2336,7 +2352,7 @@ struct PrivateData(Copyable):
         object_handle: UInt64,
         private_data_slot: PrivateDataSlot,
         p_data: Ptr[UInt64, MutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -2379,7 +2395,7 @@ struct PrivateData(Copyable):
         device: Device,
         private_data_slot: PrivateDataSlot,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyPrivateDataSlot.html
@@ -2411,7 +2427,7 @@ struct PrivateData(Copyable):
         object_handle: UInt64,
         private_data_slot: PrivateDataSlot,
         mut data: UInt64,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPrivateData.html
@@ -2423,7 +2439,7 @@ struct MetalObjects(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _export_metal_objects: fn(
         device: Device, p_metal_objects_info: Ptr[ExportMetalObjectsInfoEXT, MutAnyOrigin]
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -2436,7 +2452,7 @@ struct MetalObjects(Copyable):
 
     fn export_metal_objects(
         self, device: Device, mut metal_objects_info: ExportMetalObjectsInfoEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkExportMetalObjectsEXT.html
@@ -2450,24 +2466,24 @@ struct DescriptorBuffer(Copyable):
         device: Device,
         layout: DescriptorSetLayout,
         p_layout_size_in_bytes: Ptr[DeviceSize, MutAnyOrigin],
-    )
+    ) -> Byte
     var _get_descriptor_set_layout_binding_offset: fn(
         device: Device,
         layout: DescriptorSetLayout,
         binding: UInt32,
         p_offset: Ptr[DeviceSize, MutAnyOrigin],
-    )
+    ) -> Byte
     var _get_descriptor: fn(
         device: Device,
         p_descriptor_info: Ptr[DescriptorGetInfoEXT, ImmutAnyOrigin],
         data_size: UInt,
         p_descriptor: Ptr[Byte, MutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_bind_descriptor_buffers: fn(
         command_buffer: CommandBuffer,
         buffer_count: UInt32,
         p_binding_infos: Ptr[DescriptorBufferBindingInfoEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_descriptor_buffer_offsets: fn(
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
@@ -2476,13 +2492,13 @@ struct DescriptorBuffer(Copyable):
         set_count: UInt32,
         p_buffer_indices: Ptr[UInt32, ImmutAnyOrigin],
         p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_bind_descriptor_buffer_embedded_samplers: fn(
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
         set: UInt32,
-    )
+    ) -> Byte
     var _get_buffer_opaque_capture_descriptor_data: fn(
         device: Device,
         p_info: Ptr[BufferCaptureDescriptorDataInfoEXT, ImmutAnyOrigin],
@@ -2550,7 +2566,7 @@ struct DescriptorBuffer(Copyable):
 
     fn get_descriptor_set_layout_size(
         self, device: Device, layout: DescriptorSetLayout, mut layout_size_in_bytes: DeviceSize
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutSizeEXT.html
@@ -2559,7 +2575,7 @@ struct DescriptorBuffer(Copyable):
 
     fn get_descriptor_set_layout_binding_offset(
         self, device: Device, layout: DescriptorSetLayout, binding: UInt32, mut offset: DeviceSize
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutBindingOffsetEXT.html
@@ -2572,7 +2588,7 @@ struct DescriptorBuffer(Copyable):
         descriptor_info: DescriptorGetInfoEXT,
         data_size: UInt,
         p_descriptor: Ptr[Byte, p_descriptor_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorEXT.html
@@ -2589,7 +2605,7 @@ struct DescriptorBuffer(Copyable):
         command_buffer: CommandBuffer,
         buffer_count: UInt32,
         p_binding_infos: Ptr[DescriptorBufferBindingInfoEXT, p_binding_infos_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorBuffersEXT.html
@@ -2612,7 +2628,7 @@ struct DescriptorBuffer(Copyable):
         set_count: UInt32,
         p_buffer_indices: Ptr[UInt32, p_buffer_indices_origin],
         p_offsets: Ptr[DeviceSize, p_offsets_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDescriptorBufferOffsetsEXT.html
@@ -2633,7 +2649,7 @@ struct DescriptorBuffer(Copyable):
         pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
         set: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindDescriptorBufferEmbeddedSamplersEXT.html
@@ -2722,14 +2738,14 @@ struct MeshShader(Copyable):
         group_count_x: UInt32,
         group_count_y: UInt32,
         group_count_z: UInt32,
-    )
+    ) -> Byte
     var _cmd_draw_mesh_tasks_indirect: fn(
         command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
         draw_count: UInt32,
         stride: UInt32,
-    )
+    ) -> Byte
     var _cmd_draw_mesh_tasks_indirect_count: fn(
         command_buffer: CommandBuffer,
         buffer: Buffer,
@@ -2738,7 +2754,7 @@ struct MeshShader(Copyable):
         count_buffer_offset: DeviceSize,
         max_draw_count: UInt32,
         stride: UInt32,
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -2761,7 +2777,7 @@ struct MeshShader(Copyable):
         group_count_x: UInt32,
         group_count_y: UInt32,
         group_count_z: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawMeshTasksEXT.html
@@ -2775,7 +2791,7 @@ struct MeshShader(Copyable):
         offset: DeviceSize,
         draw_count: UInt32,
         stride: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawMeshTasksIndirectEXT.html
@@ -2791,7 +2807,7 @@ struct MeshShader(Copyable):
         count_buffer_offset: DeviceSize,
         max_draw_count: UInt32,
         stride: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawMeshTasksIndirectCountEXT.html
@@ -2808,7 +2824,7 @@ struct ImageCompressionControl(Copyable):
         image: Image,
         p_subresource: Ptr[ImageSubresource2, ImmutAnyOrigin],
         p_layout: Ptr[SubresourceLayout2, MutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -2825,7 +2841,7 @@ struct ImageCompressionControl(Copyable):
         image: Image,
         subresource: ImageSubresource2,
         mut layout: SubresourceLayout2,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageSubresourceLayout2.html
@@ -2929,7 +2945,7 @@ struct VertexInputDynamicState(Copyable):
         p_vertex_binding_descriptions: Ptr[VertexInputBindingDescription2EXT, ImmutAnyOrigin],
         vertex_attribute_description_count: UInt32,
         p_vertex_attribute_descriptions: Ptr[VertexInputAttributeDescription2EXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -2950,7 +2966,7 @@ struct VertexInputDynamicState(Copyable):
         p_vertex_binding_descriptions: Ptr[VertexInputBindingDescription2EXT, p_vertex_binding_descriptions_origin],
         vertex_attribute_description_count: UInt32,
         p_vertex_attribute_descriptions: Ptr[VertexInputAttributeDescription2EXT, p_vertex_attribute_descriptions_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetVertexInputEXT.html
@@ -2996,15 +3012,17 @@ struct PipelineProperties(Copyable):
 
 struct ExtendedDynamicState2(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_patch_control_points: fn(command_buffer: CommandBuffer, patch_control_points: UInt32)
+    var _cmd_set_patch_control_points: fn(
+        command_buffer: CommandBuffer, patch_control_points: UInt32
+    ) -> Byte
     var _cmd_set_rasterizer_discard_enable: fn(
         command_buffer: CommandBuffer, rasterizer_discard_enable: Bool32
-    )
-    var _cmd_set_depth_bias_enable: fn(command_buffer: CommandBuffer, depth_bias_enable: Bool32)
-    var _cmd_set_logic_op: fn(command_buffer: CommandBuffer, logic_op: LogicOp)
+    ) -> Byte
+    var _cmd_set_depth_bias_enable: fn(command_buffer: CommandBuffer, depth_bias_enable: Bool32) -> Byte
+    var _cmd_set_logic_op: fn(command_buffer: CommandBuffer, logic_op: LogicOp) -> Byte
     var _cmd_set_primitive_restart_enable: fn(
         command_buffer: CommandBuffer, primitive_restart_enable: Bool32
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -3029,7 +3047,7 @@ struct ExtendedDynamicState2(Copyable):
 
     fn cmd_set_patch_control_points(
         self, command_buffer: CommandBuffer, patch_control_points: UInt32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPatchControlPointsEXT.html
@@ -3038,21 +3056,23 @@ struct ExtendedDynamicState2(Copyable):
 
     fn cmd_set_rasterizer_discard_enable(
         self, command_buffer: CommandBuffer, rasterizer_discard_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRasterizerDiscardEnable.html
         """
         return self._cmd_set_rasterizer_discard_enable(command_buffer, rasterizer_discard_enable)
 
-    fn cmd_set_depth_bias_enable(self, command_buffer: CommandBuffer, depth_bias_enable: Bool32):
+    fn cmd_set_depth_bias_enable(
+        self, command_buffer: CommandBuffer, depth_bias_enable: Bool32
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBiasEnable.html
         """
         return self._cmd_set_depth_bias_enable(command_buffer, depth_bias_enable)
 
-    fn cmd_set_logic_op(self, command_buffer: CommandBuffer, logic_op: LogicOp):
+    fn cmd_set_logic_op(self, command_buffer: CommandBuffer, logic_op: LogicOp) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLogicOpEXT.html
@@ -3061,7 +3081,7 @@ struct ExtendedDynamicState2(Copyable):
 
     fn cmd_set_primitive_restart_enable(
         self, command_buffer: CommandBuffer, primitive_restart_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPrimitiveRestartEnable.html
@@ -3075,7 +3095,7 @@ struct ColorWriteEnable(Copyable):
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
         p_color_write_enables: Ptr[Bool32, ImmutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -3091,7 +3111,7 @@ struct ColorWriteEnable(Copyable):
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
         p_color_write_enables: Ptr[Bool32, p_color_write_enables_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorWriteEnableEXT.html
@@ -3112,7 +3132,7 @@ struct MultiDraw(Copyable):
         instance_count: UInt32,
         first_instance: UInt32,
         stride: UInt32,
-    )
+    ) -> Byte
     var _cmd_draw_multi_indexed: fn(
         command_buffer: CommandBuffer,
         draw_count: UInt32,
@@ -3121,7 +3141,7 @@ struct MultiDraw(Copyable):
         first_instance: UInt32,
         stride: UInt32,
         p_vertex_offset: Ptr[Int32, ImmutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -3143,7 +3163,7 @@ struct MultiDraw(Copyable):
         instance_count: UInt32,
         first_instance: UInt32,
         stride: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawMultiEXT.html
@@ -3169,7 +3189,7 @@ struct MultiDraw(Copyable):
         first_instance: UInt32,
         stride: UInt32,
         p_vertex_offset: Ptr[Int32, p_vertex_offset_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDrawMultiIndexedEXT.html
@@ -3195,12 +3215,12 @@ struct OpacityMicromap(Copyable):
     ) -> Result
     var _destroy_micromap: fn(
         device: Device, micromap: MicromapEXT, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _cmd_build_micromaps: fn(
         command_buffer: CommandBuffer,
         info_count: UInt32,
         p_infos: Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _build_micromaps: fn(
         device: Device,
         deferred_operation: DeferredOperationKHR,
@@ -3233,13 +3253,13 @@ struct OpacityMicromap(Copyable):
     ) -> Result
     var _cmd_copy_micromap: fn(
         command_buffer: CommandBuffer, p_info: Ptr[CopyMicromapInfoEXT, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _cmd_copy_micromap_to_memory: fn(
         command_buffer: CommandBuffer, p_info: Ptr[CopyMicromapToMemoryInfoEXT, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _cmd_copy_memory_to_micromap: fn(
         command_buffer: CommandBuffer, p_info: Ptr[CopyMemoryToMicromapInfoEXT, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _cmd_write_micromaps_properties: fn(
         command_buffer: CommandBuffer,
         micromap_count: UInt32,
@@ -3247,18 +3267,18 @@ struct OpacityMicromap(Copyable):
         query_type: QueryType,
         query_pool: QueryPool,
         first_query: UInt32,
-    )
+    ) -> Byte
     var _get_device_micromap_compatibility: fn(
         device: Device,
         p_version_info: Ptr[MicromapVersionInfoEXT, ImmutAnyOrigin],
         p_compatibility: Ptr[AccelerationStructureCompatibilityKHR, MutAnyOrigin],
-    )
+    ) -> Byte
     var _get_micromap_build_sizes: fn(
         device: Device,
         build_type: AccelerationStructureBuildTypeKHR,
         p_build_info: Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin],
         p_size_info: Ptr[MicromapBuildSizesInfoEXT, MutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -3331,7 +3351,7 @@ struct OpacityMicromap(Copyable):
         device: Device,
         micromap: MicromapEXT,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyMicromapEXT.html
@@ -3345,7 +3365,7 @@ struct OpacityMicromap(Copyable):
         command_buffer: CommandBuffer,
         info_count: UInt32,
         p_infos: Ptr[MicromapBuildInfoEXT, p_infos_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBuildMicromapsEXT.html
@@ -3433,7 +3453,7 @@ struct OpacityMicromap(Copyable):
             stride,
         )
 
-    fn cmd_copy_micromap(self, command_buffer: CommandBuffer, info: CopyMicromapInfoEXT):
+    fn cmd_copy_micromap(self, command_buffer: CommandBuffer, info: CopyMicromapInfoEXT) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMicromapEXT.html
@@ -3442,7 +3462,7 @@ struct OpacityMicromap(Copyable):
 
     fn cmd_copy_micromap_to_memory(
         self, command_buffer: CommandBuffer, info: CopyMicromapToMemoryInfoEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMicromapToMemoryEXT.html
@@ -3451,7 +3471,7 @@ struct OpacityMicromap(Copyable):
 
     fn cmd_copy_memory_to_micromap(
         self, command_buffer: CommandBuffer, info: CopyMemoryToMicromapInfoEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMemoryToMicromapEXT.html
@@ -3466,7 +3486,7 @@ struct OpacityMicromap(Copyable):
         query_type: QueryType,
         query_pool: QueryPool,
         first_query: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdWriteMicromapsPropertiesEXT.html
@@ -3485,7 +3505,7 @@ struct OpacityMicromap(Copyable):
         device: Device,
         version_info: MicromapVersionInfoEXT,
         mut compatibility: AccelerationStructureCompatibilityKHR,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceMicromapCompatibilityEXT.html
@@ -3498,7 +3518,7 @@ struct OpacityMicromap(Copyable):
         build_type: AccelerationStructureBuildTypeKHR,
         build_info: MicromapBuildInfoEXT,
         mut size_info: MicromapBuildSizesInfoEXT,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetMicromapBuildSizesEXT.html
@@ -3508,7 +3528,7 @@ struct OpacityMicromap(Copyable):
 
 struct PageableDeviceLocalMemory(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _set_device_memory_priority: fn(device: Device, memory: DeviceMemory, priority: Float32)
+    var _set_device_memory_priority: fn(device: Device, memory: DeviceMemory, priority: Float32) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -3519,7 +3539,9 @@ struct PageableDeviceLocalMemory(Copyable):
             device, "vkSetDeviceMemoryPriorityEXT".as_c_string_slice()
         )).bitcast[type_of(self._set_device_memory_priority)]()[]
 
-    fn set_device_memory_priority(self, device: Device, memory: DeviceMemory, priority: Float32):
+    fn set_device_memory_priority(
+        self, device: Device, memory: DeviceMemory, priority: Float32
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetDeviceMemoryPriorityEXT.html
@@ -3529,104 +3551,112 @@ struct PageableDeviceLocalMemory(Copyable):
 
 struct ExtendedDynamicState3(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_depth_clamp_enable: fn(command_buffer: CommandBuffer, depth_clamp_enable: Bool32)
-    var _cmd_set_polygon_mode: fn(command_buffer: CommandBuffer, polygon_mode: PolygonMode)
+    var _cmd_set_depth_clamp_enable: fn(
+        command_buffer: CommandBuffer, depth_clamp_enable: Bool32
+    ) -> Byte
+    var _cmd_set_polygon_mode: fn(command_buffer: CommandBuffer, polygon_mode: PolygonMode) -> Byte
     var _cmd_set_rasterization_samples: fn(
         command_buffer: CommandBuffer, rasterization_samples: SampleCountFlagBits
-    )
+    ) -> Byte
     var _cmd_set_sample_mask: fn(
         command_buffer: CommandBuffer,
         samples: SampleCountFlagBits,
         p_sample_mask: Ptr[SampleMask, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_alpha_to_coverage_enable: fn(
         command_buffer: CommandBuffer, alpha_to_coverage_enable: Bool32
-    )
-    var _cmd_set_alpha_to_one_enable: fn(command_buffer: CommandBuffer, alpha_to_one_enable: Bool32)
-    var _cmd_set_logic_op_enable: fn(command_buffer: CommandBuffer, logic_op_enable: Bool32)
+    ) -> Byte
+    var _cmd_set_alpha_to_one_enable: fn(
+        command_buffer: CommandBuffer, alpha_to_one_enable: Bool32
+    ) -> Byte
+    var _cmd_set_logic_op_enable: fn(command_buffer: CommandBuffer, logic_op_enable: Bool32) -> Byte
     var _cmd_set_color_blend_enable: fn(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_enables: Ptr[Bool32, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_color_blend_equation: fn(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_equations: Ptr[ColorBlendEquationEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_color_write_mask: fn(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_write_masks: Ptr[ColorComponentFlags, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_tessellation_domain_origin: fn(
         command_buffer: CommandBuffer, domain_origin: TessellationDomainOrigin
-    )
-    var _cmd_set_rasterization_stream: fn(command_buffer: CommandBuffer, rasterization_stream: UInt32)
+    ) -> Byte
+    var _cmd_set_rasterization_stream: fn(
+        command_buffer: CommandBuffer, rasterization_stream: UInt32
+    ) -> Byte
     var _cmd_set_conservative_rasterization_mode: fn(
         command_buffer: CommandBuffer, conservative_rasterization_mode: ConservativeRasterizationModeEXT
-    )
+    ) -> Byte
     var _cmd_set_extra_primitive_overestimation_size: fn(
         command_buffer: CommandBuffer, extra_primitive_overestimation_size: Float32
-    )
-    var _cmd_set_depth_clip_enable: fn(command_buffer: CommandBuffer, depth_clip_enable: Bool32)
+    ) -> Byte
+    var _cmd_set_depth_clip_enable: fn(command_buffer: CommandBuffer, depth_clip_enable: Bool32) -> Byte
     var _cmd_set_sample_locations_enable: fn(
         command_buffer: CommandBuffer, sample_locations_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_color_blend_advanced: fn(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_advanced: Ptr[ColorBlendAdvancedEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_provoking_vertex_mode: fn(
         command_buffer: CommandBuffer, provoking_vertex_mode: ProvokingVertexModeEXT
-    )
+    ) -> Byte
     var _cmd_set_line_rasterization_mode: fn(
         command_buffer: CommandBuffer, line_rasterization_mode: LineRasterizationModeEXT
-    )
-    var _cmd_set_line_stipple_enable: fn(command_buffer: CommandBuffer, stippled_line_enable: Bool32)
+    ) -> Byte
+    var _cmd_set_line_stipple_enable: fn(
+        command_buffer: CommandBuffer, stippled_line_enable: Bool32
+    ) -> Byte
     var _cmd_set_depth_clip_negative_one_to_one: fn(
         command_buffer: CommandBuffer, negative_one_to_one: Bool32
-    )
+    ) -> Byte
     var _cmd_set_viewport_w_scaling_enable: fn(
         command_buffer: CommandBuffer, viewport_w_scaling_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_viewport_swizzle: fn(
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
         p_viewport_swizzles: Ptr[ViewportSwizzleNV, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_coverage_to_color_enable: fn(
         command_buffer: CommandBuffer, coverage_to_color_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_coverage_to_color_location: fn(
         command_buffer: CommandBuffer, coverage_to_color_location: UInt32
-    )
+    ) -> Byte
     var _cmd_set_coverage_modulation_mode: fn(
         command_buffer: CommandBuffer, coverage_modulation_mode: CoverageModulationModeNV
-    )
+    ) -> Byte
     var _cmd_set_coverage_modulation_table_enable: fn(
         command_buffer: CommandBuffer, coverage_modulation_table_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_coverage_modulation_table: fn(
         command_buffer: CommandBuffer,
         coverage_modulation_table_count: UInt32,
         p_coverage_modulation_table: Ptr[Float32, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_shading_rate_image_enable: fn(
         command_buffer: CommandBuffer, shading_rate_image_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_representative_fragment_test_enable: fn(
         command_buffer: CommandBuffer, representative_fragment_test_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_coverage_reduction_mode: fn(
         command_buffer: CommandBuffer, coverage_reduction_mode: CoverageReductionModeNV
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -3727,14 +3757,18 @@ struct ExtendedDynamicState3(Copyable):
             device, "vkCmdSetCoverageReductionModeNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_coverage_reduction_mode)]()[]
 
-    fn cmd_set_depth_clamp_enable(self, command_buffer: CommandBuffer, depth_clamp_enable: Bool32):
+    fn cmd_set_depth_clamp_enable(
+        self, command_buffer: CommandBuffer, depth_clamp_enable: Bool32
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClampEnableEXT.html
         """
         return self._cmd_set_depth_clamp_enable(command_buffer, depth_clamp_enable)
 
-    fn cmd_set_polygon_mode(self, command_buffer: CommandBuffer, polygon_mode: PolygonMode):
+    fn cmd_set_polygon_mode(
+        self, command_buffer: CommandBuffer, polygon_mode: PolygonMode
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPolygonModeEXT.html
@@ -3743,7 +3777,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_rasterization_samples(
         self, command_buffer: CommandBuffer, rasterization_samples: SampleCountFlagBits
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRasterizationSamplesEXT.html
@@ -3755,7 +3789,7 @@ struct ExtendedDynamicState3(Copyable):
         command_buffer: CommandBuffer,
         samples: SampleCountFlagBits,
         p_sample_mask: Ptr[SampleMask, p_sample_mask_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetSampleMaskEXT.html
@@ -3766,7 +3800,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_alpha_to_coverage_enable(
         self, command_buffer: CommandBuffer, alpha_to_coverage_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetAlphaToCoverageEnableEXT.html
@@ -3775,14 +3809,16 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_alpha_to_one_enable(
         self, command_buffer: CommandBuffer, alpha_to_one_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetAlphaToOneEnableEXT.html
         """
         return self._cmd_set_alpha_to_one_enable(command_buffer, alpha_to_one_enable)
 
-    fn cmd_set_logic_op_enable(self, command_buffer: CommandBuffer, logic_op_enable: Bool32):
+    fn cmd_set_logic_op_enable(
+        self, command_buffer: CommandBuffer, logic_op_enable: Bool32
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLogicOpEnableEXT.html
@@ -3795,7 +3831,7 @@ struct ExtendedDynamicState3(Copyable):
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_enables: Ptr[Bool32, p_color_blend_enables_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorBlendEnableEXT.html
@@ -3813,7 +3849,7 @@ struct ExtendedDynamicState3(Copyable):
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_equations: Ptr[ColorBlendEquationEXT, p_color_blend_equations_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorBlendEquationEXT.html
@@ -3831,7 +3867,7 @@ struct ExtendedDynamicState3(Copyable):
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_write_masks: Ptr[ColorComponentFlags, p_color_write_masks_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorWriteMaskEXT.html
@@ -3845,7 +3881,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_tessellation_domain_origin(
         self, command_buffer: CommandBuffer, domain_origin: TessellationDomainOrigin
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetTessellationDomainOriginEXT.html
@@ -3854,7 +3890,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_rasterization_stream(
         self, command_buffer: CommandBuffer, rasterization_stream: UInt32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRasterizationStreamEXT.html
@@ -3865,7 +3901,7 @@ struct ExtendedDynamicState3(Copyable):
         self,
         command_buffer: CommandBuffer,
         conservative_rasterization_mode: ConservativeRasterizationModeEXT,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetConservativeRasterizationModeEXT.html
@@ -3876,7 +3912,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_extra_primitive_overestimation_size(
         self, command_buffer: CommandBuffer, extra_primitive_overestimation_size: Float32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetExtraPrimitiveOverestimationSizeEXT.html
@@ -3885,7 +3921,9 @@ struct ExtendedDynamicState3(Copyable):
             command_buffer, extra_primitive_overestimation_size
         )
 
-    fn cmd_set_depth_clip_enable(self, command_buffer: CommandBuffer, depth_clip_enable: Bool32):
+    fn cmd_set_depth_clip_enable(
+        self, command_buffer: CommandBuffer, depth_clip_enable: Bool32
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClipEnableEXT.html
@@ -3894,7 +3932,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_sample_locations_enable(
         self, command_buffer: CommandBuffer, sample_locations_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetSampleLocationsEnableEXT.html
@@ -3907,7 +3945,7 @@ struct ExtendedDynamicState3(Copyable):
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_advanced: Ptr[ColorBlendAdvancedEXT, p_color_blend_advanced_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorBlendAdvancedEXT.html
@@ -3921,7 +3959,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_provoking_vertex_mode(
         self, command_buffer: CommandBuffer, provoking_vertex_mode: ProvokingVertexModeEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetProvokingVertexModeEXT.html
@@ -3930,7 +3968,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_line_rasterization_mode(
         self, command_buffer: CommandBuffer, line_rasterization_mode: LineRasterizationModeEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLineRasterizationModeEXT.html
@@ -3939,7 +3977,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_line_stipple_enable(
         self, command_buffer: CommandBuffer, stippled_line_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLineStippleEnableEXT.html
@@ -3948,7 +3986,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_depth_clip_negative_one_to_one(
         self, command_buffer: CommandBuffer, negative_one_to_one: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClipNegativeOneToOneEXT.html
@@ -3957,7 +3995,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_viewport_w_scaling_enable(
         self, command_buffer: CommandBuffer, viewport_w_scaling_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWScalingEnableNV.html
@@ -3970,7 +4008,7 @@ struct ExtendedDynamicState3(Copyable):
         first_viewport: UInt32,
         viewport_count: UInt32,
         p_viewport_swizzles: Ptr[ViewportSwizzleNV, p_viewport_swizzles_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportSwizzleNV.html
@@ -3984,7 +4022,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_coverage_to_color_enable(
         self, command_buffer: CommandBuffer, coverage_to_color_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageToColorEnableNV.html
@@ -3993,7 +4031,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_coverage_to_color_location(
         self, command_buffer: CommandBuffer, coverage_to_color_location: UInt32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageToColorLocationNV.html
@@ -4002,7 +4040,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_coverage_modulation_mode(
         self, command_buffer: CommandBuffer, coverage_modulation_mode: CoverageModulationModeNV
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageModulationModeNV.html
@@ -4011,7 +4049,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_coverage_modulation_table_enable(
         self, command_buffer: CommandBuffer, coverage_modulation_table_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageModulationTableEnableNV.html
@@ -4027,7 +4065,7 @@ struct ExtendedDynamicState3(Copyable):
         command_buffer: CommandBuffer,
         coverage_modulation_table_count: UInt32,
         p_coverage_modulation_table: Ptr[Float32, p_coverage_modulation_table_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageModulationTableNV.html
@@ -4040,7 +4078,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_shading_rate_image_enable(
         self, command_buffer: CommandBuffer, shading_rate_image_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetShadingRateImageEnableNV.html
@@ -4049,7 +4087,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_representative_fragment_test_enable(
         self, command_buffer: CommandBuffer, representative_fragment_test_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRepresentativeFragmentTestEnableNV.html
@@ -4060,7 +4098,7 @@ struct ExtendedDynamicState3(Copyable):
 
     fn cmd_set_coverage_reduction_mode(
         self, command_buffer: CommandBuffer, coverage_reduction_mode: CoverageReductionModeNV
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageReductionModeNV.html
@@ -4074,12 +4112,12 @@ struct ShaderModuleIdentifier(Copyable):
         device: Device,
         shader_module: ShaderModule,
         p_identifier: Ptr[ShaderModuleIdentifierEXT, MutAnyOrigin],
-    )
+    ) -> Byte
     var _get_shader_module_create_info_identifier: fn(
         device: Device,
         p_create_info: Ptr[ShaderModuleCreateInfo, ImmutAnyOrigin],
         p_identifier: Ptr[ShaderModuleIdentifierEXT, MutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -4095,7 +4133,7 @@ struct ShaderModuleIdentifier(Copyable):
 
     fn get_shader_module_identifier(
         self, device: Device, shader_module: ShaderModule, mut identifier: ShaderModuleIdentifierEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderModuleIdentifierEXT.html
@@ -4107,7 +4145,7 @@ struct ShaderModuleIdentifier(Copyable):
         device: Device,
         create_info: ShaderModuleCreateInfo,
         mut identifier: ShaderModuleIdentifierEXT,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetShaderModuleCreateInfoIdentifierEXT.html
@@ -4128,7 +4166,7 @@ struct ShaderObject(Copyable):
     ) -> Result
     var _destroy_shader: fn(
         device: Device, shader: ShaderEXT, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _get_shader_binary_data: fn(
         device: Device,
         shader: ShaderEXT,
@@ -4140,20 +4178,20 @@ struct ShaderObject(Copyable):
         stage_count: UInt32,
         p_stages: Ptr[ShaderStageFlagBits, ImmutAnyOrigin],
         p_shaders: Ptr[ShaderEXT, ImmutAnyOrigin],
-    )
-    var _cmd_set_cull_mode: fn(command_buffer: CommandBuffer, cull_mode: CullModeFlags)
-    var _cmd_set_front_face: fn(command_buffer: CommandBuffer, front_face: FrontFace)
+    ) -> Byte
+    var _cmd_set_cull_mode: fn(command_buffer: CommandBuffer, cull_mode: CullModeFlags) -> Byte
+    var _cmd_set_front_face: fn(command_buffer: CommandBuffer, front_face: FrontFace) -> Byte
     var _cmd_set_primitive_topology: fn(
         command_buffer: CommandBuffer, primitive_topology: PrimitiveTopology
-    )
+    ) -> Byte
     var _cmd_set_viewport_with_count: fn(
         command_buffer: CommandBuffer,
         viewport_count: UInt32,
         p_viewports: Ptr[Viewport, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_scissor_with_count: fn(
         command_buffer: CommandBuffer, scissor_count: UInt32, p_scissors: Ptr[Rect2D, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _cmd_bind_vertex_buffers_2: fn(
         command_buffer: CommandBuffer,
         first_binding: UInt32,
@@ -4162,14 +4200,20 @@ struct ShaderObject(Copyable):
         p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
         p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
         p_strides: Ptr[DeviceSize, ImmutAnyOrigin],
-    )
-    var _cmd_set_depth_test_enable: fn(command_buffer: CommandBuffer, depth_test_enable: Bool32)
-    var _cmd_set_depth_write_enable: fn(command_buffer: CommandBuffer, depth_write_enable: Bool32)
-    var _cmd_set_depth_compare_op: fn(command_buffer: CommandBuffer, depth_compare_op: CompareOp)
+    ) -> Byte
+    var _cmd_set_depth_test_enable: fn(command_buffer: CommandBuffer, depth_test_enable: Bool32) -> Byte
+    var _cmd_set_depth_write_enable: fn(
+        command_buffer: CommandBuffer, depth_write_enable: Bool32
+    ) -> Byte
+    var _cmd_set_depth_compare_op: fn(
+        command_buffer: CommandBuffer, depth_compare_op: CompareOp
+    ) -> Byte
     var _cmd_set_depth_bounds_test_enable: fn(
         command_buffer: CommandBuffer, depth_bounds_test_enable: Bool32
-    )
-    var _cmd_set_stencil_test_enable: fn(command_buffer: CommandBuffer, stencil_test_enable: Bool32)
+    ) -> Byte
+    var _cmd_set_stencil_test_enable: fn(
+        command_buffer: CommandBuffer, stencil_test_enable: Bool32
+    ) -> Byte
     var _cmd_set_stencil_op: fn(
         command_buffer: CommandBuffer,
         face_mask: StencilFaceFlags,
@@ -4177,126 +4221,136 @@ struct ShaderObject(Copyable):
         pass_op: StencilOp,
         depth_fail_op: StencilOp,
         compare_op: CompareOp,
-    )
+    ) -> Byte
     var _cmd_set_vertex_input: fn(
         command_buffer: CommandBuffer,
         vertex_binding_description_count: UInt32,
         p_vertex_binding_descriptions: Ptr[VertexInputBindingDescription2EXT, ImmutAnyOrigin],
         vertex_attribute_description_count: UInt32,
         p_vertex_attribute_descriptions: Ptr[VertexInputAttributeDescription2EXT, ImmutAnyOrigin],
-    )
-    var _cmd_set_patch_control_points: fn(command_buffer: CommandBuffer, patch_control_points: UInt32)
+    ) -> Byte
+    var _cmd_set_patch_control_points: fn(
+        command_buffer: CommandBuffer, patch_control_points: UInt32
+    ) -> Byte
     var _cmd_set_rasterizer_discard_enable: fn(
         command_buffer: CommandBuffer, rasterizer_discard_enable: Bool32
-    )
-    var _cmd_set_depth_bias_enable: fn(command_buffer: CommandBuffer, depth_bias_enable: Bool32)
-    var _cmd_set_logic_op: fn(command_buffer: CommandBuffer, logic_op: LogicOp)
+    ) -> Byte
+    var _cmd_set_depth_bias_enable: fn(command_buffer: CommandBuffer, depth_bias_enable: Bool32) -> Byte
+    var _cmd_set_logic_op: fn(command_buffer: CommandBuffer, logic_op: LogicOp) -> Byte
     var _cmd_set_primitive_restart_enable: fn(
         command_buffer: CommandBuffer, primitive_restart_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_tessellation_domain_origin: fn(
         command_buffer: CommandBuffer, domain_origin: TessellationDomainOrigin
-    )
-    var _cmd_set_depth_clamp_enable: fn(command_buffer: CommandBuffer, depth_clamp_enable: Bool32)
-    var _cmd_set_polygon_mode: fn(command_buffer: CommandBuffer, polygon_mode: PolygonMode)
+    ) -> Byte
+    var _cmd_set_depth_clamp_enable: fn(
+        command_buffer: CommandBuffer, depth_clamp_enable: Bool32
+    ) -> Byte
+    var _cmd_set_polygon_mode: fn(command_buffer: CommandBuffer, polygon_mode: PolygonMode) -> Byte
     var _cmd_set_rasterization_samples: fn(
         command_buffer: CommandBuffer, rasterization_samples: SampleCountFlagBits
-    )
+    ) -> Byte
     var _cmd_set_sample_mask: fn(
         command_buffer: CommandBuffer,
         samples: SampleCountFlagBits,
         p_sample_mask: Ptr[SampleMask, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_alpha_to_coverage_enable: fn(
         command_buffer: CommandBuffer, alpha_to_coverage_enable: Bool32
-    )
-    var _cmd_set_alpha_to_one_enable: fn(command_buffer: CommandBuffer, alpha_to_one_enable: Bool32)
-    var _cmd_set_logic_op_enable: fn(command_buffer: CommandBuffer, logic_op_enable: Bool32)
+    ) -> Byte
+    var _cmd_set_alpha_to_one_enable: fn(
+        command_buffer: CommandBuffer, alpha_to_one_enable: Bool32
+    ) -> Byte
+    var _cmd_set_logic_op_enable: fn(command_buffer: CommandBuffer, logic_op_enable: Bool32) -> Byte
     var _cmd_set_color_blend_enable: fn(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_enables: Ptr[Bool32, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_color_blend_equation: fn(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_equations: Ptr[ColorBlendEquationEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_color_write_mask: fn(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_write_masks: Ptr[ColorComponentFlags, ImmutAnyOrigin],
-    )
-    var _cmd_set_rasterization_stream: fn(command_buffer: CommandBuffer, rasterization_stream: UInt32)
+    ) -> Byte
+    var _cmd_set_rasterization_stream: fn(
+        command_buffer: CommandBuffer, rasterization_stream: UInt32
+    ) -> Byte
     var _cmd_set_conservative_rasterization_mode: fn(
         command_buffer: CommandBuffer, conservative_rasterization_mode: ConservativeRasterizationModeEXT
-    )
+    ) -> Byte
     var _cmd_set_extra_primitive_overestimation_size: fn(
         command_buffer: CommandBuffer, extra_primitive_overestimation_size: Float32
-    )
-    var _cmd_set_depth_clip_enable: fn(command_buffer: CommandBuffer, depth_clip_enable: Bool32)
+    ) -> Byte
+    var _cmd_set_depth_clip_enable: fn(command_buffer: CommandBuffer, depth_clip_enable: Bool32) -> Byte
     var _cmd_set_sample_locations_enable: fn(
         command_buffer: CommandBuffer, sample_locations_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_color_blend_advanced: fn(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_advanced: Ptr[ColorBlendAdvancedEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_provoking_vertex_mode: fn(
         command_buffer: CommandBuffer, provoking_vertex_mode: ProvokingVertexModeEXT
-    )
+    ) -> Byte
     var _cmd_set_line_rasterization_mode: fn(
         command_buffer: CommandBuffer, line_rasterization_mode: LineRasterizationModeEXT
-    )
-    var _cmd_set_line_stipple_enable: fn(command_buffer: CommandBuffer, stippled_line_enable: Bool32)
+    ) -> Byte
+    var _cmd_set_line_stipple_enable: fn(
+        command_buffer: CommandBuffer, stippled_line_enable: Bool32
+    ) -> Byte
     var _cmd_set_depth_clip_negative_one_to_one: fn(
         command_buffer: CommandBuffer, negative_one_to_one: Bool32
-    )
+    ) -> Byte
     var _cmd_set_viewport_w_scaling_enable: fn(
         command_buffer: CommandBuffer, viewport_w_scaling_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_viewport_swizzle: fn(
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
         p_viewport_swizzles: Ptr[ViewportSwizzleNV, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_coverage_to_color_enable: fn(
         command_buffer: CommandBuffer, coverage_to_color_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_coverage_to_color_location: fn(
         command_buffer: CommandBuffer, coverage_to_color_location: UInt32
-    )
+    ) -> Byte
     var _cmd_set_coverage_modulation_mode: fn(
         command_buffer: CommandBuffer, coverage_modulation_mode: CoverageModulationModeNV
-    )
+    ) -> Byte
     var _cmd_set_coverage_modulation_table_enable: fn(
         command_buffer: CommandBuffer, coverage_modulation_table_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_coverage_modulation_table: fn(
         command_buffer: CommandBuffer,
         coverage_modulation_table_count: UInt32,
         p_coverage_modulation_table: Ptr[Float32, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_set_shading_rate_image_enable: fn(
         command_buffer: CommandBuffer, shading_rate_image_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_representative_fragment_test_enable: fn(
         command_buffer: CommandBuffer, representative_fragment_test_enable: Bool32
-    )
+    ) -> Byte
     var _cmd_set_coverage_reduction_mode: fn(
         command_buffer: CommandBuffer, coverage_reduction_mode: CoverageReductionModeNV
-    )
+    ) -> Byte
     var _cmd_set_depth_clamp_range: fn(
         command_buffer: CommandBuffer,
         depth_clamp_mode: DepthClampModeEXT,
         p_depth_clamp_range: Ptr[DepthClampRangeEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -4495,7 +4549,7 @@ struct ShaderObject(Copyable):
         device: Device,
         shader: ShaderEXT,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyShaderEXT.html
@@ -4548,7 +4602,7 @@ struct ShaderObject(Copyable):
         stage_count: UInt32,
         p_stages: Ptr[ShaderStageFlagBits, p_stages_origin],
         p_shaders: Ptr[ShaderEXT, p_shaders_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindShadersEXT.html
@@ -4560,14 +4614,14 @@ struct ShaderObject(Copyable):
             Ptr(to=p_shaders).bitcast[Ptr[ShaderEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_cull_mode(self, command_buffer: CommandBuffer, cull_mode: CullModeFlags):
+    fn cmd_set_cull_mode(self, command_buffer: CommandBuffer, cull_mode: CullModeFlags) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCullMode.html
         """
         return self._cmd_set_cull_mode(command_buffer, cull_mode)
 
-    fn cmd_set_front_face(self, command_buffer: CommandBuffer, front_face: FrontFace):
+    fn cmd_set_front_face(self, command_buffer: CommandBuffer, front_face: FrontFace) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetFrontFace.html
@@ -4576,7 +4630,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_primitive_topology(
         self, command_buffer: CommandBuffer, primitive_topology: PrimitiveTopology
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPrimitiveTopology.html
@@ -4588,7 +4642,7 @@ struct ShaderObject(Copyable):
         command_buffer: CommandBuffer,
         viewport_count: UInt32,
         p_viewports: Ptr[Viewport, p_viewports_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWithCount.html
@@ -4602,7 +4656,7 @@ struct ShaderObject(Copyable):
         command_buffer: CommandBuffer,
         scissor_count: UInt32,
         p_scissors: Ptr[Rect2D, p_scissors_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetScissorWithCount.html
@@ -4625,7 +4679,7 @@ struct ShaderObject(Copyable):
         p_offsets: Ptr[DeviceSize, p_offsets_origin],
         p_sizes: Ptr[DeviceSize, p_sizes_origin],
         p_strides: Ptr[DeviceSize, p_strides_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindVertexBuffers2.html
@@ -4640,21 +4694,27 @@ struct ShaderObject(Copyable):
             Ptr(to=p_strides).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_depth_test_enable(self, command_buffer: CommandBuffer, depth_test_enable: Bool32):
+    fn cmd_set_depth_test_enable(
+        self, command_buffer: CommandBuffer, depth_test_enable: Bool32
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthTestEnable.html
         """
         return self._cmd_set_depth_test_enable(command_buffer, depth_test_enable)
 
-    fn cmd_set_depth_write_enable(self, command_buffer: CommandBuffer, depth_write_enable: Bool32):
+    fn cmd_set_depth_write_enable(
+        self, command_buffer: CommandBuffer, depth_write_enable: Bool32
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthWriteEnable.html
         """
         return self._cmd_set_depth_write_enable(command_buffer, depth_write_enable)
 
-    fn cmd_set_depth_compare_op(self, command_buffer: CommandBuffer, depth_compare_op: CompareOp):
+    fn cmd_set_depth_compare_op(
+        self, command_buffer: CommandBuffer, depth_compare_op: CompareOp
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthCompareOp.html
@@ -4663,7 +4723,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_depth_bounds_test_enable(
         self, command_buffer: CommandBuffer, depth_bounds_test_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBoundsTestEnable.html
@@ -4672,7 +4732,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_stencil_test_enable(
         self, command_buffer: CommandBuffer, stencil_test_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilTestEnable.html
@@ -4687,7 +4747,7 @@ struct ShaderObject(Copyable):
         pass_op: StencilOp,
         depth_fail_op: StencilOp,
         compare_op: CompareOp,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetStencilOp.html
@@ -4706,7 +4766,7 @@ struct ShaderObject(Copyable):
         p_vertex_binding_descriptions: Ptr[VertexInputBindingDescription2EXT, p_vertex_binding_descriptions_origin],
         vertex_attribute_description_count: UInt32,
         p_vertex_attribute_descriptions: Ptr[VertexInputAttributeDescription2EXT, p_vertex_attribute_descriptions_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetVertexInputEXT.html
@@ -4721,7 +4781,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_patch_control_points(
         self, command_buffer: CommandBuffer, patch_control_points: UInt32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPatchControlPointsEXT.html
@@ -4730,21 +4790,23 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_rasterizer_discard_enable(
         self, command_buffer: CommandBuffer, rasterizer_discard_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRasterizerDiscardEnable.html
         """
         return self._cmd_set_rasterizer_discard_enable(command_buffer, rasterizer_discard_enable)
 
-    fn cmd_set_depth_bias_enable(self, command_buffer: CommandBuffer, depth_bias_enable: Bool32):
+    fn cmd_set_depth_bias_enable(
+        self, command_buffer: CommandBuffer, depth_bias_enable: Bool32
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBiasEnable.html
         """
         return self._cmd_set_depth_bias_enable(command_buffer, depth_bias_enable)
 
-    fn cmd_set_logic_op(self, command_buffer: CommandBuffer, logic_op: LogicOp):
+    fn cmd_set_logic_op(self, command_buffer: CommandBuffer, logic_op: LogicOp) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLogicOpEXT.html
@@ -4753,7 +4815,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_primitive_restart_enable(
         self, command_buffer: CommandBuffer, primitive_restart_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPrimitiveRestartEnable.html
@@ -4762,21 +4824,25 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_tessellation_domain_origin(
         self, command_buffer: CommandBuffer, domain_origin: TessellationDomainOrigin
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetTessellationDomainOriginEXT.html
         """
         return self._cmd_set_tessellation_domain_origin(command_buffer, domain_origin)
 
-    fn cmd_set_depth_clamp_enable(self, command_buffer: CommandBuffer, depth_clamp_enable: Bool32):
+    fn cmd_set_depth_clamp_enable(
+        self, command_buffer: CommandBuffer, depth_clamp_enable: Bool32
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClampEnableEXT.html
         """
         return self._cmd_set_depth_clamp_enable(command_buffer, depth_clamp_enable)
 
-    fn cmd_set_polygon_mode(self, command_buffer: CommandBuffer, polygon_mode: PolygonMode):
+    fn cmd_set_polygon_mode(
+        self, command_buffer: CommandBuffer, polygon_mode: PolygonMode
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPolygonModeEXT.html
@@ -4785,7 +4851,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_rasterization_samples(
         self, command_buffer: CommandBuffer, rasterization_samples: SampleCountFlagBits
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRasterizationSamplesEXT.html
@@ -4797,7 +4863,7 @@ struct ShaderObject(Copyable):
         command_buffer: CommandBuffer,
         samples: SampleCountFlagBits,
         p_sample_mask: Ptr[SampleMask, p_sample_mask_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetSampleMaskEXT.html
@@ -4808,7 +4874,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_alpha_to_coverage_enable(
         self, command_buffer: CommandBuffer, alpha_to_coverage_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetAlphaToCoverageEnableEXT.html
@@ -4817,14 +4883,16 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_alpha_to_one_enable(
         self, command_buffer: CommandBuffer, alpha_to_one_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetAlphaToOneEnableEXT.html
         """
         return self._cmd_set_alpha_to_one_enable(command_buffer, alpha_to_one_enable)
 
-    fn cmd_set_logic_op_enable(self, command_buffer: CommandBuffer, logic_op_enable: Bool32):
+    fn cmd_set_logic_op_enable(
+        self, command_buffer: CommandBuffer, logic_op_enable: Bool32
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLogicOpEnableEXT.html
@@ -4837,7 +4905,7 @@ struct ShaderObject(Copyable):
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_enables: Ptr[Bool32, p_color_blend_enables_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorBlendEnableEXT.html
@@ -4855,7 +4923,7 @@ struct ShaderObject(Copyable):
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_equations: Ptr[ColorBlendEquationEXT, p_color_blend_equations_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorBlendEquationEXT.html
@@ -4873,7 +4941,7 @@ struct ShaderObject(Copyable):
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_write_masks: Ptr[ColorComponentFlags, p_color_write_masks_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorWriteMaskEXT.html
@@ -4887,7 +4955,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_rasterization_stream(
         self, command_buffer: CommandBuffer, rasterization_stream: UInt32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRasterizationStreamEXT.html
@@ -4898,7 +4966,7 @@ struct ShaderObject(Copyable):
         self,
         command_buffer: CommandBuffer,
         conservative_rasterization_mode: ConservativeRasterizationModeEXT,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetConservativeRasterizationModeEXT.html
@@ -4909,7 +4977,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_extra_primitive_overestimation_size(
         self, command_buffer: CommandBuffer, extra_primitive_overestimation_size: Float32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetExtraPrimitiveOverestimationSizeEXT.html
@@ -4918,7 +4986,9 @@ struct ShaderObject(Copyable):
             command_buffer, extra_primitive_overestimation_size
         )
 
-    fn cmd_set_depth_clip_enable(self, command_buffer: CommandBuffer, depth_clip_enable: Bool32):
+    fn cmd_set_depth_clip_enable(
+        self, command_buffer: CommandBuffer, depth_clip_enable: Bool32
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClipEnableEXT.html
@@ -4927,7 +4997,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_sample_locations_enable(
         self, command_buffer: CommandBuffer, sample_locations_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetSampleLocationsEnableEXT.html
@@ -4940,7 +5010,7 @@ struct ShaderObject(Copyable):
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_advanced: Ptr[ColorBlendAdvancedEXT, p_color_blend_advanced_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetColorBlendAdvancedEXT.html
@@ -4954,7 +5024,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_provoking_vertex_mode(
         self, command_buffer: CommandBuffer, provoking_vertex_mode: ProvokingVertexModeEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetProvokingVertexModeEXT.html
@@ -4963,7 +5033,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_line_rasterization_mode(
         self, command_buffer: CommandBuffer, line_rasterization_mode: LineRasterizationModeEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLineRasterizationModeEXT.html
@@ -4972,7 +5042,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_line_stipple_enable(
         self, command_buffer: CommandBuffer, stippled_line_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLineStippleEnableEXT.html
@@ -4981,7 +5051,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_depth_clip_negative_one_to_one(
         self, command_buffer: CommandBuffer, negative_one_to_one: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClipNegativeOneToOneEXT.html
@@ -4990,7 +5060,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_viewport_w_scaling_enable(
         self, command_buffer: CommandBuffer, viewport_w_scaling_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportWScalingEnableNV.html
@@ -5003,7 +5073,7 @@ struct ShaderObject(Copyable):
         first_viewport: UInt32,
         viewport_count: UInt32,
         p_viewport_swizzles: Ptr[ViewportSwizzleNV, p_viewport_swizzles_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetViewportSwizzleNV.html
@@ -5017,7 +5087,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_coverage_to_color_enable(
         self, command_buffer: CommandBuffer, coverage_to_color_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageToColorEnableNV.html
@@ -5026,7 +5096,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_coverage_to_color_location(
         self, command_buffer: CommandBuffer, coverage_to_color_location: UInt32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageToColorLocationNV.html
@@ -5035,7 +5105,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_coverage_modulation_mode(
         self, command_buffer: CommandBuffer, coverage_modulation_mode: CoverageModulationModeNV
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageModulationModeNV.html
@@ -5044,7 +5114,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_coverage_modulation_table_enable(
         self, command_buffer: CommandBuffer, coverage_modulation_table_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageModulationTableEnableNV.html
@@ -5060,7 +5130,7 @@ struct ShaderObject(Copyable):
         command_buffer: CommandBuffer,
         coverage_modulation_table_count: UInt32,
         p_coverage_modulation_table: Ptr[Float32, p_coverage_modulation_table_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageModulationTableNV.html
@@ -5073,7 +5143,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_shading_rate_image_enable(
         self, command_buffer: CommandBuffer, shading_rate_image_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetShadingRateImageEnableNV.html
@@ -5082,7 +5152,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_representative_fragment_test_enable(
         self, command_buffer: CommandBuffer, representative_fragment_test_enable: Bool32
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetRepresentativeFragmentTestEnableNV.html
@@ -5093,7 +5163,7 @@ struct ShaderObject(Copyable):
 
     fn cmd_set_coverage_reduction_mode(
         self, command_buffer: CommandBuffer, coverage_reduction_mode: CoverageReductionModeNV
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCoverageReductionModeNV.html
@@ -5105,7 +5175,7 @@ struct ShaderObject(Copyable):
         command_buffer: CommandBuffer,
         depth_clamp_mode: DepthClampModeEXT,
         p_depth_clamp_range: Ptr[DepthClampRangeEXT, p_depth_clamp_range_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClampRangeEXT.html
@@ -5121,7 +5191,7 @@ struct AttachmentFeedbackLoopDynamicState(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_set_attachment_feedback_loop_enable: fn(
         command_buffer: CommandBuffer, aspect_mask: ImageAspectFlags
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -5134,7 +5204,7 @@ struct AttachmentFeedbackLoopDynamicState(Copyable):
 
     fn cmd_set_attachment_feedback_loop_enable(
         self, command_buffer: CommandBuffer, aspect_mask: ImageAspectFlags
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetAttachmentFeedbackLoopEnableEXT.html
@@ -5147,7 +5217,7 @@ struct MemoryDecompression(Copyable):
     var _cmd_decompress_memory: fn(
         command_buffer: CommandBuffer,
         p_decompress_memory_info_ext: Ptr[DecompressMemoryInfoEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_decompress_memory_indirect_count: fn(
         command_buffer: CommandBuffer,
         decompression_method: MemoryDecompressionMethodFlagsEXT,
@@ -5155,7 +5225,7 @@ struct MemoryDecompression(Copyable):
         indirect_commands_count_address: DeviceAddress,
         max_decompression_count: UInt32,
         stride: UInt32,
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -5171,7 +5241,7 @@ struct MemoryDecompression(Copyable):
 
     fn cmd_decompress_memory(
         self, command_buffer: CommandBuffer, decompress_memory_info_ext: DecompressMemoryInfoEXT
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDecompressMemoryEXT.html
@@ -5186,7 +5256,7 @@ struct MemoryDecompression(Copyable):
         indirect_commands_count_address: DeviceAddress,
         max_decompression_count: UInt32,
         stride: UInt32,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDecompressMemoryIndirectCountEXT.html
@@ -5207,17 +5277,17 @@ struct DeviceGeneratedCommands(Copyable):
         device: Device,
         p_info: Ptr[GeneratedCommandsMemoryRequirementsInfoEXT, ImmutAnyOrigin],
         p_memory_requirements: Ptr[MemoryRequirements2, MutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_preprocess_generated_commands: fn(
         command_buffer: CommandBuffer,
         p_generated_commands_info: Ptr[GeneratedCommandsInfoEXT, ImmutAnyOrigin],
         state_command_buffer: CommandBuffer,
-    )
+    ) -> Byte
     var _cmd_execute_generated_commands: fn(
         command_buffer: CommandBuffer,
         is_preprocessed: Bool32,
         p_generated_commands_info: Ptr[GeneratedCommandsInfoEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _create_indirect_commands_layout: fn(
         device: Device,
         p_create_info: Ptr[IndirectCommandsLayoutCreateInfoEXT, ImmutAnyOrigin],
@@ -5228,7 +5298,7 @@ struct DeviceGeneratedCommands(Copyable):
         device: Device,
         indirect_commands_layout: IndirectCommandsLayoutEXT,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _create_indirect_execution_set: fn(
         device: Device,
         p_create_info: Ptr[IndirectExecutionSetCreateInfoEXT, ImmutAnyOrigin],
@@ -5239,19 +5309,19 @@ struct DeviceGeneratedCommands(Copyable):
         device: Device,
         indirect_execution_set: IndirectExecutionSetEXT,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _update_indirect_execution_set_pipeline: fn(
         device: Device,
         indirect_execution_set: IndirectExecutionSetEXT,
         execution_set_write_count: UInt32,
         p_execution_set_writes: Ptr[WriteIndirectExecutionSetPipelineEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _update_indirect_execution_set_shader: fn(
         device: Device,
         indirect_execution_set: IndirectExecutionSetEXT,
         execution_set_write_count: UInt32,
         p_execution_set_writes: Ptr[WriteIndirectExecutionSetShaderEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -5291,7 +5361,7 @@ struct DeviceGeneratedCommands(Copyable):
         device: Device,
         info: GeneratedCommandsMemoryRequirementsInfoEXT,
         mut memory_requirements: MemoryRequirements2,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetGeneratedCommandsMemoryRequirementsEXT.html
@@ -5305,7 +5375,7 @@ struct DeviceGeneratedCommands(Copyable):
         command_buffer: CommandBuffer,
         generated_commands_info: GeneratedCommandsInfoEXT,
         state_command_buffer: CommandBuffer,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPreprocessGeneratedCommandsEXT.html
@@ -5319,7 +5389,7 @@ struct DeviceGeneratedCommands(Copyable):
         command_buffer: CommandBuffer,
         is_preprocessed: Bool32,
         generated_commands_info: GeneratedCommandsInfoEXT,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdExecuteGeneratedCommandsEXT.html
@@ -5351,7 +5421,7 @@ struct DeviceGeneratedCommands(Copyable):
         device: Device,
         indirect_commands_layout: IndirectCommandsLayoutEXT,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyIndirectCommandsLayoutEXT.html
@@ -5385,7 +5455,7 @@ struct DeviceGeneratedCommands(Copyable):
         device: Device,
         indirect_execution_set: IndirectExecutionSetEXT,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyIndirectExecutionSetEXT.html
@@ -5404,7 +5474,7 @@ struct DeviceGeneratedCommands(Copyable):
         indirect_execution_set: IndirectExecutionSetEXT,
         execution_set_write_count: UInt32,
         p_execution_set_writes: Ptr[WriteIndirectExecutionSetPipelineEXT, p_execution_set_writes_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateIndirectExecutionSetPipelineEXT.html
@@ -5424,7 +5494,7 @@ struct DeviceGeneratedCommands(Copyable):
         indirect_execution_set: IndirectExecutionSetEXT,
         execution_set_write_count: UInt32,
         p_execution_set_writes: Ptr[WriteIndirectExecutionSetShaderEXT, p_execution_set_writes_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUpdateIndirectExecutionSetShaderEXT.html
@@ -5443,7 +5513,7 @@ struct DepthClampControl(Copyable):
         command_buffer: CommandBuffer,
         depth_clamp_mode: DepthClampModeEXT,
         p_depth_clamp_range: Ptr[DepthClampRangeEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -5459,7 +5529,7 @@ struct DepthClampControl(Copyable):
         command_buffer: CommandBuffer,
         depth_clamp_mode: DepthClampModeEXT,
         p_depth_clamp_range: Ptr[DepthClampRangeEXT, p_depth_clamp_range_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClampRangeEXT.html
@@ -5536,7 +5606,7 @@ struct FragmentDensityMapOffset(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_end_rendering_2: fn(
         command_buffer: CommandBuffer, p_rendering_end_info: Ptr[RenderingEndInfoKHR, ImmutAnyOrigin]
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -5551,7 +5621,7 @@ struct FragmentDensityMapOffset(Copyable):
         self,
         command_buffer: CommandBuffer,
         p_rendering_end_info: Ptr[RenderingEndInfoKHR, p_rendering_end_info_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndRendering2KHR.html
@@ -5567,7 +5637,7 @@ struct CustomResolve(Copyable):
     var _cmd_begin_custom_resolve: fn(
         command_buffer: CommandBuffer,
         p_begin_custom_resolve_info: Ptr[BeginCustomResolveInfoEXT, ImmutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -5582,7 +5652,7 @@ struct CustomResolve(Copyable):
         self,
         command_buffer: CommandBuffer,
         p_begin_custom_resolve_info: Ptr[BeginCustomResolveInfoEXT, p_begin_custom_resolve_info_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginCustomResolveEXT.html

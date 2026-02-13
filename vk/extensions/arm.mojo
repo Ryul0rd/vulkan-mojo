@@ -13,7 +13,7 @@ struct Tensors(Copyable):
     ) -> Result
     var _destroy_tensor: fn(
         device: Device, tensor: TensorARM, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _create_tensor_view: fn(
         device: Device,
         p_create_info: Ptr[TensorViewCreateInfoARM, ImmutAnyOrigin],
@@ -24,12 +24,12 @@ struct Tensors(Copyable):
         device: Device,
         tensor_view: TensorViewARM,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _get_tensor_memory_requirements: fn(
         device: Device,
         p_info: Ptr[TensorMemoryRequirementsInfoARM, ImmutAnyOrigin],
         p_memory_requirements: Ptr[MemoryRequirements2, MutAnyOrigin],
-    )
+    ) -> Byte
     var _bind_tensor_memory: fn(
         device: Device,
         bind_info_count: UInt32,
@@ -39,15 +39,15 @@ struct Tensors(Copyable):
         device: Device,
         p_info: Ptr[DeviceTensorMemoryRequirementsARM, ImmutAnyOrigin],
         p_memory_requirements: Ptr[MemoryRequirements2, MutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_copy_tensor: fn(
         command_buffer: CommandBuffer, p_copy_tensor_info: Ptr[CopyTensorInfoARM, ImmutAnyOrigin]
-    )
+    ) -> Byte
     var _get_physical_device_external_tensor_properties: fn(
         physical_device: PhysicalDevice,
         p_external_tensor_info: Ptr[PhysicalDeviceExternalTensorInfoARM, ImmutAnyOrigin],
         p_external_tensor_properties: Ptr[ExternalTensorPropertiesARM, MutAnyOrigin],
-    )
+    ) -> Byte
     var _get_tensor_opaque_capture_descriptor_data: fn(
         device: Device,
         p_info: Ptr[TensorCaptureDescriptorDataInfoARM, ImmutAnyOrigin],
@@ -121,7 +121,7 @@ struct Tensors(Copyable):
         device: Device,
         tensor: TensorARM,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyTensorARM.html
@@ -153,7 +153,7 @@ struct Tensors(Copyable):
         device: Device,
         tensor_view: TensorViewARM,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyTensorViewARM.html
@@ -167,7 +167,7 @@ struct Tensors(Copyable):
         device: Device,
         info: TensorMemoryRequirementsInfoARM,
         mut memory_requirements: MemoryRequirements2,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetTensorMemoryRequirementsARM.html
@@ -195,7 +195,7 @@ struct Tensors(Copyable):
         device: Device,
         info: DeviceTensorMemoryRequirementsARM,
         mut memory_requirements: MemoryRequirements2,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceTensorMemoryRequirementsARM.html
@@ -204,7 +204,9 @@ struct Tensors(Copyable):
             device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
-    fn cmd_copy_tensor(self, command_buffer: CommandBuffer, copy_tensor_info: CopyTensorInfoARM):
+    fn cmd_copy_tensor(
+        self, command_buffer: CommandBuffer, copy_tensor_info: CopyTensorInfoARM
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyTensorARM.html
@@ -216,7 +218,7 @@ struct Tensors(Copyable):
         physical_device: PhysicalDevice,
         external_tensor_info: PhysicalDeviceExternalTensorInfoARM,
         mut external_tensor_properties: ExternalTensorPropertiesARM,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceExternalTensorPropertiesARM.html
@@ -281,7 +283,7 @@ struct DataGraph(Copyable):
         device: Device,
         p_info: Ptr[DataGraphPipelineSessionMemoryRequirementsInfoARM, ImmutAnyOrigin],
         p_memory_requirements: Ptr[MemoryRequirements2, MutAnyOrigin],
-    )
+    ) -> Byte
     var _bind_data_graph_pipeline_session_memory: fn(
         device: Device,
         bind_info_count: UInt32,
@@ -291,12 +293,12 @@ struct DataGraph(Copyable):
         device: Device,
         session: DataGraphPipelineSessionARM,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_dispatch_data_graph: fn(
         command_buffer: CommandBuffer,
         session: DataGraphPipelineSessionARM,
         p_info: Ptr[DataGraphPipelineDispatchInfoARM, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _get_data_graph_pipeline_available_properties: fn(
         device: Device,
         p_pipeline_info: Ptr[DataGraphPipelineInfoARM, ImmutAnyOrigin],
@@ -319,7 +321,7 @@ struct DataGraph(Copyable):
         physical_device: PhysicalDevice,
         p_queue_family_data_graph_processing_engine_info: Ptr[PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM, ImmutAnyOrigin],
         p_queue_family_data_graph_processing_engine_properties: Ptr[QueueFamilyDataGraphProcessingEnginePropertiesARM, MutAnyOrigin],
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -458,7 +460,7 @@ struct DataGraph(Copyable):
         device: Device,
         info: DataGraphPipelineSessionMemoryRequirementsInfoARM,
         mut memory_requirements: MemoryRequirements2,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDataGraphPipelineSessionMemoryRequirementsARM.html
@@ -488,7 +490,7 @@ struct DataGraph(Copyable):
         device: Device,
         session: DataGraphPipelineSessionARM,
         p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDataGraphPipelineSessionARM.html
@@ -502,7 +504,7 @@ struct DataGraph(Copyable):
         command_buffer: CommandBuffer,
         session: DataGraphPipelineSessionARM,
         p_info: Ptr[DataGraphPipelineDispatchInfoARM, p_info_origin],
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchDataGraphARM.html
@@ -626,7 +628,7 @@ struct DataGraph(Copyable):
         physical_device: PhysicalDevice,
         queue_family_data_graph_processing_engine_info: PhysicalDeviceQueueFamilyDataGraphProcessingEngineInfoARM,
         mut queue_family_data_graph_processing_engine_properties: QueueFamilyDataGraphProcessingEnginePropertiesARM,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPhysicalDeviceQueueFamilyDataGraphProcessingEnginePropertiesARM.html

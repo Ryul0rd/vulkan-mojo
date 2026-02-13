@@ -29,25 +29,25 @@ struct ShaderEnqueue(Copyable):
         execution_graph: Pipeline,
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
-    )
+    ) -> Byte
     var _cmd_dispatch_graph: fn(
         command_buffer: CommandBuffer,
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
         p_count_info: Ptr[DispatchGraphCountInfoAMDX, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_dispatch_graph_indirect: fn(
         command_buffer: CommandBuffer,
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
         p_count_info: Ptr[DispatchGraphCountInfoAMDX, ImmutAnyOrigin],
-    )
+    ) -> Byte
     var _cmd_dispatch_graph_indirect_count: fn(
         command_buffer: CommandBuffer,
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
         count_info: DeviceAddress,
-    )
+    ) -> Byte
 
     fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -135,7 +135,7 @@ struct ShaderEnqueue(Copyable):
         execution_graph: Pipeline,
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdInitializeGraphScratchMemoryAMDX.html
@@ -150,7 +150,7 @@ struct ShaderEnqueue(Copyable):
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
         count_info: DispatchGraphCountInfoAMDX,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchGraphAMDX.html
@@ -163,7 +163,7 @@ struct ShaderEnqueue(Copyable):
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
         count_info: DispatchGraphCountInfoAMDX,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchGraphIndirectAMDX.html
@@ -176,7 +176,7 @@ struct ShaderEnqueue(Copyable):
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
         count_info: DeviceAddress,
-    ):
+    ) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchGraphIndirectCountAMDX.html

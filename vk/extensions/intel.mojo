@@ -8,7 +8,7 @@ struct PerformanceQuery(Copyable):
     var _initialize_performance_api: fn(
         device: Device, p_initialize_info: Ptr[InitializePerformanceApiInfoINTEL, ImmutAnyOrigin]
     ) -> Result
-    var _uninitialize_performance_api: fn(device: Device)
+    var _uninitialize_performance_api: fn(device: Device) -> Byte
     var _cmd_set_performance_marker: fn(
         command_buffer: CommandBuffer, p_marker_info: Ptr[PerformanceMarkerInfoINTEL, ImmutAnyOrigin]
     ) -> Result
@@ -79,7 +79,7 @@ struct PerformanceQuery(Copyable):
         """
         return self._initialize_performance_api(device, Ptr(to=initialize_info))
 
-    fn uninitialize_performance_api(self, device: Device):
+    fn uninitialize_performance_api(self, device: Device) -> Byte:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUninitializePerformanceApiINTEL.html
