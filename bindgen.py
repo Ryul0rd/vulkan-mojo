@@ -1089,7 +1089,7 @@ def bind_structs(files: Dict[str, str], registry: Registry):
     # emission
     parts: List[str] = []
     parts.append(
-        "from sys.ffi import CStringSlice, c_char\n"
+        "from ffi import CStringSlice, c_char\n"
         "from .constants import *\n"
         "from .basetypes import *\n"
         "from .external_types import *\n"
@@ -1397,7 +1397,7 @@ class MojoEnum:
             return self.emit_result()
         parts: List[str] = []
         parts.append(
-            f"struct {self.name}(TrivialRegisterType, Equatable):\n"
+            f"struct {self.name}(TrivialRegisterPassable, Equatable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"\n"
             f"    fn __init__(out self, *, value: {self.underlying_type}):\n"
@@ -1417,7 +1417,7 @@ class MojoEnum:
     def emit_result(self) -> str:
         parts: List[str] = []
         parts.append(
-            "struct Result(TrivialRegisterType, Equatable, Writable):\n"
+            "struct Result(TrivialRegisterPassable, Equatable, Writable):\n"
             "    var _value: Int32\n"
             "\n"
             "    comptime _descriptions: Dict[Int32, StaticString] = {\n"
@@ -1625,7 +1625,7 @@ class MojoFlags:
     def __str__(self) -> str:
         parts: List[str] = []
         parts.append(
-            f"struct {self.name}(TrivialRegisterType, Equatable):\n"
+            f"struct {self.name}(TrivialRegisterPassable, Equatable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"\n"
             f"    fn __init__(out self):\n"
@@ -1692,7 +1692,7 @@ class MojoFlagBits:
     def __str__(self) -> str:
         parts: List[str] = []
         parts.append(
-            f"struct {self.name}(TrivialRegisterType, Equatable):\n"
+            f"struct {self.name}(TrivialRegisterPassable, Equatable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"\n"
             f"    fn __init__(out self, *, value: {self.underlying_type}):\n"
@@ -1861,7 +1861,7 @@ class MojoWrapperExternalType:
 
     def __str__(self) -> str:
         return (
-            f"struct {self.name}(TrivialRegisterType):\n"
+            f"struct {self.name}(TrivialRegisterPassable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"\n"
             f"    fn __init__(out self, *, value: {self.underlying_type}):\n"
@@ -2106,7 +2106,7 @@ class MojoHandle:
 
     def __str__(self) -> str:
         return (
-            f"struct {self.name}(TrivialRegisterType, Equatable, Writable):\n"
+            f"struct {self.name}(TrivialRegisterPassable, Equatable, Writable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"    comptime NULL = Self(value = 0)\n"
             f"\n"
@@ -2557,7 +2557,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
     # core command loader emission
     core_loader_parts: List[str] = []
     core_loader_parts.append(
-        "from sys.ffi import OwnedDLHandle, RTLD, CStringSlice, c_char\n"
+        "from ffi import OwnedDLHandle, RTLD, CStringSlice, c_char\n"
         "from memory import ArcPointer\n"
         "from .fn_types import *\n"
         "from .handles import *\n"
@@ -2650,7 +2650,7 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
     for tag, extension_loaders in extension_loaders_by_tag.items():
         extension_parts: List[str] = []
         extension_parts.append(
-            "from sys.ffi import OwnedDLHandle, CStringSlice, c_char\n"
+            "from ffi import OwnedDLHandle, CStringSlice, c_char\n"
             "from memory import ArcPointer\n"
             "from vk.core_functions import GlobalFunctions\n"
         )

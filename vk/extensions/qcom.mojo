@@ -1,4 +1,4 @@
-from sys.ffi import OwnedDLHandle, CStringSlice, c_char
+from ffi import OwnedDLHandle, CStringSlice, c_char
 from memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 

@@ -4,7 +4,7 @@ struct Display:
     pass
 
 
-struct VisualID(TrivialRegisterType):
+struct VisualID(TrivialRegisterPassable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -14,7 +14,7 @@ struct VisualID(TrivialRegisterType):
         return self._value
 
 
-struct Window(TrivialRegisterType):
+struct Window(TrivialRegisterPassable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -24,7 +24,7 @@ struct Window(TrivialRegisterType):
         return self._value
 
 
-struct RROutput(TrivialRegisterType):
+struct RROutput(TrivialRegisterPassable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -42,7 +42,7 @@ struct wl_surface:
     pass
 
 
-struct HINSTANCE(TrivialRegisterType):
+struct HINSTANCE(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -52,7 +52,7 @@ struct HINSTANCE(TrivialRegisterType):
         return self._value
 
 
-struct HWND(TrivialRegisterType):
+struct HWND(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -62,7 +62,7 @@ struct HWND(TrivialRegisterType):
         return self._value
 
 
-struct HMONITOR(TrivialRegisterType):
+struct HMONITOR(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -72,7 +72,7 @@ struct HMONITOR(TrivialRegisterType):
         return self._value
 
 
-struct HANDLE(TrivialRegisterType):
+struct HANDLE(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -86,7 +86,7 @@ struct SECURITY_ATTRIBUTES:
     pass
 
 
-struct DWORD(TrivialRegisterType):
+struct DWORD(TrivialRegisterPassable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -96,7 +96,7 @@ struct DWORD(TrivialRegisterType):
         return self._value
 
 
-struct LPCWSTR(TrivialRegisterType):
+struct LPCWSTR(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -110,7 +110,7 @@ struct xcb_connection_t:
     pass
 
 
-struct xcb_visualid_t(TrivialRegisterType):
+struct xcb_visualid_t(TrivialRegisterPassable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -120,7 +120,7 @@ struct xcb_visualid_t(TrivialRegisterType):
         return self._value
 
 
-struct xcb_window_t(TrivialRegisterType):
+struct xcb_window_t(TrivialRegisterPassable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -138,7 +138,7 @@ struct IDirectFBSurface:
     pass
 
 
-struct zx_handle_t(TrivialRegisterType):
+struct zx_handle_t(TrivialRegisterPassable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -156,7 +156,7 @@ struct OH_NativeBuffer:
     pass
 
 
-struct GgpStreamDescriptor(TrivialRegisterType):
+struct GgpStreamDescriptor(TrivialRegisterPassable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -166,7 +166,7 @@ struct GgpStreamDescriptor(TrivialRegisterType):
         return self._value
 
 
-struct GgpFrameToken(TrivialRegisterType):
+struct GgpFrameToken(TrivialRegisterPassable):
     var _value: UInt32
 
     fn __init__(out self, *, value: UInt32):
@@ -176,7 +176,7 @@ struct GgpFrameToken(TrivialRegisterType):
         return self._value
 
 
-struct screen_context_t(TrivialRegisterType):
+struct screen_context_t(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -186,7 +186,7 @@ struct screen_context_t(TrivialRegisterType):
         return self._value
 
 
-struct screen_window_t(TrivialRegisterType):
+struct screen_window_t(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -196,7 +196,7 @@ struct screen_window_t(TrivialRegisterType):
         return self._value
 
 
-struct screen_buffer_t(TrivialRegisterType):
+struct screen_buffer_t(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -206,7 +206,7 @@ struct screen_buffer_t(TrivialRegisterType):
         return self._value
 
 
-struct NvSciSyncAttrList(TrivialRegisterType):
+struct NvSciSyncAttrList(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -216,7 +216,7 @@ struct NvSciSyncAttrList(TrivialRegisterType):
         return self._value
 
 
-struct NvSciSyncObj(TrivialRegisterType):
+struct NvSciSyncObj(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -230,7 +230,7 @@ struct NvSciSyncFence:
     pass
 
 
-struct NvSciBufAttrList(TrivialRegisterType):
+struct NvSciBufAttrList(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -240,7 +240,7 @@ struct NvSciBufAttrList(TrivialRegisterType):
         return self._value
 
 
-struct NvSciBufObj(TrivialRegisterType):
+struct NvSciBufObj(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -262,7 +262,7 @@ struct CAMetalLayer:
     pass
 
 
-struct MTLDevice_id(TrivialRegisterType):
+struct MTLDevice_id(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -272,7 +272,7 @@ struct MTLDevice_id(TrivialRegisterType):
         return self._value
 
 
-struct MTLCommandQueue_id(TrivialRegisterType):
+struct MTLCommandQueue_id(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -282,7 +282,7 @@ struct MTLCommandQueue_id(TrivialRegisterType):
         return self._value
 
 
-struct MTLBuffer_id(TrivialRegisterType):
+struct MTLBuffer_id(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -292,7 +292,7 @@ struct MTLBuffer_id(TrivialRegisterType):
         return self._value
 
 
-struct MTLTexture_id(TrivialRegisterType):
+struct MTLTexture_id(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -302,7 +302,7 @@ struct MTLTexture_id(TrivialRegisterType):
         return self._value
 
 
-struct MTLSharedEvent_id(TrivialRegisterType):
+struct MTLSharedEvent_id(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -312,7 +312,7 @@ struct MTLSharedEvent_id(TrivialRegisterType):
         return self._value
 
 
-struct IOSurfaceRef(TrivialRegisterType):
+struct IOSurfaceRef(TrivialRegisterPassable):
     var _value: UInt
 
     fn __init__(out self, *, value: UInt):
@@ -322,7 +322,7 @@ struct IOSurfaceRef(TrivialRegisterType):
         return self._value
 
 
-struct StdVideoH264ProfileIdc(TrivialRegisterType, Equatable):
+struct StdVideoH264ProfileIdc(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -341,7 +341,7 @@ struct StdVideoH264ProfileIdc(TrivialRegisterType, Equatable):
     comptime INVALID = StdVideoH264ProfileIdc(value = 2147483647)
 
 
-struct StdVideoH264LevelIdc(TrivialRegisterType, Equatable):
+struct StdVideoH264LevelIdc(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -403,7 +403,7 @@ struct StdVideoDecodeH264ReferenceInfo:
     pass
 
 
-struct StdVideoH265ProfileIdc(TrivialRegisterType, Equatable):
+struct StdVideoH265ProfileIdc(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -423,7 +423,7 @@ struct StdVideoH265ProfileIdc(TrivialRegisterType, Equatable):
     comptime INVALID = StdVideoH265ProfileIdc(value = 2147483647)
 
 
-struct StdVideoH265LevelIdc(TrivialRegisterType, Equatable):
+struct StdVideoH265LevelIdc(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -483,7 +483,7 @@ struct StdVideoDecodeH265ReferenceInfo:
     pass
 
 
-struct StdVideoAV1Profile(TrivialRegisterType, Equatable):
+struct StdVideoAV1Profile(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -501,7 +501,7 @@ struct StdVideoAV1Profile(TrivialRegisterType, Equatable):
     comptime INVALID = StdVideoAV1Profile(value = 2147483647)
 
 
-struct StdVideoAV1Level(TrivialRegisterType, Equatable):
+struct StdVideoAV1Level(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -608,7 +608,7 @@ struct StdVideoDecodeAV1ReferenceInfo:
     pass
 
 
-struct StdVideoVP9Profile(TrivialRegisterType, Equatable):
+struct StdVideoVP9Profile(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):
@@ -627,7 +627,7 @@ struct StdVideoVP9Profile(TrivialRegisterType, Equatable):
     comptime INVALID = StdVideoVP9Profile(value = 2147483647)
 
 
-struct StdVideoVP9Level(TrivialRegisterType, Equatable):
+struct StdVideoVP9Level(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
     fn __init__(out self, *, value: Int32):

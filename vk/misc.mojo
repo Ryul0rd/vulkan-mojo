@@ -35,7 +35,7 @@ fn set_packed_value[width: UInt32, offset: UInt32](mut packed_values: UInt32, ne
     packed_values = packed_values & ~mask | (new_value << offset)
 
 
-struct Bool32(TrivialRegisterType, Boolable, Equatable):
+struct Bool32(TrivialRegisterPassable, Boolable, Equatable):
     var _value: UInt32
 
     fn __init__(out self):
@@ -43,7 +43,7 @@ struct Bool32(TrivialRegisterType, Boolable, Equatable):
 
     @implicit
     fn __init__(out self, value: Bool):
-        self._value = 1 if value else 0
+        self._value = UInt32(1 if value else 0)
 
     fn __bool__(self) -> Bool:
         return Bool(self._value)
@@ -52,7 +52,7 @@ struct Bool32(TrivialRegisterType, Boolable, Equatable):
         return self._value == other._value
 
 
-struct Version(TrivialRegisterType, Writable):
+struct Version(TrivialRegisterPassable, Writable):
     var _value: UInt32
 
     fn __init__(out self, major: UInt32, minor: UInt32, patch: UInt32):

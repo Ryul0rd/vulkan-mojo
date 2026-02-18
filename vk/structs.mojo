@@ -1,4 +1,4 @@
-from sys.ffi import CStringSlice, c_char
+from ffi import CStringSlice, c_char
 from .constants import *
 from .basetypes import *
 from .external_types import *

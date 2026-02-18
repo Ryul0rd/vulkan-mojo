@@ -1,4 +1,4 @@
-from sys.ffi import OwnedDLHandle, RTLD, CStringSlice, c_char
+from ffi import OwnedDLHandle, RTLD, CStringSlice, c_char
 from memory import ArcPointer
 from .fn_types import *
 from .handles import *
