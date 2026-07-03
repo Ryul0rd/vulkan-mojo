@@ -1089,7 +1089,7 @@ def bind_structs(files: Dict[str, str], registry: Registry):
     # emission
     parts: List[str] = []
     parts.append(
-        "from ffi import CStringSlice, c_char\n"
+        "from std.ffi import CStringSlice, c_char\n"
         "from .constants import *\n"
         "from .basetypes import *\n"
         "from .external_types import *\n"
@@ -1368,9 +1368,9 @@ def bind_unions(files: Dict[str, str], registry: Registry):
     # emission
     parts: List[str] = []
     parts.append(
-        "from memory import memcpy\n"
-        "from math import ceildiv\n"
-        "from sys import size_of\n"
+        "from std.memory import memcpy\n"
+        "from std.math import ceildiv\n"
+        "from std.sys import size_of\n"
         "from .structs import *\n"
         "\n\n"
         "comptime Ptr = UnsafePointer\n"
@@ -2557,8 +2557,8 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
     # core command loader emission
     core_loader_parts: List[str] = []
     core_loader_parts.append(
-        "from ffi import OwnedDLHandle, RTLD, CStringSlice, c_char\n"
-        "from memory import ArcPointer\n"
+        "from std.ffi import OwnedDLHandle, RTLD, CStringSlice, c_char\n"
+        "from std.memory import ArcPointer\n"
         "from .fn_types import *\n"
         "from .handles import *\n"
         "from .structs import *\n"
@@ -2650,8 +2650,8 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
     for tag, extension_loaders in extension_loaders_by_tag.items():
         extension_parts: List[str] = []
         extension_parts.append(
-            "from ffi import OwnedDLHandle, CStringSlice, c_char\n"
-            "from memory import ArcPointer\n"
+            "from std.ffi import OwnedDLHandle, CStringSlice, c_char\n"
+            "from std.memory import ArcPointer\n"
             "from vk.core_functions import GlobalFunctions\n"
         )
         for loader in extension_loaders:
