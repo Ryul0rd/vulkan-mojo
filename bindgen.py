@@ -2448,7 +2448,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             init_arguments = [MojoArgument("dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"]))]
             init_body_lines = [
                 f'var get_instance_proc_addr = dlhandle[].get_function[',
-                f'    fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction',
+                f'    def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction',
                 f']("vkGetInstanceProcAddr")',
             ]
             for command in vc.commands:
@@ -2466,7 +2466,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             ]
             init_body_lines = [
                 f'var get_{vc.level}_proc_addr = dlhandle[].get_function[',
-                f'    fn({vc.level}: {handle_type}, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction',
+                f'    def({vc.level}: {handle_type}, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction',
                 f']("vkGet{handle_type}ProcAddr")',
             ]
             for command in vc.commands:
@@ -2610,7 +2610,7 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
         init_body_lines = ["self._dlhandle = global_functions.get_dlhandle()"]
         init_body_lines.extend((
             f'var get_{extension.type}_proc_addr = global_functions.get_dlhandle()[].get_function[',
-            f'    fn({extension.type}: {extension.type.capitalize()}, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction',
+            f'    def({extension.type}: {extension.type.capitalize()}, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction',
             f']("vkGet{extension.type.capitalize()}ProcAddr")',
         ))
         for required_command in required_commands:
