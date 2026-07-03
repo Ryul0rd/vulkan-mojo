@@ -1,6 +1,9 @@
 vk.mojopkg
 test.mojo
 
+.devenv/
+.devenv.flake.nix
+
 # pixi environments
 .pixi/*
 !.pixi/config.toml
