@@ -1,36 +1,36 @@
-from ffi import OwnedDLHandle, CStringSlice, c_char
-from memory import ArcPointer
+from std.ffi import OwnedDLHandle, CStringSlice, c_char
+from std.memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct BinaryImport(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_cu_module: fn(
+    var _create_cu_module: def(
         device: Device,
         p_create_info: Ptr[CuModuleCreateInfoNVX, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_module: Ptr[CuModuleNVX, MutAnyOrigin],
-    ) -> Result
-    var _create_cu_function: fn(
+    ) thin abi("C") -> Result
+    var _create_cu_function: def(
         device: Device,
         p_create_info: Ptr[CuFunctionCreateInfoNVX, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_function: Ptr[CuFunctionNVX, MutAnyOrigin],
-    ) -> Result
-    var _destroy_cu_module: fn(
+    ) thin abi("C") -> Result
+    var _destroy_cu_module: def(
         device: Device, module: CuModuleNVX, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    )
-    var _destroy_cu_function: fn(
+    ) thin abi("C")
+    var _destroy_cu_function: def(
         device: Device, function: CuFunctionNVX, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    )
-    var _cmd_cu_launch_kernel: fn(
+    ) thin abi("C")
+    var _cmd_cu_launch_kernel: def(
         command_buffer: CommandBuffer, p_launch_info: Ptr[CuLaunchInfoNVX, ImmutAnyOrigin]
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_cu_module = Ptr(to=get_device_proc_addr(
             device, "vkCreateCuModuleNVX".as_c_string_slice()
@@ -48,7 +48,7 @@ struct BinaryImport(Copyable):
             device, "vkCmdCuLaunchKernelNVX".as_c_string_slice()
         )).bitcast[type_of(self._cmd_cu_launch_kernel)]()[]
 
-    fn create_cu_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_cu_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: CuModuleCreateInfoNVX,
@@ -66,7 +66,7 @@ struct BinaryImport(Copyable):
             Ptr(to=module),
         )
 
-    fn create_cu_function[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_cu_function[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: CuFunctionCreateInfoNVX,
@@ -84,7 +84,7 @@ struct BinaryImport(Copyable):
             Ptr(to=function),
         )
 
-    fn destroy_cu_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_cu_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         module: CuModuleNVX,
@@ -98,7 +98,7 @@ struct BinaryImport(Copyable):
             device, module, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn destroy_cu_function[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_cu_function[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         function: CuFunctionNVX,
@@ -112,7 +112,7 @@ struct BinaryImport(Copyable):
             device, function, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn cmd_cu_launch_kernel(self, command_buffer: CommandBuffer, launch_info: CuLaunchInfoNVX):
+    def cmd_cu_launch_kernel(self, command_buffer: CommandBuffer, launch_info: CuLaunchInfoNVX):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCuLaunchKernelNVX.html
@@ -122,25 +122,25 @@ struct BinaryImport(Copyable):
 
 struct ImageViewHandle(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_image_view_handle: fn(
+    var _get_image_view_handle: def(
         device: Device, p_info: Ptr[ImageViewHandleInfoNVX, ImmutAnyOrigin]
-    ) -> UInt32
-    var _get_image_view_handle_64: fn(
+    ) thin abi("C") -> UInt32
+    var _get_image_view_handle_64: def(
         device: Device, p_info: Ptr[ImageViewHandleInfoNVX, ImmutAnyOrigin]
-    ) -> UInt64
-    var _get_image_view_address: fn(
+    ) thin abi("C") -> UInt64
+    var _get_image_view_address: def(
         device: Device,
         image_view: ImageView,
         p_properties: Ptr[ImageViewAddressPropertiesNVX, MutAnyOrigin],
-    ) -> Result
-    var _get_device_combined_image_sampler_index: fn(
+    ) thin abi("C") -> Result
+    var _get_device_combined_image_sampler_index: def(
         device: Device, image_view_index: UInt64, sampler_index: UInt64
-    ) -> UInt64
+    ) thin abi("C") -> UInt64
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_image_view_handle = Ptr(to=get_device_proc_addr(
             device, "vkGetImageViewHandleNVX".as_c_string_slice()
@@ -155,21 +155,21 @@ struct ImageViewHandle(Copyable):
             device, "vkGetDeviceCombinedImageSamplerIndexNVX".as_c_string_slice()
         )).bitcast[type_of(self._get_device_combined_image_sampler_index)]()[]
 
-    fn get_image_view_handle(self, device: Device, info: ImageViewHandleInfoNVX) -> UInt32:
+    def get_image_view_handle(self, device: Device, info: ImageViewHandleInfoNVX) -> UInt32:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewHandleNVX.html
         """
         return self._get_image_view_handle(device, Ptr(to=info))
 
-    fn get_image_view_handle_64(self, device: Device, info: ImageViewHandleInfoNVX) -> UInt64:
+    def get_image_view_handle_64(self, device: Device, info: ImageViewHandleInfoNVX) -> UInt64:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetImageViewHandle64NVX.html
         """
         return self._get_image_view_handle_64(device, Ptr(to=info))
 
-    fn get_image_view_address(
+    def get_image_view_address(
         self, device: Device, image_view: ImageView, mut properties: ImageViewAddressPropertiesNVX
     ) -> Result:
         """See official vulkan docs for details.
@@ -178,7 +178,7 @@ struct ImageViewHandle(Copyable):
         """
         return self._get_image_view_address(device, image_view, Ptr(to=properties))
 
-    fn get_device_combined_image_sampler_index(
+    def get_device_combined_image_sampler_index(
         self, device: Device, image_view_index: UInt64, sampler_index: UInt64
     ) -> UInt64:
         """See official vulkan docs for details.

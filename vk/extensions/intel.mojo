@@ -1,46 +1,46 @@
-from ffi import OwnedDLHandle, CStringSlice, c_char
-from memory import ArcPointer
+from std.ffi import OwnedDLHandle, CStringSlice, c_char
+from std.memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct PerformanceQuery(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _initialize_performance_api: fn(
+    var _initialize_performance_api: def(
         device: Device, p_initialize_info: Ptr[InitializePerformanceApiInfoINTEL, ImmutAnyOrigin]
-    ) -> Result
-    var _uninitialize_performance_api: fn(device: Device)
-    var _cmd_set_performance_marker: fn(
+    ) thin abi("C") -> Result
+    var _uninitialize_performance_api: def(device: Device) thin abi("C")
+    var _cmd_set_performance_marker: def(
         command_buffer: CommandBuffer, p_marker_info: Ptr[PerformanceMarkerInfoINTEL, ImmutAnyOrigin]
-    ) -> Result
-    var _cmd_set_performance_stream_marker: fn(
+    ) thin abi("C") -> Result
+    var _cmd_set_performance_stream_marker: def(
         command_buffer: CommandBuffer,
         p_marker_info: Ptr[PerformanceStreamMarkerInfoINTEL, ImmutAnyOrigin],
-    ) -> Result
-    var _cmd_set_performance_override: fn(
+    ) thin abi("C") -> Result
+    var _cmd_set_performance_override: def(
         command_buffer: CommandBuffer,
         p_override_info: Ptr[PerformanceOverrideInfoINTEL, ImmutAnyOrigin],
-    ) -> Result
-    var _acquire_performance_configuration: fn(
+    ) thin abi("C") -> Result
+    var _acquire_performance_configuration: def(
         device: Device,
         p_acquire_info: Ptr[PerformanceConfigurationAcquireInfoINTEL, ImmutAnyOrigin],
         p_configuration: Ptr[PerformanceConfigurationINTEL, MutAnyOrigin],
-    ) -> Result
-    var _release_performance_configuration: fn(
+    ) thin abi("C") -> Result
+    var _release_performance_configuration: def(
         device: Device, configuration: PerformanceConfigurationINTEL
-    ) -> Result
-    var _queue_set_performance_configuration: fn(
+    ) thin abi("C") -> Result
+    var _queue_set_performance_configuration: def(
         queue: Queue, configuration: PerformanceConfigurationINTEL
-    ) -> Result
-    var _get_performance_parameter: fn(
+    ) thin abi("C") -> Result
+    var _get_performance_parameter: def(
         device: Device,
         parameter: PerformanceParameterTypeINTEL,
         p_value: Ptr[PerformanceValueINTEL, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._initialize_performance_api = Ptr(to=get_device_proc_addr(
             device, "vkInitializePerformanceApiINTEL".as_c_string_slice()
@@ -70,7 +70,7 @@ struct PerformanceQuery(Copyable):
             device, "vkGetPerformanceParameterINTEL".as_c_string_slice()
         )).bitcast[type_of(self._get_performance_parameter)]()[]
 
-    fn initialize_performance_api(
+    def initialize_performance_api(
         self, device: Device, initialize_info: InitializePerformanceApiInfoINTEL
     ) -> Result:
         """See official vulkan docs for details.
@@ -79,14 +79,14 @@ struct PerformanceQuery(Copyable):
         """
         return self._initialize_performance_api(device, Ptr(to=initialize_info))
 
-    fn uninitialize_performance_api(self, device: Device):
+    def uninitialize_performance_api(self, device: Device):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUninitializePerformanceApiINTEL.html
         """
         return self._uninitialize_performance_api(device)
 
-    fn cmd_set_performance_marker(
+    def cmd_set_performance_marker(
         self, command_buffer: CommandBuffer, marker_info: PerformanceMarkerInfoINTEL
     ) -> Result:
         """See official vulkan docs for details.
@@ -95,7 +95,7 @@ struct PerformanceQuery(Copyable):
         """
         return self._cmd_set_performance_marker(command_buffer, Ptr(to=marker_info))
 
-    fn cmd_set_performance_stream_marker(
+    def cmd_set_performance_stream_marker(
         self, command_buffer: CommandBuffer, marker_info: PerformanceStreamMarkerInfoINTEL
     ) -> Result:
         """See official vulkan docs for details.
@@ -104,7 +104,7 @@ struct PerformanceQuery(Copyable):
         """
         return self._cmd_set_performance_stream_marker(command_buffer, Ptr(to=marker_info))
 
-    fn cmd_set_performance_override(
+    def cmd_set_performance_override(
         self, command_buffer: CommandBuffer, override_info: PerformanceOverrideInfoINTEL
     ) -> Result:
         """See official vulkan docs for details.
@@ -113,7 +113,7 @@ struct PerformanceQuery(Copyable):
         """
         return self._cmd_set_performance_override(command_buffer, Ptr(to=override_info))
 
-    fn acquire_performance_configuration(
+    def acquire_performance_configuration(
         self,
         device: Device,
         acquire_info: PerformanceConfigurationAcquireInfoINTEL,
@@ -125,7 +125,7 @@ struct PerformanceQuery(Copyable):
         """
         return self._acquire_performance_configuration(device, Ptr(to=acquire_info), Ptr(to=configuration))
 
-    fn release_performance_configuration(
+    def release_performance_configuration(
         self, device: Device, configuration: PerformanceConfigurationINTEL
     ) -> Result:
         """See official vulkan docs for details.
@@ -134,7 +134,7 @@ struct PerformanceQuery(Copyable):
         """
         return self._release_performance_configuration(device, configuration)
 
-    fn queue_set_performance_configuration(
+    def queue_set_performance_configuration(
         self, queue: Queue, configuration: PerformanceConfigurationINTEL
     ) -> Result:
         """See official vulkan docs for details.
@@ -143,7 +143,7 @@ struct PerformanceQuery(Copyable):
         """
         return self._queue_set_performance_configuration(queue, configuration)
 
-    fn get_performance_parameter(
+    def get_performance_parameter(
         self,
         device: Device,
         parameter: PerformanceParameterTypeINTEL,

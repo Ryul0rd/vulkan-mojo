@@ -1,27 +1,27 @@
-from ffi import OwnedDLHandle, CStringSlice, c_char
-from memory import ArcPointer
+from std.ffi import OwnedDLHandle, CStringSlice, c_char
+from std.memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct ImagepipeSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_image_pipe_surface: fn(
+    var _create_image_pipe_surface: def(
         instance: Instance,
         p_create_info: Ptr[ImagePipeSurfaceCreateInfoFUCHSIA, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_image_pipe_surface = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateImagePipeSurfaceFUCHSIA".as_c_string_slice()
         )).bitcast[type_of(self._create_image_pipe_surface)]()[]
 
-    fn create_image_pipe_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_image_pipe_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: ImagePipeSurfaceCreateInfoFUCHSIA,
@@ -42,22 +42,22 @@ struct ImagepipeSurface(Copyable):
 
 struct ExternalMemory(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_memory_zircon_handle: fn(
+    var _get_memory_zircon_handle: def(
         device: Device,
         p_get_zircon_handle_info: Ptr[MemoryGetZirconHandleInfoFUCHSIA, ImmutAnyOrigin],
         p_zircon_handle: Ptr[zx_handle_t, MutAnyOrigin],
-    ) -> Result
-    var _get_memory_zircon_handle_properties: fn(
+    ) thin abi("C") -> Result
+    var _get_memory_zircon_handle_properties: def(
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
         zircon_handle: zx_handle_t,
         p_memory_zircon_handle_properties: Ptr[MemoryZirconHandlePropertiesFUCHSIA, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_zircon_handle = Ptr(to=get_device_proc_addr(
             device, "vkGetMemoryZirconHandleFUCHSIA".as_c_string_slice()
@@ -66,7 +66,7 @@ struct ExternalMemory(Copyable):
             device, "vkGetMemoryZirconHandlePropertiesFUCHSIA".as_c_string_slice()
         )).bitcast[type_of(self._get_memory_zircon_handle_properties)]()[]
 
-    fn get_memory_zircon_handle(
+    def get_memory_zircon_handle(
         self,
         device: Device,
         get_zircon_handle_info: MemoryGetZirconHandleInfoFUCHSIA,
@@ -78,7 +78,7 @@ struct ExternalMemory(Copyable):
         """
         return self._get_memory_zircon_handle(device, Ptr(to=get_zircon_handle_info), Ptr(to=zircon_handle))
 
-    fn get_memory_zircon_handle_properties(
+    def get_memory_zircon_handle_properties(
         self,
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
@@ -96,20 +96,20 @@ struct ExternalMemory(Copyable):
 
 struct ExternalSemaphore(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _import_semaphore_zircon_handle: fn(
+    var _import_semaphore_zircon_handle: def(
         device: Device,
         p_import_semaphore_zircon_handle_info: Ptr[ImportSemaphoreZirconHandleInfoFUCHSIA, ImmutAnyOrigin],
-    ) -> Result
-    var _get_semaphore_zircon_handle: fn(
+    ) thin abi("C") -> Result
+    var _get_semaphore_zircon_handle: def(
         device: Device,
         p_get_zircon_handle_info: Ptr[SemaphoreGetZirconHandleInfoFUCHSIA, ImmutAnyOrigin],
         p_zircon_handle: Ptr[zx_handle_t, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._import_semaphore_zircon_handle = Ptr(to=get_device_proc_addr(
             device, "vkImportSemaphoreZirconHandleFUCHSIA".as_c_string_slice()
@@ -118,7 +118,7 @@ struct ExternalSemaphore(Copyable):
             device, "vkGetSemaphoreZirconHandleFUCHSIA".as_c_string_slice()
         )).bitcast[type_of(self._get_semaphore_zircon_handle)]()[]
 
-    fn import_semaphore_zircon_handle(
+    def import_semaphore_zircon_handle(
         self,
         device: Device,
         import_semaphore_zircon_handle_info: ImportSemaphoreZirconHandleInfoFUCHSIA,
@@ -129,7 +129,7 @@ struct ExternalSemaphore(Copyable):
         """
         return self._import_semaphore_zircon_handle(device, Ptr(to=import_semaphore_zircon_handle_info))
 
-    fn get_semaphore_zircon_handle(
+    def get_semaphore_zircon_handle(
         self,
         device: Device,
         get_zircon_handle_info: SemaphoreGetZirconHandleInfoFUCHSIA,
@@ -146,37 +146,37 @@ struct ExternalSemaphore(Copyable):
 
 struct BufferCollection(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_buffer_collection: fn(
+    var _create_buffer_collection: def(
         device: Device,
         p_create_info: Ptr[BufferCollectionCreateInfoFUCHSIA, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_collection: Ptr[BufferCollectionFUCHSIA, MutAnyOrigin],
-    ) -> Result
-    var _set_buffer_collection_image_constraints: fn(
+    ) thin abi("C") -> Result
+    var _set_buffer_collection_image_constraints: def(
         device: Device,
         collection: BufferCollectionFUCHSIA,
         p_image_constraints_info: Ptr[ImageConstraintsInfoFUCHSIA, ImmutAnyOrigin],
-    ) -> Result
-    var _set_buffer_collection_buffer_constraints: fn(
+    ) thin abi("C") -> Result
+    var _set_buffer_collection_buffer_constraints: def(
         device: Device,
         collection: BufferCollectionFUCHSIA,
         p_buffer_constraints_info: Ptr[BufferConstraintsInfoFUCHSIA, ImmutAnyOrigin],
-    ) -> Result
-    var _destroy_buffer_collection: fn(
+    ) thin abi("C") -> Result
+    var _destroy_buffer_collection: def(
         device: Device,
         collection: BufferCollectionFUCHSIA,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
-    var _get_buffer_collection_properties: fn(
+    ) thin abi("C")
+    var _get_buffer_collection_properties: def(
         device: Device,
         collection: BufferCollectionFUCHSIA,
         p_properties: Ptr[BufferCollectionPropertiesFUCHSIA, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_buffer_collection = Ptr(to=get_device_proc_addr(
             device, "vkCreateBufferCollectionFUCHSIA".as_c_string_slice()
@@ -194,7 +194,7 @@ struct BufferCollection(Copyable):
             device, "vkGetBufferCollectionPropertiesFUCHSIA".as_c_string_slice()
         )).bitcast[type_of(self._get_buffer_collection_properties)]()[]
 
-    fn create_buffer_collection[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_buffer_collection[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: BufferCollectionCreateInfoFUCHSIA,
@@ -212,7 +212,7 @@ struct BufferCollection(Copyable):
             Ptr(to=collection),
         )
 
-    fn set_buffer_collection_image_constraints(
+    def set_buffer_collection_image_constraints(
         self,
         device: Device,
         collection: BufferCollectionFUCHSIA,
@@ -226,7 +226,7 @@ struct BufferCollection(Copyable):
             device, collection, Ptr(to=image_constraints_info)
         )
 
-    fn set_buffer_collection_buffer_constraints(
+    def set_buffer_collection_buffer_constraints(
         self,
         device: Device,
         collection: BufferCollectionFUCHSIA,
@@ -240,7 +240,7 @@ struct BufferCollection(Copyable):
             device, collection, Ptr(to=buffer_constraints_info)
         )
 
-    fn destroy_buffer_collection[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_buffer_collection[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         collection: BufferCollectionFUCHSIA,
@@ -254,7 +254,7 @@ struct BufferCollection(Copyable):
             device, collection, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn get_buffer_collection_properties(
+    def get_buffer_collection_properties(
         self,
         device: Device,
         collection: BufferCollectionFUCHSIA,

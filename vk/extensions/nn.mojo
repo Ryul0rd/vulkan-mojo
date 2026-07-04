@@ -1,27 +1,27 @@
-from ffi import OwnedDLHandle, CStringSlice, c_char
-from memory import ArcPointer
+from std.ffi import OwnedDLHandle, CStringSlice, c_char
+from std.memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct ViSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_vi_surface: fn(
+    var _create_vi_surface: def(
         instance: Instance,
         p_create_info: Ptr[ViSurfaceCreateInfoNN, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_vi_surface = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateViSurfaceNN".as_c_string_slice()
         )).bitcast[type_of(self._create_vi_surface)]()[]
 
-    fn create_vi_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_vi_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: ViSurfaceCreateInfoNN,

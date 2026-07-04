@@ -1,11 +1,11 @@
-from ffi import OwnedDLHandle, CStringSlice, c_char
-from memory import ArcPointer
+from std.ffi import OwnedDLHandle, CStringSlice, c_char
+from std.memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct DrawIndirectCount(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_draw_indirect_count: fn(
+    var _cmd_draw_indirect_count: def(
         command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
@@ -13,8 +13,8 @@ struct DrawIndirectCount(Copyable):
         count_buffer_offset: DeviceSize,
         max_draw_count: UInt32,
         stride: UInt32,
-    )
-    var _cmd_draw_indexed_indirect_count: fn(
+    ) thin abi("C")
+    var _cmd_draw_indexed_indirect_count: def(
         command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
@@ -22,12 +22,12 @@ struct DrawIndirectCount(Copyable):
         count_buffer_offset: DeviceSize,
         max_draw_count: UInt32,
         stride: UInt32,
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_draw_indirect_count = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawIndirectCount".as_c_string_slice()
@@ -36,7 +36,7 @@ struct DrawIndirectCount(Copyable):
             device, "vkCmdDrawIndexedIndirectCount".as_c_string_slice()
         )).bitcast[type_of(self._cmd_draw_indexed_indirect_count)]()[]
 
-    fn cmd_draw_indirect_count(
+    def cmd_draw_indirect_count(
         self,
         command_buffer: CommandBuffer,
         buffer: Buffer,
@@ -54,7 +54,7 @@ struct DrawIndirectCount(Copyable):
             command_buffer, buffer, offset, count_buffer, count_buffer_offset, max_draw_count, stride
         )
 
-    fn cmd_draw_indexed_indirect_count(
+    def cmd_draw_indexed_indirect_count(
         self,
         command_buffer: CommandBuffer,
         buffer: Buffer,
@@ -75,25 +75,25 @@ struct DrawIndirectCount(Copyable):
 
 struct ShaderInfo(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_shader_info: fn(
+    var _get_shader_info: def(
         device: Device,
         pipeline: Pipeline,
         shader_stage: ShaderStageFlagBits,
         info_type: ShaderInfoTypeAMD,
         p_info_size: Ptr[UInt, MutAnyOrigin],
         p_info: Ptr[NoneType, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_shader_info = Ptr(to=get_device_proc_addr(
             device, "vkGetShaderInfoAMD".as_c_string_slice()
         )).bitcast[type_of(self._get_shader_info)]()[]
 
-    fn get_shader_info[p_info_origin: MutOrigin = MutAnyOrigin](
+    def get_shader_info[p_info_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
@@ -115,7 +115,7 @@ struct ShaderInfo(Copyable):
             Ptr(to=p_info).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
-    fn get_shader_info[p_info_origin: MutOrigin = MutAnyOrigin](
+    def get_shader_info[p_info_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
@@ -131,43 +131,48 @@ struct ShaderInfo(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_shader_info(
-        device, pipeline, shader_stage, info_type, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
-    )
+                device,
+                pipeline,
+                shader_stage,
+                info_type,
+                Ptr(to=count),
+                Ptr[NoneType, MutUntrackedOrigin].unsafe_dangling(),
+            )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_shader_info(
-        device,
-        pipeline,
-        shader_stage,
-        info_type,
-        Ptr(to=count),
-        list.unsafe_ptr().bitcast[NoneType](),
-    )
+                device,
+                pipeline,
+                shader_stage,
+                info_type,
+                Ptr(to=count),
+                list.unsafe_ptr().bitcast[NoneType](),
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
 
 struct BufferMarker(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_write_buffer_marker: fn(
+    var _cmd_write_buffer_marker: def(
         command_buffer: CommandBuffer,
         pipeline_stage: PipelineStageFlagBits,
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         marker: UInt32,
-    )
-    var _cmd_write_buffer_marker_2: fn(
+    ) thin abi("C")
+    var _cmd_write_buffer_marker_2: def(
         command_buffer: CommandBuffer,
         stage: PipelineStageFlags2,
         dst_buffer: Buffer,
         dst_offset: DeviceSize,
         marker: UInt32,
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_write_buffer_marker = Ptr(to=get_device_proc_addr(
             device, "vkCmdWriteBufferMarkerAMD".as_c_string_slice()
@@ -176,7 +181,7 @@ struct BufferMarker(Copyable):
             device, "vkCmdWriteBufferMarker2AMD".as_c_string_slice()
         )).bitcast[type_of(self._cmd_write_buffer_marker_2)]()[]
 
-    fn cmd_write_buffer_marker(
+    def cmd_write_buffer_marker(
         self,
         command_buffer: CommandBuffer,
         pipeline_stage: PipelineStageFlagBits,
@@ -190,7 +195,7 @@ struct BufferMarker(Copyable):
         """
         return self._cmd_write_buffer_marker(command_buffer, pipeline_stage, dst_buffer, dst_offset, marker)
 
-    fn cmd_write_buffer_marker_2(
+    def cmd_write_buffer_marker_2(
         self,
         command_buffer: CommandBuffer,
         stage: PipelineStageFlags2,
@@ -207,18 +212,20 @@ struct BufferMarker(Copyable):
 
 struct DisplayNativeHdr(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _set_local_dimming: fn(device: Device, swap_chain: SwapchainKHR, local_dimming_enable: Bool32)
+    var _set_local_dimming: def(
+        device: Device, swap_chain: SwapchainKHR, local_dimming_enable: Bool32
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._set_local_dimming = Ptr(to=get_device_proc_addr(
             device, "vkSetLocalDimmingAMD".as_c_string_slice()
         )).bitcast[type_of(self._set_local_dimming)]()[]
 
-    fn set_local_dimming(
+    def set_local_dimming(
         self, device: Device, swap_chain: SwapchainKHR, local_dimming_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -230,18 +237,18 @@ struct DisplayNativeHdr(Copyable):
 
 struct AntiLag(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _anti_lag_update: fn(device: Device, p_data: Ptr[AntiLagDataAMD, ImmutAnyOrigin])
+    var _anti_lag_update: def(device: Device, p_data: Ptr[AntiLagDataAMD, ImmutAnyOrigin]) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._anti_lag_update = Ptr(to=get_device_proc_addr(
             device, "vkAntiLagUpdateAMD".as_c_string_slice()
         )).bitcast[type_of(self._anti_lag_update)]()[]
 
-    fn anti_lag_update(self, device: Device, data: AntiLagDataAMD):
+    def anti_lag_update(self, device: Device, data: AntiLagDataAMD):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAntiLagUpdateAMD.html

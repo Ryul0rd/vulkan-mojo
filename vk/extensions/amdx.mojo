@@ -1,58 +1,58 @@
-from ffi import OwnedDLHandle, CStringSlice, c_char
-from memory import ArcPointer
+from std.ffi import OwnedDLHandle, CStringSlice, c_char
+from std.memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct ShaderEnqueue(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_execution_graph_pipelines: fn(
+    var _create_execution_graph_pipelines: def(
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
         p_create_infos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_pipelines: Ptr[Pipeline, MutAnyOrigin],
-    ) -> Result
-    var _get_execution_graph_pipeline_scratch_size: fn(
+    ) thin abi("C") -> Result
+    var _get_execution_graph_pipeline_scratch_size: def(
         device: Device,
         execution_graph: Pipeline,
         p_size_info: Ptr[ExecutionGraphPipelineScratchSizeAMDX, MutAnyOrigin],
-    ) -> Result
-    var _get_execution_graph_pipeline_node_index: fn(
+    ) thin abi("C") -> Result
+    var _get_execution_graph_pipeline_node_index: def(
         device: Device,
         execution_graph: Pipeline,
         p_node_info: Ptr[PipelineShaderStageNodeCreateInfoAMDX, ImmutAnyOrigin],
         p_node_index: Ptr[UInt32, MutAnyOrigin],
-    ) -> Result
-    var _cmd_initialize_graph_scratch_memory: fn(
+    ) thin abi("C") -> Result
+    var _cmd_initialize_graph_scratch_memory: def(
         command_buffer: CommandBuffer,
         execution_graph: Pipeline,
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
-    )
-    var _cmd_dispatch_graph: fn(
+    ) thin abi("C")
+    var _cmd_dispatch_graph: def(
         command_buffer: CommandBuffer,
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
         p_count_info: Ptr[DispatchGraphCountInfoAMDX, ImmutAnyOrigin],
-    )
-    var _cmd_dispatch_graph_indirect: fn(
+    ) thin abi("C")
+    var _cmd_dispatch_graph_indirect: def(
         command_buffer: CommandBuffer,
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
         p_count_info: Ptr[DispatchGraphCountInfoAMDX, ImmutAnyOrigin],
-    )
-    var _cmd_dispatch_graph_indirect_count: fn(
+    ) thin abi("C")
+    var _cmd_dispatch_graph_indirect_count: def(
         command_buffer: CommandBuffer,
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
         count_info: DeviceAddress,
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_execution_graph_pipelines = Ptr(to=get_device_proc_addr(
             device, "vkCreateExecutionGraphPipelinesAMDX".as_c_string_slice()
@@ -76,7 +76,7 @@ struct ShaderEnqueue(Copyable):
             device, "vkCmdDispatchGraphIndirectCountAMDX".as_c_string_slice()
         )).bitcast[type_of(self._cmd_dispatch_graph_indirect_count)]()[]
 
-    fn create_execution_graph_pipelines[
+    def create_execution_graph_pipelines[
         p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
         p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
         p_pipelines_origin: MutOrigin = MutAnyOrigin,
@@ -102,7 +102,7 @@ struct ShaderEnqueue(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn get_execution_graph_pipeline_scratch_size(
+    def get_execution_graph_pipeline_scratch_size(
         self,
         device: Device,
         execution_graph: Pipeline,
@@ -114,7 +114,7 @@ struct ShaderEnqueue(Copyable):
         """
         return self._get_execution_graph_pipeline_scratch_size(device, execution_graph, Ptr(to=size_info))
 
-    fn get_execution_graph_pipeline_node_index(
+    def get_execution_graph_pipeline_node_index(
         self,
         device: Device,
         execution_graph: Pipeline,
@@ -129,7 +129,7 @@ struct ShaderEnqueue(Copyable):
             device, execution_graph, Ptr(to=node_info), Ptr(to=node_index)
         )
 
-    fn cmd_initialize_graph_scratch_memory(
+    def cmd_initialize_graph_scratch_memory(
         self,
         command_buffer: CommandBuffer,
         execution_graph: Pipeline,
@@ -144,7 +144,7 @@ struct ShaderEnqueue(Copyable):
             command_buffer, execution_graph, scratch, scratch_size
         )
 
-    fn cmd_dispatch_graph(
+    def cmd_dispatch_graph(
         self,
         command_buffer: CommandBuffer,
         scratch: DeviceAddress,
@@ -157,7 +157,7 @@ struct ShaderEnqueue(Copyable):
         """
         return self._cmd_dispatch_graph(command_buffer, scratch, scratch_size, Ptr(to=count_info))
 
-    fn cmd_dispatch_graph_indirect(
+    def cmd_dispatch_graph_indirect(
         self,
         command_buffer: CommandBuffer,
         scratch: DeviceAddress,
@@ -170,7 +170,7 @@ struct ShaderEnqueue(Copyable):
         """
         return self._cmd_dispatch_graph_indirect(command_buffer, scratch, scratch_size, Ptr(to=count_info))
 
-    fn cmd_dispatch_graph_indirect_count(
+    def cmd_dispatch_graph_indirect_count(
         self,
         command_buffer: CommandBuffer,
         scratch: DeviceAddress,

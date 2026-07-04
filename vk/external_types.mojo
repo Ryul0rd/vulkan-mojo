@@ -7,30 +7,30 @@ struct Display:
 struct VisualID(TrivialRegisterPassable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
 
 struct Window(TrivialRegisterPassable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
 
 struct RROutput(TrivialRegisterPassable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
 
@@ -45,40 +45,40 @@ struct wl_surface:
 struct HINSTANCE(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct HWND(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct HMONITOR(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct HANDLE(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
@@ -89,20 +89,20 @@ struct SECURITY_ATTRIBUTES:
 struct DWORD(TrivialRegisterPassable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
 
 struct LPCWSTR(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
@@ -113,20 +113,20 @@ struct xcb_connection_t:
 struct xcb_visualid_t(TrivialRegisterPassable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
 
 struct xcb_window_t(TrivialRegisterPassable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
 
@@ -141,10 +141,10 @@ struct IDirectFBSurface:
 struct zx_handle_t(TrivialRegisterPassable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
 
@@ -159,70 +159,70 @@ struct OH_NativeBuffer:
 struct GgpStreamDescriptor(TrivialRegisterPassable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
 
 struct GgpFrameToken(TrivialRegisterPassable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
 
 struct screen_context_t(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct screen_window_t(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct screen_buffer_t(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct NvSciSyncAttrList(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct NvSciSyncObj(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
@@ -233,20 +233,20 @@ struct NvSciSyncFence:
 struct NvSciBufAttrList(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct NvSciBufObj(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
@@ -265,73 +265,73 @@ struct CAMetalLayer:
 struct MTLDevice_id(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct MTLCommandQueue_id(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct MTLBuffer_id(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct MTLTexture_id(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct MTLSharedEvent_id(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct IOSurfaceRef(TrivialRegisterPassable):
     var _value: UInt
 
-    fn __init__(out self, *, value: UInt):
+    def __init__(out self, *, value: UInt):
         self._value = value
 
-    fn value(self) -> UInt:
+    def value(self) -> UInt:
         return self._value
 
 
 struct StdVideoH264ProfileIdc(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
-    fn __init__(out self, *, value: Int32):
+    def __init__(out self, *, value: Int32):
         self._value = value
 
-    fn value(self) -> Int32:
+    def value(self) -> Int32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
     comptime BASELINE = StdVideoH264ProfileIdc(value = 66)
@@ -344,13 +344,13 @@ struct StdVideoH264ProfileIdc(TrivialRegisterPassable, Equatable):
 struct StdVideoH264LevelIdc(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
-    fn __init__(out self, *, value: Int32):
+    def __init__(out self, *, value: Int32):
         self._value = value
 
-    fn value(self) -> Int32:
+    def value(self) -> Int32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
     comptime LEVEL_1_0 = StdVideoH264LevelIdc(value = 0)
@@ -406,13 +406,13 @@ struct StdVideoDecodeH264ReferenceInfo:
 struct StdVideoH265ProfileIdc(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
-    fn __init__(out self, *, value: Int32):
+    def __init__(out self, *, value: Int32):
         self._value = value
 
-    fn value(self) -> Int32:
+    def value(self) -> Int32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
     comptime MAIN = StdVideoH265ProfileIdc(value = 1)
@@ -426,13 +426,13 @@ struct StdVideoH265ProfileIdc(TrivialRegisterPassable, Equatable):
 struct StdVideoH265LevelIdc(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
-    fn __init__(out self, *, value: Int32):
+    def __init__(out self, *, value: Int32):
         self._value = value
 
-    fn value(self) -> Int32:
+    def value(self) -> Int32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
     comptime LEVEL_1_0 = StdVideoH265LevelIdc(value = 0)
@@ -486,13 +486,13 @@ struct StdVideoDecodeH265ReferenceInfo:
 struct StdVideoAV1Profile(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
-    fn __init__(out self, *, value: Int32):
+    def __init__(out self, *, value: Int32):
         self._value = value
 
-    fn value(self) -> Int32:
+    def value(self) -> Int32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
     comptime MAIN = StdVideoAV1Profile(value = 0)
@@ -504,13 +504,13 @@ struct StdVideoAV1Profile(TrivialRegisterPassable, Equatable):
 struct StdVideoAV1Level(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
-    fn __init__(out self, *, value: Int32):
+    def __init__(out self, *, value: Int32):
         self._value = value
 
-    fn value(self) -> Int32:
+    def value(self) -> Int32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
     comptime LEVEL_2_0 = StdVideoAV1Level(value = 0)
@@ -611,13 +611,13 @@ struct StdVideoDecodeAV1ReferenceInfo:
 struct StdVideoVP9Profile(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
-    fn __init__(out self, *, value: Int32):
+    def __init__(out self, *, value: Int32):
         self._value = value
 
-    fn value(self) -> Int32:
+    def value(self) -> Int32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
     comptime PROFILE_0 = StdVideoVP9Profile(value = 0)
@@ -630,13 +630,13 @@ struct StdVideoVP9Profile(TrivialRegisterPassable, Equatable):
 struct StdVideoVP9Level(TrivialRegisterPassable, Equatable):
     var _value: Int32
 
-    fn __init__(out self, *, value: Int32):
+    def __init__(out self, *, value: Int32):
         self._value = value
 
-    fn value(self) -> Int32:
+    def value(self) -> Int32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
     comptime LEVEL_1_0 = StdVideoVP9Level(value = 0)

@@ -1,47 +1,47 @@
 
 
-comptime PFN_vkInternalAllocationNotification = fn(
+comptime PFN_vkInternalAllocationNotification = def(
     p_user_data: Ptr[NoneType, MutAnyOrigin],
     size: UInt,
     allocation_type: InternalAllocationType,
     allocation_scope: SystemAllocationScope,
-)
+) thin abi("C")
 
 
-comptime PFN_vkInternalFreeNotification = fn(
+comptime PFN_vkInternalFreeNotification = def(
     p_user_data: Ptr[NoneType, MutAnyOrigin],
     size: UInt,
     allocation_type: InternalAllocationType,
     allocation_scope: SystemAllocationScope,
-)
+) thin abi("C")
 
 
-comptime PFN_vkReallocationFunction = fn(
+comptime PFN_vkReallocationFunction = def(
     p_user_data: Ptr[NoneType, MutAnyOrigin],
     p_original: Ptr[NoneType, MutAnyOrigin],
     size: UInt,
     alignment: UInt,
     allocation_scope: SystemAllocationScope,
-) -> Ptr[NoneType, MutAnyOrigin]
+) thin abi("C") -> Ptr[NoneType, MutAnyOrigin]
 
 
-comptime PFN_vkAllocationFunction = fn(
+comptime PFN_vkAllocationFunction = def(
     p_user_data: Ptr[NoneType, MutAnyOrigin],
     size: UInt,
     alignment: UInt,
     allocation_scope: SystemAllocationScope,
-) -> Ptr[NoneType, MutAnyOrigin]
+) thin abi("C") -> Ptr[NoneType, MutAnyOrigin]
 
 
-comptime PFN_vkFreeFunction = fn(
+comptime PFN_vkFreeFunction = def(
     p_user_data: Ptr[NoneType, MutAnyOrigin], p_memory: Ptr[NoneType, MutAnyOrigin]
-)
+) thin abi("C")
 
 
-comptime PFN_vkVoidFunction = fn()
+comptime PFN_vkVoidFunction = def() thin abi("C")
 
 
-comptime PFN_vkDebugReportCallbackEXT = fn(
+comptime PFN_vkDebugReportCallbackEXT = def(
     flags: DebugReportFlagsEXT,
     object_type: DebugReportObjectTypeEXT,
     object: UInt64,
@@ -50,28 +50,28 @@ comptime PFN_vkDebugReportCallbackEXT = fn(
     p_layer_prefix: CStringSlice[ImmutAnyOrigin],
     p_message: CStringSlice[ImmutAnyOrigin],
     p_user_data: Ptr[NoneType, MutAnyOrigin],
-) -> Bool32
+) thin abi("C") -> Bool32
 
 
-comptime PFN_vkDebugUtilsMessengerCallbackEXT = fn(
+comptime PFN_vkDebugUtilsMessengerCallbackEXT = def(
     message_severity: DebugUtilsMessageSeverityFlagBitsEXT,
     message_types: DebugUtilsMessageTypeFlagsEXT,
     p_callback_data: Ptr[DebugUtilsMessengerCallbackDataEXT, ImmutAnyOrigin],
     p_user_data: Ptr[NoneType, MutAnyOrigin],
-) -> Bool32
+) thin abi("C") -> Bool32
 
 
-comptime PFN_vkFaultCallbackFunction = fn(
+comptime PFN_vkFaultCallbackFunction = def(
     unrecorded_faults: Bool32, fault_count: UInt32, p_faults: Ptr[FaultData, ImmutAnyOrigin]
-)
+) thin abi("C")
 
 
-comptime PFN_vkDeviceMemoryReportCallbackEXT = fn(
+comptime PFN_vkDeviceMemoryReportCallbackEXT = def(
     p_callback_data: Ptr[DeviceMemoryReportCallbackDataEXT, ImmutAnyOrigin],
     p_user_data: Ptr[NoneType, MutAnyOrigin],
-)
+) thin abi("C")
 
 
-comptime PFN_vkGetInstanceProcAddrLUNARG = fn(
+comptime PFN_vkGetInstanceProcAddrLUNARG = def(
     instance: Instance, p_name: CStringSlice[ImmutAnyOrigin]
-) -> PFN_vkVoidFunction
+) thin abi("C") -> PFN_vkVoidFunction

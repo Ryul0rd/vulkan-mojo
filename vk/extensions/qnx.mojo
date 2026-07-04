@@ -1,24 +1,24 @@
-from ffi import OwnedDLHandle, CStringSlice, c_char
-from memory import ArcPointer
+from std.ffi import OwnedDLHandle, CStringSlice, c_char
+from std.memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct ScreenSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_screen_surface: fn(
+    var _create_screen_surface: def(
         instance: Instance,
         p_create_info: Ptr[ScreenSurfaceCreateInfoQNX, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
-    ) -> Result
-    var _get_physical_device_screen_presentation_support: fn(
+    ) thin abi("C") -> Result
+    var _get_physical_device_screen_presentation_support: def(
         physical_device: PhysicalDevice, queue_family_index: UInt32, window: screen_window_t
-    ) -> Bool32
+    ) thin abi("C") -> Bool32
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_screen_surface = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateScreenSurfaceQNX".as_c_string_slice()
@@ -27,7 +27,7 @@ struct ScreenSurface(Copyable):
             instance, "vkGetPhysicalDeviceScreenPresentationSupportQNX".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_screen_presentation_support)]()[]
 
-    fn create_screen_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_screen_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: ScreenSurfaceCreateInfoQNX,
@@ -45,7 +45,7 @@ struct ScreenSurface(Copyable):
             Ptr(to=surface),
         )
 
-    fn get_physical_device_screen_presentation_support(
+    def get_physical_device_screen_presentation_support(
         self, physical_device: PhysicalDevice, queue_family_index: UInt32, window: screen_window_t
     ) -> Bool32:
         """See official vulkan docs for details.
@@ -59,22 +59,22 @@ struct ScreenSurface(Copyable):
 
 struct ExternalMemoryScreenBuffer(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_screen_buffer_properties: fn(
+    var _get_screen_buffer_properties: def(
         device: Device,
         buffer: screen_buffer_t,
         p_properties: Ptr[ScreenBufferPropertiesQNX, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_screen_buffer_properties = Ptr(to=get_device_proc_addr(
             device, "vkGetScreenBufferPropertiesQNX".as_c_string_slice()
         )).bitcast[type_of(self._get_screen_buffer_properties)]()[]
 
-    fn get_screen_buffer_properties(
+    def get_screen_buffer_properties(
         self, device: Device, buffer: screen_buffer_t, mut properties: ScreenBufferPropertiesQNX
     ) -> Result:
         """See official vulkan docs for details.

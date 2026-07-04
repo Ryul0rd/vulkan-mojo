@@ -36,50 +36,50 @@ comptime PresentGravityFlagsEXT = PresentGravityFlagsKHR
 struct FramebufferCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: FramebufferCreateFlagBits):
+    def __init__(out self, bit: FramebufferCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: FramebufferCreateFlags) -> Self:
+    def __or__(self, other: FramebufferCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: FramebufferCreateFlags) -> Self:
+    def __ror__(self, other: FramebufferCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: FramebufferCreateFlags):
+    def __ior__(mut self, other: FramebufferCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: FramebufferCreateFlags) -> Self:
+    def __and__(self, other: FramebufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: FramebufferCreateFlags) -> Self:
+    def __rand__(self, other: FramebufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: FramebufferCreateFlags):
+    def __iand__(mut self, other: FramebufferCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: FramebufferCreateFlags) -> Bool:
+    def __contains__(self, other: FramebufferCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: FramebufferCreateFlags) -> Bool:
+    def is_subset(self, other: FramebufferCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: FramebufferCreateFlags) -> Bool:
+    def is_superset(self, other: FramebufferCreateFlags) -> Bool:
         return self & other == other
 
     comptime IMAGELESS = Self(value = FramebufferCreateFlagBits.IMAGELESS.value())
@@ -88,16 +88,16 @@ struct FramebufferCreateFlags(TrivialRegisterPassable, Equatable):
 struct FramebufferCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> FramebufferCreateFlags:
+    def __or__(self, other: Self) -> FramebufferCreateFlags:
         return FramebufferCreateFlags(value = self._value | other._value)
 
     comptime IMAGELESS = Self(value = 1 << 0)
@@ -106,50 +106,50 @@ struct FramebufferCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct QueryPoolCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: QueryPoolCreateFlagBits):
+    def __init__(out self, bit: QueryPoolCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: QueryPoolCreateFlags) -> Self:
+    def __or__(self, other: QueryPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: QueryPoolCreateFlags) -> Self:
+    def __ror__(self, other: QueryPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: QueryPoolCreateFlags):
+    def __ior__(mut self, other: QueryPoolCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: QueryPoolCreateFlags) -> Self:
+    def __and__(self, other: QueryPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: QueryPoolCreateFlags) -> Self:
+    def __rand__(self, other: QueryPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: QueryPoolCreateFlags):
+    def __iand__(mut self, other: QueryPoolCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: QueryPoolCreateFlags) -> Bool:
+    def __contains__(self, other: QueryPoolCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: QueryPoolCreateFlags) -> Bool:
+    def is_subset(self, other: QueryPoolCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: QueryPoolCreateFlags) -> Bool:
+    def is_superset(self, other: QueryPoolCreateFlags) -> Bool:
         return self & other == other
 
     comptime RESET = Self(value = QueryPoolCreateFlagBits.RESET.value())
@@ -158,16 +158,16 @@ struct QueryPoolCreateFlags(TrivialRegisterPassable, Equatable):
 struct QueryPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> QueryPoolCreateFlags:
+    def __or__(self, other: Self) -> QueryPoolCreateFlags:
         return QueryPoolCreateFlags(value = self._value | other._value)
 
     comptime RESET = Self(value = 1 << 0)
@@ -176,50 +176,50 @@ struct QueryPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct RenderPassCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: RenderPassCreateFlagBits):
+    def __init__(out self, bit: RenderPassCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: RenderPassCreateFlags) -> Self:
+    def __or__(self, other: RenderPassCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: RenderPassCreateFlags) -> Self:
+    def __ror__(self, other: RenderPassCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: RenderPassCreateFlags):
+    def __ior__(mut self, other: RenderPassCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: RenderPassCreateFlags) -> Self:
+    def __and__(self, other: RenderPassCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: RenderPassCreateFlags) -> Self:
+    def __rand__(self, other: RenderPassCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: RenderPassCreateFlags):
+    def __iand__(mut self, other: RenderPassCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: RenderPassCreateFlags) -> Bool:
+    def __contains__(self, other: RenderPassCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: RenderPassCreateFlags) -> Bool:
+    def is_subset(self, other: RenderPassCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: RenderPassCreateFlags) -> Bool:
+    def is_superset(self, other: RenderPassCreateFlags) -> Bool:
         return self & other == other
 
     comptime RESERVED_0 = Self(value = RenderPassCreateFlagBits.RESERVED_0.value())
@@ -231,16 +231,16 @@ struct RenderPassCreateFlags(TrivialRegisterPassable, Equatable):
 struct RenderPassCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> RenderPassCreateFlags:
+    def __or__(self, other: Self) -> RenderPassCreateFlags:
         return RenderPassCreateFlags(value = self._value | other._value)
 
     comptime RESERVED_0 = Self(value = 1 << 0)
@@ -252,50 +252,50 @@ struct RenderPassCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct SamplerCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SamplerCreateFlagBits):
+    def __init__(out self, bit: SamplerCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SamplerCreateFlags) -> Self:
+    def __or__(self, other: SamplerCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SamplerCreateFlags) -> Self:
+    def __ror__(self, other: SamplerCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SamplerCreateFlags):
+    def __ior__(mut self, other: SamplerCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: SamplerCreateFlags) -> Self:
+    def __and__(self, other: SamplerCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SamplerCreateFlags) -> Self:
+    def __rand__(self, other: SamplerCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SamplerCreateFlags):
+    def __iand__(mut self, other: SamplerCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: SamplerCreateFlags) -> Bool:
+    def __contains__(self, other: SamplerCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SamplerCreateFlags) -> Bool:
+    def is_subset(self, other: SamplerCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SamplerCreateFlags) -> Bool:
+    def is_superset(self, other: SamplerCreateFlags) -> Bool:
         return self & other == other
 
     comptime SUBSAMPLED = Self(value = SamplerCreateFlagBits.SUBSAMPLED.value())
@@ -308,16 +308,16 @@ struct SamplerCreateFlags(TrivialRegisterPassable, Equatable):
 struct SamplerCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SamplerCreateFlags:
+    def __or__(self, other: Self) -> SamplerCreateFlags:
         return SamplerCreateFlags(value = self._value | other._value)
 
     comptime SUBSAMPLED = Self(value = 1 << 0)
@@ -330,50 +330,50 @@ struct SamplerCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct PipelineLayoutCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineLayoutCreateFlagBits):
+    def __init__(out self, bit: PipelineLayoutCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineLayoutCreateFlags) -> Self:
+    def __or__(self, other: PipelineLayoutCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineLayoutCreateFlags) -> Self:
+    def __ror__(self, other: PipelineLayoutCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineLayoutCreateFlags):
+    def __ior__(mut self, other: PipelineLayoutCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineLayoutCreateFlags) -> Self:
+    def __and__(self, other: PipelineLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineLayoutCreateFlags) -> Self:
+    def __rand__(self, other: PipelineLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineLayoutCreateFlags):
+    def __iand__(mut self, other: PipelineLayoutCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineLayoutCreateFlags) -> Bool:
+    def __contains__(self, other: PipelineLayoutCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineLayoutCreateFlags) -> Bool:
+    def is_subset(self, other: PipelineLayoutCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineLayoutCreateFlags) -> Bool:
+    def is_superset(self, other: PipelineLayoutCreateFlags) -> Bool:
         return self & other == other
 
     comptime RESERVED_0 = Self(value = PipelineLayoutCreateFlagBits.RESERVED_0.value())
@@ -383,16 +383,16 @@ struct PipelineLayoutCreateFlags(TrivialRegisterPassable, Equatable):
 struct PipelineLayoutCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineLayoutCreateFlags:
+    def __or__(self, other: Self) -> PipelineLayoutCreateFlags:
         return PipelineLayoutCreateFlags(value = self._value | other._value)
 
     comptime RESERVED_0 = Self(value = 1 << 0)
@@ -402,50 +402,50 @@ struct PipelineLayoutCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct PipelineCacheCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineCacheCreateFlagBits):
+    def __init__(out self, bit: PipelineCacheCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCacheCreateFlags) -> Self:
+    def __or__(self, other: PipelineCacheCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCacheCreateFlags) -> Self:
+    def __ror__(self, other: PipelineCacheCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineCacheCreateFlags):
+    def __ior__(mut self, other: PipelineCacheCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineCacheCreateFlags) -> Self:
+    def __and__(self, other: PipelineCacheCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCacheCreateFlags) -> Self:
+    def __rand__(self, other: PipelineCacheCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineCacheCreateFlags):
+    def __iand__(mut self, other: PipelineCacheCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineCacheCreateFlags) -> Bool:
+    def __contains__(self, other: PipelineCacheCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineCacheCreateFlags) -> Bool:
+    def is_subset(self, other: PipelineCacheCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCacheCreateFlags) -> Bool:
+    def is_superset(self, other: PipelineCacheCreateFlags) -> Bool:
         return self & other == other
 
     comptime EXTERNALLY_SYNCHRONIZED = Self(value = PipelineCacheCreateFlagBits.EXTERNALLY_SYNCHRONIZED.value())
@@ -457,16 +457,16 @@ struct PipelineCacheCreateFlags(TrivialRegisterPassable, Equatable):
 struct PipelineCacheCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineCacheCreateFlags:
+    def __or__(self, other: Self) -> PipelineCacheCreateFlags:
         return PipelineCacheCreateFlags(value = self._value | other._value)
 
     comptime EXTERNALLY_SYNCHRONIZED = Self(value = 1 << 0)
@@ -478,644 +478,644 @@ struct PipelineCacheCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct PipelineDepthStencilStateCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineDepthStencilStateCreateFlagBits):
+    def __init__(out self, bit: PipelineDepthStencilStateCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
+    def __or__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
+    def __ror__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineDepthStencilStateCreateFlags):
+    def __ior__(mut self, other: PipelineDepthStencilStateCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
+    def __and__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
+    def __rand__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineDepthStencilStateCreateFlags):
+    def __iand__(mut self, other: PipelineDepthStencilStateCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineDepthStencilStateCreateFlags) -> Bool:
+    def __contains__(self, other: PipelineDepthStencilStateCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineDepthStencilStateCreateFlags) -> Bool:
+    def is_subset(self, other: PipelineDepthStencilStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineDepthStencilStateCreateFlags) -> Bool:
+    def is_superset(self, other: PipelineDepthStencilStateCreateFlags) -> Bool:
         return self & other == other
 
 
 struct PipelineDepthStencilStateCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineDepthStencilStateCreateFlags:
+    def __or__(self, other: Self) -> PipelineDepthStencilStateCreateFlags:
         return PipelineDepthStencilStateCreateFlags(value = self._value | other._value)
 
 
 struct PipelineDynamicStateCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineDynamicStateCreateFlagBits):
+    def __init__(out self, bit: PipelineDynamicStateCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineDynamicStateCreateFlags) -> Self:
+    def __or__(self, other: PipelineDynamicStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineDynamicStateCreateFlags) -> Self:
+    def __ror__(self, other: PipelineDynamicStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineDynamicStateCreateFlags):
+    def __ior__(mut self, other: PipelineDynamicStateCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineDynamicStateCreateFlags) -> Self:
+    def __and__(self, other: PipelineDynamicStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineDynamicStateCreateFlags) -> Self:
+    def __rand__(self, other: PipelineDynamicStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineDynamicStateCreateFlags):
+    def __iand__(mut self, other: PipelineDynamicStateCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineDynamicStateCreateFlags) -> Bool:
+    def __contains__(self, other: PipelineDynamicStateCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineDynamicStateCreateFlags) -> Bool:
+    def is_subset(self, other: PipelineDynamicStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineDynamicStateCreateFlags) -> Bool:
+    def is_superset(self, other: PipelineDynamicStateCreateFlags) -> Bool:
         return self & other == other
 
 
 struct PipelineDynamicStateCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineDynamicStateCreateFlags:
+    def __or__(self, other: Self) -> PipelineDynamicStateCreateFlags:
         return PipelineDynamicStateCreateFlags(value = self._value | other._value)
 
 
 struct PipelineColorBlendStateCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineColorBlendStateCreateFlagBits):
+    def __init__(out self, bit: PipelineColorBlendStateCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
+    def __or__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
+    def __ror__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineColorBlendStateCreateFlags):
+    def __ior__(mut self, other: PipelineColorBlendStateCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
+    def __and__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
+    def __rand__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineColorBlendStateCreateFlags):
+    def __iand__(mut self, other: PipelineColorBlendStateCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineColorBlendStateCreateFlags) -> Bool:
+    def __contains__(self, other: PipelineColorBlendStateCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineColorBlendStateCreateFlags) -> Bool:
+    def is_subset(self, other: PipelineColorBlendStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineColorBlendStateCreateFlags) -> Bool:
+    def is_superset(self, other: PipelineColorBlendStateCreateFlags) -> Bool:
         return self & other == other
 
 
 struct PipelineColorBlendStateCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineColorBlendStateCreateFlags:
+    def __or__(self, other: Self) -> PipelineColorBlendStateCreateFlags:
         return PipelineColorBlendStateCreateFlags(value = self._value | other._value)
 
 
 struct PipelineMultisampleStateCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineMultisampleStateCreateFlagBits):
+    def __init__(out self, bit: PipelineMultisampleStateCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
+    def __or__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
+    def __ror__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineMultisampleStateCreateFlags):
+    def __ior__(mut self, other: PipelineMultisampleStateCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
+    def __and__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
+    def __rand__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineMultisampleStateCreateFlags):
+    def __iand__(mut self, other: PipelineMultisampleStateCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineMultisampleStateCreateFlags) -> Bool:
+    def __contains__(self, other: PipelineMultisampleStateCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineMultisampleStateCreateFlags) -> Bool:
+    def is_subset(self, other: PipelineMultisampleStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineMultisampleStateCreateFlags) -> Bool:
+    def is_superset(self, other: PipelineMultisampleStateCreateFlags) -> Bool:
         return self & other == other
 
 
 struct PipelineMultisampleStateCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineMultisampleStateCreateFlags:
+    def __or__(self, other: Self) -> PipelineMultisampleStateCreateFlags:
         return PipelineMultisampleStateCreateFlags(value = self._value | other._value)
 
 
 struct PipelineRasterizationStateCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineRasterizationStateCreateFlagBits):
+    def __init__(out self, bit: PipelineRasterizationStateCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
+    def __or__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
+    def __ror__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineRasterizationStateCreateFlags):
+    def __ior__(mut self, other: PipelineRasterizationStateCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
+    def __and__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
+    def __rand__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineRasterizationStateCreateFlags):
+    def __iand__(mut self, other: PipelineRasterizationStateCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineRasterizationStateCreateFlags) -> Bool:
+    def __contains__(self, other: PipelineRasterizationStateCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineRasterizationStateCreateFlags) -> Bool:
+    def is_subset(self, other: PipelineRasterizationStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineRasterizationStateCreateFlags) -> Bool:
+    def is_superset(self, other: PipelineRasterizationStateCreateFlags) -> Bool:
         return self & other == other
 
 
 struct PipelineRasterizationStateCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineRasterizationStateCreateFlags:
+    def __or__(self, other: Self) -> PipelineRasterizationStateCreateFlags:
         return PipelineRasterizationStateCreateFlags(value = self._value | other._value)
 
 
 struct PipelineViewportStateCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineViewportStateCreateFlagBits):
+    def __init__(out self, bit: PipelineViewportStateCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineViewportStateCreateFlags) -> Self:
+    def __or__(self, other: PipelineViewportStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineViewportStateCreateFlags) -> Self:
+    def __ror__(self, other: PipelineViewportStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineViewportStateCreateFlags):
+    def __ior__(mut self, other: PipelineViewportStateCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineViewportStateCreateFlags) -> Self:
+    def __and__(self, other: PipelineViewportStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineViewportStateCreateFlags) -> Self:
+    def __rand__(self, other: PipelineViewportStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineViewportStateCreateFlags):
+    def __iand__(mut self, other: PipelineViewportStateCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineViewportStateCreateFlags) -> Bool:
+    def __contains__(self, other: PipelineViewportStateCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineViewportStateCreateFlags) -> Bool:
+    def is_subset(self, other: PipelineViewportStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineViewportStateCreateFlags) -> Bool:
+    def is_superset(self, other: PipelineViewportStateCreateFlags) -> Bool:
         return self & other == other
 
 
 struct PipelineViewportStateCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineViewportStateCreateFlags:
+    def __or__(self, other: Self) -> PipelineViewportStateCreateFlags:
         return PipelineViewportStateCreateFlags(value = self._value | other._value)
 
 
 struct PipelineTessellationStateCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineTessellationStateCreateFlagBits):
+    def __init__(out self, bit: PipelineTessellationStateCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineTessellationStateCreateFlags) -> Self:
+    def __or__(self, other: PipelineTessellationStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineTessellationStateCreateFlags) -> Self:
+    def __ror__(self, other: PipelineTessellationStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineTessellationStateCreateFlags):
+    def __ior__(mut self, other: PipelineTessellationStateCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineTessellationStateCreateFlags) -> Self:
+    def __and__(self, other: PipelineTessellationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineTessellationStateCreateFlags) -> Self:
+    def __rand__(self, other: PipelineTessellationStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineTessellationStateCreateFlags):
+    def __iand__(mut self, other: PipelineTessellationStateCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineTessellationStateCreateFlags) -> Bool:
+    def __contains__(self, other: PipelineTessellationStateCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineTessellationStateCreateFlags) -> Bool:
+    def is_subset(self, other: PipelineTessellationStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineTessellationStateCreateFlags) -> Bool:
+    def is_superset(self, other: PipelineTessellationStateCreateFlags) -> Bool:
         return self & other == other
 
 
 struct PipelineTessellationStateCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineTessellationStateCreateFlags:
+    def __or__(self, other: Self) -> PipelineTessellationStateCreateFlags:
         return PipelineTessellationStateCreateFlags(value = self._value | other._value)
 
 
 struct PipelineInputAssemblyStateCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineInputAssemblyStateCreateFlagBits):
+    def __init__(out self, bit: PipelineInputAssemblyStateCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
+    def __or__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
+    def __ror__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineInputAssemblyStateCreateFlags):
+    def __ior__(mut self, other: PipelineInputAssemblyStateCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
+    def __and__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
+    def __rand__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineInputAssemblyStateCreateFlags):
+    def __iand__(mut self, other: PipelineInputAssemblyStateCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineInputAssemblyStateCreateFlags) -> Bool:
+    def __contains__(self, other: PipelineInputAssemblyStateCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineInputAssemblyStateCreateFlags) -> Bool:
+    def is_subset(self, other: PipelineInputAssemblyStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineInputAssemblyStateCreateFlags) -> Bool:
+    def is_superset(self, other: PipelineInputAssemblyStateCreateFlags) -> Bool:
         return self & other == other
 
 
 struct PipelineInputAssemblyStateCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineInputAssemblyStateCreateFlags:
+    def __or__(self, other: Self) -> PipelineInputAssemblyStateCreateFlags:
         return PipelineInputAssemblyStateCreateFlags(value = self._value | other._value)
 
 
 struct PipelineVertexInputStateCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineVertexInputStateCreateFlagBits):
+    def __init__(out self, bit: PipelineVertexInputStateCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
+    def __or__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
+    def __ror__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineVertexInputStateCreateFlags):
+    def __ior__(mut self, other: PipelineVertexInputStateCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
+    def __and__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
+    def __rand__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineVertexInputStateCreateFlags):
+    def __iand__(mut self, other: PipelineVertexInputStateCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineVertexInputStateCreateFlags) -> Bool:
+    def __contains__(self, other: PipelineVertexInputStateCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineVertexInputStateCreateFlags) -> Bool:
+    def is_subset(self, other: PipelineVertexInputStateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineVertexInputStateCreateFlags) -> Bool:
+    def is_superset(self, other: PipelineVertexInputStateCreateFlags) -> Bool:
         return self & other == other
 
 
 struct PipelineVertexInputStateCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineVertexInputStateCreateFlags:
+    def __or__(self, other: Self) -> PipelineVertexInputStateCreateFlags:
         return PipelineVertexInputStateCreateFlags(value = self._value | other._value)
 
 
 struct PipelineShaderStageCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineShaderStageCreateFlagBits):
+    def __init__(out self, bit: PipelineShaderStageCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineShaderStageCreateFlags) -> Self:
+    def __or__(self, other: PipelineShaderStageCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineShaderStageCreateFlags) -> Self:
+    def __ror__(self, other: PipelineShaderStageCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineShaderStageCreateFlags):
+    def __ior__(mut self, other: PipelineShaderStageCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineShaderStageCreateFlags) -> Self:
+    def __and__(self, other: PipelineShaderStageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineShaderStageCreateFlags) -> Self:
+    def __rand__(self, other: PipelineShaderStageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineShaderStageCreateFlags):
+    def __iand__(mut self, other: PipelineShaderStageCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineShaderStageCreateFlags) -> Bool:
+    def __contains__(self, other: PipelineShaderStageCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineShaderStageCreateFlags) -> Bool:
+    def is_subset(self, other: PipelineShaderStageCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineShaderStageCreateFlags) -> Bool:
+    def is_superset(self, other: PipelineShaderStageCreateFlags) -> Bool:
         return self & other == other
 
     comptime ALLOW_VARYING_SUBGROUP_SIZE = Self(value = PipelineShaderStageCreateFlagBits.ALLOW_VARYING_SUBGROUP_SIZE.value())
@@ -1126,16 +1126,16 @@ struct PipelineShaderStageCreateFlags(TrivialRegisterPassable, Equatable):
 struct PipelineShaderStageCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineShaderStageCreateFlags:
+    def __or__(self, other: Self) -> PipelineShaderStageCreateFlags:
         return PipelineShaderStageCreateFlags(value = self._value | other._value)
 
     comptime ALLOW_VARYING_SUBGROUP_SIZE = Self(value = 1 << 0)
@@ -1146,50 +1146,50 @@ struct PipelineShaderStageCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct DescriptorSetLayoutCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DescriptorSetLayoutCreateFlagBits):
+    def __init__(out self, bit: DescriptorSetLayoutCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
+    def __or__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
+    def __ror__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DescriptorSetLayoutCreateFlags):
+    def __ior__(mut self, other: DescriptorSetLayoutCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
+    def __and__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
+    def __rand__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DescriptorSetLayoutCreateFlags):
+    def __iand__(mut self, other: DescriptorSetLayoutCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: DescriptorSetLayoutCreateFlags) -> Bool:
+    def __contains__(self, other: DescriptorSetLayoutCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DescriptorSetLayoutCreateFlags) -> Bool:
+    def is_subset(self, other: DescriptorSetLayoutCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DescriptorSetLayoutCreateFlags) -> Bool:
+    def is_superset(self, other: DescriptorSetLayoutCreateFlags) -> Bool:
         return self & other == other
 
     comptime PUSH_DESCRIPTOR = Self(value = DescriptorSetLayoutCreateFlagBits.PUSH_DESCRIPTOR.value())
@@ -1204,16 +1204,16 @@ struct DescriptorSetLayoutCreateFlags(TrivialRegisterPassable, Equatable):
 struct DescriptorSetLayoutCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DescriptorSetLayoutCreateFlags:
+    def __or__(self, other: Self) -> DescriptorSetLayoutCreateFlags:
         return DescriptorSetLayoutCreateFlags(value = self._value | other._value)
 
     comptime PUSH_DESCRIPTOR = Self(value = 1 << 0)
@@ -1228,116 +1228,116 @@ struct DescriptorSetLayoutCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct BufferViewCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: BufferViewCreateFlagBits):
+    def __init__(out self, bit: BufferViewCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: BufferViewCreateFlags) -> Self:
+    def __or__(self, other: BufferViewCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: BufferViewCreateFlags) -> Self:
+    def __ror__(self, other: BufferViewCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: BufferViewCreateFlags):
+    def __ior__(mut self, other: BufferViewCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: BufferViewCreateFlags) -> Self:
+    def __and__(self, other: BufferViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: BufferViewCreateFlags) -> Self:
+    def __rand__(self, other: BufferViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: BufferViewCreateFlags):
+    def __iand__(mut self, other: BufferViewCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: BufferViewCreateFlags) -> Bool:
+    def __contains__(self, other: BufferViewCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: BufferViewCreateFlags) -> Bool:
+    def is_subset(self, other: BufferViewCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: BufferViewCreateFlags) -> Bool:
+    def is_superset(self, other: BufferViewCreateFlags) -> Bool:
         return self & other == other
 
 
 struct BufferViewCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> BufferViewCreateFlags:
+    def __or__(self, other: Self) -> BufferViewCreateFlags:
         return BufferViewCreateFlags(value = self._value | other._value)
 
 
 struct InstanceCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: InstanceCreateFlagBits):
+    def __init__(out self, bit: InstanceCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: InstanceCreateFlags) -> Self:
+    def __or__(self, other: InstanceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: InstanceCreateFlags) -> Self:
+    def __ror__(self, other: InstanceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: InstanceCreateFlags):
+    def __ior__(mut self, other: InstanceCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: InstanceCreateFlags) -> Self:
+    def __and__(self, other: InstanceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: InstanceCreateFlags) -> Self:
+    def __rand__(self, other: InstanceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: InstanceCreateFlags):
+    def __iand__(mut self, other: InstanceCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: InstanceCreateFlags) -> Bool:
+    def __contains__(self, other: InstanceCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: InstanceCreateFlags) -> Bool:
+    def is_subset(self, other: InstanceCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: InstanceCreateFlags) -> Bool:
+    def is_superset(self, other: InstanceCreateFlags) -> Bool:
         return self & other == other
 
     comptime ENUMERATE_PORTABILITY = Self(value = InstanceCreateFlagBits.ENUMERATE_PORTABILITY.value())
@@ -1347,16 +1347,16 @@ struct InstanceCreateFlags(TrivialRegisterPassable, Equatable):
 struct InstanceCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> InstanceCreateFlags:
+    def __or__(self, other: Self) -> InstanceCreateFlags:
         return InstanceCreateFlags(value = self._value | other._value)
 
     comptime ENUMERATE_PORTABILITY = Self(value = 1 << 0)
@@ -1366,116 +1366,116 @@ struct InstanceCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct DeviceCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DeviceCreateFlagBits):
+    def __init__(out self, bit: DeviceCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DeviceCreateFlags) -> Self:
+    def __or__(self, other: DeviceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DeviceCreateFlags) -> Self:
+    def __ror__(self, other: DeviceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DeviceCreateFlags):
+    def __ior__(mut self, other: DeviceCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: DeviceCreateFlags) -> Self:
+    def __and__(self, other: DeviceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DeviceCreateFlags) -> Self:
+    def __rand__(self, other: DeviceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DeviceCreateFlags):
+    def __iand__(mut self, other: DeviceCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: DeviceCreateFlags) -> Bool:
+    def __contains__(self, other: DeviceCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DeviceCreateFlags) -> Bool:
+    def is_subset(self, other: DeviceCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DeviceCreateFlags) -> Bool:
+    def is_superset(self, other: DeviceCreateFlags) -> Bool:
         return self & other == other
 
 
 struct DeviceCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DeviceCreateFlags:
+    def __or__(self, other: Self) -> DeviceCreateFlags:
         return DeviceCreateFlags(value = self._value | other._value)
 
 
 struct DeviceQueueCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DeviceQueueCreateFlagBits):
+    def __init__(out self, bit: DeviceQueueCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DeviceQueueCreateFlags) -> Self:
+    def __or__(self, other: DeviceQueueCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DeviceQueueCreateFlags) -> Self:
+    def __ror__(self, other: DeviceQueueCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DeviceQueueCreateFlags):
+    def __ior__(mut self, other: DeviceQueueCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: DeviceQueueCreateFlags) -> Self:
+    def __and__(self, other: DeviceQueueCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DeviceQueueCreateFlags) -> Self:
+    def __rand__(self, other: DeviceQueueCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DeviceQueueCreateFlags):
+    def __iand__(mut self, other: DeviceQueueCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: DeviceQueueCreateFlags) -> Bool:
+    def __contains__(self, other: DeviceQueueCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DeviceQueueCreateFlags) -> Bool:
+    def is_subset(self, other: DeviceQueueCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DeviceQueueCreateFlags) -> Bool:
+    def is_superset(self, other: DeviceQueueCreateFlags) -> Bool:
         return self & other == other
 
     comptime PROTECTED = Self(value = DeviceQueueCreateFlagBits.PROTECTED.value())
@@ -1486,16 +1486,16 @@ struct DeviceQueueCreateFlags(TrivialRegisterPassable, Equatable):
 struct DeviceQueueCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DeviceQueueCreateFlags:
+    def __or__(self, other: Self) -> DeviceQueueCreateFlags:
         return DeviceQueueCreateFlags(value = self._value | other._value)
 
     comptime PROTECTED = Self(value = 1 << 0)
@@ -1506,50 +1506,50 @@ struct DeviceQueueCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct QueueFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: QueueFlagBits):
+    def __init__(out self, bit: QueueFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: QueueFlags) -> Self:
+    def __or__(self, other: QueueFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: QueueFlags) -> Self:
+    def __ror__(self, other: QueueFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: QueueFlags):
+    def __ior__(mut self, other: QueueFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: QueueFlags) -> Self:
+    def __and__(self, other: QueueFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: QueueFlags) -> Self:
+    def __rand__(self, other: QueueFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: QueueFlags):
+    def __iand__(mut self, other: QueueFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: QueueFlags) -> Bool:
+    def __contains__(self, other: QueueFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: QueueFlags) -> Bool:
+    def is_subset(self, other: QueueFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: QueueFlags) -> Bool:
+    def is_superset(self, other: QueueFlags) -> Bool:
         return self & other == other
 
     comptime GRAPHICS = Self(value = QueueFlagBits.GRAPHICS.value())
@@ -1571,16 +1571,16 @@ struct QueueFlags(TrivialRegisterPassable, Equatable):
 struct QueueFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> QueueFlags:
+    def __or__(self, other: Self) -> QueueFlags:
         return QueueFlags(value = self._value | other._value)
 
     comptime GRAPHICS = Self(value = 1 << 0)
@@ -1602,50 +1602,50 @@ struct QueueFlagBits(TrivialRegisterPassable, Equatable):
 struct MemoryPropertyFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: MemoryPropertyFlagBits):
+    def __init__(out self, bit: MemoryPropertyFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MemoryPropertyFlags) -> Self:
+    def __or__(self, other: MemoryPropertyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MemoryPropertyFlags) -> Self:
+    def __ror__(self, other: MemoryPropertyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: MemoryPropertyFlags):
+    def __ior__(mut self, other: MemoryPropertyFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: MemoryPropertyFlags) -> Self:
+    def __and__(self, other: MemoryPropertyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MemoryPropertyFlags) -> Self:
+    def __rand__(self, other: MemoryPropertyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: MemoryPropertyFlags):
+    def __iand__(mut self, other: MemoryPropertyFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: MemoryPropertyFlags) -> Bool:
+    def __contains__(self, other: MemoryPropertyFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: MemoryPropertyFlags) -> Bool:
+    def is_subset(self, other: MemoryPropertyFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MemoryPropertyFlags) -> Bool:
+    def is_superset(self, other: MemoryPropertyFlags) -> Bool:
         return self & other == other
 
     comptime DEVICE_LOCAL = Self(value = MemoryPropertyFlagBits.DEVICE_LOCAL.value())
@@ -1662,16 +1662,16 @@ struct MemoryPropertyFlags(TrivialRegisterPassable, Equatable):
 struct MemoryPropertyFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> MemoryPropertyFlags:
+    def __or__(self, other: Self) -> MemoryPropertyFlags:
         return MemoryPropertyFlags(value = self._value | other._value)
 
     comptime DEVICE_LOCAL = Self(value = 1 << 0)
@@ -1688,50 +1688,50 @@ struct MemoryPropertyFlagBits(TrivialRegisterPassable, Equatable):
 struct MemoryHeapFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: MemoryHeapFlagBits):
+    def __init__(out self, bit: MemoryHeapFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MemoryHeapFlags) -> Self:
+    def __or__(self, other: MemoryHeapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MemoryHeapFlags) -> Self:
+    def __ror__(self, other: MemoryHeapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: MemoryHeapFlags):
+    def __ior__(mut self, other: MemoryHeapFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: MemoryHeapFlags) -> Self:
+    def __and__(self, other: MemoryHeapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MemoryHeapFlags) -> Self:
+    def __rand__(self, other: MemoryHeapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: MemoryHeapFlags):
+    def __iand__(mut self, other: MemoryHeapFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: MemoryHeapFlags) -> Bool:
+    def __contains__(self, other: MemoryHeapFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: MemoryHeapFlags) -> Bool:
+    def is_subset(self, other: MemoryHeapFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MemoryHeapFlags) -> Bool:
+    def is_superset(self, other: MemoryHeapFlags) -> Bool:
         return self & other == other
 
     comptime DEVICE_LOCAL = Self(value = MemoryHeapFlagBits.DEVICE_LOCAL.value())
@@ -1743,16 +1743,16 @@ struct MemoryHeapFlags(TrivialRegisterPassable, Equatable):
 struct MemoryHeapFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> MemoryHeapFlags:
+    def __or__(self, other: Self) -> MemoryHeapFlags:
         return MemoryHeapFlags(value = self._value | other._value)
 
     comptime DEVICE_LOCAL = Self(value = 1 << 0)
@@ -1764,50 +1764,50 @@ struct MemoryHeapFlagBits(TrivialRegisterPassable, Equatable):
 struct AccessFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: AccessFlagBits):
+    def __init__(out self, bit: AccessFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AccessFlags) -> Self:
+    def __or__(self, other: AccessFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AccessFlags) -> Self:
+    def __ror__(self, other: AccessFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: AccessFlags):
+    def __ior__(mut self, other: AccessFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: AccessFlags) -> Self:
+    def __and__(self, other: AccessFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AccessFlags) -> Self:
+    def __rand__(self, other: AccessFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: AccessFlags):
+    def __iand__(mut self, other: AccessFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: AccessFlags) -> Bool:
+    def __contains__(self, other: AccessFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: AccessFlags) -> Bool:
+    def is_subset(self, other: AccessFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AccessFlags) -> Bool:
+    def is_superset(self, other: AccessFlags) -> Bool:
         return self & other == other
 
     comptime NONE = Self(value = AccessFlagBits.NONE.value())
@@ -1842,16 +1842,16 @@ struct AccessFlags(TrivialRegisterPassable, Equatable):
 struct AccessFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> AccessFlags:
+    def __or__(self, other: Self) -> AccessFlags:
         return AccessFlags(value = self._value | other._value)
 
     comptime NONE = Self(value = 0)
@@ -1886,50 +1886,50 @@ struct AccessFlagBits(TrivialRegisterPassable, Equatable):
 struct BufferUsageFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: BufferUsageFlagBits):
+    def __init__(out self, bit: BufferUsageFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: BufferUsageFlags) -> Self:
+    def __or__(self, other: BufferUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: BufferUsageFlags) -> Self:
+    def __ror__(self, other: BufferUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: BufferUsageFlags):
+    def __ior__(mut self, other: BufferUsageFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: BufferUsageFlags) -> Self:
+    def __and__(self, other: BufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: BufferUsageFlags) -> Self:
+    def __rand__(self, other: BufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: BufferUsageFlags):
+    def __iand__(mut self, other: BufferUsageFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: BufferUsageFlags) -> Bool:
+    def __contains__(self, other: BufferUsageFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: BufferUsageFlags) -> Bool:
+    def is_subset(self, other: BufferUsageFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: BufferUsageFlags) -> Bool:
+    def is_superset(self, other: BufferUsageFlags) -> Bool:
         return self & other == other
 
     comptime TRANSFER_SRC = Self(value = BufferUsageFlagBits.TRANSFER_SRC.value())
@@ -1965,16 +1965,16 @@ struct BufferUsageFlags(TrivialRegisterPassable, Equatable):
 struct BufferUsageFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> BufferUsageFlags:
+    def __or__(self, other: Self) -> BufferUsageFlags:
         return BufferUsageFlags(value = self._value | other._value)
 
     comptime TRANSFER_SRC = Self(value = 1 << 0)
@@ -2010,50 +2010,50 @@ struct BufferUsageFlagBits(TrivialRegisterPassable, Equatable):
 struct BufferCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: BufferCreateFlagBits):
+    def __init__(out self, bit: BufferCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: BufferCreateFlags) -> Self:
+    def __or__(self, other: BufferCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: BufferCreateFlags) -> Self:
+    def __ror__(self, other: BufferCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: BufferCreateFlags):
+    def __ior__(mut self, other: BufferCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: BufferCreateFlags) -> Self:
+    def __and__(self, other: BufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: BufferCreateFlags) -> Self:
+    def __rand__(self, other: BufferCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: BufferCreateFlags):
+    def __iand__(mut self, other: BufferCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: BufferCreateFlags) -> Bool:
+    def __contains__(self, other: BufferCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: BufferCreateFlags) -> Bool:
+    def is_subset(self, other: BufferCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: BufferCreateFlags) -> Bool:
+    def is_superset(self, other: BufferCreateFlags) -> Bool:
         return self & other == other
 
     comptime SPARSE_BINDING = Self(value = BufferCreateFlagBits.SPARSE_BINDING.value())
@@ -2069,16 +2069,16 @@ struct BufferCreateFlags(TrivialRegisterPassable, Equatable):
 struct BufferCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> BufferCreateFlags:
+    def __or__(self, other: Self) -> BufferCreateFlags:
         return BufferCreateFlags(value = self._value | other._value)
 
     comptime SPARSE_BINDING = Self(value = 1 << 0)
@@ -2094,50 +2094,50 @@ struct BufferCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct ShaderStageFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ShaderStageFlagBits):
+    def __init__(out self, bit: ShaderStageFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ShaderStageFlags) -> Self:
+    def __or__(self, other: ShaderStageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ShaderStageFlags) -> Self:
+    def __ror__(self, other: ShaderStageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ShaderStageFlags):
+    def __ior__(mut self, other: ShaderStageFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ShaderStageFlags) -> Self:
+    def __and__(self, other: ShaderStageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ShaderStageFlags) -> Self:
+    def __rand__(self, other: ShaderStageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ShaderStageFlags):
+    def __iand__(mut self, other: ShaderStageFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ShaderStageFlags) -> Bool:
+    def __contains__(self, other: ShaderStageFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ShaderStageFlags) -> Bool:
+    def is_subset(self, other: ShaderStageFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ShaderStageFlags) -> Bool:
+    def is_superset(self, other: ShaderStageFlags) -> Bool:
         return self & other == other
 
     comptime ALL_GRAPHICS = Self(value = ShaderStageFlagBits.ALL_GRAPHICS.value())
@@ -2163,16 +2163,16 @@ struct ShaderStageFlags(TrivialRegisterPassable, Equatable):
 struct ShaderStageFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ShaderStageFlags:
+    def __or__(self, other: Self) -> ShaderStageFlags:
         return ShaderStageFlags(value = self._value | other._value)
 
     comptime ALL_GRAPHICS = Self(value = 31)
@@ -2198,50 +2198,50 @@ struct ShaderStageFlagBits(TrivialRegisterPassable, Equatable):
 struct ImageUsageFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ImageUsageFlagBits):
+    def __init__(out self, bit: ImageUsageFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageUsageFlags) -> Self:
+    def __or__(self, other: ImageUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageUsageFlags) -> Self:
+    def __ror__(self, other: ImageUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ImageUsageFlags):
+    def __ior__(mut self, other: ImageUsageFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ImageUsageFlags) -> Self:
+    def __and__(self, other: ImageUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageUsageFlags) -> Self:
+    def __rand__(self, other: ImageUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ImageUsageFlags):
+    def __iand__(mut self, other: ImageUsageFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ImageUsageFlags) -> Bool:
+    def __contains__(self, other: ImageUsageFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ImageUsageFlags) -> Bool:
+    def is_subset(self, other: ImageUsageFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageUsageFlags) -> Bool:
+    def is_superset(self, other: ImageUsageFlags) -> Bool:
         return self & other == other
 
     comptime TRANSFER_SRC = Self(value = ImageUsageFlagBits.TRANSFER_SRC.value())
@@ -2280,16 +2280,16 @@ struct ImageUsageFlags(TrivialRegisterPassable, Equatable):
 struct ImageUsageFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ImageUsageFlags:
+    def __or__(self, other: Self) -> ImageUsageFlags:
         return ImageUsageFlags(value = self._value | other._value)
 
     comptime TRANSFER_SRC = Self(value = 1 << 0)
@@ -2328,50 +2328,50 @@ struct ImageUsageFlagBits(TrivialRegisterPassable, Equatable):
 struct ImageCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ImageCreateFlagBits):
+    def __init__(out self, bit: ImageCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageCreateFlags) -> Self:
+    def __or__(self, other: ImageCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageCreateFlags) -> Self:
+    def __ror__(self, other: ImageCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ImageCreateFlags):
+    def __ior__(mut self, other: ImageCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ImageCreateFlags) -> Self:
+    def __and__(self, other: ImageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageCreateFlags) -> Self:
+    def __rand__(self, other: ImageCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ImageCreateFlags):
+    def __iand__(mut self, other: ImageCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ImageCreateFlags) -> Bool:
+    def __contains__(self, other: ImageCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ImageCreateFlags) -> Bool:
+    def is_subset(self, other: ImageCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageCreateFlags) -> Bool:
+    def is_superset(self, other: ImageCreateFlags) -> Bool:
         return self & other == other
 
     comptime SPARSE_BINDING = Self(value = ImageCreateFlagBits.SPARSE_BINDING.value())
@@ -2400,16 +2400,16 @@ struct ImageCreateFlags(TrivialRegisterPassable, Equatable):
 struct ImageCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ImageCreateFlags:
+    def __or__(self, other: Self) -> ImageCreateFlags:
         return ImageCreateFlags(value = self._value | other._value)
 
     comptime SPARSE_BINDING = Self(value = 1 << 0)
@@ -2438,50 +2438,50 @@ struct ImageCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct ImageViewCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ImageViewCreateFlagBits):
+    def __init__(out self, bit: ImageViewCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageViewCreateFlags) -> Self:
+    def __or__(self, other: ImageViewCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageViewCreateFlags) -> Self:
+    def __ror__(self, other: ImageViewCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ImageViewCreateFlags):
+    def __ior__(mut self, other: ImageViewCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ImageViewCreateFlags) -> Self:
+    def __and__(self, other: ImageViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageViewCreateFlags) -> Self:
+    def __rand__(self, other: ImageViewCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ImageViewCreateFlags):
+    def __iand__(mut self, other: ImageViewCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ImageViewCreateFlags) -> Bool:
+    def __contains__(self, other: ImageViewCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ImageViewCreateFlags) -> Bool:
+    def is_subset(self, other: ImageViewCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageViewCreateFlags) -> Bool:
+    def is_superset(self, other: ImageViewCreateFlags) -> Bool:
         return self & other == other
 
     comptime FRAGMENT_DENSITY_MAP_DYNAMIC = Self(value = ImageViewCreateFlagBits.FRAGMENT_DENSITY_MAP_DYNAMIC.value())
@@ -2492,16 +2492,16 @@ struct ImageViewCreateFlags(TrivialRegisterPassable, Equatable):
 struct ImageViewCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ImageViewCreateFlags:
+    def __or__(self, other: Self) -> ImageViewCreateFlags:
         return ImageViewCreateFlags(value = self._value | other._value)
 
     comptime FRAGMENT_DENSITY_MAP_DYNAMIC = Self(value = 1 << 0)
@@ -2512,50 +2512,50 @@ struct ImageViewCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct PipelineCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineCreateFlagBits):
+    def __init__(out self, bit: PipelineCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCreateFlags) -> Self:
+    def __or__(self, other: PipelineCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCreateFlags) -> Self:
+    def __ror__(self, other: PipelineCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineCreateFlags):
+    def __ior__(mut self, other: PipelineCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineCreateFlags) -> Self:
+    def __and__(self, other: PipelineCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCreateFlags) -> Self:
+    def __rand__(self, other: PipelineCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineCreateFlags):
+    def __iand__(mut self, other: PipelineCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineCreateFlags) -> Bool:
+    def __contains__(self, other: PipelineCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineCreateFlags) -> Bool:
+    def is_subset(self, other: PipelineCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCreateFlags) -> Bool:
+    def is_superset(self, other: PipelineCreateFlags) -> Bool:
         return self & other == other
 
     comptime DISABLE_OPTIMIZATION = Self(value = PipelineCreateFlagBits.DISABLE_OPTIMIZATION.value())
@@ -2594,16 +2594,16 @@ struct PipelineCreateFlags(TrivialRegisterPassable, Equatable):
 struct PipelineCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineCreateFlags:
+    def __or__(self, other: Self) -> PipelineCreateFlags:
         return PipelineCreateFlags(value = self._value | other._value)
 
     comptime DISABLE_OPTIMIZATION = Self(value = 1 << 0)
@@ -2642,50 +2642,50 @@ struct PipelineCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct ColorComponentFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ColorComponentFlagBits):
+    def __init__(out self, bit: ColorComponentFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ColorComponentFlags) -> Self:
+    def __or__(self, other: ColorComponentFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ColorComponentFlags) -> Self:
+    def __ror__(self, other: ColorComponentFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ColorComponentFlags):
+    def __ior__(mut self, other: ColorComponentFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ColorComponentFlags) -> Self:
+    def __and__(self, other: ColorComponentFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ColorComponentFlags) -> Self:
+    def __rand__(self, other: ColorComponentFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ColorComponentFlags):
+    def __iand__(mut self, other: ColorComponentFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ColorComponentFlags) -> Bool:
+    def __contains__(self, other: ColorComponentFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ColorComponentFlags) -> Bool:
+    def is_subset(self, other: ColorComponentFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ColorComponentFlags) -> Bool:
+    def is_superset(self, other: ColorComponentFlags) -> Bool:
         return self & other == other
 
     comptime R = Self(value = ColorComponentFlagBits.R.value())
@@ -2697,16 +2697,16 @@ struct ColorComponentFlags(TrivialRegisterPassable, Equatable):
 struct ColorComponentFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ColorComponentFlags:
+    def __or__(self, other: Self) -> ColorComponentFlags:
         return ColorComponentFlags(value = self._value | other._value)
 
     comptime R = Self(value = 1 << 0)
@@ -2718,50 +2718,50 @@ struct ColorComponentFlagBits(TrivialRegisterPassable, Equatable):
 struct FenceCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: FenceCreateFlagBits):
+    def __init__(out self, bit: FenceCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: FenceCreateFlags) -> Self:
+    def __or__(self, other: FenceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: FenceCreateFlags) -> Self:
+    def __ror__(self, other: FenceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: FenceCreateFlags):
+    def __ior__(mut self, other: FenceCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: FenceCreateFlags) -> Self:
+    def __and__(self, other: FenceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: FenceCreateFlags) -> Self:
+    def __rand__(self, other: FenceCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: FenceCreateFlags):
+    def __iand__(mut self, other: FenceCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: FenceCreateFlags) -> Bool:
+    def __contains__(self, other: FenceCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: FenceCreateFlags) -> Bool:
+    def is_subset(self, other: FenceCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: FenceCreateFlags) -> Bool:
+    def is_superset(self, other: FenceCreateFlags) -> Bool:
         return self & other == other
 
     comptime SIGNALED = Self(value = FenceCreateFlagBits.SIGNALED.value())
@@ -2770,16 +2770,16 @@ struct FenceCreateFlags(TrivialRegisterPassable, Equatable):
 struct FenceCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> FenceCreateFlags:
+    def __or__(self, other: Self) -> FenceCreateFlags:
         return FenceCreateFlags(value = self._value | other._value)
 
     comptime SIGNALED = Self(value = 1 << 0)
@@ -2788,116 +2788,116 @@ struct FenceCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct SemaphoreCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SemaphoreCreateFlagBits):
+    def __init__(out self, bit: SemaphoreCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SemaphoreCreateFlags) -> Self:
+    def __or__(self, other: SemaphoreCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SemaphoreCreateFlags) -> Self:
+    def __ror__(self, other: SemaphoreCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SemaphoreCreateFlags):
+    def __ior__(mut self, other: SemaphoreCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: SemaphoreCreateFlags) -> Self:
+    def __and__(self, other: SemaphoreCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SemaphoreCreateFlags) -> Self:
+    def __rand__(self, other: SemaphoreCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SemaphoreCreateFlags):
+    def __iand__(mut self, other: SemaphoreCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: SemaphoreCreateFlags) -> Bool:
+    def __contains__(self, other: SemaphoreCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SemaphoreCreateFlags) -> Bool:
+    def is_subset(self, other: SemaphoreCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SemaphoreCreateFlags) -> Bool:
+    def is_superset(self, other: SemaphoreCreateFlags) -> Bool:
         return self & other == other
 
 
 struct SemaphoreCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SemaphoreCreateFlags:
+    def __or__(self, other: Self) -> SemaphoreCreateFlags:
         return SemaphoreCreateFlags(value = self._value | other._value)
 
 
 struct FormatFeatureFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: FormatFeatureFlagBits):
+    def __init__(out self, bit: FormatFeatureFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: FormatFeatureFlags) -> Self:
+    def __or__(self, other: FormatFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: FormatFeatureFlags) -> Self:
+    def __ror__(self, other: FormatFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: FormatFeatureFlags):
+    def __ior__(mut self, other: FormatFeatureFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: FormatFeatureFlags) -> Self:
+    def __and__(self, other: FormatFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: FormatFeatureFlags) -> Self:
+    def __rand__(self, other: FormatFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: FormatFeatureFlags):
+    def __iand__(mut self, other: FormatFeatureFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: FormatFeatureFlags) -> Bool:
+    def __contains__(self, other: FormatFeatureFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: FormatFeatureFlags) -> Bool:
+    def is_subset(self, other: FormatFeatureFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: FormatFeatureFlags) -> Bool:
+    def is_superset(self, other: FormatFeatureFlags) -> Bool:
         return self & other == other
 
     comptime SAMPLED_IMAGE = Self(value = FormatFeatureFlagBits.SAMPLED_IMAGE.value())
@@ -2935,16 +2935,16 @@ struct FormatFeatureFlags(TrivialRegisterPassable, Equatable):
 struct FormatFeatureFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> FormatFeatureFlags:
+    def __or__(self, other: Self) -> FormatFeatureFlags:
         return FormatFeatureFlags(value = self._value | other._value)
 
     comptime SAMPLED_IMAGE = Self(value = 1 << 0)
@@ -2982,50 +2982,50 @@ struct FormatFeatureFlagBits(TrivialRegisterPassable, Equatable):
 struct QueryControlFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: QueryControlFlagBits):
+    def __init__(out self, bit: QueryControlFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: QueryControlFlags) -> Self:
+    def __or__(self, other: QueryControlFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: QueryControlFlags) -> Self:
+    def __ror__(self, other: QueryControlFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: QueryControlFlags):
+    def __ior__(mut self, other: QueryControlFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: QueryControlFlags) -> Self:
+    def __and__(self, other: QueryControlFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: QueryControlFlags) -> Self:
+    def __rand__(self, other: QueryControlFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: QueryControlFlags):
+    def __iand__(mut self, other: QueryControlFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: QueryControlFlags) -> Bool:
+    def __contains__(self, other: QueryControlFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: QueryControlFlags) -> Bool:
+    def is_subset(self, other: QueryControlFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: QueryControlFlags) -> Bool:
+    def is_superset(self, other: QueryControlFlags) -> Bool:
         return self & other == other
 
     comptime PRECISE = Self(value = QueryControlFlagBits.PRECISE.value())
@@ -3034,16 +3034,16 @@ struct QueryControlFlags(TrivialRegisterPassable, Equatable):
 struct QueryControlFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> QueryControlFlags:
+    def __or__(self, other: Self) -> QueryControlFlags:
         return QueryControlFlags(value = self._value | other._value)
 
     comptime PRECISE = Self(value = 1 << 0)
@@ -3052,50 +3052,50 @@ struct QueryControlFlagBits(TrivialRegisterPassable, Equatable):
 struct QueryResultFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: QueryResultFlagBits):
+    def __init__(out self, bit: QueryResultFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: QueryResultFlags) -> Self:
+    def __or__(self, other: QueryResultFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: QueryResultFlags) -> Self:
+    def __ror__(self, other: QueryResultFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: QueryResultFlags):
+    def __ior__(mut self, other: QueryResultFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: QueryResultFlags) -> Self:
+    def __and__(self, other: QueryResultFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: QueryResultFlags) -> Self:
+    def __rand__(self, other: QueryResultFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: QueryResultFlags):
+    def __iand__(mut self, other: QueryResultFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: QueryResultFlags) -> Bool:
+    def __contains__(self, other: QueryResultFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: QueryResultFlags) -> Bool:
+    def is_subset(self, other: QueryResultFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: QueryResultFlags) -> Bool:
+    def is_superset(self, other: QueryResultFlags) -> Bool:
         return self & other == other
 
     comptime RESULT_64 = Self(value = QueryResultFlagBits.RESULT_64.value())
@@ -3108,16 +3108,16 @@ struct QueryResultFlags(TrivialRegisterPassable, Equatable):
 struct QueryResultFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> QueryResultFlags:
+    def __or__(self, other: Self) -> QueryResultFlags:
         return QueryResultFlags(value = self._value | other._value)
 
     comptime RESULT_64 = Self(value = 1 << 0)
@@ -3130,116 +3130,116 @@ struct QueryResultFlagBits(TrivialRegisterPassable, Equatable):
 struct ShaderModuleCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ShaderModuleCreateFlagBits):
+    def __init__(out self, bit: ShaderModuleCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ShaderModuleCreateFlags) -> Self:
+    def __or__(self, other: ShaderModuleCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ShaderModuleCreateFlags) -> Self:
+    def __ror__(self, other: ShaderModuleCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ShaderModuleCreateFlags):
+    def __ior__(mut self, other: ShaderModuleCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ShaderModuleCreateFlags) -> Self:
+    def __and__(self, other: ShaderModuleCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ShaderModuleCreateFlags) -> Self:
+    def __rand__(self, other: ShaderModuleCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ShaderModuleCreateFlags):
+    def __iand__(mut self, other: ShaderModuleCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ShaderModuleCreateFlags) -> Bool:
+    def __contains__(self, other: ShaderModuleCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ShaderModuleCreateFlags) -> Bool:
+    def is_subset(self, other: ShaderModuleCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ShaderModuleCreateFlags) -> Bool:
+    def is_superset(self, other: ShaderModuleCreateFlags) -> Bool:
         return self & other == other
 
 
 struct ShaderModuleCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ShaderModuleCreateFlags:
+    def __or__(self, other: Self) -> ShaderModuleCreateFlags:
         return ShaderModuleCreateFlags(value = self._value | other._value)
 
 
 struct EventCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: EventCreateFlagBits):
+    def __init__(out self, bit: EventCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: EventCreateFlags) -> Self:
+    def __or__(self, other: EventCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: EventCreateFlags) -> Self:
+    def __ror__(self, other: EventCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: EventCreateFlags):
+    def __ior__(mut self, other: EventCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: EventCreateFlags) -> Self:
+    def __and__(self, other: EventCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: EventCreateFlags) -> Self:
+    def __rand__(self, other: EventCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: EventCreateFlags):
+    def __iand__(mut self, other: EventCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: EventCreateFlags) -> Bool:
+    def __contains__(self, other: EventCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: EventCreateFlags) -> Bool:
+    def is_subset(self, other: EventCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: EventCreateFlags) -> Bool:
+    def is_superset(self, other: EventCreateFlags) -> Bool:
         return self & other == other
 
     comptime DEVICE_ONLY = Self(value = EventCreateFlagBits.DEVICE_ONLY.value())
@@ -3248,16 +3248,16 @@ struct EventCreateFlags(TrivialRegisterPassable, Equatable):
 struct EventCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> EventCreateFlags:
+    def __or__(self, other: Self) -> EventCreateFlags:
         return EventCreateFlags(value = self._value | other._value)
 
     comptime DEVICE_ONLY = Self(value = 1 << 0)
@@ -3266,50 +3266,50 @@ struct EventCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct CommandPoolCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: CommandPoolCreateFlagBits):
+    def __init__(out self, bit: CommandPoolCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CommandPoolCreateFlags) -> Self:
+    def __or__(self, other: CommandPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CommandPoolCreateFlags) -> Self:
+    def __ror__(self, other: CommandPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: CommandPoolCreateFlags):
+    def __ior__(mut self, other: CommandPoolCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: CommandPoolCreateFlags) -> Self:
+    def __and__(self, other: CommandPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CommandPoolCreateFlags) -> Self:
+    def __rand__(self, other: CommandPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: CommandPoolCreateFlags):
+    def __iand__(mut self, other: CommandPoolCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: CommandPoolCreateFlags) -> Bool:
+    def __contains__(self, other: CommandPoolCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: CommandPoolCreateFlags) -> Bool:
+    def is_subset(self, other: CommandPoolCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CommandPoolCreateFlags) -> Bool:
+    def is_superset(self, other: CommandPoolCreateFlags) -> Bool:
         return self & other == other
 
     comptime TRANSIENT = Self(value = CommandPoolCreateFlagBits.TRANSIENT.value())
@@ -3320,16 +3320,16 @@ struct CommandPoolCreateFlags(TrivialRegisterPassable, Equatable):
 struct CommandPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> CommandPoolCreateFlags:
+    def __or__(self, other: Self) -> CommandPoolCreateFlags:
         return CommandPoolCreateFlags(value = self._value | other._value)
 
     comptime TRANSIENT = Self(value = 1 << 0)
@@ -3340,50 +3340,50 @@ struct CommandPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct CommandPoolResetFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: CommandPoolResetFlagBits):
+    def __init__(out self, bit: CommandPoolResetFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CommandPoolResetFlags) -> Self:
+    def __or__(self, other: CommandPoolResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CommandPoolResetFlags) -> Self:
+    def __ror__(self, other: CommandPoolResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: CommandPoolResetFlags):
+    def __ior__(mut self, other: CommandPoolResetFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: CommandPoolResetFlags) -> Self:
+    def __and__(self, other: CommandPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CommandPoolResetFlags) -> Self:
+    def __rand__(self, other: CommandPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: CommandPoolResetFlags):
+    def __iand__(mut self, other: CommandPoolResetFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: CommandPoolResetFlags) -> Bool:
+    def __contains__(self, other: CommandPoolResetFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: CommandPoolResetFlags) -> Bool:
+    def is_subset(self, other: CommandPoolResetFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CommandPoolResetFlags) -> Bool:
+    def is_superset(self, other: CommandPoolResetFlags) -> Bool:
         return self & other == other
 
     comptime RELEASE_RESOURCES = Self(value = CommandPoolResetFlagBits.RELEASE_RESOURCES.value())
@@ -3393,16 +3393,16 @@ struct CommandPoolResetFlags(TrivialRegisterPassable, Equatable):
 struct CommandPoolResetFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> CommandPoolResetFlags:
+    def __or__(self, other: Self) -> CommandPoolResetFlags:
         return CommandPoolResetFlags(value = self._value | other._value)
 
     comptime RELEASE_RESOURCES = Self(value = 1 << 0)
@@ -3412,50 +3412,50 @@ struct CommandPoolResetFlagBits(TrivialRegisterPassable, Equatable):
 struct CommandBufferResetFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: CommandBufferResetFlagBits):
+    def __init__(out self, bit: CommandBufferResetFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CommandBufferResetFlags) -> Self:
+    def __or__(self, other: CommandBufferResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CommandBufferResetFlags) -> Self:
+    def __ror__(self, other: CommandBufferResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: CommandBufferResetFlags):
+    def __ior__(mut self, other: CommandBufferResetFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: CommandBufferResetFlags) -> Self:
+    def __and__(self, other: CommandBufferResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CommandBufferResetFlags) -> Self:
+    def __rand__(self, other: CommandBufferResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: CommandBufferResetFlags):
+    def __iand__(mut self, other: CommandBufferResetFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: CommandBufferResetFlags) -> Bool:
+    def __contains__(self, other: CommandBufferResetFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: CommandBufferResetFlags) -> Bool:
+    def is_subset(self, other: CommandBufferResetFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CommandBufferResetFlags) -> Bool:
+    def is_superset(self, other: CommandBufferResetFlags) -> Bool:
         return self & other == other
 
     comptime RELEASE_RESOURCES = Self(value = CommandBufferResetFlagBits.RELEASE_RESOURCES.value())
@@ -3464,16 +3464,16 @@ struct CommandBufferResetFlags(TrivialRegisterPassable, Equatable):
 struct CommandBufferResetFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> CommandBufferResetFlags:
+    def __or__(self, other: Self) -> CommandBufferResetFlags:
         return CommandBufferResetFlags(value = self._value | other._value)
 
     comptime RELEASE_RESOURCES = Self(value = 1 << 0)
@@ -3482,50 +3482,50 @@ struct CommandBufferResetFlagBits(TrivialRegisterPassable, Equatable):
 struct CommandBufferUsageFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: CommandBufferUsageFlagBits):
+    def __init__(out self, bit: CommandBufferUsageFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CommandBufferUsageFlags) -> Self:
+    def __or__(self, other: CommandBufferUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CommandBufferUsageFlags) -> Self:
+    def __ror__(self, other: CommandBufferUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: CommandBufferUsageFlags):
+    def __ior__(mut self, other: CommandBufferUsageFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: CommandBufferUsageFlags) -> Self:
+    def __and__(self, other: CommandBufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CommandBufferUsageFlags) -> Self:
+    def __rand__(self, other: CommandBufferUsageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: CommandBufferUsageFlags):
+    def __iand__(mut self, other: CommandBufferUsageFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: CommandBufferUsageFlags) -> Bool:
+    def __contains__(self, other: CommandBufferUsageFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: CommandBufferUsageFlags) -> Bool:
+    def is_subset(self, other: CommandBufferUsageFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CommandBufferUsageFlags) -> Bool:
+    def is_superset(self, other: CommandBufferUsageFlags) -> Bool:
         return self & other == other
 
     comptime ONE_TIME_SUBMIT = Self(value = CommandBufferUsageFlagBits.ONE_TIME_SUBMIT.value())
@@ -3538,16 +3538,16 @@ struct CommandBufferUsageFlags(TrivialRegisterPassable, Equatable):
 struct CommandBufferUsageFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> CommandBufferUsageFlags:
+    def __or__(self, other: Self) -> CommandBufferUsageFlags:
         return CommandBufferUsageFlags(value = self._value | other._value)
 
     comptime ONE_TIME_SUBMIT = Self(value = 1 << 0)
@@ -3560,50 +3560,50 @@ struct CommandBufferUsageFlagBits(TrivialRegisterPassable, Equatable):
 struct QueryPipelineStatisticFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: QueryPipelineStatisticFlagBits):
+    def __init__(out self, bit: QueryPipelineStatisticFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: QueryPipelineStatisticFlags) -> Self:
+    def __or__(self, other: QueryPipelineStatisticFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: QueryPipelineStatisticFlags) -> Self:
+    def __ror__(self, other: QueryPipelineStatisticFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: QueryPipelineStatisticFlags):
+    def __ior__(mut self, other: QueryPipelineStatisticFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: QueryPipelineStatisticFlags) -> Self:
+    def __and__(self, other: QueryPipelineStatisticFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: QueryPipelineStatisticFlags) -> Self:
+    def __rand__(self, other: QueryPipelineStatisticFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: QueryPipelineStatisticFlags):
+    def __iand__(mut self, other: QueryPipelineStatisticFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: QueryPipelineStatisticFlags) -> Bool:
+    def __contains__(self, other: QueryPipelineStatisticFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: QueryPipelineStatisticFlags) -> Bool:
+    def is_subset(self, other: QueryPipelineStatisticFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: QueryPipelineStatisticFlags) -> Bool:
+    def is_superset(self, other: QueryPipelineStatisticFlags) -> Bool:
         return self & other == other
 
     comptime INPUT_ASSEMBLY_VERTICES = Self(value = QueryPipelineStatisticFlagBits.INPUT_ASSEMBLY_VERTICES.value())
@@ -3625,16 +3625,16 @@ struct QueryPipelineStatisticFlags(TrivialRegisterPassable, Equatable):
 struct QueryPipelineStatisticFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> QueryPipelineStatisticFlags:
+    def __or__(self, other: Self) -> QueryPipelineStatisticFlags:
         return QueryPipelineStatisticFlags(value = self._value | other._value)
 
     comptime INPUT_ASSEMBLY_VERTICES = Self(value = 1 << 0)
@@ -3656,50 +3656,50 @@ struct QueryPipelineStatisticFlagBits(TrivialRegisterPassable, Equatable):
 struct MemoryMapFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: MemoryMapFlagBits):
+    def __init__(out self, bit: MemoryMapFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MemoryMapFlags) -> Self:
+    def __or__(self, other: MemoryMapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MemoryMapFlags) -> Self:
+    def __ror__(self, other: MemoryMapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: MemoryMapFlags):
+    def __ior__(mut self, other: MemoryMapFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: MemoryMapFlags) -> Self:
+    def __and__(self, other: MemoryMapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MemoryMapFlags) -> Self:
+    def __rand__(self, other: MemoryMapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: MemoryMapFlags):
+    def __iand__(mut self, other: MemoryMapFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: MemoryMapFlags) -> Bool:
+    def __contains__(self, other: MemoryMapFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: MemoryMapFlags) -> Bool:
+    def is_subset(self, other: MemoryMapFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MemoryMapFlags) -> Bool:
+    def is_superset(self, other: MemoryMapFlags) -> Bool:
         return self & other == other
 
     comptime PLACED = Self(value = MemoryMapFlagBits.PLACED.value())
@@ -3708,16 +3708,16 @@ struct MemoryMapFlags(TrivialRegisterPassable, Equatable):
 struct MemoryMapFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> MemoryMapFlags:
+    def __or__(self, other: Self) -> MemoryMapFlags:
         return MemoryMapFlags(value = self._value | other._value)
 
     comptime PLACED = Self(value = 1 << 0)
@@ -3726,50 +3726,50 @@ struct MemoryMapFlagBits(TrivialRegisterPassable, Equatable):
 struct MemoryUnmapFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: MemoryUnmapFlagBits):
+    def __init__(out self, bit: MemoryUnmapFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MemoryUnmapFlags) -> Self:
+    def __or__(self, other: MemoryUnmapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MemoryUnmapFlags) -> Self:
+    def __ror__(self, other: MemoryUnmapFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: MemoryUnmapFlags):
+    def __ior__(mut self, other: MemoryUnmapFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: MemoryUnmapFlags) -> Self:
+    def __and__(self, other: MemoryUnmapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MemoryUnmapFlags) -> Self:
+    def __rand__(self, other: MemoryUnmapFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: MemoryUnmapFlags):
+    def __iand__(mut self, other: MemoryUnmapFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: MemoryUnmapFlags) -> Bool:
+    def __contains__(self, other: MemoryUnmapFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: MemoryUnmapFlags) -> Bool:
+    def is_subset(self, other: MemoryUnmapFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MemoryUnmapFlags) -> Bool:
+    def is_superset(self, other: MemoryUnmapFlags) -> Bool:
         return self & other == other
 
     comptime RESERVE = Self(value = MemoryUnmapFlagBits.RESERVE.value())
@@ -3778,16 +3778,16 @@ struct MemoryUnmapFlags(TrivialRegisterPassable, Equatable):
 struct MemoryUnmapFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> MemoryUnmapFlags:
+    def __or__(self, other: Self) -> MemoryUnmapFlags:
         return MemoryUnmapFlags(value = self._value | other._value)
 
     comptime RESERVE = Self(value = 1 << 0)
@@ -3796,50 +3796,50 @@ struct MemoryUnmapFlagBits(TrivialRegisterPassable, Equatable):
 struct ImageAspectFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ImageAspectFlagBits):
+    def __init__(out self, bit: ImageAspectFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageAspectFlags) -> Self:
+    def __or__(self, other: ImageAspectFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageAspectFlags) -> Self:
+    def __ror__(self, other: ImageAspectFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ImageAspectFlags):
+    def __ior__(mut self, other: ImageAspectFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ImageAspectFlags) -> Self:
+    def __and__(self, other: ImageAspectFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageAspectFlags) -> Self:
+    def __rand__(self, other: ImageAspectFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ImageAspectFlags):
+    def __iand__(mut self, other: ImageAspectFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ImageAspectFlags) -> Bool:
+    def __contains__(self, other: ImageAspectFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ImageAspectFlags) -> Bool:
+    def is_subset(self, other: ImageAspectFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageAspectFlags) -> Bool:
+    def is_superset(self, other: ImageAspectFlags) -> Bool:
         return self & other == other
 
     comptime NONE = Self(value = ImageAspectFlagBits.NONE.value())
@@ -3860,16 +3860,16 @@ struct ImageAspectFlags(TrivialRegisterPassable, Equatable):
 struct ImageAspectFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ImageAspectFlags:
+    def __or__(self, other: Self) -> ImageAspectFlags:
         return ImageAspectFlags(value = self._value | other._value)
 
     comptime NONE = Self(value = 0)
@@ -3890,50 +3890,50 @@ struct ImageAspectFlagBits(TrivialRegisterPassable, Equatable):
 struct SparseMemoryBindFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SparseMemoryBindFlagBits):
+    def __init__(out self, bit: SparseMemoryBindFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SparseMemoryBindFlags) -> Self:
+    def __or__(self, other: SparseMemoryBindFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SparseMemoryBindFlags) -> Self:
+    def __ror__(self, other: SparseMemoryBindFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SparseMemoryBindFlags):
+    def __ior__(mut self, other: SparseMemoryBindFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: SparseMemoryBindFlags) -> Self:
+    def __and__(self, other: SparseMemoryBindFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SparseMemoryBindFlags) -> Self:
+    def __rand__(self, other: SparseMemoryBindFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SparseMemoryBindFlags):
+    def __iand__(mut self, other: SparseMemoryBindFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: SparseMemoryBindFlags) -> Bool:
+    def __contains__(self, other: SparseMemoryBindFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SparseMemoryBindFlags) -> Bool:
+    def is_subset(self, other: SparseMemoryBindFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SparseMemoryBindFlags) -> Bool:
+    def is_superset(self, other: SparseMemoryBindFlags) -> Bool:
         return self & other == other
 
     comptime METADATA = Self(value = SparseMemoryBindFlagBits.METADATA.value())
@@ -3942,16 +3942,16 @@ struct SparseMemoryBindFlags(TrivialRegisterPassable, Equatable):
 struct SparseMemoryBindFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SparseMemoryBindFlags:
+    def __or__(self, other: Self) -> SparseMemoryBindFlags:
         return SparseMemoryBindFlags(value = self._value | other._value)
 
     comptime METADATA = Self(value = 1 << 0)
@@ -3960,50 +3960,50 @@ struct SparseMemoryBindFlagBits(TrivialRegisterPassable, Equatable):
 struct SparseImageFormatFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SparseImageFormatFlagBits):
+    def __init__(out self, bit: SparseImageFormatFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SparseImageFormatFlags) -> Self:
+    def __or__(self, other: SparseImageFormatFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SparseImageFormatFlags) -> Self:
+    def __ror__(self, other: SparseImageFormatFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SparseImageFormatFlags):
+    def __ior__(mut self, other: SparseImageFormatFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: SparseImageFormatFlags) -> Self:
+    def __and__(self, other: SparseImageFormatFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SparseImageFormatFlags) -> Self:
+    def __rand__(self, other: SparseImageFormatFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SparseImageFormatFlags):
+    def __iand__(mut self, other: SparseImageFormatFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: SparseImageFormatFlags) -> Bool:
+    def __contains__(self, other: SparseImageFormatFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SparseImageFormatFlags) -> Bool:
+    def is_subset(self, other: SparseImageFormatFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SparseImageFormatFlags) -> Bool:
+    def is_superset(self, other: SparseImageFormatFlags) -> Bool:
         return self & other == other
 
     comptime SINGLE_MIPTAIL = Self(value = SparseImageFormatFlagBits.SINGLE_MIPTAIL.value())
@@ -4014,16 +4014,16 @@ struct SparseImageFormatFlags(TrivialRegisterPassable, Equatable):
 struct SparseImageFormatFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SparseImageFormatFlags:
+    def __or__(self, other: Self) -> SparseImageFormatFlags:
         return SparseImageFormatFlags(value = self._value | other._value)
 
     comptime SINGLE_MIPTAIL = Self(value = 1 << 0)
@@ -4034,50 +4034,50 @@ struct SparseImageFormatFlagBits(TrivialRegisterPassable, Equatable):
 struct SubpassDescriptionFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SubpassDescriptionFlagBits):
+    def __init__(out self, bit: SubpassDescriptionFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SubpassDescriptionFlags) -> Self:
+    def __or__(self, other: SubpassDescriptionFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SubpassDescriptionFlags) -> Self:
+    def __ror__(self, other: SubpassDescriptionFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SubpassDescriptionFlags):
+    def __ior__(mut self, other: SubpassDescriptionFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: SubpassDescriptionFlags) -> Self:
+    def __and__(self, other: SubpassDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SubpassDescriptionFlags) -> Self:
+    def __rand__(self, other: SubpassDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SubpassDescriptionFlags):
+    def __iand__(mut self, other: SubpassDescriptionFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: SubpassDescriptionFlags) -> Bool:
+    def __contains__(self, other: SubpassDescriptionFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SubpassDescriptionFlags) -> Bool:
+    def is_subset(self, other: SubpassDescriptionFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SubpassDescriptionFlags) -> Bool:
+    def is_superset(self, other: SubpassDescriptionFlags) -> Bool:
         return self & other == other
 
     comptime PER_VIEW_ATTRIBUTES = Self(value = SubpassDescriptionFlagBits.PER_VIEW_ATTRIBUTES.value())
@@ -4090,16 +4090,16 @@ struct SubpassDescriptionFlags(TrivialRegisterPassable, Equatable):
 struct SubpassDescriptionFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SubpassDescriptionFlags:
+    def __or__(self, other: Self) -> SubpassDescriptionFlags:
         return SubpassDescriptionFlags(value = self._value | other._value)
 
     comptime PER_VIEW_ATTRIBUTES = Self(value = 1 << 0)
@@ -4112,50 +4112,50 @@ struct SubpassDescriptionFlagBits(TrivialRegisterPassable, Equatable):
 struct PipelineStageFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineStageFlagBits):
+    def __init__(out self, bit: PipelineStageFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineStageFlags) -> Self:
+    def __or__(self, other: PipelineStageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineStageFlags) -> Self:
+    def __ror__(self, other: PipelineStageFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineStageFlags):
+    def __ior__(mut self, other: PipelineStageFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineStageFlags) -> Self:
+    def __and__(self, other: PipelineStageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineStageFlags) -> Self:
+    def __rand__(self, other: PipelineStageFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineStageFlags):
+    def __iand__(mut self, other: PipelineStageFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineStageFlags) -> Bool:
+    def __contains__(self, other: PipelineStageFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineStageFlags) -> Bool:
+    def is_subset(self, other: PipelineStageFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineStageFlags) -> Bool:
+    def is_superset(self, other: PipelineStageFlags) -> Bool:
         return self & other == other
 
     comptime NONE = Self(value = PipelineStageFlagBits.NONE.value())
@@ -4187,16 +4187,16 @@ struct PipelineStageFlags(TrivialRegisterPassable, Equatable):
 struct PipelineStageFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineStageFlags:
+    def __or__(self, other: Self) -> PipelineStageFlags:
         return PipelineStageFlags(value = self._value | other._value)
 
     comptime NONE = Self(value = 0)
@@ -4228,50 +4228,50 @@ struct PipelineStageFlagBits(TrivialRegisterPassable, Equatable):
 struct SampleCountFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SampleCountFlagBits):
+    def __init__(out self, bit: SampleCountFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SampleCountFlags) -> Self:
+    def __or__(self, other: SampleCountFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SampleCountFlags) -> Self:
+    def __ror__(self, other: SampleCountFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SampleCountFlags):
+    def __ior__(mut self, other: SampleCountFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: SampleCountFlags) -> Self:
+    def __and__(self, other: SampleCountFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SampleCountFlags) -> Self:
+    def __rand__(self, other: SampleCountFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SampleCountFlags):
+    def __iand__(mut self, other: SampleCountFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: SampleCountFlags) -> Bool:
+    def __contains__(self, other: SampleCountFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SampleCountFlags) -> Bool:
+    def is_subset(self, other: SampleCountFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SampleCountFlags) -> Bool:
+    def is_superset(self, other: SampleCountFlags) -> Bool:
         return self & other == other
 
     comptime COUNT_1 = Self(value = SampleCountFlagBits.COUNT_1.value())
@@ -4286,16 +4286,16 @@ struct SampleCountFlags(TrivialRegisterPassable, Equatable):
 struct SampleCountFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SampleCountFlags:
+    def __or__(self, other: Self) -> SampleCountFlags:
         return SampleCountFlags(value = self._value | other._value)
 
     comptime COUNT_1 = Self(value = 1 << 0)
@@ -4310,50 +4310,50 @@ struct SampleCountFlagBits(TrivialRegisterPassable, Equatable):
 struct AttachmentDescriptionFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: AttachmentDescriptionFlagBits):
+    def __init__(out self, bit: AttachmentDescriptionFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AttachmentDescriptionFlags) -> Self:
+    def __or__(self, other: AttachmentDescriptionFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AttachmentDescriptionFlags) -> Self:
+    def __ror__(self, other: AttachmentDescriptionFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: AttachmentDescriptionFlags):
+    def __ior__(mut self, other: AttachmentDescriptionFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: AttachmentDescriptionFlags) -> Self:
+    def __and__(self, other: AttachmentDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AttachmentDescriptionFlags) -> Self:
+    def __rand__(self, other: AttachmentDescriptionFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: AttachmentDescriptionFlags):
+    def __iand__(mut self, other: AttachmentDescriptionFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: AttachmentDescriptionFlags) -> Bool:
+    def __contains__(self, other: AttachmentDescriptionFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: AttachmentDescriptionFlags) -> Bool:
+    def is_subset(self, other: AttachmentDescriptionFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AttachmentDescriptionFlags) -> Bool:
+    def is_superset(self, other: AttachmentDescriptionFlags) -> Bool:
         return self & other == other
 
     comptime MAY_ALIAS = Self(value = AttachmentDescriptionFlagBits.MAY_ALIAS.value())
@@ -4364,16 +4364,16 @@ struct AttachmentDescriptionFlags(TrivialRegisterPassable, Equatable):
 struct AttachmentDescriptionFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> AttachmentDescriptionFlags:
+    def __or__(self, other: Self) -> AttachmentDescriptionFlags:
         return AttachmentDescriptionFlags(value = self._value | other._value)
 
     comptime MAY_ALIAS = Self(value = 1 << 0)
@@ -4384,50 +4384,50 @@ struct AttachmentDescriptionFlagBits(TrivialRegisterPassable, Equatable):
 struct StencilFaceFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: StencilFaceFlagBits):
+    def __init__(out self, bit: StencilFaceFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: StencilFaceFlags) -> Self:
+    def __or__(self, other: StencilFaceFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: StencilFaceFlags) -> Self:
+    def __ror__(self, other: StencilFaceFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: StencilFaceFlags):
+    def __ior__(mut self, other: StencilFaceFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: StencilFaceFlags) -> Self:
+    def __and__(self, other: StencilFaceFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: StencilFaceFlags) -> Self:
+    def __rand__(self, other: StencilFaceFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: StencilFaceFlags):
+    def __iand__(mut self, other: StencilFaceFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: StencilFaceFlags) -> Bool:
+    def __contains__(self, other: StencilFaceFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: StencilFaceFlags) -> Bool:
+    def is_subset(self, other: StencilFaceFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: StencilFaceFlags) -> Bool:
+    def is_superset(self, other: StencilFaceFlags) -> Bool:
         return self & other == other
 
     comptime FRONT_AND_BACK = Self(value = StencilFaceFlagBits.FRONT_AND_BACK.value())
@@ -4438,16 +4438,16 @@ struct StencilFaceFlags(TrivialRegisterPassable, Equatable):
 struct StencilFaceFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> StencilFaceFlags:
+    def __or__(self, other: Self) -> StencilFaceFlags:
         return StencilFaceFlags(value = self._value | other._value)
 
     comptime FRONT_AND_BACK = Self(value = 3)
@@ -4458,50 +4458,50 @@ struct StencilFaceFlagBits(TrivialRegisterPassable, Equatable):
 struct CullModeFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: CullModeFlagBits):
+    def __init__(out self, bit: CullModeFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CullModeFlags) -> Self:
+    def __or__(self, other: CullModeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CullModeFlags) -> Self:
+    def __ror__(self, other: CullModeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: CullModeFlags):
+    def __ior__(mut self, other: CullModeFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: CullModeFlags) -> Self:
+    def __and__(self, other: CullModeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CullModeFlags) -> Self:
+    def __rand__(self, other: CullModeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: CullModeFlags):
+    def __iand__(mut self, other: CullModeFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: CullModeFlags) -> Bool:
+    def __contains__(self, other: CullModeFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: CullModeFlags) -> Bool:
+    def is_subset(self, other: CullModeFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CullModeFlags) -> Bool:
+    def is_superset(self, other: CullModeFlags) -> Bool:
         return self & other == other
 
     comptime NONE = Self(value = CullModeFlagBits.NONE.value())
@@ -4513,16 +4513,16 @@ struct CullModeFlags(TrivialRegisterPassable, Equatable):
 struct CullModeFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> CullModeFlags:
+    def __or__(self, other: Self) -> CullModeFlags:
         return CullModeFlags(value = self._value | other._value)
 
     comptime NONE = Self(value = 0)
@@ -4534,50 +4534,50 @@ struct CullModeFlagBits(TrivialRegisterPassable, Equatable):
 struct DescriptorPoolCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DescriptorPoolCreateFlagBits):
+    def __init__(out self, bit: DescriptorPoolCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DescriptorPoolCreateFlags) -> Self:
+    def __or__(self, other: DescriptorPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DescriptorPoolCreateFlags) -> Self:
+    def __ror__(self, other: DescriptorPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DescriptorPoolCreateFlags):
+    def __ior__(mut self, other: DescriptorPoolCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: DescriptorPoolCreateFlags) -> Self:
+    def __and__(self, other: DescriptorPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DescriptorPoolCreateFlags) -> Self:
+    def __rand__(self, other: DescriptorPoolCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DescriptorPoolCreateFlags):
+    def __iand__(mut self, other: DescriptorPoolCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: DescriptorPoolCreateFlags) -> Bool:
+    def __contains__(self, other: DescriptorPoolCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DescriptorPoolCreateFlags) -> Bool:
+    def is_subset(self, other: DescriptorPoolCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DescriptorPoolCreateFlags) -> Bool:
+    def is_superset(self, other: DescriptorPoolCreateFlags) -> Bool:
         return self & other == other
 
     comptime FREE_DESCRIPTOR_SET = Self(value = DescriptorPoolCreateFlagBits.FREE_DESCRIPTOR_SET.value())
@@ -4589,16 +4589,16 @@ struct DescriptorPoolCreateFlags(TrivialRegisterPassable, Equatable):
 struct DescriptorPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DescriptorPoolCreateFlags:
+    def __or__(self, other: Self) -> DescriptorPoolCreateFlags:
         return DescriptorPoolCreateFlags(value = self._value | other._value)
 
     comptime FREE_DESCRIPTOR_SET = Self(value = 1 << 0)
@@ -4610,116 +4610,116 @@ struct DescriptorPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct DescriptorPoolResetFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DescriptorPoolResetFlagBits):
+    def __init__(out self, bit: DescriptorPoolResetFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DescriptorPoolResetFlags) -> Self:
+    def __or__(self, other: DescriptorPoolResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DescriptorPoolResetFlags) -> Self:
+    def __ror__(self, other: DescriptorPoolResetFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DescriptorPoolResetFlags):
+    def __ior__(mut self, other: DescriptorPoolResetFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: DescriptorPoolResetFlags) -> Self:
+    def __and__(self, other: DescriptorPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DescriptorPoolResetFlags) -> Self:
+    def __rand__(self, other: DescriptorPoolResetFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DescriptorPoolResetFlags):
+    def __iand__(mut self, other: DescriptorPoolResetFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: DescriptorPoolResetFlags) -> Bool:
+    def __contains__(self, other: DescriptorPoolResetFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DescriptorPoolResetFlags) -> Bool:
+    def is_subset(self, other: DescriptorPoolResetFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DescriptorPoolResetFlags) -> Bool:
+    def is_superset(self, other: DescriptorPoolResetFlags) -> Bool:
         return self & other == other
 
 
 struct DescriptorPoolResetFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DescriptorPoolResetFlags:
+    def __or__(self, other: Self) -> DescriptorPoolResetFlags:
         return DescriptorPoolResetFlags(value = self._value | other._value)
 
 
 struct DependencyFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DependencyFlagBits):
+    def __init__(out self, bit: DependencyFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DependencyFlags) -> Self:
+    def __or__(self, other: DependencyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DependencyFlags) -> Self:
+    def __ror__(self, other: DependencyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DependencyFlags):
+    def __ior__(mut self, other: DependencyFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: DependencyFlags) -> Self:
+    def __and__(self, other: DependencyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DependencyFlags) -> Self:
+    def __rand__(self, other: DependencyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DependencyFlags):
+    def __iand__(mut self, other: DependencyFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: DependencyFlags) -> Bool:
+    def __contains__(self, other: DependencyFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DependencyFlags) -> Bool:
+    def is_subset(self, other: DependencyFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DependencyFlags) -> Bool:
+    def is_superset(self, other: DependencyFlags) -> Bool:
         return self & other == other
 
     comptime BY_REGION = Self(value = DependencyFlagBits.BY_REGION.value())
@@ -4734,16 +4734,16 @@ struct DependencyFlags(TrivialRegisterPassable, Equatable):
 struct DependencyFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DependencyFlags:
+    def __or__(self, other: Self) -> DependencyFlags:
         return DependencyFlags(value = self._value | other._value)
 
     comptime BY_REGION = Self(value = 1 << 0)
@@ -4758,50 +4758,50 @@ struct DependencyFlagBits(TrivialRegisterPassable, Equatable):
 struct SubgroupFeatureFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SubgroupFeatureFlagBits):
+    def __init__(out self, bit: SubgroupFeatureFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SubgroupFeatureFlags) -> Self:
+    def __or__(self, other: SubgroupFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SubgroupFeatureFlags) -> Self:
+    def __ror__(self, other: SubgroupFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SubgroupFeatureFlags):
+    def __ior__(mut self, other: SubgroupFeatureFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: SubgroupFeatureFlags) -> Self:
+    def __and__(self, other: SubgroupFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SubgroupFeatureFlags) -> Self:
+    def __rand__(self, other: SubgroupFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SubgroupFeatureFlags):
+    def __iand__(mut self, other: SubgroupFeatureFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: SubgroupFeatureFlags) -> Bool:
+    def __contains__(self, other: SubgroupFeatureFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SubgroupFeatureFlags) -> Bool:
+    def is_subset(self, other: SubgroupFeatureFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SubgroupFeatureFlags) -> Bool:
+    def is_superset(self, other: SubgroupFeatureFlags) -> Bool:
         return self & other == other
 
     comptime BASIC = Self(value = SubgroupFeatureFlagBits.BASIC.value())
@@ -4819,16 +4819,16 @@ struct SubgroupFeatureFlags(TrivialRegisterPassable, Equatable):
 struct SubgroupFeatureFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SubgroupFeatureFlags:
+    def __or__(self, other: Self) -> SubgroupFeatureFlags:
         return SubgroupFeatureFlags(value = self._value | other._value)
 
     comptime BASIC = Self(value = 1 << 0)
@@ -4846,50 +4846,50 @@ struct SubgroupFeatureFlagBits(TrivialRegisterPassable, Equatable):
 struct IndirectCommandsLayoutUsageFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: IndirectCommandsLayoutUsageFlagBitsNV):
+    def __init__(out self, bit: IndirectCommandsLayoutUsageFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
+    def __or__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
+    def __ror__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: IndirectCommandsLayoutUsageFlagsNV):
+    def __ior__(mut self, other: IndirectCommandsLayoutUsageFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
+    def __and__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
+    def __rand__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: IndirectCommandsLayoutUsageFlagsNV):
+    def __iand__(mut self, other: IndirectCommandsLayoutUsageFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Bool:
+    def __contains__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Bool:
+    def is_subset(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Bool:
+    def is_superset(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Bool:
         return self & other == other
 
     comptime EXPLICIT_PREPROCESS = Self(value = IndirectCommandsLayoutUsageFlagBitsNV.EXPLICIT_PREPROCESS.value())
@@ -4900,16 +4900,16 @@ struct IndirectCommandsLayoutUsageFlagsNV(TrivialRegisterPassable, Equatable):
 struct IndirectCommandsLayoutUsageFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> IndirectCommandsLayoutUsageFlagsNV:
+    def __or__(self, other: Self) -> IndirectCommandsLayoutUsageFlagsNV:
         return IndirectCommandsLayoutUsageFlagsNV(value = self._value | other._value)
 
     comptime EXPLICIT_PREPROCESS = Self(value = 1 << 0)
@@ -4920,50 +4920,50 @@ struct IndirectCommandsLayoutUsageFlagBitsNV(TrivialRegisterPassable, Equatable)
 struct IndirectStateFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: IndirectStateFlagBitsNV):
+    def __init__(out self, bit: IndirectStateFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: IndirectStateFlagsNV) -> Self:
+    def __or__(self, other: IndirectStateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: IndirectStateFlagsNV) -> Self:
+    def __ror__(self, other: IndirectStateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: IndirectStateFlagsNV):
+    def __ior__(mut self, other: IndirectStateFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: IndirectStateFlagsNV) -> Self:
+    def __and__(self, other: IndirectStateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: IndirectStateFlagsNV) -> Self:
+    def __rand__(self, other: IndirectStateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: IndirectStateFlagsNV):
+    def __iand__(mut self, other: IndirectStateFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: IndirectStateFlagsNV) -> Bool:
+    def __contains__(self, other: IndirectStateFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: IndirectStateFlagsNV) -> Bool:
+    def is_subset(self, other: IndirectStateFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: IndirectStateFlagsNV) -> Bool:
+    def is_superset(self, other: IndirectStateFlagsNV) -> Bool:
         return self & other == other
 
     comptime FLAG_FRONTFACE = Self(value = IndirectStateFlagBitsNV.FLAG_FRONTFACE.value())
@@ -4972,16 +4972,16 @@ struct IndirectStateFlagsNV(TrivialRegisterPassable, Equatable):
 struct IndirectStateFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> IndirectStateFlagsNV:
+    def __or__(self, other: Self) -> IndirectStateFlagsNV:
         return IndirectStateFlagsNV(value = self._value | other._value)
 
     comptime FLAG_FRONTFACE = Self(value = 1 << 0)
@@ -4990,50 +4990,50 @@ struct IndirectStateFlagBitsNV(TrivialRegisterPassable, Equatable):
 struct GeometryFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: GeometryFlagBitsKHR):
+    def __init__(out self, bit: GeometryFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: GeometryFlagsKHR) -> Self:
+    def __or__(self, other: GeometryFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: GeometryFlagsKHR) -> Self:
+    def __ror__(self, other: GeometryFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: GeometryFlagsKHR):
+    def __ior__(mut self, other: GeometryFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: GeometryFlagsKHR) -> Self:
+    def __and__(self, other: GeometryFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: GeometryFlagsKHR) -> Self:
+    def __rand__(self, other: GeometryFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: GeometryFlagsKHR):
+    def __iand__(mut self, other: GeometryFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: GeometryFlagsKHR) -> Bool:
+    def __contains__(self, other: GeometryFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: GeometryFlagsKHR) -> Bool:
+    def is_subset(self, other: GeometryFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: GeometryFlagsKHR) -> Bool:
+    def is_superset(self, other: GeometryFlagsKHR) -> Bool:
         return self & other == other
 
     comptime OPAQUE = Self(value = GeometryFlagBitsKHR.OPAQUE.value())
@@ -5043,16 +5043,16 @@ struct GeometryFlagsKHR(TrivialRegisterPassable, Equatable):
 struct GeometryFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> GeometryFlagsKHR:
+    def __or__(self, other: Self) -> GeometryFlagsKHR:
         return GeometryFlagsKHR(value = self._value | other._value)
 
     comptime OPAQUE = Self(value = 1 << 0)
@@ -5062,50 +5062,50 @@ struct GeometryFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct GeometryInstanceFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: GeometryInstanceFlagBitsKHR):
+    def __init__(out self, bit: GeometryInstanceFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: GeometryInstanceFlagsKHR) -> Self:
+    def __or__(self, other: GeometryInstanceFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: GeometryInstanceFlagsKHR) -> Self:
+    def __ror__(self, other: GeometryInstanceFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: GeometryInstanceFlagsKHR):
+    def __ior__(mut self, other: GeometryInstanceFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: GeometryInstanceFlagsKHR) -> Self:
+    def __and__(self, other: GeometryInstanceFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: GeometryInstanceFlagsKHR) -> Self:
+    def __rand__(self, other: GeometryInstanceFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: GeometryInstanceFlagsKHR):
+    def __iand__(mut self, other: GeometryInstanceFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: GeometryInstanceFlagsKHR) -> Bool:
+    def __contains__(self, other: GeometryInstanceFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: GeometryInstanceFlagsKHR) -> Bool:
+    def is_subset(self, other: GeometryInstanceFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: GeometryInstanceFlagsKHR) -> Bool:
+    def is_superset(self, other: GeometryInstanceFlagsKHR) -> Bool:
         return self & other == other
 
     comptime TRIANGLE_FACING_CULL_DISABLE = Self(value = GeometryInstanceFlagBitsKHR.TRIANGLE_FACING_CULL_DISABLE.value())
@@ -5119,16 +5119,16 @@ struct GeometryInstanceFlagsKHR(TrivialRegisterPassable, Equatable):
 struct GeometryInstanceFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> GeometryInstanceFlagsKHR:
+    def __or__(self, other: Self) -> GeometryInstanceFlagsKHR:
         return GeometryInstanceFlagsKHR(value = self._value | other._value)
 
     comptime TRIANGLE_FACING_CULL_DISABLE = Self(value = 1 << 0)
@@ -5142,50 +5142,50 @@ struct GeometryInstanceFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct ClusterAccelerationStructureGeometryFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ClusterAccelerationStructureGeometryFlagBitsNV):
+    def __init__(out self, bit: ClusterAccelerationStructureGeometryFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
+    def __or__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
+    def __ror__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ClusterAccelerationStructureGeometryFlagsNV):
+    def __ior__(mut self, other: ClusterAccelerationStructureGeometryFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
+    def __and__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
+    def __rand__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ClusterAccelerationStructureGeometryFlagsNV):
+    def __iand__(mut self, other: ClusterAccelerationStructureGeometryFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Bool:
+    def __contains__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Bool:
+    def is_subset(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Bool:
+    def is_superset(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Bool:
         return self & other == other
 
     comptime CULL_DISABLE = Self(value = ClusterAccelerationStructureGeometryFlagBitsNV.CULL_DISABLE.value())
@@ -5196,16 +5196,16 @@ struct ClusterAccelerationStructureGeometryFlagsNV(TrivialRegisterPassable, Equa
 struct ClusterAccelerationStructureGeometryFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ClusterAccelerationStructureGeometryFlagsNV:
+    def __or__(self, other: Self) -> ClusterAccelerationStructureGeometryFlagsNV:
         return ClusterAccelerationStructureGeometryFlagsNV(value = self._value | other._value)
 
     comptime CULL_DISABLE = Self(value = 1 << 0)
@@ -5216,50 +5216,50 @@ struct ClusterAccelerationStructureGeometryFlagBitsNV(TrivialRegisterPassable, E
 struct ClusterAccelerationStructureClusterFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ClusterAccelerationStructureClusterFlagBitsNV):
+    def __init__(out self, bit: ClusterAccelerationStructureClusterFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
+    def __or__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
+    def __ror__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ClusterAccelerationStructureClusterFlagsNV):
+    def __ior__(mut self, other: ClusterAccelerationStructureClusterFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
+    def __and__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
+    def __rand__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ClusterAccelerationStructureClusterFlagsNV):
+    def __iand__(mut self, other: ClusterAccelerationStructureClusterFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Bool:
+    def __contains__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Bool:
+    def is_subset(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Bool:
+    def is_superset(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Bool:
         return self & other == other
 
     comptime ALLOW_DISABLE_OPACITY_MICROMAPS = Self(value = ClusterAccelerationStructureClusterFlagBitsNV.ALLOW_DISABLE_OPACITY_MICROMAPS.value())
@@ -5268,16 +5268,16 @@ struct ClusterAccelerationStructureClusterFlagsNV(TrivialRegisterPassable, Equat
 struct ClusterAccelerationStructureClusterFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ClusterAccelerationStructureClusterFlagsNV:
+    def __or__(self, other: Self) -> ClusterAccelerationStructureClusterFlagsNV:
         return ClusterAccelerationStructureClusterFlagsNV(value = self._value | other._value)
 
     comptime ALLOW_DISABLE_OPACITY_MICROMAPS = Self(value = 1 << 0)
@@ -5286,50 +5286,50 @@ struct ClusterAccelerationStructureClusterFlagBitsNV(TrivialRegisterPassable, Eq
 struct ClusterAccelerationStructureAddressResolutionFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ClusterAccelerationStructureAddressResolutionFlagBitsNV):
+    def __init__(out self, bit: ClusterAccelerationStructureAddressResolutionFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
+    def __or__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
+    def __ror__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ClusterAccelerationStructureAddressResolutionFlagsNV):
+    def __ior__(mut self, other: ClusterAccelerationStructureAddressResolutionFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
+    def __and__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
+    def __rand__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ClusterAccelerationStructureAddressResolutionFlagsNV):
+    def __iand__(mut self, other: ClusterAccelerationStructureAddressResolutionFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Bool:
+    def __contains__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Bool:
+    def is_subset(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Bool:
+    def is_superset(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Bool:
         return self & other == other
 
     comptime NONE = Self(value = ClusterAccelerationStructureAddressResolutionFlagBitsNV.NONE.value())
@@ -5344,16 +5344,16 @@ struct ClusterAccelerationStructureAddressResolutionFlagsNV(TrivialRegisterPassa
 struct ClusterAccelerationStructureAddressResolutionFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ClusterAccelerationStructureAddressResolutionFlagsNV:
+    def __or__(self, other: Self) -> ClusterAccelerationStructureAddressResolutionFlagsNV:
         return ClusterAccelerationStructureAddressResolutionFlagsNV(value = self._value | other._value)
 
     comptime NONE = Self(value = 0)
@@ -5368,50 +5368,50 @@ struct ClusterAccelerationStructureAddressResolutionFlagBitsNV(TrivialRegisterPa
 struct BuildAccelerationStructureFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: BuildAccelerationStructureFlagBitsKHR):
+    def __init__(out self, bit: BuildAccelerationStructureFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
+    def __or__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
+    def __ror__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: BuildAccelerationStructureFlagsKHR):
+    def __ior__(mut self, other: BuildAccelerationStructureFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
+    def __and__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
+    def __rand__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: BuildAccelerationStructureFlagsKHR):
+    def __iand__(mut self, other: BuildAccelerationStructureFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: BuildAccelerationStructureFlagsKHR) -> Bool:
+    def __contains__(self, other: BuildAccelerationStructureFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: BuildAccelerationStructureFlagsKHR) -> Bool:
+    def is_subset(self, other: BuildAccelerationStructureFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: BuildAccelerationStructureFlagsKHR) -> Bool:
+    def is_superset(self, other: BuildAccelerationStructureFlagsKHR) -> Bool:
         return self & other == other
 
     comptime ALLOW_UPDATE = Self(value = BuildAccelerationStructureFlagBitsKHR.ALLOW_UPDATE.value())
@@ -5432,16 +5432,16 @@ struct BuildAccelerationStructureFlagsKHR(TrivialRegisterPassable, Equatable):
 struct BuildAccelerationStructureFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> BuildAccelerationStructureFlagsKHR:
+    def __or__(self, other: Self) -> BuildAccelerationStructureFlagsKHR:
         return BuildAccelerationStructureFlagsKHR(value = self._value | other._value)
 
     comptime ALLOW_UPDATE = Self(value = 1 << 0)
@@ -5462,50 +5462,50 @@ struct BuildAccelerationStructureFlagBitsKHR(TrivialRegisterPassable, Equatable)
 struct PrivateDataSlotCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PrivateDataSlotCreateFlagBits):
+    def __init__(out self, bit: PrivateDataSlotCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PrivateDataSlotCreateFlags) -> Self:
+    def __or__(self, other: PrivateDataSlotCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PrivateDataSlotCreateFlags) -> Self:
+    def __ror__(self, other: PrivateDataSlotCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PrivateDataSlotCreateFlags):
+    def __ior__(mut self, other: PrivateDataSlotCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PrivateDataSlotCreateFlags) -> Self:
+    def __and__(self, other: PrivateDataSlotCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PrivateDataSlotCreateFlags) -> Self:
+    def __rand__(self, other: PrivateDataSlotCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PrivateDataSlotCreateFlags):
+    def __iand__(mut self, other: PrivateDataSlotCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PrivateDataSlotCreateFlags) -> Bool:
+    def __contains__(self, other: PrivateDataSlotCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PrivateDataSlotCreateFlags) -> Bool:
+    def is_subset(self, other: PrivateDataSlotCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PrivateDataSlotCreateFlags) -> Bool:
+    def is_superset(self, other: PrivateDataSlotCreateFlags) -> Bool:
         return self & other == other
 
     comptime RESERVED_0 = Self(value = PrivateDataSlotCreateFlagBits.RESERVED_0.value())
@@ -5514,16 +5514,16 @@ struct PrivateDataSlotCreateFlags(TrivialRegisterPassable, Equatable):
 struct PrivateDataSlotCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PrivateDataSlotCreateFlags:
+    def __or__(self, other: Self) -> PrivateDataSlotCreateFlags:
         return PrivateDataSlotCreateFlags(value = self._value | other._value)
 
     comptime RESERVED_0 = Self(value = 1 << 0)
@@ -5532,50 +5532,50 @@ struct PrivateDataSlotCreateFlagBits(TrivialRegisterPassable, Equatable):
 struct AccelerationStructureCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: AccelerationStructureCreateFlagBitsKHR):
+    def __init__(out self, bit: AccelerationStructureCreateFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
+    def __or__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
+    def __ror__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: AccelerationStructureCreateFlagsKHR):
+    def __ior__(mut self, other: AccelerationStructureCreateFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
+    def __and__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
+    def __rand__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: AccelerationStructureCreateFlagsKHR):
+    def __iand__(mut self, other: AccelerationStructureCreateFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: AccelerationStructureCreateFlagsKHR) -> Bool:
+    def __contains__(self, other: AccelerationStructureCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: AccelerationStructureCreateFlagsKHR) -> Bool:
+    def is_subset(self, other: AccelerationStructureCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AccelerationStructureCreateFlagsKHR) -> Bool:
+    def is_superset(self, other: AccelerationStructureCreateFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DEVICE_ADDRESS_CAPTURE_REPLAY = Self(value = AccelerationStructureCreateFlagBitsKHR.DEVICE_ADDRESS_CAPTURE_REPLAY.value())
@@ -5586,16 +5586,16 @@ struct AccelerationStructureCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 struct AccelerationStructureCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> AccelerationStructureCreateFlagsKHR:
+    def __or__(self, other: Self) -> AccelerationStructureCreateFlagsKHR:
         return AccelerationStructureCreateFlagsKHR(value = self._value | other._value)
 
     comptime DEVICE_ADDRESS_CAPTURE_REPLAY = Self(value = 1 << 0)
@@ -5606,116 +5606,116 @@ struct AccelerationStructureCreateFlagBitsKHR(TrivialRegisterPassable, Equatable
 struct DescriptorUpdateTemplateCreateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DescriptorUpdateTemplateCreateFlagBits):
+    def __init__(out self, bit: DescriptorUpdateTemplateCreateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
+    def __or__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
+    def __ror__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DescriptorUpdateTemplateCreateFlags):
+    def __ior__(mut self, other: DescriptorUpdateTemplateCreateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
+    def __and__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
+    def __rand__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DescriptorUpdateTemplateCreateFlags):
+    def __iand__(mut self, other: DescriptorUpdateTemplateCreateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: DescriptorUpdateTemplateCreateFlags) -> Bool:
+    def __contains__(self, other: DescriptorUpdateTemplateCreateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DescriptorUpdateTemplateCreateFlags) -> Bool:
+    def is_subset(self, other: DescriptorUpdateTemplateCreateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DescriptorUpdateTemplateCreateFlags) -> Bool:
+    def is_superset(self, other: DescriptorUpdateTemplateCreateFlags) -> Bool:
         return self & other == other
 
 
 struct DescriptorUpdateTemplateCreateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DescriptorUpdateTemplateCreateFlags:
+    def __or__(self, other: Self) -> DescriptorUpdateTemplateCreateFlags:
         return DescriptorUpdateTemplateCreateFlags(value = self._value | other._value)
 
 
 struct PipelineCreationFeedbackFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineCreationFeedbackFlagBits):
+    def __init__(out self, bit: PipelineCreationFeedbackFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCreationFeedbackFlags) -> Self:
+    def __or__(self, other: PipelineCreationFeedbackFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCreationFeedbackFlags) -> Self:
+    def __ror__(self, other: PipelineCreationFeedbackFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineCreationFeedbackFlags):
+    def __ior__(mut self, other: PipelineCreationFeedbackFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineCreationFeedbackFlags) -> Self:
+    def __and__(self, other: PipelineCreationFeedbackFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCreationFeedbackFlags) -> Self:
+    def __rand__(self, other: PipelineCreationFeedbackFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineCreationFeedbackFlags):
+    def __iand__(mut self, other: PipelineCreationFeedbackFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineCreationFeedbackFlags) -> Bool:
+    def __contains__(self, other: PipelineCreationFeedbackFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineCreationFeedbackFlags) -> Bool:
+    def is_subset(self, other: PipelineCreationFeedbackFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCreationFeedbackFlags) -> Bool:
+    def is_superset(self, other: PipelineCreationFeedbackFlags) -> Bool:
         return self & other == other
 
     comptime VALID = Self(value = PipelineCreationFeedbackFlagBits.VALID.value())
@@ -5726,16 +5726,16 @@ struct PipelineCreationFeedbackFlags(TrivialRegisterPassable, Equatable):
 struct PipelineCreationFeedbackFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineCreationFeedbackFlags:
+    def __or__(self, other: Self) -> PipelineCreationFeedbackFlags:
         return PipelineCreationFeedbackFlags(value = self._value | other._value)
 
     comptime VALID = Self(value = 1 << 0)
@@ -5746,50 +5746,50 @@ struct PipelineCreationFeedbackFlagBits(TrivialRegisterPassable, Equatable):
 struct PerformanceCounterDescriptionFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PerformanceCounterDescriptionFlagBitsKHR):
+    def __init__(out self, bit: PerformanceCounterDescriptionFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
+    def __or__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
+    def __ror__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PerformanceCounterDescriptionFlagsKHR):
+    def __ior__(mut self, other: PerformanceCounterDescriptionFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
+    def __and__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
+    def __rand__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PerformanceCounterDescriptionFlagsKHR):
+    def __iand__(mut self, other: PerformanceCounterDescriptionFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Bool:
+    def __contains__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PerformanceCounterDescriptionFlagsKHR) -> Bool:
+    def is_subset(self, other: PerformanceCounterDescriptionFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PerformanceCounterDescriptionFlagsKHR) -> Bool:
+    def is_superset(self, other: PerformanceCounterDescriptionFlagsKHR) -> Bool:
         return self & other == other
 
     comptime PERFORMANCE_IMPACTING = Self(value = PerformanceCounterDescriptionFlagBitsKHR.PERFORMANCE_IMPACTING.value())
@@ -5799,16 +5799,16 @@ struct PerformanceCounterDescriptionFlagsKHR(TrivialRegisterPassable, Equatable)
 struct PerformanceCounterDescriptionFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PerformanceCounterDescriptionFlagsKHR:
+    def __or__(self, other: Self) -> PerformanceCounterDescriptionFlagsKHR:
         return PerformanceCounterDescriptionFlagsKHR(value = self._value | other._value)
 
     comptime PERFORMANCE_IMPACTING = Self(value = 1 << 0)
@@ -5818,116 +5818,116 @@ struct PerformanceCounterDescriptionFlagBitsKHR(TrivialRegisterPassable, Equatab
 struct AcquireProfilingLockFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: AcquireProfilingLockFlagBitsKHR):
+    def __init__(out self, bit: AcquireProfilingLockFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
+    def __or__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
+    def __ror__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: AcquireProfilingLockFlagsKHR):
+    def __ior__(mut self, other: AcquireProfilingLockFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
+    def __and__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
+    def __rand__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: AcquireProfilingLockFlagsKHR):
+    def __iand__(mut self, other: AcquireProfilingLockFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: AcquireProfilingLockFlagsKHR) -> Bool:
+    def __contains__(self, other: AcquireProfilingLockFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: AcquireProfilingLockFlagsKHR) -> Bool:
+    def is_subset(self, other: AcquireProfilingLockFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AcquireProfilingLockFlagsKHR) -> Bool:
+    def is_superset(self, other: AcquireProfilingLockFlagsKHR) -> Bool:
         return self & other == other
 
 
 struct AcquireProfilingLockFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> AcquireProfilingLockFlagsKHR:
+    def __or__(self, other: Self) -> AcquireProfilingLockFlagsKHR:
         return AcquireProfilingLockFlagsKHR(value = self._value | other._value)
 
 
 struct SemaphoreWaitFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SemaphoreWaitFlagBits):
+    def __init__(out self, bit: SemaphoreWaitFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SemaphoreWaitFlags) -> Self:
+    def __or__(self, other: SemaphoreWaitFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SemaphoreWaitFlags) -> Self:
+    def __ror__(self, other: SemaphoreWaitFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SemaphoreWaitFlags):
+    def __ior__(mut self, other: SemaphoreWaitFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: SemaphoreWaitFlags) -> Self:
+    def __and__(self, other: SemaphoreWaitFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SemaphoreWaitFlags) -> Self:
+    def __rand__(self, other: SemaphoreWaitFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SemaphoreWaitFlags):
+    def __iand__(mut self, other: SemaphoreWaitFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: SemaphoreWaitFlags) -> Bool:
+    def __contains__(self, other: SemaphoreWaitFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SemaphoreWaitFlags) -> Bool:
+    def is_subset(self, other: SemaphoreWaitFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SemaphoreWaitFlags) -> Bool:
+    def is_superset(self, other: SemaphoreWaitFlags) -> Bool:
         return self & other == other
 
     comptime ANY = Self(value = SemaphoreWaitFlagBits.ANY.value())
@@ -5936,16 +5936,16 @@ struct SemaphoreWaitFlags(TrivialRegisterPassable, Equatable):
 struct SemaphoreWaitFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SemaphoreWaitFlags:
+    def __or__(self, other: Self) -> SemaphoreWaitFlags:
         return SemaphoreWaitFlags(value = self._value | other._value)
 
     comptime ANY = Self(value = 1 << 0)
@@ -5954,182 +5954,182 @@ struct SemaphoreWaitFlagBits(TrivialRegisterPassable, Equatable):
 struct PipelineCompilerControlFlagsAMD(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineCompilerControlFlagBitsAMD):
+    def __init__(out self, bit: PipelineCompilerControlFlagBitsAMD):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
+    def __or__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
+    def __ror__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineCompilerControlFlagsAMD):
+    def __ior__(mut self, other: PipelineCompilerControlFlagsAMD):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
+    def __and__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
+    def __rand__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineCompilerControlFlagsAMD):
+    def __iand__(mut self, other: PipelineCompilerControlFlagsAMD):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineCompilerControlFlagsAMD) -> Bool:
+    def __contains__(self, other: PipelineCompilerControlFlagsAMD) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineCompilerControlFlagsAMD) -> Bool:
+    def is_subset(self, other: PipelineCompilerControlFlagsAMD) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCompilerControlFlagsAMD) -> Bool:
+    def is_superset(self, other: PipelineCompilerControlFlagsAMD) -> Bool:
         return self & other == other
 
 
 struct PipelineCompilerControlFlagBitsAMD(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineCompilerControlFlagsAMD:
+    def __or__(self, other: Self) -> PipelineCompilerControlFlagsAMD:
         return PipelineCompilerControlFlagsAMD(value = self._value | other._value)
 
 
 struct ShaderCorePropertiesFlagsAMD(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ShaderCorePropertiesFlagBitsAMD):
+    def __init__(out self, bit: ShaderCorePropertiesFlagBitsAMD):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
+    def __or__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
+    def __ror__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ShaderCorePropertiesFlagsAMD):
+    def __ior__(mut self, other: ShaderCorePropertiesFlagsAMD):
         self._value |= other.value()
 
-    fn __and__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
+    def __and__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
+    def __rand__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ShaderCorePropertiesFlagsAMD):
+    def __iand__(mut self, other: ShaderCorePropertiesFlagsAMD):
         self._value &= other.value()
 
-    fn __contains__(self, other: ShaderCorePropertiesFlagsAMD) -> Bool:
+    def __contains__(self, other: ShaderCorePropertiesFlagsAMD) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ShaderCorePropertiesFlagsAMD) -> Bool:
+    def is_subset(self, other: ShaderCorePropertiesFlagsAMD) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ShaderCorePropertiesFlagsAMD) -> Bool:
+    def is_superset(self, other: ShaderCorePropertiesFlagsAMD) -> Bool:
         return self & other == other
 
 
 struct ShaderCorePropertiesFlagBitsAMD(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ShaderCorePropertiesFlagsAMD:
+    def __or__(self, other: Self) -> ShaderCorePropertiesFlagsAMD:
         return ShaderCorePropertiesFlagsAMD(value = self._value | other._value)
 
 
 struct DeviceDiagnosticsConfigFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DeviceDiagnosticsConfigFlagBitsNV):
+    def __init__(out self, bit: DeviceDiagnosticsConfigFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
+    def __or__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
+    def __ror__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DeviceDiagnosticsConfigFlagsNV):
+    def __ior__(mut self, other: DeviceDiagnosticsConfigFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
+    def __and__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
+    def __rand__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DeviceDiagnosticsConfigFlagsNV):
+    def __iand__(mut self, other: DeviceDiagnosticsConfigFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Bool:
+    def __contains__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DeviceDiagnosticsConfigFlagsNV) -> Bool:
+    def is_subset(self, other: DeviceDiagnosticsConfigFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DeviceDiagnosticsConfigFlagsNV) -> Bool:
+    def is_superset(self, other: DeviceDiagnosticsConfigFlagsNV) -> Bool:
         return self & other == other
 
     comptime ENABLE_SHADER_DEBUG_INFO = Self(value = DeviceDiagnosticsConfigFlagBitsNV.ENABLE_SHADER_DEBUG_INFO.value())
@@ -6141,16 +6141,16 @@ struct DeviceDiagnosticsConfigFlagsNV(TrivialRegisterPassable, Equatable):
 struct DeviceDiagnosticsConfigFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DeviceDiagnosticsConfigFlagsNV:
+    def __or__(self, other: Self) -> DeviceDiagnosticsConfigFlagsNV:
         return DeviceDiagnosticsConfigFlagsNV(value = self._value | other._value)
 
     comptime ENABLE_SHADER_DEBUG_INFO = Self(value = 1 << 0)
@@ -6162,116 +6162,116 @@ struct DeviceDiagnosticsConfigFlagBitsNV(TrivialRegisterPassable, Equatable):
 struct RefreshObjectFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: RefreshObjectFlagBitsKHR):
+    def __init__(out self, bit: RefreshObjectFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: RefreshObjectFlagsKHR) -> Self:
+    def __or__(self, other: RefreshObjectFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: RefreshObjectFlagsKHR) -> Self:
+    def __ror__(self, other: RefreshObjectFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: RefreshObjectFlagsKHR):
+    def __ior__(mut self, other: RefreshObjectFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: RefreshObjectFlagsKHR) -> Self:
+    def __and__(self, other: RefreshObjectFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: RefreshObjectFlagsKHR) -> Self:
+    def __rand__(self, other: RefreshObjectFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: RefreshObjectFlagsKHR):
+    def __iand__(mut self, other: RefreshObjectFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: RefreshObjectFlagsKHR) -> Bool:
+    def __contains__(self, other: RefreshObjectFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: RefreshObjectFlagsKHR) -> Bool:
+    def is_subset(self, other: RefreshObjectFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: RefreshObjectFlagsKHR) -> Bool:
+    def is_superset(self, other: RefreshObjectFlagsKHR) -> Bool:
         return self & other == other
 
 
 struct RefreshObjectFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> RefreshObjectFlagsKHR:
+    def __or__(self, other: Self) -> RefreshObjectFlagsKHR:
         return RefreshObjectFlagsKHR(value = self._value | other._value)
 
 
 struct AccessFlags2(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: AccessFlagBits2):
+    def __init__(out self, bit: AccessFlagBits2):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AccessFlags2) -> Self:
+    def __or__(self, other: AccessFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AccessFlags2) -> Self:
+    def __ror__(self, other: AccessFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: AccessFlags2):
+    def __ior__(mut self, other: AccessFlags2):
         self._value |= other.value()
 
-    fn __and__(self, other: AccessFlags2) -> Self:
+    def __and__(self, other: AccessFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AccessFlags2) -> Self:
+    def __rand__(self, other: AccessFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: AccessFlags2):
+    def __iand__(mut self, other: AccessFlags2):
         self._value &= other.value()
 
-    fn __contains__(self, other: AccessFlags2) -> Bool:
+    def __contains__(self, other: AccessFlags2) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: AccessFlags2) -> Bool:
+    def is_subset(self, other: AccessFlags2) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AccessFlags2) -> Bool:
+    def is_superset(self, other: AccessFlags2) -> Bool:
         return self & other == other
 
     comptime NONE = Self(value = AccessFlagBits2.NONE.value())
@@ -6335,16 +6335,16 @@ struct AccessFlags2(TrivialRegisterPassable, Equatable):
 struct AccessFlagBits2(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> AccessFlags2:
+    def __or__(self, other: Self) -> AccessFlags2:
         return AccessFlags2(value = self._value | other._value)
 
     comptime NONE = Self(value = 0)
@@ -6408,50 +6408,50 @@ struct AccessFlagBits2(TrivialRegisterPassable, Equatable):
 struct PipelineStageFlags2(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineStageFlagBits2):
+    def __init__(out self, bit: PipelineStageFlagBits2):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineStageFlags2) -> Self:
+    def __or__(self, other: PipelineStageFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineStageFlags2) -> Self:
+    def __ror__(self, other: PipelineStageFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineStageFlags2):
+    def __ior__(mut self, other: PipelineStageFlags2):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineStageFlags2) -> Self:
+    def __and__(self, other: PipelineStageFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineStageFlags2) -> Self:
+    def __rand__(self, other: PipelineStageFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineStageFlags2):
+    def __iand__(mut self, other: PipelineStageFlags2):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineStageFlags2) -> Bool:
+    def __contains__(self, other: PipelineStageFlags2) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineStageFlags2) -> Bool:
+    def is_subset(self, other: PipelineStageFlags2) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineStageFlags2) -> Bool:
+    def is_superset(self, other: PipelineStageFlags2) -> Bool:
         return self & other == other
 
     comptime NONE = Self(value = PipelineStageFlagBits2.NONE.value())
@@ -6506,16 +6506,16 @@ struct PipelineStageFlags2(TrivialRegisterPassable, Equatable):
 struct PipelineStageFlagBits2(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineStageFlags2:
+    def __or__(self, other: Self) -> PipelineStageFlags2:
         return PipelineStageFlags2(value = self._value | other._value)
 
     comptime NONE = Self(value = 0)
@@ -6570,182 +6570,182 @@ struct PipelineStageFlagBits2(TrivialRegisterPassable, Equatable):
 struct AccelerationStructureMotionInfoFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: AccelerationStructureMotionInfoFlagBitsNV):
+    def __init__(out self, bit: AccelerationStructureMotionInfoFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
+    def __or__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
+    def __ror__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: AccelerationStructureMotionInfoFlagsNV):
+    def __ior__(mut self, other: AccelerationStructureMotionInfoFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
+    def __and__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
+    def __rand__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: AccelerationStructureMotionInfoFlagsNV):
+    def __iand__(mut self, other: AccelerationStructureMotionInfoFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Bool:
+    def __contains__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: AccelerationStructureMotionInfoFlagsNV) -> Bool:
+    def is_subset(self, other: AccelerationStructureMotionInfoFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AccelerationStructureMotionInfoFlagsNV) -> Bool:
+    def is_superset(self, other: AccelerationStructureMotionInfoFlagsNV) -> Bool:
         return self & other == other
 
 
 struct AccelerationStructureMotionInfoFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> AccelerationStructureMotionInfoFlagsNV:
+    def __or__(self, other: Self) -> AccelerationStructureMotionInfoFlagsNV:
         return AccelerationStructureMotionInfoFlagsNV(value = self._value | other._value)
 
 
 struct AccelerationStructureMotionInstanceFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: AccelerationStructureMotionInstanceFlagBitsNV):
+    def __init__(out self, bit: AccelerationStructureMotionInstanceFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
+    def __or__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
+    def __ror__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: AccelerationStructureMotionInstanceFlagsNV):
+    def __ior__(mut self, other: AccelerationStructureMotionInstanceFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
+    def __and__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
+    def __rand__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: AccelerationStructureMotionInstanceFlagsNV):
+    def __iand__(mut self, other: AccelerationStructureMotionInstanceFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Bool:
+    def __contains__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Bool:
+    def is_subset(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Bool:
+    def is_superset(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Bool:
         return self & other == other
 
 
 struct AccelerationStructureMotionInstanceFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> AccelerationStructureMotionInstanceFlagsNV:
+    def __or__(self, other: Self) -> AccelerationStructureMotionInstanceFlagsNV:
         return AccelerationStructureMotionInstanceFlagsNV(value = self._value | other._value)
 
 
 struct FormatFeatureFlags2(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: FormatFeatureFlagBits2):
+    def __init__(out self, bit: FormatFeatureFlagBits2):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: FormatFeatureFlags2) -> Self:
+    def __or__(self, other: FormatFeatureFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: FormatFeatureFlags2) -> Self:
+    def __ror__(self, other: FormatFeatureFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: FormatFeatureFlags2):
+    def __ior__(mut self, other: FormatFeatureFlags2):
         self._value |= other.value()
 
-    fn __and__(self, other: FormatFeatureFlags2) -> Self:
+    def __and__(self, other: FormatFeatureFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: FormatFeatureFlags2) -> Self:
+    def __rand__(self, other: FormatFeatureFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: FormatFeatureFlags2):
+    def __iand__(mut self, other: FormatFeatureFlags2):
         self._value &= other.value()
 
-    fn __contains__(self, other: FormatFeatureFlags2) -> Bool:
+    def __contains__(self, other: FormatFeatureFlags2) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: FormatFeatureFlags2) -> Bool:
+    def is_subset(self, other: FormatFeatureFlags2) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: FormatFeatureFlags2) -> Bool:
+    def is_superset(self, other: FormatFeatureFlags2) -> Bool:
         return self & other == other
 
     comptime SAMPLED_IMAGE = Self(value = FormatFeatureFlagBits2.SAMPLED_IMAGE.value())
@@ -6814,16 +6814,16 @@ struct FormatFeatureFlags2(TrivialRegisterPassable, Equatable):
 struct FormatFeatureFlagBits2(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> FormatFeatureFlags2:
+    def __or__(self, other: Self) -> FormatFeatureFlags2:
         return FormatFeatureFlags2(value = self._value | other._value)
 
     comptime SAMPLED_IMAGE = Self(value = 1 << 0)
@@ -6892,50 +6892,50 @@ struct FormatFeatureFlagBits2(TrivialRegisterPassable, Equatable):
 struct RenderingFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: RenderingFlagBits):
+    def __init__(out self, bit: RenderingFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: RenderingFlags) -> Self:
+    def __or__(self, other: RenderingFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: RenderingFlags) -> Self:
+    def __ror__(self, other: RenderingFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: RenderingFlags):
+    def __ior__(mut self, other: RenderingFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: RenderingFlags) -> Self:
+    def __and__(self, other: RenderingFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: RenderingFlags) -> Self:
+    def __rand__(self, other: RenderingFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: RenderingFlags):
+    def __iand__(mut self, other: RenderingFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: RenderingFlags) -> Bool:
+    def __contains__(self, other: RenderingFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: RenderingFlags) -> Bool:
+    def is_subset(self, other: RenderingFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: RenderingFlags) -> Bool:
+    def is_superset(self, other: RenderingFlags) -> Bool:
         return self & other == other
 
     comptime CONTENTS_SECONDARY_COMMAND_BUFFERS = Self(value = RenderingFlagBits.CONTENTS_SECONDARY_COMMAND_BUFFERS.value())
@@ -6952,16 +6952,16 @@ struct RenderingFlags(TrivialRegisterPassable, Equatable):
 struct RenderingFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> RenderingFlags:
+    def __or__(self, other: Self) -> RenderingFlags:
         return RenderingFlags(value = self._value | other._value)
 
     comptime CONTENTS_SECONDARY_COMMAND_BUFFERS = Self(value = 1 << 0)
@@ -6978,50 +6978,50 @@ struct RenderingFlagBits(TrivialRegisterPassable, Equatable):
 struct MemoryDecompressionMethodFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: MemoryDecompressionMethodFlagBitsEXT):
+    def __init__(out self, bit: MemoryDecompressionMethodFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
+    def __or__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
+    def __ror__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: MemoryDecompressionMethodFlagsEXT):
+    def __ior__(mut self, other: MemoryDecompressionMethodFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
+    def __and__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
+    def __rand__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: MemoryDecompressionMethodFlagsEXT):
+    def __iand__(mut self, other: MemoryDecompressionMethodFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: MemoryDecompressionMethodFlagsEXT) -> Bool:
+    def __contains__(self, other: MemoryDecompressionMethodFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: MemoryDecompressionMethodFlagsEXT) -> Bool:
+    def is_subset(self, other: MemoryDecompressionMethodFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MemoryDecompressionMethodFlagsEXT) -> Bool:
+    def is_superset(self, other: MemoryDecompressionMethodFlagsEXT) -> Bool:
         return self & other == other
 
     comptime GDEFLATE_1_0 = Self(value = MemoryDecompressionMethodFlagBitsEXT.GDEFLATE_1_0.value())
@@ -7030,16 +7030,16 @@ struct MemoryDecompressionMethodFlagsEXT(TrivialRegisterPassable, Equatable):
 struct MemoryDecompressionMethodFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> MemoryDecompressionMethodFlagsEXT:
+    def __or__(self, other: Self) -> MemoryDecompressionMethodFlagsEXT:
         return MemoryDecompressionMethodFlagsEXT(value = self._value | other._value)
 
     comptime GDEFLATE_1_0 = Self(value = 1 << 0)
@@ -7048,50 +7048,50 @@ struct MemoryDecompressionMethodFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct BuildMicromapFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: BuildMicromapFlagBitsEXT):
+    def __init__(out self, bit: BuildMicromapFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: BuildMicromapFlagsEXT) -> Self:
+    def __or__(self, other: BuildMicromapFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: BuildMicromapFlagsEXT) -> Self:
+    def __ror__(self, other: BuildMicromapFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: BuildMicromapFlagsEXT):
+    def __ior__(mut self, other: BuildMicromapFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: BuildMicromapFlagsEXT) -> Self:
+    def __and__(self, other: BuildMicromapFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: BuildMicromapFlagsEXT) -> Self:
+    def __rand__(self, other: BuildMicromapFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: BuildMicromapFlagsEXT):
+    def __iand__(mut self, other: BuildMicromapFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: BuildMicromapFlagsEXT) -> Bool:
+    def __contains__(self, other: BuildMicromapFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: BuildMicromapFlagsEXT) -> Bool:
+    def is_subset(self, other: BuildMicromapFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: BuildMicromapFlagsEXT) -> Bool:
+    def is_superset(self, other: BuildMicromapFlagsEXT) -> Bool:
         return self & other == other
 
     comptime PREFER_FAST_TRACE = Self(value = BuildMicromapFlagBitsEXT.PREFER_FAST_TRACE.value())
@@ -7102,16 +7102,16 @@ struct BuildMicromapFlagsEXT(TrivialRegisterPassable, Equatable):
 struct BuildMicromapFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> BuildMicromapFlagsEXT:
+    def __or__(self, other: Self) -> BuildMicromapFlagsEXT:
         return BuildMicromapFlagsEXT(value = self._value | other._value)
 
     comptime PREFER_FAST_TRACE = Self(value = 1 << 0)
@@ -7122,50 +7122,50 @@ struct BuildMicromapFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct MicromapCreateFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: MicromapCreateFlagBitsEXT):
+    def __init__(out self, bit: MicromapCreateFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MicromapCreateFlagsEXT) -> Self:
+    def __or__(self, other: MicromapCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MicromapCreateFlagsEXT) -> Self:
+    def __ror__(self, other: MicromapCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: MicromapCreateFlagsEXT):
+    def __ior__(mut self, other: MicromapCreateFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: MicromapCreateFlagsEXT) -> Self:
+    def __and__(self, other: MicromapCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MicromapCreateFlagsEXT) -> Self:
+    def __rand__(self, other: MicromapCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: MicromapCreateFlagsEXT):
+    def __iand__(mut self, other: MicromapCreateFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: MicromapCreateFlagsEXT) -> Bool:
+    def __contains__(self, other: MicromapCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: MicromapCreateFlagsEXT) -> Bool:
+    def is_subset(self, other: MicromapCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MicromapCreateFlagsEXT) -> Bool:
+    def is_superset(self, other: MicromapCreateFlagsEXT) -> Bool:
         return self & other == other
 
     comptime DEVICE_ADDRESS_CAPTURE_REPLAY = Self(value = MicromapCreateFlagBitsEXT.DEVICE_ADDRESS_CAPTURE_REPLAY.value())
@@ -7174,16 +7174,16 @@ struct MicromapCreateFlagsEXT(TrivialRegisterPassable, Equatable):
 struct MicromapCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> MicromapCreateFlagsEXT:
+    def __or__(self, other: Self) -> MicromapCreateFlagsEXT:
         return MicromapCreateFlagsEXT(value = self._value | other._value)
 
     comptime DEVICE_ADDRESS_CAPTURE_REPLAY = Self(value = 1 << 0)
@@ -7192,50 +7192,50 @@ struct MicromapCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct IndirectCommandsLayoutUsageFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: IndirectCommandsLayoutUsageFlagBitsEXT):
+    def __init__(out self, bit: IndirectCommandsLayoutUsageFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
+    def __or__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
+    def __ror__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: IndirectCommandsLayoutUsageFlagsEXT):
+    def __ior__(mut self, other: IndirectCommandsLayoutUsageFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
+    def __and__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
+    def __rand__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: IndirectCommandsLayoutUsageFlagsEXT):
+    def __iand__(mut self, other: IndirectCommandsLayoutUsageFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Bool:
+    def __contains__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Bool:
+    def is_subset(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Bool:
+    def is_superset(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Bool:
         return self & other == other
 
     comptime EXPLICIT_PREPROCESS = Self(value = IndirectCommandsLayoutUsageFlagBitsEXT.EXPLICIT_PREPROCESS.value())
@@ -7245,16 +7245,16 @@ struct IndirectCommandsLayoutUsageFlagsEXT(TrivialRegisterPassable, Equatable):
 struct IndirectCommandsLayoutUsageFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> IndirectCommandsLayoutUsageFlagsEXT:
+    def __or__(self, other: Self) -> IndirectCommandsLayoutUsageFlagsEXT:
         return IndirectCommandsLayoutUsageFlagsEXT(value = self._value | other._value)
 
     comptime EXPLICIT_PREPROCESS = Self(value = 1 << 0)
@@ -7264,50 +7264,50 @@ struct IndirectCommandsLayoutUsageFlagBitsEXT(TrivialRegisterPassable, Equatable
 struct IndirectCommandsInputModeFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: IndirectCommandsInputModeFlagBitsEXT):
+    def __init__(out self, bit: IndirectCommandsInputModeFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
+    def __or__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
+    def __ror__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: IndirectCommandsInputModeFlagsEXT):
+    def __ior__(mut self, other: IndirectCommandsInputModeFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
+    def __and__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
+    def __rand__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: IndirectCommandsInputModeFlagsEXT):
+    def __iand__(mut self, other: IndirectCommandsInputModeFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: IndirectCommandsInputModeFlagsEXT) -> Bool:
+    def __contains__(self, other: IndirectCommandsInputModeFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: IndirectCommandsInputModeFlagsEXT) -> Bool:
+    def is_subset(self, other: IndirectCommandsInputModeFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: IndirectCommandsInputModeFlagsEXT) -> Bool:
+    def is_superset(self, other: IndirectCommandsInputModeFlagsEXT) -> Bool:
         return self & other == other
 
     comptime VULKAN_INDEX_BUFFER = Self(value = IndirectCommandsInputModeFlagBitsEXT.VULKAN_INDEX_BUFFER.value())
@@ -7317,16 +7317,16 @@ struct IndirectCommandsInputModeFlagsEXT(TrivialRegisterPassable, Equatable):
 struct IndirectCommandsInputModeFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> IndirectCommandsInputModeFlagsEXT:
+    def __or__(self, other: Self) -> IndirectCommandsInputModeFlagsEXT:
         return IndirectCommandsInputModeFlagsEXT(value = self._value | other._value)
 
     comptime VULKAN_INDEX_BUFFER = Self(value = 1 << 0)
@@ -7336,116 +7336,116 @@ struct IndirectCommandsInputModeFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct DirectDriverLoadingFlagsLUNARG(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DirectDriverLoadingFlagBitsLUNARG):
+    def __init__(out self, bit: DirectDriverLoadingFlagBitsLUNARG):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
+    def __or__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
+    def __ror__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DirectDriverLoadingFlagsLUNARG):
+    def __ior__(mut self, other: DirectDriverLoadingFlagsLUNARG):
         self._value |= other.value()
 
-    fn __and__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
+    def __and__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
+    def __rand__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DirectDriverLoadingFlagsLUNARG):
+    def __iand__(mut self, other: DirectDriverLoadingFlagsLUNARG):
         self._value &= other.value()
 
-    fn __contains__(self, other: DirectDriverLoadingFlagsLUNARG) -> Bool:
+    def __contains__(self, other: DirectDriverLoadingFlagsLUNARG) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DirectDriverLoadingFlagsLUNARG) -> Bool:
+    def is_subset(self, other: DirectDriverLoadingFlagsLUNARG) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DirectDriverLoadingFlagsLUNARG) -> Bool:
+    def is_superset(self, other: DirectDriverLoadingFlagsLUNARG) -> Bool:
         return self & other == other
 
 
 struct DirectDriverLoadingFlagBitsLUNARG(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DirectDriverLoadingFlagsLUNARG:
+    def __or__(self, other: Self) -> DirectDriverLoadingFlagsLUNARG:
         return DirectDriverLoadingFlagsLUNARG(value = self._value | other._value)
 
 
 struct PipelineCreateFlags2(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineCreateFlagBits2):
+    def __init__(out self, bit: PipelineCreateFlagBits2):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCreateFlags2) -> Self:
+    def __or__(self, other: PipelineCreateFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCreateFlags2) -> Self:
+    def __ror__(self, other: PipelineCreateFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineCreateFlags2):
+    def __ior__(mut self, other: PipelineCreateFlags2):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineCreateFlags2) -> Self:
+    def __and__(self, other: PipelineCreateFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCreateFlags2) -> Self:
+    def __rand__(self, other: PipelineCreateFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineCreateFlags2):
+    def __iand__(mut self, other: PipelineCreateFlags2):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineCreateFlags2) -> Bool:
+    def __contains__(self, other: PipelineCreateFlags2) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineCreateFlags2) -> Bool:
+    def is_subset(self, other: PipelineCreateFlags2) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCreateFlags2) -> Bool:
+    def is_superset(self, other: PipelineCreateFlags2) -> Bool:
         return self & other == other
 
     comptime DISABLE_OPTIMIZATION = Self(value = PipelineCreateFlagBits2.DISABLE_OPTIMIZATION.value())
@@ -7499,16 +7499,16 @@ struct PipelineCreateFlags2(TrivialRegisterPassable, Equatable):
 struct PipelineCreateFlagBits2(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineCreateFlags2:
+    def __or__(self, other: Self) -> PipelineCreateFlags2:
         return PipelineCreateFlags2(value = self._value | other._value)
 
     comptime DISABLE_OPTIMIZATION = Self(value = 1 << 0)
@@ -7562,50 +7562,50 @@ struct PipelineCreateFlagBits2(TrivialRegisterPassable, Equatable):
 struct BufferUsageFlags2(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: BufferUsageFlagBits2):
+    def __init__(out self, bit: BufferUsageFlagBits2):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: BufferUsageFlags2) -> Self:
+    def __or__(self, other: BufferUsageFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: BufferUsageFlags2) -> Self:
+    def __ror__(self, other: BufferUsageFlags2) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: BufferUsageFlags2):
+    def __ior__(mut self, other: BufferUsageFlags2):
         self._value |= other.value()
 
-    fn __and__(self, other: BufferUsageFlags2) -> Self:
+    def __and__(self, other: BufferUsageFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: BufferUsageFlags2) -> Self:
+    def __rand__(self, other: BufferUsageFlags2) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: BufferUsageFlags2):
+    def __iand__(mut self, other: BufferUsageFlags2):
         self._value &= other.value()
 
-    fn __contains__(self, other: BufferUsageFlags2) -> Bool:
+    def __contains__(self, other: BufferUsageFlags2) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: BufferUsageFlags2) -> Bool:
+    def is_subset(self, other: BufferUsageFlags2) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: BufferUsageFlags2) -> Bool:
+    def is_superset(self, other: BufferUsageFlags2) -> Bool:
         return self & other == other
 
     comptime TRANSFER_SRC = Self(value = BufferUsageFlagBits2.TRANSFER_SRC.value())
@@ -7649,16 +7649,16 @@ struct BufferUsageFlags2(TrivialRegisterPassable, Equatable):
 struct BufferUsageFlagBits2(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> BufferUsageFlags2:
+    def __or__(self, other: Self) -> BufferUsageFlags2:
         return BufferUsageFlags2(value = self._value | other._value)
 
     comptime TRANSFER_SRC = Self(value = 1 << 0)
@@ -7702,50 +7702,50 @@ struct BufferUsageFlagBits2(TrivialRegisterPassable, Equatable):
 struct AddressCopyFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: AddressCopyFlagBitsKHR):
+    def __init__(out self, bit: AddressCopyFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AddressCopyFlagsKHR) -> Self:
+    def __or__(self, other: AddressCopyFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AddressCopyFlagsKHR) -> Self:
+    def __ror__(self, other: AddressCopyFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: AddressCopyFlagsKHR):
+    def __ior__(mut self, other: AddressCopyFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: AddressCopyFlagsKHR) -> Self:
+    def __and__(self, other: AddressCopyFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AddressCopyFlagsKHR) -> Self:
+    def __rand__(self, other: AddressCopyFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: AddressCopyFlagsKHR):
+    def __iand__(mut self, other: AddressCopyFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: AddressCopyFlagsKHR) -> Bool:
+    def __contains__(self, other: AddressCopyFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: AddressCopyFlagsKHR) -> Bool:
+    def is_subset(self, other: AddressCopyFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AddressCopyFlagsKHR) -> Bool:
+    def is_superset(self, other: AddressCopyFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DEVICE_LOCAL = Self(value = AddressCopyFlagBitsKHR.DEVICE_LOCAL.value())
@@ -7756,16 +7756,16 @@ struct AddressCopyFlagsKHR(TrivialRegisterPassable, Equatable):
 struct AddressCopyFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> AddressCopyFlagsKHR:
+    def __or__(self, other: Self) -> AddressCopyFlagsKHR:
         return AddressCopyFlagsKHR(value = self._value | other._value)
 
     comptime DEVICE_LOCAL = Self(value = 1 << 0)
@@ -7776,50 +7776,50 @@ struct AddressCopyFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct TensorCreateFlagsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: TensorCreateFlagBitsARM):
+    def __init__(out self, bit: TensorCreateFlagBitsARM):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: TensorCreateFlagsARM) -> Self:
+    def __or__(self, other: TensorCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: TensorCreateFlagsARM) -> Self:
+    def __ror__(self, other: TensorCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: TensorCreateFlagsARM):
+    def __ior__(mut self, other: TensorCreateFlagsARM):
         self._value |= other.value()
 
-    fn __and__(self, other: TensorCreateFlagsARM) -> Self:
+    def __and__(self, other: TensorCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: TensorCreateFlagsARM) -> Self:
+    def __rand__(self, other: TensorCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: TensorCreateFlagsARM):
+    def __iand__(mut self, other: TensorCreateFlagsARM):
         self._value &= other.value()
 
-    fn __contains__(self, other: TensorCreateFlagsARM) -> Bool:
+    def __contains__(self, other: TensorCreateFlagsARM) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: TensorCreateFlagsARM) -> Bool:
+    def is_subset(self, other: TensorCreateFlagsARM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: TensorCreateFlagsARM) -> Bool:
+    def is_superset(self, other: TensorCreateFlagsARM) -> Bool:
         return self & other == other
 
     comptime MUTABLE_FORMAT = Self(value = TensorCreateFlagBitsARM.MUTABLE_FORMAT.value())
@@ -7831,16 +7831,16 @@ struct TensorCreateFlagsARM(TrivialRegisterPassable, Equatable):
 struct TensorCreateFlagBitsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> TensorCreateFlagsARM:
+    def __or__(self, other: Self) -> TensorCreateFlagsARM:
         return TensorCreateFlagsARM(value = self._value | other._value)
 
     comptime MUTABLE_FORMAT = Self(value = 1 << 0)
@@ -7852,50 +7852,50 @@ struct TensorCreateFlagBitsARM(TrivialRegisterPassable, Equatable):
 struct TensorUsageFlagsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: TensorUsageFlagBitsARM):
+    def __init__(out self, bit: TensorUsageFlagBitsARM):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: TensorUsageFlagsARM) -> Self:
+    def __or__(self, other: TensorUsageFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: TensorUsageFlagsARM) -> Self:
+    def __ror__(self, other: TensorUsageFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: TensorUsageFlagsARM):
+    def __ior__(mut self, other: TensorUsageFlagsARM):
         self._value |= other.value()
 
-    fn __and__(self, other: TensorUsageFlagsARM) -> Self:
+    def __and__(self, other: TensorUsageFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: TensorUsageFlagsARM) -> Self:
+    def __rand__(self, other: TensorUsageFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: TensorUsageFlagsARM):
+    def __iand__(mut self, other: TensorUsageFlagsARM):
         self._value &= other.value()
 
-    fn __contains__(self, other: TensorUsageFlagsARM) -> Bool:
+    def __contains__(self, other: TensorUsageFlagsARM) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: TensorUsageFlagsARM) -> Bool:
+    def is_subset(self, other: TensorUsageFlagsARM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: TensorUsageFlagsARM) -> Bool:
+    def is_superset(self, other: TensorUsageFlagsARM) -> Bool:
         return self & other == other
 
     comptime SHADER = Self(value = TensorUsageFlagBitsARM.SHADER.value())
@@ -7908,16 +7908,16 @@ struct TensorUsageFlagsARM(TrivialRegisterPassable, Equatable):
 struct TensorUsageFlagBitsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> TensorUsageFlagsARM:
+    def __or__(self, other: Self) -> TensorUsageFlagsARM:
         return TensorUsageFlagsARM(value = self._value | other._value)
 
     comptime SHADER = Self(value = 1 << 1)
@@ -7930,50 +7930,50 @@ struct TensorUsageFlagBitsARM(TrivialRegisterPassable, Equatable):
 struct TensorViewCreateFlagsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: TensorViewCreateFlagBitsARM):
+    def __init__(out self, bit: TensorViewCreateFlagBitsARM):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: TensorViewCreateFlagsARM) -> Self:
+    def __or__(self, other: TensorViewCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: TensorViewCreateFlagsARM) -> Self:
+    def __ror__(self, other: TensorViewCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: TensorViewCreateFlagsARM):
+    def __ior__(mut self, other: TensorViewCreateFlagsARM):
         self._value |= other.value()
 
-    fn __and__(self, other: TensorViewCreateFlagsARM) -> Self:
+    def __and__(self, other: TensorViewCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: TensorViewCreateFlagsARM) -> Self:
+    def __rand__(self, other: TensorViewCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: TensorViewCreateFlagsARM):
+    def __iand__(mut self, other: TensorViewCreateFlagsARM):
         self._value &= other.value()
 
-    fn __contains__(self, other: TensorViewCreateFlagsARM) -> Bool:
+    def __contains__(self, other: TensorViewCreateFlagsARM) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: TensorViewCreateFlagsARM) -> Bool:
+    def is_subset(self, other: TensorViewCreateFlagsARM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: TensorViewCreateFlagsARM) -> Bool:
+    def is_superset(self, other: TensorViewCreateFlagsARM) -> Bool:
         return self & other == other
 
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = TensorViewCreateFlagBitsARM.DESCRIPTOR_BUFFER_CAPTURE_REPLAY.value())
@@ -7982,16 +7982,16 @@ struct TensorViewCreateFlagsARM(TrivialRegisterPassable, Equatable):
 struct TensorViewCreateFlagBitsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> TensorViewCreateFlagsARM:
+    def __or__(self, other: Self) -> TensorViewCreateFlagsARM:
         return TensorViewCreateFlagsARM(value = self._value | other._value)
 
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = 1 << 0)
@@ -8000,50 +8000,50 @@ struct TensorViewCreateFlagBitsARM(TrivialRegisterPassable, Equatable):
 struct DataGraphPipelineSessionCreateFlagsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DataGraphPipelineSessionCreateFlagBitsARM):
+    def __init__(out self, bit: DataGraphPipelineSessionCreateFlagBitsARM):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
+    def __or__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
+    def __ror__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DataGraphPipelineSessionCreateFlagsARM):
+    def __ior__(mut self, other: DataGraphPipelineSessionCreateFlagsARM):
         self._value |= other.value()
 
-    fn __and__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
+    def __and__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
+    def __rand__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DataGraphPipelineSessionCreateFlagsARM):
+    def __iand__(mut self, other: DataGraphPipelineSessionCreateFlagsARM):
         self._value &= other.value()
 
-    fn __contains__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Bool:
+    def __contains__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Bool:
+    def is_subset(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Bool:
+    def is_superset(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Bool:
         return self & other == other
 
     comptime PROTECTED = Self(value = DataGraphPipelineSessionCreateFlagBitsARM.PROTECTED.value())
@@ -8052,16 +8052,16 @@ struct DataGraphPipelineSessionCreateFlagsARM(TrivialRegisterPassable, Equatable
 struct DataGraphPipelineSessionCreateFlagBitsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DataGraphPipelineSessionCreateFlagsARM:
+    def __or__(self, other: Self) -> DataGraphPipelineSessionCreateFlagsARM:
         return DataGraphPipelineSessionCreateFlagsARM(value = self._value | other._value)
 
     comptime PROTECTED = Self(value = 1 << 0)
@@ -8070,116 +8070,116 @@ struct DataGraphPipelineSessionCreateFlagBitsARM(TrivialRegisterPassable, Equata
 struct DataGraphPipelineDispatchFlagsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DataGraphPipelineDispatchFlagBitsARM):
+    def __init__(out self, bit: DataGraphPipelineDispatchFlagBitsARM):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
+    def __or__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
+    def __ror__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DataGraphPipelineDispatchFlagsARM):
+    def __ior__(mut self, other: DataGraphPipelineDispatchFlagsARM):
         self._value |= other.value()
 
-    fn __and__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
+    def __and__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
+    def __rand__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DataGraphPipelineDispatchFlagsARM):
+    def __iand__(mut self, other: DataGraphPipelineDispatchFlagsARM):
         self._value &= other.value()
 
-    fn __contains__(self, other: DataGraphPipelineDispatchFlagsARM) -> Bool:
+    def __contains__(self, other: DataGraphPipelineDispatchFlagsARM) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DataGraphPipelineDispatchFlagsARM) -> Bool:
+    def is_subset(self, other: DataGraphPipelineDispatchFlagsARM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DataGraphPipelineDispatchFlagsARM) -> Bool:
+    def is_superset(self, other: DataGraphPipelineDispatchFlagsARM) -> Bool:
         return self & other == other
 
 
 struct DataGraphPipelineDispatchFlagBitsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DataGraphPipelineDispatchFlagsARM:
+    def __or__(self, other: Self) -> DataGraphPipelineDispatchFlagsARM:
         return DataGraphPipelineDispatchFlagsARM(value = self._value | other._value)
 
 
 struct VideoEncodeRgbModelConversionFlagsVALVE(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeRgbModelConversionFlagBitsVALVE):
+    def __init__(out self, bit: VideoEncodeRgbModelConversionFlagBitsVALVE):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
+    def __or__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
+    def __ror__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeRgbModelConversionFlagsVALVE):
+    def __ior__(mut self, other: VideoEncodeRgbModelConversionFlagsVALVE):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
+    def __and__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
+    def __rand__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeRgbModelConversionFlagsVALVE):
+    def __iand__(mut self, other: VideoEncodeRgbModelConversionFlagsVALVE):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Bool:
+    def __contains__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Bool:
+    def is_subset(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Bool:
+    def is_superset(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Bool:
         return self & other == other
 
     comptime RGB_IDENTITY = Self(value = VideoEncodeRgbModelConversionFlagBitsVALVE.RGB_IDENTITY.value())
@@ -8192,16 +8192,16 @@ struct VideoEncodeRgbModelConversionFlagsVALVE(TrivialRegisterPassable, Equatabl
 struct VideoEncodeRgbModelConversionFlagBitsVALVE(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeRgbModelConversionFlagsVALVE:
+    def __or__(self, other: Self) -> VideoEncodeRgbModelConversionFlagsVALVE:
         return VideoEncodeRgbModelConversionFlagsVALVE(value = self._value | other._value)
 
     comptime RGB_IDENTITY = Self(value = 1 << 0)
@@ -8214,50 +8214,50 @@ struct VideoEncodeRgbModelConversionFlagBitsVALVE(TrivialRegisterPassable, Equat
 struct VideoEncodeRgbRangeCompressionFlagsVALVE(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeRgbRangeCompressionFlagBitsVALVE):
+    def __init__(out self, bit: VideoEncodeRgbRangeCompressionFlagBitsVALVE):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
+    def __or__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
+    def __ror__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeRgbRangeCompressionFlagsVALVE):
+    def __ior__(mut self, other: VideoEncodeRgbRangeCompressionFlagsVALVE):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
+    def __and__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
+    def __rand__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeRgbRangeCompressionFlagsVALVE):
+    def __iand__(mut self, other: VideoEncodeRgbRangeCompressionFlagsVALVE):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Bool:
+    def __contains__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Bool:
+    def is_subset(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Bool:
+    def is_superset(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Bool:
         return self & other == other
 
     comptime FULL_RANGE = Self(value = VideoEncodeRgbRangeCompressionFlagBitsVALVE.FULL_RANGE.value())
@@ -8267,16 +8267,16 @@ struct VideoEncodeRgbRangeCompressionFlagsVALVE(TrivialRegisterPassable, Equatab
 struct VideoEncodeRgbRangeCompressionFlagBitsVALVE(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeRgbRangeCompressionFlagsVALVE:
+    def __or__(self, other: Self) -> VideoEncodeRgbRangeCompressionFlagsVALVE:
         return VideoEncodeRgbRangeCompressionFlagsVALVE(value = self._value | other._value)
 
     comptime FULL_RANGE = Self(value = 1 << 0)
@@ -8286,50 +8286,50 @@ struct VideoEncodeRgbRangeCompressionFlagBitsVALVE(TrivialRegisterPassable, Equa
 struct VideoEncodeRgbChromaOffsetFlagsVALVE(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeRgbChromaOffsetFlagBitsVALVE):
+    def __init__(out self, bit: VideoEncodeRgbChromaOffsetFlagBitsVALVE):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
+    def __or__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
+    def __ror__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeRgbChromaOffsetFlagsVALVE):
+    def __ior__(mut self, other: VideoEncodeRgbChromaOffsetFlagsVALVE):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
+    def __and__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
+    def __rand__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeRgbChromaOffsetFlagsVALVE):
+    def __iand__(mut self, other: VideoEncodeRgbChromaOffsetFlagsVALVE):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Bool:
+    def __contains__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Bool:
+    def is_subset(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Bool:
+    def is_superset(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Bool:
         return self & other == other
 
     comptime COSITED_EVEN = Self(value = VideoEncodeRgbChromaOffsetFlagBitsVALVE.COSITED_EVEN.value())
@@ -8339,16 +8339,16 @@ struct VideoEncodeRgbChromaOffsetFlagsVALVE(TrivialRegisterPassable, Equatable):
 struct VideoEncodeRgbChromaOffsetFlagBitsVALVE(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeRgbChromaOffsetFlagsVALVE:
+    def __or__(self, other: Self) -> VideoEncodeRgbChromaOffsetFlagsVALVE:
         return VideoEncodeRgbChromaOffsetFlagsVALVE(value = self._value | other._value)
 
     comptime COSITED_EVEN = Self(value = 1 << 0)
@@ -8358,50 +8358,50 @@ struct VideoEncodeRgbChromaOffsetFlagBitsVALVE(TrivialRegisterPassable, Equatabl
 struct SpirvResourceTypeFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SpirvResourceTypeFlagBitsEXT):
+    def __init__(out self, bit: SpirvResourceTypeFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
+    def __or__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
+    def __ror__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SpirvResourceTypeFlagsEXT):
+    def __ior__(mut self, other: SpirvResourceTypeFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
+    def __and__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
+    def __rand__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SpirvResourceTypeFlagsEXT):
+    def __iand__(mut self, other: SpirvResourceTypeFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: SpirvResourceTypeFlagsEXT) -> Bool:
+    def __contains__(self, other: SpirvResourceTypeFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SpirvResourceTypeFlagsEXT) -> Bool:
+    def is_subset(self, other: SpirvResourceTypeFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SpirvResourceTypeFlagsEXT) -> Bool:
+    def is_superset(self, other: SpirvResourceTypeFlagsEXT) -> Bool:
         return self & other == other
 
     comptime ALL = Self(value = SpirvResourceTypeFlagBitsEXT.ALL.value())
@@ -8420,16 +8420,16 @@ struct SpirvResourceTypeFlagsEXT(TrivialRegisterPassable, Equatable):
 struct SpirvResourceTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SpirvResourceTypeFlagsEXT:
+    def __or__(self, other: Self) -> SpirvResourceTypeFlagsEXT:
         return SpirvResourceTypeFlagsEXT(value = self._value | other._value)
 
     comptime ALL = Self(value = 2147483647)
@@ -8448,50 +8448,50 @@ struct SpirvResourceTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct CompositeAlphaFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: CompositeAlphaFlagBitsKHR):
+    def __init__(out self, bit: CompositeAlphaFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CompositeAlphaFlagsKHR) -> Self:
+    def __or__(self, other: CompositeAlphaFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CompositeAlphaFlagsKHR) -> Self:
+    def __ror__(self, other: CompositeAlphaFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: CompositeAlphaFlagsKHR):
+    def __ior__(mut self, other: CompositeAlphaFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: CompositeAlphaFlagsKHR) -> Self:
+    def __and__(self, other: CompositeAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CompositeAlphaFlagsKHR) -> Self:
+    def __rand__(self, other: CompositeAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: CompositeAlphaFlagsKHR):
+    def __iand__(mut self, other: CompositeAlphaFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: CompositeAlphaFlagsKHR) -> Bool:
+    def __contains__(self, other: CompositeAlphaFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: CompositeAlphaFlagsKHR) -> Bool:
+    def is_subset(self, other: CompositeAlphaFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CompositeAlphaFlagsKHR) -> Bool:
+    def is_superset(self, other: CompositeAlphaFlagsKHR) -> Bool:
         return self & other == other
 
     comptime OPAQUE = Self(value = CompositeAlphaFlagBitsKHR.OPAQUE.value())
@@ -8503,16 +8503,16 @@ struct CompositeAlphaFlagsKHR(TrivialRegisterPassable, Equatable):
 struct CompositeAlphaFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> CompositeAlphaFlagsKHR:
+    def __or__(self, other: Self) -> CompositeAlphaFlagsKHR:
         return CompositeAlphaFlagsKHR(value = self._value | other._value)
 
     comptime OPAQUE = Self(value = 1 << 0)
@@ -8524,50 +8524,50 @@ struct CompositeAlphaFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct DisplayPlaneAlphaFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DisplayPlaneAlphaFlagBitsKHR):
+    def __init__(out self, bit: DisplayPlaneAlphaFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
+    def __or__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
+    def __ror__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DisplayPlaneAlphaFlagsKHR):
+    def __ior__(mut self, other: DisplayPlaneAlphaFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
+    def __and__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
+    def __rand__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DisplayPlaneAlphaFlagsKHR):
+    def __iand__(mut self, other: DisplayPlaneAlphaFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: DisplayPlaneAlphaFlagsKHR) -> Bool:
+    def __contains__(self, other: DisplayPlaneAlphaFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DisplayPlaneAlphaFlagsKHR) -> Bool:
+    def is_subset(self, other: DisplayPlaneAlphaFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DisplayPlaneAlphaFlagsKHR) -> Bool:
+    def is_superset(self, other: DisplayPlaneAlphaFlagsKHR) -> Bool:
         return self & other == other
 
     comptime OPAQUE = Self(value = DisplayPlaneAlphaFlagBitsKHR.OPAQUE.value())
@@ -8579,16 +8579,16 @@ struct DisplayPlaneAlphaFlagsKHR(TrivialRegisterPassable, Equatable):
 struct DisplayPlaneAlphaFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DisplayPlaneAlphaFlagsKHR:
+    def __or__(self, other: Self) -> DisplayPlaneAlphaFlagsKHR:
         return DisplayPlaneAlphaFlagsKHR(value = self._value | other._value)
 
     comptime OPAQUE = Self(value = 1 << 0)
@@ -8600,50 +8600,50 @@ struct DisplayPlaneAlphaFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct SurfaceTransformFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SurfaceTransformFlagBitsKHR):
+    def __init__(out self, bit: SurfaceTransformFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SurfaceTransformFlagsKHR) -> Self:
+    def __or__(self, other: SurfaceTransformFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SurfaceTransformFlagsKHR) -> Self:
+    def __ror__(self, other: SurfaceTransformFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SurfaceTransformFlagsKHR):
+    def __ior__(mut self, other: SurfaceTransformFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: SurfaceTransformFlagsKHR) -> Self:
+    def __and__(self, other: SurfaceTransformFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SurfaceTransformFlagsKHR) -> Self:
+    def __rand__(self, other: SurfaceTransformFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SurfaceTransformFlagsKHR):
+    def __iand__(mut self, other: SurfaceTransformFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: SurfaceTransformFlagsKHR) -> Bool:
+    def __contains__(self, other: SurfaceTransformFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SurfaceTransformFlagsKHR) -> Bool:
+    def is_subset(self, other: SurfaceTransformFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SurfaceTransformFlagsKHR) -> Bool:
+    def is_superset(self, other: SurfaceTransformFlagsKHR) -> Bool:
         return self & other == other
 
     comptime IDENTITY = Self(value = SurfaceTransformFlagBitsKHR.IDENTITY.value())
@@ -8660,16 +8660,16 @@ struct SurfaceTransformFlagsKHR(TrivialRegisterPassable, Equatable):
 struct SurfaceTransformFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SurfaceTransformFlagsKHR:
+    def __or__(self, other: Self) -> SurfaceTransformFlagsKHR:
         return SurfaceTransformFlagsKHR(value = self._value | other._value)
 
     comptime IDENTITY = Self(value = 1 << 0)
@@ -8686,50 +8686,50 @@ struct SurfaceTransformFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct SwapchainCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SwapchainCreateFlagBitsKHR):
+    def __init__(out self, bit: SwapchainCreateFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SwapchainCreateFlagsKHR) -> Self:
+    def __or__(self, other: SwapchainCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SwapchainCreateFlagsKHR) -> Self:
+    def __ror__(self, other: SwapchainCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SwapchainCreateFlagsKHR):
+    def __ior__(mut self, other: SwapchainCreateFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: SwapchainCreateFlagsKHR) -> Self:
+    def __and__(self, other: SwapchainCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SwapchainCreateFlagsKHR) -> Self:
+    def __rand__(self, other: SwapchainCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SwapchainCreateFlagsKHR):
+    def __iand__(mut self, other: SwapchainCreateFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: SwapchainCreateFlagsKHR) -> Bool:
+    def __contains__(self, other: SwapchainCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SwapchainCreateFlagsKHR) -> Bool:
+    def is_subset(self, other: SwapchainCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SwapchainCreateFlagsKHR) -> Bool:
+    def is_superset(self, other: SwapchainCreateFlagsKHR) -> Bool:
         return self & other == other
 
     comptime SPLIT_INSTANCE_BIND_REGIONS = Self(value = SwapchainCreateFlagBitsKHR.SPLIT_INSTANCE_BIND_REGIONS.value())
@@ -8746,16 +8746,16 @@ struct SwapchainCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 struct SwapchainCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SwapchainCreateFlagsKHR:
+    def __or__(self, other: Self) -> SwapchainCreateFlagsKHR:
         return SwapchainCreateFlagsKHR(value = self._value | other._value)
 
     comptime SPLIT_INSTANCE_BIND_REGIONS = Self(value = 1 << 0)
@@ -8772,314 +8772,314 @@ struct SwapchainCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct DisplayModeCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DisplayModeCreateFlagBitsKHR):
+    def __init__(out self, bit: DisplayModeCreateFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DisplayModeCreateFlagsKHR) -> Self:
+    def __or__(self, other: DisplayModeCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DisplayModeCreateFlagsKHR) -> Self:
+    def __ror__(self, other: DisplayModeCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DisplayModeCreateFlagsKHR):
+    def __ior__(mut self, other: DisplayModeCreateFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: DisplayModeCreateFlagsKHR) -> Self:
+    def __and__(self, other: DisplayModeCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DisplayModeCreateFlagsKHR) -> Self:
+    def __rand__(self, other: DisplayModeCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DisplayModeCreateFlagsKHR):
+    def __iand__(mut self, other: DisplayModeCreateFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: DisplayModeCreateFlagsKHR) -> Bool:
+    def __contains__(self, other: DisplayModeCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DisplayModeCreateFlagsKHR) -> Bool:
+    def is_subset(self, other: DisplayModeCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DisplayModeCreateFlagsKHR) -> Bool:
+    def is_superset(self, other: DisplayModeCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
 struct DisplayModeCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DisplayModeCreateFlagsKHR:
+    def __or__(self, other: Self) -> DisplayModeCreateFlagsKHR:
         return DisplayModeCreateFlagsKHR(value = self._value | other._value)
 
 
 struct DisplaySurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DisplaySurfaceCreateFlagBitsKHR):
+    def __init__(out self, bit: DisplaySurfaceCreateFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
+    def __or__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
+    def __ror__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DisplaySurfaceCreateFlagsKHR):
+    def __ior__(mut self, other: DisplaySurfaceCreateFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
+    def __and__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
+    def __rand__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DisplaySurfaceCreateFlagsKHR):
+    def __iand__(mut self, other: DisplaySurfaceCreateFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: DisplaySurfaceCreateFlagsKHR) -> Bool:
+    def __contains__(self, other: DisplaySurfaceCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DisplaySurfaceCreateFlagsKHR) -> Bool:
+    def is_subset(self, other: DisplaySurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DisplaySurfaceCreateFlagsKHR) -> Bool:
+    def is_superset(self, other: DisplaySurfaceCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
 struct DisplaySurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DisplaySurfaceCreateFlagsKHR:
+    def __or__(self, other: Self) -> DisplaySurfaceCreateFlagsKHR:
         return DisplaySurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
 struct AndroidSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: AndroidSurfaceCreateFlagBitsKHR):
+    def __init__(out self, bit: AndroidSurfaceCreateFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
+    def __or__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
+    def __ror__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: AndroidSurfaceCreateFlagsKHR):
+    def __ior__(mut self, other: AndroidSurfaceCreateFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
+    def __and__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
+    def __rand__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: AndroidSurfaceCreateFlagsKHR):
+    def __iand__(mut self, other: AndroidSurfaceCreateFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: AndroidSurfaceCreateFlagsKHR) -> Bool:
+    def __contains__(self, other: AndroidSurfaceCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: AndroidSurfaceCreateFlagsKHR) -> Bool:
+    def is_subset(self, other: AndroidSurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AndroidSurfaceCreateFlagsKHR) -> Bool:
+    def is_superset(self, other: AndroidSurfaceCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
 struct AndroidSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> AndroidSurfaceCreateFlagsKHR:
+    def __or__(self, other: Self) -> AndroidSurfaceCreateFlagsKHR:
         return AndroidSurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
 struct ViSurfaceCreateFlagsNN(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ViSurfaceCreateFlagBitsNN):
+    def __init__(out self, bit: ViSurfaceCreateFlagBitsNN):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ViSurfaceCreateFlagsNN) -> Self:
+    def __or__(self, other: ViSurfaceCreateFlagsNN) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ViSurfaceCreateFlagsNN) -> Self:
+    def __ror__(self, other: ViSurfaceCreateFlagsNN) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ViSurfaceCreateFlagsNN):
+    def __ior__(mut self, other: ViSurfaceCreateFlagsNN):
         self._value |= other.value()
 
-    fn __and__(self, other: ViSurfaceCreateFlagsNN) -> Self:
+    def __and__(self, other: ViSurfaceCreateFlagsNN) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ViSurfaceCreateFlagsNN) -> Self:
+    def __rand__(self, other: ViSurfaceCreateFlagsNN) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ViSurfaceCreateFlagsNN):
+    def __iand__(mut self, other: ViSurfaceCreateFlagsNN):
         self._value &= other.value()
 
-    fn __contains__(self, other: ViSurfaceCreateFlagsNN) -> Bool:
+    def __contains__(self, other: ViSurfaceCreateFlagsNN) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ViSurfaceCreateFlagsNN) -> Bool:
+    def is_subset(self, other: ViSurfaceCreateFlagsNN) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ViSurfaceCreateFlagsNN) -> Bool:
+    def is_superset(self, other: ViSurfaceCreateFlagsNN) -> Bool:
         return self & other == other
 
 
 struct ViSurfaceCreateFlagBitsNN(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ViSurfaceCreateFlagsNN:
+    def __or__(self, other: Self) -> ViSurfaceCreateFlagsNN:
         return ViSurfaceCreateFlagsNN(value = self._value | other._value)
 
 
 struct WaylandSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: WaylandSurfaceCreateFlagBitsKHR):
+    def __init__(out self, bit: WaylandSurfaceCreateFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
+    def __or__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
+    def __ror__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: WaylandSurfaceCreateFlagsKHR):
+    def __ior__(mut self, other: WaylandSurfaceCreateFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
+    def __and__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
+    def __rand__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: WaylandSurfaceCreateFlagsKHR):
+    def __iand__(mut self, other: WaylandSurfaceCreateFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: WaylandSurfaceCreateFlagsKHR) -> Bool:
+    def __contains__(self, other: WaylandSurfaceCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: WaylandSurfaceCreateFlagsKHR) -> Bool:
+    def is_subset(self, other: WaylandSurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: WaylandSurfaceCreateFlagsKHR) -> Bool:
+    def is_superset(self, other: WaylandSurfaceCreateFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DISABLE_COLOR_MANAGEMENT = Self(value = WaylandSurfaceCreateFlagBitsKHR.DISABLE_COLOR_MANAGEMENT.value())
@@ -9088,16 +9088,16 @@ struct WaylandSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 struct WaylandSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> WaylandSurfaceCreateFlagsKHR:
+    def __or__(self, other: Self) -> WaylandSurfaceCreateFlagsKHR:
         return WaylandSurfaceCreateFlagsKHR(value = self._value | other._value)
 
     comptime DISABLE_COLOR_MANAGEMENT = Self(value = 1 << 0)
@@ -9106,776 +9106,776 @@ struct WaylandSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct Win32SurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: Win32SurfaceCreateFlagBitsKHR):
+    def __init__(out self, bit: Win32SurfaceCreateFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
+    def __or__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
+    def __ror__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: Win32SurfaceCreateFlagsKHR):
+    def __ior__(mut self, other: Win32SurfaceCreateFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
+    def __and__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
+    def __rand__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: Win32SurfaceCreateFlagsKHR):
+    def __iand__(mut self, other: Win32SurfaceCreateFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: Win32SurfaceCreateFlagsKHR) -> Bool:
+    def __contains__(self, other: Win32SurfaceCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: Win32SurfaceCreateFlagsKHR) -> Bool:
+    def is_subset(self, other: Win32SurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: Win32SurfaceCreateFlagsKHR) -> Bool:
+    def is_superset(self, other: Win32SurfaceCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
 struct Win32SurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> Win32SurfaceCreateFlagsKHR:
+    def __or__(self, other: Self) -> Win32SurfaceCreateFlagsKHR:
         return Win32SurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
 struct XlibSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: XlibSurfaceCreateFlagBitsKHR):
+    def __init__(out self, bit: XlibSurfaceCreateFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
+    def __or__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
+    def __ror__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: XlibSurfaceCreateFlagsKHR):
+    def __ior__(mut self, other: XlibSurfaceCreateFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
+    def __and__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
+    def __rand__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: XlibSurfaceCreateFlagsKHR):
+    def __iand__(mut self, other: XlibSurfaceCreateFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: XlibSurfaceCreateFlagsKHR) -> Bool:
+    def __contains__(self, other: XlibSurfaceCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: XlibSurfaceCreateFlagsKHR) -> Bool:
+    def is_subset(self, other: XlibSurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: XlibSurfaceCreateFlagsKHR) -> Bool:
+    def is_superset(self, other: XlibSurfaceCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
 struct XlibSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> XlibSurfaceCreateFlagsKHR:
+    def __or__(self, other: Self) -> XlibSurfaceCreateFlagsKHR:
         return XlibSurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
 struct XcbSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: XcbSurfaceCreateFlagBitsKHR):
+    def __init__(out self, bit: XcbSurfaceCreateFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
+    def __or__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
+    def __ror__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: XcbSurfaceCreateFlagsKHR):
+    def __ior__(mut self, other: XcbSurfaceCreateFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
+    def __and__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
+    def __rand__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: XcbSurfaceCreateFlagsKHR):
+    def __iand__(mut self, other: XcbSurfaceCreateFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: XcbSurfaceCreateFlagsKHR) -> Bool:
+    def __contains__(self, other: XcbSurfaceCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: XcbSurfaceCreateFlagsKHR) -> Bool:
+    def is_subset(self, other: XcbSurfaceCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: XcbSurfaceCreateFlagsKHR) -> Bool:
+    def is_superset(self, other: XcbSurfaceCreateFlagsKHR) -> Bool:
         return self & other == other
 
 
 struct XcbSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> XcbSurfaceCreateFlagsKHR:
+    def __or__(self, other: Self) -> XcbSurfaceCreateFlagsKHR:
         return XcbSurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
 struct DirectFBSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DirectFBSurfaceCreateFlagBitsEXT):
+    def __init__(out self, bit: DirectFBSurfaceCreateFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
+    def __or__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
+    def __ror__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DirectFBSurfaceCreateFlagsEXT):
+    def __ior__(mut self, other: DirectFBSurfaceCreateFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
+    def __and__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
+    def __rand__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DirectFBSurfaceCreateFlagsEXT):
+    def __iand__(mut self, other: DirectFBSurfaceCreateFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Bool:
+    def __contains__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DirectFBSurfaceCreateFlagsEXT) -> Bool:
+    def is_subset(self, other: DirectFBSurfaceCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DirectFBSurfaceCreateFlagsEXT) -> Bool:
+    def is_superset(self, other: DirectFBSurfaceCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
 struct DirectFBSurfaceCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DirectFBSurfaceCreateFlagsEXT:
+    def __or__(self, other: Self) -> DirectFBSurfaceCreateFlagsEXT:
         return DirectFBSurfaceCreateFlagsEXT(value = self._value | other._value)
 
 
 struct IOSSurfaceCreateFlagsMVK(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: IOSSurfaceCreateFlagBitsMVK):
+    def __init__(out self, bit: IOSSurfaceCreateFlagBitsMVK):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
+    def __or__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
+    def __ror__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: IOSSurfaceCreateFlagsMVK):
+    def __ior__(mut self, other: IOSSurfaceCreateFlagsMVK):
         self._value |= other.value()
 
-    fn __and__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
+    def __and__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
+    def __rand__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: IOSSurfaceCreateFlagsMVK):
+    def __iand__(mut self, other: IOSSurfaceCreateFlagsMVK):
         self._value &= other.value()
 
-    fn __contains__(self, other: IOSSurfaceCreateFlagsMVK) -> Bool:
+    def __contains__(self, other: IOSSurfaceCreateFlagsMVK) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: IOSSurfaceCreateFlagsMVK) -> Bool:
+    def is_subset(self, other: IOSSurfaceCreateFlagsMVK) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: IOSSurfaceCreateFlagsMVK) -> Bool:
+    def is_superset(self, other: IOSSurfaceCreateFlagsMVK) -> Bool:
         return self & other == other
 
 
 struct IOSSurfaceCreateFlagBitsMVK(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> IOSSurfaceCreateFlagsMVK:
+    def __or__(self, other: Self) -> IOSSurfaceCreateFlagsMVK:
         return IOSSurfaceCreateFlagsMVK(value = self._value | other._value)
 
 
 struct MacOSSurfaceCreateFlagsMVK(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: MacOSSurfaceCreateFlagBitsMVK):
+    def __init__(out self, bit: MacOSSurfaceCreateFlagBitsMVK):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
+    def __or__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
+    def __ror__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: MacOSSurfaceCreateFlagsMVK):
+    def __ior__(mut self, other: MacOSSurfaceCreateFlagsMVK):
         self._value |= other.value()
 
-    fn __and__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
+    def __and__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
+    def __rand__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: MacOSSurfaceCreateFlagsMVK):
+    def __iand__(mut self, other: MacOSSurfaceCreateFlagsMVK):
         self._value &= other.value()
 
-    fn __contains__(self, other: MacOSSurfaceCreateFlagsMVK) -> Bool:
+    def __contains__(self, other: MacOSSurfaceCreateFlagsMVK) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: MacOSSurfaceCreateFlagsMVK) -> Bool:
+    def is_subset(self, other: MacOSSurfaceCreateFlagsMVK) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MacOSSurfaceCreateFlagsMVK) -> Bool:
+    def is_superset(self, other: MacOSSurfaceCreateFlagsMVK) -> Bool:
         return self & other == other
 
 
 struct MacOSSurfaceCreateFlagBitsMVK(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> MacOSSurfaceCreateFlagsMVK:
+    def __or__(self, other: Self) -> MacOSSurfaceCreateFlagsMVK:
         return MacOSSurfaceCreateFlagsMVK(value = self._value | other._value)
 
 
 struct MetalSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: MetalSurfaceCreateFlagBitsEXT):
+    def __init__(out self, bit: MetalSurfaceCreateFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
+    def __or__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
+    def __ror__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: MetalSurfaceCreateFlagsEXT):
+    def __ior__(mut self, other: MetalSurfaceCreateFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
+    def __and__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
+    def __rand__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: MetalSurfaceCreateFlagsEXT):
+    def __iand__(mut self, other: MetalSurfaceCreateFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: MetalSurfaceCreateFlagsEXT) -> Bool:
+    def __contains__(self, other: MetalSurfaceCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: MetalSurfaceCreateFlagsEXT) -> Bool:
+    def is_subset(self, other: MetalSurfaceCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MetalSurfaceCreateFlagsEXT) -> Bool:
+    def is_superset(self, other: MetalSurfaceCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
 struct MetalSurfaceCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> MetalSurfaceCreateFlagsEXT:
+    def __or__(self, other: Self) -> MetalSurfaceCreateFlagsEXT:
         return MetalSurfaceCreateFlagsEXT(value = self._value | other._value)
 
 
 struct ImagePipeSurfaceCreateFlagsFUCHSIA(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ImagePipeSurfaceCreateFlagBitsFUCHSIA):
+    def __init__(out self, bit: ImagePipeSurfaceCreateFlagBitsFUCHSIA):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
+    def __or__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
+    def __ror__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ImagePipeSurfaceCreateFlagsFUCHSIA):
+    def __ior__(mut self, other: ImagePipeSurfaceCreateFlagsFUCHSIA):
         self._value |= other.value()
 
-    fn __and__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
+    def __and__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
+    def __rand__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ImagePipeSurfaceCreateFlagsFUCHSIA):
+    def __iand__(mut self, other: ImagePipeSurfaceCreateFlagsFUCHSIA):
         self._value &= other.value()
 
-    fn __contains__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Bool:
+    def __contains__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Bool:
+    def is_subset(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Bool:
+    def is_superset(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Bool:
         return self & other == other
 
 
 struct ImagePipeSurfaceCreateFlagBitsFUCHSIA(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ImagePipeSurfaceCreateFlagsFUCHSIA:
+    def __or__(self, other: Self) -> ImagePipeSurfaceCreateFlagsFUCHSIA:
         return ImagePipeSurfaceCreateFlagsFUCHSIA(value = self._value | other._value)
 
 
 struct StreamDescriptorSurfaceCreateFlagsGGP(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: StreamDescriptorSurfaceCreateFlagBitsGGP):
+    def __init__(out self, bit: StreamDescriptorSurfaceCreateFlagBitsGGP):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
+    def __or__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
+    def __ror__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: StreamDescriptorSurfaceCreateFlagsGGP):
+    def __ior__(mut self, other: StreamDescriptorSurfaceCreateFlagsGGP):
         self._value |= other.value()
 
-    fn __and__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
+    def __and__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
+    def __rand__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: StreamDescriptorSurfaceCreateFlagsGGP):
+    def __iand__(mut self, other: StreamDescriptorSurfaceCreateFlagsGGP):
         self._value &= other.value()
 
-    fn __contains__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Bool:
+    def __contains__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Bool:
+    def is_subset(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Bool:
+    def is_superset(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Bool:
         return self & other == other
 
 
 struct StreamDescriptorSurfaceCreateFlagBitsGGP(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> StreamDescriptorSurfaceCreateFlagsGGP:
+    def __or__(self, other: Self) -> StreamDescriptorSurfaceCreateFlagsGGP:
         return StreamDescriptorSurfaceCreateFlagsGGP(value = self._value | other._value)
 
 
 struct HeadlessSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: HeadlessSurfaceCreateFlagBitsEXT):
+    def __init__(out self, bit: HeadlessSurfaceCreateFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
+    def __or__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
+    def __ror__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: HeadlessSurfaceCreateFlagsEXT):
+    def __ior__(mut self, other: HeadlessSurfaceCreateFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
+    def __and__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
+    def __rand__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: HeadlessSurfaceCreateFlagsEXT):
+    def __iand__(mut self, other: HeadlessSurfaceCreateFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Bool:
+    def __contains__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: HeadlessSurfaceCreateFlagsEXT) -> Bool:
+    def is_subset(self, other: HeadlessSurfaceCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: HeadlessSurfaceCreateFlagsEXT) -> Bool:
+    def is_superset(self, other: HeadlessSurfaceCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
 struct HeadlessSurfaceCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> HeadlessSurfaceCreateFlagsEXT:
+    def __or__(self, other: Self) -> HeadlessSurfaceCreateFlagsEXT:
         return HeadlessSurfaceCreateFlagsEXT(value = self._value | other._value)
 
 
 struct ScreenSurfaceCreateFlagsQNX(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ScreenSurfaceCreateFlagBitsQNX):
+    def __init__(out self, bit: ScreenSurfaceCreateFlagBitsQNX):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
+    def __or__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
+    def __ror__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ScreenSurfaceCreateFlagsQNX):
+    def __ior__(mut self, other: ScreenSurfaceCreateFlagsQNX):
         self._value |= other.value()
 
-    fn __and__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
+    def __and__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
+    def __rand__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ScreenSurfaceCreateFlagsQNX):
+    def __iand__(mut self, other: ScreenSurfaceCreateFlagsQNX):
         self._value &= other.value()
 
-    fn __contains__(self, other: ScreenSurfaceCreateFlagsQNX) -> Bool:
+    def __contains__(self, other: ScreenSurfaceCreateFlagsQNX) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ScreenSurfaceCreateFlagsQNX) -> Bool:
+    def is_subset(self, other: ScreenSurfaceCreateFlagsQNX) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ScreenSurfaceCreateFlagsQNX) -> Bool:
+    def is_superset(self, other: ScreenSurfaceCreateFlagsQNX) -> Bool:
         return self & other == other
 
 
 struct ScreenSurfaceCreateFlagBitsQNX(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ScreenSurfaceCreateFlagsQNX:
+    def __or__(self, other: Self) -> ScreenSurfaceCreateFlagsQNX:
         return ScreenSurfaceCreateFlagsQNX(value = self._value | other._value)
 
 
 struct PeerMemoryFeatureFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PeerMemoryFeatureFlagBits):
+    def __init__(out self, bit: PeerMemoryFeatureFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PeerMemoryFeatureFlags) -> Self:
+    def __or__(self, other: PeerMemoryFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PeerMemoryFeatureFlags) -> Self:
+    def __ror__(self, other: PeerMemoryFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PeerMemoryFeatureFlags):
+    def __ior__(mut self, other: PeerMemoryFeatureFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: PeerMemoryFeatureFlags) -> Self:
+    def __and__(self, other: PeerMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PeerMemoryFeatureFlags) -> Self:
+    def __rand__(self, other: PeerMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PeerMemoryFeatureFlags):
+    def __iand__(mut self, other: PeerMemoryFeatureFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: PeerMemoryFeatureFlags) -> Bool:
+    def __contains__(self, other: PeerMemoryFeatureFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PeerMemoryFeatureFlags) -> Bool:
+    def is_subset(self, other: PeerMemoryFeatureFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PeerMemoryFeatureFlags) -> Bool:
+    def is_superset(self, other: PeerMemoryFeatureFlags) -> Bool:
         return self & other == other
 
     comptime COPY_SRC = Self(value = PeerMemoryFeatureFlagBits.COPY_SRC.value())
@@ -9887,16 +9887,16 @@ struct PeerMemoryFeatureFlags(TrivialRegisterPassable, Equatable):
 struct PeerMemoryFeatureFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PeerMemoryFeatureFlags:
+    def __or__(self, other: Self) -> PeerMemoryFeatureFlags:
         return PeerMemoryFeatureFlags(value = self._value | other._value)
 
     comptime COPY_SRC = Self(value = 1 << 0)
@@ -9908,50 +9908,50 @@ struct PeerMemoryFeatureFlagBits(TrivialRegisterPassable, Equatable):
 struct MemoryAllocateFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: MemoryAllocateFlagBits):
+    def __init__(out self, bit: MemoryAllocateFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: MemoryAllocateFlags) -> Self:
+    def __or__(self, other: MemoryAllocateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: MemoryAllocateFlags) -> Self:
+    def __ror__(self, other: MemoryAllocateFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: MemoryAllocateFlags):
+    def __ior__(mut self, other: MemoryAllocateFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: MemoryAllocateFlags) -> Self:
+    def __and__(self, other: MemoryAllocateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: MemoryAllocateFlags) -> Self:
+    def __rand__(self, other: MemoryAllocateFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: MemoryAllocateFlags):
+    def __iand__(mut self, other: MemoryAllocateFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: MemoryAllocateFlags) -> Bool:
+    def __contains__(self, other: MemoryAllocateFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: MemoryAllocateFlags) -> Bool:
+    def is_subset(self, other: MemoryAllocateFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: MemoryAllocateFlags) -> Bool:
+    def is_superset(self, other: MemoryAllocateFlags) -> Bool:
         return self & other == other
 
     comptime DEVICE_MASK = Self(value = MemoryAllocateFlagBits.DEVICE_MASK.value())
@@ -9963,16 +9963,16 @@ struct MemoryAllocateFlags(TrivialRegisterPassable, Equatable):
 struct MemoryAllocateFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> MemoryAllocateFlags:
+    def __or__(self, other: Self) -> MemoryAllocateFlags:
         return MemoryAllocateFlags(value = self._value | other._value)
 
     comptime DEVICE_MASK = Self(value = 1 << 0)
@@ -9984,50 +9984,50 @@ struct MemoryAllocateFlagBits(TrivialRegisterPassable, Equatable):
 struct DeviceGroupPresentModeFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DeviceGroupPresentModeFlagBitsKHR):
+    def __init__(out self, bit: DeviceGroupPresentModeFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
+    def __or__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
+    def __ror__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DeviceGroupPresentModeFlagsKHR):
+    def __ior__(mut self, other: DeviceGroupPresentModeFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
+    def __and__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
+    def __rand__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DeviceGroupPresentModeFlagsKHR):
+    def __iand__(mut self, other: DeviceGroupPresentModeFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: DeviceGroupPresentModeFlagsKHR) -> Bool:
+    def __contains__(self, other: DeviceGroupPresentModeFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DeviceGroupPresentModeFlagsKHR) -> Bool:
+    def is_subset(self, other: DeviceGroupPresentModeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DeviceGroupPresentModeFlagsKHR) -> Bool:
+    def is_superset(self, other: DeviceGroupPresentModeFlagsKHR) -> Bool:
         return self & other == other
 
     comptime LOCAL = Self(value = DeviceGroupPresentModeFlagBitsKHR.LOCAL.value())
@@ -10039,16 +10039,16 @@ struct DeviceGroupPresentModeFlagsKHR(TrivialRegisterPassable, Equatable):
 struct DeviceGroupPresentModeFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DeviceGroupPresentModeFlagsKHR:
+    def __or__(self, other: Self) -> DeviceGroupPresentModeFlagsKHR:
         return DeviceGroupPresentModeFlagsKHR(value = self._value | other._value)
 
     comptime LOCAL = Self(value = 1 << 0)
@@ -10060,50 +10060,50 @@ struct DeviceGroupPresentModeFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct DebugReportFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DebugReportFlagBitsEXT):
+    def __init__(out self, bit: DebugReportFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DebugReportFlagsEXT) -> Self:
+    def __or__(self, other: DebugReportFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DebugReportFlagsEXT) -> Self:
+    def __ror__(self, other: DebugReportFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DebugReportFlagsEXT):
+    def __ior__(mut self, other: DebugReportFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: DebugReportFlagsEXT) -> Self:
+    def __and__(self, other: DebugReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DebugReportFlagsEXT) -> Self:
+    def __rand__(self, other: DebugReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DebugReportFlagsEXT):
+    def __iand__(mut self, other: DebugReportFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: DebugReportFlagsEXT) -> Bool:
+    def __contains__(self, other: DebugReportFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DebugReportFlagsEXT) -> Bool:
+    def is_subset(self, other: DebugReportFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DebugReportFlagsEXT) -> Bool:
+    def is_superset(self, other: DebugReportFlagsEXT) -> Bool:
         return self & other == other
 
     comptime INFORMATION = Self(value = DebugReportFlagBitsEXT.INFORMATION.value())
@@ -10116,16 +10116,16 @@ struct DebugReportFlagsEXT(TrivialRegisterPassable, Equatable):
 struct DebugReportFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DebugReportFlagsEXT:
+    def __or__(self, other: Self) -> DebugReportFlagsEXT:
         return DebugReportFlagsEXT(value = self._value | other._value)
 
     comptime INFORMATION = Self(value = 1 << 0)
@@ -10138,116 +10138,116 @@ struct DebugReportFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct CommandPoolTrimFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: CommandPoolTrimFlagBits):
+    def __init__(out self, bit: CommandPoolTrimFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: CommandPoolTrimFlags) -> Self:
+    def __or__(self, other: CommandPoolTrimFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: CommandPoolTrimFlags) -> Self:
+    def __ror__(self, other: CommandPoolTrimFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: CommandPoolTrimFlags):
+    def __ior__(mut self, other: CommandPoolTrimFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: CommandPoolTrimFlags) -> Self:
+    def __and__(self, other: CommandPoolTrimFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: CommandPoolTrimFlags) -> Self:
+    def __rand__(self, other: CommandPoolTrimFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: CommandPoolTrimFlags):
+    def __iand__(mut self, other: CommandPoolTrimFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: CommandPoolTrimFlags) -> Bool:
+    def __contains__(self, other: CommandPoolTrimFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: CommandPoolTrimFlags) -> Bool:
+    def is_subset(self, other: CommandPoolTrimFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: CommandPoolTrimFlags) -> Bool:
+    def is_superset(self, other: CommandPoolTrimFlags) -> Bool:
         return self & other == other
 
 
 struct CommandPoolTrimFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> CommandPoolTrimFlags:
+    def __or__(self, other: Self) -> CommandPoolTrimFlags:
         return CommandPoolTrimFlags(value = self._value | other._value)
 
 
 struct ExternalMemoryHandleTypeFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ExternalMemoryHandleTypeFlagBitsNV):
+    def __init__(out self, bit: ExternalMemoryHandleTypeFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
+    def __or__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
+    def __ror__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ExternalMemoryHandleTypeFlagsNV):
+    def __ior__(mut self, other: ExternalMemoryHandleTypeFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
+    def __and__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
+    def __rand__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ExternalMemoryHandleTypeFlagsNV):
+    def __iand__(mut self, other: ExternalMemoryHandleTypeFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Bool:
+    def __contains__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ExternalMemoryHandleTypeFlagsNV) -> Bool:
+    def is_subset(self, other: ExternalMemoryHandleTypeFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalMemoryHandleTypeFlagsNV) -> Bool:
+    def is_superset(self, other: ExternalMemoryHandleTypeFlagsNV) -> Bool:
         return self & other == other
 
     comptime OPAQUE_WIN32 = Self(value = ExternalMemoryHandleTypeFlagBitsNV.OPAQUE_WIN32.value())
@@ -10259,16 +10259,16 @@ struct ExternalMemoryHandleTypeFlagsNV(TrivialRegisterPassable, Equatable):
 struct ExternalMemoryHandleTypeFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ExternalMemoryHandleTypeFlagsNV:
+    def __or__(self, other: Self) -> ExternalMemoryHandleTypeFlagsNV:
         return ExternalMemoryHandleTypeFlagsNV(value = self._value | other._value)
 
     comptime OPAQUE_WIN32 = Self(value = 1 << 0)
@@ -10280,50 +10280,50 @@ struct ExternalMemoryHandleTypeFlagBitsNV(TrivialRegisterPassable, Equatable):
 struct ClusterAccelerationStructureIndexFormatFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ClusterAccelerationStructureIndexFormatFlagBitsNV):
+    def __init__(out self, bit: ClusterAccelerationStructureIndexFormatFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
+    def __or__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
+    def __ror__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ClusterAccelerationStructureIndexFormatFlagsNV):
+    def __ior__(mut self, other: ClusterAccelerationStructureIndexFormatFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
+    def __and__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
+    def __rand__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ClusterAccelerationStructureIndexFormatFlagsNV):
+    def __iand__(mut self, other: ClusterAccelerationStructureIndexFormatFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Bool:
+    def __contains__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Bool:
+    def is_subset(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Bool:
+    def is_superset(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Bool:
         return self & other == other
 
     comptime FORMAT_8BIT = Self(value = ClusterAccelerationStructureIndexFormatFlagBitsNV.FORMAT_8BIT.value())
@@ -10334,16 +10334,16 @@ struct ClusterAccelerationStructureIndexFormatFlagsNV(TrivialRegisterPassable, E
 struct ClusterAccelerationStructureIndexFormatFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ClusterAccelerationStructureIndexFormatFlagsNV:
+    def __or__(self, other: Self) -> ClusterAccelerationStructureIndexFormatFlagsNV:
         return ClusterAccelerationStructureIndexFormatFlagsNV(value = self._value | other._value)
 
     comptime FORMAT_8BIT = Self(value = 1 << 0)
@@ -10354,50 +10354,50 @@ struct ClusterAccelerationStructureIndexFormatFlagBitsNV(TrivialRegisterPassable
 struct ExternalMemoryFeatureFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ExternalMemoryFeatureFlagBitsNV):
+    def __init__(out self, bit: ExternalMemoryFeatureFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
+    def __or__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
+    def __ror__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ExternalMemoryFeatureFlagsNV):
+    def __ior__(mut self, other: ExternalMemoryFeatureFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
+    def __and__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
+    def __rand__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ExternalMemoryFeatureFlagsNV):
+    def __iand__(mut self, other: ExternalMemoryFeatureFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: ExternalMemoryFeatureFlagsNV) -> Bool:
+    def __contains__(self, other: ExternalMemoryFeatureFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ExternalMemoryFeatureFlagsNV) -> Bool:
+    def is_subset(self, other: ExternalMemoryFeatureFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalMemoryFeatureFlagsNV) -> Bool:
+    def is_superset(self, other: ExternalMemoryFeatureFlagsNV) -> Bool:
         return self & other == other
 
     comptime DEDICATED_ONLY = Self(value = ExternalMemoryFeatureFlagBitsNV.DEDICATED_ONLY.value())
@@ -10408,16 +10408,16 @@ struct ExternalMemoryFeatureFlagsNV(TrivialRegisterPassable, Equatable):
 struct ExternalMemoryFeatureFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ExternalMemoryFeatureFlagsNV:
+    def __or__(self, other: Self) -> ExternalMemoryFeatureFlagsNV:
         return ExternalMemoryFeatureFlagsNV(value = self._value | other._value)
 
     comptime DEDICATED_ONLY = Self(value = 1 << 0)
@@ -10428,50 +10428,50 @@ struct ExternalMemoryFeatureFlagBitsNV(TrivialRegisterPassable, Equatable):
 struct ExternalMemoryHandleTypeFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ExternalMemoryHandleTypeFlagBits):
+    def __init__(out self, bit: ExternalMemoryHandleTypeFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
+    def __or__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
+    def __ror__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ExternalMemoryHandleTypeFlags):
+    def __ior__(mut self, other: ExternalMemoryHandleTypeFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
+    def __and__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
+    def __rand__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ExternalMemoryHandleTypeFlags):
+    def __iand__(mut self, other: ExternalMemoryHandleTypeFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ExternalMemoryHandleTypeFlags) -> Bool:
+    def __contains__(self, other: ExternalMemoryHandleTypeFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ExternalMemoryHandleTypeFlags) -> Bool:
+    def is_subset(self, other: ExternalMemoryHandleTypeFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalMemoryHandleTypeFlags) -> Bool:
+    def is_superset(self, other: ExternalMemoryHandleTypeFlags) -> Bool:
         return self & other == other
 
     comptime OPAQUE_FD = Self(value = ExternalMemoryHandleTypeFlagBits.OPAQUE_FD.value())
@@ -10498,16 +10498,16 @@ struct ExternalMemoryHandleTypeFlags(TrivialRegisterPassable, Equatable):
 struct ExternalMemoryHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ExternalMemoryHandleTypeFlags:
+    def __or__(self, other: Self) -> ExternalMemoryHandleTypeFlags:
         return ExternalMemoryHandleTypeFlags(value = self._value | other._value)
 
     comptime OPAQUE_FD = Self(value = 1 << 0)
@@ -10534,50 +10534,50 @@ struct ExternalMemoryHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
 struct ExternalMemoryFeatureFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ExternalMemoryFeatureFlagBits):
+    def __init__(out self, bit: ExternalMemoryFeatureFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalMemoryFeatureFlags) -> Self:
+    def __or__(self, other: ExternalMemoryFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalMemoryFeatureFlags) -> Self:
+    def __ror__(self, other: ExternalMemoryFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ExternalMemoryFeatureFlags):
+    def __ior__(mut self, other: ExternalMemoryFeatureFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ExternalMemoryFeatureFlags) -> Self:
+    def __and__(self, other: ExternalMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalMemoryFeatureFlags) -> Self:
+    def __rand__(self, other: ExternalMemoryFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ExternalMemoryFeatureFlags):
+    def __iand__(mut self, other: ExternalMemoryFeatureFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ExternalMemoryFeatureFlags) -> Bool:
+    def __contains__(self, other: ExternalMemoryFeatureFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ExternalMemoryFeatureFlags) -> Bool:
+    def is_subset(self, other: ExternalMemoryFeatureFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalMemoryFeatureFlags) -> Bool:
+    def is_superset(self, other: ExternalMemoryFeatureFlags) -> Bool:
         return self & other == other
 
     comptime DEDICATED_ONLY = Self(value = ExternalMemoryFeatureFlagBits.DEDICATED_ONLY.value())
@@ -10588,16 +10588,16 @@ struct ExternalMemoryFeatureFlags(TrivialRegisterPassable, Equatable):
 struct ExternalMemoryFeatureFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ExternalMemoryFeatureFlags:
+    def __or__(self, other: Self) -> ExternalMemoryFeatureFlags:
         return ExternalMemoryFeatureFlags(value = self._value | other._value)
 
     comptime DEDICATED_ONLY = Self(value = 1 << 0)
@@ -10608,50 +10608,50 @@ struct ExternalMemoryFeatureFlagBits(TrivialRegisterPassable, Equatable):
 struct ExternalSemaphoreHandleTypeFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ExternalSemaphoreHandleTypeFlagBits):
+    def __init__(out self, bit: ExternalSemaphoreHandleTypeFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
+    def __or__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
+    def __ror__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ExternalSemaphoreHandleTypeFlags):
+    def __ior__(mut self, other: ExternalSemaphoreHandleTypeFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
+    def __and__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
+    def __rand__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ExternalSemaphoreHandleTypeFlags):
+    def __iand__(mut self, other: ExternalSemaphoreHandleTypeFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ExternalSemaphoreHandleTypeFlags) -> Bool:
+    def __contains__(self, other: ExternalSemaphoreHandleTypeFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ExternalSemaphoreHandleTypeFlags) -> Bool:
+    def is_subset(self, other: ExternalSemaphoreHandleTypeFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalSemaphoreHandleTypeFlags) -> Bool:
+    def is_superset(self, other: ExternalSemaphoreHandleTypeFlags) -> Bool:
         return self & other == other
 
     comptime OPAQUE_FD = Self(value = ExternalSemaphoreHandleTypeFlagBits.OPAQUE_FD.value())
@@ -10666,16 +10666,16 @@ struct ExternalSemaphoreHandleTypeFlags(TrivialRegisterPassable, Equatable):
 struct ExternalSemaphoreHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ExternalSemaphoreHandleTypeFlags:
+    def __or__(self, other: Self) -> ExternalSemaphoreHandleTypeFlags:
         return ExternalSemaphoreHandleTypeFlags(value = self._value | other._value)
 
     comptime OPAQUE_FD = Self(value = 1 << 0)
@@ -10690,50 +10690,50 @@ struct ExternalSemaphoreHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
 struct ExternalSemaphoreFeatureFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ExternalSemaphoreFeatureFlagBits):
+    def __init__(out self, bit: ExternalSemaphoreFeatureFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
+    def __or__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
+    def __ror__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ExternalSemaphoreFeatureFlags):
+    def __ior__(mut self, other: ExternalSemaphoreFeatureFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
+    def __and__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
+    def __rand__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ExternalSemaphoreFeatureFlags):
+    def __iand__(mut self, other: ExternalSemaphoreFeatureFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ExternalSemaphoreFeatureFlags) -> Bool:
+    def __contains__(self, other: ExternalSemaphoreFeatureFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ExternalSemaphoreFeatureFlags) -> Bool:
+    def is_subset(self, other: ExternalSemaphoreFeatureFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalSemaphoreFeatureFlags) -> Bool:
+    def is_superset(self, other: ExternalSemaphoreFeatureFlags) -> Bool:
         return self & other == other
 
     comptime EXPORTABLE = Self(value = ExternalSemaphoreFeatureFlagBits.EXPORTABLE.value())
@@ -10743,16 +10743,16 @@ struct ExternalSemaphoreFeatureFlags(TrivialRegisterPassable, Equatable):
 struct ExternalSemaphoreFeatureFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ExternalSemaphoreFeatureFlags:
+    def __or__(self, other: Self) -> ExternalSemaphoreFeatureFlags:
         return ExternalSemaphoreFeatureFlags(value = self._value | other._value)
 
     comptime EXPORTABLE = Self(value = 1 << 0)
@@ -10762,50 +10762,50 @@ struct ExternalSemaphoreFeatureFlagBits(TrivialRegisterPassable, Equatable):
 struct SemaphoreImportFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SemaphoreImportFlagBits):
+    def __init__(out self, bit: SemaphoreImportFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SemaphoreImportFlags) -> Self:
+    def __or__(self, other: SemaphoreImportFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SemaphoreImportFlags) -> Self:
+    def __ror__(self, other: SemaphoreImportFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SemaphoreImportFlags):
+    def __ior__(mut self, other: SemaphoreImportFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: SemaphoreImportFlags) -> Self:
+    def __and__(self, other: SemaphoreImportFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SemaphoreImportFlags) -> Self:
+    def __rand__(self, other: SemaphoreImportFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SemaphoreImportFlags):
+    def __iand__(mut self, other: SemaphoreImportFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: SemaphoreImportFlags) -> Bool:
+    def __contains__(self, other: SemaphoreImportFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SemaphoreImportFlags) -> Bool:
+    def is_subset(self, other: SemaphoreImportFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SemaphoreImportFlags) -> Bool:
+    def is_superset(self, other: SemaphoreImportFlags) -> Bool:
         return self & other == other
 
     comptime TEMPORARY = Self(value = SemaphoreImportFlagBits.TEMPORARY.value())
@@ -10814,16 +10814,16 @@ struct SemaphoreImportFlags(TrivialRegisterPassable, Equatable):
 struct SemaphoreImportFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SemaphoreImportFlags:
+    def __or__(self, other: Self) -> SemaphoreImportFlags:
         return SemaphoreImportFlags(value = self._value | other._value)
 
     comptime TEMPORARY = Self(value = 1 << 0)
@@ -10832,50 +10832,50 @@ struct SemaphoreImportFlagBits(TrivialRegisterPassable, Equatable):
 struct ExternalFenceHandleTypeFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ExternalFenceHandleTypeFlagBits):
+    def __init__(out self, bit: ExternalFenceHandleTypeFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalFenceHandleTypeFlags) -> Self:
+    def __or__(self, other: ExternalFenceHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalFenceHandleTypeFlags) -> Self:
+    def __ror__(self, other: ExternalFenceHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ExternalFenceHandleTypeFlags):
+    def __ior__(mut self, other: ExternalFenceHandleTypeFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ExternalFenceHandleTypeFlags) -> Self:
+    def __and__(self, other: ExternalFenceHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalFenceHandleTypeFlags) -> Self:
+    def __rand__(self, other: ExternalFenceHandleTypeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ExternalFenceHandleTypeFlags):
+    def __iand__(mut self, other: ExternalFenceHandleTypeFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ExternalFenceHandleTypeFlags) -> Bool:
+    def __contains__(self, other: ExternalFenceHandleTypeFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ExternalFenceHandleTypeFlags) -> Bool:
+    def is_subset(self, other: ExternalFenceHandleTypeFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalFenceHandleTypeFlags) -> Bool:
+    def is_superset(self, other: ExternalFenceHandleTypeFlags) -> Bool:
         return self & other == other
 
     comptime OPAQUE_FD = Self(value = ExternalFenceHandleTypeFlagBits.OPAQUE_FD.value())
@@ -10889,16 +10889,16 @@ struct ExternalFenceHandleTypeFlags(TrivialRegisterPassable, Equatable):
 struct ExternalFenceHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ExternalFenceHandleTypeFlags:
+    def __or__(self, other: Self) -> ExternalFenceHandleTypeFlags:
         return ExternalFenceHandleTypeFlags(value = self._value | other._value)
 
     comptime OPAQUE_FD = Self(value = 1 << 0)
@@ -10912,50 +10912,50 @@ struct ExternalFenceHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
 struct ExternalFenceFeatureFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ExternalFenceFeatureFlagBits):
+    def __init__(out self, bit: ExternalFenceFeatureFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExternalFenceFeatureFlags) -> Self:
+    def __or__(self, other: ExternalFenceFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExternalFenceFeatureFlags) -> Self:
+    def __ror__(self, other: ExternalFenceFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ExternalFenceFeatureFlags):
+    def __ior__(mut self, other: ExternalFenceFeatureFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ExternalFenceFeatureFlags) -> Self:
+    def __and__(self, other: ExternalFenceFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExternalFenceFeatureFlags) -> Self:
+    def __rand__(self, other: ExternalFenceFeatureFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ExternalFenceFeatureFlags):
+    def __iand__(mut self, other: ExternalFenceFeatureFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ExternalFenceFeatureFlags) -> Bool:
+    def __contains__(self, other: ExternalFenceFeatureFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ExternalFenceFeatureFlags) -> Bool:
+    def is_subset(self, other: ExternalFenceFeatureFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExternalFenceFeatureFlags) -> Bool:
+    def is_superset(self, other: ExternalFenceFeatureFlags) -> Bool:
         return self & other == other
 
     comptime EXPORTABLE = Self(value = ExternalFenceFeatureFlagBits.EXPORTABLE.value())
@@ -10965,16 +10965,16 @@ struct ExternalFenceFeatureFlags(TrivialRegisterPassable, Equatable):
 struct ExternalFenceFeatureFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ExternalFenceFeatureFlags:
+    def __or__(self, other: Self) -> ExternalFenceFeatureFlags:
         return ExternalFenceFeatureFlags(value = self._value | other._value)
 
     comptime EXPORTABLE = Self(value = 1 << 0)
@@ -10984,50 +10984,50 @@ struct ExternalFenceFeatureFlagBits(TrivialRegisterPassable, Equatable):
 struct FenceImportFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: FenceImportFlagBits):
+    def __init__(out self, bit: FenceImportFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: FenceImportFlags) -> Self:
+    def __or__(self, other: FenceImportFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: FenceImportFlags) -> Self:
+    def __ror__(self, other: FenceImportFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: FenceImportFlags):
+    def __ior__(mut self, other: FenceImportFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: FenceImportFlags) -> Self:
+    def __and__(self, other: FenceImportFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: FenceImportFlags) -> Self:
+    def __rand__(self, other: FenceImportFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: FenceImportFlags):
+    def __iand__(mut self, other: FenceImportFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: FenceImportFlags) -> Bool:
+    def __contains__(self, other: FenceImportFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: FenceImportFlags) -> Bool:
+    def is_subset(self, other: FenceImportFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: FenceImportFlags) -> Bool:
+    def is_superset(self, other: FenceImportFlags) -> Bool:
         return self & other == other
 
     comptime TEMPORARY = Self(value = FenceImportFlagBits.TEMPORARY.value())
@@ -11036,16 +11036,16 @@ struct FenceImportFlags(TrivialRegisterPassable, Equatable):
 struct FenceImportFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> FenceImportFlags:
+    def __or__(self, other: Self) -> FenceImportFlags:
         return FenceImportFlags(value = self._value | other._value)
 
     comptime TEMPORARY = Self(value = 1 << 0)
@@ -11054,50 +11054,50 @@ struct FenceImportFlagBits(TrivialRegisterPassable, Equatable):
 struct SurfaceCounterFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SurfaceCounterFlagBitsEXT):
+    def __init__(out self, bit: SurfaceCounterFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SurfaceCounterFlagsEXT) -> Self:
+    def __or__(self, other: SurfaceCounterFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SurfaceCounterFlagsEXT) -> Self:
+    def __ror__(self, other: SurfaceCounterFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SurfaceCounterFlagsEXT):
+    def __ior__(mut self, other: SurfaceCounterFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: SurfaceCounterFlagsEXT) -> Self:
+    def __and__(self, other: SurfaceCounterFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SurfaceCounterFlagsEXT) -> Self:
+    def __rand__(self, other: SurfaceCounterFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SurfaceCounterFlagsEXT):
+    def __iand__(mut self, other: SurfaceCounterFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: SurfaceCounterFlagsEXT) -> Bool:
+    def __contains__(self, other: SurfaceCounterFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SurfaceCounterFlagsEXT) -> Bool:
+    def is_subset(self, other: SurfaceCounterFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SurfaceCounterFlagsEXT) -> Bool:
+    def is_superset(self, other: SurfaceCounterFlagsEXT) -> Bool:
         return self & other == other
 
     comptime VBLANK = Self(value = SurfaceCounterFlagBitsEXT.VBLANK.value())
@@ -11106,16 +11106,16 @@ struct SurfaceCounterFlagsEXT(TrivialRegisterPassable, Equatable):
 struct SurfaceCounterFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SurfaceCounterFlagsEXT:
+    def __or__(self, other: Self) -> SurfaceCounterFlagsEXT:
         return SurfaceCounterFlagsEXT(value = self._value | other._value)
 
     comptime VBLANK = Self(value = 1 << 0)
@@ -11124,446 +11124,446 @@ struct SurfaceCounterFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct PipelineViewportSwizzleStateCreateFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineViewportSwizzleStateCreateFlagBitsNV):
+    def __init__(out self, bit: PipelineViewportSwizzleStateCreateFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
+    def __or__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
+    def __ror__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineViewportSwizzleStateCreateFlagsNV):
+    def __ior__(mut self, other: PipelineViewportSwizzleStateCreateFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
+    def __and__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
+    def __rand__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineViewportSwizzleStateCreateFlagsNV):
+    def __iand__(mut self, other: PipelineViewportSwizzleStateCreateFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Bool:
+    def __contains__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Bool:
+    def is_subset(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Bool:
+    def is_superset(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Bool:
         return self & other == other
 
 
 struct PipelineViewportSwizzleStateCreateFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineViewportSwizzleStateCreateFlagsNV:
+    def __or__(self, other: Self) -> PipelineViewportSwizzleStateCreateFlagsNV:
         return PipelineViewportSwizzleStateCreateFlagsNV(value = self._value | other._value)
 
 
 struct PipelineDiscardRectangleStateCreateFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineDiscardRectangleStateCreateFlagBitsEXT):
+    def __init__(out self, bit: PipelineDiscardRectangleStateCreateFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
+    def __or__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
+    def __ror__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineDiscardRectangleStateCreateFlagsEXT):
+    def __ior__(mut self, other: PipelineDiscardRectangleStateCreateFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
+    def __and__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
+    def __rand__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineDiscardRectangleStateCreateFlagsEXT):
+    def __iand__(mut self, other: PipelineDiscardRectangleStateCreateFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Bool:
+    def __contains__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Bool:
+    def is_subset(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Bool:
+    def is_superset(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
 struct PipelineDiscardRectangleStateCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineDiscardRectangleStateCreateFlagsEXT:
+    def __or__(self, other: Self) -> PipelineDiscardRectangleStateCreateFlagsEXT:
         return PipelineDiscardRectangleStateCreateFlagsEXT(value = self._value | other._value)
 
 
 struct PipelineCoverageToColorStateCreateFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineCoverageToColorStateCreateFlagBitsNV):
+    def __init__(out self, bit: PipelineCoverageToColorStateCreateFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
+    def __or__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
+    def __ror__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineCoverageToColorStateCreateFlagsNV):
+    def __ior__(mut self, other: PipelineCoverageToColorStateCreateFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
+    def __and__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
+    def __rand__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineCoverageToColorStateCreateFlagsNV):
+    def __iand__(mut self, other: PipelineCoverageToColorStateCreateFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Bool:
+    def __contains__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Bool:
+    def is_subset(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Bool:
+    def is_superset(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Bool:
         return self & other == other
 
 
 struct PipelineCoverageToColorStateCreateFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineCoverageToColorStateCreateFlagsNV:
+    def __or__(self, other: Self) -> PipelineCoverageToColorStateCreateFlagsNV:
         return PipelineCoverageToColorStateCreateFlagsNV(value = self._value | other._value)
 
 
 struct PipelineCoverageModulationStateCreateFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineCoverageModulationStateCreateFlagBitsNV):
+    def __init__(out self, bit: PipelineCoverageModulationStateCreateFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
+    def __or__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
+    def __ror__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineCoverageModulationStateCreateFlagsNV):
+    def __ior__(mut self, other: PipelineCoverageModulationStateCreateFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
+    def __and__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
+    def __rand__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineCoverageModulationStateCreateFlagsNV):
+    def __iand__(mut self, other: PipelineCoverageModulationStateCreateFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Bool:
+    def __contains__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Bool:
+    def is_subset(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Bool:
+    def is_superset(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Bool:
         return self & other == other
 
 
 struct PipelineCoverageModulationStateCreateFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineCoverageModulationStateCreateFlagsNV:
+    def __or__(self, other: Self) -> PipelineCoverageModulationStateCreateFlagsNV:
         return PipelineCoverageModulationStateCreateFlagsNV(value = self._value | other._value)
 
 
 struct PipelineCoverageReductionStateCreateFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineCoverageReductionStateCreateFlagBitsNV):
+    def __init__(out self, bit: PipelineCoverageReductionStateCreateFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
+    def __or__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
+    def __ror__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineCoverageReductionStateCreateFlagsNV):
+    def __ior__(mut self, other: PipelineCoverageReductionStateCreateFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
+    def __and__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
+    def __rand__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineCoverageReductionStateCreateFlagsNV):
+    def __iand__(mut self, other: PipelineCoverageReductionStateCreateFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Bool:
+    def __contains__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Bool:
+    def is_subset(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Bool:
+    def is_superset(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Bool:
         return self & other == other
 
 
 struct PipelineCoverageReductionStateCreateFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineCoverageReductionStateCreateFlagsNV:
+    def __or__(self, other: Self) -> PipelineCoverageReductionStateCreateFlagsNV:
         return PipelineCoverageReductionStateCreateFlagsNV(value = self._value | other._value)
 
 
 struct ValidationCacheCreateFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ValidationCacheCreateFlagBitsEXT):
+    def __init__(out self, bit: ValidationCacheCreateFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
+    def __or__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
+    def __ror__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ValidationCacheCreateFlagsEXT):
+    def __ior__(mut self, other: ValidationCacheCreateFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
+    def __and__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
+    def __rand__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ValidationCacheCreateFlagsEXT):
+    def __iand__(mut self, other: ValidationCacheCreateFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: ValidationCacheCreateFlagsEXT) -> Bool:
+    def __contains__(self, other: ValidationCacheCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ValidationCacheCreateFlagsEXT) -> Bool:
+    def is_subset(self, other: ValidationCacheCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ValidationCacheCreateFlagsEXT) -> Bool:
+    def is_superset(self, other: ValidationCacheCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
 struct ValidationCacheCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ValidationCacheCreateFlagsEXT:
+    def __or__(self, other: Self) -> ValidationCacheCreateFlagsEXT:
         return ValidationCacheCreateFlagsEXT(value = self._value | other._value)
 
 
 struct DebugUtilsMessageSeverityFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DebugUtilsMessageSeverityFlagBitsEXT):
+    def __init__(out self, bit: DebugUtilsMessageSeverityFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
+    def __or__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
+    def __ror__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DebugUtilsMessageSeverityFlagsEXT):
+    def __ior__(mut self, other: DebugUtilsMessageSeverityFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
+    def __and__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
+    def __rand__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DebugUtilsMessageSeverityFlagsEXT):
+    def __iand__(mut self, other: DebugUtilsMessageSeverityFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Bool:
+    def __contains__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Bool:
+    def is_subset(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Bool:
+    def is_superset(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Bool:
         return self & other == other
 
     comptime VERBOSE = Self(value = DebugUtilsMessageSeverityFlagBitsEXT.VERBOSE.value())
@@ -11575,16 +11575,16 @@ struct DebugUtilsMessageSeverityFlagsEXT(TrivialRegisterPassable, Equatable):
 struct DebugUtilsMessageSeverityFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DebugUtilsMessageSeverityFlagsEXT:
+    def __or__(self, other: Self) -> DebugUtilsMessageSeverityFlagsEXT:
         return DebugUtilsMessageSeverityFlagsEXT(value = self._value | other._value)
 
     comptime VERBOSE = Self(value = 1 << 0)
@@ -11596,50 +11596,50 @@ struct DebugUtilsMessageSeverityFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct DebugUtilsMessageTypeFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DebugUtilsMessageTypeFlagBitsEXT):
+    def __init__(out self, bit: DebugUtilsMessageTypeFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
+    def __or__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
+    def __ror__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DebugUtilsMessageTypeFlagsEXT):
+    def __ior__(mut self, other: DebugUtilsMessageTypeFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
+    def __and__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
+    def __rand__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DebugUtilsMessageTypeFlagsEXT):
+    def __iand__(mut self, other: DebugUtilsMessageTypeFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Bool:
+    def __contains__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DebugUtilsMessageTypeFlagsEXT) -> Bool:
+    def is_subset(self, other: DebugUtilsMessageTypeFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DebugUtilsMessageTypeFlagsEXT) -> Bool:
+    def is_superset(self, other: DebugUtilsMessageTypeFlagsEXT) -> Bool:
         return self & other == other
 
     comptime GENERAL = Self(value = DebugUtilsMessageTypeFlagBitsEXT.GENERAL.value())
@@ -11651,16 +11651,16 @@ struct DebugUtilsMessageTypeFlagsEXT(TrivialRegisterPassable, Equatable):
 struct DebugUtilsMessageTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DebugUtilsMessageTypeFlagsEXT:
+    def __or__(self, other: Self) -> DebugUtilsMessageTypeFlagsEXT:
         return DebugUtilsMessageTypeFlagsEXT(value = self._value | other._value)
 
     comptime GENERAL = Self(value = 1 << 0)
@@ -11672,314 +11672,314 @@ struct DebugUtilsMessageTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct DebugUtilsMessengerCreateFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DebugUtilsMessengerCreateFlagBitsEXT):
+    def __init__(out self, bit: DebugUtilsMessengerCreateFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
+    def __or__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
+    def __ror__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DebugUtilsMessengerCreateFlagsEXT):
+    def __ior__(mut self, other: DebugUtilsMessengerCreateFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
+    def __and__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
+    def __rand__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DebugUtilsMessengerCreateFlagsEXT):
+    def __iand__(mut self, other: DebugUtilsMessengerCreateFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Bool:
+    def __contains__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Bool:
+    def is_subset(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Bool:
+    def is_superset(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
 struct DebugUtilsMessengerCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DebugUtilsMessengerCreateFlagsEXT:
+    def __or__(self, other: Self) -> DebugUtilsMessengerCreateFlagsEXT:
         return DebugUtilsMessengerCreateFlagsEXT(value = self._value | other._value)
 
 
 struct DebugUtilsMessengerCallbackDataFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DebugUtilsMessengerCallbackDataFlagBitsEXT):
+    def __init__(out self, bit: DebugUtilsMessengerCallbackDataFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
+    def __or__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
+    def __ror__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DebugUtilsMessengerCallbackDataFlagsEXT):
+    def __ior__(mut self, other: DebugUtilsMessengerCallbackDataFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
+    def __and__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
+    def __rand__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DebugUtilsMessengerCallbackDataFlagsEXT):
+    def __iand__(mut self, other: DebugUtilsMessengerCallbackDataFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Bool:
+    def __contains__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Bool:
+    def is_subset(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Bool:
+    def is_superset(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Bool:
         return self & other == other
 
 
 struct DebugUtilsMessengerCallbackDataFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DebugUtilsMessengerCallbackDataFlagsEXT:
+    def __or__(self, other: Self) -> DebugUtilsMessengerCallbackDataFlagsEXT:
         return DebugUtilsMessengerCallbackDataFlagsEXT(value = self._value | other._value)
 
 
 struct DeviceMemoryReportFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DeviceMemoryReportFlagBitsEXT):
+    def __init__(out self, bit: DeviceMemoryReportFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
+    def __or__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
+    def __ror__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DeviceMemoryReportFlagsEXT):
+    def __ior__(mut self, other: DeviceMemoryReportFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
+    def __and__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
+    def __rand__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DeviceMemoryReportFlagsEXT):
+    def __iand__(mut self, other: DeviceMemoryReportFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: DeviceMemoryReportFlagsEXT) -> Bool:
+    def __contains__(self, other: DeviceMemoryReportFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DeviceMemoryReportFlagsEXT) -> Bool:
+    def is_subset(self, other: DeviceMemoryReportFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DeviceMemoryReportFlagsEXT) -> Bool:
+    def is_superset(self, other: DeviceMemoryReportFlagsEXT) -> Bool:
         return self & other == other
 
 
 struct DeviceMemoryReportFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DeviceMemoryReportFlagsEXT:
+    def __or__(self, other: Self) -> DeviceMemoryReportFlagsEXT:
         return DeviceMemoryReportFlagsEXT(value = self._value | other._value)
 
 
 struct PipelineRasterizationConservativeStateCreateFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineRasterizationConservativeStateCreateFlagBitsEXT):
+    def __init__(out self, bit: PipelineRasterizationConservativeStateCreateFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
+    def __or__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
+    def __ror__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineRasterizationConservativeStateCreateFlagsEXT):
+    def __ior__(mut self, other: PipelineRasterizationConservativeStateCreateFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
+    def __and__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
+    def __rand__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineRasterizationConservativeStateCreateFlagsEXT):
+    def __iand__(mut self, other: PipelineRasterizationConservativeStateCreateFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Bool:
+    def __contains__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Bool:
+    def is_subset(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Bool:
+    def is_superset(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
 struct PipelineRasterizationConservativeStateCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineRasterizationConservativeStateCreateFlagsEXT:
+    def __or__(self, other: Self) -> PipelineRasterizationConservativeStateCreateFlagsEXT:
         return PipelineRasterizationConservativeStateCreateFlagsEXT(value = self._value | other._value)
 
 
 struct DescriptorBindingFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DescriptorBindingFlagBits):
+    def __init__(out self, bit: DescriptorBindingFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DescriptorBindingFlags) -> Self:
+    def __or__(self, other: DescriptorBindingFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DescriptorBindingFlags) -> Self:
+    def __ror__(self, other: DescriptorBindingFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DescriptorBindingFlags):
+    def __ior__(mut self, other: DescriptorBindingFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: DescriptorBindingFlags) -> Self:
+    def __and__(self, other: DescriptorBindingFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DescriptorBindingFlags) -> Self:
+    def __rand__(self, other: DescriptorBindingFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DescriptorBindingFlags):
+    def __iand__(mut self, other: DescriptorBindingFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: DescriptorBindingFlags) -> Bool:
+    def __contains__(self, other: DescriptorBindingFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DescriptorBindingFlags) -> Bool:
+    def is_subset(self, other: DescriptorBindingFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DescriptorBindingFlags) -> Bool:
+    def is_superset(self, other: DescriptorBindingFlags) -> Bool:
         return self & other == other
 
     comptime UPDATE_AFTER_BIND = Self(value = DescriptorBindingFlagBits.UPDATE_AFTER_BIND.value())
@@ -11992,16 +11992,16 @@ struct DescriptorBindingFlags(TrivialRegisterPassable, Equatable):
 struct DescriptorBindingFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DescriptorBindingFlags:
+    def __or__(self, other: Self) -> DescriptorBindingFlags:
         return DescriptorBindingFlags(value = self._value | other._value)
 
     comptime UPDATE_AFTER_BIND = Self(value = 1 << 0)
@@ -12014,50 +12014,50 @@ struct DescriptorBindingFlagBits(TrivialRegisterPassable, Equatable):
 struct ConditionalRenderingFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ConditionalRenderingFlagBitsEXT):
+    def __init__(out self, bit: ConditionalRenderingFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ConditionalRenderingFlagsEXT) -> Self:
+    def __or__(self, other: ConditionalRenderingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ConditionalRenderingFlagsEXT) -> Self:
+    def __ror__(self, other: ConditionalRenderingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ConditionalRenderingFlagsEXT):
+    def __ior__(mut self, other: ConditionalRenderingFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: ConditionalRenderingFlagsEXT) -> Self:
+    def __and__(self, other: ConditionalRenderingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ConditionalRenderingFlagsEXT) -> Self:
+    def __rand__(self, other: ConditionalRenderingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ConditionalRenderingFlagsEXT):
+    def __iand__(mut self, other: ConditionalRenderingFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: ConditionalRenderingFlagsEXT) -> Bool:
+    def __contains__(self, other: ConditionalRenderingFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ConditionalRenderingFlagsEXT) -> Bool:
+    def is_subset(self, other: ConditionalRenderingFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ConditionalRenderingFlagsEXT) -> Bool:
+    def is_superset(self, other: ConditionalRenderingFlagsEXT) -> Bool:
         return self & other == other
 
     comptime INVERTED = Self(value = ConditionalRenderingFlagBitsEXT.INVERTED.value())
@@ -12066,16 +12066,16 @@ struct ConditionalRenderingFlagsEXT(TrivialRegisterPassable, Equatable):
 struct ConditionalRenderingFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ConditionalRenderingFlagsEXT:
+    def __or__(self, other: Self) -> ConditionalRenderingFlagsEXT:
         return ConditionalRenderingFlagsEXT(value = self._value | other._value)
 
     comptime INVERTED = Self(value = 1 << 0)
@@ -12084,50 +12084,50 @@ struct ConditionalRenderingFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct ResolveModeFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ResolveModeFlagBits):
+    def __init__(out self, bit: ResolveModeFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ResolveModeFlags) -> Self:
+    def __or__(self, other: ResolveModeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ResolveModeFlags) -> Self:
+    def __ror__(self, other: ResolveModeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ResolveModeFlags):
+    def __ior__(mut self, other: ResolveModeFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ResolveModeFlags) -> Self:
+    def __and__(self, other: ResolveModeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ResolveModeFlags) -> Self:
+    def __rand__(self, other: ResolveModeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ResolveModeFlags):
+    def __iand__(mut self, other: ResolveModeFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ResolveModeFlags) -> Bool:
+    def __contains__(self, other: ResolveModeFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ResolveModeFlags) -> Bool:
+    def is_subset(self, other: ResolveModeFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ResolveModeFlags) -> Bool:
+    def is_superset(self, other: ResolveModeFlags) -> Bool:
         return self & other == other
 
     comptime NONE = Self(value = ResolveModeFlagBits.NONE.value())
@@ -12142,16 +12142,16 @@ struct ResolveModeFlags(TrivialRegisterPassable, Equatable):
 struct ResolveModeFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ResolveModeFlags:
+    def __or__(self, other: Self) -> ResolveModeFlags:
         return ResolveModeFlags(value = self._value | other._value)
 
     comptime NONE = Self(value = 0)
@@ -12166,182 +12166,182 @@ struct ResolveModeFlagBits(TrivialRegisterPassable, Equatable):
 struct PipelineRasterizationStateStreamCreateFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineRasterizationStateStreamCreateFlagBitsEXT):
+    def __init__(out self, bit: PipelineRasterizationStateStreamCreateFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
+    def __or__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
+    def __ror__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineRasterizationStateStreamCreateFlagsEXT):
+    def __ior__(mut self, other: PipelineRasterizationStateStreamCreateFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
+    def __and__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
+    def __rand__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineRasterizationStateStreamCreateFlagsEXT):
+    def __iand__(mut self, other: PipelineRasterizationStateStreamCreateFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Bool:
+    def __contains__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Bool:
+    def is_subset(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Bool:
+    def is_superset(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
 struct PipelineRasterizationStateStreamCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineRasterizationStateStreamCreateFlagsEXT:
+    def __or__(self, other: Self) -> PipelineRasterizationStateStreamCreateFlagsEXT:
         return PipelineRasterizationStateStreamCreateFlagsEXT(value = self._value | other._value)
 
 
 struct PipelineRasterizationDepthClipStateCreateFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PipelineRasterizationDepthClipStateCreateFlagBitsEXT):
+    def __init__(out self, bit: PipelineRasterizationDepthClipStateCreateFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
+    def __or__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
+    def __ror__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT):
+    def __ior__(mut self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
+    def __and__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
+    def __rand__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT):
+    def __iand__(mut self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Bool:
+    def __contains__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Bool:
+    def is_subset(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Bool:
+    def is_superset(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Bool:
         return self & other == other
 
 
 struct PipelineRasterizationDepthClipStateCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PipelineRasterizationDepthClipStateCreateFlagsEXT:
+    def __or__(self, other: Self) -> PipelineRasterizationDepthClipStateCreateFlagsEXT:
         return PipelineRasterizationDepthClipStateCreateFlagsEXT(value = self._value | other._value)
 
 
 struct SwapchainImageUsageFlagsANDROID(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SwapchainImageUsageFlagBitsANDROID):
+    def __init__(out self, bit: SwapchainImageUsageFlagBitsANDROID):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
+    def __or__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
+    def __ror__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SwapchainImageUsageFlagsANDROID):
+    def __ior__(mut self, other: SwapchainImageUsageFlagsANDROID):
         self._value |= other.value()
 
-    fn __and__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
+    def __and__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
+    def __rand__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SwapchainImageUsageFlagsANDROID):
+    def __iand__(mut self, other: SwapchainImageUsageFlagsANDROID):
         self._value &= other.value()
 
-    fn __contains__(self, other: SwapchainImageUsageFlagsANDROID) -> Bool:
+    def __contains__(self, other: SwapchainImageUsageFlagsANDROID) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SwapchainImageUsageFlagsANDROID) -> Bool:
+    def is_subset(self, other: SwapchainImageUsageFlagsANDROID) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SwapchainImageUsageFlagsANDROID) -> Bool:
+    def is_superset(self, other: SwapchainImageUsageFlagsANDROID) -> Bool:
         return self & other == other
 
     comptime SHARED = Self(value = SwapchainImageUsageFlagBitsANDROID.SHARED.value())
@@ -12350,16 +12350,16 @@ struct SwapchainImageUsageFlagsANDROID(TrivialRegisterPassable, Equatable):
 struct SwapchainImageUsageFlagBitsANDROID(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SwapchainImageUsageFlagsANDROID:
+    def __or__(self, other: Self) -> SwapchainImageUsageFlagsANDROID:
         return SwapchainImageUsageFlagsANDROID(value = self._value | other._value)
 
     comptime SHARED = Self(value = 1 << 0)
@@ -12368,50 +12368,50 @@ struct SwapchainImageUsageFlagBitsANDROID(TrivialRegisterPassable, Equatable):
 struct ToolPurposeFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ToolPurposeFlagBits):
+    def __init__(out self, bit: ToolPurposeFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ToolPurposeFlags) -> Self:
+    def __or__(self, other: ToolPurposeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ToolPurposeFlags) -> Self:
+    def __ror__(self, other: ToolPurposeFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ToolPurposeFlags):
+    def __ior__(mut self, other: ToolPurposeFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: ToolPurposeFlags) -> Self:
+    def __and__(self, other: ToolPurposeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ToolPurposeFlags) -> Self:
+    def __rand__(self, other: ToolPurposeFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ToolPurposeFlags):
+    def __iand__(mut self, other: ToolPurposeFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: ToolPurposeFlags) -> Bool:
+    def __contains__(self, other: ToolPurposeFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ToolPurposeFlags) -> Bool:
+    def is_subset(self, other: ToolPurposeFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ToolPurposeFlags) -> Bool:
+    def is_superset(self, other: ToolPurposeFlags) -> Bool:
         return self & other == other
 
     comptime VALIDATION = Self(value = ToolPurposeFlagBits.VALIDATION.value())
@@ -12426,16 +12426,16 @@ struct ToolPurposeFlags(TrivialRegisterPassable, Equatable):
 struct ToolPurposeFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ToolPurposeFlags:
+    def __or__(self, other: Self) -> ToolPurposeFlags:
         return ToolPurposeFlags(value = self._value | other._value)
 
     comptime VALIDATION = Self(value = 1 << 0)
@@ -12450,50 +12450,50 @@ struct ToolPurposeFlagBits(TrivialRegisterPassable, Equatable):
 struct SubmitFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SubmitFlagBits):
+    def __init__(out self, bit: SubmitFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SubmitFlags) -> Self:
+    def __or__(self, other: SubmitFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SubmitFlags) -> Self:
+    def __ror__(self, other: SubmitFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SubmitFlags):
+    def __ior__(mut self, other: SubmitFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: SubmitFlags) -> Self:
+    def __and__(self, other: SubmitFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SubmitFlags) -> Self:
+    def __rand__(self, other: SubmitFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SubmitFlags):
+    def __iand__(mut self, other: SubmitFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: SubmitFlags) -> Bool:
+    def __contains__(self, other: SubmitFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SubmitFlags) -> Bool:
+    def is_subset(self, other: SubmitFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SubmitFlags) -> Bool:
+    def is_superset(self, other: SubmitFlags) -> Bool:
         return self & other == other
 
     comptime PROTECTED = Self(value = SubmitFlagBits.PROTECTED.value())
@@ -12502,16 +12502,16 @@ struct SubmitFlags(TrivialRegisterPassable, Equatable):
 struct SubmitFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SubmitFlags:
+    def __or__(self, other: Self) -> SubmitFlags:
         return SubmitFlags(value = self._value | other._value)
 
     comptime PROTECTED = Self(value = 1 << 0)
@@ -12520,116 +12520,116 @@ struct SubmitFlagBits(TrivialRegisterPassable, Equatable):
 struct ImageFormatConstraintsFlagsFUCHSIA(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ImageFormatConstraintsFlagBitsFUCHSIA):
+    def __init__(out self, bit: ImageFormatConstraintsFlagBitsFUCHSIA):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
+    def __or__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
+    def __ror__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ImageFormatConstraintsFlagsFUCHSIA):
+    def __ior__(mut self, other: ImageFormatConstraintsFlagsFUCHSIA):
         self._value |= other.value()
 
-    fn __and__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
+    def __and__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
+    def __rand__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ImageFormatConstraintsFlagsFUCHSIA):
+    def __iand__(mut self, other: ImageFormatConstraintsFlagsFUCHSIA):
         self._value &= other.value()
 
-    fn __contains__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Bool:
+    def __contains__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Bool:
+    def is_subset(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Bool:
+    def is_superset(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Bool:
         return self & other == other
 
 
 struct ImageFormatConstraintsFlagBitsFUCHSIA(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ImageFormatConstraintsFlagsFUCHSIA:
+    def __or__(self, other: Self) -> ImageFormatConstraintsFlagsFUCHSIA:
         return ImageFormatConstraintsFlagsFUCHSIA(value = self._value | other._value)
 
 
 struct HostImageCopyFlags(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: HostImageCopyFlagBits):
+    def __init__(out self, bit: HostImageCopyFlagBits):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: HostImageCopyFlags) -> Self:
+    def __or__(self, other: HostImageCopyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: HostImageCopyFlags) -> Self:
+    def __ror__(self, other: HostImageCopyFlags) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: HostImageCopyFlags):
+    def __ior__(mut self, other: HostImageCopyFlags):
         self._value |= other.value()
 
-    fn __and__(self, other: HostImageCopyFlags) -> Self:
+    def __and__(self, other: HostImageCopyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: HostImageCopyFlags) -> Self:
+    def __rand__(self, other: HostImageCopyFlags) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: HostImageCopyFlags):
+    def __iand__(mut self, other: HostImageCopyFlags):
         self._value &= other.value()
 
-    fn __contains__(self, other: HostImageCopyFlags) -> Bool:
+    def __contains__(self, other: HostImageCopyFlags) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: HostImageCopyFlags) -> Bool:
+    def is_subset(self, other: HostImageCopyFlags) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: HostImageCopyFlags) -> Bool:
+    def is_superset(self, other: HostImageCopyFlags) -> Bool:
         return self & other == other
 
     comptime MEMCPY = Self(value = HostImageCopyFlagBits.MEMCPY.value())
@@ -12638,16 +12638,16 @@ struct HostImageCopyFlags(TrivialRegisterPassable, Equatable):
 struct HostImageCopyFlagBits(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> HostImageCopyFlags:
+    def __or__(self, other: Self) -> HostImageCopyFlags:
         return HostImageCopyFlags(value = self._value | other._value)
 
     comptime MEMCPY = Self(value = 1 << 0)
@@ -12656,50 +12656,50 @@ struct HostImageCopyFlagBits(TrivialRegisterPassable, Equatable):
 struct PartitionedAccelerationStructureInstanceFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PartitionedAccelerationStructureInstanceFlagBitsNV):
+    def __init__(out self, bit: PartitionedAccelerationStructureInstanceFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
+    def __or__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
+    def __ror__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PartitionedAccelerationStructureInstanceFlagsNV):
+    def __ior__(mut self, other: PartitionedAccelerationStructureInstanceFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
+    def __and__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
+    def __rand__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PartitionedAccelerationStructureInstanceFlagsNV):
+    def __iand__(mut self, other: PartitionedAccelerationStructureInstanceFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Bool:
+    def __contains__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Bool:
+    def is_subset(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Bool:
+    def is_superset(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Bool:
         return self & other == other
 
     comptime FLAG_TRIANGLE_FACING_CULL_DISABLE = Self(value = PartitionedAccelerationStructureInstanceFlagBitsNV.FLAG_TRIANGLE_FACING_CULL_DISABLE.value())
@@ -12712,16 +12712,16 @@ struct PartitionedAccelerationStructureInstanceFlagsNV(TrivialRegisterPassable, 
 struct PartitionedAccelerationStructureInstanceFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PartitionedAccelerationStructureInstanceFlagsNV:
+    def __or__(self, other: Self) -> PartitionedAccelerationStructureInstanceFlagsNV:
         return PartitionedAccelerationStructureInstanceFlagsNV(value = self._value | other._value)
 
     comptime FLAG_TRIANGLE_FACING_CULL_DISABLE = Self(value = 1 << 0)
@@ -12734,50 +12734,50 @@ struct PartitionedAccelerationStructureInstanceFlagBitsNV(TrivialRegisterPassabl
 struct ImageConstraintsInfoFlagsFUCHSIA(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ImageConstraintsInfoFlagBitsFUCHSIA):
+    def __init__(out self, bit: ImageConstraintsInfoFlagBitsFUCHSIA):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
+    def __or__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
+    def __ror__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ImageConstraintsInfoFlagsFUCHSIA):
+    def __ior__(mut self, other: ImageConstraintsInfoFlagsFUCHSIA):
         self._value |= other.value()
 
-    fn __and__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
+    def __and__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
+    def __rand__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ImageConstraintsInfoFlagsFUCHSIA):
+    def __iand__(mut self, other: ImageConstraintsInfoFlagsFUCHSIA):
         self._value &= other.value()
 
-    fn __contains__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Bool:
+    def __contains__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Bool:
+    def is_subset(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Bool:
+    def is_superset(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Bool:
         return self & other == other
 
     comptime CPU_READ_RARELY = Self(value = ImageConstraintsInfoFlagBitsFUCHSIA.CPU_READ_RARELY.value())
@@ -12790,16 +12790,16 @@ struct ImageConstraintsInfoFlagsFUCHSIA(TrivialRegisterPassable, Equatable):
 struct ImageConstraintsInfoFlagBitsFUCHSIA(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ImageConstraintsInfoFlagsFUCHSIA:
+    def __or__(self, other: Self) -> ImageConstraintsInfoFlagsFUCHSIA:
         return ImageConstraintsInfoFlagsFUCHSIA(value = self._value | other._value)
 
     comptime CPU_READ_RARELY = Self(value = 1 << 0)
@@ -12812,50 +12812,50 @@ struct ImageConstraintsInfoFlagBitsFUCHSIA(TrivialRegisterPassable, Equatable):
 struct GraphicsPipelineLibraryFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: GraphicsPipelineLibraryFlagBitsEXT):
+    def __init__(out self, bit: GraphicsPipelineLibraryFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
+    def __or__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
+    def __ror__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: GraphicsPipelineLibraryFlagsEXT):
+    def __ior__(mut self, other: GraphicsPipelineLibraryFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
+    def __and__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
+    def __rand__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: GraphicsPipelineLibraryFlagsEXT):
+    def __iand__(mut self, other: GraphicsPipelineLibraryFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Bool:
+    def __contains__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: GraphicsPipelineLibraryFlagsEXT) -> Bool:
+    def is_subset(self, other: GraphicsPipelineLibraryFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: GraphicsPipelineLibraryFlagsEXT) -> Bool:
+    def is_superset(self, other: GraphicsPipelineLibraryFlagsEXT) -> Bool:
         return self & other == other
 
     comptime VERTEX_INPUT_INTERFACE = Self(value = GraphicsPipelineLibraryFlagBitsEXT.VERTEX_INPUT_INTERFACE.value())
@@ -12867,16 +12867,16 @@ struct GraphicsPipelineLibraryFlagsEXT(TrivialRegisterPassable, Equatable):
 struct GraphicsPipelineLibraryFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> GraphicsPipelineLibraryFlagsEXT:
+    def __or__(self, other: Self) -> GraphicsPipelineLibraryFlagsEXT:
         return GraphicsPipelineLibraryFlagsEXT(value = self._value | other._value)
 
     comptime VERTEX_INPUT_INTERFACE = Self(value = 1 << 0)
@@ -12888,50 +12888,50 @@ struct GraphicsPipelineLibraryFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct ImageCompressionFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ImageCompressionFlagBitsEXT):
+    def __init__(out self, bit: ImageCompressionFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageCompressionFlagsEXT) -> Self:
+    def __or__(self, other: ImageCompressionFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageCompressionFlagsEXT) -> Self:
+    def __ror__(self, other: ImageCompressionFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ImageCompressionFlagsEXT):
+    def __ior__(mut self, other: ImageCompressionFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: ImageCompressionFlagsEXT) -> Self:
+    def __and__(self, other: ImageCompressionFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageCompressionFlagsEXT) -> Self:
+    def __rand__(self, other: ImageCompressionFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ImageCompressionFlagsEXT):
+    def __iand__(mut self, other: ImageCompressionFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: ImageCompressionFlagsEXT) -> Bool:
+    def __contains__(self, other: ImageCompressionFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ImageCompressionFlagsEXT) -> Bool:
+    def is_subset(self, other: ImageCompressionFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageCompressionFlagsEXT) -> Bool:
+    def is_superset(self, other: ImageCompressionFlagsEXT) -> Bool:
         return self & other == other
 
     comptime DEFAULT = Self(value = ImageCompressionFlagBitsEXT.DEFAULT.value())
@@ -12943,16 +12943,16 @@ struct ImageCompressionFlagsEXT(TrivialRegisterPassable, Equatable):
 struct ImageCompressionFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ImageCompressionFlagsEXT:
+    def __or__(self, other: Self) -> ImageCompressionFlagsEXT:
         return ImageCompressionFlagsEXT(value = self._value | other._value)
 
     comptime DEFAULT = Self(value = 0)
@@ -12964,50 +12964,50 @@ struct ImageCompressionFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct ImageCompressionFixedRateFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ImageCompressionFixedRateFlagBitsEXT):
+    def __init__(out self, bit: ImageCompressionFixedRateFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
+    def __or__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
+    def __ror__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ImageCompressionFixedRateFlagsEXT):
+    def __ior__(mut self, other: ImageCompressionFixedRateFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
+    def __and__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
+    def __rand__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ImageCompressionFixedRateFlagsEXT):
+    def __iand__(mut self, other: ImageCompressionFixedRateFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: ImageCompressionFixedRateFlagsEXT) -> Bool:
+    def __contains__(self, other: ImageCompressionFixedRateFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ImageCompressionFixedRateFlagsEXT) -> Bool:
+    def is_subset(self, other: ImageCompressionFixedRateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ImageCompressionFixedRateFlagsEXT) -> Bool:
+    def is_superset(self, other: ImageCompressionFixedRateFlagsEXT) -> Bool:
         return self & other == other
 
     comptime NONE = Self(value = ImageCompressionFixedRateFlagBitsEXT.NONE.value())
@@ -13040,16 +13040,16 @@ struct ImageCompressionFixedRateFlagsEXT(TrivialRegisterPassable, Equatable):
 struct ImageCompressionFixedRateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ImageCompressionFixedRateFlagsEXT:
+    def __or__(self, other: Self) -> ImageCompressionFixedRateFlagsEXT:
         return ImageCompressionFixedRateFlagsEXT(value = self._value | other._value)
 
     comptime NONE = Self(value = 0)
@@ -13082,50 +13082,50 @@ struct ImageCompressionFixedRateFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct ExportMetalObjectTypeFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ExportMetalObjectTypeFlagBitsEXT):
+    def __init__(out self, bit: ExportMetalObjectTypeFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
+    def __or__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
+    def __ror__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ExportMetalObjectTypeFlagsEXT):
+    def __ior__(mut self, other: ExportMetalObjectTypeFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
+    def __and__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
+    def __rand__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ExportMetalObjectTypeFlagsEXT):
+    def __iand__(mut self, other: ExportMetalObjectTypeFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: ExportMetalObjectTypeFlagsEXT) -> Bool:
+    def __contains__(self, other: ExportMetalObjectTypeFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ExportMetalObjectTypeFlagsEXT) -> Bool:
+    def is_subset(self, other: ExportMetalObjectTypeFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ExportMetalObjectTypeFlagsEXT) -> Bool:
+    def is_superset(self, other: ExportMetalObjectTypeFlagsEXT) -> Bool:
         return self & other == other
 
     comptime METAL_DEVICE = Self(value = ExportMetalObjectTypeFlagBitsEXT.METAL_DEVICE.value())
@@ -13139,16 +13139,16 @@ struct ExportMetalObjectTypeFlagsEXT(TrivialRegisterPassable, Equatable):
 struct ExportMetalObjectTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ExportMetalObjectTypeFlagsEXT:
+    def __or__(self, other: Self) -> ExportMetalObjectTypeFlagsEXT:
         return ExportMetalObjectTypeFlagsEXT(value = self._value | other._value)
 
     comptime METAL_DEVICE = Self(value = 1 << 0)
@@ -13162,50 +13162,50 @@ struct ExportMetalObjectTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct RenderingAttachmentFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: RenderingAttachmentFlagBitsKHR):
+    def __init__(out self, bit: RenderingAttachmentFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: RenderingAttachmentFlagsKHR) -> Self:
+    def __or__(self, other: RenderingAttachmentFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: RenderingAttachmentFlagsKHR) -> Self:
+    def __ror__(self, other: RenderingAttachmentFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: RenderingAttachmentFlagsKHR):
+    def __ior__(mut self, other: RenderingAttachmentFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: RenderingAttachmentFlagsKHR) -> Self:
+    def __and__(self, other: RenderingAttachmentFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: RenderingAttachmentFlagsKHR) -> Self:
+    def __rand__(self, other: RenderingAttachmentFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: RenderingAttachmentFlagsKHR):
+    def __iand__(mut self, other: RenderingAttachmentFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: RenderingAttachmentFlagsKHR) -> Bool:
+    def __contains__(self, other: RenderingAttachmentFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: RenderingAttachmentFlagsKHR) -> Bool:
+    def is_subset(self, other: RenderingAttachmentFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: RenderingAttachmentFlagsKHR) -> Bool:
+    def is_superset(self, other: RenderingAttachmentFlagsKHR) -> Bool:
         return self & other == other
 
     comptime INPUT_ATTACHMENT_FEEDBACK = Self(value = RenderingAttachmentFlagBitsKHR.INPUT_ATTACHMENT_FEEDBACK.value())
@@ -13216,16 +13216,16 @@ struct RenderingAttachmentFlagsKHR(TrivialRegisterPassable, Equatable):
 struct RenderingAttachmentFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> RenderingAttachmentFlagsKHR:
+    def __or__(self, other: Self) -> RenderingAttachmentFlagsKHR:
         return RenderingAttachmentFlagsKHR(value = self._value | other._value)
 
     comptime INPUT_ATTACHMENT_FEEDBACK = Self(value = 1 << 0)
@@ -13236,50 +13236,50 @@ struct RenderingAttachmentFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct ResolveImageFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ResolveImageFlagBitsKHR):
+    def __init__(out self, bit: ResolveImageFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ResolveImageFlagsKHR) -> Self:
+    def __or__(self, other: ResolveImageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ResolveImageFlagsKHR) -> Self:
+    def __ror__(self, other: ResolveImageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ResolveImageFlagsKHR):
+    def __ior__(mut self, other: ResolveImageFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: ResolveImageFlagsKHR) -> Self:
+    def __and__(self, other: ResolveImageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ResolveImageFlagsKHR) -> Self:
+    def __rand__(self, other: ResolveImageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ResolveImageFlagsKHR):
+    def __iand__(mut self, other: ResolveImageFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: ResolveImageFlagsKHR) -> Bool:
+    def __contains__(self, other: ResolveImageFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ResolveImageFlagsKHR) -> Bool:
+    def is_subset(self, other: ResolveImageFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ResolveImageFlagsKHR) -> Bool:
+    def is_superset(self, other: ResolveImageFlagsKHR) -> Bool:
         return self & other == other
 
     comptime SKIP_TRANSFER_FUNCTION = Self(value = ResolveImageFlagBitsKHR.SKIP_TRANSFER_FUNCTION.value())
@@ -13289,16 +13289,16 @@ struct ResolveImageFlagsKHR(TrivialRegisterPassable, Equatable):
 struct ResolveImageFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ResolveImageFlagsKHR:
+    def __or__(self, other: Self) -> ResolveImageFlagsKHR:
         return ResolveImageFlagsKHR(value = self._value | other._value)
 
     comptime SKIP_TRANSFER_FUNCTION = Self(value = 1 << 0)
@@ -13308,50 +13308,50 @@ struct ResolveImageFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct DeviceAddressBindingFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: DeviceAddressBindingFlagBitsEXT):
+    def __init__(out self, bit: DeviceAddressBindingFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
+    def __or__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
+    def __ror__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: DeviceAddressBindingFlagsEXT):
+    def __ior__(mut self, other: DeviceAddressBindingFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
+    def __and__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
+    def __rand__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: DeviceAddressBindingFlagsEXT):
+    def __iand__(mut self, other: DeviceAddressBindingFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: DeviceAddressBindingFlagsEXT) -> Bool:
+    def __contains__(self, other: DeviceAddressBindingFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: DeviceAddressBindingFlagsEXT) -> Bool:
+    def is_subset(self, other: DeviceAddressBindingFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: DeviceAddressBindingFlagsEXT) -> Bool:
+    def is_superset(self, other: DeviceAddressBindingFlagsEXT) -> Bool:
         return self & other == other
 
     comptime INTERNAL_OBJECT = Self(value = DeviceAddressBindingFlagBitsEXT.INTERNAL_OBJECT.value())
@@ -13360,16 +13360,16 @@ struct DeviceAddressBindingFlagsEXT(TrivialRegisterPassable, Equatable):
 struct DeviceAddressBindingFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> DeviceAddressBindingFlagsEXT:
+    def __or__(self, other: Self) -> DeviceAddressBindingFlagsEXT:
         return DeviceAddressBindingFlagsEXT(value = self._value | other._value)
 
     comptime INTERNAL_OBJECT = Self(value = 1 << 0)
@@ -13378,50 +13378,50 @@ struct DeviceAddressBindingFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct OpticalFlowGridSizeFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: OpticalFlowGridSizeFlagBitsNV):
+    def __init__(out self, bit: OpticalFlowGridSizeFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
+    def __or__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
+    def __ror__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: OpticalFlowGridSizeFlagsNV):
+    def __ior__(mut self, other: OpticalFlowGridSizeFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
+    def __and__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
+    def __rand__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: OpticalFlowGridSizeFlagsNV):
+    def __iand__(mut self, other: OpticalFlowGridSizeFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: OpticalFlowGridSizeFlagsNV) -> Bool:
+    def __contains__(self, other: OpticalFlowGridSizeFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: OpticalFlowGridSizeFlagsNV) -> Bool:
+    def is_subset(self, other: OpticalFlowGridSizeFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: OpticalFlowGridSizeFlagsNV) -> Bool:
+    def is_superset(self, other: OpticalFlowGridSizeFlagsNV) -> Bool:
         return self & other == other
 
     comptime UNKNOWN = Self(value = OpticalFlowGridSizeFlagBitsNV.UNKNOWN.value())
@@ -13434,16 +13434,16 @@ struct OpticalFlowGridSizeFlagsNV(TrivialRegisterPassable, Equatable):
 struct OpticalFlowGridSizeFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> OpticalFlowGridSizeFlagsNV:
+    def __or__(self, other: Self) -> OpticalFlowGridSizeFlagsNV:
         return OpticalFlowGridSizeFlagsNV(value = self._value | other._value)
 
     comptime UNKNOWN = Self(value = 0)
@@ -13456,50 +13456,50 @@ struct OpticalFlowGridSizeFlagBitsNV(TrivialRegisterPassable, Equatable):
 struct OpticalFlowUsageFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: OpticalFlowUsageFlagBitsNV):
+    def __init__(out self, bit: OpticalFlowUsageFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: OpticalFlowUsageFlagsNV) -> Self:
+    def __or__(self, other: OpticalFlowUsageFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: OpticalFlowUsageFlagsNV) -> Self:
+    def __ror__(self, other: OpticalFlowUsageFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: OpticalFlowUsageFlagsNV):
+    def __ior__(mut self, other: OpticalFlowUsageFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: OpticalFlowUsageFlagsNV) -> Self:
+    def __and__(self, other: OpticalFlowUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: OpticalFlowUsageFlagsNV) -> Self:
+    def __rand__(self, other: OpticalFlowUsageFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: OpticalFlowUsageFlagsNV):
+    def __iand__(mut self, other: OpticalFlowUsageFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: OpticalFlowUsageFlagsNV) -> Bool:
+    def __contains__(self, other: OpticalFlowUsageFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: OpticalFlowUsageFlagsNV) -> Bool:
+    def is_subset(self, other: OpticalFlowUsageFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: OpticalFlowUsageFlagsNV) -> Bool:
+    def is_superset(self, other: OpticalFlowUsageFlagsNV) -> Bool:
         return self & other == other
 
     comptime UNKNOWN = Self(value = OpticalFlowUsageFlagBitsNV.UNKNOWN.value())
@@ -13513,16 +13513,16 @@ struct OpticalFlowUsageFlagsNV(TrivialRegisterPassable, Equatable):
 struct OpticalFlowUsageFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> OpticalFlowUsageFlagsNV:
+    def __or__(self, other: Self) -> OpticalFlowUsageFlagsNV:
         return OpticalFlowUsageFlagsNV(value = self._value | other._value)
 
     comptime UNKNOWN = Self(value = 0)
@@ -13536,50 +13536,50 @@ struct OpticalFlowUsageFlagBitsNV(TrivialRegisterPassable, Equatable):
 struct OpticalFlowSessionCreateFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: OpticalFlowSessionCreateFlagBitsNV):
+    def __init__(out self, bit: OpticalFlowSessionCreateFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
+    def __or__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
+    def __ror__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: OpticalFlowSessionCreateFlagsNV):
+    def __ior__(mut self, other: OpticalFlowSessionCreateFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
+    def __and__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
+    def __rand__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: OpticalFlowSessionCreateFlagsNV):
+    def __iand__(mut self, other: OpticalFlowSessionCreateFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: OpticalFlowSessionCreateFlagsNV) -> Bool:
+    def __contains__(self, other: OpticalFlowSessionCreateFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: OpticalFlowSessionCreateFlagsNV) -> Bool:
+    def is_subset(self, other: OpticalFlowSessionCreateFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: OpticalFlowSessionCreateFlagsNV) -> Bool:
+    def is_superset(self, other: OpticalFlowSessionCreateFlagsNV) -> Bool:
         return self & other == other
 
     comptime ENABLE_HINT = Self(value = OpticalFlowSessionCreateFlagBitsNV.ENABLE_HINT.value())
@@ -13592,16 +13592,16 @@ struct OpticalFlowSessionCreateFlagsNV(TrivialRegisterPassable, Equatable):
 struct OpticalFlowSessionCreateFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> OpticalFlowSessionCreateFlagsNV:
+    def __or__(self, other: Self) -> OpticalFlowSessionCreateFlagsNV:
         return OpticalFlowSessionCreateFlagsNV(value = self._value | other._value)
 
     comptime ENABLE_HINT = Self(value = 1 << 0)
@@ -13614,50 +13614,50 @@ struct OpticalFlowSessionCreateFlagBitsNV(TrivialRegisterPassable, Equatable):
 struct OpticalFlowExecuteFlagsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: OpticalFlowExecuteFlagBitsNV):
+    def __init__(out self, bit: OpticalFlowExecuteFlagBitsNV):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
+    def __or__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
+    def __ror__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: OpticalFlowExecuteFlagsNV):
+    def __ior__(mut self, other: OpticalFlowExecuteFlagsNV):
         self._value |= other.value()
 
-    fn __and__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
+    def __and__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
+    def __rand__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: OpticalFlowExecuteFlagsNV):
+    def __iand__(mut self, other: OpticalFlowExecuteFlagsNV):
         self._value &= other.value()
 
-    fn __contains__(self, other: OpticalFlowExecuteFlagsNV) -> Bool:
+    def __contains__(self, other: OpticalFlowExecuteFlagsNV) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: OpticalFlowExecuteFlagsNV) -> Bool:
+    def is_subset(self, other: OpticalFlowExecuteFlagsNV) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: OpticalFlowExecuteFlagsNV) -> Bool:
+    def is_superset(self, other: OpticalFlowExecuteFlagsNV) -> Bool:
         return self & other == other
 
     comptime DISABLE_TEMPORAL_HINTS = Self(value = OpticalFlowExecuteFlagBitsNV.DISABLE_TEMPORAL_HINTS.value())
@@ -13666,16 +13666,16 @@ struct OpticalFlowExecuteFlagsNV(TrivialRegisterPassable, Equatable):
 struct OpticalFlowExecuteFlagBitsNV(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> OpticalFlowExecuteFlagsNV:
+    def __or__(self, other: Self) -> OpticalFlowExecuteFlagsNV:
         return OpticalFlowExecuteFlagsNV(value = self._value | other._value)
 
     comptime DISABLE_TEMPORAL_HINTS = Self(value = 1 << 0)
@@ -13684,50 +13684,50 @@ struct OpticalFlowExecuteFlagBitsNV(TrivialRegisterPassable, Equatable):
 struct FrameBoundaryFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: FrameBoundaryFlagBitsEXT):
+    def __init__(out self, bit: FrameBoundaryFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: FrameBoundaryFlagsEXT) -> Self:
+    def __or__(self, other: FrameBoundaryFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: FrameBoundaryFlagsEXT) -> Self:
+    def __ror__(self, other: FrameBoundaryFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: FrameBoundaryFlagsEXT):
+    def __ior__(mut self, other: FrameBoundaryFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: FrameBoundaryFlagsEXT) -> Self:
+    def __and__(self, other: FrameBoundaryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: FrameBoundaryFlagsEXT) -> Self:
+    def __rand__(self, other: FrameBoundaryFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: FrameBoundaryFlagsEXT):
+    def __iand__(mut self, other: FrameBoundaryFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: FrameBoundaryFlagsEXT) -> Bool:
+    def __contains__(self, other: FrameBoundaryFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: FrameBoundaryFlagsEXT) -> Bool:
+    def is_subset(self, other: FrameBoundaryFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: FrameBoundaryFlagsEXT) -> Bool:
+    def is_superset(self, other: FrameBoundaryFlagsEXT) -> Bool:
         return self & other == other
 
     comptime FRAME_END = Self(value = FrameBoundaryFlagBitsEXT.FRAME_END.value())
@@ -13736,16 +13736,16 @@ struct FrameBoundaryFlagsEXT(TrivialRegisterPassable, Equatable):
 struct FrameBoundaryFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> FrameBoundaryFlagsEXT:
+    def __or__(self, other: Self) -> FrameBoundaryFlagsEXT:
         return FrameBoundaryFlagsEXT(value = self._value | other._value)
 
     comptime FRAME_END = Self(value = 1 << 0)
@@ -13754,50 +13754,50 @@ struct FrameBoundaryFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct PresentScalingFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PresentScalingFlagBitsKHR):
+    def __init__(out self, bit: PresentScalingFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PresentScalingFlagsKHR) -> Self:
+    def __or__(self, other: PresentScalingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PresentScalingFlagsKHR) -> Self:
+    def __ror__(self, other: PresentScalingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PresentScalingFlagsKHR):
+    def __ior__(mut self, other: PresentScalingFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: PresentScalingFlagsKHR) -> Self:
+    def __and__(self, other: PresentScalingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PresentScalingFlagsKHR) -> Self:
+    def __rand__(self, other: PresentScalingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PresentScalingFlagsKHR):
+    def __iand__(mut self, other: PresentScalingFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: PresentScalingFlagsKHR) -> Bool:
+    def __contains__(self, other: PresentScalingFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PresentScalingFlagsKHR) -> Bool:
+    def is_subset(self, other: PresentScalingFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PresentScalingFlagsKHR) -> Bool:
+    def is_superset(self, other: PresentScalingFlagsKHR) -> Bool:
         return self & other == other
 
     comptime ONE_TO_ONE = Self(value = PresentScalingFlagBitsKHR.ONE_TO_ONE.value())
@@ -13808,16 +13808,16 @@ struct PresentScalingFlagsKHR(TrivialRegisterPassable, Equatable):
 struct PresentScalingFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PresentScalingFlagsKHR:
+    def __or__(self, other: Self) -> PresentScalingFlagsKHR:
         return PresentScalingFlagsKHR(value = self._value | other._value)
 
     comptime ONE_TO_ONE = Self(value = 1 << 0)
@@ -13828,50 +13828,50 @@ struct PresentScalingFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct PresentGravityFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PresentGravityFlagBitsKHR):
+    def __init__(out self, bit: PresentGravityFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PresentGravityFlagsKHR) -> Self:
+    def __or__(self, other: PresentGravityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PresentGravityFlagsKHR) -> Self:
+    def __ror__(self, other: PresentGravityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PresentGravityFlagsKHR):
+    def __ior__(mut self, other: PresentGravityFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: PresentGravityFlagsKHR) -> Self:
+    def __and__(self, other: PresentGravityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PresentGravityFlagsKHR) -> Self:
+    def __rand__(self, other: PresentGravityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PresentGravityFlagsKHR):
+    def __iand__(mut self, other: PresentGravityFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: PresentGravityFlagsKHR) -> Bool:
+    def __contains__(self, other: PresentGravityFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PresentGravityFlagsKHR) -> Bool:
+    def is_subset(self, other: PresentGravityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PresentGravityFlagsKHR) -> Bool:
+    def is_superset(self, other: PresentGravityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime MIN = Self(value = PresentGravityFlagBitsKHR.MIN.value())
@@ -13882,16 +13882,16 @@ struct PresentGravityFlagsKHR(TrivialRegisterPassable, Equatable):
 struct PresentGravityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PresentGravityFlagsKHR:
+    def __or__(self, other: Self) -> PresentGravityFlagsKHR:
         return PresentGravityFlagsKHR(value = self._value | other._value)
 
     comptime MIN = Self(value = 1 << 0)
@@ -13902,50 +13902,50 @@ struct PresentGravityFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct ShaderCreateFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: ShaderCreateFlagBitsEXT):
+    def __init__(out self, bit: ShaderCreateFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: ShaderCreateFlagsEXT) -> Self:
+    def __or__(self, other: ShaderCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: ShaderCreateFlagsEXT) -> Self:
+    def __ror__(self, other: ShaderCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: ShaderCreateFlagsEXT):
+    def __ior__(mut self, other: ShaderCreateFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: ShaderCreateFlagsEXT) -> Self:
+    def __and__(self, other: ShaderCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: ShaderCreateFlagsEXT) -> Self:
+    def __rand__(self, other: ShaderCreateFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: ShaderCreateFlagsEXT):
+    def __iand__(mut self, other: ShaderCreateFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: ShaderCreateFlagsEXT) -> Bool:
+    def __contains__(self, other: ShaderCreateFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: ShaderCreateFlagsEXT) -> Bool:
+    def is_subset(self, other: ShaderCreateFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: ShaderCreateFlagsEXT) -> Bool:
+    def is_superset(self, other: ShaderCreateFlagsEXT) -> Bool:
         return self & other == other
 
     comptime LINK_STAGE = Self(value = ShaderCreateFlagBitsEXT.LINK_STAGE.value())
@@ -13969,16 +13969,16 @@ struct ShaderCreateFlagsEXT(TrivialRegisterPassable, Equatable):
 struct ShaderCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> ShaderCreateFlagsEXT:
+    def __or__(self, other: Self) -> ShaderCreateFlagsEXT:
         return ShaderCreateFlagsEXT(value = self._value | other._value)
 
     comptime LINK_STAGE = Self(value = 1 << 0)
@@ -14002,50 +14002,50 @@ struct ShaderCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct TileShadingRenderPassFlagsQCOM(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: TileShadingRenderPassFlagBitsQCOM):
+    def __init__(out self, bit: TileShadingRenderPassFlagBitsQCOM):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
+    def __or__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
+    def __ror__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: TileShadingRenderPassFlagsQCOM):
+    def __ior__(mut self, other: TileShadingRenderPassFlagsQCOM):
         self._value |= other.value()
 
-    fn __and__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
+    def __and__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
+    def __rand__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: TileShadingRenderPassFlagsQCOM):
+    def __iand__(mut self, other: TileShadingRenderPassFlagsQCOM):
         self._value &= other.value()
 
-    fn __contains__(self, other: TileShadingRenderPassFlagsQCOM) -> Bool:
+    def __contains__(self, other: TileShadingRenderPassFlagsQCOM) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: TileShadingRenderPassFlagsQCOM) -> Bool:
+    def is_subset(self, other: TileShadingRenderPassFlagsQCOM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: TileShadingRenderPassFlagsQCOM) -> Bool:
+    def is_superset(self, other: TileShadingRenderPassFlagsQCOM) -> Bool:
         return self & other == other
 
     comptime ENABLE = Self(value = TileShadingRenderPassFlagBitsQCOM.ENABLE.value())
@@ -14055,16 +14055,16 @@ struct TileShadingRenderPassFlagsQCOM(TrivialRegisterPassable, Equatable):
 struct TileShadingRenderPassFlagBitsQCOM(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> TileShadingRenderPassFlagsQCOM:
+    def __or__(self, other: Self) -> TileShadingRenderPassFlagsQCOM:
         return TileShadingRenderPassFlagsQCOM(value = self._value | other._value)
 
     comptime ENABLE = Self(value = 1 << 0)
@@ -14074,50 +14074,50 @@ struct TileShadingRenderPassFlagBitsQCOM(TrivialRegisterPassable, Equatable):
 struct PhysicalDeviceSchedulingControlsFlagsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PhysicalDeviceSchedulingControlsFlagBitsARM):
+    def __init__(out self, bit: PhysicalDeviceSchedulingControlsFlagBitsARM):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
+    def __or__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
+    def __ror__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PhysicalDeviceSchedulingControlsFlagsARM):
+    def __ior__(mut self, other: PhysicalDeviceSchedulingControlsFlagsARM):
         self._value |= other.value()
 
-    fn __and__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
+    def __and__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
+    def __rand__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PhysicalDeviceSchedulingControlsFlagsARM):
+    def __iand__(mut self, other: PhysicalDeviceSchedulingControlsFlagsARM):
         self._value &= other.value()
 
-    fn __contains__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Bool:
+    def __contains__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Bool:
+    def is_subset(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Bool:
+    def is_superset(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Bool:
         return self & other == other
 
     comptime SHADER_CORE_COUNT = Self(value = PhysicalDeviceSchedulingControlsFlagBitsARM.SHADER_CORE_COUNT.value())
@@ -14126,16 +14126,16 @@ struct PhysicalDeviceSchedulingControlsFlagsARM(TrivialRegisterPassable, Equatab
 struct PhysicalDeviceSchedulingControlsFlagBitsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PhysicalDeviceSchedulingControlsFlagsARM:
+    def __or__(self, other: Self) -> PhysicalDeviceSchedulingControlsFlagsARM:
         return PhysicalDeviceSchedulingControlsFlagsARM(value = self._value | other._value)
 
     comptime SHADER_CORE_COUNT = Self(value = 1 << 0)
@@ -14144,116 +14144,116 @@ struct PhysicalDeviceSchedulingControlsFlagBitsARM(TrivialRegisterPassable, Equa
 struct SurfaceCreateFlagsOHOS(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SurfaceCreateFlagBitsOHOS):
+    def __init__(out self, bit: SurfaceCreateFlagBitsOHOS):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SurfaceCreateFlagsOHOS) -> Self:
+    def __or__(self, other: SurfaceCreateFlagsOHOS) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SurfaceCreateFlagsOHOS) -> Self:
+    def __ror__(self, other: SurfaceCreateFlagsOHOS) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SurfaceCreateFlagsOHOS):
+    def __ior__(mut self, other: SurfaceCreateFlagsOHOS):
         self._value |= other.value()
 
-    fn __and__(self, other: SurfaceCreateFlagsOHOS) -> Self:
+    def __and__(self, other: SurfaceCreateFlagsOHOS) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SurfaceCreateFlagsOHOS) -> Self:
+    def __rand__(self, other: SurfaceCreateFlagsOHOS) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SurfaceCreateFlagsOHOS):
+    def __iand__(mut self, other: SurfaceCreateFlagsOHOS):
         self._value &= other.value()
 
-    fn __contains__(self, other: SurfaceCreateFlagsOHOS) -> Bool:
+    def __contains__(self, other: SurfaceCreateFlagsOHOS) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SurfaceCreateFlagsOHOS) -> Bool:
+    def is_subset(self, other: SurfaceCreateFlagsOHOS) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SurfaceCreateFlagsOHOS) -> Bool:
+    def is_superset(self, other: SurfaceCreateFlagsOHOS) -> Bool:
         return self & other == other
 
 
 struct SurfaceCreateFlagBitsOHOS(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SurfaceCreateFlagsOHOS:
+    def __or__(self, other: Self) -> SurfaceCreateFlagsOHOS:
         return SurfaceCreateFlagsOHOS(value = self._value | other._value)
 
 
 struct PresentStageFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PresentStageFlagBitsEXT):
+    def __init__(out self, bit: PresentStageFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PresentStageFlagsEXT) -> Self:
+    def __or__(self, other: PresentStageFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PresentStageFlagsEXT) -> Self:
+    def __ror__(self, other: PresentStageFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PresentStageFlagsEXT):
+    def __ior__(mut self, other: PresentStageFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: PresentStageFlagsEXT) -> Self:
+    def __and__(self, other: PresentStageFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PresentStageFlagsEXT) -> Self:
+    def __rand__(self, other: PresentStageFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PresentStageFlagsEXT):
+    def __iand__(mut self, other: PresentStageFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: PresentStageFlagsEXT) -> Bool:
+    def __contains__(self, other: PresentStageFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PresentStageFlagsEXT) -> Bool:
+    def is_subset(self, other: PresentStageFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PresentStageFlagsEXT) -> Bool:
+    def is_superset(self, other: PresentStageFlagsEXT) -> Bool:
         return self & other == other
 
     comptime QUEUE_OPERATIONS_END = Self(value = PresentStageFlagBitsEXT.QUEUE_OPERATIONS_END.value())
@@ -14265,16 +14265,16 @@ struct PresentStageFlagsEXT(TrivialRegisterPassable, Equatable):
 struct PresentStageFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PresentStageFlagsEXT:
+    def __or__(self, other: Self) -> PresentStageFlagsEXT:
         return PresentStageFlagsEXT(value = self._value | other._value)
 
     comptime QUEUE_OPERATIONS_END = Self(value = 1 << 0)
@@ -14286,50 +14286,50 @@ struct PresentStageFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct PastPresentationTimingFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PastPresentationTimingFlagBitsEXT):
+    def __init__(out self, bit: PastPresentationTimingFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PastPresentationTimingFlagsEXT) -> Self:
+    def __or__(self, other: PastPresentationTimingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PastPresentationTimingFlagsEXT) -> Self:
+    def __ror__(self, other: PastPresentationTimingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PastPresentationTimingFlagsEXT):
+    def __ior__(mut self, other: PastPresentationTimingFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: PastPresentationTimingFlagsEXT) -> Self:
+    def __and__(self, other: PastPresentationTimingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PastPresentationTimingFlagsEXT) -> Self:
+    def __rand__(self, other: PastPresentationTimingFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PastPresentationTimingFlagsEXT):
+    def __iand__(mut self, other: PastPresentationTimingFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: PastPresentationTimingFlagsEXT) -> Bool:
+    def __contains__(self, other: PastPresentationTimingFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PastPresentationTimingFlagsEXT) -> Bool:
+    def is_subset(self, other: PastPresentationTimingFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PastPresentationTimingFlagsEXT) -> Bool:
+    def is_superset(self, other: PastPresentationTimingFlagsEXT) -> Bool:
         return self & other == other
 
     comptime ALLOW_PARTIAL_RESULTS = Self(value = PastPresentationTimingFlagBitsEXT.ALLOW_PARTIAL_RESULTS.value())
@@ -14339,16 +14339,16 @@ struct PastPresentationTimingFlagsEXT(TrivialRegisterPassable, Equatable):
 struct PastPresentationTimingFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PastPresentationTimingFlagsEXT:
+    def __or__(self, other: Self) -> PastPresentationTimingFlagsEXT:
         return PastPresentationTimingFlagsEXT(value = self._value | other._value)
 
     comptime ALLOW_PARTIAL_RESULTS = Self(value = 1 << 0)
@@ -14358,50 +14358,50 @@ struct PastPresentationTimingFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct PresentTimingInfoFlagsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PresentTimingInfoFlagBitsEXT):
+    def __init__(out self, bit: PresentTimingInfoFlagBitsEXT):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PresentTimingInfoFlagsEXT) -> Self:
+    def __or__(self, other: PresentTimingInfoFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PresentTimingInfoFlagsEXT) -> Self:
+    def __ror__(self, other: PresentTimingInfoFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PresentTimingInfoFlagsEXT):
+    def __ior__(mut self, other: PresentTimingInfoFlagsEXT):
         self._value |= other.value()
 
-    fn __and__(self, other: PresentTimingInfoFlagsEXT) -> Self:
+    def __and__(self, other: PresentTimingInfoFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PresentTimingInfoFlagsEXT) -> Self:
+    def __rand__(self, other: PresentTimingInfoFlagsEXT) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PresentTimingInfoFlagsEXT):
+    def __iand__(mut self, other: PresentTimingInfoFlagsEXT):
         self._value &= other.value()
 
-    fn __contains__(self, other: PresentTimingInfoFlagsEXT) -> Bool:
+    def __contains__(self, other: PresentTimingInfoFlagsEXT) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PresentTimingInfoFlagsEXT) -> Bool:
+    def is_subset(self, other: PresentTimingInfoFlagsEXT) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PresentTimingInfoFlagsEXT) -> Bool:
+    def is_superset(self, other: PresentTimingInfoFlagsEXT) -> Bool:
         return self & other == other
 
     comptime PRESENT_AT_RELATIVE_TIME = Self(value = PresentTimingInfoFlagBitsEXT.PRESENT_AT_RELATIVE_TIME.value())
@@ -14411,16 +14411,16 @@ struct PresentTimingInfoFlagsEXT(TrivialRegisterPassable, Equatable):
 struct PresentTimingInfoFlagBitsEXT(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PresentTimingInfoFlagsEXT:
+    def __or__(self, other: Self) -> PresentTimingInfoFlagsEXT:
         return PresentTimingInfoFlagsEXT(value = self._value | other._value)
 
     comptime PRESENT_AT_RELATIVE_TIME = Self(value = 1 << 0)
@@ -14430,50 +14430,50 @@ struct PresentTimingInfoFlagBitsEXT(TrivialRegisterPassable, Equatable):
 struct SwapchainImageUsageFlagsOHOS(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: SwapchainImageUsageFlagBitsOHOS):
+    def __init__(out self, bit: SwapchainImageUsageFlagBitsOHOS):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
+    def __or__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
+    def __ror__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: SwapchainImageUsageFlagsOHOS):
+    def __ior__(mut self, other: SwapchainImageUsageFlagsOHOS):
         self._value |= other.value()
 
-    fn __and__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
+    def __and__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
+    def __rand__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: SwapchainImageUsageFlagsOHOS):
+    def __iand__(mut self, other: SwapchainImageUsageFlagsOHOS):
         self._value &= other.value()
 
-    fn __contains__(self, other: SwapchainImageUsageFlagsOHOS) -> Bool:
+    def __contains__(self, other: SwapchainImageUsageFlagsOHOS) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: SwapchainImageUsageFlagsOHOS) -> Bool:
+    def is_subset(self, other: SwapchainImageUsageFlagsOHOS) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: SwapchainImageUsageFlagsOHOS) -> Bool:
+    def is_superset(self, other: SwapchainImageUsageFlagsOHOS) -> Bool:
         return self & other == other
 
     comptime SHARED = Self(value = SwapchainImageUsageFlagBitsOHOS.SHARED.value())
@@ -14482,16 +14482,16 @@ struct SwapchainImageUsageFlagsOHOS(TrivialRegisterPassable, Equatable):
 struct SwapchainImageUsageFlagBitsOHOS(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> SwapchainImageUsageFlagsOHOS:
+    def __or__(self, other: Self) -> SwapchainImageUsageFlagsOHOS:
         return SwapchainImageUsageFlagsOHOS(value = self._value | other._value)
 
     comptime SHARED = Self(value = 1 << 0)
@@ -14500,116 +14500,116 @@ struct SwapchainImageUsageFlagBitsOHOS(TrivialRegisterPassable, Equatable):
 struct PerformanceCounterDescriptionFlagsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: PerformanceCounterDescriptionFlagBitsARM):
+    def __init__(out self, bit: PerformanceCounterDescriptionFlagBitsARM):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
+    def __or__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
+    def __ror__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: PerformanceCounterDescriptionFlagsARM):
+    def __ior__(mut self, other: PerformanceCounterDescriptionFlagsARM):
         self._value |= other.value()
 
-    fn __and__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
+    def __and__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
+    def __rand__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: PerformanceCounterDescriptionFlagsARM):
+    def __iand__(mut self, other: PerformanceCounterDescriptionFlagsARM):
         self._value &= other.value()
 
-    fn __contains__(self, other: PerformanceCounterDescriptionFlagsARM) -> Bool:
+    def __contains__(self, other: PerformanceCounterDescriptionFlagsARM) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: PerformanceCounterDescriptionFlagsARM) -> Bool:
+    def is_subset(self, other: PerformanceCounterDescriptionFlagsARM) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: PerformanceCounterDescriptionFlagsARM) -> Bool:
+    def is_superset(self, other: PerformanceCounterDescriptionFlagsARM) -> Bool:
         return self & other == other
 
 
 struct PerformanceCounterDescriptionFlagBitsARM(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> PerformanceCounterDescriptionFlagsARM:
+    def __or__(self, other: Self) -> PerformanceCounterDescriptionFlagsARM:
         return PerformanceCounterDescriptionFlagsARM(value = self._value | other._value)
 
 
 struct VideoCodecOperationFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoCodecOperationFlagBitsKHR):
+    def __init__(out self, bit: VideoCodecOperationFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoCodecOperationFlagsKHR) -> Self:
+    def __or__(self, other: VideoCodecOperationFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoCodecOperationFlagsKHR) -> Self:
+    def __ror__(self, other: VideoCodecOperationFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoCodecOperationFlagsKHR):
+    def __ior__(mut self, other: VideoCodecOperationFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoCodecOperationFlagsKHR) -> Self:
+    def __and__(self, other: VideoCodecOperationFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoCodecOperationFlagsKHR) -> Self:
+    def __rand__(self, other: VideoCodecOperationFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoCodecOperationFlagsKHR):
+    def __iand__(mut self, other: VideoCodecOperationFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoCodecOperationFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoCodecOperationFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoCodecOperationFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoCodecOperationFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoCodecOperationFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoCodecOperationFlagsKHR) -> Bool:
         return self & other == other
 
     comptime NONE = Self(value = VideoCodecOperationFlagBitsKHR.NONE.value())
@@ -14625,16 +14625,16 @@ struct VideoCodecOperationFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoCodecOperationFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoCodecOperationFlagsKHR:
+    def __or__(self, other: Self) -> VideoCodecOperationFlagsKHR:
         return VideoCodecOperationFlagsKHR(value = self._value | other._value)
 
     comptime NONE = Self(value = 0)
@@ -14650,50 +14650,50 @@ struct VideoCodecOperationFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoCapabilityFlagBitsKHR):
+    def __init__(out self, bit: VideoCapabilityFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoCapabilityFlagsKHR) -> Self:
+    def __or__(self, other: VideoCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoCapabilityFlagsKHR) -> Self:
+    def __ror__(self, other: VideoCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoCapabilityFlagsKHR):
+    def __ior__(mut self, other: VideoCapabilityFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoCapabilityFlagsKHR) -> Self:
+    def __and__(self, other: VideoCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoCapabilityFlagsKHR) -> Self:
+    def __rand__(self, other: VideoCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoCapabilityFlagsKHR):
+    def __iand__(mut self, other: VideoCapabilityFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoCapabilityFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoCapabilityFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoCapabilityFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoCapabilityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoCapabilityFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoCapabilityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime PROTECTED_CONTENT = Self(value = VideoCapabilityFlagBitsKHR.PROTECTED_CONTENT.value())
@@ -14703,16 +14703,16 @@ struct VideoCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoCapabilityFlagsKHR:
+    def __or__(self, other: Self) -> VideoCapabilityFlagsKHR:
         return VideoCapabilityFlagsKHR(value = self._value | other._value)
 
     comptime PROTECTED_CONTENT = Self(value = 1 << 0)
@@ -14722,50 +14722,50 @@ struct VideoCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoSessionCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoSessionCreateFlagBitsKHR):
+    def __init__(out self, bit: VideoSessionCreateFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoSessionCreateFlagsKHR) -> Self:
+    def __or__(self, other: VideoSessionCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoSessionCreateFlagsKHR) -> Self:
+    def __ror__(self, other: VideoSessionCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoSessionCreateFlagsKHR):
+    def __ior__(mut self, other: VideoSessionCreateFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoSessionCreateFlagsKHR) -> Self:
+    def __and__(self, other: VideoSessionCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoSessionCreateFlagsKHR) -> Self:
+    def __rand__(self, other: VideoSessionCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoSessionCreateFlagsKHR):
+    def __iand__(mut self, other: VideoSessionCreateFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoSessionCreateFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoSessionCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoSessionCreateFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoSessionCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoSessionCreateFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoSessionCreateFlagsKHR) -> Bool:
         return self & other == other
 
     comptime PROTECTED_CONTENT = Self(value = VideoSessionCreateFlagBitsKHR.PROTECTED_CONTENT.value())
@@ -14779,16 +14779,16 @@ struct VideoSessionCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoSessionCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoSessionCreateFlagsKHR:
+    def __or__(self, other: Self) -> VideoSessionCreateFlagsKHR:
         return VideoSessionCreateFlagsKHR(value = self._value | other._value)
 
     comptime PROTECTED_CONTENT = Self(value = 1 << 0)
@@ -14802,50 +14802,50 @@ struct VideoSessionCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoSessionParametersCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoSessionParametersCreateFlagBitsKHR):
+    def __init__(out self, bit: VideoSessionParametersCreateFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
+    def __or__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
+    def __ror__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoSessionParametersCreateFlagsKHR):
+    def __ior__(mut self, other: VideoSessionParametersCreateFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
+    def __and__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
+    def __rand__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoSessionParametersCreateFlagsKHR):
+    def __iand__(mut self, other: VideoSessionParametersCreateFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoSessionParametersCreateFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoSessionParametersCreateFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoSessionParametersCreateFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoSessionParametersCreateFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoSessionParametersCreateFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoSessionParametersCreateFlagsKHR) -> Bool:
         return self & other == other
 
     comptime QUANTIZATION_MAP_COMPATIBLE = Self(value = VideoSessionParametersCreateFlagBitsKHR.QUANTIZATION_MAP_COMPATIBLE.value())
@@ -14854,16 +14854,16 @@ struct VideoSessionParametersCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoSessionParametersCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoSessionParametersCreateFlagsKHR:
+    def __or__(self, other: Self) -> VideoSessionParametersCreateFlagsKHR:
         return VideoSessionParametersCreateFlagsKHR(value = self._value | other._value)
 
     comptime QUANTIZATION_MAP_COMPATIBLE = Self(value = 1 << 0)
@@ -14872,182 +14872,182 @@ struct VideoSessionParametersCreateFlagBitsKHR(TrivialRegisterPassable, Equatabl
 struct VideoBeginCodingFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoBeginCodingFlagBitsKHR):
+    def __init__(out self, bit: VideoBeginCodingFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoBeginCodingFlagsKHR) -> Self:
+    def __or__(self, other: VideoBeginCodingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoBeginCodingFlagsKHR) -> Self:
+    def __ror__(self, other: VideoBeginCodingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoBeginCodingFlagsKHR):
+    def __ior__(mut self, other: VideoBeginCodingFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoBeginCodingFlagsKHR) -> Self:
+    def __and__(self, other: VideoBeginCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoBeginCodingFlagsKHR) -> Self:
+    def __rand__(self, other: VideoBeginCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoBeginCodingFlagsKHR):
+    def __iand__(mut self, other: VideoBeginCodingFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoBeginCodingFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoBeginCodingFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoBeginCodingFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoBeginCodingFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoBeginCodingFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoBeginCodingFlagsKHR) -> Bool:
         return self & other == other
 
 
 struct VideoBeginCodingFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoBeginCodingFlagsKHR:
+    def __or__(self, other: Self) -> VideoBeginCodingFlagsKHR:
         return VideoBeginCodingFlagsKHR(value = self._value | other._value)
 
 
 struct VideoEndCodingFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEndCodingFlagBitsKHR):
+    def __init__(out self, bit: VideoEndCodingFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEndCodingFlagsKHR) -> Self:
+    def __or__(self, other: VideoEndCodingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEndCodingFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEndCodingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEndCodingFlagsKHR):
+    def __ior__(mut self, other: VideoEndCodingFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEndCodingFlagsKHR) -> Self:
+    def __and__(self, other: VideoEndCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEndCodingFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEndCodingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEndCodingFlagsKHR):
+    def __iand__(mut self, other: VideoEndCodingFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEndCodingFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEndCodingFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEndCodingFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEndCodingFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEndCodingFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEndCodingFlagsKHR) -> Bool:
         return self & other == other
 
 
 struct VideoEndCodingFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEndCodingFlagsKHR:
+    def __or__(self, other: Self) -> VideoEndCodingFlagsKHR:
         return VideoEndCodingFlagsKHR(value = self._value | other._value)
 
 
 struct VideoCodingControlFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoCodingControlFlagBitsKHR):
+    def __init__(out self, bit: VideoCodingControlFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoCodingControlFlagsKHR) -> Self:
+    def __or__(self, other: VideoCodingControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoCodingControlFlagsKHR) -> Self:
+    def __ror__(self, other: VideoCodingControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoCodingControlFlagsKHR):
+    def __ior__(mut self, other: VideoCodingControlFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoCodingControlFlagsKHR) -> Self:
+    def __and__(self, other: VideoCodingControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoCodingControlFlagsKHR) -> Self:
+    def __rand__(self, other: VideoCodingControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoCodingControlFlagsKHR):
+    def __iand__(mut self, other: VideoCodingControlFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoCodingControlFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoCodingControlFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoCodingControlFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoCodingControlFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoCodingControlFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoCodingControlFlagsKHR) -> Bool:
         return self & other == other
 
     comptime RESET = Self(value = VideoCodingControlFlagBitsKHR.RESET.value())
@@ -15058,16 +15058,16 @@ struct VideoCodingControlFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoCodingControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoCodingControlFlagsKHR:
+    def __or__(self, other: Self) -> VideoCodingControlFlagsKHR:
         return VideoCodingControlFlagsKHR(value = self._value | other._value)
 
     comptime RESET = Self(value = 1 << 0)
@@ -15078,50 +15078,50 @@ struct VideoCodingControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoDecodeUsageFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoDecodeUsageFlagBitsKHR):
+    def __init__(out self, bit: VideoDecodeUsageFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
+    def __or__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
+    def __ror__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoDecodeUsageFlagsKHR):
+    def __ior__(mut self, other: VideoDecodeUsageFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
+    def __and__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
+    def __rand__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoDecodeUsageFlagsKHR):
+    def __iand__(mut self, other: VideoDecodeUsageFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoDecodeUsageFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoDecodeUsageFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoDecodeUsageFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoDecodeUsageFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoDecodeUsageFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoDecodeUsageFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DEFAULT = Self(value = VideoDecodeUsageFlagBitsKHR.DEFAULT.value())
@@ -15133,16 +15133,16 @@ struct VideoDecodeUsageFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoDecodeUsageFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoDecodeUsageFlagsKHR:
+    def __or__(self, other: Self) -> VideoDecodeUsageFlagsKHR:
         return VideoDecodeUsageFlagsKHR(value = self._value | other._value)
 
     comptime DEFAULT = Self(value = 0)
@@ -15154,50 +15154,50 @@ struct VideoDecodeUsageFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoDecodeCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoDecodeCapabilityFlagBitsKHR):
+    def __init__(out self, bit: VideoDecodeCapabilityFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
+    def __or__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
+    def __ror__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoDecodeCapabilityFlagsKHR):
+    def __ior__(mut self, other: VideoDecodeCapabilityFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
+    def __and__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
+    def __rand__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoDecodeCapabilityFlagsKHR):
+    def __iand__(mut self, other: VideoDecodeCapabilityFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoDecodeCapabilityFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoDecodeCapabilityFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoDecodeCapabilityFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoDecodeCapabilityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoDecodeCapabilityFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoDecodeCapabilityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DPB_AND_OUTPUT_COINCIDE = Self(value = VideoDecodeCapabilityFlagBitsKHR.DPB_AND_OUTPUT_COINCIDE.value())
@@ -15207,16 +15207,16 @@ struct VideoDecodeCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoDecodeCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoDecodeCapabilityFlagsKHR:
+    def __or__(self, other: Self) -> VideoDecodeCapabilityFlagsKHR:
         return VideoDecodeCapabilityFlagsKHR(value = self._value | other._value)
 
     comptime DPB_AND_OUTPUT_COINCIDE = Self(value = 1 << 0)
@@ -15226,116 +15226,116 @@ struct VideoDecodeCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoDecodeFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoDecodeFlagBitsKHR):
+    def __init__(out self, bit: VideoDecodeFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoDecodeFlagsKHR) -> Self:
+    def __or__(self, other: VideoDecodeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoDecodeFlagsKHR) -> Self:
+    def __ror__(self, other: VideoDecodeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoDecodeFlagsKHR):
+    def __ior__(mut self, other: VideoDecodeFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoDecodeFlagsKHR) -> Self:
+    def __and__(self, other: VideoDecodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoDecodeFlagsKHR) -> Self:
+    def __rand__(self, other: VideoDecodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoDecodeFlagsKHR):
+    def __iand__(mut self, other: VideoDecodeFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoDecodeFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoDecodeFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoDecodeFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoDecodeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoDecodeFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoDecodeFlagsKHR) -> Bool:
         return self & other == other
 
 
 struct VideoDecodeFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoDecodeFlagsKHR:
+    def __or__(self, other: Self) -> VideoDecodeFlagsKHR:
         return VideoDecodeFlagsKHR(value = self._value | other._value)
 
 
 struct VideoDecodeH264PictureLayoutFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoDecodeH264PictureLayoutFlagBitsKHR):
+    def __init__(out self, bit: VideoDecodeH264PictureLayoutFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
+    def __or__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
+    def __ror__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoDecodeH264PictureLayoutFlagsKHR):
+    def __ior__(mut self, other: VideoDecodeH264PictureLayoutFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
+    def __and__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
+    def __rand__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoDecodeH264PictureLayoutFlagsKHR):
+    def __iand__(mut self, other: VideoDecodeH264PictureLayoutFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Bool:
         return self & other == other
 
     comptime PROGRESSIVE = Self(value = VideoDecodeH264PictureLayoutFlagBitsKHR.PROGRESSIVE.value())
@@ -15346,16 +15346,16 @@ struct VideoDecodeH264PictureLayoutFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoDecodeH264PictureLayoutFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoDecodeH264PictureLayoutFlagsKHR:
+    def __or__(self, other: Self) -> VideoDecodeH264PictureLayoutFlagsKHR:
         return VideoDecodeH264PictureLayoutFlagsKHR(value = self._value | other._value)
 
     comptime PROGRESSIVE = Self(value = 0)
@@ -15366,50 +15366,50 @@ struct VideoDecodeH264PictureLayoutFlagBitsKHR(TrivialRegisterPassable, Equatabl
 struct VideoEncodeFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeFlagsKHR) -> Bool:
         return self & other == other
 
     comptime WITH_QUANTIZATION_DELTA_MAP = Self(value = VideoEncodeFlagBitsKHR.WITH_QUANTIZATION_DELTA_MAP.value())
@@ -15420,16 +15420,16 @@ struct VideoEncodeFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeFlagsKHR:
         return VideoEncodeFlagsKHR(value = self._value | other._value)
 
     comptime WITH_QUANTIZATION_DELTA_MAP = Self(value = 1 << 0)
@@ -15440,50 +15440,50 @@ struct VideoEncodeFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeUsageFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeUsageFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeUsageFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeUsageFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeUsageFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeUsageFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeUsageFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeUsageFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeUsageFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeUsageFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeUsageFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeUsageFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeUsageFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DEFAULT = Self(value = VideoEncodeUsageFlagBitsKHR.DEFAULT.value())
@@ -15496,16 +15496,16 @@ struct VideoEncodeUsageFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeUsageFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeUsageFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeUsageFlagsKHR:
         return VideoEncodeUsageFlagsKHR(value = self._value | other._value)
 
     comptime DEFAULT = Self(value = 0)
@@ -15518,50 +15518,50 @@ struct VideoEncodeUsageFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeContentFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeContentFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeContentFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeContentFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeContentFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeContentFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeContentFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeContentFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeContentFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeContentFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeContentFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeContentFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeContentFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeContentFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeContentFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeContentFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeContentFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeContentFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeContentFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeContentFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeContentFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DEFAULT = Self(value = VideoEncodeContentFlagBitsKHR.DEFAULT.value())
@@ -15573,16 +15573,16 @@ struct VideoEncodeContentFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeContentFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeContentFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeContentFlagsKHR:
         return VideoEncodeContentFlagsKHR(value = self._value | other._value)
 
     comptime DEFAULT = Self(value = 0)
@@ -15594,50 +15594,50 @@ struct VideoEncodeContentFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeCapabilityFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeCapabilityFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeCapabilityFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeCapabilityFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeCapabilityFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeCapabilityFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeCapabilityFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeCapabilityFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeCapabilityFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeCapabilityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeCapabilityFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeCapabilityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime PRECEDING_EXTERNALLY_ENCODED_BYTES = Self(value = VideoEncodeCapabilityFlagBitsKHR.PRECEDING_EXTERNALLY_ENCODED_BYTES.value())
@@ -15649,16 +15649,16 @@ struct VideoEncodeCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeCapabilityFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeCapabilityFlagsKHR:
         return VideoEncodeCapabilityFlagsKHR(value = self._value | other._value)
 
     comptime PRECEDING_EXTERNALLY_ENCODED_BYTES = Self(value = 1 << 0)
@@ -15670,50 +15670,50 @@ struct VideoEncodeCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeFeedbackFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeFeedbackFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeFeedbackFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeFeedbackFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeFeedbackFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeFeedbackFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeFeedbackFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeFeedbackFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeFeedbackFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeFeedbackFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeFeedbackFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeFeedbackFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeFeedbackFlagsKHR) -> Bool:
         return self & other == other
 
     comptime BITSTREAM_BUFFER_OFFSET = Self(value = VideoEncodeFeedbackFlagBitsKHR.BITSTREAM_BUFFER_OFFSET.value())
@@ -15731,16 +15731,16 @@ struct VideoEncodeFeedbackFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeFeedbackFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeFeedbackFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeFeedbackFlagsKHR:
         return VideoEncodeFeedbackFlagsKHR(value = self._value | other._value)
 
     comptime BITSTREAM_BUFFER_OFFSET = Self(value = 1 << 0)
@@ -15758,116 +15758,116 @@ struct VideoEncodeFeedbackFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeRateControlFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeRateControlFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeRateControlFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeRateControlFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeRateControlFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeRateControlFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeRateControlFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeRateControlFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeRateControlFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeRateControlFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeRateControlFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeRateControlFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeRateControlFlagsKHR) -> Bool:
         return self & other == other
 
 
 struct VideoEncodeRateControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeRateControlFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeRateControlFlagsKHR:
         return VideoEncodeRateControlFlagsKHR(value = self._value | other._value)
 
 
 struct VideoEncodeRateControlModeFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeRateControlModeFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeRateControlModeFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeRateControlModeFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeRateControlModeFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeRateControlModeFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeRateControlModeFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeRateControlModeFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeRateControlModeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeRateControlModeFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeRateControlModeFlagsKHR) -> Bool:
         return self & other == other
 
     comptime DEFAULT = Self(value = VideoEncodeRateControlModeFlagBitsKHR.DEFAULT.value())
@@ -15879,16 +15879,16 @@ struct VideoEncodeRateControlModeFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeRateControlModeFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeRateControlModeFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeRateControlModeFlagsKHR:
         return VideoEncodeRateControlModeFlagsKHR(value = self._value | other._value)
 
     comptime DEFAULT = Self(value = 0)
@@ -15900,50 +15900,50 @@ struct VideoEncodeRateControlModeFlagBitsKHR(TrivialRegisterPassable, Equatable)
 struct VideoEncodeIntraRefreshModeFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeIntraRefreshModeFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeIntraRefreshModeFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeIntraRefreshModeFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeIntraRefreshModeFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeIntraRefreshModeFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeIntraRefreshModeFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Bool:
         return self & other == other
 
     comptime NONE = Self(value = VideoEncodeIntraRefreshModeFlagBitsKHR.NONE.value())
@@ -15956,16 +15956,16 @@ struct VideoEncodeIntraRefreshModeFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeIntraRefreshModeFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeIntraRefreshModeFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeIntraRefreshModeFlagsKHR:
         return VideoEncodeIntraRefreshModeFlagsKHR(value = self._value | other._value)
 
     comptime NONE = Self(value = 0)
@@ -15978,50 +15978,50 @@ struct VideoEncodeIntraRefreshModeFlagBitsKHR(TrivialRegisterPassable, Equatable
 struct VideoChromaSubsamplingFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoChromaSubsamplingFlagBitsKHR):
+    def __init__(out self, bit: VideoChromaSubsamplingFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
+    def __or__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
+    def __ror__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoChromaSubsamplingFlagsKHR):
+    def __ior__(mut self, other: VideoChromaSubsamplingFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
+    def __and__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
+    def __rand__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoChromaSubsamplingFlagsKHR):
+    def __iand__(mut self, other: VideoChromaSubsamplingFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoChromaSubsamplingFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoChromaSubsamplingFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoChromaSubsamplingFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoChromaSubsamplingFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoChromaSubsamplingFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoChromaSubsamplingFlagsKHR) -> Bool:
         return self & other == other
 
     comptime INVALID = Self(value = VideoChromaSubsamplingFlagBitsKHR.INVALID.value())
@@ -16034,16 +16034,16 @@ struct VideoChromaSubsamplingFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoChromaSubsamplingFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoChromaSubsamplingFlagsKHR:
+    def __or__(self, other: Self) -> VideoChromaSubsamplingFlagsKHR:
         return VideoChromaSubsamplingFlagsKHR(value = self._value | other._value)
 
     comptime INVALID = Self(value = 0)
@@ -16056,50 +16056,50 @@ struct VideoChromaSubsamplingFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoComponentBitDepthFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoComponentBitDepthFlagBitsKHR):
+    def __init__(out self, bit: VideoComponentBitDepthFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
+    def __or__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
+    def __ror__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoComponentBitDepthFlagsKHR):
+    def __ior__(mut self, other: VideoComponentBitDepthFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
+    def __and__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
+    def __rand__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoComponentBitDepthFlagsKHR):
+    def __iand__(mut self, other: VideoComponentBitDepthFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoComponentBitDepthFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoComponentBitDepthFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoComponentBitDepthFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoComponentBitDepthFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoComponentBitDepthFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoComponentBitDepthFlagsKHR) -> Bool:
         return self & other == other
 
     comptime INVALID = Self(value = VideoComponentBitDepthFlagBitsKHR.INVALID.value())
@@ -16111,16 +16111,16 @@ struct VideoComponentBitDepthFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoComponentBitDepthFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoComponentBitDepthFlagsKHR:
+    def __or__(self, other: Self) -> VideoComponentBitDepthFlagsKHR:
         return VideoComponentBitDepthFlagsKHR(value = self._value | other._value)
 
     comptime INVALID = Self(value = 0)
@@ -16132,50 +16132,50 @@ struct VideoComponentBitDepthFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeH264CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeH264CapabilityFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeH264CapabilityFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeH264CapabilityFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeH264CapabilityFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeH264CapabilityFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeH264CapabilityFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime HRD_COMPLIANCE = Self(value = VideoEncodeH264CapabilityFlagBitsKHR.HRD_COMPLIANCE.value())
@@ -16194,16 +16194,16 @@ struct VideoEncodeH264CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeH264CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeH264CapabilityFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeH264CapabilityFlagsKHR:
         return VideoEncodeH264CapabilityFlagsKHR(value = self._value | other._value)
 
     comptime HRD_COMPLIANCE = Self(value = 1 << 0)
@@ -16222,50 +16222,50 @@ struct VideoEncodeH264CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeH264StdFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeH264StdFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeH264StdFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeH264StdFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeH264StdFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeH264StdFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeH264StdFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeH264StdFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeH264StdFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeH264StdFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeH264StdFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH264StdFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeH264StdFlagsKHR) -> Bool:
         return self & other == other
 
     comptime SEPARATE_COLOR_PLANE_FLAG_SET = Self(value = VideoEncodeH264StdFlagBitsKHR.SEPARATE_COLOR_PLANE_FLAG_SET.value())
@@ -16293,16 +16293,16 @@ struct VideoEncodeH264StdFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeH264StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeH264StdFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeH264StdFlagsKHR:
         return VideoEncodeH264StdFlagsKHR(value = self._value | other._value)
 
     comptime SEPARATE_COLOR_PLANE_FLAG_SET = Self(value = 1 << 0)
@@ -16330,50 +16330,50 @@ struct VideoEncodeH264StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeH264RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeH264RateControlFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeH264RateControlFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeH264RateControlFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeH264RateControlFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeH264RateControlFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeH264RateControlFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeH264RateControlFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeH264RateControlFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH264RateControlFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeH264RateControlFlagsKHR) -> Bool:
         return self & other == other
 
     comptime ATTEMPT_HRD_COMPLIANCE = Self(value = VideoEncodeH264RateControlFlagBitsKHR.ATTEMPT_HRD_COMPLIANCE.value())
@@ -16386,16 +16386,16 @@ struct VideoEncodeH264RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeH264RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeH264RateControlFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeH264RateControlFlagsKHR:
         return VideoEncodeH264RateControlFlagsKHR(value = self._value | other._value)
 
     comptime ATTEMPT_HRD_COMPLIANCE = Self(value = 1 << 0)
@@ -16408,50 +16408,50 @@ struct VideoEncodeH264RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable)
 struct VideoEncodeH265CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeH265CapabilityFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeH265CapabilityFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeH265CapabilityFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeH265CapabilityFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeH265CapabilityFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeH265CapabilityFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime HRD_COMPLIANCE = Self(value = VideoEncodeH265CapabilityFlagBitsKHR.HRD_COMPLIANCE.value())
@@ -16471,16 +16471,16 @@ struct VideoEncodeH265CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeH265CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeH265CapabilityFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeH265CapabilityFlagsKHR:
         return VideoEncodeH265CapabilityFlagsKHR(value = self._value | other._value)
 
     comptime HRD_COMPLIANCE = Self(value = 1 << 0)
@@ -16500,50 +16500,50 @@ struct VideoEncodeH265CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeH265StdFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeH265StdFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeH265StdFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeH265StdFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeH265StdFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeH265StdFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeH265StdFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeH265StdFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeH265StdFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeH265StdFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeH265StdFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH265StdFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeH265StdFlagsKHR) -> Bool:
         return self & other == other
 
     comptime SEPARATE_COLOR_PLANE_FLAG_SET = Self(value = VideoEncodeH265StdFlagBitsKHR.SEPARATE_COLOR_PLANE_FLAG_SET.value())
@@ -16572,16 +16572,16 @@ struct VideoEncodeH265StdFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeH265StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeH265StdFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeH265StdFlagsKHR:
         return VideoEncodeH265StdFlagsKHR(value = self._value | other._value)
 
     comptime SEPARATE_COLOR_PLANE_FLAG_SET = Self(value = 1 << 0)
@@ -16610,50 +16610,50 @@ struct VideoEncodeH265StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeH265RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeH265RateControlFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeH265RateControlFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeH265RateControlFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeH265RateControlFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeH265RateControlFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeH265RateControlFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeH265RateControlFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeH265RateControlFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH265RateControlFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeH265RateControlFlagsKHR) -> Bool:
         return self & other == other
 
     comptime ATTEMPT_HRD_COMPLIANCE = Self(value = VideoEncodeH265RateControlFlagBitsKHR.ATTEMPT_HRD_COMPLIANCE.value())
@@ -16666,16 +16666,16 @@ struct VideoEncodeH265RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeH265RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeH265RateControlFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeH265RateControlFlagsKHR:
         return VideoEncodeH265RateControlFlagsKHR(value = self._value | other._value)
 
     comptime ATTEMPT_HRD_COMPLIANCE = Self(value = 1 << 0)
@@ -16688,50 +16688,50 @@ struct VideoEncodeH265RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable)
 struct VideoEncodeH265CtbSizeFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeH265CtbSizeFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeH265CtbSizeFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeH265CtbSizeFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeH265CtbSizeFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeH265CtbSizeFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeH265CtbSizeFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Bool:
         return self & other == other
 
     comptime SIZE_16 = Self(value = VideoEncodeH265CtbSizeFlagBitsKHR.SIZE_16.value())
@@ -16742,16 +16742,16 @@ struct VideoEncodeH265CtbSizeFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeH265CtbSizeFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeH265CtbSizeFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeH265CtbSizeFlagsKHR:
         return VideoEncodeH265CtbSizeFlagsKHR(value = self._value | other._value)
 
     comptime SIZE_16 = Self(value = 1 << 0)
@@ -16762,50 +16762,50 @@ struct VideoEncodeH265CtbSizeFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeH265TransformBlockSizeFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeH265TransformBlockSizeFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeH265TransformBlockSizeFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeH265TransformBlockSizeFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeH265TransformBlockSizeFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeH265TransformBlockSizeFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeH265TransformBlockSizeFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Bool:
         return self & other == other
 
     comptime SIZE_4 = Self(value = VideoEncodeH265TransformBlockSizeFlagBitsKHR.SIZE_4.value())
@@ -16817,16 +16817,16 @@ struct VideoEncodeH265TransformBlockSizeFlagsKHR(TrivialRegisterPassable, Equata
 struct VideoEncodeH265TransformBlockSizeFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeH265TransformBlockSizeFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeH265TransformBlockSizeFlagsKHR:
         return VideoEncodeH265TransformBlockSizeFlagsKHR(value = self._value | other._value)
 
     comptime SIZE_4 = Self(value = 1 << 0)
@@ -16838,50 +16838,50 @@ struct VideoEncodeH265TransformBlockSizeFlagBitsKHR(TrivialRegisterPassable, Equ
 struct VideoEncodeAV1CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeAV1CapabilityFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeAV1CapabilityFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeAV1CapabilityFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeAV1CapabilityFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeAV1CapabilityFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeAV1CapabilityFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Bool:
         return self & other == other
 
     comptime PER_RATE_CONTROL_GROUP_MIN_MAX_Q_INDEX = Self(value = VideoEncodeAV1CapabilityFlagBitsKHR.PER_RATE_CONTROL_GROUP_MIN_MAX_Q_INDEX.value())
@@ -16895,16 +16895,16 @@ struct VideoEncodeAV1CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeAV1CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeAV1CapabilityFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeAV1CapabilityFlagsKHR:
         return VideoEncodeAV1CapabilityFlagsKHR(value = self._value | other._value)
 
     comptime PER_RATE_CONTROL_GROUP_MIN_MAX_Q_INDEX = Self(value = 1 << 0)
@@ -16918,50 +16918,50 @@ struct VideoEncodeAV1CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeAV1StdFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeAV1StdFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeAV1StdFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeAV1StdFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeAV1StdFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeAV1StdFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeAV1StdFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeAV1StdFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeAV1StdFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeAV1StdFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeAV1StdFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeAV1StdFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeAV1StdFlagsKHR) -> Bool:
         return self & other == other
 
     comptime UNIFORM_TILE_SPACING_FLAG_SET = Self(value = VideoEncodeAV1StdFlagBitsKHR.UNIFORM_TILE_SPACING_FLAG_SET.value())
@@ -16973,16 +16973,16 @@ struct VideoEncodeAV1StdFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeAV1StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeAV1StdFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeAV1StdFlagsKHR:
         return VideoEncodeAV1StdFlagsKHR(value = self._value | other._value)
 
     comptime UNIFORM_TILE_SPACING_FLAG_SET = Self(value = 1 << 0)
@@ -16994,50 +16994,50 @@ struct VideoEncodeAV1StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeAV1RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeAV1RateControlFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeAV1RateControlFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeAV1RateControlFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeAV1RateControlFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeAV1RateControlFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeAV1RateControlFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Bool:
         return self & other == other
 
     comptime REGULAR_GOP = Self(value = VideoEncodeAV1RateControlFlagBitsKHR.REGULAR_GOP.value())
@@ -17049,16 +17049,16 @@ struct VideoEncodeAV1RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeAV1RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeAV1RateControlFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeAV1RateControlFlagsKHR:
         return VideoEncodeAV1RateControlFlagsKHR(value = self._value | other._value)
 
     comptime REGULAR_GOP = Self(value = 1 << 0)
@@ -17070,50 +17070,50 @@ struct VideoEncodeAV1RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeAV1SuperblockSizeFlagsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: VideoEncodeAV1SuperblockSizeFlagBitsKHR):
+    def __init__(out self, bit: VideoEncodeAV1SuperblockSizeFlagBitsKHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
+    def __or__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
+    def __ror__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: VideoEncodeAV1SuperblockSizeFlagsKHR):
+    def __ior__(mut self, other: VideoEncodeAV1SuperblockSizeFlagsKHR):
         self._value |= other.value()
 
-    fn __and__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
+    def __and__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
+    def __rand__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: VideoEncodeAV1SuperblockSizeFlagsKHR):
+    def __iand__(mut self, other: VideoEncodeAV1SuperblockSizeFlagsKHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Bool:
+    def __contains__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Bool:
+    def is_subset(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Bool:
+    def is_superset(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Bool:
         return self & other == other
 
     comptime SIZE_64 = Self(value = VideoEncodeAV1SuperblockSizeFlagBitsKHR.SIZE_64.value())
@@ -17123,16 +17123,16 @@ struct VideoEncodeAV1SuperblockSizeFlagsKHR(TrivialRegisterPassable, Equatable):
 struct VideoEncodeAV1SuperblockSizeFlagBitsKHR(TrivialRegisterPassable, Equatable):
     var _value: UInt32
 
-    fn __init__(out self, *, value: UInt32):
+    def __init__(out self, *, value: UInt32):
         self._value = value
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> VideoEncodeAV1SuperblockSizeFlagsKHR:
+    def __or__(self, other: Self) -> VideoEncodeAV1SuperblockSizeFlagsKHR:
         return VideoEncodeAV1SuperblockSizeFlagsKHR(value = self._value | other._value)
 
     comptime SIZE_64 = Self(value = 1 << 0)
@@ -17142,50 +17142,50 @@ struct VideoEncodeAV1SuperblockSizeFlagBitsKHR(TrivialRegisterPassable, Equatabl
 struct AccessFlags3KHR(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, bit: AccessFlagBits3KHR):
+    def __init__(out self, bit: AccessFlagBits3KHR):
         self._value = bit._value
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: AccessFlags3KHR) -> Self:
+    def __or__(self, other: AccessFlags3KHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ror__(self, other: AccessFlags3KHR) -> Self:
+    def __ror__(self, other: AccessFlags3KHR) -> Self:
         return Self(value = self.value() | other.value())
 
-    fn __ior__(mut self, other: AccessFlags3KHR):
+    def __ior__(mut self, other: AccessFlags3KHR):
         self._value |= other.value()
 
-    fn __and__(self, other: AccessFlags3KHR) -> Self:
+    def __and__(self, other: AccessFlags3KHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __rand__(self, other: AccessFlags3KHR) -> Self:
+    def __rand__(self, other: AccessFlags3KHR) -> Self:
         return Self(value = self.value() & other.value())
 
-    fn __iand__(mut self, other: AccessFlags3KHR):
+    def __iand__(mut self, other: AccessFlags3KHR):
         self._value &= other.value()
 
-    fn __contains__(self, other: AccessFlags3KHR) -> Bool:
+    def __contains__(self, other: AccessFlags3KHR) -> Bool:
         return self.is_superset(other)
 
-    fn is_subset(self, other: AccessFlags3KHR) -> Bool:
+    def is_subset(self, other: AccessFlags3KHR) -> Bool:
         return self & other == self
 
-    fn is_superset(self, other: AccessFlags3KHR) -> Bool:
+    def is_superset(self, other: AccessFlags3KHR) -> Bool:
         return self & other == other
 
     comptime NONE = Self(value = AccessFlagBits3KHR.NONE.value())
@@ -17194,16 +17194,16 @@ struct AccessFlags3KHR(TrivialRegisterPassable, Equatable):
 struct AccessFlagBits3KHR(TrivialRegisterPassable, Equatable):
     var _value: UInt64
 
-    fn __init__(out self, *, value: UInt64):
+    def __init__(out self, *, value: UInt64):
         self._value = value
 
-    fn value(self) -> UInt64:
+    def value(self) -> UInt64:
         return self._value
 
-    fn __eq__(self, other: Self) -> Bool:
+    def __eq__(self, other: Self) -> Bool:
         return self._value == other._value
 
-    fn __or__(self, other: Self) -> AccessFlags3KHR:
+    def __or__(self, other: Self) -> AccessFlags3KHR:
         return AccessFlags3KHR(value = self._value | other._value)
 
     comptime NONE = Self(value = 0)

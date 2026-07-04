@@ -1,25 +1,25 @@
-from ffi import OwnedDLHandle, CStringSlice, c_char
-from memory import ArcPointer
+from std.ffi import OwnedDLHandle, CStringSlice, c_char
+from std.memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct DescriptorSetHostMapping(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_descriptor_set_layout_host_mapping_info: fn(
+    var _get_descriptor_set_layout_host_mapping_info: def(
         device: Device,
         p_binding_reference: Ptr[DescriptorSetBindingReferenceVALVE, ImmutAnyOrigin],
         p_host_mapping: Ptr[DescriptorSetLayoutHostMappingInfoVALVE, MutAnyOrigin],
-    )
-    var _get_descriptor_set_host_mapping: fn(
+    ) thin abi("C")
+    var _get_descriptor_set_host_mapping: def(
         device: Device,
         descriptor_set: DescriptorSet,
         pp_data: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_descriptor_set_layout_host_mapping_info = Ptr(to=get_device_proc_addr(
             device, "vkGetDescriptorSetLayoutHostMappingInfoVALVE".as_c_string_slice()
@@ -28,7 +28,7 @@ struct DescriptorSetHostMapping(Copyable):
             device, "vkGetDescriptorSetHostMappingVALVE".as_c_string_slice()
         )).bitcast[type_of(self._get_descriptor_set_host_mapping)]()[]
 
-    fn get_descriptor_set_layout_host_mapping_info(
+    def get_descriptor_set_layout_host_mapping_info(
         self,
         device: Device,
         binding_reference: DescriptorSetBindingReferenceVALVE,
@@ -42,7 +42,7 @@ struct DescriptorSetHostMapping(Copyable):
             device, Ptr(to=binding_reference), Ptr(to=host_mapping)
         )
 
-    fn get_descriptor_set_host_mapping[p_data_origin: MutOrigin = MutAnyOrigin](
+    def get_descriptor_set_host_mapping[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         descriptor_set: DescriptorSet,

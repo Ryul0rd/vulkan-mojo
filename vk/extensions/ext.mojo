@@ -1,22 +1,22 @@
-from ffi import OwnedDLHandle, CStringSlice, c_char
-from memory import ArcPointer
+from std.ffi import OwnedDLHandle, CStringSlice, c_char
+from std.memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct DebugReport(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_debug_report_callback: fn(
+    var _create_debug_report_callback: def(
         instance: Instance,
         p_create_info: Ptr[DebugReportCallbackCreateInfoEXT, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_callback: Ptr[DebugReportCallbackEXT, MutAnyOrigin],
-    ) -> Result
-    var _destroy_debug_report_callback: fn(
+    ) thin abi("C") -> Result
+    var _destroy_debug_report_callback: def(
         instance: Instance,
         callback: DebugReportCallbackEXT,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
-    var _debug_report_message: fn(
+    ) thin abi("C")
+    var _debug_report_message: def(
         instance: Instance,
         flags: DebugReportFlagsEXT,
         object_type: DebugReportObjectTypeEXT,
@@ -25,12 +25,12 @@ struct DebugReport(Copyable):
         message_code: Int32,
         p_layer_prefix: CStringSlice[ImmutAnyOrigin],
         p_message: CStringSlice[ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_debug_report_callback = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateDebugReportCallbackEXT".as_c_string_slice()
@@ -42,7 +42,7 @@ struct DebugReport(Copyable):
             instance, "vkDebugReportMessageEXT".as_c_string_slice()
         )).bitcast[type_of(self._debug_report_message)]()[]
 
-    fn create_debug_report_callback[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_debug_report_callback[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: DebugReportCallbackCreateInfoEXT,
@@ -60,7 +60,7 @@ struct DebugReport(Copyable):
             Ptr(to=callback),
         )
 
-    fn destroy_debug_report_callback[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_debug_report_callback[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         callback: DebugReportCallbackEXT,
@@ -74,7 +74,7 @@ struct DebugReport(Copyable):
             instance, callback, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn debug_report_message[
+    def debug_report_message[
         p_layer_prefix_origin: ImmutOrigin = ImmutAnyOrigin,
         p_message_origin: ImmutOrigin = ImmutAnyOrigin,
     ](
@@ -106,24 +106,24 @@ struct DebugReport(Copyable):
 
 struct DebugMarker(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _debug_marker_set_object_tag: fn(
+    var _debug_marker_set_object_tag: def(
         device: Device, p_tag_info: Ptr[DebugMarkerObjectTagInfoEXT, ImmutAnyOrigin]
-    ) -> Result
-    var _debug_marker_set_object_name: fn(
+    ) thin abi("C") -> Result
+    var _debug_marker_set_object_name: def(
         device: Device, p_name_info: Ptr[DebugMarkerObjectNameInfoEXT, ImmutAnyOrigin]
-    ) -> Result
-    var _cmd_debug_marker_begin: fn(
+    ) thin abi("C") -> Result
+    var _cmd_debug_marker_begin: def(
         command_buffer: CommandBuffer, p_marker_info: Ptr[DebugMarkerMarkerInfoEXT, ImmutAnyOrigin]
-    )
-    var _cmd_debug_marker_end: fn(command_buffer: CommandBuffer)
-    var _cmd_debug_marker_insert: fn(
+    ) thin abi("C")
+    var _cmd_debug_marker_end: def(command_buffer: CommandBuffer) thin abi("C")
+    var _cmd_debug_marker_insert: def(
         command_buffer: CommandBuffer, p_marker_info: Ptr[DebugMarkerMarkerInfoEXT, ImmutAnyOrigin]
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._debug_marker_set_object_tag = Ptr(to=get_device_proc_addr(
             device, "vkDebugMarkerSetObjectTagEXT".as_c_string_slice()
@@ -141,7 +141,7 @@ struct DebugMarker(Copyable):
             device, "vkCmdDebugMarkerInsertEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_debug_marker_insert)]()[]
 
-    fn debug_marker_set_object_tag(
+    def debug_marker_set_object_tag(
         self, device: Device, tag_info: DebugMarkerObjectTagInfoEXT
     ) -> Result:
         """See official vulkan docs for details.
@@ -150,7 +150,7 @@ struct DebugMarker(Copyable):
         """
         return self._debug_marker_set_object_tag(device, Ptr(to=tag_info))
 
-    fn debug_marker_set_object_name(
+    def debug_marker_set_object_name(
         self, device: Device, name_info: DebugMarkerObjectNameInfoEXT
     ) -> Result:
         """See official vulkan docs for details.
@@ -159,7 +159,7 @@ struct DebugMarker(Copyable):
         """
         return self._debug_marker_set_object_name(device, Ptr(to=name_info))
 
-    fn cmd_debug_marker_begin(
+    def cmd_debug_marker_begin(
         self, command_buffer: CommandBuffer, marker_info: DebugMarkerMarkerInfoEXT
     ):
         """See official vulkan docs for details.
@@ -168,14 +168,14 @@ struct DebugMarker(Copyable):
         """
         return self._cmd_debug_marker_begin(command_buffer, Ptr(to=marker_info))
 
-    fn cmd_debug_marker_end(self, command_buffer: CommandBuffer):
+    def cmd_debug_marker_end(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDebugMarkerEndEXT.html
         """
         return self._cmd_debug_marker_end(command_buffer)
 
-    fn cmd_debug_marker_insert(
+    def cmd_debug_marker_insert(
         self, command_buffer: CommandBuffer, marker_info: DebugMarkerMarkerInfoEXT
     ):
         """See official vulkan docs for details.
@@ -187,39 +187,39 @@ struct DebugMarker(Copyable):
 
 struct TransformFeedback(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_bind_transform_feedback_buffers: fn(
+    var _cmd_bind_transform_feedback_buffers: def(
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
         p_buffers: Ptr[Buffer, ImmutAnyOrigin],
         p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
         p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
-    )
-    var _cmd_begin_transform_feedback: fn(
+    ) thin abi("C")
+    var _cmd_begin_transform_feedback: def(
         command_buffer: CommandBuffer,
         first_counter_buffer: UInt32,
         counter_buffer_count: UInt32,
         p_counter_buffers: Ptr[Buffer, ImmutAnyOrigin],
         p_counter_buffer_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
-    )
-    var _cmd_end_transform_feedback: fn(
+    ) thin abi("C")
+    var _cmd_end_transform_feedback: def(
         command_buffer: CommandBuffer,
         first_counter_buffer: UInt32,
         counter_buffer_count: UInt32,
         p_counter_buffers: Ptr[Buffer, ImmutAnyOrigin],
         p_counter_buffer_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
-    )
-    var _cmd_begin_query_indexed: fn(
+    ) thin abi("C")
+    var _cmd_begin_query_indexed: def(
         command_buffer: CommandBuffer,
         query_pool: QueryPool,
         query: UInt32,
         flags: QueryControlFlags,
         index: UInt32,
-    )
-    var _cmd_end_query_indexed: fn(
+    ) thin abi("C")
+    var _cmd_end_query_indexed: def(
         command_buffer: CommandBuffer, query_pool: QueryPool, query: UInt32, index: UInt32
-    )
-    var _cmd_draw_indirect_byte_count: fn(
+    ) thin abi("C")
+    var _cmd_draw_indirect_byte_count: def(
         command_buffer: CommandBuffer,
         instance_count: UInt32,
         first_instance: UInt32,
@@ -227,12 +227,12 @@ struct TransformFeedback(Copyable):
         counter_buffer_offset: DeviceSize,
         counter_offset: UInt32,
         vertex_stride: UInt32,
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_bind_transform_feedback_buffers = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindTransformFeedbackBuffersEXT".as_c_string_slice()
@@ -253,7 +253,7 @@ struct TransformFeedback(Copyable):
             device, "vkCmdDrawIndirectByteCountEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_draw_indirect_byte_count)]()[]
 
-    fn cmd_bind_transform_feedback_buffers[
+    def cmd_bind_transform_feedback_buffers[
         p_buffers_origin: ImmutOrigin = ImmutAnyOrigin,
         p_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
         p_sizes_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -279,7 +279,7 @@ struct TransformFeedback(Copyable):
             Ptr(to=p_sizes).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_begin_transform_feedback[
+    def cmd_begin_transform_feedback[
         p_counter_buffers_origin: ImmutOrigin = ImmutAnyOrigin,
         p_counter_buffer_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
     ](
@@ -302,7 +302,7 @@ struct TransformFeedback(Copyable):
             Ptr(to=p_counter_buffer_offsets).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_end_transform_feedback[
+    def cmd_end_transform_feedback[
         p_counter_buffers_origin: ImmutOrigin = ImmutAnyOrigin,
         p_counter_buffer_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
     ](
@@ -325,7 +325,7 @@ struct TransformFeedback(Copyable):
             Ptr(to=p_counter_buffer_offsets).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_begin_query_indexed(
+    def cmd_begin_query_indexed(
         self,
         command_buffer: CommandBuffer,
         query_pool: QueryPool,
@@ -339,7 +339,7 @@ struct TransformFeedback(Copyable):
         """
         return self._cmd_begin_query_indexed(command_buffer, query_pool, query, flags, index)
 
-    fn cmd_end_query_indexed(
+    def cmd_end_query_indexed(
         self, command_buffer: CommandBuffer, query_pool: QueryPool, query: UInt32, index: UInt32
     ):
         """See official vulkan docs for details.
@@ -348,7 +348,7 @@ struct TransformFeedback(Copyable):
         """
         return self._cmd_end_query_indexed(command_buffer, query_pool, query, index)
 
-    fn cmd_draw_indirect_byte_count(
+    def cmd_draw_indirect_byte_count(
         self,
         command_buffer: CommandBuffer,
         instance_count: UInt32,
@@ -375,16 +375,16 @@ struct TransformFeedback(Copyable):
 
 struct ConditionalRendering(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_begin_conditional_rendering: fn(
+    var _cmd_begin_conditional_rendering: def(
         command_buffer: CommandBuffer,
         p_conditional_rendering_begin: Ptr[ConditionalRenderingBeginInfoEXT, ImmutAnyOrigin],
-    )
-    var _cmd_end_conditional_rendering: fn(command_buffer: CommandBuffer)
+    ) thin abi("C")
+    var _cmd_end_conditional_rendering: def(command_buffer: CommandBuffer) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_begin_conditional_rendering = Ptr(to=get_device_proc_addr(
             device, "vkCmdBeginConditionalRenderingEXT".as_c_string_slice()
@@ -393,7 +393,7 @@ struct ConditionalRendering(Copyable):
             device, "vkCmdEndConditionalRenderingEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_end_conditional_rendering)]()[]
 
-    fn cmd_begin_conditional_rendering(
+    def cmd_begin_conditional_rendering(
         self,
         command_buffer: CommandBuffer,
         conditional_rendering_begin: ConditionalRenderingBeginInfoEXT,
@@ -404,7 +404,7 @@ struct ConditionalRendering(Copyable):
         """
         return self._cmd_begin_conditional_rendering(command_buffer, Ptr(to=conditional_rendering_begin))
 
-    fn cmd_end_conditional_rendering(self, command_buffer: CommandBuffer):
+    def cmd_end_conditional_rendering(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndConditionalRenderingEXT.html
@@ -414,18 +414,20 @@ struct ConditionalRendering(Copyable):
 
 struct DirectModeDisplay(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _release_display: fn(physical_device: PhysicalDevice, display: DisplayKHR) -> Result
+    var _release_display: def(
+        physical_device: PhysicalDevice, display: DisplayKHR
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._release_display = Ptr(to=get_instance_proc_addr(
             instance, "vkReleaseDisplayEXT".as_c_string_slice()
         )).bitcast[type_of(self._release_display)]()[]
 
-    fn release_display(self, physical_device: PhysicalDevice, display: DisplayKHR) -> Result:
+    def release_display(self, physical_device: PhysicalDevice, display: DisplayKHR) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkReleaseDisplayEXT.html
@@ -435,20 +437,20 @@ struct DirectModeDisplay(Copyable):
 
 struct AcquireXlibDisplay(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _acquire_xlib_display: fn(
+    var _acquire_xlib_display: def(
         physical_device: PhysicalDevice, dpy: Ptr[Display, MutAnyOrigin], display: DisplayKHR
-    ) -> Result
-    var _get_rand_r_output_display: fn(
+    ) thin abi("C") -> Result
+    var _get_rand_r_output_display: def(
         physical_device: PhysicalDevice,
         dpy: Ptr[Display, MutAnyOrigin],
         rr_output: RROutput,
         p_display: Ptr[DisplayKHR, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._acquire_xlib_display = Ptr(to=get_instance_proc_addr(
             instance, "vkAcquireXlibDisplayEXT".as_c_string_slice()
@@ -457,7 +459,7 @@ struct AcquireXlibDisplay(Copyable):
             instance, "vkGetRandROutputDisplayEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_rand_r_output_display)]()[]
 
-    fn acquire_xlib_display(
+    def acquire_xlib_display(
         self, physical_device: PhysicalDevice, mut dpy: Display, display: DisplayKHR
     ) -> Result:
         """See official vulkan docs for details.
@@ -466,7 +468,7 @@ struct AcquireXlibDisplay(Copyable):
         """
         return self._acquire_xlib_display(physical_device, Ptr(to=dpy), display)
 
-    fn get_rand_r_output_display(
+    def get_rand_r_output_display(
         self,
         physical_device: PhysicalDevice,
         mut dpy: Display,
@@ -482,22 +484,22 @@ struct AcquireXlibDisplay(Copyable):
 
 struct DisplaySurfaceCounter(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_physical_device_surface_capabilities_2: fn(
+    var _get_physical_device_surface_capabilities_2: def(
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
         p_surface_capabilities: Ptr[SurfaceCapabilities2EXT, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_surface_capabilities_2 = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceSurfaceCapabilities2EXT".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_surface_capabilities_2)]()[]
 
-    fn get_physical_device_surface_capabilities_2(
+    def get_physical_device_surface_capabilities_2(
         self,
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
@@ -514,35 +516,35 @@ struct DisplaySurfaceCounter(Copyable):
 
 struct DisplayControl(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _display_power_control: fn(
+    var _display_power_control: def(
         device: Device,
         display: DisplayKHR,
         p_display_power_info: Ptr[DisplayPowerInfoEXT, ImmutAnyOrigin],
-    ) -> Result
-    var _register_device_event: fn(
+    ) thin abi("C") -> Result
+    var _register_device_event: def(
         device: Device,
         p_device_event_info: Ptr[DeviceEventInfoEXT, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_fence: Ptr[Fence, MutAnyOrigin],
-    ) -> Result
-    var _register_display_event: fn(
+    ) thin abi("C") -> Result
+    var _register_display_event: def(
         device: Device,
         display: DisplayKHR,
         p_display_event_info: Ptr[DisplayEventInfoEXT, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_fence: Ptr[Fence, MutAnyOrigin],
-    ) -> Result
-    var _get_swapchain_counter: fn(
+    ) thin abi("C") -> Result
+    var _get_swapchain_counter: def(
         device: Device,
         swapchain: SwapchainKHR,
         counter: SurfaceCounterFlagBitsEXT,
         p_counter_value: Ptr[UInt64, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._display_power_control = Ptr(to=get_device_proc_addr(
             device, "vkDisplayPowerControlEXT".as_c_string_slice()
@@ -557,7 +559,7 @@ struct DisplayControl(Copyable):
             device, "vkGetSwapchainCounterEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_swapchain_counter)]()[]
 
-    fn display_power_control(
+    def display_power_control(
         self, device: Device, display: DisplayKHR, display_power_info: DisplayPowerInfoEXT
     ) -> Result:
         """See official vulkan docs for details.
@@ -566,7 +568,7 @@ struct DisplayControl(Copyable):
         """
         return self._display_power_control(device, display, Ptr(to=display_power_info))
 
-    fn register_device_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def register_device_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         device_event_info: DeviceEventInfoEXT,
@@ -584,7 +586,7 @@ struct DisplayControl(Copyable):
             Ptr(to=fence),
         )
 
-    fn register_display_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def register_display_event[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         display: DisplayKHR,
@@ -604,7 +606,7 @@ struct DisplayControl(Copyable):
             Ptr(to=fence),
         )
 
-    fn get_swapchain_counter(
+    def get_swapchain_counter(
         self,
         device: Device,
         swapchain: SwapchainKHR,
@@ -620,23 +622,23 @@ struct DisplayControl(Copyable):
 
 struct DiscardRectangles(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_discard_rectangle: fn(
+    var _cmd_set_discard_rectangle: def(
         command_buffer: CommandBuffer,
         first_discard_rectangle: UInt32,
         discard_rectangle_count: UInt32,
         p_discard_rectangles: Ptr[Rect2D, ImmutAnyOrigin],
-    )
-    var _cmd_set_discard_rectangle_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_discard_rectangle_enable: def(
         command_buffer: CommandBuffer, discard_rectangle_enable: Bool32
-    )
-    var _cmd_set_discard_rectangle_mode: fn(
+    ) thin abi("C")
+    var _cmd_set_discard_rectangle_mode: def(
         command_buffer: CommandBuffer, discard_rectangle_mode: DiscardRectangleModeEXT
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_discard_rectangle = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDiscardRectangleEXT".as_c_string_slice()
@@ -648,7 +650,7 @@ struct DiscardRectangles(Copyable):
             device, "vkCmdSetDiscardRectangleModeEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_discard_rectangle_mode)]()[]
 
-    fn cmd_set_discard_rectangle[p_discard_rectangles_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_discard_rectangle[p_discard_rectangles_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_discard_rectangle: UInt32,
@@ -666,7 +668,7 @@ struct DiscardRectangles(Copyable):
             Ptr(to=p_discard_rectangles).bitcast[Ptr[Rect2D, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_discard_rectangle_enable(
+    def cmd_set_discard_rectangle_enable(
         self, command_buffer: CommandBuffer, discard_rectangle_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -675,7 +677,7 @@ struct DiscardRectangles(Copyable):
         """
         return self._cmd_set_discard_rectangle_enable(command_buffer, discard_rectangle_enable)
 
-    fn cmd_set_discard_rectangle_mode(
+    def cmd_set_discard_rectangle_mode(
         self, command_buffer: CommandBuffer, discard_rectangle_mode: DiscardRectangleModeEXT
     ):
         """See official vulkan docs for details.
@@ -687,23 +689,23 @@ struct DiscardRectangles(Copyable):
 
 struct HdrMetadata(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _set_hdr_metadata: fn(
+    var _set_hdr_metadata: def(
         device: Device,
         swapchain_count: UInt32,
         p_swapchains: Ptr[SwapchainKHR, ImmutAnyOrigin],
         p_metadata: Ptr[HdrMetadataEXT, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._set_hdr_metadata = Ptr(to=get_device_proc_addr(
             device, "vkSetHdrMetadataEXT".as_c_string_slice()
         )).bitcast[type_of(self._set_hdr_metadata)]()[]
 
-    fn set_hdr_metadata[
+    def set_hdr_metadata[
         p_swapchains_origin: ImmutOrigin = ImmutAnyOrigin,
         p_metadata_origin: ImmutOrigin = ImmutAnyOrigin,
     ](
@@ -727,48 +729,48 @@ struct HdrMetadata(Copyable):
 
 struct DebugUtils(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _set_debug_utils_object_name: fn(
+    var _set_debug_utils_object_name: def(
         device: Device, p_name_info: Ptr[DebugUtilsObjectNameInfoEXT, ImmutAnyOrigin]
-    ) -> Result
-    var _set_debug_utils_object_tag: fn(
+    ) thin abi("C") -> Result
+    var _set_debug_utils_object_tag: def(
         device: Device, p_tag_info: Ptr[DebugUtilsObjectTagInfoEXT, ImmutAnyOrigin]
-    ) -> Result
-    var _queue_begin_debug_utils_label: fn(
+    ) thin abi("C") -> Result
+    var _queue_begin_debug_utils_label: def(
         queue: Queue, p_label_info: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]
-    )
-    var _queue_end_debug_utils_label: fn(queue: Queue)
-    var _queue_insert_debug_utils_label: fn(
+    ) thin abi("C")
+    var _queue_end_debug_utils_label: def(queue: Queue) thin abi("C")
+    var _queue_insert_debug_utils_label: def(
         queue: Queue, p_label_info: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]
-    )
-    var _cmd_begin_debug_utils_label: fn(
+    ) thin abi("C")
+    var _cmd_begin_debug_utils_label: def(
         command_buffer: CommandBuffer, p_label_info: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]
-    )
-    var _cmd_end_debug_utils_label: fn(command_buffer: CommandBuffer)
-    var _cmd_insert_debug_utils_label: fn(
+    ) thin abi("C")
+    var _cmd_end_debug_utils_label: def(command_buffer: CommandBuffer) thin abi("C")
+    var _cmd_insert_debug_utils_label: def(
         command_buffer: CommandBuffer, p_label_info: Ptr[DebugUtilsLabelEXT, ImmutAnyOrigin]
-    )
-    var _create_debug_utils_messenger: fn(
+    ) thin abi("C")
+    var _create_debug_utils_messenger: def(
         instance: Instance,
         p_create_info: Ptr[DebugUtilsMessengerCreateInfoEXT, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_messenger: Ptr[DebugUtilsMessengerEXT, MutAnyOrigin],
-    ) -> Result
-    var _destroy_debug_utils_messenger: fn(
+    ) thin abi("C") -> Result
+    var _destroy_debug_utils_messenger: def(
         instance: Instance,
         messenger: DebugUtilsMessengerEXT,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
-    var _submit_debug_utils_message: fn(
+    ) thin abi("C")
+    var _submit_debug_utils_message: def(
         instance: Instance,
         message_severity: DebugUtilsMessageSeverityFlagBitsEXT,
         message_types: DebugUtilsMessageTypeFlagsEXT,
         p_callback_data: Ptr[DebugUtilsMessengerCallbackDataEXT, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._set_debug_utils_object_name = Ptr(to=get_instance_proc_addr(
             instance, "vkSetDebugUtilsObjectNameEXT".as_c_string_slice()
@@ -804,7 +806,7 @@ struct DebugUtils(Copyable):
             instance, "vkSubmitDebugUtilsMessageEXT".as_c_string_slice()
         )).bitcast[type_of(self._submit_debug_utils_message)]()[]
 
-    fn set_debug_utils_object_name(
+    def set_debug_utils_object_name(
         self, device: Device, name_info: DebugUtilsObjectNameInfoEXT
     ) -> Result:
         """See official vulkan docs for details.
@@ -813,7 +815,7 @@ struct DebugUtils(Copyable):
         """
         return self._set_debug_utils_object_name(device, Ptr(to=name_info))
 
-    fn set_debug_utils_object_tag(
+    def set_debug_utils_object_tag(
         self, device: Device, tag_info: DebugUtilsObjectTagInfoEXT
     ) -> Result:
         """See official vulkan docs for details.
@@ -822,28 +824,28 @@ struct DebugUtils(Copyable):
         """
         return self._set_debug_utils_object_tag(device, Ptr(to=tag_info))
 
-    fn queue_begin_debug_utils_label(self, queue: Queue, label_info: DebugUtilsLabelEXT):
+    def queue_begin_debug_utils_label(self, queue: Queue, label_info: DebugUtilsLabelEXT):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueBeginDebugUtilsLabelEXT.html
         """
         return self._queue_begin_debug_utils_label(queue, Ptr(to=label_info))
 
-    fn queue_end_debug_utils_label(self, queue: Queue):
+    def queue_end_debug_utils_label(self, queue: Queue):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueEndDebugUtilsLabelEXT.html
         """
         return self._queue_end_debug_utils_label(queue)
 
-    fn queue_insert_debug_utils_label(self, queue: Queue, label_info: DebugUtilsLabelEXT):
+    def queue_insert_debug_utils_label(self, queue: Queue, label_info: DebugUtilsLabelEXT):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueInsertDebugUtilsLabelEXT.html
         """
         return self._queue_insert_debug_utils_label(queue, Ptr(to=label_info))
 
-    fn cmd_begin_debug_utils_label(
+    def cmd_begin_debug_utils_label(
         self, command_buffer: CommandBuffer, label_info: DebugUtilsLabelEXT
     ):
         """See official vulkan docs for details.
@@ -852,14 +854,14 @@ struct DebugUtils(Copyable):
         """
         return self._cmd_begin_debug_utils_label(command_buffer, Ptr(to=label_info))
 
-    fn cmd_end_debug_utils_label(self, command_buffer: CommandBuffer):
+    def cmd_end_debug_utils_label(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndDebugUtilsLabelEXT.html
         """
         return self._cmd_end_debug_utils_label(command_buffer)
 
-    fn cmd_insert_debug_utils_label(
+    def cmd_insert_debug_utils_label(
         self, command_buffer: CommandBuffer, label_info: DebugUtilsLabelEXT
     ):
         """See official vulkan docs for details.
@@ -868,7 +870,7 @@ struct DebugUtils(Copyable):
         """
         return self._cmd_insert_debug_utils_label(command_buffer, Ptr(to=label_info))
 
-    fn create_debug_utils_messenger[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_debug_utils_messenger[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: DebugUtilsMessengerCreateInfoEXT,
@@ -886,7 +888,7 @@ struct DebugUtils(Copyable):
             Ptr(to=messenger),
         )
 
-    fn destroy_debug_utils_messenger[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_debug_utils_messenger[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         messenger: DebugUtilsMessengerEXT,
@@ -900,7 +902,7 @@ struct DebugUtils(Copyable):
             instance, messenger, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn submit_debug_utils_message(
+    def submit_debug_utils_message(
         self,
         instance: Instance,
         message_severity: DebugUtilsMessageSeverityFlagBitsEXT,
@@ -918,54 +920,54 @@ struct DebugUtils(Copyable):
 
 struct DescriptorHeap(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _write_sampler_descriptors: fn(
+    var _write_sampler_descriptors: def(
         device: Device,
         sampler_count: UInt32,
         p_samplers: Ptr[SamplerCreateInfo, ImmutAnyOrigin],
         p_descriptors: Ptr[HostAddressRangeEXT, ImmutAnyOrigin],
-    ) -> Result
-    var _write_resource_descriptors: fn(
+    ) thin abi("C") -> Result
+    var _write_resource_descriptors: def(
         device: Device,
         resource_count: UInt32,
         p_resources: Ptr[ResourceDescriptorInfoEXT, ImmutAnyOrigin],
         p_descriptors: Ptr[HostAddressRangeEXT, ImmutAnyOrigin],
-    ) -> Result
-    var _cmd_bind_sampler_heap: fn(
+    ) thin abi("C") -> Result
+    var _cmd_bind_sampler_heap: def(
         command_buffer: CommandBuffer, p_bind_info: Ptr[BindHeapInfoEXT, ImmutAnyOrigin]
-    )
-    var _cmd_bind_resource_heap: fn(
+    ) thin abi("C")
+    var _cmd_bind_resource_heap: def(
         command_buffer: CommandBuffer, p_bind_info: Ptr[BindHeapInfoEXT, ImmutAnyOrigin]
-    )
-    var _cmd_push_data: fn(
+    ) thin abi("C")
+    var _cmd_push_data: def(
         command_buffer: CommandBuffer, p_push_data_info: Ptr[PushDataInfoEXT, ImmutAnyOrigin]
-    )
-    var _get_image_opaque_capture_data: fn(
+    ) thin abi("C")
+    var _get_image_opaque_capture_data: def(
         device: Device,
         image_count: UInt32,
         p_images: Ptr[Image, ImmutAnyOrigin],
         p_datas: Ptr[HostAddressRangeEXT, MutAnyOrigin],
-    ) -> Result
-    var _get_physical_device_descriptor_size: fn(
+    ) thin abi("C") -> Result
+    var _get_physical_device_descriptor_size: def(
         physical_device: PhysicalDevice, descriptor_type: DescriptorType
-    ) -> DeviceSize
-    var _register_custom_border_color: fn(
+    ) thin abi("C") -> DeviceSize
+    var _register_custom_border_color: def(
         device: Device,
         p_border_color: Ptr[SamplerCustomBorderColorCreateInfoEXT, ImmutAnyOrigin],
         request_index: Bool32,
         p_index: Ptr[UInt32, MutAnyOrigin],
-    ) -> Result
-    var _unregister_custom_border_color: fn(device: Device, index: UInt32)
-    var _get_tensor_opaque_capture_data: fn(
+    ) thin abi("C") -> Result
+    var _unregister_custom_border_color: def(device: Device, index: UInt32) thin abi("C")
+    var _get_tensor_opaque_capture_data: def(
         device: Device,
         tensor_count: UInt32,
         p_tensors: Ptr[TensorARM, ImmutAnyOrigin],
         p_datas: Ptr[HostAddressRangeEXT, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._write_sampler_descriptors = Ptr(to=get_device_proc_addr(
             device, "vkWriteSamplerDescriptorsEXT".as_c_string_slice()
@@ -998,7 +1000,7 @@ struct DescriptorHeap(Copyable):
             device, "vkGetTensorOpaqueCaptureDataARM".as_c_string_slice()
         )).bitcast[type_of(self._get_tensor_opaque_capture_data)]()[]
 
-    fn write_sampler_descriptors[
+    def write_sampler_descriptors[
         p_samplers_origin: ImmutOrigin = ImmutAnyOrigin,
         p_descriptors_origin: ImmutOrigin = ImmutAnyOrigin,
     ](
@@ -1019,7 +1021,7 @@ struct DescriptorHeap(Copyable):
             Ptr(to=p_descriptors).bitcast[Ptr[HostAddressRangeEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn write_resource_descriptors[
+    def write_resource_descriptors[
         p_resources_origin: ImmutOrigin = ImmutAnyOrigin,
         p_descriptors_origin: ImmutOrigin = ImmutAnyOrigin,
     ](
@@ -1040,28 +1042,28 @@ struct DescriptorHeap(Copyable):
             Ptr(to=p_descriptors).bitcast[Ptr[HostAddressRangeEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_bind_sampler_heap(self, command_buffer: CommandBuffer, bind_info: BindHeapInfoEXT):
+    def cmd_bind_sampler_heap(self, command_buffer: CommandBuffer, bind_info: BindHeapInfoEXT):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindSamplerHeapEXT.html
         """
         return self._cmd_bind_sampler_heap(command_buffer, Ptr(to=bind_info))
 
-    fn cmd_bind_resource_heap(self, command_buffer: CommandBuffer, bind_info: BindHeapInfoEXT):
+    def cmd_bind_resource_heap(self, command_buffer: CommandBuffer, bind_info: BindHeapInfoEXT):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBindResourceHeapEXT.html
         """
         return self._cmd_bind_resource_heap(command_buffer, Ptr(to=bind_info))
 
-    fn cmd_push_data(self, command_buffer: CommandBuffer, push_data_info: PushDataInfoEXT):
+    def cmd_push_data(self, command_buffer: CommandBuffer, push_data_info: PushDataInfoEXT):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdPushDataEXT.html
         """
         return self._cmd_push_data(command_buffer, Ptr(to=push_data_info))
 
-    fn get_image_opaque_capture_data[
+    def get_image_opaque_capture_data[
         p_images_origin: ImmutOrigin = ImmutAnyOrigin, p_datas_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -1081,7 +1083,7 @@ struct DescriptorHeap(Copyable):
             Ptr(to=p_datas).bitcast[Ptr[HostAddressRangeEXT, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_descriptor_size(
+    def get_physical_device_descriptor_size(
         self, physical_device: PhysicalDevice, descriptor_type: DescriptorType
     ) -> DeviceSize:
         """See official vulkan docs for details.
@@ -1090,7 +1092,7 @@ struct DescriptorHeap(Copyable):
         """
         return self._get_physical_device_descriptor_size(physical_device, descriptor_type)
 
-    fn register_custom_border_color(
+    def register_custom_border_color(
         self,
         device: Device,
         border_color: SamplerCustomBorderColorCreateInfoEXT,
@@ -1105,14 +1107,14 @@ struct DescriptorHeap(Copyable):
             device, Ptr(to=border_color), request_index, Ptr(to=index)
         )
 
-    fn unregister_custom_border_color(self, device: Device, index: UInt32):
+    def unregister_custom_border_color(self, device: Device, index: UInt32):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkUnregisterCustomBorderColorEXT.html
         """
         return self._unregister_custom_border_color(device, index)
 
-    fn get_tensor_opaque_capture_data[
+    def get_tensor_opaque_capture_data[
         p_tensors_origin: ImmutOrigin = ImmutAnyOrigin, p_datas_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -1135,20 +1137,20 @@ struct DescriptorHeap(Copyable):
 
 struct SampleLocations(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_sample_locations: fn(
+    var _cmd_set_sample_locations: def(
         command_buffer: CommandBuffer,
         p_sample_locations_info: Ptr[SampleLocationsInfoEXT, ImmutAnyOrigin],
-    )
-    var _get_physical_device_multisample_properties: fn(
+    ) thin abi("C")
+    var _get_physical_device_multisample_properties: def(
         physical_device: PhysicalDevice,
         samples: SampleCountFlagBits,
         p_multisample_properties: Ptr[MultisamplePropertiesEXT, MutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_sample_locations = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetSampleLocationsEXT".as_c_string_slice()
@@ -1157,7 +1159,7 @@ struct SampleLocations(Copyable):
             device, "vkGetPhysicalDeviceMultisamplePropertiesEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_multisample_properties)]()[]
 
-    fn cmd_set_sample_locations(
+    def cmd_set_sample_locations(
         self, command_buffer: CommandBuffer, sample_locations_info: SampleLocationsInfoEXT
     ):
         """See official vulkan docs for details.
@@ -1166,7 +1168,7 @@ struct SampleLocations(Copyable):
         """
         return self._cmd_set_sample_locations(command_buffer, Ptr(to=sample_locations_info))
 
-    fn get_physical_device_multisample_properties(
+    def get_physical_device_multisample_properties(
         self,
         physical_device: PhysicalDevice,
         samples: SampleCountFlagBits,
@@ -1183,22 +1185,22 @@ struct SampleLocations(Copyable):
 
 struct ImageDrmFormatModifier(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_image_drm_format_modifier_properties: fn(
+    var _get_image_drm_format_modifier_properties: def(
         device: Device,
         image: Image,
         p_properties: Ptr[ImageDrmFormatModifierPropertiesEXT, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_image_drm_format_modifier_properties = Ptr(to=get_device_proc_addr(
             device, "vkGetImageDrmFormatModifierPropertiesEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_image_drm_format_modifier_properties)]()[]
 
-    fn get_image_drm_format_modifier_properties(
+    def get_image_drm_format_modifier_properties(
         self, device: Device, image: Image, mut properties: ImageDrmFormatModifierPropertiesEXT
     ) -> Result:
         """See official vulkan docs for details.
@@ -1210,34 +1212,34 @@ struct ImageDrmFormatModifier(Copyable):
 
 struct ValidationCache(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_validation_cache: fn(
+    var _create_validation_cache: def(
         device: Device,
         p_create_info: Ptr[ValidationCacheCreateInfoEXT, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_validation_cache: Ptr[ValidationCacheEXT, MutAnyOrigin],
-    ) -> Result
-    var _destroy_validation_cache: fn(
+    ) thin abi("C") -> Result
+    var _destroy_validation_cache: def(
         device: Device,
         validation_cache: ValidationCacheEXT,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
-    var _merge_validation_caches: fn(
+    ) thin abi("C")
+    var _merge_validation_caches: def(
         device: Device,
         dst_cache: ValidationCacheEXT,
         src_cache_count: UInt32,
         p_src_caches: Ptr[ValidationCacheEXT, ImmutAnyOrigin],
-    ) -> Result
-    var _get_validation_cache_data: fn(
+    ) thin abi("C") -> Result
+    var _get_validation_cache_data: def(
         device: Device,
         validation_cache: ValidationCacheEXT,
         p_data_size: Ptr[UInt, MutAnyOrigin],
         p_data: Ptr[NoneType, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_validation_cache = Ptr(to=get_device_proc_addr(
             device, "vkCreateValidationCacheEXT".as_c_string_slice()
@@ -1252,7 +1254,7 @@ struct ValidationCache(Copyable):
             device, "vkGetValidationCacheDataEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_validation_cache_data)]()[]
 
-    fn create_validation_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_validation_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ValidationCacheCreateInfoEXT,
@@ -1270,7 +1272,7 @@ struct ValidationCache(Copyable):
             Ptr(to=validation_cache),
         )
 
-    fn destroy_validation_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_validation_cache[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         validation_cache: ValidationCacheEXT,
@@ -1286,7 +1288,7 @@ struct ValidationCache(Copyable):
             Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
         )
 
-    fn merge_validation_caches[p_src_caches_origin: ImmutOrigin = ImmutAnyOrigin](
+    def merge_validation_caches[p_src_caches_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         dst_cache: ValidationCacheEXT,
@@ -1304,7 +1306,7 @@ struct ValidationCache(Copyable):
             Ptr(to=p_src_caches).bitcast[Ptr[ValidationCacheEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn get_validation_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
+    def get_validation_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         validation_cache: ValidationCacheEXT,
@@ -1322,7 +1324,7 @@ struct ValidationCache(Copyable):
             Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
-    fn get_validation_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
+    def get_validation_cache_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, validation_cache: ValidationCacheEXT
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -1334,36 +1336,39 @@ struct ValidationCache(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_validation_cache_data(
-        device, validation_cache, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
-    )
+                device,
+                validation_cache,
+                Ptr(to=count),
+                Ptr[NoneType, MutUntrackedOrigin].unsafe_dangling(),
+            )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_validation_cache_data(
-        device, validation_cache, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
-    )
+                device, validation_cache, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
 
 struct ExternalMemoryHost(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_memory_host_pointer_properties: fn(
+    var _get_memory_host_pointer_properties: def(
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
         p_host_pointer: Ptr[NoneType, ImmutAnyOrigin],
         p_memory_host_pointer_properties: Ptr[MemoryHostPointerPropertiesEXT, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_host_pointer_properties = Ptr(to=get_device_proc_addr(
             device, "vkGetMemoryHostPointerPropertiesEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_memory_host_pointer_properties)]()[]
 
-    fn get_memory_host_pointer_properties[p_host_pointer_origin: ImmutOrigin = ImmutAnyOrigin](
+    def get_memory_host_pointer_properties[p_host_pointer_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
@@ -1384,23 +1389,23 @@ struct ExternalMemoryHost(Copyable):
 
 struct CalibratedTimestamps(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_physical_device_calibrateable_time_domains: fn(
+    var _get_physical_device_calibrateable_time_domains: def(
         physical_device: PhysicalDevice,
         p_time_domain_count: Ptr[UInt32, MutAnyOrigin],
         p_time_domains: Ptr[TimeDomainKHR, MutAnyOrigin],
-    ) -> Result
-    var _get_calibrated_timestamps: fn(
+    ) thin abi("C") -> Result
+    var _get_calibrated_timestamps: def(
         device: Device,
         timestamp_count: UInt32,
         p_timestamp_infos: Ptr[CalibratedTimestampInfoKHR, ImmutAnyOrigin],
         p_timestamps: Ptr[UInt64, MutAnyOrigin],
         p_max_deviation: Ptr[UInt64, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_calibrateable_time_domains = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceCalibrateableTimeDomainsKHR".as_c_string_slice()
@@ -1409,7 +1414,7 @@ struct CalibratedTimestamps(Copyable):
             device, "vkGetCalibratedTimestampsKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_calibrated_timestamps)]()[]
 
-    fn get_physical_device_calibrateable_time_domains[
+    def get_physical_device_calibrateable_time_domains[
         p_time_domains_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -1427,7 +1432,7 @@ struct CalibratedTimestamps(Copyable):
             Ptr(to=p_time_domains).bitcast[Ptr[TimeDomainKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_calibrateable_time_domains[
+    def get_physical_device_calibrateable_time_domains[
         p_time_domains_origin: MutOrigin = MutAnyOrigin
     ](
         self, physical_device: PhysicalDevice
@@ -1441,17 +1446,19 @@ struct CalibratedTimestamps(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_calibrateable_time_domains(
-        physical_device, Ptr(to=count), Ptr[TimeDomainKHR, MutExternalOrigin]()
-    )
+                physical_device,
+                Ptr(to=count),
+                Ptr[TimeDomainKHR, MutUntrackedOrigin].unsafe_dangling(),
+            )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_calibrateable_time_domains(
-        physical_device, Ptr(to=count), list.unsafe_ptr()
-    )
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn get_calibrated_timestamps[
+    def get_calibrated_timestamps[
         p_timestamp_infos_origin: ImmutOrigin = ImmutAnyOrigin,
         p_timestamps_origin: MutOrigin = MutAnyOrigin,
     ](
@@ -1477,31 +1484,31 @@ struct CalibratedTimestamps(Copyable):
 
 struct PresentTiming(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _set_swapchain_present_timing_queue_size: fn(
+    var _set_swapchain_present_timing_queue_size: def(
         device: Device, swapchain: SwapchainKHR, size: UInt32
-    ) -> Result
-    var _get_swapchain_timing_properties: fn(
+    ) thin abi("C") -> Result
+    var _get_swapchain_timing_properties: def(
         device: Device,
         swapchain: SwapchainKHR,
         p_swapchain_timing_properties: Ptr[SwapchainTimingPropertiesEXT, MutAnyOrigin],
         p_swapchain_timing_properties_counter: Ptr[UInt64, MutAnyOrigin],
-    ) -> Result
-    var _get_swapchain_time_domain_properties: fn(
+    ) thin abi("C") -> Result
+    var _get_swapchain_time_domain_properties: def(
         device: Device,
         swapchain: SwapchainKHR,
         p_swapchain_time_domain_properties: Ptr[SwapchainTimeDomainPropertiesEXT, MutAnyOrigin],
         p_time_domains_counter: Ptr[UInt64, MutAnyOrigin],
-    ) -> Result
-    var _get_past_presentation_timing: fn(
+    ) thin abi("C") -> Result
+    var _get_past_presentation_timing: def(
         device: Device,
         p_past_presentation_timing_info: Ptr[PastPresentationTimingInfoEXT, ImmutAnyOrigin],
         p_past_presentation_timing_properties: Ptr[PastPresentationTimingPropertiesEXT, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._set_swapchain_present_timing_queue_size = Ptr(to=get_device_proc_addr(
             device, "vkSetSwapchainPresentTimingQueueSizeEXT".as_c_string_slice()
@@ -1516,7 +1523,7 @@ struct PresentTiming(Copyable):
             device, "vkGetPastPresentationTimingEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_past_presentation_timing)]()[]
 
-    fn set_swapchain_present_timing_queue_size(
+    def set_swapchain_present_timing_queue_size(
         self, device: Device, swapchain: SwapchainKHR, size: UInt32
     ) -> Result:
         """See official vulkan docs for details.
@@ -1525,7 +1532,7 @@ struct PresentTiming(Copyable):
         """
         return self._set_swapchain_present_timing_queue_size(device, swapchain, size)
 
-    fn get_swapchain_timing_properties[
+    def get_swapchain_timing_properties[
         p_swapchain_timing_properties_counter_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -1545,7 +1552,7 @@ struct PresentTiming(Copyable):
             Ptr(to=p_swapchain_timing_properties_counter).bitcast[Ptr[UInt64, MutAnyOrigin]]()[],
         )
 
-    fn get_swapchain_time_domain_properties[
+    def get_swapchain_time_domain_properties[
         p_time_domains_counter_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -1565,7 +1572,7 @@ struct PresentTiming(Copyable):
             Ptr(to=p_time_domains_counter).bitcast[Ptr[UInt64, MutAnyOrigin]]()[],
         )
 
-    fn get_past_presentation_timing(
+    def get_past_presentation_timing(
         self,
         device: Device,
         past_presentation_timing_info: PastPresentationTimingInfoEXT,
@@ -1582,23 +1589,23 @@ struct PresentTiming(Copyable):
 
 struct MetalSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_metal_surface: fn(
+    var _create_metal_surface: def(
         instance: Instance,
         p_create_info: Ptr[MetalSurfaceCreateInfoEXT, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_metal_surface = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateMetalSurfaceEXT".as_c_string_slice()
         )).bitcast[type_of(self._create_metal_surface)]()[]
 
-    fn create_metal_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_metal_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: MetalSurfaceCreateInfoEXT,
@@ -1619,20 +1626,20 @@ struct MetalSurface(Copyable):
 
 struct BufferDeviceAddress(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_buffer_device_address: fn(
+    var _get_buffer_device_address: def(
         device: Device, p_info: Ptr[BufferDeviceAddressInfo, ImmutAnyOrigin]
-    ) -> DeviceAddress
+    ) thin abi("C") -> DeviceAddress
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_buffer_device_address = Ptr(to=get_device_proc_addr(
             device, "vkGetBufferDeviceAddress".as_c_string_slice()
         )).bitcast[type_of(self._get_buffer_device_address)]()[]
 
-    fn get_buffer_device_address(
+    def get_buffer_device_address(
         self, device: Device, info: BufferDeviceAddressInfo
     ) -> DeviceAddress:
         """See official vulkan docs for details.
@@ -1644,22 +1651,22 @@ struct BufferDeviceAddress(Copyable):
 
 struct ToolingInfo(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_physical_device_tool_properties: fn(
+    var _get_physical_device_tool_properties: def(
         physical_device: PhysicalDevice,
         p_tool_count: Ptr[UInt32, MutAnyOrigin],
         p_tool_properties: Ptr[PhysicalDeviceToolProperties, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_tool_properties = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceToolProperties".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_tool_properties)]()[]
 
-    fn get_physical_device_tool_properties[p_tool_properties_origin: MutOrigin = MutAnyOrigin](
+    def get_physical_device_tool_properties[p_tool_properties_origin: MutOrigin = MutAnyOrigin](
         self,
         physical_device: PhysicalDevice,
         mut tool_count: UInt32,
@@ -1675,7 +1682,7 @@ struct ToolingInfo(Copyable):
             Ptr(to=p_tool_properties).bitcast[Ptr[PhysicalDeviceToolProperties, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_tool_properties[p_tool_properties_origin: MutOrigin = MutAnyOrigin](
+    def get_physical_device_tool_properties[p_tool_properties_origin: MutOrigin = MutAnyOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[PhysicalDeviceToolProperties]:
         """See official vulkan docs for details.
@@ -1687,37 +1694,43 @@ struct ToolingInfo(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_tool_properties(
-        physical_device, Ptr(to=count), Ptr[PhysicalDeviceToolProperties, MutExternalOrigin]()
-    )
+                physical_device,
+                Ptr(to=count),
+                Ptr[PhysicalDeviceToolProperties, MutUntrackedOrigin].unsafe_dangling(),
+            )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_tool_properties(
-        physical_device, Ptr(to=count), list.unsafe_ptr()
-    )
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
 
 struct FullScreenExclusive(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_physical_device_surface_present_modes_2: fn(
+    var _get_physical_device_surface_present_modes_2: def(
         physical_device: PhysicalDevice,
         p_surface_info: Ptr[PhysicalDeviceSurfaceInfo2KHR, ImmutAnyOrigin],
         p_present_mode_count: Ptr[UInt32, MutAnyOrigin],
         p_present_modes: Ptr[PresentModeKHR, MutAnyOrigin],
-    ) -> Result
-    var _acquire_full_screen_exclusive_mode: fn(device: Device, swapchain: SwapchainKHR) -> Result
-    var _release_full_screen_exclusive_mode: fn(device: Device, swapchain: SwapchainKHR) -> Result
-    var _get_device_group_surface_present_modes_2: fn(
+    ) thin abi("C") -> Result
+    var _acquire_full_screen_exclusive_mode: def(
+        device: Device, swapchain: SwapchainKHR
+    ) thin abi("C") -> Result
+    var _release_full_screen_exclusive_mode: def(
+        device: Device, swapchain: SwapchainKHR
+    ) thin abi("C") -> Result
+    var _get_device_group_surface_present_modes_2: def(
         device: Device,
         p_surface_info: Ptr[PhysicalDeviceSurfaceInfo2KHR, ImmutAnyOrigin],
         p_modes: Ptr[DeviceGroupPresentModeFlagsKHR, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_surface_present_modes_2 = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceSurfacePresentModes2EXT".as_c_string_slice()
@@ -1732,7 +1745,7 @@ struct FullScreenExclusive(Copyable):
             device, "vkGetDeviceGroupSurfacePresentModes2EXT".as_c_string_slice()
         )).bitcast[type_of(self._get_device_group_surface_present_modes_2)]()[]
 
-    fn get_physical_device_surface_present_modes_2[
+    def get_physical_device_surface_present_modes_2[
         p_present_modes_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -1752,7 +1765,7 @@ struct FullScreenExclusive(Copyable):
             Ptr(to=p_present_modes).bitcast[Ptr[PresentModeKHR, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_surface_present_modes_2[
+    def get_physical_device_surface_present_modes_2[
         p_present_modes_origin: MutOrigin = MutAnyOrigin
     ](
         self, physical_device: PhysicalDevice, surface_info: PhysicalDeviceSurfaceInfo2KHR
@@ -1766,34 +1779,38 @@ struct FullScreenExclusive(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_surface_present_modes_2(
-        physical_device,
-        Ptr(to=surface_info),
-        Ptr(to=count),
-        Ptr[PresentModeKHR, MutExternalOrigin](),
-    )
+                physical_device,
+                Ptr(to=surface_info),
+                Ptr(to=count),
+                Ptr[PresentModeKHR, MutUntrackedOrigin].unsafe_dangling(),
+            )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_surface_present_modes_2(
-        physical_device, Ptr(to=surface_info), Ptr(to=count), list.unsafe_ptr()
-    )
+                physical_device, Ptr(to=surface_info), Ptr(to=count), list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn acquire_full_screen_exclusive_mode(self, device: Device, swapchain: SwapchainKHR) -> Result:
+    def acquire_full_screen_exclusive_mode(
+        self, device: Device, swapchain: SwapchainKHR
+    ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireFullScreenExclusiveModeEXT.html
         """
         return self._acquire_full_screen_exclusive_mode(device, swapchain)
 
-    fn release_full_screen_exclusive_mode(self, device: Device, swapchain: SwapchainKHR) -> Result:
+    def release_full_screen_exclusive_mode(
+        self, device: Device, swapchain: SwapchainKHR
+    ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkReleaseFullScreenExclusiveModeEXT.html
         """
         return self._release_full_screen_exclusive_mode(device, swapchain)
 
-    fn get_device_group_surface_present_modes_2(
+    def get_device_group_surface_present_modes_2(
         self,
         device: Device,
         surface_info: PhysicalDeviceSurfaceInfo2KHR,
@@ -1808,23 +1825,23 @@ struct FullScreenExclusive(Copyable):
 
 struct HeadlessSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_headless_surface: fn(
+    var _create_headless_surface: def(
         instance: Instance,
         p_create_info: Ptr[HeadlessSurfaceCreateInfoEXT, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_headless_surface = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateHeadlessSurfaceEXT".as_c_string_slice()
         )).bitcast[type_of(self._create_headless_surface)]()[]
 
-    fn create_headless_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_headless_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: HeadlessSurfaceCreateInfoEXT,
@@ -1845,20 +1862,20 @@ struct HeadlessSurface(Copyable):
 
 struct LineRasterization(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_line_stipple: fn(
+    var _cmd_set_line_stipple: def(
         command_buffer: CommandBuffer, line_stipple_factor: UInt32, line_stipple_pattern: UInt16
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_line_stipple = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetLineStipple".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_line_stipple)]()[]
 
-    fn cmd_set_line_stipple(
+    def cmd_set_line_stipple(
         self,
         command_buffer: CommandBuffer,
         line_stipple_factor: UInt32,
@@ -1873,20 +1890,20 @@ struct LineRasterization(Copyable):
 
 struct HostQueryReset(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _reset_query_pool: fn(
+    var _reset_query_pool: def(
         device: Device, query_pool: QueryPool, first_query: UInt32, query_count: UInt32
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._reset_query_pool = Ptr(to=get_device_proc_addr(
             device, "vkResetQueryPool".as_c_string_slice()
         )).bitcast[type_of(self._reset_query_pool)]()[]
 
-    fn reset_query_pool(
+    def reset_query_pool(
         self, device: Device, query_pool: QueryPool, first_query: UInt32, query_count: UInt32
     ):
         """See official vulkan docs for details.
@@ -1898,20 +1915,20 @@ struct HostQueryReset(Copyable):
 
 struct ExtendedDynamicState(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_cull_mode: fn(command_buffer: CommandBuffer, cull_mode: CullModeFlags)
-    var _cmd_set_front_face: fn(command_buffer: CommandBuffer, front_face: FrontFace)
-    var _cmd_set_primitive_topology: fn(
+    var _cmd_set_cull_mode: def(command_buffer: CommandBuffer, cull_mode: CullModeFlags) thin abi("C")
+    var _cmd_set_front_face: def(command_buffer: CommandBuffer, front_face: FrontFace) thin abi("C")
+    var _cmd_set_primitive_topology: def(
         command_buffer: CommandBuffer, primitive_topology: PrimitiveTopology
-    )
-    var _cmd_set_viewport_with_count: fn(
+    ) thin abi("C")
+    var _cmd_set_viewport_with_count: def(
         command_buffer: CommandBuffer,
         viewport_count: UInt32,
         p_viewports: Ptr[Viewport, ImmutAnyOrigin],
-    )
-    var _cmd_set_scissor_with_count: fn(
+    ) thin abi("C")
+    var _cmd_set_scissor_with_count: def(
         command_buffer: CommandBuffer, scissor_count: UInt32, p_scissors: Ptr[Rect2D, ImmutAnyOrigin]
-    )
-    var _cmd_bind_vertex_buffers_2: fn(
+    ) thin abi("C")
+    var _cmd_bind_vertex_buffers_2: def(
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
@@ -1919,27 +1936,35 @@ struct ExtendedDynamicState(Copyable):
         p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
         p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
         p_strides: Ptr[DeviceSize, ImmutAnyOrigin],
-    )
-    var _cmd_set_depth_test_enable: fn(command_buffer: CommandBuffer, depth_test_enable: Bool32)
-    var _cmd_set_depth_write_enable: fn(command_buffer: CommandBuffer, depth_write_enable: Bool32)
-    var _cmd_set_depth_compare_op: fn(command_buffer: CommandBuffer, depth_compare_op: CompareOp)
-    var _cmd_set_depth_bounds_test_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_depth_test_enable: def(
+        command_buffer: CommandBuffer, depth_test_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_depth_write_enable: def(
+        command_buffer: CommandBuffer, depth_write_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_depth_compare_op: def(
+        command_buffer: CommandBuffer, depth_compare_op: CompareOp
+    ) thin abi("C")
+    var _cmd_set_depth_bounds_test_enable: def(
         command_buffer: CommandBuffer, depth_bounds_test_enable: Bool32
-    )
-    var _cmd_set_stencil_test_enable: fn(command_buffer: CommandBuffer, stencil_test_enable: Bool32)
-    var _cmd_set_stencil_op: fn(
+    ) thin abi("C")
+    var _cmd_set_stencil_test_enable: def(
+        command_buffer: CommandBuffer, stencil_test_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_stencil_op: def(
         command_buffer: CommandBuffer,
         face_mask: StencilFaceFlags,
         fail_op: StencilOp,
         pass_op: StencilOp,
         depth_fail_op: StencilOp,
         compare_op: CompareOp,
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_cull_mode = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetCullMode".as_c_string_slice()
@@ -1978,21 +2003,21 @@ struct ExtendedDynamicState(Copyable):
             device, "vkCmdSetStencilOp".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_stencil_op)]()[]
 
-    fn cmd_set_cull_mode(self, command_buffer: CommandBuffer, cull_mode: CullModeFlags):
+    def cmd_set_cull_mode(self, command_buffer: CommandBuffer, cull_mode: CullModeFlags):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCullMode.html
         """
         return self._cmd_set_cull_mode(command_buffer, cull_mode)
 
-    fn cmd_set_front_face(self, command_buffer: CommandBuffer, front_face: FrontFace):
+    def cmd_set_front_face(self, command_buffer: CommandBuffer, front_face: FrontFace):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetFrontFace.html
         """
         return self._cmd_set_front_face(command_buffer, front_face)
 
-    fn cmd_set_primitive_topology(
+    def cmd_set_primitive_topology(
         self, command_buffer: CommandBuffer, primitive_topology: PrimitiveTopology
     ):
         """See official vulkan docs for details.
@@ -2001,7 +2026,7 @@ struct ExtendedDynamicState(Copyable):
         """
         return self._cmd_set_primitive_topology(command_buffer, primitive_topology)
 
-    fn cmd_set_viewport_with_count[p_viewports_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_viewport_with_count[p_viewports_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         viewport_count: UInt32,
@@ -2015,7 +2040,7 @@ struct ExtendedDynamicState(Copyable):
             command_buffer, viewport_count, Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutAnyOrigin]]()[]
         )
 
-    fn cmd_set_scissor_with_count[p_scissors_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_scissor_with_count[p_scissors_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         scissor_count: UInt32,
@@ -2029,7 +2054,7 @@ struct ExtendedDynamicState(Copyable):
             command_buffer, scissor_count, Ptr(to=p_scissors).bitcast[Ptr[Rect2D, ImmutAnyOrigin]]()[]
         )
 
-    fn cmd_bind_vertex_buffers_2[
+    def cmd_bind_vertex_buffers_2[
         p_buffers_origin: ImmutOrigin = ImmutAnyOrigin,
         p_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
         p_sizes_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -2058,28 +2083,30 @@ struct ExtendedDynamicState(Copyable):
             Ptr(to=p_strides).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_depth_test_enable(self, command_buffer: CommandBuffer, depth_test_enable: Bool32):
+    def cmd_set_depth_test_enable(self, command_buffer: CommandBuffer, depth_test_enable: Bool32):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthTestEnable.html
         """
         return self._cmd_set_depth_test_enable(command_buffer, depth_test_enable)
 
-    fn cmd_set_depth_write_enable(self, command_buffer: CommandBuffer, depth_write_enable: Bool32):
+    def cmd_set_depth_write_enable(
+        self, command_buffer: CommandBuffer, depth_write_enable: Bool32
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthWriteEnable.html
         """
         return self._cmd_set_depth_write_enable(command_buffer, depth_write_enable)
 
-    fn cmd_set_depth_compare_op(self, command_buffer: CommandBuffer, depth_compare_op: CompareOp):
+    def cmd_set_depth_compare_op(self, command_buffer: CommandBuffer, depth_compare_op: CompareOp):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthCompareOp.html
         """
         return self._cmd_set_depth_compare_op(command_buffer, depth_compare_op)
 
-    fn cmd_set_depth_bounds_test_enable(
+    def cmd_set_depth_bounds_test_enable(
         self, command_buffer: CommandBuffer, depth_bounds_test_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -2088,7 +2115,7 @@ struct ExtendedDynamicState(Copyable):
         """
         return self._cmd_set_depth_bounds_test_enable(command_buffer, depth_bounds_test_enable)
 
-    fn cmd_set_stencil_test_enable(
+    def cmd_set_stencil_test_enable(
         self, command_buffer: CommandBuffer, stencil_test_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -2097,7 +2124,7 @@ struct ExtendedDynamicState(Copyable):
         """
         return self._cmd_set_stencil_test_enable(command_buffer, stencil_test_enable)
 
-    fn cmd_set_stencil_op(
+    def cmd_set_stencil_op(
         self,
         command_buffer: CommandBuffer,
         face_mask: StencilFaceFlags,
@@ -2117,31 +2144,31 @@ struct ExtendedDynamicState(Copyable):
 
 struct HostImageCopy(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _copy_memory_to_image: fn(
+    var _copy_memory_to_image: def(
         device: Device, p_copy_memory_to_image_info: Ptr[CopyMemoryToImageInfo, ImmutAnyOrigin]
-    ) -> Result
-    var _copy_image_to_memory: fn(
+    ) thin abi("C") -> Result
+    var _copy_image_to_memory: def(
         device: Device, p_copy_image_to_memory_info: Ptr[CopyImageToMemoryInfo, ImmutAnyOrigin]
-    ) -> Result
-    var _copy_image_to_image: fn(
+    ) thin abi("C") -> Result
+    var _copy_image_to_image: def(
         device: Device, p_copy_image_to_image_info: Ptr[CopyImageToImageInfo, ImmutAnyOrigin]
-    ) -> Result
-    var _transition_image_layout: fn(
+    ) thin abi("C") -> Result
+    var _transition_image_layout: def(
         device: Device,
         transition_count: UInt32,
         p_transitions: Ptr[HostImageLayoutTransitionInfo, ImmutAnyOrigin],
-    ) -> Result
-    var _get_image_subresource_layout_2: fn(
+    ) thin abi("C") -> Result
+    var _get_image_subresource_layout_2: def(
         device: Device,
         image: Image,
         p_subresource: Ptr[ImageSubresource2, ImmutAnyOrigin],
         p_layout: Ptr[SubresourceLayout2, MutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._copy_memory_to_image = Ptr(to=get_device_proc_addr(
             device, "vkCopyMemoryToImage".as_c_string_slice()
@@ -2159,7 +2186,7 @@ struct HostImageCopy(Copyable):
             device, "vkGetImageSubresourceLayout2".as_c_string_slice()
         )).bitcast[type_of(self._get_image_subresource_layout_2)]()[]
 
-    fn copy_memory_to_image(
+    def copy_memory_to_image(
         self, device: Device, copy_memory_to_image_info: CopyMemoryToImageInfo
     ) -> Result:
         """See official vulkan docs for details.
@@ -2168,7 +2195,7 @@ struct HostImageCopy(Copyable):
         """
         return self._copy_memory_to_image(device, Ptr(to=copy_memory_to_image_info))
 
-    fn copy_image_to_memory(
+    def copy_image_to_memory(
         self, device: Device, copy_image_to_memory_info: CopyImageToMemoryInfo
     ) -> Result:
         """See official vulkan docs for details.
@@ -2177,7 +2204,7 @@ struct HostImageCopy(Copyable):
         """
         return self._copy_image_to_memory(device, Ptr(to=copy_image_to_memory_info))
 
-    fn copy_image_to_image(
+    def copy_image_to_image(
         self, device: Device, copy_image_to_image_info: CopyImageToImageInfo
     ) -> Result:
         """See official vulkan docs for details.
@@ -2186,7 +2213,7 @@ struct HostImageCopy(Copyable):
         """
         return self._copy_image_to_image(device, Ptr(to=copy_image_to_image_info))
 
-    fn transition_image_layout[p_transitions_origin: ImmutOrigin = ImmutAnyOrigin](
+    def transition_image_layout[p_transitions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         transition_count: UInt32,
@@ -2202,7 +2229,7 @@ struct HostImageCopy(Copyable):
             Ptr(to=p_transitions).bitcast[Ptr[HostImageLayoutTransitionInfo, ImmutAnyOrigin]]()[],
         )
 
-    fn get_image_subresource_layout_2(
+    def get_image_subresource_layout_2(
         self,
         device: Device,
         image: Image,
@@ -2218,20 +2245,20 @@ struct HostImageCopy(Copyable):
 
 struct SwapchainMaintenance1(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _release_swapchain_images: fn(
+    var _release_swapchain_images: def(
         device: Device, p_release_info: Ptr[ReleaseSwapchainImagesInfoKHR, ImmutAnyOrigin]
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._release_swapchain_images = Ptr(to=get_device_proc_addr(
             device, "vkReleaseSwapchainImagesKHR".as_c_string_slice()
         )).bitcast[type_of(self._release_swapchain_images)]()[]
 
-    fn release_swapchain_images(
+    def release_swapchain_images(
         self, device: Device, release_info: ReleaseSwapchainImagesInfoKHR
     ) -> Result:
         """See official vulkan docs for details.
@@ -2243,20 +2270,20 @@ struct SwapchainMaintenance1(Copyable):
 
 struct DepthBiasControl(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_depth_bias_2: fn(
+    var _cmd_set_depth_bias_2: def(
         command_buffer: CommandBuffer, p_depth_bias_info: Ptr[DepthBiasInfoEXT, ImmutAnyOrigin]
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_depth_bias_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDepthBias2EXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_depth_bias_2)]()[]
 
-    fn cmd_set_depth_bias_2(
+    def cmd_set_depth_bias_2(
         self, command_buffer: CommandBuffer, depth_bias_info: DepthBiasInfoEXT
     ):
         """See official vulkan docs for details.
@@ -2268,20 +2295,20 @@ struct DepthBiasControl(Copyable):
 
 struct AcquireDrmDisplay(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _acquire_drm_display: fn(
+    var _acquire_drm_display: def(
         physical_device: PhysicalDevice, drm_fd: Int32, display: DisplayKHR
-    ) -> Result
-    var _get_drm_display: fn(
+    ) thin abi("C") -> Result
+    var _get_drm_display: def(
         physical_device: PhysicalDevice,
         drm_fd: Int32,
         connector_id: UInt32,
         display: Ptr[DisplayKHR, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._acquire_drm_display = Ptr(to=get_instance_proc_addr(
             instance, "vkAcquireDrmDisplayEXT".as_c_string_slice()
@@ -2290,7 +2317,7 @@ struct AcquireDrmDisplay(Copyable):
             instance, "vkGetDrmDisplayEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_drm_display)]()[]
 
-    fn acquire_drm_display(
+    def acquire_drm_display(
         self, physical_device: PhysicalDevice, drm_fd: Int32, display: DisplayKHR
     ) -> Result:
         """See official vulkan docs for details.
@@ -2299,7 +2326,7 @@ struct AcquireDrmDisplay(Copyable):
         """
         return self._acquire_drm_display(physical_device, drm_fd, display)
 
-    fn get_drm_display(
+    def get_drm_display(
         self,
         physical_device: PhysicalDevice,
         drm_fd: Int32,
@@ -2315,36 +2342,36 @@ struct AcquireDrmDisplay(Copyable):
 
 struct PrivateData(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_private_data_slot: fn(
+    var _create_private_data_slot: def(
         device: Device,
         p_create_info: Ptr[PrivateDataSlotCreateInfo, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_private_data_slot: Ptr[PrivateDataSlot, MutAnyOrigin],
-    ) -> Result
-    var _destroy_private_data_slot: fn(
+    ) thin abi("C") -> Result
+    var _destroy_private_data_slot: def(
         device: Device,
         private_data_slot: PrivateDataSlot,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
-    var _set_private_data: fn(
+    ) thin abi("C")
+    var _set_private_data: def(
         device: Device,
         object_type: ObjectType,
         object_handle: UInt64,
         private_data_slot: PrivateDataSlot,
         data: UInt64,
-    ) -> Result
-    var _get_private_data: fn(
+    ) thin abi("C") -> Result
+    var _get_private_data: def(
         device: Device,
         object_type: ObjectType,
         object_handle: UInt64,
         private_data_slot: PrivateDataSlot,
         p_data: Ptr[UInt64, MutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_private_data_slot = Ptr(to=get_device_proc_addr(
             device, "vkCreatePrivateDataSlot".as_c_string_slice()
@@ -2359,7 +2386,7 @@ struct PrivateData(Copyable):
             device, "vkGetPrivateData".as_c_string_slice()
         )).bitcast[type_of(self._get_private_data)]()[]
 
-    fn create_private_data_slot[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_private_data_slot[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: PrivateDataSlotCreateInfo,
@@ -2377,7 +2404,7 @@ struct PrivateData(Copyable):
             Ptr(to=private_data_slot),
         )
 
-    fn destroy_private_data_slot[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_private_data_slot[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         private_data_slot: PrivateDataSlot,
@@ -2393,7 +2420,7 @@ struct PrivateData(Copyable):
             Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
         )
 
-    fn set_private_data(
+    def set_private_data(
         self,
         device: Device,
         object_type: ObjectType,
@@ -2407,7 +2434,7 @@ struct PrivateData(Copyable):
         """
         return self._set_private_data(device, object_type, object_handle, private_data_slot, data)
 
-    fn get_private_data(
+    def get_private_data(
         self,
         device: Device,
         object_type: ObjectType,
@@ -2424,20 +2451,20 @@ struct PrivateData(Copyable):
 
 struct MetalObjects(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _export_metal_objects: fn(
+    var _export_metal_objects: def(
         device: Device, p_metal_objects_info: Ptr[ExportMetalObjectsInfoEXT, MutAnyOrigin]
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._export_metal_objects = Ptr(to=get_device_proc_addr(
             device, "vkExportMetalObjectsEXT".as_c_string_slice()
         )).bitcast[type_of(self._export_metal_objects)]()[]
 
-    fn export_metal_objects(
+    def export_metal_objects(
         self, device: Device, mut metal_objects_info: ExportMetalObjectsInfoEXT
     ):
         """See official vulkan docs for details.
@@ -2449,29 +2476,29 @@ struct MetalObjects(Copyable):
 
 struct DescriptorBuffer(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_descriptor_set_layout_size: fn(
+    var _get_descriptor_set_layout_size: def(
         device: Device,
         layout: DescriptorSetLayout,
         p_layout_size_in_bytes: Ptr[DeviceSize, MutAnyOrigin],
-    )
-    var _get_descriptor_set_layout_binding_offset: fn(
+    ) thin abi("C")
+    var _get_descriptor_set_layout_binding_offset: def(
         device: Device,
         layout: DescriptorSetLayout,
         binding: UInt32,
         p_offset: Ptr[DeviceSize, MutAnyOrigin],
-    )
-    var _get_descriptor: fn(
+    ) thin abi("C")
+    var _get_descriptor: def(
         device: Device,
         p_descriptor_info: Ptr[DescriptorGetInfoEXT, ImmutAnyOrigin],
         data_size: UInt,
         p_descriptor: Ptr[NoneType, MutAnyOrigin],
-    )
-    var _cmd_bind_descriptor_buffers: fn(
+    ) thin abi("C")
+    var _cmd_bind_descriptor_buffers: def(
         command_buffer: CommandBuffer,
         buffer_count: UInt32,
         p_binding_infos: Ptr[DescriptorBufferBindingInfoEXT, ImmutAnyOrigin],
-    )
-    var _cmd_set_descriptor_buffer_offsets: fn(
+    ) thin abi("C")
+    var _cmd_set_descriptor_buffer_offsets: def(
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
@@ -2479,43 +2506,43 @@ struct DescriptorBuffer(Copyable):
         set_count: UInt32,
         p_buffer_indices: Ptr[UInt32, ImmutAnyOrigin],
         p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
-    )
-    var _cmd_bind_descriptor_buffer_embedded_samplers: fn(
+    ) thin abi("C")
+    var _cmd_bind_descriptor_buffer_embedded_samplers: def(
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
         layout: PipelineLayout,
         set: UInt32,
-    )
-    var _get_buffer_opaque_capture_descriptor_data: fn(
+    ) thin abi("C")
+    var _get_buffer_opaque_capture_descriptor_data: def(
         device: Device,
         p_info: Ptr[BufferCaptureDescriptorDataInfoEXT, ImmutAnyOrigin],
         p_data: Ptr[NoneType, MutAnyOrigin],
-    ) -> Result
-    var _get_image_opaque_capture_descriptor_data: fn(
+    ) thin abi("C") -> Result
+    var _get_image_opaque_capture_descriptor_data: def(
         device: Device,
         p_info: Ptr[ImageCaptureDescriptorDataInfoEXT, ImmutAnyOrigin],
         p_data: Ptr[NoneType, MutAnyOrigin],
-    ) -> Result
-    var _get_image_view_opaque_capture_descriptor_data: fn(
+    ) thin abi("C") -> Result
+    var _get_image_view_opaque_capture_descriptor_data: def(
         device: Device,
         p_info: Ptr[ImageViewCaptureDescriptorDataInfoEXT, ImmutAnyOrigin],
         p_data: Ptr[NoneType, MutAnyOrigin],
-    ) -> Result
-    var _get_sampler_opaque_capture_descriptor_data: fn(
+    ) thin abi("C") -> Result
+    var _get_sampler_opaque_capture_descriptor_data: def(
         device: Device,
         p_info: Ptr[SamplerCaptureDescriptorDataInfoEXT, ImmutAnyOrigin],
         p_data: Ptr[NoneType, MutAnyOrigin],
-    ) -> Result
-    var _get_acceleration_structure_opaque_capture_descriptor_data: fn(
+    ) thin abi("C") -> Result
+    var _get_acceleration_structure_opaque_capture_descriptor_data: def(
         device: Device,
         p_info: Ptr[AccelerationStructureCaptureDescriptorDataInfoEXT, ImmutAnyOrigin],
         p_data: Ptr[NoneType, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_descriptor_set_layout_size = Ptr(to=get_device_proc_addr(
             device, "vkGetDescriptorSetLayoutSizeEXT".as_c_string_slice()
@@ -2551,7 +2578,7 @@ struct DescriptorBuffer(Copyable):
             device, "vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_acceleration_structure_opaque_capture_descriptor_data)]()[]
 
-    fn get_descriptor_set_layout_size(
+    def get_descriptor_set_layout_size(
         self, device: Device, layout: DescriptorSetLayout, mut layout_size_in_bytes: DeviceSize
     ):
         """See official vulkan docs for details.
@@ -2560,7 +2587,7 @@ struct DescriptorBuffer(Copyable):
         """
         return self._get_descriptor_set_layout_size(device, layout, Ptr(to=layout_size_in_bytes))
 
-    fn get_descriptor_set_layout_binding_offset(
+    def get_descriptor_set_layout_binding_offset(
         self, device: Device, layout: DescriptorSetLayout, binding: UInt32, mut offset: DeviceSize
     ):
         """See official vulkan docs for details.
@@ -2569,7 +2596,7 @@ struct DescriptorBuffer(Copyable):
         """
         return self._get_descriptor_set_layout_binding_offset(device, layout, binding, Ptr(to=offset))
 
-    fn get_descriptor[p_descriptor_origin: MutOrigin = MutAnyOrigin](
+    def get_descriptor[p_descriptor_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         descriptor_info: DescriptorGetInfoEXT,
@@ -2587,7 +2614,7 @@ struct DescriptorBuffer(Copyable):
             Ptr(to=p_descriptor).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
-    fn cmd_bind_descriptor_buffers[p_binding_infos_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_bind_descriptor_buffers[p_binding_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         buffer_count: UInt32,
@@ -2603,7 +2630,7 @@ struct DescriptorBuffer(Copyable):
             Ptr(to=p_binding_infos).bitcast[Ptr[DescriptorBufferBindingInfoEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_descriptor_buffer_offsets[
+    def cmd_set_descriptor_buffer_offsets[
         p_buffer_indices_origin: ImmutOrigin = ImmutAnyOrigin,
         p_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
     ](
@@ -2630,7 +2657,7 @@ struct DescriptorBuffer(Copyable):
             Ptr(to=p_offsets).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_bind_descriptor_buffer_embedded_samplers(
+    def cmd_bind_descriptor_buffer_embedded_samplers(
         self,
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
@@ -2645,7 +2672,7 @@ struct DescriptorBuffer(Copyable):
             command_buffer, pipeline_bind_point, layout, set
         )
 
-    fn get_buffer_opaque_capture_descriptor_data[p_data_origin: MutOrigin = MutAnyOrigin](
+    def get_buffer_opaque_capture_descriptor_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         info: BufferCaptureDescriptorDataInfoEXT,
@@ -2659,7 +2686,7 @@ struct DescriptorBuffer(Copyable):
             device, Ptr(to=info), Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[]
         )
 
-    fn get_image_opaque_capture_descriptor_data[p_data_origin: MutOrigin = MutAnyOrigin](
+    def get_image_opaque_capture_descriptor_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         info: ImageCaptureDescriptorDataInfoEXT,
@@ -2673,7 +2700,7 @@ struct DescriptorBuffer(Copyable):
             device, Ptr(to=info), Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[]
         )
 
-    fn get_image_view_opaque_capture_descriptor_data[p_data_origin: MutOrigin = MutAnyOrigin](
+    def get_image_view_opaque_capture_descriptor_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         info: ImageViewCaptureDescriptorDataInfoEXT,
@@ -2687,7 +2714,7 @@ struct DescriptorBuffer(Copyable):
             device, Ptr(to=info), Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[]
         )
 
-    fn get_sampler_opaque_capture_descriptor_data[p_data_origin: MutOrigin = MutAnyOrigin](
+    def get_sampler_opaque_capture_descriptor_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         info: SamplerCaptureDescriptorDataInfoEXT,
@@ -2701,7 +2728,7 @@ struct DescriptorBuffer(Copyable):
             device, Ptr(to=info), Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[]
         )
 
-    fn get_acceleration_structure_opaque_capture_descriptor_data[
+    def get_acceleration_structure_opaque_capture_descriptor_data[
         p_data_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -2720,20 +2747,20 @@ struct DescriptorBuffer(Copyable):
 
 struct MeshShader(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_draw_mesh_tasks: fn(
+    var _cmd_draw_mesh_tasks: def(
         command_buffer: CommandBuffer,
         group_count_x: UInt32,
         group_count_y: UInt32,
         group_count_z: UInt32,
-    )
-    var _cmd_draw_mesh_tasks_indirect: fn(
+    ) thin abi("C")
+    var _cmd_draw_mesh_tasks_indirect: def(
         command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
         draw_count: UInt32,
         stride: UInt32,
-    )
-    var _cmd_draw_mesh_tasks_indirect_count: fn(
+    ) thin abi("C")
+    var _cmd_draw_mesh_tasks_indirect_count: def(
         command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
@@ -2741,12 +2768,12 @@ struct MeshShader(Copyable):
         count_buffer_offset: DeviceSize,
         max_draw_count: UInt32,
         stride: UInt32,
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_draw_mesh_tasks = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawMeshTasksEXT".as_c_string_slice()
@@ -2758,7 +2785,7 @@ struct MeshShader(Copyable):
             device, "vkCmdDrawMeshTasksIndirectCountEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_draw_mesh_tasks_indirect_count)]()[]
 
-    fn cmd_draw_mesh_tasks(
+    def cmd_draw_mesh_tasks(
         self,
         command_buffer: CommandBuffer,
         group_count_x: UInt32,
@@ -2771,7 +2798,7 @@ struct MeshShader(Copyable):
         """
         return self._cmd_draw_mesh_tasks(command_buffer, group_count_x, group_count_y, group_count_z)
 
-    fn cmd_draw_mesh_tasks_indirect(
+    def cmd_draw_mesh_tasks_indirect(
         self,
         command_buffer: CommandBuffer,
         buffer: Buffer,
@@ -2785,7 +2812,7 @@ struct MeshShader(Copyable):
         """
         return self._cmd_draw_mesh_tasks_indirect(command_buffer, buffer, offset, draw_count, stride)
 
-    fn cmd_draw_mesh_tasks_indirect_count(
+    def cmd_draw_mesh_tasks_indirect_count(
         self,
         command_buffer: CommandBuffer,
         buffer: Buffer,
@@ -2806,23 +2833,23 @@ struct MeshShader(Copyable):
 
 struct ImageCompressionControl(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_image_subresource_layout_2: fn(
+    var _get_image_subresource_layout_2: def(
         device: Device,
         image: Image,
         p_subresource: Ptr[ImageSubresource2, ImmutAnyOrigin],
         p_layout: Ptr[SubresourceLayout2, MutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_image_subresource_layout_2 = Ptr(to=get_device_proc_addr(
             device, "vkGetImageSubresourceLayout2".as_c_string_slice()
         )).bitcast[type_of(self._get_image_subresource_layout_2)]()[]
 
-    fn get_image_subresource_layout_2(
+    def get_image_subresource_layout_2(
         self,
         device: Device,
         image: Image,
@@ -2838,22 +2865,22 @@ struct ImageCompressionControl(Copyable):
 
 struct DeviceFault(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_device_fault_info: fn(
+    var _get_device_fault_info: def(
         device: Device,
         p_fault_counts: Ptr[DeviceFaultCountsEXT, MutAnyOrigin],
         p_fault_info: Ptr[DeviceFaultInfoEXT, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_device_fault_info = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceFaultInfoEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_device_fault_info)]()[]
 
-    fn get_device_fault_info[p_fault_info_origin: MutOrigin = MutAnyOrigin](
+    def get_device_fault_info[p_fault_info_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         mut fault_counts: DeviceFaultCountsEXT,
@@ -2872,20 +2899,20 @@ struct DeviceFault(Copyable):
 
 struct DirectfbSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_direct_fb_surface: fn(
+    var _create_direct_fb_surface: def(
         instance: Instance,
         p_create_info: Ptr[DirectFBSurfaceCreateInfoEXT, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
-    ) -> Result
-    var _get_physical_device_direct_fb_presentation_support: fn(
+    ) thin abi("C") -> Result
+    var _get_physical_device_direct_fb_presentation_support: def(
         physical_device: PhysicalDevice, queue_family_index: UInt32, dfb: Ptr[IDirectFB, MutAnyOrigin]
-    ) -> Bool32
+    ) thin abi("C") -> Bool32
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._create_direct_fb_surface = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateDirectFBSurfaceEXT".as_c_string_slice()
@@ -2894,7 +2921,7 @@ struct DirectfbSurface(Copyable):
             instance, "vkGetPhysicalDeviceDirectFBPresentationSupportEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_direct_fb_presentation_support)]()[]
 
-    fn create_direct_fb_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_direct_fb_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         instance: Instance,
         create_info: DirectFBSurfaceCreateInfoEXT,
@@ -2912,7 +2939,7 @@ struct DirectfbSurface(Copyable):
             Ptr(to=surface),
         )
 
-    fn get_physical_device_direct_fb_presentation_support(
+    def get_physical_device_direct_fb_presentation_support(
         self, physical_device: PhysicalDevice, queue_family_index: UInt32, mut dfb: IDirectFB
     ) -> Bool32:
         """See official vulkan docs for details.
@@ -2926,24 +2953,24 @@ struct DirectfbSurface(Copyable):
 
 struct VertexInputDynamicState(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_vertex_input: fn(
+    var _cmd_set_vertex_input: def(
         command_buffer: CommandBuffer,
         vertex_binding_description_count: UInt32,
         p_vertex_binding_descriptions: Ptr[VertexInputBindingDescription2EXT, ImmutAnyOrigin],
         vertex_attribute_description_count: UInt32,
         p_vertex_attribute_descriptions: Ptr[VertexInputAttributeDescription2EXT, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_vertex_input = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetVertexInputEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_vertex_input)]()[]
 
-    fn cmd_set_vertex_input[
+    def cmd_set_vertex_input[
         p_vertex_binding_descriptions_origin: ImmutOrigin = ImmutAnyOrigin,
         p_vertex_attribute_descriptions_origin: ImmutOrigin = ImmutAnyOrigin,
     ](
@@ -2969,22 +2996,22 @@ struct VertexInputDynamicState(Copyable):
 
 struct PipelineProperties(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_pipeline_properties: fn(
+    var _get_pipeline_properties: def(
         device: Device,
         p_pipeline_info: Ptr[PipelineInfoEXT, ImmutAnyOrigin],
         p_pipeline_properties: Ptr[BaseOutStructure, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_pipeline_properties = Ptr(to=get_device_proc_addr(
             device, "vkGetPipelinePropertiesEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_pipeline_properties)]()[]
 
-    fn get_pipeline_properties(
+    def get_pipeline_properties(
         self,
         device: Device,
         pipeline_info: PipelineInfoEXT,
@@ -2999,20 +3026,24 @@ struct PipelineProperties(Copyable):
 
 struct ExtendedDynamicState2(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_patch_control_points: fn(command_buffer: CommandBuffer, patch_control_points: UInt32)
-    var _cmd_set_rasterizer_discard_enable: fn(
+    var _cmd_set_patch_control_points: def(
+        command_buffer: CommandBuffer, patch_control_points: UInt32
+    ) thin abi("C")
+    var _cmd_set_rasterizer_discard_enable: def(
         command_buffer: CommandBuffer, rasterizer_discard_enable: Bool32
-    )
-    var _cmd_set_depth_bias_enable: fn(command_buffer: CommandBuffer, depth_bias_enable: Bool32)
-    var _cmd_set_logic_op: fn(command_buffer: CommandBuffer, logic_op: LogicOp)
-    var _cmd_set_primitive_restart_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_depth_bias_enable: def(
+        command_buffer: CommandBuffer, depth_bias_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_logic_op: def(command_buffer: CommandBuffer, logic_op: LogicOp) thin abi("C")
+    var _cmd_set_primitive_restart_enable: def(
         command_buffer: CommandBuffer, primitive_restart_enable: Bool32
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_patch_control_points = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetPatchControlPointsEXT".as_c_string_slice()
@@ -3030,7 +3061,7 @@ struct ExtendedDynamicState2(Copyable):
             device, "vkCmdSetPrimitiveRestartEnable".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_primitive_restart_enable)]()[]
 
-    fn cmd_set_patch_control_points(
+    def cmd_set_patch_control_points(
         self, command_buffer: CommandBuffer, patch_control_points: UInt32
     ):
         """See official vulkan docs for details.
@@ -3039,7 +3070,7 @@ struct ExtendedDynamicState2(Copyable):
         """
         return self._cmd_set_patch_control_points(command_buffer, patch_control_points)
 
-    fn cmd_set_rasterizer_discard_enable(
+    def cmd_set_rasterizer_discard_enable(
         self, command_buffer: CommandBuffer, rasterizer_discard_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -3048,21 +3079,21 @@ struct ExtendedDynamicState2(Copyable):
         """
         return self._cmd_set_rasterizer_discard_enable(command_buffer, rasterizer_discard_enable)
 
-    fn cmd_set_depth_bias_enable(self, command_buffer: CommandBuffer, depth_bias_enable: Bool32):
+    def cmd_set_depth_bias_enable(self, command_buffer: CommandBuffer, depth_bias_enable: Bool32):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBiasEnable.html
         """
         return self._cmd_set_depth_bias_enable(command_buffer, depth_bias_enable)
 
-    fn cmd_set_logic_op(self, command_buffer: CommandBuffer, logic_op: LogicOp):
+    def cmd_set_logic_op(self, command_buffer: CommandBuffer, logic_op: LogicOp):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLogicOpEXT.html
         """
         return self._cmd_set_logic_op(command_buffer, logic_op)
 
-    fn cmd_set_primitive_restart_enable(
+    def cmd_set_primitive_restart_enable(
         self, command_buffer: CommandBuffer, primitive_restart_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -3074,22 +3105,22 @@ struct ExtendedDynamicState2(Copyable):
 
 struct ColorWriteEnable(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_color_write_enable: fn(
+    var _cmd_set_color_write_enable: def(
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
         p_color_write_enables: Ptr[Bool32, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_color_write_enable = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetColorWriteEnableEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_color_write_enable)]()[]
 
-    fn cmd_set_color_write_enable[p_color_write_enables_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_color_write_enable[p_color_write_enables_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
@@ -3108,15 +3139,15 @@ struct ColorWriteEnable(Copyable):
 
 struct MultiDraw(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_draw_multi: fn(
+    var _cmd_draw_multi: def(
         command_buffer: CommandBuffer,
         draw_count: UInt32,
         p_vertex_info: Ptr[MultiDrawInfoEXT, ImmutAnyOrigin],
         instance_count: UInt32,
         first_instance: UInt32,
         stride: UInt32,
-    )
-    var _cmd_draw_multi_indexed: fn(
+    ) thin abi("C")
+    var _cmd_draw_multi_indexed: def(
         command_buffer: CommandBuffer,
         draw_count: UInt32,
         p_index_info: Ptr[MultiDrawIndexedInfoEXT, ImmutAnyOrigin],
@@ -3124,12 +3155,12 @@ struct MultiDraw(Copyable):
         first_instance: UInt32,
         stride: UInt32,
         p_vertex_offset: Ptr[Int32, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_draw_multi = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawMultiEXT".as_c_string_slice()
@@ -3138,7 +3169,7 @@ struct MultiDraw(Copyable):
             device, "vkCmdDrawMultiIndexedEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_draw_multi_indexed)]()[]
 
-    fn cmd_draw_multi[p_vertex_info_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_draw_multi[p_vertex_info_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         draw_count: UInt32,
@@ -3160,7 +3191,7 @@ struct MultiDraw(Copyable):
             stride,
         )
 
-    fn cmd_draw_multi_indexed[
+    def cmd_draw_multi_indexed[
         p_index_info_origin: ImmutOrigin = ImmutAnyOrigin,
         p_vertex_offset_origin: ImmutOrigin = ImmutAnyOrigin,
     ](
@@ -3190,42 +3221,42 @@ struct MultiDraw(Copyable):
 
 struct OpacityMicromap(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_micromap: fn(
+    var _create_micromap: def(
         device: Device,
         p_create_info: Ptr[MicromapCreateInfoEXT, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_micromap: Ptr[MicromapEXT, MutAnyOrigin],
-    ) -> Result
-    var _destroy_micromap: fn(
+    ) thin abi("C") -> Result
+    var _destroy_micromap: def(
         device: Device, micromap: MicromapEXT, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    )
-    var _cmd_build_micromaps: fn(
+    ) thin abi("C")
+    var _cmd_build_micromaps: def(
         command_buffer: CommandBuffer,
         info_count: UInt32,
         p_infos: Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin],
-    )
-    var _build_micromaps: fn(
+    ) thin abi("C")
+    var _build_micromaps: def(
         device: Device,
         deferred_operation: DeferredOperationKHR,
         info_count: UInt32,
         p_infos: Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin],
-    ) -> Result
-    var _copy_micromap: fn(
+    ) thin abi("C") -> Result
+    var _copy_micromap: def(
         device: Device,
         deferred_operation: DeferredOperationKHR,
         p_info: Ptr[CopyMicromapInfoEXT, ImmutAnyOrigin],
-    ) -> Result
-    var _copy_micromap_to_memory: fn(
+    ) thin abi("C") -> Result
+    var _copy_micromap_to_memory: def(
         device: Device,
         deferred_operation: DeferredOperationKHR,
         p_info: Ptr[CopyMicromapToMemoryInfoEXT, ImmutAnyOrigin],
-    ) -> Result
-    var _copy_memory_to_micromap: fn(
+    ) thin abi("C") -> Result
+    var _copy_memory_to_micromap: def(
         device: Device,
         deferred_operation: DeferredOperationKHR,
         p_info: Ptr[CopyMemoryToMicromapInfoEXT, ImmutAnyOrigin],
-    ) -> Result
-    var _write_micromaps_properties: fn(
+    ) thin abi("C") -> Result
+    var _write_micromaps_properties: def(
         device: Device,
         micromap_count: UInt32,
         p_micromaps: Ptr[MicromapEXT, ImmutAnyOrigin],
@@ -3233,40 +3264,40 @@ struct OpacityMicromap(Copyable):
         data_size: UInt,
         p_data: Ptr[NoneType, MutAnyOrigin],
         stride: UInt,
-    ) -> Result
-    var _cmd_copy_micromap: fn(
+    ) thin abi("C") -> Result
+    var _cmd_copy_micromap: def(
         command_buffer: CommandBuffer, p_info: Ptr[CopyMicromapInfoEXT, ImmutAnyOrigin]
-    )
-    var _cmd_copy_micromap_to_memory: fn(
+    ) thin abi("C")
+    var _cmd_copy_micromap_to_memory: def(
         command_buffer: CommandBuffer, p_info: Ptr[CopyMicromapToMemoryInfoEXT, ImmutAnyOrigin]
-    )
-    var _cmd_copy_memory_to_micromap: fn(
+    ) thin abi("C")
+    var _cmd_copy_memory_to_micromap: def(
         command_buffer: CommandBuffer, p_info: Ptr[CopyMemoryToMicromapInfoEXT, ImmutAnyOrigin]
-    )
-    var _cmd_write_micromaps_properties: fn(
+    ) thin abi("C")
+    var _cmd_write_micromaps_properties: def(
         command_buffer: CommandBuffer,
         micromap_count: UInt32,
         p_micromaps: Ptr[MicromapEXT, ImmutAnyOrigin],
         query_type: QueryType,
         query_pool: QueryPool,
         first_query: UInt32,
-    )
-    var _get_device_micromap_compatibility: fn(
+    ) thin abi("C")
+    var _get_device_micromap_compatibility: def(
         device: Device,
         p_version_info: Ptr[MicromapVersionInfoEXT, ImmutAnyOrigin],
         p_compatibility: Ptr[AccelerationStructureCompatibilityKHR, MutAnyOrigin],
-    )
-    var _get_micromap_build_sizes: fn(
+    ) thin abi("C")
+    var _get_micromap_build_sizes: def(
         device: Device,
         build_type: AccelerationStructureBuildTypeKHR,
         p_build_info: Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin],
         p_size_info: Ptr[MicromapBuildSizesInfoEXT, MutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_micromap = Ptr(to=get_device_proc_addr(
             device, "vkCreateMicromapEXT".as_c_string_slice()
@@ -3311,7 +3342,7 @@ struct OpacityMicromap(Copyable):
             device, "vkGetMicromapBuildSizesEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_micromap_build_sizes)]()[]
 
-    fn create_micromap[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_micromap[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: MicromapCreateInfoEXT,
@@ -3329,7 +3360,7 @@ struct OpacityMicromap(Copyable):
             Ptr(to=micromap),
         )
 
-    fn destroy_micromap[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_micromap[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         micromap: MicromapEXT,
@@ -3343,7 +3374,7 @@ struct OpacityMicromap(Copyable):
             device, micromap, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn cmd_build_micromaps[p_infos_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_build_micromaps[p_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         info_count: UInt32,
@@ -3359,7 +3390,7 @@ struct OpacityMicromap(Copyable):
             Ptr(to=p_infos).bitcast[Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn build_micromaps[p_infos_origin: ImmutOrigin = ImmutAnyOrigin](
+    def build_micromaps[p_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         deferred_operation: DeferredOperationKHR,
@@ -3377,7 +3408,7 @@ struct OpacityMicromap(Copyable):
             Ptr(to=p_infos).bitcast[Ptr[MicromapBuildInfoEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn copy_micromap(
+    def copy_micromap(
         self, device: Device, deferred_operation: DeferredOperationKHR, info: CopyMicromapInfoEXT
     ) -> Result:
         """See official vulkan docs for details.
@@ -3386,7 +3417,7 @@ struct OpacityMicromap(Copyable):
         """
         return self._copy_micromap(device, deferred_operation, Ptr(to=info))
 
-    fn copy_micromap_to_memory(
+    def copy_micromap_to_memory(
         self,
         device: Device,
         deferred_operation: DeferredOperationKHR,
@@ -3398,7 +3429,7 @@ struct OpacityMicromap(Copyable):
         """
         return self._copy_micromap_to_memory(device, deferred_operation, Ptr(to=info))
 
-    fn copy_memory_to_micromap(
+    def copy_memory_to_micromap(
         self,
         device: Device,
         deferred_operation: DeferredOperationKHR,
@@ -3410,7 +3441,7 @@ struct OpacityMicromap(Copyable):
         """
         return self._copy_memory_to_micromap(device, deferred_operation, Ptr(to=info))
 
-    fn write_micromaps_properties[
+    def write_micromaps_properties[
         p_micromaps_origin: ImmutOrigin = ImmutAnyOrigin, p_data_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -3436,14 +3467,14 @@ struct OpacityMicromap(Copyable):
             stride,
         )
 
-    fn cmd_copy_micromap(self, command_buffer: CommandBuffer, info: CopyMicromapInfoEXT):
+    def cmd_copy_micromap(self, command_buffer: CommandBuffer, info: CopyMicromapInfoEXT):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCopyMicromapEXT.html
         """
         return self._cmd_copy_micromap(command_buffer, Ptr(to=info))
 
-    fn cmd_copy_micromap_to_memory(
+    def cmd_copy_micromap_to_memory(
         self, command_buffer: CommandBuffer, info: CopyMicromapToMemoryInfoEXT
     ):
         """See official vulkan docs for details.
@@ -3452,7 +3483,7 @@ struct OpacityMicromap(Copyable):
         """
         return self._cmd_copy_micromap_to_memory(command_buffer, Ptr(to=info))
 
-    fn cmd_copy_memory_to_micromap(
+    def cmd_copy_memory_to_micromap(
         self, command_buffer: CommandBuffer, info: CopyMemoryToMicromapInfoEXT
     ):
         """See official vulkan docs for details.
@@ -3461,7 +3492,7 @@ struct OpacityMicromap(Copyable):
         """
         return self._cmd_copy_memory_to_micromap(command_buffer, Ptr(to=info))
 
-    fn cmd_write_micromaps_properties[p_micromaps_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_write_micromaps_properties[p_micromaps_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         micromap_count: UInt32,
@@ -3483,7 +3514,7 @@ struct OpacityMicromap(Copyable):
             first_query,
         )
 
-    fn get_device_micromap_compatibility(
+    def get_device_micromap_compatibility(
         self,
         device: Device,
         version_info: MicromapVersionInfoEXT,
@@ -3495,7 +3526,7 @@ struct OpacityMicromap(Copyable):
         """
         return self._get_device_micromap_compatibility(device, Ptr(to=version_info), Ptr(to=compatibility))
 
-    fn get_micromap_build_sizes(
+    def get_micromap_build_sizes(
         self,
         device: Device,
         build_type: AccelerationStructureBuildTypeKHR,
@@ -3511,18 +3542,20 @@ struct OpacityMicromap(Copyable):
 
 struct PageableDeviceLocalMemory(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _set_device_memory_priority: fn(device: Device, memory: DeviceMemory, priority: Float32)
+    var _set_device_memory_priority: def(
+        device: Device, memory: DeviceMemory, priority: Float32
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._set_device_memory_priority = Ptr(to=get_device_proc_addr(
             device, "vkSetDeviceMemoryPriorityEXT".as_c_string_slice()
         )).bitcast[type_of(self._set_device_memory_priority)]()[]
 
-    fn set_device_memory_priority(self, device: Device, memory: DeviceMemory, priority: Float32):
+    def set_device_memory_priority(self, device: Device, memory: DeviceMemory, priority: Float32):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkSetDeviceMemoryPriorityEXT.html
@@ -3532,109 +3565,123 @@ struct PageableDeviceLocalMemory(Copyable):
 
 struct ExtendedDynamicState3(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_depth_clamp_enable: fn(command_buffer: CommandBuffer, depth_clamp_enable: Bool32)
-    var _cmd_set_polygon_mode: fn(command_buffer: CommandBuffer, polygon_mode: PolygonMode)
-    var _cmd_set_rasterization_samples: fn(
+    var _cmd_set_depth_clamp_enable: def(
+        command_buffer: CommandBuffer, depth_clamp_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_polygon_mode: def(
+        command_buffer: CommandBuffer, polygon_mode: PolygonMode
+    ) thin abi("C")
+    var _cmd_set_rasterization_samples: def(
         command_buffer: CommandBuffer, rasterization_samples: SampleCountFlagBits
-    )
-    var _cmd_set_sample_mask: fn(
+    ) thin abi("C")
+    var _cmd_set_sample_mask: def(
         command_buffer: CommandBuffer,
         samples: SampleCountFlagBits,
         p_sample_mask: Ptr[SampleMask, ImmutAnyOrigin],
-    )
-    var _cmd_set_alpha_to_coverage_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_alpha_to_coverage_enable: def(
         command_buffer: CommandBuffer, alpha_to_coverage_enable: Bool32
-    )
-    var _cmd_set_alpha_to_one_enable: fn(command_buffer: CommandBuffer, alpha_to_one_enable: Bool32)
-    var _cmd_set_logic_op_enable: fn(command_buffer: CommandBuffer, logic_op_enable: Bool32)
-    var _cmd_set_color_blend_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_alpha_to_one_enable: def(
+        command_buffer: CommandBuffer, alpha_to_one_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_logic_op_enable: def(
+        command_buffer: CommandBuffer, logic_op_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_color_blend_enable: def(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_enables: Ptr[Bool32, ImmutAnyOrigin],
-    )
-    var _cmd_set_color_blend_equation: fn(
+    ) thin abi("C")
+    var _cmd_set_color_blend_equation: def(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_equations: Ptr[ColorBlendEquationEXT, ImmutAnyOrigin],
-    )
-    var _cmd_set_color_write_mask: fn(
+    ) thin abi("C")
+    var _cmd_set_color_write_mask: def(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_write_masks: Ptr[ColorComponentFlags, ImmutAnyOrigin],
-    )
-    var _cmd_set_tessellation_domain_origin: fn(
+    ) thin abi("C")
+    var _cmd_set_tessellation_domain_origin: def(
         command_buffer: CommandBuffer, domain_origin: TessellationDomainOrigin
-    )
-    var _cmd_set_rasterization_stream: fn(command_buffer: CommandBuffer, rasterization_stream: UInt32)
-    var _cmd_set_conservative_rasterization_mode: fn(
+    ) thin abi("C")
+    var _cmd_set_rasterization_stream: def(
+        command_buffer: CommandBuffer, rasterization_stream: UInt32
+    ) thin abi("C")
+    var _cmd_set_conservative_rasterization_mode: def(
         command_buffer: CommandBuffer, conservative_rasterization_mode: ConservativeRasterizationModeEXT
-    )
-    var _cmd_set_extra_primitive_overestimation_size: fn(
+    ) thin abi("C")
+    var _cmd_set_extra_primitive_overestimation_size: def(
         command_buffer: CommandBuffer, extra_primitive_overestimation_size: Float32
-    )
-    var _cmd_set_depth_clip_enable: fn(command_buffer: CommandBuffer, depth_clip_enable: Bool32)
-    var _cmd_set_sample_locations_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_depth_clip_enable: def(
+        command_buffer: CommandBuffer, depth_clip_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_sample_locations_enable: def(
         command_buffer: CommandBuffer, sample_locations_enable: Bool32
-    )
-    var _cmd_set_color_blend_advanced: fn(
+    ) thin abi("C")
+    var _cmd_set_color_blend_advanced: def(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_advanced: Ptr[ColorBlendAdvancedEXT, ImmutAnyOrigin],
-    )
-    var _cmd_set_provoking_vertex_mode: fn(
+    ) thin abi("C")
+    var _cmd_set_provoking_vertex_mode: def(
         command_buffer: CommandBuffer, provoking_vertex_mode: ProvokingVertexModeEXT
-    )
-    var _cmd_set_line_rasterization_mode: fn(
+    ) thin abi("C")
+    var _cmd_set_line_rasterization_mode: def(
         command_buffer: CommandBuffer, line_rasterization_mode: LineRasterizationModeEXT
-    )
-    var _cmd_set_line_stipple_enable: fn(command_buffer: CommandBuffer, stippled_line_enable: Bool32)
-    var _cmd_set_depth_clip_negative_one_to_one: fn(
+    ) thin abi("C")
+    var _cmd_set_line_stipple_enable: def(
+        command_buffer: CommandBuffer, stippled_line_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_depth_clip_negative_one_to_one: def(
         command_buffer: CommandBuffer, negative_one_to_one: Bool32
-    )
-    var _cmd_set_viewport_w_scaling_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_viewport_w_scaling_enable: def(
         command_buffer: CommandBuffer, viewport_w_scaling_enable: Bool32
-    )
-    var _cmd_set_viewport_swizzle: fn(
+    ) thin abi("C")
+    var _cmd_set_viewport_swizzle: def(
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
         p_viewport_swizzles: Ptr[ViewportSwizzleNV, ImmutAnyOrigin],
-    )
-    var _cmd_set_coverage_to_color_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_coverage_to_color_enable: def(
         command_buffer: CommandBuffer, coverage_to_color_enable: Bool32
-    )
-    var _cmd_set_coverage_to_color_location: fn(
+    ) thin abi("C")
+    var _cmd_set_coverage_to_color_location: def(
         command_buffer: CommandBuffer, coverage_to_color_location: UInt32
-    )
-    var _cmd_set_coverage_modulation_mode: fn(
+    ) thin abi("C")
+    var _cmd_set_coverage_modulation_mode: def(
         command_buffer: CommandBuffer, coverage_modulation_mode: CoverageModulationModeNV
-    )
-    var _cmd_set_coverage_modulation_table_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_coverage_modulation_table_enable: def(
         command_buffer: CommandBuffer, coverage_modulation_table_enable: Bool32
-    )
-    var _cmd_set_coverage_modulation_table: fn(
+    ) thin abi("C")
+    var _cmd_set_coverage_modulation_table: def(
         command_buffer: CommandBuffer,
         coverage_modulation_table_count: UInt32,
         p_coverage_modulation_table: Ptr[Float32, ImmutAnyOrigin],
-    )
-    var _cmd_set_shading_rate_image_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_shading_rate_image_enable: def(
         command_buffer: CommandBuffer, shading_rate_image_enable: Bool32
-    )
-    var _cmd_set_representative_fragment_test_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_representative_fragment_test_enable: def(
         command_buffer: CommandBuffer, representative_fragment_test_enable: Bool32
-    )
-    var _cmd_set_coverage_reduction_mode: fn(
+    ) thin abi("C")
+    var _cmd_set_coverage_reduction_mode: def(
         command_buffer: CommandBuffer, coverage_reduction_mode: CoverageReductionModeNV
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_depth_clamp_enable = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDepthClampEnableEXT".as_c_string_slice()
@@ -3730,21 +3777,23 @@ struct ExtendedDynamicState3(Copyable):
             device, "vkCmdSetCoverageReductionModeNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_coverage_reduction_mode)]()[]
 
-    fn cmd_set_depth_clamp_enable(self, command_buffer: CommandBuffer, depth_clamp_enable: Bool32):
+    def cmd_set_depth_clamp_enable(
+        self, command_buffer: CommandBuffer, depth_clamp_enable: Bool32
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClampEnableEXT.html
         """
         return self._cmd_set_depth_clamp_enable(command_buffer, depth_clamp_enable)
 
-    fn cmd_set_polygon_mode(self, command_buffer: CommandBuffer, polygon_mode: PolygonMode):
+    def cmd_set_polygon_mode(self, command_buffer: CommandBuffer, polygon_mode: PolygonMode):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPolygonModeEXT.html
         """
         return self._cmd_set_polygon_mode(command_buffer, polygon_mode)
 
-    fn cmd_set_rasterization_samples(
+    def cmd_set_rasterization_samples(
         self, command_buffer: CommandBuffer, rasterization_samples: SampleCountFlagBits
     ):
         """See official vulkan docs for details.
@@ -3753,7 +3802,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_rasterization_samples(command_buffer, rasterization_samples)
 
-    fn cmd_set_sample_mask[p_sample_mask_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_sample_mask[p_sample_mask_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         samples: SampleCountFlagBits,
@@ -3767,7 +3816,7 @@ struct ExtendedDynamicState3(Copyable):
             command_buffer, samples, Ptr(to=p_sample_mask).bitcast[Ptr[SampleMask, ImmutAnyOrigin]]()[]
         )
 
-    fn cmd_set_alpha_to_coverage_enable(
+    def cmd_set_alpha_to_coverage_enable(
         self, command_buffer: CommandBuffer, alpha_to_coverage_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -3776,7 +3825,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_alpha_to_coverage_enable(command_buffer, alpha_to_coverage_enable)
 
-    fn cmd_set_alpha_to_one_enable(
+    def cmd_set_alpha_to_one_enable(
         self, command_buffer: CommandBuffer, alpha_to_one_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -3785,14 +3834,14 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_alpha_to_one_enable(command_buffer, alpha_to_one_enable)
 
-    fn cmd_set_logic_op_enable(self, command_buffer: CommandBuffer, logic_op_enable: Bool32):
+    def cmd_set_logic_op_enable(self, command_buffer: CommandBuffer, logic_op_enable: Bool32):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLogicOpEnableEXT.html
         """
         return self._cmd_set_logic_op_enable(command_buffer, logic_op_enable)
 
-    fn cmd_set_color_blend_enable[p_color_blend_enables_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_color_blend_enable[p_color_blend_enables_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
@@ -3810,7 +3859,7 @@ struct ExtendedDynamicState3(Copyable):
             Ptr(to=p_color_blend_enables).bitcast[Ptr[Bool32, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_color_blend_equation[p_color_blend_equations_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_color_blend_equation[p_color_blend_equations_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
@@ -3828,7 +3877,7 @@ struct ExtendedDynamicState3(Copyable):
             Ptr(to=p_color_blend_equations).bitcast[Ptr[ColorBlendEquationEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_color_write_mask[p_color_write_masks_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_color_write_mask[p_color_write_masks_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
@@ -3846,7 +3895,7 @@ struct ExtendedDynamicState3(Copyable):
             Ptr(to=p_color_write_masks).bitcast[Ptr[ColorComponentFlags, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_tessellation_domain_origin(
+    def cmd_set_tessellation_domain_origin(
         self, command_buffer: CommandBuffer, domain_origin: TessellationDomainOrigin
     ):
         """See official vulkan docs for details.
@@ -3855,7 +3904,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_tessellation_domain_origin(command_buffer, domain_origin)
 
-    fn cmd_set_rasterization_stream(
+    def cmd_set_rasterization_stream(
         self, command_buffer: CommandBuffer, rasterization_stream: UInt32
     ):
         """See official vulkan docs for details.
@@ -3864,7 +3913,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_rasterization_stream(command_buffer, rasterization_stream)
 
-    fn cmd_set_conservative_rasterization_mode(
+    def cmd_set_conservative_rasterization_mode(
         self,
         command_buffer: CommandBuffer,
         conservative_rasterization_mode: ConservativeRasterizationModeEXT,
@@ -3877,7 +3926,7 @@ struct ExtendedDynamicState3(Copyable):
             command_buffer, conservative_rasterization_mode
         )
 
-    fn cmd_set_extra_primitive_overestimation_size(
+    def cmd_set_extra_primitive_overestimation_size(
         self, command_buffer: CommandBuffer, extra_primitive_overestimation_size: Float32
     ):
         """See official vulkan docs for details.
@@ -3888,14 +3937,14 @@ struct ExtendedDynamicState3(Copyable):
             command_buffer, extra_primitive_overestimation_size
         )
 
-    fn cmd_set_depth_clip_enable(self, command_buffer: CommandBuffer, depth_clip_enable: Bool32):
+    def cmd_set_depth_clip_enable(self, command_buffer: CommandBuffer, depth_clip_enable: Bool32):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClipEnableEXT.html
         """
         return self._cmd_set_depth_clip_enable(command_buffer, depth_clip_enable)
 
-    fn cmd_set_sample_locations_enable(
+    def cmd_set_sample_locations_enable(
         self, command_buffer: CommandBuffer, sample_locations_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -3904,7 +3953,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_sample_locations_enable(command_buffer, sample_locations_enable)
 
-    fn cmd_set_color_blend_advanced[p_color_blend_advanced_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_color_blend_advanced[p_color_blend_advanced_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
@@ -3922,7 +3971,7 @@ struct ExtendedDynamicState3(Copyable):
             Ptr(to=p_color_blend_advanced).bitcast[Ptr[ColorBlendAdvancedEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_provoking_vertex_mode(
+    def cmd_set_provoking_vertex_mode(
         self, command_buffer: CommandBuffer, provoking_vertex_mode: ProvokingVertexModeEXT
     ):
         """See official vulkan docs for details.
@@ -3931,7 +3980,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_provoking_vertex_mode(command_buffer, provoking_vertex_mode)
 
-    fn cmd_set_line_rasterization_mode(
+    def cmd_set_line_rasterization_mode(
         self, command_buffer: CommandBuffer, line_rasterization_mode: LineRasterizationModeEXT
     ):
         """See official vulkan docs for details.
@@ -3940,7 +3989,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_line_rasterization_mode(command_buffer, line_rasterization_mode)
 
-    fn cmd_set_line_stipple_enable(
+    def cmd_set_line_stipple_enable(
         self, command_buffer: CommandBuffer, stippled_line_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -3949,7 +3998,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_line_stipple_enable(command_buffer, stippled_line_enable)
 
-    fn cmd_set_depth_clip_negative_one_to_one(
+    def cmd_set_depth_clip_negative_one_to_one(
         self, command_buffer: CommandBuffer, negative_one_to_one: Bool32
     ):
         """See official vulkan docs for details.
@@ -3958,7 +4007,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_depth_clip_negative_one_to_one(command_buffer, negative_one_to_one)
 
-    fn cmd_set_viewport_w_scaling_enable(
+    def cmd_set_viewport_w_scaling_enable(
         self, command_buffer: CommandBuffer, viewport_w_scaling_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -3967,7 +4016,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_viewport_w_scaling_enable(command_buffer, viewport_w_scaling_enable)
 
-    fn cmd_set_viewport_swizzle[p_viewport_swizzles_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_viewport_swizzle[p_viewport_swizzles_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
@@ -3985,7 +4034,7 @@ struct ExtendedDynamicState3(Copyable):
             Ptr(to=p_viewport_swizzles).bitcast[Ptr[ViewportSwizzleNV, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_coverage_to_color_enable(
+    def cmd_set_coverage_to_color_enable(
         self, command_buffer: CommandBuffer, coverage_to_color_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -3994,7 +4043,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_coverage_to_color_enable(command_buffer, coverage_to_color_enable)
 
-    fn cmd_set_coverage_to_color_location(
+    def cmd_set_coverage_to_color_location(
         self, command_buffer: CommandBuffer, coverage_to_color_location: UInt32
     ):
         """See official vulkan docs for details.
@@ -4003,7 +4052,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_coverage_to_color_location(command_buffer, coverage_to_color_location)
 
-    fn cmd_set_coverage_modulation_mode(
+    def cmd_set_coverage_modulation_mode(
         self, command_buffer: CommandBuffer, coverage_modulation_mode: CoverageModulationModeNV
     ):
         """See official vulkan docs for details.
@@ -4012,7 +4061,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_coverage_modulation_mode(command_buffer, coverage_modulation_mode)
 
-    fn cmd_set_coverage_modulation_table_enable(
+    def cmd_set_coverage_modulation_table_enable(
         self, command_buffer: CommandBuffer, coverage_modulation_table_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -4023,7 +4072,7 @@ struct ExtendedDynamicState3(Copyable):
             command_buffer, coverage_modulation_table_enable
         )
 
-    fn cmd_set_coverage_modulation_table[
+    def cmd_set_coverage_modulation_table[
         p_coverage_modulation_table_origin: ImmutOrigin = ImmutAnyOrigin
     ](
         self,
@@ -4041,7 +4090,7 @@ struct ExtendedDynamicState3(Copyable):
             Ptr(to=p_coverage_modulation_table).bitcast[Ptr[Float32, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_shading_rate_image_enable(
+    def cmd_set_shading_rate_image_enable(
         self, command_buffer: CommandBuffer, shading_rate_image_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -4050,7 +4099,7 @@ struct ExtendedDynamicState3(Copyable):
         """
         return self._cmd_set_shading_rate_image_enable(command_buffer, shading_rate_image_enable)
 
-    fn cmd_set_representative_fragment_test_enable(
+    def cmd_set_representative_fragment_test_enable(
         self, command_buffer: CommandBuffer, representative_fragment_test_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -4061,7 +4110,7 @@ struct ExtendedDynamicState3(Copyable):
             command_buffer, representative_fragment_test_enable
         )
 
-    fn cmd_set_coverage_reduction_mode(
+    def cmd_set_coverage_reduction_mode(
         self, command_buffer: CommandBuffer, coverage_reduction_mode: CoverageReductionModeNV
     ):
         """See official vulkan docs for details.
@@ -4073,21 +4122,21 @@ struct ExtendedDynamicState3(Copyable):
 
 struct ShaderModuleIdentifier(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_shader_module_identifier: fn(
+    var _get_shader_module_identifier: def(
         device: Device,
         shader_module: ShaderModule,
         p_identifier: Ptr[ShaderModuleIdentifierEXT, MutAnyOrigin],
-    )
-    var _get_shader_module_create_info_identifier: fn(
+    ) thin abi("C")
+    var _get_shader_module_create_info_identifier: def(
         device: Device,
         p_create_info: Ptr[ShaderModuleCreateInfo, ImmutAnyOrigin],
         p_identifier: Ptr[ShaderModuleIdentifierEXT, MutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_shader_module_identifier = Ptr(to=get_device_proc_addr(
             device, "vkGetShaderModuleIdentifierEXT".as_c_string_slice()
@@ -4096,7 +4145,7 @@ struct ShaderModuleIdentifier(Copyable):
             device, "vkGetShaderModuleCreateInfoIdentifierEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_shader_module_create_info_identifier)]()[]
 
-    fn get_shader_module_identifier(
+    def get_shader_module_identifier(
         self, device: Device, shader_module: ShaderModule, mut identifier: ShaderModuleIdentifierEXT
     ):
         """See official vulkan docs for details.
@@ -4105,7 +4154,7 @@ struct ShaderModuleIdentifier(Copyable):
         """
         return self._get_shader_module_identifier(device, shader_module, Ptr(to=identifier))
 
-    fn get_shader_module_create_info_identifier(
+    def get_shader_module_create_info_identifier(
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
@@ -4122,42 +4171,42 @@ struct ShaderModuleIdentifier(Copyable):
 
 struct ShaderObject(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_shaders: fn(
+    var _create_shaders: def(
         device: Device,
         create_info_count: UInt32,
         p_create_infos: Ptr[ShaderCreateInfoEXT, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_shaders: Ptr[ShaderEXT, MutAnyOrigin],
-    ) -> Result
-    var _destroy_shader: fn(
+    ) thin abi("C") -> Result
+    var _destroy_shader: def(
         device: Device, shader: ShaderEXT, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    )
-    var _get_shader_binary_data: fn(
+    ) thin abi("C")
+    var _get_shader_binary_data: def(
         device: Device,
         shader: ShaderEXT,
         p_data_size: Ptr[UInt, MutAnyOrigin],
         p_data: Ptr[NoneType, MutAnyOrigin],
-    ) -> Result
-    var _cmd_bind_shaders: fn(
+    ) thin abi("C") -> Result
+    var _cmd_bind_shaders: def(
         command_buffer: CommandBuffer,
         stage_count: UInt32,
         p_stages: Ptr[ShaderStageFlagBits, ImmutAnyOrigin],
         p_shaders: Ptr[ShaderEXT, ImmutAnyOrigin],
-    )
-    var _cmd_set_cull_mode: fn(command_buffer: CommandBuffer, cull_mode: CullModeFlags)
-    var _cmd_set_front_face: fn(command_buffer: CommandBuffer, front_face: FrontFace)
-    var _cmd_set_primitive_topology: fn(
+    ) thin abi("C")
+    var _cmd_set_cull_mode: def(command_buffer: CommandBuffer, cull_mode: CullModeFlags) thin abi("C")
+    var _cmd_set_front_face: def(command_buffer: CommandBuffer, front_face: FrontFace) thin abi("C")
+    var _cmd_set_primitive_topology: def(
         command_buffer: CommandBuffer, primitive_topology: PrimitiveTopology
-    )
-    var _cmd_set_viewport_with_count: fn(
+    ) thin abi("C")
+    var _cmd_set_viewport_with_count: def(
         command_buffer: CommandBuffer,
         viewport_count: UInt32,
         p_viewports: Ptr[Viewport, ImmutAnyOrigin],
-    )
-    var _cmd_set_scissor_with_count: fn(
+    ) thin abi("C")
+    var _cmd_set_scissor_with_count: def(
         command_buffer: CommandBuffer, scissor_count: UInt32, p_scissors: Ptr[Rect2D, ImmutAnyOrigin]
-    )
-    var _cmd_bind_vertex_buffers_2: fn(
+    ) thin abi("C")
+    var _cmd_bind_vertex_buffers_2: def(
         command_buffer: CommandBuffer,
         first_binding: UInt32,
         binding_count: UInt32,
@@ -4165,146 +4214,172 @@ struct ShaderObject(Copyable):
         p_offsets: Ptr[DeviceSize, ImmutAnyOrigin],
         p_sizes: Ptr[DeviceSize, ImmutAnyOrigin],
         p_strides: Ptr[DeviceSize, ImmutAnyOrigin],
-    )
-    var _cmd_set_depth_test_enable: fn(command_buffer: CommandBuffer, depth_test_enable: Bool32)
-    var _cmd_set_depth_write_enable: fn(command_buffer: CommandBuffer, depth_write_enable: Bool32)
-    var _cmd_set_depth_compare_op: fn(command_buffer: CommandBuffer, depth_compare_op: CompareOp)
-    var _cmd_set_depth_bounds_test_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_depth_test_enable: def(
+        command_buffer: CommandBuffer, depth_test_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_depth_write_enable: def(
+        command_buffer: CommandBuffer, depth_write_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_depth_compare_op: def(
+        command_buffer: CommandBuffer, depth_compare_op: CompareOp
+    ) thin abi("C")
+    var _cmd_set_depth_bounds_test_enable: def(
         command_buffer: CommandBuffer, depth_bounds_test_enable: Bool32
-    )
-    var _cmd_set_stencil_test_enable: fn(command_buffer: CommandBuffer, stencil_test_enable: Bool32)
-    var _cmd_set_stencil_op: fn(
+    ) thin abi("C")
+    var _cmd_set_stencil_test_enable: def(
+        command_buffer: CommandBuffer, stencil_test_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_stencil_op: def(
         command_buffer: CommandBuffer,
         face_mask: StencilFaceFlags,
         fail_op: StencilOp,
         pass_op: StencilOp,
         depth_fail_op: StencilOp,
         compare_op: CompareOp,
-    )
-    var _cmd_set_vertex_input: fn(
+    ) thin abi("C")
+    var _cmd_set_vertex_input: def(
         command_buffer: CommandBuffer,
         vertex_binding_description_count: UInt32,
         p_vertex_binding_descriptions: Ptr[VertexInputBindingDescription2EXT, ImmutAnyOrigin],
         vertex_attribute_description_count: UInt32,
         p_vertex_attribute_descriptions: Ptr[VertexInputAttributeDescription2EXT, ImmutAnyOrigin],
-    )
-    var _cmd_set_patch_control_points: fn(command_buffer: CommandBuffer, patch_control_points: UInt32)
-    var _cmd_set_rasterizer_discard_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_patch_control_points: def(
+        command_buffer: CommandBuffer, patch_control_points: UInt32
+    ) thin abi("C")
+    var _cmd_set_rasterizer_discard_enable: def(
         command_buffer: CommandBuffer, rasterizer_discard_enable: Bool32
-    )
-    var _cmd_set_depth_bias_enable: fn(command_buffer: CommandBuffer, depth_bias_enable: Bool32)
-    var _cmd_set_logic_op: fn(command_buffer: CommandBuffer, logic_op: LogicOp)
-    var _cmd_set_primitive_restart_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_depth_bias_enable: def(
+        command_buffer: CommandBuffer, depth_bias_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_logic_op: def(command_buffer: CommandBuffer, logic_op: LogicOp) thin abi("C")
+    var _cmd_set_primitive_restart_enable: def(
         command_buffer: CommandBuffer, primitive_restart_enable: Bool32
-    )
-    var _cmd_set_tessellation_domain_origin: fn(
+    ) thin abi("C")
+    var _cmd_set_tessellation_domain_origin: def(
         command_buffer: CommandBuffer, domain_origin: TessellationDomainOrigin
-    )
-    var _cmd_set_depth_clamp_enable: fn(command_buffer: CommandBuffer, depth_clamp_enable: Bool32)
-    var _cmd_set_polygon_mode: fn(command_buffer: CommandBuffer, polygon_mode: PolygonMode)
-    var _cmd_set_rasterization_samples: fn(
+    ) thin abi("C")
+    var _cmd_set_depth_clamp_enable: def(
+        command_buffer: CommandBuffer, depth_clamp_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_polygon_mode: def(
+        command_buffer: CommandBuffer, polygon_mode: PolygonMode
+    ) thin abi("C")
+    var _cmd_set_rasterization_samples: def(
         command_buffer: CommandBuffer, rasterization_samples: SampleCountFlagBits
-    )
-    var _cmd_set_sample_mask: fn(
+    ) thin abi("C")
+    var _cmd_set_sample_mask: def(
         command_buffer: CommandBuffer,
         samples: SampleCountFlagBits,
         p_sample_mask: Ptr[SampleMask, ImmutAnyOrigin],
-    )
-    var _cmd_set_alpha_to_coverage_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_alpha_to_coverage_enable: def(
         command_buffer: CommandBuffer, alpha_to_coverage_enable: Bool32
-    )
-    var _cmd_set_alpha_to_one_enable: fn(command_buffer: CommandBuffer, alpha_to_one_enable: Bool32)
-    var _cmd_set_logic_op_enable: fn(command_buffer: CommandBuffer, logic_op_enable: Bool32)
-    var _cmd_set_color_blend_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_alpha_to_one_enable: def(
+        command_buffer: CommandBuffer, alpha_to_one_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_logic_op_enable: def(
+        command_buffer: CommandBuffer, logic_op_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_color_blend_enable: def(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_enables: Ptr[Bool32, ImmutAnyOrigin],
-    )
-    var _cmd_set_color_blend_equation: fn(
+    ) thin abi("C")
+    var _cmd_set_color_blend_equation: def(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_equations: Ptr[ColorBlendEquationEXT, ImmutAnyOrigin],
-    )
-    var _cmd_set_color_write_mask: fn(
+    ) thin abi("C")
+    var _cmd_set_color_write_mask: def(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_write_masks: Ptr[ColorComponentFlags, ImmutAnyOrigin],
-    )
-    var _cmd_set_rasterization_stream: fn(command_buffer: CommandBuffer, rasterization_stream: UInt32)
-    var _cmd_set_conservative_rasterization_mode: fn(
+    ) thin abi("C")
+    var _cmd_set_rasterization_stream: def(
+        command_buffer: CommandBuffer, rasterization_stream: UInt32
+    ) thin abi("C")
+    var _cmd_set_conservative_rasterization_mode: def(
         command_buffer: CommandBuffer, conservative_rasterization_mode: ConservativeRasterizationModeEXT
-    )
-    var _cmd_set_extra_primitive_overestimation_size: fn(
+    ) thin abi("C")
+    var _cmd_set_extra_primitive_overestimation_size: def(
         command_buffer: CommandBuffer, extra_primitive_overestimation_size: Float32
-    )
-    var _cmd_set_depth_clip_enable: fn(command_buffer: CommandBuffer, depth_clip_enable: Bool32)
-    var _cmd_set_sample_locations_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_depth_clip_enable: def(
+        command_buffer: CommandBuffer, depth_clip_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_sample_locations_enable: def(
         command_buffer: CommandBuffer, sample_locations_enable: Bool32
-    )
-    var _cmd_set_color_blend_advanced: fn(
+    ) thin abi("C")
+    var _cmd_set_color_blend_advanced: def(
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
         attachment_count: UInt32,
         p_color_blend_advanced: Ptr[ColorBlendAdvancedEXT, ImmutAnyOrigin],
-    )
-    var _cmd_set_provoking_vertex_mode: fn(
+    ) thin abi("C")
+    var _cmd_set_provoking_vertex_mode: def(
         command_buffer: CommandBuffer, provoking_vertex_mode: ProvokingVertexModeEXT
-    )
-    var _cmd_set_line_rasterization_mode: fn(
+    ) thin abi("C")
+    var _cmd_set_line_rasterization_mode: def(
         command_buffer: CommandBuffer, line_rasterization_mode: LineRasterizationModeEXT
-    )
-    var _cmd_set_line_stipple_enable: fn(command_buffer: CommandBuffer, stippled_line_enable: Bool32)
-    var _cmd_set_depth_clip_negative_one_to_one: fn(
+    ) thin abi("C")
+    var _cmd_set_line_stipple_enable: def(
+        command_buffer: CommandBuffer, stippled_line_enable: Bool32
+    ) thin abi("C")
+    var _cmd_set_depth_clip_negative_one_to_one: def(
         command_buffer: CommandBuffer, negative_one_to_one: Bool32
-    )
-    var _cmd_set_viewport_w_scaling_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_viewport_w_scaling_enable: def(
         command_buffer: CommandBuffer, viewport_w_scaling_enable: Bool32
-    )
-    var _cmd_set_viewport_swizzle: fn(
+    ) thin abi("C")
+    var _cmd_set_viewport_swizzle: def(
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
         p_viewport_swizzles: Ptr[ViewportSwizzleNV, ImmutAnyOrigin],
-    )
-    var _cmd_set_coverage_to_color_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_coverage_to_color_enable: def(
         command_buffer: CommandBuffer, coverage_to_color_enable: Bool32
-    )
-    var _cmd_set_coverage_to_color_location: fn(
+    ) thin abi("C")
+    var _cmd_set_coverage_to_color_location: def(
         command_buffer: CommandBuffer, coverage_to_color_location: UInt32
-    )
-    var _cmd_set_coverage_modulation_mode: fn(
+    ) thin abi("C")
+    var _cmd_set_coverage_modulation_mode: def(
         command_buffer: CommandBuffer, coverage_modulation_mode: CoverageModulationModeNV
-    )
-    var _cmd_set_coverage_modulation_table_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_coverage_modulation_table_enable: def(
         command_buffer: CommandBuffer, coverage_modulation_table_enable: Bool32
-    )
-    var _cmd_set_coverage_modulation_table: fn(
+    ) thin abi("C")
+    var _cmd_set_coverage_modulation_table: def(
         command_buffer: CommandBuffer,
         coverage_modulation_table_count: UInt32,
         p_coverage_modulation_table: Ptr[Float32, ImmutAnyOrigin],
-    )
-    var _cmd_set_shading_rate_image_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_shading_rate_image_enable: def(
         command_buffer: CommandBuffer, shading_rate_image_enable: Bool32
-    )
-    var _cmd_set_representative_fragment_test_enable: fn(
+    ) thin abi("C")
+    var _cmd_set_representative_fragment_test_enable: def(
         command_buffer: CommandBuffer, representative_fragment_test_enable: Bool32
-    )
-    var _cmd_set_coverage_reduction_mode: fn(
+    ) thin abi("C")
+    var _cmd_set_coverage_reduction_mode: def(
         command_buffer: CommandBuffer, coverage_reduction_mode: CoverageReductionModeNV
-    )
-    var _cmd_set_depth_clamp_range: fn(
+    ) thin abi("C")
+    var _cmd_set_depth_clamp_range: def(
         command_buffer: CommandBuffer,
         depth_clamp_mode: DepthClampModeEXT,
         p_depth_clamp_range: Ptr[DepthClampRangeEXT, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_shaders = Ptr(to=get_device_proc_addr(
             device, "vkCreateShadersEXT".as_c_string_slice()
@@ -4469,7 +4544,7 @@ struct ShaderObject(Copyable):
             device, "vkCmdSetDepthClampRangeEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_depth_clamp_range)]()[]
 
-    fn create_shaders[
+    def create_shaders[
         p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
         p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
         p_shaders_origin: MutOrigin = MutAnyOrigin,
@@ -4493,7 +4568,7 @@ struct ShaderObject(Copyable):
             Ptr(to=p_shaders).bitcast[Ptr[ShaderEXT, MutAnyOrigin]]()[],
         )
 
-    fn destroy_shader[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_shader[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         shader: ShaderEXT,
@@ -4507,7 +4582,7 @@ struct ShaderObject(Copyable):
             device, shader, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn get_shader_binary_data[p_data_origin: MutOrigin = MutAnyOrigin](
+    def get_shader_binary_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         shader: ShaderEXT,
@@ -4522,7 +4597,7 @@ struct ShaderObject(Copyable):
             device, shader, Ptr(to=data_size), Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[]
         )
 
-    fn get_shader_binary_data[p_data_origin: MutOrigin = MutAnyOrigin](
+    def get_shader_binary_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, shader: ShaderEXT
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -4534,17 +4609,17 @@ struct ShaderObject(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_shader_binary_data(
-        device, shader, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
-    )
+                device, shader, Ptr(to=count), Ptr[NoneType, MutUntrackedOrigin].unsafe_dangling()
+            )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_shader_binary_data(
-        device, shader, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
-    )
+                device, shader, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn cmd_bind_shaders[
+    def cmd_bind_shaders[
         p_stages_origin: ImmutOrigin = ImmutAnyOrigin,
         p_shaders_origin: ImmutOrigin = ImmutAnyOrigin,
     ](
@@ -4565,21 +4640,21 @@ struct ShaderObject(Copyable):
             Ptr(to=p_shaders).bitcast[Ptr[ShaderEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_cull_mode(self, command_buffer: CommandBuffer, cull_mode: CullModeFlags):
+    def cmd_set_cull_mode(self, command_buffer: CommandBuffer, cull_mode: CullModeFlags):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetCullMode.html
         """
         return self._cmd_set_cull_mode(command_buffer, cull_mode)
 
-    fn cmd_set_front_face(self, command_buffer: CommandBuffer, front_face: FrontFace):
+    def cmd_set_front_face(self, command_buffer: CommandBuffer, front_face: FrontFace):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetFrontFace.html
         """
         return self._cmd_set_front_face(command_buffer, front_face)
 
-    fn cmd_set_primitive_topology(
+    def cmd_set_primitive_topology(
         self, command_buffer: CommandBuffer, primitive_topology: PrimitiveTopology
     ):
         """See official vulkan docs for details.
@@ -4588,7 +4663,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_primitive_topology(command_buffer, primitive_topology)
 
-    fn cmd_set_viewport_with_count[p_viewports_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_viewport_with_count[p_viewports_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         viewport_count: UInt32,
@@ -4602,7 +4677,7 @@ struct ShaderObject(Copyable):
             command_buffer, viewport_count, Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutAnyOrigin]]()[]
         )
 
-    fn cmd_set_scissor_with_count[p_scissors_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_scissor_with_count[p_scissors_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         scissor_count: UInt32,
@@ -4616,7 +4691,7 @@ struct ShaderObject(Copyable):
             command_buffer, scissor_count, Ptr(to=p_scissors).bitcast[Ptr[Rect2D, ImmutAnyOrigin]]()[]
         )
 
-    fn cmd_bind_vertex_buffers_2[
+    def cmd_bind_vertex_buffers_2[
         p_buffers_origin: ImmutOrigin = ImmutAnyOrigin,
         p_offsets_origin: ImmutOrigin = ImmutAnyOrigin,
         p_sizes_origin: ImmutOrigin = ImmutAnyOrigin,
@@ -4645,28 +4720,30 @@ struct ShaderObject(Copyable):
             Ptr(to=p_strides).bitcast[Ptr[DeviceSize, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_depth_test_enable(self, command_buffer: CommandBuffer, depth_test_enable: Bool32):
+    def cmd_set_depth_test_enable(self, command_buffer: CommandBuffer, depth_test_enable: Bool32):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthTestEnable.html
         """
         return self._cmd_set_depth_test_enable(command_buffer, depth_test_enable)
 
-    fn cmd_set_depth_write_enable(self, command_buffer: CommandBuffer, depth_write_enable: Bool32):
+    def cmd_set_depth_write_enable(
+        self, command_buffer: CommandBuffer, depth_write_enable: Bool32
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthWriteEnable.html
         """
         return self._cmd_set_depth_write_enable(command_buffer, depth_write_enable)
 
-    fn cmd_set_depth_compare_op(self, command_buffer: CommandBuffer, depth_compare_op: CompareOp):
+    def cmd_set_depth_compare_op(self, command_buffer: CommandBuffer, depth_compare_op: CompareOp):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthCompareOp.html
         """
         return self._cmd_set_depth_compare_op(command_buffer, depth_compare_op)
 
-    fn cmd_set_depth_bounds_test_enable(
+    def cmd_set_depth_bounds_test_enable(
         self, command_buffer: CommandBuffer, depth_bounds_test_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -4675,7 +4752,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_depth_bounds_test_enable(command_buffer, depth_bounds_test_enable)
 
-    fn cmd_set_stencil_test_enable(
+    def cmd_set_stencil_test_enable(
         self, command_buffer: CommandBuffer, stencil_test_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -4684,7 +4761,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_stencil_test_enable(command_buffer, stencil_test_enable)
 
-    fn cmd_set_stencil_op(
+    def cmd_set_stencil_op(
         self,
         command_buffer: CommandBuffer,
         face_mask: StencilFaceFlags,
@@ -4701,7 +4778,7 @@ struct ShaderObject(Copyable):
             command_buffer, face_mask, fail_op, pass_op, depth_fail_op, compare_op
         )
 
-    fn cmd_set_vertex_input[
+    def cmd_set_vertex_input[
         p_vertex_binding_descriptions_origin: ImmutOrigin = ImmutAnyOrigin,
         p_vertex_attribute_descriptions_origin: ImmutOrigin = ImmutAnyOrigin,
     ](
@@ -4724,7 +4801,7 @@ struct ShaderObject(Copyable):
             Ptr(to=p_vertex_attribute_descriptions).bitcast[Ptr[VertexInputAttributeDescription2EXT, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_patch_control_points(
+    def cmd_set_patch_control_points(
         self, command_buffer: CommandBuffer, patch_control_points: UInt32
     ):
         """See official vulkan docs for details.
@@ -4733,7 +4810,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_patch_control_points(command_buffer, patch_control_points)
 
-    fn cmd_set_rasterizer_discard_enable(
+    def cmd_set_rasterizer_discard_enable(
         self, command_buffer: CommandBuffer, rasterizer_discard_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -4742,21 +4819,21 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_rasterizer_discard_enable(command_buffer, rasterizer_discard_enable)
 
-    fn cmd_set_depth_bias_enable(self, command_buffer: CommandBuffer, depth_bias_enable: Bool32):
+    def cmd_set_depth_bias_enable(self, command_buffer: CommandBuffer, depth_bias_enable: Bool32):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthBiasEnable.html
         """
         return self._cmd_set_depth_bias_enable(command_buffer, depth_bias_enable)
 
-    fn cmd_set_logic_op(self, command_buffer: CommandBuffer, logic_op: LogicOp):
+    def cmd_set_logic_op(self, command_buffer: CommandBuffer, logic_op: LogicOp):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLogicOpEXT.html
         """
         return self._cmd_set_logic_op(command_buffer, logic_op)
 
-    fn cmd_set_primitive_restart_enable(
+    def cmd_set_primitive_restart_enable(
         self, command_buffer: CommandBuffer, primitive_restart_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -4765,7 +4842,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_primitive_restart_enable(command_buffer, primitive_restart_enable)
 
-    fn cmd_set_tessellation_domain_origin(
+    def cmd_set_tessellation_domain_origin(
         self, command_buffer: CommandBuffer, domain_origin: TessellationDomainOrigin
     ):
         """See official vulkan docs for details.
@@ -4774,21 +4851,23 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_tessellation_domain_origin(command_buffer, domain_origin)
 
-    fn cmd_set_depth_clamp_enable(self, command_buffer: CommandBuffer, depth_clamp_enable: Bool32):
+    def cmd_set_depth_clamp_enable(
+        self, command_buffer: CommandBuffer, depth_clamp_enable: Bool32
+    ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClampEnableEXT.html
         """
         return self._cmd_set_depth_clamp_enable(command_buffer, depth_clamp_enable)
 
-    fn cmd_set_polygon_mode(self, command_buffer: CommandBuffer, polygon_mode: PolygonMode):
+    def cmd_set_polygon_mode(self, command_buffer: CommandBuffer, polygon_mode: PolygonMode):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPolygonModeEXT.html
         """
         return self._cmd_set_polygon_mode(command_buffer, polygon_mode)
 
-    fn cmd_set_rasterization_samples(
+    def cmd_set_rasterization_samples(
         self, command_buffer: CommandBuffer, rasterization_samples: SampleCountFlagBits
     ):
         """See official vulkan docs for details.
@@ -4797,7 +4876,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_rasterization_samples(command_buffer, rasterization_samples)
 
-    fn cmd_set_sample_mask[p_sample_mask_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_sample_mask[p_sample_mask_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         samples: SampleCountFlagBits,
@@ -4811,7 +4890,7 @@ struct ShaderObject(Copyable):
             command_buffer, samples, Ptr(to=p_sample_mask).bitcast[Ptr[SampleMask, ImmutAnyOrigin]]()[]
         )
 
-    fn cmd_set_alpha_to_coverage_enable(
+    def cmd_set_alpha_to_coverage_enable(
         self, command_buffer: CommandBuffer, alpha_to_coverage_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -4820,7 +4899,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_alpha_to_coverage_enable(command_buffer, alpha_to_coverage_enable)
 
-    fn cmd_set_alpha_to_one_enable(
+    def cmd_set_alpha_to_one_enable(
         self, command_buffer: CommandBuffer, alpha_to_one_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -4829,14 +4908,14 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_alpha_to_one_enable(command_buffer, alpha_to_one_enable)
 
-    fn cmd_set_logic_op_enable(self, command_buffer: CommandBuffer, logic_op_enable: Bool32):
+    def cmd_set_logic_op_enable(self, command_buffer: CommandBuffer, logic_op_enable: Bool32):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetLogicOpEnableEXT.html
         """
         return self._cmd_set_logic_op_enable(command_buffer, logic_op_enable)
 
-    fn cmd_set_color_blend_enable[p_color_blend_enables_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_color_blend_enable[p_color_blend_enables_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
@@ -4854,7 +4933,7 @@ struct ShaderObject(Copyable):
             Ptr(to=p_color_blend_enables).bitcast[Ptr[Bool32, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_color_blend_equation[p_color_blend_equations_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_color_blend_equation[p_color_blend_equations_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
@@ -4872,7 +4951,7 @@ struct ShaderObject(Copyable):
             Ptr(to=p_color_blend_equations).bitcast[Ptr[ColorBlendEquationEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_color_write_mask[p_color_write_masks_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_color_write_mask[p_color_write_masks_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
@@ -4890,7 +4969,7 @@ struct ShaderObject(Copyable):
             Ptr(to=p_color_write_masks).bitcast[Ptr[ColorComponentFlags, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_rasterization_stream(
+    def cmd_set_rasterization_stream(
         self, command_buffer: CommandBuffer, rasterization_stream: UInt32
     ):
         """See official vulkan docs for details.
@@ -4899,7 +4978,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_rasterization_stream(command_buffer, rasterization_stream)
 
-    fn cmd_set_conservative_rasterization_mode(
+    def cmd_set_conservative_rasterization_mode(
         self,
         command_buffer: CommandBuffer,
         conservative_rasterization_mode: ConservativeRasterizationModeEXT,
@@ -4912,7 +4991,7 @@ struct ShaderObject(Copyable):
             command_buffer, conservative_rasterization_mode
         )
 
-    fn cmd_set_extra_primitive_overestimation_size(
+    def cmd_set_extra_primitive_overestimation_size(
         self, command_buffer: CommandBuffer, extra_primitive_overestimation_size: Float32
     ):
         """See official vulkan docs for details.
@@ -4923,14 +5002,14 @@ struct ShaderObject(Copyable):
             command_buffer, extra_primitive_overestimation_size
         )
 
-    fn cmd_set_depth_clip_enable(self, command_buffer: CommandBuffer, depth_clip_enable: Bool32):
+    def cmd_set_depth_clip_enable(self, command_buffer: CommandBuffer, depth_clip_enable: Bool32):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetDepthClipEnableEXT.html
         """
         return self._cmd_set_depth_clip_enable(command_buffer, depth_clip_enable)
 
-    fn cmd_set_sample_locations_enable(
+    def cmd_set_sample_locations_enable(
         self, command_buffer: CommandBuffer, sample_locations_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -4939,7 +5018,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_sample_locations_enable(command_buffer, sample_locations_enable)
 
-    fn cmd_set_color_blend_advanced[p_color_blend_advanced_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_color_blend_advanced[p_color_blend_advanced_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_attachment: UInt32,
@@ -4957,7 +5036,7 @@ struct ShaderObject(Copyable):
             Ptr(to=p_color_blend_advanced).bitcast[Ptr[ColorBlendAdvancedEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_provoking_vertex_mode(
+    def cmd_set_provoking_vertex_mode(
         self, command_buffer: CommandBuffer, provoking_vertex_mode: ProvokingVertexModeEXT
     ):
         """See official vulkan docs for details.
@@ -4966,7 +5045,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_provoking_vertex_mode(command_buffer, provoking_vertex_mode)
 
-    fn cmd_set_line_rasterization_mode(
+    def cmd_set_line_rasterization_mode(
         self, command_buffer: CommandBuffer, line_rasterization_mode: LineRasterizationModeEXT
     ):
         """See official vulkan docs for details.
@@ -4975,7 +5054,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_line_rasterization_mode(command_buffer, line_rasterization_mode)
 
-    fn cmd_set_line_stipple_enable(
+    def cmd_set_line_stipple_enable(
         self, command_buffer: CommandBuffer, stippled_line_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -4984,7 +5063,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_line_stipple_enable(command_buffer, stippled_line_enable)
 
-    fn cmd_set_depth_clip_negative_one_to_one(
+    def cmd_set_depth_clip_negative_one_to_one(
         self, command_buffer: CommandBuffer, negative_one_to_one: Bool32
     ):
         """See official vulkan docs for details.
@@ -4993,7 +5072,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_depth_clip_negative_one_to_one(command_buffer, negative_one_to_one)
 
-    fn cmd_set_viewport_w_scaling_enable(
+    def cmd_set_viewport_w_scaling_enable(
         self, command_buffer: CommandBuffer, viewport_w_scaling_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -5002,7 +5081,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_viewport_w_scaling_enable(command_buffer, viewport_w_scaling_enable)
 
-    fn cmd_set_viewport_swizzle[p_viewport_swizzles_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_viewport_swizzle[p_viewport_swizzles_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
@@ -5020,7 +5099,7 @@ struct ShaderObject(Copyable):
             Ptr(to=p_viewport_swizzles).bitcast[Ptr[ViewportSwizzleNV, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_coverage_to_color_enable(
+    def cmd_set_coverage_to_color_enable(
         self, command_buffer: CommandBuffer, coverage_to_color_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -5029,7 +5108,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_coverage_to_color_enable(command_buffer, coverage_to_color_enable)
 
-    fn cmd_set_coverage_to_color_location(
+    def cmd_set_coverage_to_color_location(
         self, command_buffer: CommandBuffer, coverage_to_color_location: UInt32
     ):
         """See official vulkan docs for details.
@@ -5038,7 +5117,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_coverage_to_color_location(command_buffer, coverage_to_color_location)
 
-    fn cmd_set_coverage_modulation_mode(
+    def cmd_set_coverage_modulation_mode(
         self, command_buffer: CommandBuffer, coverage_modulation_mode: CoverageModulationModeNV
     ):
         """See official vulkan docs for details.
@@ -5047,7 +5126,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_coverage_modulation_mode(command_buffer, coverage_modulation_mode)
 
-    fn cmd_set_coverage_modulation_table_enable(
+    def cmd_set_coverage_modulation_table_enable(
         self, command_buffer: CommandBuffer, coverage_modulation_table_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -5058,7 +5137,7 @@ struct ShaderObject(Copyable):
             command_buffer, coverage_modulation_table_enable
         )
 
-    fn cmd_set_coverage_modulation_table[
+    def cmd_set_coverage_modulation_table[
         p_coverage_modulation_table_origin: ImmutOrigin = ImmutAnyOrigin
     ](
         self,
@@ -5076,7 +5155,7 @@ struct ShaderObject(Copyable):
             Ptr(to=p_coverage_modulation_table).bitcast[Ptr[Float32, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_shading_rate_image_enable(
+    def cmd_set_shading_rate_image_enable(
         self, command_buffer: CommandBuffer, shading_rate_image_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -5085,7 +5164,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_shading_rate_image_enable(command_buffer, shading_rate_image_enable)
 
-    fn cmd_set_representative_fragment_test_enable(
+    def cmd_set_representative_fragment_test_enable(
         self, command_buffer: CommandBuffer, representative_fragment_test_enable: Bool32
     ):
         """See official vulkan docs for details.
@@ -5096,7 +5175,7 @@ struct ShaderObject(Copyable):
             command_buffer, representative_fragment_test_enable
         )
 
-    fn cmd_set_coverage_reduction_mode(
+    def cmd_set_coverage_reduction_mode(
         self, command_buffer: CommandBuffer, coverage_reduction_mode: CoverageReductionModeNV
     ):
         """See official vulkan docs for details.
@@ -5105,7 +5184,7 @@ struct ShaderObject(Copyable):
         """
         return self._cmd_set_coverage_reduction_mode(command_buffer, coverage_reduction_mode)
 
-    fn cmd_set_depth_clamp_range[p_depth_clamp_range_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_depth_clamp_range[p_depth_clamp_range_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         depth_clamp_mode: DepthClampModeEXT,
@@ -5124,20 +5203,20 @@ struct ShaderObject(Copyable):
 
 struct AttachmentFeedbackLoopDynamicState(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_attachment_feedback_loop_enable: fn(
+    var _cmd_set_attachment_feedback_loop_enable: def(
         command_buffer: CommandBuffer, aspect_mask: ImageAspectFlags
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_attachment_feedback_loop_enable = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetAttachmentFeedbackLoopEnableEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_attachment_feedback_loop_enable)]()[]
 
-    fn cmd_set_attachment_feedback_loop_enable(
+    def cmd_set_attachment_feedback_loop_enable(
         self, command_buffer: CommandBuffer, aspect_mask: ImageAspectFlags
     ):
         """See official vulkan docs for details.
@@ -5149,23 +5228,23 @@ struct AttachmentFeedbackLoopDynamicState(Copyable):
 
 struct MemoryDecompression(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_decompress_memory: fn(
+    var _cmd_decompress_memory: def(
         command_buffer: CommandBuffer,
         p_decompress_memory_info_ext: Ptr[DecompressMemoryInfoEXT, ImmutAnyOrigin],
-    )
-    var _cmd_decompress_memory_indirect_count: fn(
+    ) thin abi("C")
+    var _cmd_decompress_memory_indirect_count: def(
         command_buffer: CommandBuffer,
         decompression_method: MemoryDecompressionMethodFlagsEXT,
         indirect_commands_address: DeviceAddress,
         indirect_commands_count_address: DeviceAddress,
         max_decompression_count: UInt32,
         stride: UInt32,
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_decompress_memory = Ptr(to=get_device_proc_addr(
             device, "vkCmdDecompressMemoryEXT".as_c_string_slice()
@@ -5174,7 +5253,7 @@ struct MemoryDecompression(Copyable):
             device, "vkCmdDecompressMemoryIndirectCountEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_decompress_memory_indirect_count)]()[]
 
-    fn cmd_decompress_memory(
+    def cmd_decompress_memory(
         self, command_buffer: CommandBuffer, decompress_memory_info_ext: DecompressMemoryInfoEXT
     ):
         """See official vulkan docs for details.
@@ -5183,7 +5262,7 @@ struct MemoryDecompression(Copyable):
         """
         return self._cmd_decompress_memory(command_buffer, Ptr(to=decompress_memory_info_ext))
 
-    fn cmd_decompress_memory_indirect_count(
+    def cmd_decompress_memory_indirect_count(
         self,
         command_buffer: CommandBuffer,
         decompression_method: MemoryDecompressionMethodFlagsEXT,
@@ -5208,60 +5287,60 @@ struct MemoryDecompression(Copyable):
 
 struct DeviceGeneratedCommands(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_generated_commands_memory_requirements: fn(
+    var _get_generated_commands_memory_requirements: def(
         device: Device,
         p_info: Ptr[GeneratedCommandsMemoryRequirementsInfoEXT, ImmutAnyOrigin],
         p_memory_requirements: Ptr[MemoryRequirements2, MutAnyOrigin],
-    )
-    var _cmd_preprocess_generated_commands: fn(
+    ) thin abi("C")
+    var _cmd_preprocess_generated_commands: def(
         command_buffer: CommandBuffer,
         p_generated_commands_info: Ptr[GeneratedCommandsInfoEXT, ImmutAnyOrigin],
         state_command_buffer: CommandBuffer,
-    )
-    var _cmd_execute_generated_commands: fn(
+    ) thin abi("C")
+    var _cmd_execute_generated_commands: def(
         command_buffer: CommandBuffer,
         is_preprocessed: Bool32,
         p_generated_commands_info: Ptr[GeneratedCommandsInfoEXT, ImmutAnyOrigin],
-    )
-    var _create_indirect_commands_layout: fn(
+    ) thin abi("C")
+    var _create_indirect_commands_layout: def(
         device: Device,
         p_create_info: Ptr[IndirectCommandsLayoutCreateInfoEXT, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_indirect_commands_layout: Ptr[IndirectCommandsLayoutEXT, MutAnyOrigin],
-    ) -> Result
-    var _destroy_indirect_commands_layout: fn(
+    ) thin abi("C") -> Result
+    var _destroy_indirect_commands_layout: def(
         device: Device,
         indirect_commands_layout: IndirectCommandsLayoutEXT,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
-    var _create_indirect_execution_set: fn(
+    ) thin abi("C")
+    var _create_indirect_execution_set: def(
         device: Device,
         p_create_info: Ptr[IndirectExecutionSetCreateInfoEXT, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_indirect_execution_set: Ptr[IndirectExecutionSetEXT, MutAnyOrigin],
-    ) -> Result
-    var _destroy_indirect_execution_set: fn(
+    ) thin abi("C") -> Result
+    var _destroy_indirect_execution_set: def(
         device: Device,
         indirect_execution_set: IndirectExecutionSetEXT,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
-    var _update_indirect_execution_set_pipeline: fn(
+    ) thin abi("C")
+    var _update_indirect_execution_set_pipeline: def(
         device: Device,
         indirect_execution_set: IndirectExecutionSetEXT,
         execution_set_write_count: UInt32,
         p_execution_set_writes: Ptr[WriteIndirectExecutionSetPipelineEXT, ImmutAnyOrigin],
-    )
-    var _update_indirect_execution_set_shader: fn(
+    ) thin abi("C")
+    var _update_indirect_execution_set_shader: def(
         device: Device,
         indirect_execution_set: IndirectExecutionSetEXT,
         execution_set_write_count: UInt32,
         p_execution_set_writes: Ptr[WriteIndirectExecutionSetShaderEXT, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_generated_commands_memory_requirements = Ptr(to=get_device_proc_addr(
             device, "vkGetGeneratedCommandsMemoryRequirementsEXT".as_c_string_slice()
@@ -5291,7 +5370,7 @@ struct DeviceGeneratedCommands(Copyable):
             device, "vkUpdateIndirectExecutionSetShaderEXT".as_c_string_slice()
         )).bitcast[type_of(self._update_indirect_execution_set_shader)]()[]
 
-    fn get_generated_commands_memory_requirements(
+    def get_generated_commands_memory_requirements(
         self,
         device: Device,
         info: GeneratedCommandsMemoryRequirementsInfoEXT,
@@ -5305,7 +5384,7 @@ struct DeviceGeneratedCommands(Copyable):
             device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
-    fn cmd_preprocess_generated_commands(
+    def cmd_preprocess_generated_commands(
         self,
         command_buffer: CommandBuffer,
         generated_commands_info: GeneratedCommandsInfoEXT,
@@ -5319,7 +5398,7 @@ struct DeviceGeneratedCommands(Copyable):
             command_buffer, Ptr(to=generated_commands_info), state_command_buffer
         )
 
-    fn cmd_execute_generated_commands(
+    def cmd_execute_generated_commands(
         self,
         command_buffer: CommandBuffer,
         is_preprocessed: Bool32,
@@ -5333,7 +5412,7 @@ struct DeviceGeneratedCommands(Copyable):
             command_buffer, is_preprocessed, Ptr(to=generated_commands_info)
         )
 
-    fn create_indirect_commands_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_indirect_commands_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: IndirectCommandsLayoutCreateInfoEXT,
@@ -5351,7 +5430,7 @@ struct DeviceGeneratedCommands(Copyable):
             Ptr(to=indirect_commands_layout),
         )
 
-    fn destroy_indirect_commands_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_indirect_commands_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         indirect_commands_layout: IndirectCommandsLayoutEXT,
@@ -5367,7 +5446,7 @@ struct DeviceGeneratedCommands(Copyable):
             Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
         )
 
-    fn create_indirect_execution_set[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_indirect_execution_set[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: IndirectExecutionSetCreateInfoEXT,
@@ -5385,7 +5464,7 @@ struct DeviceGeneratedCommands(Copyable):
             Ptr(to=indirect_execution_set),
         )
 
-    fn destroy_indirect_execution_set[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_indirect_execution_set[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         indirect_execution_set: IndirectExecutionSetEXT,
@@ -5401,7 +5480,7 @@ struct DeviceGeneratedCommands(Copyable):
             Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
         )
 
-    fn update_indirect_execution_set_pipeline[
+    def update_indirect_execution_set_pipeline[
         p_execution_set_writes_origin: ImmutOrigin = ImmutAnyOrigin
     ](
         self,
@@ -5421,7 +5500,7 @@ struct DeviceGeneratedCommands(Copyable):
             Ptr(to=p_execution_set_writes).bitcast[Ptr[WriteIndirectExecutionSetPipelineEXT, ImmutAnyOrigin]]()[],
         )
 
-    fn update_indirect_execution_set_shader[
+    def update_indirect_execution_set_shader[
         p_execution_set_writes_origin: ImmutOrigin = ImmutAnyOrigin
     ](
         self,
@@ -5444,22 +5523,22 @@ struct DeviceGeneratedCommands(Copyable):
 
 struct DepthClampControl(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_depth_clamp_range: fn(
+    var _cmd_set_depth_clamp_range: def(
         command_buffer: CommandBuffer,
         depth_clamp_mode: DepthClampModeEXT,
         p_depth_clamp_range: Ptr[DepthClampRangeEXT, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_depth_clamp_range = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetDepthClampRangeEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_depth_clamp_range)]()[]
 
-    fn cmd_set_depth_clamp_range[p_depth_clamp_range_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_depth_clamp_range[p_depth_clamp_range_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         depth_clamp_mode: DepthClampModeEXT,
@@ -5478,22 +5557,22 @@ struct DepthClampControl(Copyable):
 
 struct ExternalMemoryMetal(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_memory_metal_handle: fn(
+    var _get_memory_metal_handle: def(
         device: Device,
         p_get_metal_handle_info: Ptr[MemoryGetMetalHandleInfoEXT, ImmutAnyOrigin],
         p_handle: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
-    ) -> Result
-    var _get_memory_metal_handle_properties: fn(
+    ) thin abi("C") -> Result
+    var _get_memory_metal_handle_properties: def(
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
         p_handle: Ptr[NoneType, ImmutAnyOrigin],
         p_memory_metal_handle_properties: Ptr[MemoryMetalHandlePropertiesEXT, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_metal_handle = Ptr(to=get_device_proc_addr(
             device, "vkGetMemoryMetalHandleEXT".as_c_string_slice()
@@ -5502,7 +5581,7 @@ struct ExternalMemoryMetal(Copyable):
             device, "vkGetMemoryMetalHandlePropertiesEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_memory_metal_handle_properties)]()[]
 
-    fn get_memory_metal_handle[handle_origin: MutOrigin = MutAnyOrigin](
+    def get_memory_metal_handle[handle_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         get_metal_handle_info: MemoryGetMetalHandleInfoEXT,
@@ -5518,7 +5597,7 @@ struct ExternalMemoryMetal(Copyable):
             Ptr(to=Ptr(to=handle)).bitcast[Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin]]()[],
         )
 
-    fn get_memory_metal_handle_properties[p_handle_origin: ImmutOrigin = ImmutAnyOrigin](
+    def get_memory_metal_handle_properties[p_handle_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         handle_type: ExternalMemoryHandleTypeFlagBits,
@@ -5539,20 +5618,20 @@ struct ExternalMemoryMetal(Copyable):
 
 struct FragmentDensityMapOffset(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_end_rendering_2: fn(
+    var _cmd_end_rendering_2: def(
         command_buffer: CommandBuffer, p_rendering_end_info: Ptr[RenderingEndInfoKHR, ImmutAnyOrigin]
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_end_rendering_2 = Ptr(to=get_device_proc_addr(
             device, "vkCmdEndRendering2KHR".as_c_string_slice()
         )).bitcast[type_of(self._cmd_end_rendering_2)]()[]
 
-    fn cmd_end_rendering_2[p_rendering_end_info_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_end_rendering_2[p_rendering_end_info_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         p_rendering_end_info: Ptr[RenderingEndInfoKHR, p_rendering_end_info_origin],
@@ -5569,21 +5648,21 @@ struct FragmentDensityMapOffset(Copyable):
 
 struct CustomResolve(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_begin_custom_resolve: fn(
+    var _cmd_begin_custom_resolve: def(
         command_buffer: CommandBuffer,
         p_begin_custom_resolve_info: Ptr[BeginCustomResolveInfoEXT, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_begin_custom_resolve = Ptr(to=get_device_proc_addr(
             device, "vkCmdBeginCustomResolveEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_begin_custom_resolve)]()[]
 
-    fn cmd_begin_custom_resolve[p_begin_custom_resolve_info_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_begin_custom_resolve[p_begin_custom_resolve_info_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         p_begin_custom_resolve_info: Ptr[BeginCustomResolveInfoEXT, p_begin_custom_resolve_info_origin],

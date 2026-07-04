@@ -1,19 +1,19 @@
-from ffi import OwnedDLHandle, CStringSlice, c_char
-from memory import ArcPointer
+from std.ffi import OwnedDLHandle, CStringSlice, c_char
+from std.memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct SubpassShading(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_device_subpass_shading_max_workgroup_size: fn(
+    var _get_device_subpass_shading_max_workgroup_size: def(
         device: Device, renderpass: RenderPass, p_max_workgroup_size: Ptr[Extent2D, MutAnyOrigin]
-    ) -> Result
-    var _cmd_subpass_shading: fn(command_buffer: CommandBuffer)
+    ) thin abi("C") -> Result
+    var _cmd_subpass_shading: def(command_buffer: CommandBuffer) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_device_subpass_shading_max_workgroup_size = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceSubpassShadingMaxWorkgroupSizeHUAWEI".as_c_string_slice()
@@ -22,7 +22,7 @@ struct SubpassShading(Copyable):
             device, "vkCmdSubpassShadingHUAWEI".as_c_string_slice()
         )).bitcast[type_of(self._cmd_subpass_shading)]()[]
 
-    fn get_device_subpass_shading_max_workgroup_size[
+    def get_device_subpass_shading_max_workgroup_size[
         p_max_workgroup_size_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -38,7 +38,7 @@ struct SubpassShading(Copyable):
             device, renderpass, Ptr(to=p_max_workgroup_size).bitcast[Ptr[Extent2D, MutAnyOrigin]]()[]
         )
 
-    fn cmd_subpass_shading(self, command_buffer: CommandBuffer):
+    def cmd_subpass_shading(self, command_buffer: CommandBuffer):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSubpassShadingHUAWEI.html
@@ -48,20 +48,20 @@ struct SubpassShading(Copyable):
 
 struct InvocationMask(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_bind_invocation_mask: fn(
+    var _cmd_bind_invocation_mask: def(
         command_buffer: CommandBuffer, image_view: ImageView, image_layout: ImageLayout
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_bind_invocation_mask = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindInvocationMaskHUAWEI".as_c_string_slice()
         )).bitcast[type_of(self._cmd_bind_invocation_mask)]()[]
 
-    fn cmd_bind_invocation_mask(
+    def cmd_bind_invocation_mask(
         self, command_buffer: CommandBuffer, image_view: ImageView, image_layout: ImageLayout
     ):
         """See official vulkan docs for details.
@@ -73,20 +73,20 @@ struct InvocationMask(Copyable):
 
 struct ClusterCullingShader(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_draw_cluster: fn(
+    var _cmd_draw_cluster: def(
         command_buffer: CommandBuffer,
         group_count_x: UInt32,
         group_count_y: UInt32,
         group_count_z: UInt32,
-    )
-    var _cmd_draw_cluster_indirect: fn(
+    ) thin abi("C")
+    var _cmd_draw_cluster_indirect: def(
         command_buffer: CommandBuffer, buffer: Buffer, offset: DeviceSize
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_draw_cluster = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawClusterHUAWEI".as_c_string_slice()
@@ -95,7 +95,7 @@ struct ClusterCullingShader(Copyable):
             device, "vkCmdDrawClusterIndirectHUAWEI".as_c_string_slice()
         )).bitcast[type_of(self._cmd_draw_cluster_indirect)]()[]
 
-    fn cmd_draw_cluster(
+    def cmd_draw_cluster(
         self,
         command_buffer: CommandBuffer,
         group_count_x: UInt32,
@@ -108,7 +108,7 @@ struct ClusterCullingShader(Copyable):
         """
         return self._cmd_draw_cluster(command_buffer, group_count_x, group_count_y, group_count_z)
 
-    fn cmd_draw_cluster_indirect(
+    def cmd_draw_cluster_indirect(
         self, command_buffer: CommandBuffer, buffer: Buffer, offset: DeviceSize
     ):
         """See official vulkan docs for details.

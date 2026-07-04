@@ -1,6 +1,6 @@
-from memory import memcpy
-from math import ceildiv
-from sys import size_of
+from std.memory import memcpy
+from std.math import ceildiv
+from std.sys import size_of
 from .structs import *
 
 
@@ -17,7 +17,7 @@ struct ClearColorValue(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: InlineArray[Float32, Int(4)]):
+    def __init__(out self, value: InlineArray[Float32, Int(4)]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -25,7 +25,7 @@ struct ClearColorValue(ImplicitlyCopyable):
             count = size_of[InlineArray[Float32, Int(4)]](),
         )
 
-    fn __init__(out self, value: InlineArray[Int32, Int(4)]):
+    def __init__(out self, value: InlineArray[Int32, Int(4)]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -33,7 +33,7 @@ struct ClearColorValue(ImplicitlyCopyable):
             count = size_of[InlineArray[Int32, Int(4)]](),
         )
 
-    fn __init__(out self, value: InlineArray[UInt32, Int(4)]):
+    def __init__(out self, value: InlineArray[UInt32, Int(4)]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -41,8 +41,8 @@ struct ClearColorValue(ImplicitlyCopyable):
             count = size_of[InlineArray[UInt32, Int(4)]](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct ClearValue(ImplicitlyCopyable):
@@ -54,7 +54,7 @@ struct ClearValue(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: ClearColorValue):
+    def __init__(out self, value: ClearColorValue):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -62,7 +62,7 @@ struct ClearValue(ImplicitlyCopyable):
             count = size_of[ClearColorValue](),
         )
 
-    fn __init__(out self, value: ClearDepthStencilValue):
+    def __init__(out self, value: ClearDepthStencilValue):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -70,8 +70,8 @@ struct ClearValue(ImplicitlyCopyable):
             count = size_of[ClearDepthStencilValue](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct ClusterAccelerationStructureOpInputNV(ImplicitlyCopyable):
@@ -84,7 +84,7 @@ struct ClusterAccelerationStructureOpInputNV(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: Ptr[ClusterAccelerationStructureClustersBottomLevelInputNV, MutAnyOrigin]):
+    def __init__(out self, value: Ptr[ClusterAccelerationStructureClustersBottomLevelInputNV, MutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -92,7 +92,7 @@ struct ClusterAccelerationStructureOpInputNV(ImplicitlyCopyable):
             count = size_of[Ptr[ClusterAccelerationStructureClustersBottomLevelInputNV, MutAnyOrigin]](),
         )
 
-    fn __init__(out self, value: Ptr[ClusterAccelerationStructureTriangleClusterInputNV, MutAnyOrigin]):
+    def __init__(out self, value: Ptr[ClusterAccelerationStructureTriangleClusterInputNV, MutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -100,7 +100,7 @@ struct ClusterAccelerationStructureOpInputNV(ImplicitlyCopyable):
             count = size_of[Ptr[ClusterAccelerationStructureTriangleClusterInputNV, MutAnyOrigin]](),
         )
 
-    fn __init__(out self, value: Ptr[ClusterAccelerationStructureMoveObjectsInputNV, MutAnyOrigin]):
+    def __init__(out self, value: Ptr[ClusterAccelerationStructureMoveObjectsInputNV, MutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -108,8 +108,8 @@ struct ClusterAccelerationStructureOpInputNV(ImplicitlyCopyable):
             count = size_of[Ptr[ClusterAccelerationStructureMoveObjectsInputNV, MutAnyOrigin]](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct PerformanceCounterResultKHR(ImplicitlyCopyable):
@@ -125,7 +125,7 @@ struct PerformanceCounterResultKHR(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: Int32):
+    def __init__(out self, value: Int32):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -133,7 +133,7 @@ struct PerformanceCounterResultKHR(ImplicitlyCopyable):
             count = size_of[Int32](),
         )
 
-    fn __init__(out self, value: Int64):
+    def __init__(out self, value: Int64):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -141,7 +141,7 @@ struct PerformanceCounterResultKHR(ImplicitlyCopyable):
             count = size_of[Int64](),
         )
 
-    fn __init__(out self, value: UInt32):
+    def __init__(out self, value: UInt32):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -149,7 +149,7 @@ struct PerformanceCounterResultKHR(ImplicitlyCopyable):
             count = size_of[UInt32](),
         )
 
-    fn __init__(out self, value: UInt64):
+    def __init__(out self, value: UInt64):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -157,7 +157,7 @@ struct PerformanceCounterResultKHR(ImplicitlyCopyable):
             count = size_of[UInt64](),
         )
 
-    fn __init__(out self, value: Float32):
+    def __init__(out self, value: Float32):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -165,7 +165,7 @@ struct PerformanceCounterResultKHR(ImplicitlyCopyable):
             count = size_of[Float32](),
         )
 
-    fn __init__(out self, value: Float64):
+    def __init__(out self, value: Float64):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -173,8 +173,8 @@ struct PerformanceCounterResultKHR(ImplicitlyCopyable):
             count = size_of[Float64](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct PerformanceValueDataINTEL(ImplicitlyCopyable):
@@ -189,7 +189,7 @@ struct PerformanceValueDataINTEL(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: UInt32):
+    def __init__(out self, value: UInt32):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -197,7 +197,7 @@ struct PerformanceValueDataINTEL(ImplicitlyCopyable):
             count = size_of[UInt32](),
         )
 
-    fn __init__(out self, value: UInt64):
+    def __init__(out self, value: UInt64):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -205,7 +205,7 @@ struct PerformanceValueDataINTEL(ImplicitlyCopyable):
             count = size_of[UInt64](),
         )
 
-    fn __init__(out self, value: Float32):
+    def __init__(out self, value: Float32):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -213,7 +213,7 @@ struct PerformanceValueDataINTEL(ImplicitlyCopyable):
             count = size_of[Float32](),
         )
 
-    fn __init__(out self, value: Bool32):
+    def __init__(out self, value: Bool32):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -221,7 +221,7 @@ struct PerformanceValueDataINTEL(ImplicitlyCopyable):
             count = size_of[Bool32](),
         )
 
-    fn __init__(out self, value: CStringSlice[ImmutAnyOrigin]):
+    def __init__(out self, value: CStringSlice[ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -229,8 +229,8 @@ struct PerformanceValueDataINTEL(ImplicitlyCopyable):
             count = size_of[CStringSlice[ImmutAnyOrigin]](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct PipelineExecutableStatisticValueKHR(ImplicitlyCopyable):
@@ -244,7 +244,7 @@ struct PipelineExecutableStatisticValueKHR(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: Bool32):
+    def __init__(out self, value: Bool32):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -252,7 +252,7 @@ struct PipelineExecutableStatisticValueKHR(ImplicitlyCopyable):
             count = size_of[Bool32](),
         )
 
-    fn __init__(out self, value: Int64):
+    def __init__(out self, value: Int64):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -260,7 +260,7 @@ struct PipelineExecutableStatisticValueKHR(ImplicitlyCopyable):
             count = size_of[Int64](),
         )
 
-    fn __init__(out self, value: UInt64):
+    def __init__(out self, value: UInt64):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -268,7 +268,7 @@ struct PipelineExecutableStatisticValueKHR(ImplicitlyCopyable):
             count = size_of[UInt64](),
         )
 
-    fn __init__(out self, value: Float64):
+    def __init__(out self, value: Float64):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -276,8 +276,8 @@ struct PipelineExecutableStatisticValueKHR(ImplicitlyCopyable):
             count = size_of[Float64](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct DeviceOrHostAddressKHR(ImplicitlyCopyable):
@@ -289,7 +289,7 @@ struct DeviceOrHostAddressKHR(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: DeviceAddress):
+    def __init__(out self, value: DeviceAddress):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -297,7 +297,7 @@ struct DeviceOrHostAddressKHR(ImplicitlyCopyable):
             count = size_of[DeviceAddress](),
         )
 
-    fn __init__(out self, value: Ptr[NoneType, MutAnyOrigin]):
+    def __init__(out self, value: Ptr[NoneType, MutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -305,8 +305,8 @@ struct DeviceOrHostAddressKHR(ImplicitlyCopyable):
             count = size_of[Ptr[NoneType, MutAnyOrigin]](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct DeviceOrHostAddressConstKHR(ImplicitlyCopyable):
@@ -318,7 +318,7 @@ struct DeviceOrHostAddressConstKHR(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: DeviceAddress):
+    def __init__(out self, value: DeviceAddress):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -326,7 +326,7 @@ struct DeviceOrHostAddressConstKHR(ImplicitlyCopyable):
             count = size_of[DeviceAddress](),
         )
 
-    fn __init__(out self, value: Ptr[NoneType, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[NoneType, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -334,8 +334,8 @@ struct DeviceOrHostAddressConstKHR(ImplicitlyCopyable):
             count = size_of[Ptr[NoneType, ImmutAnyOrigin]](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct DeviceOrHostAddressConstAMDX(ImplicitlyCopyable):
@@ -347,7 +347,7 @@ struct DeviceOrHostAddressConstAMDX(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: DeviceAddress):
+    def __init__(out self, value: DeviceAddress):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -355,7 +355,7 @@ struct DeviceOrHostAddressConstAMDX(ImplicitlyCopyable):
             count = size_of[DeviceAddress](),
         )
 
-    fn __init__(out self, value: Ptr[NoneType, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[NoneType, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -363,8 +363,8 @@ struct DeviceOrHostAddressConstAMDX(ImplicitlyCopyable):
             count = size_of[Ptr[NoneType, ImmutAnyOrigin]](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct AccelerationStructureGeometryDataKHR(ImplicitlyCopyable):
@@ -377,7 +377,7 @@ struct AccelerationStructureGeometryDataKHR(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: AccelerationStructureGeometryTrianglesDataKHR):
+    def __init__(out self, value: AccelerationStructureGeometryTrianglesDataKHR):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -385,7 +385,7 @@ struct AccelerationStructureGeometryDataKHR(ImplicitlyCopyable):
             count = size_of[AccelerationStructureGeometryTrianglesDataKHR](),
         )
 
-    fn __init__(out self, value: AccelerationStructureGeometryAabbsDataKHR):
+    def __init__(out self, value: AccelerationStructureGeometryAabbsDataKHR):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -393,7 +393,7 @@ struct AccelerationStructureGeometryDataKHR(ImplicitlyCopyable):
             count = size_of[AccelerationStructureGeometryAabbsDataKHR](),
         )
 
-    fn __init__(out self, value: AccelerationStructureGeometryInstancesDataKHR):
+    def __init__(out self, value: AccelerationStructureGeometryInstancesDataKHR):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -401,8 +401,8 @@ struct AccelerationStructureGeometryDataKHR(ImplicitlyCopyable):
             count = size_of[AccelerationStructureGeometryInstancesDataKHR](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct IndirectExecutionSetInfoEXT(ImplicitlyCopyable):
@@ -414,7 +414,7 @@ struct IndirectExecutionSetInfoEXT(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: Ptr[IndirectExecutionSetPipelineInfoEXT, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[IndirectExecutionSetPipelineInfoEXT, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -422,7 +422,7 @@ struct IndirectExecutionSetInfoEXT(ImplicitlyCopyable):
             count = size_of[Ptr[IndirectExecutionSetPipelineInfoEXT, ImmutAnyOrigin]](),
         )
 
-    fn __init__(out self, value: Ptr[IndirectExecutionSetShaderInfoEXT, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[IndirectExecutionSetShaderInfoEXT, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -430,8 +430,8 @@ struct IndirectExecutionSetInfoEXT(ImplicitlyCopyable):
             count = size_of[Ptr[IndirectExecutionSetShaderInfoEXT, ImmutAnyOrigin]](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct IndirectCommandsTokenDataEXT(ImplicitlyCopyable):
@@ -445,7 +445,7 @@ struct IndirectCommandsTokenDataEXT(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: Ptr[IndirectCommandsPushConstantTokenEXT, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[IndirectCommandsPushConstantTokenEXT, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -453,7 +453,7 @@ struct IndirectCommandsTokenDataEXT(ImplicitlyCopyable):
             count = size_of[Ptr[IndirectCommandsPushConstantTokenEXT, ImmutAnyOrigin]](),
         )
 
-    fn __init__(out self, value: Ptr[IndirectCommandsVertexBufferTokenEXT, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[IndirectCommandsVertexBufferTokenEXT, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -461,7 +461,7 @@ struct IndirectCommandsTokenDataEXT(ImplicitlyCopyable):
             count = size_of[Ptr[IndirectCommandsVertexBufferTokenEXT, ImmutAnyOrigin]](),
         )
 
-    fn __init__(out self, value: Ptr[IndirectCommandsIndexBufferTokenEXT, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[IndirectCommandsIndexBufferTokenEXT, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -469,7 +469,7 @@ struct IndirectCommandsTokenDataEXT(ImplicitlyCopyable):
             count = size_of[Ptr[IndirectCommandsIndexBufferTokenEXT, ImmutAnyOrigin]](),
         )
 
-    fn __init__(out self, value: Ptr[IndirectCommandsExecutionSetTokenEXT, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[IndirectCommandsExecutionSetTokenEXT, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -477,8 +477,8 @@ struct IndirectCommandsTokenDataEXT(ImplicitlyCopyable):
             count = size_of[Ptr[IndirectCommandsExecutionSetTokenEXT, ImmutAnyOrigin]](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct DescriptorDataEXT(ImplicitlyCopyable):
@@ -492,7 +492,7 @@ struct DescriptorDataEXT(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: Ptr[Sampler, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[Sampler, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -500,7 +500,7 @@ struct DescriptorDataEXT(ImplicitlyCopyable):
             count = size_of[Ptr[Sampler, ImmutAnyOrigin]](),
         )
 
-    fn __init__(out self, value: Ptr[DescriptorImageInfo, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[DescriptorImageInfo, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -508,7 +508,7 @@ struct DescriptorDataEXT(ImplicitlyCopyable):
             count = size_of[Ptr[DescriptorImageInfo, ImmutAnyOrigin]](),
         )
 
-    fn __init__(out self, value: Ptr[DescriptorAddressInfoEXT, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[DescriptorAddressInfoEXT, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -516,7 +516,7 @@ struct DescriptorDataEXT(ImplicitlyCopyable):
             count = size_of[Ptr[DescriptorAddressInfoEXT, ImmutAnyOrigin]](),
         )
 
-    fn __init__(out self, value: DeviceAddress):
+    def __init__(out self, value: DeviceAddress):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -524,8 +524,8 @@ struct DescriptorDataEXT(ImplicitlyCopyable):
             count = size_of[DeviceAddress](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct AccelerationStructureMotionInstanceDataNV(ImplicitlyCopyable):
@@ -538,7 +538,7 @@ struct AccelerationStructureMotionInstanceDataNV(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: AccelerationStructureInstanceKHR):
+    def __init__(out self, value: AccelerationStructureInstanceKHR):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -546,7 +546,7 @@ struct AccelerationStructureMotionInstanceDataNV(ImplicitlyCopyable):
             count = size_of[AccelerationStructureInstanceKHR](),
         )
 
-    fn __init__(out self, value: AccelerationStructureMatrixMotionInstanceNV):
+    def __init__(out self, value: AccelerationStructureMatrixMotionInstanceNV):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -554,7 +554,7 @@ struct AccelerationStructureMotionInstanceDataNV(ImplicitlyCopyable):
             count = size_of[AccelerationStructureMatrixMotionInstanceNV](),
         )
 
-    fn __init__(out self, value: AccelerationStructureSRTMotionInstanceNV):
+    def __init__(out self, value: AccelerationStructureSRTMotionInstanceNV):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -562,8 +562,8 @@ struct AccelerationStructureMotionInstanceDataNV(ImplicitlyCopyable):
             count = size_of[AccelerationStructureSRTMotionInstanceNV](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct ResourceDescriptorDataEXT(ImplicitlyCopyable):
@@ -577,7 +577,7 @@ struct ResourceDescriptorDataEXT(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: Ptr[ImageDescriptorInfoEXT, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[ImageDescriptorInfoEXT, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -585,7 +585,7 @@ struct ResourceDescriptorDataEXT(ImplicitlyCopyable):
             count = size_of[Ptr[ImageDescriptorInfoEXT, ImmutAnyOrigin]](),
         )
 
-    fn __init__(out self, value: Ptr[TexelBufferDescriptorInfoEXT, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[TexelBufferDescriptorInfoEXT, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -593,7 +593,7 @@ struct ResourceDescriptorDataEXT(ImplicitlyCopyable):
             count = size_of[Ptr[TexelBufferDescriptorInfoEXT, ImmutAnyOrigin]](),
         )
 
-    fn __init__(out self, value: Ptr[DeviceAddressRangeEXT, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[DeviceAddressRangeEXT, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -601,7 +601,7 @@ struct ResourceDescriptorDataEXT(ImplicitlyCopyable):
             count = size_of[Ptr[DeviceAddressRangeEXT, ImmutAnyOrigin]](),
         )
 
-    fn __init__(out self, value: Ptr[TensorViewCreateInfoARM, ImmutAnyOrigin]):
+    def __init__(out self, value: Ptr[TensorViewCreateInfoARM, ImmutAnyOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -609,8 +609,8 @@ struct ResourceDescriptorDataEXT(ImplicitlyCopyable):
             count = size_of[Ptr[TensorViewCreateInfoARM, ImmutAnyOrigin]](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()
 
 
 struct DescriptorMappingSourceDataEXT(ImplicitlyCopyable):
@@ -628,7 +628,7 @@ struct DescriptorMappingSourceDataEXT(ImplicitlyCopyable):
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
     var _value: Self._InnerType
 
-    fn __init__(out self, value: DescriptorMappingSourceConstantOffsetEXT):
+    def __init__(out self, value: DescriptorMappingSourceConstantOffsetEXT):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -636,7 +636,7 @@ struct DescriptorMappingSourceDataEXT(ImplicitlyCopyable):
             count = size_of[DescriptorMappingSourceConstantOffsetEXT](),
         )
 
-    fn __init__(out self, value: DescriptorMappingSourcePushIndexEXT):
+    def __init__(out self, value: DescriptorMappingSourcePushIndexEXT):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -644,7 +644,7 @@ struct DescriptorMappingSourceDataEXT(ImplicitlyCopyable):
             count = size_of[DescriptorMappingSourcePushIndexEXT](),
         )
 
-    fn __init__(out self, value: DescriptorMappingSourceIndirectIndexEXT):
+    def __init__(out self, value: DescriptorMappingSourceIndirectIndexEXT):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -652,7 +652,7 @@ struct DescriptorMappingSourceDataEXT(ImplicitlyCopyable):
             count = size_of[DescriptorMappingSourceIndirectIndexEXT](),
         )
 
-    fn __init__(out self, value: DescriptorMappingSourceIndirectIndexArrayEXT):
+    def __init__(out self, value: DescriptorMappingSourceIndirectIndexArrayEXT):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -660,7 +660,7 @@ struct DescriptorMappingSourceDataEXT(ImplicitlyCopyable):
             count = size_of[DescriptorMappingSourceIndirectIndexArrayEXT](),
         )
 
-    fn __init__(out self, value: DescriptorMappingSourceHeapDataEXT):
+    def __init__(out self, value: DescriptorMappingSourceHeapDataEXT):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -668,7 +668,7 @@ struct DescriptorMappingSourceDataEXT(ImplicitlyCopyable):
             count = size_of[DescriptorMappingSourceHeapDataEXT](),
         )
 
-    fn __init__(out self, value: UInt32):
+    def __init__(out self, value: UInt32):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -676,7 +676,7 @@ struct DescriptorMappingSourceDataEXT(ImplicitlyCopyable):
             count = size_of[UInt32](),
         )
 
-    fn __init__(out self, value: DescriptorMappingSourceIndirectAddressEXT):
+    def __init__(out self, value: DescriptorMappingSourceIndirectAddressEXT):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -684,7 +684,7 @@ struct DescriptorMappingSourceDataEXT(ImplicitlyCopyable):
             count = size_of[DescriptorMappingSourceIndirectAddressEXT](),
         )
 
-    fn __init__(out self, value: DescriptorMappingSourceShaderRecordIndexEXT):
+    def __init__(out self, value: DescriptorMappingSourceShaderRecordIndexEXT):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
@@ -692,5 +692,5 @@ struct DescriptorMappingSourceDataEXT(ImplicitlyCopyable):
             count = size_of[DescriptorMappingSourceShaderRecordIndexEXT](),
         )
 
-    fn __copyinit__(out self, other: Self):
-        self._value = other._value.copy()
+    def __init__(out self, *, copy: Self):
+        self._value = copy._value.copy()

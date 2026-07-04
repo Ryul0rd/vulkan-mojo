@@ -1,11 +1,11 @@
-from ffi import OwnedDLHandle, CStringSlice, c_char
-from memory import ArcPointer
+from std.ffi import OwnedDLHandle, CStringSlice, c_char
+from std.memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct ExternalMemoryCapabilities(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_physical_device_external_image_format_properties: fn(
+    var _get_physical_device_external_image_format_properties: def(
         physical_device: PhysicalDevice,
         format: Format,
         type: ImageType,
@@ -14,18 +14,18 @@ struct ExternalMemoryCapabilities(Copyable):
         flags: ImageCreateFlags,
         external_handle_type: ExternalMemoryHandleTypeFlagsNV,
         p_external_image_format_properties: Ptr[ExternalImageFormatPropertiesNV, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
         self._get_physical_device_external_image_format_properties = Ptr(to=get_instance_proc_addr(
             instance, "vkGetPhysicalDeviceExternalImageFormatPropertiesNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_external_image_format_properties)]()[]
 
-    fn get_physical_device_external_image_format_properties(
+    def get_physical_device_external_image_format_properties(
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -54,23 +54,23 @@ struct ExternalMemoryCapabilities(Copyable):
 
 struct ExternalMemoryWin32(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_memory_win_32_handle: fn(
+    var _get_memory_win_32_handle: def(
         device: Device,
         memory: DeviceMemory,
         handle_type: ExternalMemoryHandleTypeFlagsNV,
         p_handle: Ptr[HANDLE, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_win_32_handle = Ptr(to=get_device_proc_addr(
             device, "vkGetMemoryWin32HandleNV".as_c_string_slice()
         )).bitcast[type_of(self._get_memory_win_32_handle)]()[]
 
-    fn get_memory_win_32_handle(
+    def get_memory_win_32_handle(
         self,
         device: Device,
         memory: DeviceMemory,
@@ -86,23 +86,23 @@ struct ExternalMemoryWin32(Copyable):
 
 struct ClipSpaceWScaling(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_viewport_w_scaling: fn(
+    var _cmd_set_viewport_w_scaling: def(
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
         p_viewport_w_scalings: Ptr[ViewportWScalingNV, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_viewport_w_scaling = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetViewportWScalingNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_viewport_w_scaling)]()[]
 
-    fn cmd_set_viewport_w_scaling[p_viewport_w_scalings_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_viewport_w_scaling[p_viewport_w_scalings_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
@@ -123,26 +123,26 @@ struct ClipSpaceWScaling(Copyable):
 
 struct ShadingRateImage(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_bind_shading_rate_image: fn(
+    var _cmd_bind_shading_rate_image: def(
         command_buffer: CommandBuffer, image_view: ImageView, image_layout: ImageLayout
-    )
-    var _cmd_set_viewport_shading_rate_palette: fn(
+    ) thin abi("C")
+    var _cmd_set_viewport_shading_rate_palette: def(
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
         viewport_count: UInt32,
         p_shading_rate_palettes: Ptr[ShadingRatePaletteNV, ImmutAnyOrigin],
-    )
-    var _cmd_set_coarse_sample_order: fn(
+    ) thin abi("C")
+    var _cmd_set_coarse_sample_order: def(
         command_buffer: CommandBuffer,
         sample_order_type: CoarseSampleOrderTypeNV,
         custom_sample_order_count: UInt32,
         p_custom_sample_orders: Ptr[CoarseSampleOrderCustomNV, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_bind_shading_rate_image = Ptr(to=get_device_proc_addr(
             device, "vkCmdBindShadingRateImageNV".as_c_string_slice()
@@ -154,7 +154,7 @@ struct ShadingRateImage(Copyable):
             device, "vkCmdSetCoarseSampleOrderNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_coarse_sample_order)]()[]
 
-    fn cmd_bind_shading_rate_image(
+    def cmd_bind_shading_rate_image(
         self, command_buffer: CommandBuffer, image_view: ImageView, image_layout: ImageLayout
     ):
         """See official vulkan docs for details.
@@ -163,7 +163,7 @@ struct ShadingRateImage(Copyable):
         """
         return self._cmd_bind_shading_rate_image(command_buffer, image_view, image_layout)
 
-    fn cmd_set_viewport_shading_rate_palette[
+    def cmd_set_viewport_shading_rate_palette[
         p_shading_rate_palettes_origin: ImmutOrigin = ImmutAnyOrigin
     ](
         self,
@@ -183,7 +183,7 @@ struct ShadingRateImage(Copyable):
             Ptr(to=p_shading_rate_palettes).bitcast[Ptr[ShadingRatePaletteNV, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_coarse_sample_order[p_custom_sample_orders_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_coarse_sample_order[p_custom_sample_orders_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         sample_order_type: CoarseSampleOrderTypeNV,
@@ -204,28 +204,28 @@ struct ShadingRateImage(Copyable):
 
 struct RayTracing(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_acceleration_structure: fn(
+    var _create_acceleration_structure: def(
         device: Device,
         p_create_info: Ptr[AccelerationStructureCreateInfoNV, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_acceleration_structure: Ptr[AccelerationStructureNV, MutAnyOrigin],
-    ) -> Result
-    var _destroy_acceleration_structure: fn(
+    ) thin abi("C") -> Result
+    var _destroy_acceleration_structure: def(
         device: Device,
         acceleration_structure: AccelerationStructureNV,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
-    var _get_acceleration_structure_memory_requirements: fn(
+    ) thin abi("C")
+    var _get_acceleration_structure_memory_requirements: def(
         device: Device,
         p_info: Ptr[AccelerationStructureMemoryRequirementsInfoNV, ImmutAnyOrigin],
         p_memory_requirements: Ptr[MemoryRequirements2KHR, MutAnyOrigin],
-    )
-    var _bind_acceleration_structure_memory: fn(
+    ) thin abi("C")
+    var _bind_acceleration_structure_memory: def(
         device: Device,
         bind_info_count: UInt32,
         p_bind_infos: Ptr[BindAccelerationStructureMemoryInfoNV, ImmutAnyOrigin],
-    ) -> Result
-    var _cmd_build_acceleration_structure: fn(
+    ) thin abi("C") -> Result
+    var _cmd_build_acceleration_structure: def(
         command_buffer: CommandBuffer,
         p_info: Ptr[AccelerationStructureInfoNV, ImmutAnyOrigin],
         instance_data: Buffer,
@@ -235,14 +235,14 @@ struct RayTracing(Copyable):
         src: AccelerationStructureNV,
         scratch: Buffer,
         scratch_offset: DeviceSize,
-    )
-    var _cmd_copy_acceleration_structure: fn(
+    ) thin abi("C")
+    var _cmd_copy_acceleration_structure: def(
         command_buffer: CommandBuffer,
         dst: AccelerationStructureNV,
         src: AccelerationStructureNV,
         mode: CopyAccelerationStructureModeKHR,
-    )
-    var _cmd_trace_rays: fn(
+    ) thin abi("C")
+    var _cmd_trace_rays: def(
         command_buffer: CommandBuffer,
         raygen_shader_binding_table_buffer: Buffer,
         raygen_shader_binding_offset: DeviceSize,
@@ -258,43 +258,45 @@ struct RayTracing(Copyable):
         width: UInt32,
         height: UInt32,
         depth: UInt32,
-    )
-    var _create_ray_tracing_pipelines: fn(
+    ) thin abi("C")
+    var _create_ray_tracing_pipelines: def(
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
         p_create_infos: Ptr[RayTracingPipelineCreateInfoNV, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_pipelines: Ptr[Pipeline, MutAnyOrigin],
-    ) -> Result
-    var _get_ray_tracing_shader_group_handles: fn(
+    ) thin abi("C") -> Result
+    var _get_ray_tracing_shader_group_handles: def(
         device: Device,
         pipeline: Pipeline,
         first_group: UInt32,
         group_count: UInt32,
         data_size: UInt,
         p_data: Ptr[NoneType, MutAnyOrigin],
-    ) -> Result
-    var _get_acceleration_structure_handle: fn(
+    ) thin abi("C") -> Result
+    var _get_acceleration_structure_handle: def(
         device: Device,
         acceleration_structure: AccelerationStructureNV,
         data_size: UInt,
         p_data: Ptr[NoneType, MutAnyOrigin],
-    ) -> Result
-    var _cmd_write_acceleration_structures_properties: fn(
+    ) thin abi("C") -> Result
+    var _cmd_write_acceleration_structures_properties: def(
         command_buffer: CommandBuffer,
         acceleration_structure_count: UInt32,
         p_acceleration_structures: Ptr[AccelerationStructureNV, ImmutAnyOrigin],
         query_type: QueryType,
         query_pool: QueryPool,
         first_query: UInt32,
-    )
-    var _compile_deferred: fn(device: Device, pipeline: Pipeline, shader: UInt32) -> Result
+    ) thin abi("C")
+    var _compile_deferred: def(
+        device: Device, pipeline: Pipeline, shader: UInt32
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_acceleration_structure = Ptr(to=get_device_proc_addr(
             device, "vkCreateAccelerationStructureNV".as_c_string_slice()
@@ -333,7 +335,7 @@ struct RayTracing(Copyable):
             device, "vkCompileDeferredNV".as_c_string_slice()
         )).bitcast[type_of(self._compile_deferred)]()[]
 
-    fn create_acceleration_structure[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_acceleration_structure[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: AccelerationStructureCreateInfoNV,
@@ -351,7 +353,7 @@ struct RayTracing(Copyable):
             Ptr(to=acceleration_structure),
         )
 
-    fn destroy_acceleration_structure[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_acceleration_structure[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         acceleration_structure: AccelerationStructureNV,
@@ -367,7 +369,7 @@ struct RayTracing(Copyable):
             Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
         )
 
-    fn get_acceleration_structure_memory_requirements(
+    def get_acceleration_structure_memory_requirements(
         self,
         device: Device,
         info: AccelerationStructureMemoryRequirementsInfoNV,
@@ -381,7 +383,7 @@ struct RayTracing(Copyable):
             device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
-    fn bind_acceleration_structure_memory[p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin](
+    def bind_acceleration_structure_memory[p_bind_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
@@ -397,7 +399,7 @@ struct RayTracing(Copyable):
             Ptr(to=p_bind_infos).bitcast[Ptr[BindAccelerationStructureMemoryInfoNV, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_build_acceleration_structure(
+    def cmd_build_acceleration_structure(
         self,
         command_buffer: CommandBuffer,
         info: AccelerationStructureInfoNV,
@@ -425,7 +427,7 @@ struct RayTracing(Copyable):
             scratch_offset,
         )
 
-    fn cmd_copy_acceleration_structure(
+    def cmd_copy_acceleration_structure(
         self,
         command_buffer: CommandBuffer,
         dst: AccelerationStructureNV,
@@ -438,7 +440,7 @@ struct RayTracing(Copyable):
         """
         return self._cmd_copy_acceleration_structure(command_buffer, dst, src, mode)
 
-    fn cmd_trace_rays(
+    def cmd_trace_rays(
         self,
         command_buffer: CommandBuffer,
         raygen_shader_binding_table_buffer: Buffer,
@@ -478,7 +480,7 @@ struct RayTracing(Copyable):
             depth,
         )
 
-    fn create_ray_tracing_pipelines[
+    def create_ray_tracing_pipelines[
         p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
         p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
         p_pipelines_origin: MutOrigin = MutAnyOrigin,
@@ -504,7 +506,7 @@ struct RayTracing(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
         )
 
-    fn get_ray_tracing_shader_group_handles[p_data_origin: MutOrigin = MutAnyOrigin](
+    def get_ray_tracing_shader_group_handles[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
@@ -526,7 +528,7 @@ struct RayTracing(Copyable):
             Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
-    fn get_acceleration_structure_handle[p_data_origin: MutOrigin = MutAnyOrigin](
+    def get_acceleration_structure_handle[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         acceleration_structure: AccelerationStructureNV,
@@ -544,7 +546,7 @@ struct RayTracing(Copyable):
             Ptr(to=p_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
-    fn cmd_write_acceleration_structures_properties[
+    def cmd_write_acceleration_structures_properties[
         p_acceleration_structures_origin: ImmutOrigin = ImmutAnyOrigin
     ](
         self,
@@ -568,7 +570,7 @@ struct RayTracing(Copyable):
             first_query,
         )
 
-    fn compile_deferred(self, device: Device, pipeline: Pipeline, shader: UInt32) -> Result:
+    def compile_deferred(self, device: Device, pipeline: Pipeline, shader: UInt32) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCompileDeferredNV.html
@@ -578,15 +580,17 @@ struct RayTracing(Copyable):
 
 struct MeshShader(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_draw_mesh_tasks: fn(command_buffer: CommandBuffer, task_count: UInt32, first_task: UInt32)
-    var _cmd_draw_mesh_tasks_indirect: fn(
+    var _cmd_draw_mesh_tasks: def(
+        command_buffer: CommandBuffer, task_count: UInt32, first_task: UInt32
+    ) thin abi("C")
+    var _cmd_draw_mesh_tasks_indirect: def(
         command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
         draw_count: UInt32,
         stride: UInt32,
-    )
-    var _cmd_draw_mesh_tasks_indirect_count: fn(
+    ) thin abi("C")
+    var _cmd_draw_mesh_tasks_indirect_count: def(
         command_buffer: CommandBuffer,
         buffer: Buffer,
         offset: DeviceSize,
@@ -594,12 +598,12 @@ struct MeshShader(Copyable):
         count_buffer_offset: DeviceSize,
         max_draw_count: UInt32,
         stride: UInt32,
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_draw_mesh_tasks = Ptr(to=get_device_proc_addr(
             device, "vkCmdDrawMeshTasksNV".as_c_string_slice()
@@ -611,7 +615,7 @@ struct MeshShader(Copyable):
             device, "vkCmdDrawMeshTasksIndirectCountNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_draw_mesh_tasks_indirect_count)]()[]
 
-    fn cmd_draw_mesh_tasks(
+    def cmd_draw_mesh_tasks(
         self, command_buffer: CommandBuffer, task_count: UInt32, first_task: UInt32
     ):
         """See official vulkan docs for details.
@@ -620,7 +624,7 @@ struct MeshShader(Copyable):
         """
         return self._cmd_draw_mesh_tasks(command_buffer, task_count, first_task)
 
-    fn cmd_draw_mesh_tasks_indirect(
+    def cmd_draw_mesh_tasks_indirect(
         self,
         command_buffer: CommandBuffer,
         buffer: Buffer,
@@ -634,7 +638,7 @@ struct MeshShader(Copyable):
         """
         return self._cmd_draw_mesh_tasks_indirect(command_buffer, buffer, offset, draw_count, stride)
 
-    fn cmd_draw_mesh_tasks_indirect_count(
+    def cmd_draw_mesh_tasks_indirect_count(
         self,
         command_buffer: CommandBuffer,
         buffer: Buffer,
@@ -655,23 +659,23 @@ struct MeshShader(Copyable):
 
 struct ScissorExclusive(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_exclusive_scissor_enable: fn(
+    var _cmd_set_exclusive_scissor_enable: def(
         command_buffer: CommandBuffer,
         first_exclusive_scissor: UInt32,
         exclusive_scissor_count: UInt32,
         p_exclusive_scissor_enables: Ptr[Bool32, ImmutAnyOrigin],
-    )
-    var _cmd_set_exclusive_scissor: fn(
+    ) thin abi("C")
+    var _cmd_set_exclusive_scissor: def(
         command_buffer: CommandBuffer,
         first_exclusive_scissor: UInt32,
         exclusive_scissor_count: UInt32,
         p_exclusive_scissors: Ptr[Rect2D, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_exclusive_scissor_enable = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetExclusiveScissorEnableNV".as_c_string_slice()
@@ -680,7 +684,7 @@ struct ScissorExclusive(Copyable):
             device, "vkCmdSetExclusiveScissorNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_exclusive_scissor)]()[]
 
-    fn cmd_set_exclusive_scissor_enable[
+    def cmd_set_exclusive_scissor_enable[
         p_exclusive_scissor_enables_origin: ImmutOrigin = ImmutAnyOrigin
     ](
         self,
@@ -700,7 +704,7 @@ struct ScissorExclusive(Copyable):
             Ptr(to=p_exclusive_scissor_enables).bitcast[Ptr[Bool32, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_set_exclusive_scissor[p_exclusive_scissors_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_exclusive_scissor[p_exclusive_scissors_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         first_exclusive_scissor: UInt32,
@@ -721,24 +725,24 @@ struct ScissorExclusive(Copyable):
 
 struct DeviceDiagnosticCheckpoints(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_checkpoint: fn(
+    var _cmd_set_checkpoint: def(
         command_buffer: CommandBuffer, p_checkpoint_marker: Ptr[NoneType, ImmutAnyOrigin]
-    )
-    var _get_queue_checkpoint_data: fn(
+    ) thin abi("C")
+    var _get_queue_checkpoint_data: def(
         queue: Queue,
         p_checkpoint_data_count: Ptr[UInt32, MutAnyOrigin],
         p_checkpoint_data: Ptr[CheckpointDataNV, MutAnyOrigin],
-    )
-    var _get_queue_checkpoint_data_2: fn(
+    ) thin abi("C")
+    var _get_queue_checkpoint_data_2: def(
         queue: Queue,
         p_checkpoint_data_count: Ptr[UInt32, MutAnyOrigin],
         p_checkpoint_data: Ptr[CheckpointData2NV, MutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_checkpoint = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetCheckpointNV".as_c_string_slice()
@@ -750,7 +754,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
             device, "vkGetQueueCheckpointData2NV".as_c_string_slice()
         )).bitcast[type_of(self._get_queue_checkpoint_data_2)]()[]
 
-    fn cmd_set_checkpoint[p_checkpoint_marker_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_set_checkpoint[p_checkpoint_marker_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         p_checkpoint_marker: Ptr[NoneType, p_checkpoint_marker_origin],
@@ -763,7 +767,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
             command_buffer, Ptr(to=p_checkpoint_marker).bitcast[Ptr[NoneType, ImmutAnyOrigin]]()[]
         )
 
-    fn get_queue_checkpoint_data[p_checkpoint_data_origin: MutOrigin = MutAnyOrigin](
+    def get_queue_checkpoint_data[p_checkpoint_data_origin: MutOrigin = MutAnyOrigin](
         self,
         queue: Queue,
         mut checkpoint_data_count: UInt32,
@@ -779,7 +783,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
             Ptr(to=p_checkpoint_data).bitcast[Ptr[CheckpointDataNV, MutAnyOrigin]]()[],
         )
 
-    fn get_queue_checkpoint_data[p_checkpoint_data_origin: MutOrigin = MutAnyOrigin](
+    def get_queue_checkpoint_data[p_checkpoint_data_origin: MutOrigin = MutAnyOrigin](
         self, queue: Queue
     ) -> List[CheckpointDataNV]:
         """See official vulkan docs for details.
@@ -788,13 +792,15 @@ struct DeviceDiagnosticCheckpoints(Copyable):
         """
         var list = List[CheckpointDataNV]()
         var count: UInt32 = 0
-        self._get_queue_checkpoint_data(queue, Ptr(to=count), Ptr[CheckpointDataNV, MutExternalOrigin]())
+        self._get_queue_checkpoint_data(
+    queue, Ptr(to=count), Ptr[CheckpointDataNV, MutUntrackedOrigin].unsafe_dangling()
+)
         list.reserve(Int(count))
         self._get_queue_checkpoint_data(queue, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
         return list^
 
-    fn get_queue_checkpoint_data_2[p_checkpoint_data_origin: MutOrigin = MutAnyOrigin](
+    def get_queue_checkpoint_data_2[p_checkpoint_data_origin: MutOrigin = MutAnyOrigin](
         self,
         queue: Queue,
         mut checkpoint_data_count: UInt32,
@@ -810,7 +816,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
             Ptr(to=p_checkpoint_data).bitcast[Ptr[CheckpointData2NV, MutAnyOrigin]]()[],
         )
 
-    fn get_queue_checkpoint_data_2[p_checkpoint_data_origin: MutOrigin = MutAnyOrigin](
+    def get_queue_checkpoint_data_2[p_checkpoint_data_origin: MutOrigin = MutAnyOrigin](
         self, queue: Queue
     ) -> List[CheckpointData2NV]:
         """See official vulkan docs for details.
@@ -819,7 +825,9 @@ struct DeviceDiagnosticCheckpoints(Copyable):
         """
         var list = List[CheckpointData2NV]()
         var count: UInt32 = 0
-        self._get_queue_checkpoint_data_2(queue, Ptr(to=count), Ptr[CheckpointData2NV, MutExternalOrigin]())
+        self._get_queue_checkpoint_data_2(
+    queue, Ptr(to=count), Ptr[CheckpointData2NV, MutUntrackedOrigin].unsafe_dangling()
+)
         list.reserve(Int(count))
         self._get_queue_checkpoint_data_2(queue, Ptr(to=count), list.unsafe_ptr())
         list._len = Int(count)
@@ -828,22 +836,22 @@ struct DeviceDiagnosticCheckpoints(Copyable):
 
 struct CooperativeMatrix(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_physical_device_cooperative_matrix_properties: fn(
+    var _get_physical_device_cooperative_matrix_properties: def(
         physical_device: PhysicalDevice,
         p_property_count: Ptr[UInt32, MutAnyOrigin],
         p_properties: Ptr[CooperativeMatrixPropertiesNV, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_cooperative_matrix_properties = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_cooperative_matrix_properties)]()[]
 
-    fn get_physical_device_cooperative_matrix_properties[
+    def get_physical_device_cooperative_matrix_properties[
         p_properties_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -861,7 +869,7 @@ struct CooperativeMatrix(Copyable):
             Ptr(to=p_properties).bitcast[Ptr[CooperativeMatrixPropertiesNV, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_cooperative_matrix_properties[
+    def get_physical_device_cooperative_matrix_properties[
         p_properties_origin: MutOrigin = MutAnyOrigin
     ](
         self, physical_device: PhysicalDevice
@@ -875,35 +883,37 @@ struct CooperativeMatrix(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_cooperative_matrix_properties(
-        physical_device, Ptr(to=count), Ptr[CooperativeMatrixPropertiesNV, MutExternalOrigin]()
-    )
+                physical_device,
+                Ptr(to=count),
+                Ptr[CooperativeMatrixPropertiesNV, MutUntrackedOrigin].unsafe_dangling(),
+            )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_cooperative_matrix_properties(
-        physical_device, Ptr(to=count), list.unsafe_ptr()
-    )
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
 
 struct CoverageReductionMode(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_physical_device_supported_framebuffer_mixed_samples_combinations: fn(
+    var _get_physical_device_supported_framebuffer_mixed_samples_combinations: def(
         physical_device: PhysicalDevice,
         p_combination_count: Ptr[UInt32, MutAnyOrigin],
         p_combinations: Ptr[FramebufferMixedSamplesCombinationNV, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_supported_framebuffer_mixed_samples_combinations = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_supported_framebuffer_mixed_samples_combinations)]()[]
 
-    fn get_physical_device_supported_framebuffer_mixed_samples_combinations[
+    def get_physical_device_supported_framebuffer_mixed_samples_combinations[
         p_combinations_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -921,7 +931,7 @@ struct CoverageReductionMode(Copyable):
             Ptr(to=p_combinations).bitcast[Ptr[FramebufferMixedSamplesCombinationNV, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_supported_framebuffer_mixed_samples_combinations[
+    def get_physical_device_supported_framebuffer_mixed_samples_combinations[
         p_combinations_origin: MutOrigin = MutAnyOrigin
     ](
         self, physical_device: PhysicalDevice
@@ -935,57 +945,57 @@ struct CoverageReductionMode(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_supported_framebuffer_mixed_samples_combinations(
-        physical_device,
-        Ptr(to=count),
-        Ptr[FramebufferMixedSamplesCombinationNV, MutExternalOrigin](),
-    )
+                physical_device,
+                Ptr(to=count),
+                Ptr[FramebufferMixedSamplesCombinationNV, MutUntrackedOrigin].unsafe_dangling(),
+            )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_supported_framebuffer_mixed_samples_combinations(
-        physical_device, Ptr(to=count), list.unsafe_ptr()
-    )
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
 
 struct DeviceGeneratedCommands(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_generated_commands_memory_requirements: fn(
+    var _get_generated_commands_memory_requirements: def(
         device: Device,
         p_info: Ptr[GeneratedCommandsMemoryRequirementsInfoNV, ImmutAnyOrigin],
         p_memory_requirements: Ptr[MemoryRequirements2, MutAnyOrigin],
-    )
-    var _cmd_preprocess_generated_commands: fn(
+    ) thin abi("C")
+    var _cmd_preprocess_generated_commands: def(
         command_buffer: CommandBuffer,
         p_generated_commands_info: Ptr[GeneratedCommandsInfoNV, ImmutAnyOrigin],
-    )
-    var _cmd_execute_generated_commands: fn(
+    ) thin abi("C")
+    var _cmd_execute_generated_commands: def(
         command_buffer: CommandBuffer,
         is_preprocessed: Bool32,
         p_generated_commands_info: Ptr[GeneratedCommandsInfoNV, ImmutAnyOrigin],
-    )
-    var _cmd_bind_pipeline_shader_group: fn(
+    ) thin abi("C")
+    var _cmd_bind_pipeline_shader_group: def(
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
         pipeline: Pipeline,
         group_index: UInt32,
-    )
-    var _create_indirect_commands_layout: fn(
+    ) thin abi("C")
+    var _create_indirect_commands_layout: def(
         device: Device,
         p_create_info: Ptr[IndirectCommandsLayoutCreateInfoNV, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_indirect_commands_layout: Ptr[IndirectCommandsLayoutNV, MutAnyOrigin],
-    ) -> Result
-    var _destroy_indirect_commands_layout: fn(
+    ) thin abi("C") -> Result
+    var _destroy_indirect_commands_layout: def(
         device: Device,
         indirect_commands_layout: IndirectCommandsLayoutNV,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_generated_commands_memory_requirements = Ptr(to=get_device_proc_addr(
             device, "vkGetGeneratedCommandsMemoryRequirementsNV".as_c_string_slice()
@@ -1006,7 +1016,7 @@ struct DeviceGeneratedCommands(Copyable):
             device, "vkDestroyIndirectCommandsLayoutNV".as_c_string_slice()
         )).bitcast[type_of(self._destroy_indirect_commands_layout)]()[]
 
-    fn get_generated_commands_memory_requirements(
+    def get_generated_commands_memory_requirements(
         self,
         device: Device,
         info: GeneratedCommandsMemoryRequirementsInfoNV,
@@ -1020,7 +1030,7 @@ struct DeviceGeneratedCommands(Copyable):
             device, Ptr(to=info), Ptr(to=memory_requirements)
         )
 
-    fn cmd_preprocess_generated_commands(
+    def cmd_preprocess_generated_commands(
         self, command_buffer: CommandBuffer, generated_commands_info: GeneratedCommandsInfoNV
     ):
         """See official vulkan docs for details.
@@ -1029,7 +1039,7 @@ struct DeviceGeneratedCommands(Copyable):
         """
         return self._cmd_preprocess_generated_commands(command_buffer, Ptr(to=generated_commands_info))
 
-    fn cmd_execute_generated_commands(
+    def cmd_execute_generated_commands(
         self,
         command_buffer: CommandBuffer,
         is_preprocessed: Bool32,
@@ -1043,7 +1053,7 @@ struct DeviceGeneratedCommands(Copyable):
             command_buffer, is_preprocessed, Ptr(to=generated_commands_info)
         )
 
-    fn cmd_bind_pipeline_shader_group(
+    def cmd_bind_pipeline_shader_group(
         self,
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
@@ -1058,7 +1068,7 @@ struct DeviceGeneratedCommands(Copyable):
             command_buffer, pipeline_bind_point, pipeline, group_index
         )
 
-    fn create_indirect_commands_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_indirect_commands_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: IndirectCommandsLayoutCreateInfoNV,
@@ -1076,7 +1086,7 @@ struct DeviceGeneratedCommands(Copyable):
             Ptr(to=indirect_commands_layout),
         )
 
-    fn destroy_indirect_commands_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_indirect_commands_layout[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         indirect_commands_layout: IndirectCommandsLayoutNV,
@@ -1095,38 +1105,38 @@ struct DeviceGeneratedCommands(Copyable):
 
 struct CudaKernelLaunch(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_cuda_module: fn(
+    var _create_cuda_module: def(
         device: Device,
         p_create_info: Ptr[CudaModuleCreateInfoNV, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_module: Ptr[CudaModuleNV, MutAnyOrigin],
-    ) -> Result
-    var _get_cuda_module_cache: fn(
+    ) thin abi("C") -> Result
+    var _get_cuda_module_cache: def(
         device: Device,
         module: CudaModuleNV,
         p_cache_size: Ptr[UInt, MutAnyOrigin],
         p_cache_data: Ptr[NoneType, MutAnyOrigin],
-    ) -> Result
-    var _create_cuda_function: fn(
+    ) thin abi("C") -> Result
+    var _create_cuda_function: def(
         device: Device,
         p_create_info: Ptr[CudaFunctionCreateInfoNV, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_function: Ptr[CudaFunctionNV, MutAnyOrigin],
-    ) -> Result
-    var _destroy_cuda_module: fn(
+    ) thin abi("C") -> Result
+    var _destroy_cuda_module: def(
         device: Device, module: CudaModuleNV, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    )
-    var _destroy_cuda_function: fn(
+    ) thin abi("C")
+    var _destroy_cuda_function: def(
         device: Device, function: CudaFunctionNV, p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin]
-    )
-    var _cmd_cuda_launch_kernel: fn(
+    ) thin abi("C")
+    var _cmd_cuda_launch_kernel: def(
         command_buffer: CommandBuffer, p_launch_info: Ptr[CudaLaunchInfoNV, ImmutAnyOrigin]
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_cuda_module = Ptr(to=get_device_proc_addr(
             device, "vkCreateCudaModuleNV".as_c_string_slice()
@@ -1147,7 +1157,7 @@ struct CudaKernelLaunch(Copyable):
             device, "vkCmdCudaLaunchKernelNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_cuda_launch_kernel)]()[]
 
-    fn create_cuda_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_cuda_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: CudaModuleCreateInfoNV,
@@ -1165,7 +1175,7 @@ struct CudaKernelLaunch(Copyable):
             Ptr(to=module),
         )
 
-    fn get_cuda_module_cache[p_cache_data_origin: MutOrigin = MutAnyOrigin](
+    def get_cuda_module_cache[p_cache_data_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         module: CudaModuleNV,
@@ -1183,7 +1193,7 @@ struct CudaKernelLaunch(Copyable):
             Ptr(to=p_cache_data).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
         )
 
-    fn get_cuda_module_cache[p_cache_data_origin: MutOrigin = MutAnyOrigin](
+    def get_cuda_module_cache[p_cache_data_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, module: CudaModuleNV
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -1195,17 +1205,17 @@ struct CudaKernelLaunch(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_cuda_module_cache(
-        device, module, Ptr(to=count), Ptr[NoneType, MutExternalOrigin]()
-    )
+                device, module, Ptr(to=count), Ptr[NoneType, MutUntrackedOrigin].unsafe_dangling()
+            )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_cuda_module_cache(
-        device, module, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
-    )
+                device, module, Ptr(to=count), list.unsafe_ptr().bitcast[NoneType]()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn create_cuda_function[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_cuda_function[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: CudaFunctionCreateInfoNV,
@@ -1223,7 +1233,7 @@ struct CudaKernelLaunch(Copyable):
             Ptr(to=function),
         )
 
-    fn destroy_cuda_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_cuda_module[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         module: CudaModuleNV,
@@ -1237,7 +1247,7 @@ struct CudaKernelLaunch(Copyable):
             device, module, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn destroy_cuda_function[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_cuda_function[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         function: CudaFunctionNV,
@@ -1251,7 +1261,7 @@ struct CudaKernelLaunch(Copyable):
             device, function, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn cmd_cuda_launch_kernel(self, command_buffer: CommandBuffer, launch_info: CudaLaunchInfoNV):
+    def cmd_cuda_launch_kernel(self, command_buffer: CommandBuffer, launch_info: CudaLaunchInfoNV):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdCudaLaunchKernelNV.html
@@ -1261,22 +1271,22 @@ struct CudaKernelLaunch(Copyable):
 
 struct FragmentShadingRateEnums(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_fragment_shading_rate_enum: fn(
+    var _cmd_set_fragment_shading_rate_enum: def(
         command_buffer: CommandBuffer,
         shading_rate: FragmentShadingRateNV,
         combiner_ops: InlineArray[FragmentShadingRateCombinerOpKHR, Int(2)],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_fragment_shading_rate_enum = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetFragmentShadingRateEnumNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_fragment_shading_rate_enum)]()[]
 
-    fn cmd_set_fragment_shading_rate_enum(
+    def cmd_set_fragment_shading_rate_enum(
         self,
         command_buffer: CommandBuffer,
         shading_rate: FragmentShadingRateNV,
@@ -1291,17 +1301,19 @@ struct FragmentShadingRateEnums(Copyable):
 
 struct AcquireWinrtDisplay(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _acquire_winrt_display: fn(physical_device: PhysicalDevice, display: DisplayKHR) -> Result
-    var _get_winrt_display: fn(
+    var _acquire_winrt_display: def(
+        physical_device: PhysicalDevice, display: DisplayKHR
+    ) thin abi("C") -> Result
+    var _get_winrt_display: def(
         physical_device: PhysicalDevice,
         device_relative_id: UInt32,
         p_display: Ptr[DisplayKHR, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._acquire_winrt_display = Ptr(to=get_device_proc_addr(
             device, "vkAcquireWinrtDisplayNV".as_c_string_slice()
@@ -1310,14 +1322,16 @@ struct AcquireWinrtDisplay(Copyable):
             device, "vkGetWinrtDisplayNV".as_c_string_slice()
         )).bitcast[type_of(self._get_winrt_display)]()[]
 
-    fn acquire_winrt_display(self, physical_device: PhysicalDevice, display: DisplayKHR) -> Result:
+    def acquire_winrt_display(
+        self, physical_device: PhysicalDevice, display: DisplayKHR
+    ) -> Result:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquireWinrtDisplayNV.html
         """
         return self._acquire_winrt_display(physical_device, display)
 
-    fn get_winrt_display(
+    def get_winrt_display(
         self, physical_device: PhysicalDevice, device_relative_id: UInt32, mut display: DisplayKHR
     ) -> Result:
         """See official vulkan docs for details.
@@ -1329,22 +1343,22 @@ struct AcquireWinrtDisplay(Copyable):
 
 struct ExternalMemoryRdma(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_memory_remote_address: fn(
+    var _get_memory_remote_address: def(
         device: Device,
         p_memory_get_remote_address_info: Ptr[MemoryGetRemoteAddressInfoNV, ImmutAnyOrigin],
         p_address: Ptr[RemoteAddressNV, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_memory_remote_address = Ptr(to=get_device_proc_addr(
             device, "vkGetMemoryRemoteAddressNV".as_c_string_slice()
         )).bitcast[type_of(self._get_memory_remote_address)]()[]
 
-    fn get_memory_remote_address(
+    def get_memory_remote_address(
         self,
         device: Device,
         memory_get_remote_address_info: MemoryGetRemoteAddressInfoNV,
@@ -1361,13 +1375,13 @@ struct ExternalMemoryRdma(Copyable):
 
 struct CopyMemoryIndirect(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_copy_memory_indirect: fn(
+    var _cmd_copy_memory_indirect: def(
         command_buffer: CommandBuffer,
         copy_buffer_address: DeviceAddress,
         copy_count: UInt32,
         stride: UInt32,
-    )
-    var _cmd_copy_memory_to_image_indirect: fn(
+    ) thin abi("C")
+    var _cmd_copy_memory_to_image_indirect: def(
         command_buffer: CommandBuffer,
         copy_buffer_address: DeviceAddress,
         copy_count: UInt32,
@@ -1375,12 +1389,12 @@ struct CopyMemoryIndirect(Copyable):
         dst_image: Image,
         dst_image_layout: ImageLayout,
         p_image_subresources: Ptr[ImageSubresourceLayers, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_copy_memory_indirect = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyMemoryIndirectNV".as_c_string_slice()
@@ -1389,7 +1403,7 @@ struct CopyMemoryIndirect(Copyable):
             device, "vkCmdCopyMemoryToImageIndirectNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_copy_memory_to_image_indirect)]()[]
 
-    fn cmd_copy_memory_indirect(
+    def cmd_copy_memory_indirect(
         self,
         command_buffer: CommandBuffer,
         copy_buffer_address: DeviceAddress,
@@ -1402,7 +1416,9 @@ struct CopyMemoryIndirect(Copyable):
         """
         return self._cmd_copy_memory_indirect(command_buffer, copy_buffer_address, copy_count, stride)
 
-    fn cmd_copy_memory_to_image_indirect[p_image_subresources_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_copy_memory_to_image_indirect[
+        p_image_subresources_origin: ImmutOrigin = ImmutAnyOrigin
+    ](
         self,
         command_buffer: CommandBuffer,
         copy_buffer_address: DeviceAddress,
@@ -1429,22 +1445,22 @@ struct CopyMemoryIndirect(Copyable):
 
 struct MemoryDecompression(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_decompress_memory: fn(
+    var _cmd_decompress_memory: def(
         command_buffer: CommandBuffer,
         decompress_region_count: UInt32,
         p_decompress_memory_regions: Ptr[DecompressMemoryRegionNV, ImmutAnyOrigin],
-    )
-    var _cmd_decompress_memory_indirect_count: fn(
+    ) thin abi("C")
+    var _cmd_decompress_memory_indirect_count: def(
         command_buffer: CommandBuffer,
         indirect_commands_address: DeviceAddress,
         indirect_commands_count_address: DeviceAddress,
         stride: UInt32,
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_decompress_memory = Ptr(to=get_device_proc_addr(
             device, "vkCmdDecompressMemoryNV".as_c_string_slice()
@@ -1453,7 +1469,7 @@ struct MemoryDecompression(Copyable):
             device, "vkCmdDecompressMemoryIndirectCountNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_decompress_memory_indirect_count)]()[]
 
-    fn cmd_decompress_memory[p_decompress_memory_regions_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_decompress_memory[p_decompress_memory_regions_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         decompress_region_count: UInt32,
@@ -1469,7 +1485,7 @@ struct MemoryDecompression(Copyable):
             Ptr(to=p_decompress_memory_regions).bitcast[Ptr[DecompressMemoryRegionNV, ImmutAnyOrigin]]()[],
         )
 
-    fn cmd_decompress_memory_indirect_count(
+    def cmd_decompress_memory_indirect_count(
         self,
         command_buffer: CommandBuffer,
         indirect_commands_address: DeviceAddress,
@@ -1487,22 +1503,22 @@ struct MemoryDecompression(Copyable):
 
 struct DeviceGeneratedCommandsCompute(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_pipeline_indirect_memory_requirements: fn(
+    var _get_pipeline_indirect_memory_requirements: def(
         device: Device,
         p_create_info: Ptr[ComputePipelineCreateInfo, ImmutAnyOrigin],
         p_memory_requirements: Ptr[MemoryRequirements2, MutAnyOrigin],
-    )
-    var _cmd_update_pipeline_indirect_buffer: fn(
+    ) thin abi("C")
+    var _cmd_update_pipeline_indirect_buffer: def(
         command_buffer: CommandBuffer, pipeline_bind_point: PipelineBindPoint, pipeline: Pipeline
-    )
-    var _get_pipeline_indirect_device_address: fn(
+    ) thin abi("C")
+    var _get_pipeline_indirect_device_address: def(
         device: Device, p_info: Ptr[PipelineIndirectDeviceAddressInfoNV, ImmutAnyOrigin]
-    ) -> DeviceAddress
+    ) thin abi("C") -> DeviceAddress
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_pipeline_indirect_memory_requirements = Ptr(to=get_device_proc_addr(
             device, "vkGetPipelineIndirectMemoryRequirementsNV".as_c_string_slice()
@@ -1514,7 +1530,7 @@ struct DeviceGeneratedCommandsCompute(Copyable):
             device, "vkGetPipelineIndirectDeviceAddressNV".as_c_string_slice()
         )).bitcast[type_of(self._get_pipeline_indirect_device_address)]()[]
 
-    fn get_pipeline_indirect_memory_requirements(
+    def get_pipeline_indirect_memory_requirements(
         self,
         device: Device,
         create_info: ComputePipelineCreateInfo,
@@ -1528,7 +1544,7 @@ struct DeviceGeneratedCommandsCompute(Copyable):
             device, Ptr(to=create_info), Ptr(to=memory_requirements)
         )
 
-    fn cmd_update_pipeline_indirect_buffer(
+    def cmd_update_pipeline_indirect_buffer(
         self,
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
@@ -1540,7 +1556,7 @@ struct DeviceGeneratedCommandsCompute(Copyable):
         """
         return self._cmd_update_pipeline_indirect_buffer(command_buffer, pipeline_bind_point, pipeline)
 
-    fn get_pipeline_indirect_device_address(
+    def get_pipeline_indirect_device_address(
         self, device: Device, info: PipelineIndirectDeviceAddressInfoNV
     ) -> DeviceAddress:
         """See official vulkan docs for details.
@@ -1552,40 +1568,40 @@ struct DeviceGeneratedCommandsCompute(Copyable):
 
 struct OpticalFlow(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_physical_device_optical_flow_image_formats: fn(
+    var _get_physical_device_optical_flow_image_formats: def(
         physical_device: PhysicalDevice,
         p_optical_flow_image_format_info: Ptr[OpticalFlowImageFormatInfoNV, ImmutAnyOrigin],
         p_format_count: Ptr[UInt32, MutAnyOrigin],
         p_image_format_properties: Ptr[OpticalFlowImageFormatPropertiesNV, MutAnyOrigin],
-    ) -> Result
-    var _create_optical_flow_session: fn(
+    ) thin abi("C") -> Result
+    var _create_optical_flow_session: def(
         device: Device,
         p_create_info: Ptr[OpticalFlowSessionCreateInfoNV, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_session: Ptr[OpticalFlowSessionNV, MutAnyOrigin],
-    ) -> Result
-    var _destroy_optical_flow_session: fn(
+    ) thin abi("C") -> Result
+    var _destroy_optical_flow_session: def(
         device: Device,
         session: OpticalFlowSessionNV,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
-    var _bind_optical_flow_session_image: fn(
+    ) thin abi("C")
+    var _bind_optical_flow_session_image: def(
         device: Device,
         session: OpticalFlowSessionNV,
         binding_point: OpticalFlowSessionBindingPointNV,
         view: ImageView,
         layout: ImageLayout,
-    ) -> Result
-    var _cmd_optical_flow_execute: fn(
+    ) thin abi("C") -> Result
+    var _cmd_optical_flow_execute: def(
         command_buffer: CommandBuffer,
         session: OpticalFlowSessionNV,
         p_execute_info: Ptr[OpticalFlowExecuteInfoNV, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_optical_flow_image_formats = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceOpticalFlowImageFormatsNV".as_c_string_slice()
@@ -1603,7 +1619,7 @@ struct OpticalFlow(Copyable):
             device, "vkCmdOpticalFlowExecuteNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_optical_flow_execute)]()[]
 
-    fn get_physical_device_optical_flow_image_formats[
+    def get_physical_device_optical_flow_image_formats[
         p_image_format_properties_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -1623,7 +1639,7 @@ struct OpticalFlow(Copyable):
             Ptr(to=p_image_format_properties).bitcast[Ptr[OpticalFlowImageFormatPropertiesNV, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_optical_flow_image_formats[
+    def get_physical_device_optical_flow_image_formats[
         p_image_format_properties_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -1639,20 +1655,23 @@ struct OpticalFlow(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_optical_flow_image_formats(
-        physical_device,
-        Ptr(to=optical_flow_image_format_info),
-        Ptr(to=count),
-        Ptr[OpticalFlowImageFormatPropertiesNV, MutExternalOrigin](),
-    )
+                physical_device,
+                Ptr(to=optical_flow_image_format_info),
+                Ptr(to=count),
+                Ptr[OpticalFlowImageFormatPropertiesNV, MutUntrackedOrigin].unsafe_dangling(),
+            )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_optical_flow_image_formats(
-        physical_device, Ptr(to=optical_flow_image_format_info), Ptr(to=count), list.unsafe_ptr()
-    )
+                physical_device,
+                Ptr(to=optical_flow_image_format_info),
+                Ptr(to=count),
+                list.unsafe_ptr(),
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn create_optical_flow_session[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_optical_flow_session[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: OpticalFlowSessionCreateInfoNV,
@@ -1670,7 +1689,7 @@ struct OpticalFlow(Copyable):
             Ptr(to=session),
         )
 
-    fn destroy_optical_flow_session[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_optical_flow_session[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         session: OpticalFlowSessionNV,
@@ -1684,7 +1703,7 @@ struct OpticalFlow(Copyable):
             device, session, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[]
         )
 
-    fn bind_optical_flow_session_image(
+    def bind_optical_flow_session_image(
         self,
         device: Device,
         session: OpticalFlowSessionNV,
@@ -1698,7 +1717,7 @@ struct OpticalFlow(Copyable):
         """
         return self._bind_optical_flow_session_image(device, session, binding_point, view, layout)
 
-    fn cmd_optical_flow_execute(
+    def cmd_optical_flow_execute(
         self,
         command_buffer: CommandBuffer,
         session: OpticalFlowSessionNV,
@@ -1713,24 +1732,24 @@ struct OpticalFlow(Copyable):
 
 struct CooperativeVector(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_physical_device_cooperative_vector_properties: fn(
+    var _get_physical_device_cooperative_vector_properties: def(
         physical_device: PhysicalDevice,
         p_property_count: Ptr[UInt32, MutAnyOrigin],
         p_properties: Ptr[CooperativeVectorPropertiesNV, MutAnyOrigin],
-    ) -> Result
-    var _convert_cooperative_vector_matrix: fn(
+    ) thin abi("C") -> Result
+    var _convert_cooperative_vector_matrix: def(
         device: Device, p_info: Ptr[ConvertCooperativeVectorMatrixInfoNV, ImmutAnyOrigin]
-    ) -> Result
-    var _cmd_convert_cooperative_vector_matrix: fn(
+    ) thin abi("C") -> Result
+    var _cmd_convert_cooperative_vector_matrix: def(
         command_buffer: CommandBuffer,
         info_count: UInt32,
         p_infos: Ptr[ConvertCooperativeVectorMatrixInfoNV, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_cooperative_vector_properties = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceCooperativeVectorPropertiesNV".as_c_string_slice()
@@ -1742,7 +1761,7 @@ struct CooperativeVector(Copyable):
             device, "vkCmdConvertCooperativeVectorMatrixNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_convert_cooperative_vector_matrix)]()[]
 
-    fn get_physical_device_cooperative_vector_properties[
+    def get_physical_device_cooperative_vector_properties[
         p_properties_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -1760,7 +1779,7 @@ struct CooperativeVector(Copyable):
             Ptr(to=p_properties).bitcast[Ptr[CooperativeVectorPropertiesNV, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_cooperative_vector_properties[
+    def get_physical_device_cooperative_vector_properties[
         p_properties_origin: MutOrigin = MutAnyOrigin
     ](
         self, physical_device: PhysicalDevice
@@ -1774,17 +1793,19 @@ struct CooperativeVector(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_cooperative_vector_properties(
-        physical_device, Ptr(to=count), Ptr[CooperativeVectorPropertiesNV, MutExternalOrigin]()
-    )
+                physical_device,
+                Ptr(to=count),
+                Ptr[CooperativeVectorPropertiesNV, MutUntrackedOrigin].unsafe_dangling(),
+            )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_cooperative_vector_properties(
-        physical_device, Ptr(to=count), list.unsafe_ptr()
-    )
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
-    fn convert_cooperative_vector_matrix(
+    def convert_cooperative_vector_matrix(
         self, device: Device, info: ConvertCooperativeVectorMatrixInfoNV
     ) -> Result:
         """See official vulkan docs for details.
@@ -1793,7 +1814,7 @@ struct CooperativeVector(Copyable):
         """
         return self._convert_cooperative_vector_matrix(device, Ptr(to=info))
 
-    fn cmd_convert_cooperative_vector_matrix[p_infos_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_convert_cooperative_vector_matrix[p_infos_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         command_buffer: CommandBuffer,
         info_count: UInt32,
@@ -1812,32 +1833,32 @@ struct CooperativeVector(Copyable):
 
 struct LowLatency2(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _set_latency_sleep_mode: fn(
+    var _set_latency_sleep_mode: def(
         device: Device,
         swapchain: SwapchainKHR,
         p_sleep_mode_info: Ptr[LatencySleepModeInfoNV, ImmutAnyOrigin],
-    ) -> Result
-    var _latency_sleep: fn(
+    ) thin abi("C") -> Result
+    var _latency_sleep: def(
         device: Device, swapchain: SwapchainKHR, p_sleep_info: Ptr[LatencySleepInfoNV, ImmutAnyOrigin]
-    ) -> Result
-    var _set_latency_marker: fn(
+    ) thin abi("C") -> Result
+    var _set_latency_marker: def(
         device: Device,
         swapchain: SwapchainKHR,
         p_latency_marker_info: Ptr[SetLatencyMarkerInfoNV, ImmutAnyOrigin],
-    )
-    var _get_latency_timings: fn(
+    ) thin abi("C")
+    var _get_latency_timings: def(
         device: Device,
         swapchain: SwapchainKHR,
         p_latency_marker_info: Ptr[GetLatencyMarkerInfoNV, MutAnyOrigin],
-    )
-    var _queue_notify_out_of_band: fn(
+    ) thin abi("C")
+    var _queue_notify_out_of_band: def(
         queue: Queue, p_queue_type_info: Ptr[OutOfBandQueueTypeInfoNV, ImmutAnyOrigin]
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._set_latency_sleep_mode = Ptr(to=get_device_proc_addr(
             device, "vkSetLatencySleepModeNV".as_c_string_slice()
@@ -1855,7 +1876,7 @@ struct LowLatency2(Copyable):
             device, "vkQueueNotifyOutOfBandNV".as_c_string_slice()
         )).bitcast[type_of(self._queue_notify_out_of_band)]()[]
 
-    fn set_latency_sleep_mode(
+    def set_latency_sleep_mode(
         self, device: Device, swapchain: SwapchainKHR, sleep_mode_info: LatencySleepModeInfoNV
     ) -> Result:
         """See official vulkan docs for details.
@@ -1864,7 +1885,7 @@ struct LowLatency2(Copyable):
         """
         return self._set_latency_sleep_mode(device, swapchain, Ptr(to=sleep_mode_info))
 
-    fn latency_sleep(
+    def latency_sleep(
         self, device: Device, swapchain: SwapchainKHR, sleep_info: LatencySleepInfoNV
     ) -> Result:
         """See official vulkan docs for details.
@@ -1873,7 +1894,7 @@ struct LowLatency2(Copyable):
         """
         return self._latency_sleep(device, swapchain, Ptr(to=sleep_info))
 
-    fn set_latency_marker(
+    def set_latency_marker(
         self, device: Device, swapchain: SwapchainKHR, latency_marker_info: SetLatencyMarkerInfoNV
     ):
         """See official vulkan docs for details.
@@ -1882,7 +1903,7 @@ struct LowLatency2(Copyable):
         """
         return self._set_latency_marker(device, swapchain, Ptr(to=latency_marker_info))
 
-    fn get_latency_timings(
+    def get_latency_timings(
         self,
         device: Device,
         swapchain: SwapchainKHR,
@@ -1894,7 +1915,7 @@ struct LowLatency2(Copyable):
         """
         return self._get_latency_timings(device, swapchain, Ptr(to=latency_marker_info))
 
-    fn queue_notify_out_of_band(self, queue: Queue, queue_type_info: OutOfBandQueueTypeInfoNV):
+    def queue_notify_out_of_band(self, queue: Queue, queue_type_info: OutOfBandQueueTypeInfoNV):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkQueueNotifyOutOfBandNV.html
@@ -1904,27 +1925,27 @@ struct LowLatency2(Copyable):
 
 struct ExternalComputeQueue(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _create_external_compute_queue: fn(
+    var _create_external_compute_queue: def(
         device: Device,
         p_create_info: Ptr[ExternalComputeQueueCreateInfoNV, ImmutAnyOrigin],
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
         p_external_queue: Ptr[ExternalComputeQueueNV, MutAnyOrigin],
-    ) -> Result
-    var _destroy_external_compute_queue: fn(
+    ) thin abi("C") -> Result
+    var _destroy_external_compute_queue: def(
         device: Device,
         external_queue: ExternalComputeQueueNV,
         p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-    )
-    var _get_external_compute_queue_data: fn(
+    ) thin abi("C")
+    var _get_external_compute_queue_data: def(
         external_queue: ExternalComputeQueueNV,
         params: Ptr[ExternalComputeQueueDataParamsNV, MutAnyOrigin],
         p_data: Ptr[NoneType, MutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._create_external_compute_queue = Ptr(to=get_device_proc_addr(
             device, "vkCreateExternalComputeQueueNV".as_c_string_slice()
@@ -1936,7 +1957,7 @@ struct ExternalComputeQueue(Copyable):
             device, "vkGetExternalComputeQueueDataNV".as_c_string_slice()
         )).bitcast[type_of(self._get_external_compute_queue_data)]()[]
 
-    fn create_external_compute_queue[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_external_compute_queue[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         create_info: ExternalComputeQueueCreateInfoNV,
@@ -1954,7 +1975,7 @@ struct ExternalComputeQueue(Copyable):
             Ptr(to=external_queue),
         )
 
-    fn destroy_external_compute_queue[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def destroy_external_compute_queue[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
         self,
         device: Device,
         external_queue: ExternalComputeQueueNV,
@@ -1970,7 +1991,7 @@ struct ExternalComputeQueue(Copyable):
             Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
         )
 
-    fn get_external_compute_queue_data[p_data_origin: MutOrigin = MutAnyOrigin](
+    def get_external_compute_queue_data[p_data_origin: MutOrigin = MutAnyOrigin](
         self,
         external_queue: ExternalComputeQueueNV,
         mut params: ExternalComputeQueueDataParamsNV,
@@ -1987,20 +2008,20 @@ struct ExternalComputeQueue(Copyable):
 
 struct ClusterAccelerationStructure(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_cluster_acceleration_structure_build_sizes: fn(
+    var _get_cluster_acceleration_structure_build_sizes: def(
         device: Device,
         p_info: Ptr[ClusterAccelerationStructureInputInfoNV, ImmutAnyOrigin],
         p_size_info: Ptr[AccelerationStructureBuildSizesInfoKHR, MutAnyOrigin],
-    )
-    var _cmd_build_cluster_acceleration_structure_indirect: fn(
+    ) thin abi("C")
+    var _cmd_build_cluster_acceleration_structure_indirect: def(
         command_buffer: CommandBuffer,
         p_command_infos: Ptr[ClusterAccelerationStructureCommandsInfoNV, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_cluster_acceleration_structure_build_sizes = Ptr(to=get_device_proc_addr(
             device, "vkGetClusterAccelerationStructureBuildSizesNV".as_c_string_slice()
@@ -2009,7 +2030,7 @@ struct ClusterAccelerationStructure(Copyable):
             device, "vkCmdBuildClusterAccelerationStructureIndirectNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_build_cluster_acceleration_structure_indirect)]()[]
 
-    fn get_cluster_acceleration_structure_build_sizes(
+    def get_cluster_acceleration_structure_build_sizes(
         self,
         device: Device,
         info: ClusterAccelerationStructureInputInfoNV,
@@ -2021,7 +2042,7 @@ struct ClusterAccelerationStructure(Copyable):
         """
         return self._get_cluster_acceleration_structure_build_sizes(device, Ptr(to=info), Ptr(to=size_info))
 
-    fn cmd_build_cluster_acceleration_structure_indirect(
+    def cmd_build_cluster_acceleration_structure_indirect(
         self,
         command_buffer: CommandBuffer,
         command_infos: ClusterAccelerationStructureCommandsInfoNV,
@@ -2037,20 +2058,20 @@ struct ClusterAccelerationStructure(Copyable):
 
 struct PartitionedAccelerationStructure(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_partitioned_acceleration_structures_build_sizes: fn(
+    var _get_partitioned_acceleration_structures_build_sizes: def(
         device: Device,
         p_info: Ptr[PartitionedAccelerationStructureInstancesInputNV, ImmutAnyOrigin],
         p_size_info: Ptr[AccelerationStructureBuildSizesInfoKHR, MutAnyOrigin],
-    )
-    var _cmd_build_partitioned_acceleration_structures: fn(
+    ) thin abi("C")
+    var _cmd_build_partitioned_acceleration_structures: def(
         command_buffer: CommandBuffer,
         p_build_info: Ptr[BuildPartitionedAccelerationStructureInfoNV, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_partitioned_acceleration_structures_build_sizes = Ptr(to=get_device_proc_addr(
             device, "vkGetPartitionedAccelerationStructuresBuildSizesNV".as_c_string_slice()
@@ -2059,7 +2080,7 @@ struct PartitionedAccelerationStructure(Copyable):
             device, "vkCmdBuildPartitionedAccelerationStructuresNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_build_partitioned_acceleration_structures)]()[]
 
-    fn get_partitioned_acceleration_structures_build_sizes(
+    def get_partitioned_acceleration_structures_build_sizes(
         self,
         device: Device,
         info: PartitionedAccelerationStructureInstancesInputNV,
@@ -2073,7 +2094,7 @@ struct PartitionedAccelerationStructure(Copyable):
             device, Ptr(to=info), Ptr(to=size_info)
         )
 
-    fn cmd_build_partitioned_acceleration_structures(
+    def cmd_build_partitioned_acceleration_structures(
         self, command_buffer: CommandBuffer, build_info: BuildPartitionedAccelerationStructureInfoNV
     ):
         """See official vulkan docs for details.
@@ -2085,22 +2106,22 @@ struct PartitionedAccelerationStructure(Copyable):
 
 struct CooperativeMatrix2(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_physical_device_cooperative_matrix_flexible_dimensions_properties: fn(
+    var _get_physical_device_cooperative_matrix_flexible_dimensions_properties: def(
         physical_device: PhysicalDevice,
         p_property_count: Ptr[UInt32, MutAnyOrigin],
         p_properties: Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_physical_device_cooperative_matrix_flexible_dimensions_properties = Ptr(to=get_device_proc_addr(
             device, "vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_cooperative_matrix_flexible_dimensions_properties)]()[]
 
-    fn get_physical_device_cooperative_matrix_flexible_dimensions_properties[
+    def get_physical_device_cooperative_matrix_flexible_dimensions_properties[
         p_properties_origin: MutOrigin = MutAnyOrigin
     ](
         self,
@@ -2118,7 +2139,7 @@ struct CooperativeMatrix2(Copyable):
             Ptr(to=p_properties).bitcast[Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutAnyOrigin]]()[],
         )
 
-    fn get_physical_device_cooperative_matrix_flexible_dimensions_properties[
+    def get_physical_device_cooperative_matrix_flexible_dimensions_properties[
         p_properties_origin: MutOrigin = MutAnyOrigin
     ](
         self, physical_device: PhysicalDevice
@@ -2132,36 +2153,36 @@ struct CooperativeMatrix2(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_physical_device_cooperative_matrix_flexible_dimensions_properties(
-        physical_device,
-        Ptr(to=count),
-        Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutExternalOrigin](),
-    )
+                physical_device,
+                Ptr(to=count),
+                Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutUntrackedOrigin].unsafe_dangling(),
+            )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_cooperative_matrix_flexible_dimensions_properties(
-        physical_device, Ptr(to=count), list.unsafe_ptr()
-    )
+                physical_device, Ptr(to=count), list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
 
 
 struct ComputeOccupancyPriority(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _cmd_set_compute_occupancy_priority: fn(
+    var _cmd_set_compute_occupancy_priority: def(
         command_buffer: CommandBuffer,
         p_parameters: Ptr[ComputeOccupancyPriorityParametersNV, ImmutAnyOrigin],
-    )
+    ) thin abi("C")
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_compute_occupancy_priority = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetComputeOccupancyPriorityNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_compute_occupancy_priority)]()[]
 
-    fn cmd_set_compute_occupancy_priority(
+    def cmd_set_compute_occupancy_priority(
         self, command_buffer: CommandBuffer, parameters: ComputeOccupancyPriorityParametersNV
     ):
         """See official vulkan docs for details.

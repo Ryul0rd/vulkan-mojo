@@ -1,26 +1,26 @@
-from ffi import OwnedDLHandle, CStringSlice, c_char
-from memory import ArcPointer
+from std.ffi import OwnedDLHandle, CStringSlice, c_char
+from std.memory import ArcPointer
 from vk.core_functions import GlobalFunctions
 
 
 struct DisplayTiming(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _get_refresh_cycle_duration: fn(
+    var _get_refresh_cycle_duration: def(
         device: Device,
         swapchain: SwapchainKHR,
         p_display_timing_properties: Ptr[RefreshCycleDurationGOOGLE, MutAnyOrigin],
-    ) -> Result
-    var _get_past_presentation_timing: fn(
+    ) thin abi("C") -> Result
+    var _get_past_presentation_timing: def(
         device: Device,
         swapchain: SwapchainKHR,
         p_presentation_timing_count: Ptr[UInt32, MutAnyOrigin],
         p_presentation_timings: Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin],
-    ) -> Result
+    ) thin abi("C") -> Result
 
-    fn __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            fn(device: Device, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._get_refresh_cycle_duration = Ptr(to=get_device_proc_addr(
             device, "vkGetRefreshCycleDurationGOOGLE".as_c_string_slice()
@@ -29,7 +29,7 @@ struct DisplayTiming(Copyable):
             device, "vkGetPastPresentationTimingGOOGLE".as_c_string_slice()
         )).bitcast[type_of(self._get_past_presentation_timing)]()[]
 
-    fn get_refresh_cycle_duration(
+    def get_refresh_cycle_duration(
         self,
         device: Device,
         swapchain: SwapchainKHR,
@@ -41,7 +41,7 @@ struct DisplayTiming(Copyable):
         """
         return self._get_refresh_cycle_duration(device, swapchain, Ptr(to=display_timing_properties))
 
-    fn get_past_presentation_timing[p_presentation_timings_origin: MutOrigin = MutAnyOrigin](
+    def get_past_presentation_timing[p_presentation_timings_origin: MutOrigin = MutAnyOrigin](
         self,
         device: Device,
         swapchain: SwapchainKHR,
@@ -59,7 +59,7 @@ struct DisplayTiming(Copyable):
             Ptr(to=p_presentation_timings).bitcast[Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin]]()[],
         )
 
-    fn get_past_presentation_timing[p_presentation_timings_origin: MutOrigin = MutAnyOrigin](
+    def get_past_presentation_timing[p_presentation_timings_origin: MutOrigin = MutAnyOrigin](
         self, device: Device, swapchain: SwapchainKHR
     ) -> ListResult[PastPresentationTimingGOOGLE]:
         """See official vulkan docs for details.
@@ -71,10 +71,15 @@ struct DisplayTiming(Copyable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._get_past_presentation_timing(
-        device, swapchain, Ptr(to=count), Ptr[PastPresentationTimingGOOGLE, MutExternalOrigin]()
-    )
+                device,
+                swapchain,
+                Ptr(to=count),
+                Ptr[PastPresentationTimingGOOGLE, MutUntrackedOrigin].unsafe_dangling(),
+            )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
-                result = self._get_past_presentation_timing(device, swapchain, Ptr(to=count), list.unsafe_ptr())
+                result = self._get_past_presentation_timing(
+                device, swapchain, Ptr(to=count), list.unsafe_ptr()
+            )
         list._len = Int(count)
         return ListResult(list^, result)
