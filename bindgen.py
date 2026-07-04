@@ -466,6 +466,13 @@ class RegistryRequiredEnumAlias:
     comment: Optional[str]
 
 
+@dataclass
+class RegistryRequiredStringConstant:
+    name: str
+    value: str
+    comment: Optional[str]
+
+
 RegistryRequirement = (
     RegistryRequiredFeature 
     | RegistryRequiredType
@@ -474,6 +481,7 @@ RegistryRequirement = (
     | RegistryRequiredBitposEnum
     | RegistryRequiredValueEnum
     | RegistryRequiredEnumAlias
+    | RegistryRequiredStringConstant
 )
 
 
@@ -573,6 +581,12 @@ def parse_extensions(xml_registry: Element) -> List[RegistryExtension]:
                 extends = enum_el.attrib.get("extends")
                 # Only enum additions that extend an existing enum type are requirements
                 if extends is None:
+                    if "value" in enum_el.attrib and enum_el.attrib["value"].startswith('"'):
+                        requires.append(RegistryRequiredStringConstant(
+                            name=enum_name,
+                            value=enum_el.attrib["value"].strip('"'),
+                            comment=enum_el.attrib.get("comment")
+                        ))
                     continue
                 comment = enum_el.attrib.get("comment")
                 if "alias" in enum_el.attrib:
@@ -1146,6 +1160,13 @@ def bind_constants(files: Dict[str, str], registry: Registry):
     parts: List[str] = []
     for constant in constants:
         parts.append(str(constant))
+    parts.append("\n")
+    for extension in registry.extensions:
+        for requirement in extension.requires:
+            if isinstance(requirement, RegistryRequiredStringConstant):
+                mojo_name = requirement.name.removeprefix("VK_")
+                comment = f" # {requirement.comment}" if requirement.comment is not None else ""
+                parts.append(f'comptime {mojo_name} = "{requirement.value}".as_c_string_slice(){comment}\n')
     files["constants.mojo"] = "".join(parts)
 
 
