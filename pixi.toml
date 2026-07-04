@@ -7,6 +7,8 @@ version = "0.1.0"
 
 [tasks]
 bindgen = "python3 bindgen.py"
+compile = "mojo precompile vk -o vk.mojoc"
+build = {depends-on = ["bindgen", "compile"]}
 
 [dependencies]
 mojo = "==1.0.0b2"
