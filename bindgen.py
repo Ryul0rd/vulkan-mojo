@@ -603,7 +603,7 @@ def parse_extensions(xml_registry: Element) -> List[RegistryExtension]:
 # --------------------------------
 
 
-MojoOriginLiteral = Literal["MutExternalOrigin", "ImmutExternalOrigin", "MutAnyOrigin", "ImmutAnyOrigin"]
+MojoOriginLiteral = Literal["MutUntrackedOrigin", "ImmutUntrackedOrigin", "MutAnyOrigin", "ImmutAnyOrigin"]
 
 
 @dataclass
@@ -653,9 +653,9 @@ class MojoFnType:
     def __str__(self) -> str:
         returns_none = isinstance(self.return_type, MojoBaseType) and self.return_type.name == "NoneType"
         return emit_fn_like(
-            "fn",
+            "def",
             [str(arg) for arg in self.args],
-            suffix="" if returns_none else f" -> {self.return_type}",
+            suffix=' thin abi("C")' if returns_none else f' thin abi("C") -> {self.return_type}',
         )
 
 
@@ -736,9 +736,9 @@ class MojoField:
         if isinstance(self.type, MojoFnType):
             returns_none = isinstance(self.type.return_type, MojoBaseType) and self.type.return_type.name == "NoneType"
             return emit_fn_like(
-                f"var {self.name}: fn",
+                f"var {self.name}: def",
                 [str(arg) for arg in self.type.args],
-                suffix="" if returns_none else f" -> {self.type.return_type}",
+                suffix=' thin abi("C")' if returns_none else f' thin abi("C") -> {self.type.return_type}',
             )
         return f"var {self.name}: {self.type}"
 
@@ -831,9 +831,9 @@ def convert_origins_to_external(mojo_type: MojoType) -> MojoType:
     if isinstance(mojo_type, MojoPointerType):
         new_origin = mojo_type.origin
         if new_origin == "MutAnyOrigin":
-            new_origin = "MutExternalOrigin"
+            new_origin = "MutUntrackedOrigin"
         elif new_origin == "ImmutAnyOrigin":
-            new_origin = "ImmutExternalOrigin"
+            new_origin = "ImmutUntrackedOrigin"
         return MojoPointerType(
             pointee_type=convert_origins_to_external(mojo_type.pointee_type),
             origin=new_origin
@@ -842,9 +842,9 @@ def convert_origins_to_external(mojo_type: MojoType) -> MojoType:
         new_params: List[MojoOriginLiteral | MojoParametricOrigin | str] = []
         for p in mojo_type.parameters:
             if p == "MutAnyOrigin":
-                new_params.append("MutExternalOrigin")
+                new_params.append("MutUntrackedOrigin")
             elif p == "ImmutAnyOrigin":
-                new_params.append("ImmutExternalOrigin")
+                new_params.append("ImmutUntrackedOrigin")
             else:
                 new_params.append(p)
         return MojoBaseType(mojo_type.name, new_params)
@@ -914,7 +914,7 @@ def as_parametric_type(name: str, mojo_type: MojoType, parameters: List[MojoPara
 
     if isinstance(mojo_type, MojoPointerType):
         param_name = get_unique_name(f"{name}_origin")
-        is_mutable = mojo_type.origin in ("MutAnyOrigin", "MutExternalOrigin")
+        is_mutable = mojo_type.origin in ("MutAnyOrigin", "MutUntrackedOrigin")
         parameters.append(MojoParameter(
             name=param_name,
             type="MutOrigin" if is_mutable else "ImmutOrigin",
@@ -929,7 +929,7 @@ def as_parametric_type(name: str, mojo_type: MojoType, parameters: List[MojoPara
     elif isinstance(mojo_type, MojoBaseType) and mojo_type.name == "CStringSlice":
         param_name = get_unique_name(f"{name}_origin")
         # CStringSlice has 1 param
-        is_mutable = mojo_type.parameters[0] in ("MutAnyOrigin", "MutExternalOrigin")
+        is_mutable = mojo_type.parameters[0] in ("MutAnyOrigin", "MutUntrackedOrigin")
         parameters.append(MojoParameter(
             name=param_name,
             type="MutOrigin" if is_mutable else "ImmutOrigin",
@@ -1185,7 +1185,7 @@ def bind_basetypes(files: Dict[str, str], registry: Registry):
         MojoBasetypeAlias("SampleMask", MojoBaseType("UInt32")),
         MojoBasetypeAlias("DeviceSize", MojoBaseType("UInt64")),
         MojoBasetypeAlias("DeviceAddress", MojoBaseType("UInt64")),
-        MojoBasetypeAlias("RemoteAddressNV", MojoPointerType(MojoBaseType("NoneType"), "MutExternalOrigin")),
+        MojoBasetypeAlias("RemoteAddressNV", MojoPointerType(MojoBaseType("NoneType"), "MutUntrackedOrigin")),
     ]
     
     # Emission
@@ -1209,9 +1209,9 @@ class MojoFuncpointer:
     def __str__(self) -> str:
         returns_none = isinstance(self.return_type, MojoBaseType) and self.return_type.name == "NoneType"
         return emit_fn_like(
-            f"comptime {self.name} = fn",
+            f"comptime {self.name} = def",
             [str(arg) for arg in self.args],
-            suffix="\n" if returns_none else f" -> {self.return_type}\n"
+            suffix=' thin abi("C")\n' if returns_none else f' thin abi("C") -> {self.return_type}\n'
         )
 
 
@@ -1306,8 +1306,8 @@ class MojoUnion:
             )
         parts.append(
             f"\n"
-            f"    def __copyinit__(out self, other: Self):\n"
-            f"        self._value = other._value.copy()\n"
+            f"    def __init__(out self, *, copy: Self):\n"
+            f"        self._value = copy._value.copy()\n"
         )
         return "".join(parts)
 
@@ -2372,16 +2372,16 @@ def registry_command_to_mojo_methods(
     
     # Handle casts (e.g. if data is void* but element is UInt8)
     needs_cast = elem_type != data_type.pointee_type
-    ptr_null = f"Ptr[{data_type.pointee_type}, MutExternalOrigin]()"
+    ptr_dangling = f"Ptr[{data_type.pointee_type}, MutUntrackedOrigin].unsafe_dangling()"
     ptr_list = f"list.unsafe_ptr(){'.bitcast['+str(data_type.pointee_type)+']()' if needs_cast else ''}"
 
     # Pre-generate calls
     base_args = call_args[:-2]
-    indent = 1 if is_result else 0
+    indent = 3 if is_result else 0
     prefix = "result = " if is_result else ""
     call_1 = emit_fn_like(
         f"{prefix}{call_target}",
-        base_args + ["Ptr(to=count)", ptr_null],
+        base_args + ["Ptr(to=count)", ptr_dangling],
         base_indent_level=indent
     ).strip()
     call_2 = emit_fn_like(
@@ -2448,7 +2448,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             init_arguments = [MojoArgument("dlhandle", MojoBaseType("ArcPointer", ["OwnedDLHandle"]))]
             init_body_lines = [
                 f'var get_instance_proc_addr = dlhandle[].get_function[',
-                f'    def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction',
+                f'    def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction',
                 f']("vkGetInstanceProcAddr")',
             ]
             for command in vc.commands:
@@ -2466,7 +2466,7 @@ def bind_core_commands(files: Dict[str, str], registry: Registry):
             ]
             init_body_lines = [
                 f'var get_{vc.level}_proc_addr = dlhandle[].get_function[',
-                f'    def({vc.level}: {handle_type}, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction',
+                f'    def({vc.level}: {handle_type}, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction',
                 f']("vkGet{handle_type}ProcAddr")',
             ]
             for command in vc.commands:
@@ -2610,7 +2610,7 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
         init_body_lines = ["self._dlhandle = global_functions.get_dlhandle()"]
         init_body_lines.extend((
             f'var get_{extension.type}_proc_addr = global_functions.get_dlhandle()[].get_function[',
-            f'    def({extension.type}: {extension.type.capitalize()}, p_name: CStringSlice[StaticConstantOrigin]) -> PFN_vkVoidFunction',
+            f'    def({extension.type}: {extension.type.capitalize()}, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction',
             f']("vkGet{extension.type.capitalize()}ProcAddr")',
         ))
         for required_command in required_commands:
