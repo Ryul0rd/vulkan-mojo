@@ -1864,7 +1864,7 @@ class MojoWrapperExternalType:
             f"struct {self.name}(TrivialRegisterPassable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"\n"
-            f"    de __init__(out self, *, value: {self.underlying_type}):\n"
+            f"    def __init__(out self, *, value: {self.underlying_type}):\n"
             f"        self._value = value\n"
             f"\n"
             f"    def value(self) -> {self.underlying_type}:\n"
