@@ -1,33 +1,30 @@
-from memory import memset_zero, memcpy
-from os import abort
+from std.memory import memset_zero, memcpy
+from std.os import abort
 
 
-comptime Ptr = UnsafePointer
-
-
-fn uninitialized[T: AnyType](out value: T):
+def uninitialized[T: AnyType](out value: T):
     __mlir_op.`lit.ownership.mark_initialized`(__get_mvalue_as_litref(value))
 
 
-fn zero_init[T: AnyType](out value: T):
+def zero_init[T: AnyType](out value: T):
     value = uninitialized[T]()
-    memset_zero(Ptr(to=value), 1)
+    memset_zero(UnsafePointer(to=value), 1)
 
 
-fn get_packed_value[width: UInt32, offset: UInt32](packed_values: UInt32) -> UInt32:
-    constrained[width > 0]()
-    constrained[width <= 32]()
-    constrained[offset < 32]()
-    constrained[width + offset <= 32]()
+def get_packed_value[width: UInt32, offset: UInt32](packed_values: UInt32) -> UInt32:
+    comptime assert width > 0
+    comptime assert width <= 32
+    comptime assert offset < 32
+    comptime assert width + offset <= 32
     comptime mask: UInt32 = ((1 << (width + offset)) - 1) - ((1 << offset) - 1)
     return (packed_values & mask) >> offset
 
 
-fn set_packed_value[width: UInt32, offset: UInt32](mut packed_values: UInt32, new_value: UInt32):
-    constrained[width > 0]()
-    constrained[width <= 32]()
-    constrained[offset < 32]()
-    constrained[width + offset <= 32]()
+def set_packed_value[width: UInt32, offset: UInt32](mut packed_values: UInt32, new_value: UInt32):
+    comptime assert width > 0
+    comptime assert width <= 32
+    comptime assert offset < 32
+    comptime assert width + offset <= 32
     comptime mask: UInt32 = ((1 << (width + offset)) - 1) - ((1 << offset) - 1)
     comptime max_value: UInt32 = (1 << width) - 1
     if new_value > max_value:
@@ -35,48 +32,45 @@ fn set_packed_value[width: UInt32, offset: UInt32](mut packed_values: UInt32, ne
     packed_values = packed_values & ~mask | (new_value << offset)
 
 
-struct Bool32(TrivialRegisterPassable, Boolable, Equatable):
+struct Bool32(TrivialRegisterPassable, Boolable, Hashable):
     var _value: UInt32
 
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @implicit
-    fn __init__(out self, value: Bool):
+    def __init__(out self, value: Bool):
         self._value = UInt32(1 if value else 0)
 
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return Bool(self._value)
 
-    fn __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
-
-struct Version(TrivialRegisterPassable, Writable):
+struct Version(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
-    fn __init__(out self, major: UInt32, minor: UInt32, patch: UInt32):
+    def __init__(out self, major: UInt32, minor: UInt32, patch: UInt32):
         self._value = (major << 22) | (minor << 12) | (patch)
 
-    fn __init__(out self, variant: UInt32, major: UInt32, minor: UInt32, patch: UInt32):
+    def __init__(out self, variant: UInt32, major: UInt32, minor: UInt32, patch: UInt32):
         self._value = (variant << 29) | (major << 22) | (minor << 12) | (patch)
 
-    fn variant(self) -> UInt32:
+    def variant(self) -> UInt32:
         return (self._value >> 29) & 0x7
 
-    fn major(self) -> UInt32:
+    def major(self) -> UInt32:
         return (self._value >> 22) & 0x7F
 
-    fn minor(self) -> UInt32:
+    def minor(self) -> UInt32:
         return (self._value >> 12) & 0x3FF
 
-    fn patch(self) -> UInt32:
+    def patch(self) -> UInt32:
         return self._value & 0xFFF
 
-    fn value(self) -> UInt32:
+    def value(self) -> UInt32:
         return self._value
 
-    fn write_to[W: Writer](self, mut writer: W):
+    def write_to[W: Writer](self, mut writer: W):
         writer.write(
             self.major(),
             ".", self.minor(),
@@ -85,11 +79,11 @@ struct Version(TrivialRegisterPassable, Writable):
 
 
 @fieldwise_init
-struct ListResult[T: Copyable & Movable](Copyable, Movable):
+struct ListResult[T: Copyable & ImplicitlyDestructible](Copyable):
     var list: List[Self.T]
     var result: Result
 
-    fn steal_list(mut self) -> List[Self.T]:
+    def steal_list(mut self) -> List[Self.T]:
         var out = self.list^
         self.list = List[Self.T]()
         return out^
