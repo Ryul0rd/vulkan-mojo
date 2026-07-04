@@ -33,7 +33,7 @@ comptime PresentScalingFlagsEXT = PresentScalingFlagsKHR
 comptime PresentGravityFlagsEXT = PresentGravityFlagsKHR
 
 
-struct FramebufferCreateFlags(TrivialRegisterPassable, Equatable):
+struct FramebufferCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -51,9 +51,6 @@ struct FramebufferCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: FramebufferCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -85,7 +82,7 @@ struct FramebufferCreateFlags(TrivialRegisterPassable, Equatable):
     comptime IMAGELESS = Self(value = FramebufferCreateFlagBits.IMAGELESS.value())
 
 
-struct FramebufferCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct FramebufferCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -94,16 +91,13 @@ struct FramebufferCreateFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> FramebufferCreateFlags:
         return FramebufferCreateFlags(value = self._value | other._value)
 
     comptime IMAGELESS = Self(value = 1 << 0)
 
 
-struct QueryPoolCreateFlags(TrivialRegisterPassable, Equatable):
+struct QueryPoolCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -121,9 +115,6 @@ struct QueryPoolCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: QueryPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -155,7 +146,7 @@ struct QueryPoolCreateFlags(TrivialRegisterPassable, Equatable):
     comptime RESET = Self(value = QueryPoolCreateFlagBits.RESET.value())
 
 
-struct QueryPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct QueryPoolCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -164,16 +155,13 @@ struct QueryPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> QueryPoolCreateFlags:
         return QueryPoolCreateFlags(value = self._value | other._value)
 
     comptime RESET = Self(value = 1 << 0)
 
 
-struct RenderPassCreateFlags(TrivialRegisterPassable, Equatable):
+struct RenderPassCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -191,9 +179,6 @@ struct RenderPassCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: RenderPassCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -228,7 +213,7 @@ struct RenderPassCreateFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVED_3 = Self(value = RenderPassCreateFlagBits.RESERVED_3.value())
 
 
-struct RenderPassCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct RenderPassCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -236,9 +221,6 @@ struct RenderPassCreateFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> RenderPassCreateFlags:
         return RenderPassCreateFlags(value = self._value | other._value)
@@ -249,7 +231,7 @@ struct RenderPassCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime RESERVED_3 = Self(value = 1 << 3)
 
 
-struct SamplerCreateFlags(TrivialRegisterPassable, Equatable):
+struct SamplerCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -267,9 +249,6 @@ struct SamplerCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SamplerCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -305,7 +284,7 @@ struct SamplerCreateFlags(TrivialRegisterPassable, Equatable):
     comptime IMAGE_PROCESSING = Self(value = SamplerCreateFlagBits.IMAGE_PROCESSING.value())
 
 
-struct SamplerCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct SamplerCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -313,9 +292,6 @@ struct SamplerCreateFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> SamplerCreateFlags:
         return SamplerCreateFlags(value = self._value | other._value)
@@ -327,7 +303,7 @@ struct SamplerCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime IMAGE_PROCESSING = Self(value = 1 << 4)
 
 
-struct PipelineLayoutCreateFlags(TrivialRegisterPassable, Equatable):
+struct PipelineLayoutCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -345,9 +321,6 @@ struct PipelineLayoutCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineLayoutCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -380,7 +353,7 @@ struct PipelineLayoutCreateFlags(TrivialRegisterPassable, Equatable):
     comptime INDEPENDENT_SETS = Self(value = PipelineLayoutCreateFlagBits.INDEPENDENT_SETS.value())
 
 
-struct PipelineLayoutCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineLayoutCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -389,9 +362,6 @@ struct PipelineLayoutCreateFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineLayoutCreateFlags:
         return PipelineLayoutCreateFlags(value = self._value | other._value)
 
@@ -399,7 +369,7 @@ struct PipelineLayoutCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime INDEPENDENT_SETS = Self(value = 1 << 1)
 
 
-struct PipelineCacheCreateFlags(TrivialRegisterPassable, Equatable):
+struct PipelineCacheCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -417,9 +387,6 @@ struct PipelineCacheCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineCacheCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -454,7 +421,7 @@ struct PipelineCacheCreateFlags(TrivialRegisterPassable, Equatable):
     comptime INTERNALLY_SYNCHRONIZED_MERGE = Self(value = PipelineCacheCreateFlagBits.INTERNALLY_SYNCHRONIZED_MERGE.value())
 
 
-struct PipelineCacheCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineCacheCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -462,9 +429,6 @@ struct PipelineCacheCreateFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> PipelineCacheCreateFlags:
         return PipelineCacheCreateFlags(value = self._value | other._value)
@@ -475,7 +439,7 @@ struct PipelineCacheCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime INTERNALLY_SYNCHRONIZED_MERGE = Self(value = 1 << 3)
 
 
-struct PipelineDepthStencilStateCreateFlags(TrivialRegisterPassable, Equatable):
+struct PipelineDepthStencilStateCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -493,9 +457,6 @@ struct PipelineDepthStencilStateCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineDepthStencilStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -525,7 +486,7 @@ struct PipelineDepthStencilStateCreateFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct PipelineDepthStencilStateCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineDepthStencilStateCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -534,14 +495,11 @@ struct PipelineDepthStencilStateCreateFlagBits(TrivialRegisterPassable, Equatabl
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineDepthStencilStateCreateFlags:
         return PipelineDepthStencilStateCreateFlags(value = self._value | other._value)
 
 
-struct PipelineDynamicStateCreateFlags(TrivialRegisterPassable, Equatable):
+struct PipelineDynamicStateCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -559,9 +517,6 @@ struct PipelineDynamicStateCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineDynamicStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -591,7 +546,7 @@ struct PipelineDynamicStateCreateFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct PipelineDynamicStateCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineDynamicStateCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -600,14 +555,11 @@ struct PipelineDynamicStateCreateFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineDynamicStateCreateFlags:
         return PipelineDynamicStateCreateFlags(value = self._value | other._value)
 
 
-struct PipelineColorBlendStateCreateFlags(TrivialRegisterPassable, Equatable):
+struct PipelineColorBlendStateCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -625,9 +577,6 @@ struct PipelineColorBlendStateCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineColorBlendStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -657,7 +606,7 @@ struct PipelineColorBlendStateCreateFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct PipelineColorBlendStateCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineColorBlendStateCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -666,14 +615,11 @@ struct PipelineColorBlendStateCreateFlagBits(TrivialRegisterPassable, Equatable)
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineColorBlendStateCreateFlags:
         return PipelineColorBlendStateCreateFlags(value = self._value | other._value)
 
 
-struct PipelineMultisampleStateCreateFlags(TrivialRegisterPassable, Equatable):
+struct PipelineMultisampleStateCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -691,9 +637,6 @@ struct PipelineMultisampleStateCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineMultisampleStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -723,7 +666,7 @@ struct PipelineMultisampleStateCreateFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct PipelineMultisampleStateCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineMultisampleStateCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -732,14 +675,11 @@ struct PipelineMultisampleStateCreateFlagBits(TrivialRegisterPassable, Equatable
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineMultisampleStateCreateFlags:
         return PipelineMultisampleStateCreateFlags(value = self._value | other._value)
 
 
-struct PipelineRasterizationStateCreateFlags(TrivialRegisterPassable, Equatable):
+struct PipelineRasterizationStateCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -757,9 +697,6 @@ struct PipelineRasterizationStateCreateFlags(TrivialRegisterPassable, Equatable)
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineRasterizationStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -789,7 +726,7 @@ struct PipelineRasterizationStateCreateFlags(TrivialRegisterPassable, Equatable)
         return self & other == other
 
 
-struct PipelineRasterizationStateCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineRasterizationStateCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -798,14 +735,11 @@ struct PipelineRasterizationStateCreateFlagBits(TrivialRegisterPassable, Equatab
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineRasterizationStateCreateFlags:
         return PipelineRasterizationStateCreateFlags(value = self._value | other._value)
 
 
-struct PipelineViewportStateCreateFlags(TrivialRegisterPassable, Equatable):
+struct PipelineViewportStateCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -823,9 +757,6 @@ struct PipelineViewportStateCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineViewportStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -855,7 +786,7 @@ struct PipelineViewportStateCreateFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct PipelineViewportStateCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineViewportStateCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -864,14 +795,11 @@ struct PipelineViewportStateCreateFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineViewportStateCreateFlags:
         return PipelineViewportStateCreateFlags(value = self._value | other._value)
 
 
-struct PipelineTessellationStateCreateFlags(TrivialRegisterPassable, Equatable):
+struct PipelineTessellationStateCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -889,9 +817,6 @@ struct PipelineTessellationStateCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineTessellationStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -921,7 +846,7 @@ struct PipelineTessellationStateCreateFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct PipelineTessellationStateCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineTessellationStateCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -930,14 +855,11 @@ struct PipelineTessellationStateCreateFlagBits(TrivialRegisterPassable, Equatabl
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineTessellationStateCreateFlags:
         return PipelineTessellationStateCreateFlags(value = self._value | other._value)
 
 
-struct PipelineInputAssemblyStateCreateFlags(TrivialRegisterPassable, Equatable):
+struct PipelineInputAssemblyStateCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -955,9 +877,6 @@ struct PipelineInputAssemblyStateCreateFlags(TrivialRegisterPassable, Equatable)
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineInputAssemblyStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -987,7 +906,7 @@ struct PipelineInputAssemblyStateCreateFlags(TrivialRegisterPassable, Equatable)
         return self & other == other
 
 
-struct PipelineInputAssemblyStateCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineInputAssemblyStateCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -996,14 +915,11 @@ struct PipelineInputAssemblyStateCreateFlagBits(TrivialRegisterPassable, Equatab
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineInputAssemblyStateCreateFlags:
         return PipelineInputAssemblyStateCreateFlags(value = self._value | other._value)
 
 
-struct PipelineVertexInputStateCreateFlags(TrivialRegisterPassable, Equatable):
+struct PipelineVertexInputStateCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -1021,9 +937,6 @@ struct PipelineVertexInputStateCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineVertexInputStateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -1053,7 +966,7 @@ struct PipelineVertexInputStateCreateFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct PipelineVertexInputStateCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineVertexInputStateCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -1062,14 +975,11 @@ struct PipelineVertexInputStateCreateFlagBits(TrivialRegisterPassable, Equatable
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineVertexInputStateCreateFlags:
         return PipelineVertexInputStateCreateFlags(value = self._value | other._value)
 
 
-struct PipelineShaderStageCreateFlags(TrivialRegisterPassable, Equatable):
+struct PipelineShaderStageCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -1087,9 +997,6 @@ struct PipelineShaderStageCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineShaderStageCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -1123,7 +1030,7 @@ struct PipelineShaderStageCreateFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVED_3 = Self(value = PipelineShaderStageCreateFlagBits.RESERVED_3.value())
 
 
-struct PipelineShaderStageCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineShaderStageCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -1131,9 +1038,6 @@ struct PipelineShaderStageCreateFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> PipelineShaderStageCreateFlags:
         return PipelineShaderStageCreateFlags(value = self._value | other._value)
@@ -1143,7 +1047,7 @@ struct PipelineShaderStageCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime RESERVED_3 = Self(value = 1 << 3)
 
 
-struct DescriptorSetLayoutCreateFlags(TrivialRegisterPassable, Equatable):
+struct DescriptorSetLayoutCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -1161,9 +1065,6 @@ struct DescriptorSetLayoutCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DescriptorSetLayoutCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -1201,7 +1102,7 @@ struct DescriptorSetLayoutCreateFlags(TrivialRegisterPassable, Equatable):
     comptime INDIRECT_BINDABLE = Self(value = DescriptorSetLayoutCreateFlagBits.INDIRECT_BINDABLE.value())
 
 
-struct DescriptorSetLayoutCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct DescriptorSetLayoutCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -1209,9 +1110,6 @@ struct DescriptorSetLayoutCreateFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> DescriptorSetLayoutCreateFlags:
         return DescriptorSetLayoutCreateFlags(value = self._value | other._value)
@@ -1225,7 +1123,7 @@ struct DescriptorSetLayoutCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime INDIRECT_BINDABLE = Self(value = 1 << 7)
 
 
-struct BufferViewCreateFlags(TrivialRegisterPassable, Equatable):
+struct BufferViewCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -1243,9 +1141,6 @@ struct BufferViewCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: BufferViewCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -1275,7 +1170,7 @@ struct BufferViewCreateFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct BufferViewCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct BufferViewCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -1284,14 +1179,11 @@ struct BufferViewCreateFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> BufferViewCreateFlags:
         return BufferViewCreateFlags(value = self._value | other._value)
 
 
-struct InstanceCreateFlags(TrivialRegisterPassable, Equatable):
+struct InstanceCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -1309,9 +1201,6 @@ struct InstanceCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: InstanceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -1344,7 +1233,7 @@ struct InstanceCreateFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVED_616 = Self(value = InstanceCreateFlagBits.RESERVED_616.value())
 
 
-struct InstanceCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct InstanceCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -1353,9 +1242,6 @@ struct InstanceCreateFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> InstanceCreateFlags:
         return InstanceCreateFlags(value = self._value | other._value)
 
@@ -1363,7 +1249,7 @@ struct InstanceCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime RESERVED_616 = Self(value = 1 << 1)
 
 
-struct DeviceCreateFlags(TrivialRegisterPassable, Equatable):
+struct DeviceCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -1381,9 +1267,6 @@ struct DeviceCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DeviceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -1413,7 +1296,7 @@ struct DeviceCreateFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct DeviceCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct DeviceCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -1422,14 +1305,11 @@ struct DeviceCreateFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> DeviceCreateFlags:
         return DeviceCreateFlags(value = self._value | other._value)
 
 
-struct DeviceQueueCreateFlags(TrivialRegisterPassable, Equatable):
+struct DeviceQueueCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -1447,9 +1327,6 @@ struct DeviceQueueCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DeviceQueueCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -1483,7 +1360,7 @@ struct DeviceQueueCreateFlags(TrivialRegisterPassable, Equatable):
     comptime INTERNALLY_SYNCHRONIZED = Self(value = DeviceQueueCreateFlagBits.INTERNALLY_SYNCHRONIZED.value())
 
 
-struct DeviceQueueCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct DeviceQueueCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -1491,9 +1368,6 @@ struct DeviceQueueCreateFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> DeviceQueueCreateFlags:
         return DeviceQueueCreateFlags(value = self._value | other._value)
@@ -1503,7 +1377,7 @@ struct DeviceQueueCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime INTERNALLY_SYNCHRONIZED = Self(value = 1 << 2)
 
 
-struct QueueFlags(TrivialRegisterPassable, Equatable):
+struct QueueFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -1521,9 +1395,6 @@ struct QueueFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: QueueFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -1568,7 +1439,7 @@ struct QueueFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVED_13 = Self(value = QueueFlagBits.RESERVED_13.value())
 
 
-struct QueueFlagBits(TrivialRegisterPassable, Equatable):
+struct QueueFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -1576,9 +1447,6 @@ struct QueueFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> QueueFlags:
         return QueueFlags(value = self._value | other._value)
@@ -1599,7 +1467,7 @@ struct QueueFlagBits(TrivialRegisterPassable, Equatable):
     comptime RESERVED_13 = Self(value = 1 << 13)
 
 
-struct MemoryPropertyFlags(TrivialRegisterPassable, Equatable):
+struct MemoryPropertyFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -1617,9 +1485,6 @@ struct MemoryPropertyFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: MemoryPropertyFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -1659,7 +1524,7 @@ struct MemoryPropertyFlags(TrivialRegisterPassable, Equatable):
     comptime RDMA_CAPABLE = Self(value = MemoryPropertyFlagBits.RDMA_CAPABLE.value())
 
 
-struct MemoryPropertyFlagBits(TrivialRegisterPassable, Equatable):
+struct MemoryPropertyFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -1667,9 +1532,6 @@ struct MemoryPropertyFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> MemoryPropertyFlags:
         return MemoryPropertyFlags(value = self._value | other._value)
@@ -1685,7 +1547,7 @@ struct MemoryPropertyFlagBits(TrivialRegisterPassable, Equatable):
     comptime RDMA_CAPABLE = Self(value = 1 << 8)
 
 
-struct MemoryHeapFlags(TrivialRegisterPassable, Equatable):
+struct MemoryHeapFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -1703,9 +1565,6 @@ struct MemoryHeapFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: MemoryHeapFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -1740,7 +1599,7 @@ struct MemoryHeapFlags(TrivialRegisterPassable, Equatable):
     comptime TILE_MEMORY = Self(value = MemoryHeapFlagBits.TILE_MEMORY.value())
 
 
-struct MemoryHeapFlagBits(TrivialRegisterPassable, Equatable):
+struct MemoryHeapFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -1748,9 +1607,6 @@ struct MemoryHeapFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> MemoryHeapFlags:
         return MemoryHeapFlags(value = self._value | other._value)
@@ -1761,7 +1617,7 @@ struct MemoryHeapFlagBits(TrivialRegisterPassable, Equatable):
     comptime TILE_MEMORY = Self(value = 1 << 3)
 
 
-struct AccessFlags(TrivialRegisterPassable, Equatable):
+struct AccessFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -1779,9 +1635,6 @@ struct AccessFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: AccessFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -1839,7 +1692,7 @@ struct AccessFlags(TrivialRegisterPassable, Equatable):
     comptime TRANSFORM_FEEDBACK_COUNTER_WRITE = Self(value = AccessFlagBits.TRANSFORM_FEEDBACK_COUNTER_WRITE.value())
 
 
-struct AccessFlagBits(TrivialRegisterPassable, Equatable):
+struct AccessFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -1847,9 +1700,6 @@ struct AccessFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> AccessFlags:
         return AccessFlags(value = self._value | other._value)
@@ -1883,7 +1733,7 @@ struct AccessFlagBits(TrivialRegisterPassable, Equatable):
     comptime TRANSFORM_FEEDBACK_COUNTER_WRITE = Self(value = 1 << 27)
 
 
-struct BufferUsageFlags(TrivialRegisterPassable, Equatable):
+struct BufferUsageFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -1901,9 +1751,6 @@ struct BufferUsageFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: BufferUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -1962,7 +1809,7 @@ struct BufferUsageFlags(TrivialRegisterPassable, Equatable):
     comptime DESCRIPTOR_HEAP = Self(value = BufferUsageFlagBits.DESCRIPTOR_HEAP.value())
 
 
-struct BufferUsageFlagBits(TrivialRegisterPassable, Equatable):
+struct BufferUsageFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -1970,9 +1817,6 @@ struct BufferUsageFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> BufferUsageFlags:
         return BufferUsageFlags(value = self._value | other._value)
@@ -2007,7 +1851,7 @@ struct BufferUsageFlagBits(TrivialRegisterPassable, Equatable):
     comptime DESCRIPTOR_HEAP = Self(value = 1 << 28)
 
 
-struct BufferCreateFlags(TrivialRegisterPassable, Equatable):
+struct BufferCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -2025,9 +1869,6 @@ struct BufferCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: BufferCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -2066,7 +1907,7 @@ struct BufferCreateFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVED_7 = Self(value = BufferCreateFlagBits.RESERVED_7.value())
 
 
-struct BufferCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct BufferCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -2074,9 +1915,6 @@ struct BufferCreateFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> BufferCreateFlags:
         return BufferCreateFlags(value = self._value | other._value)
@@ -2091,7 +1929,7 @@ struct BufferCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime RESERVED_7 = Self(value = 1 << 7)
 
 
-struct ShaderStageFlags(TrivialRegisterPassable, Equatable):
+struct ShaderStageFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -2109,9 +1947,6 @@ struct ShaderStageFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ShaderStageFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -2160,7 +1995,7 @@ struct ShaderStageFlags(TrivialRegisterPassable, Equatable):
     comptime CLUSTER_CULLING = Self(value = ShaderStageFlagBits.CLUSTER_CULLING.value())
 
 
-struct ShaderStageFlagBits(TrivialRegisterPassable, Equatable):
+struct ShaderStageFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -2168,9 +2003,6 @@ struct ShaderStageFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ShaderStageFlags:
         return ShaderStageFlags(value = self._value | other._value)
@@ -2195,7 +2027,7 @@ struct ShaderStageFlagBits(TrivialRegisterPassable, Equatable):
     comptime CLUSTER_CULLING = Self(value = 1 << 19)
 
 
-struct ImageUsageFlags(TrivialRegisterPassable, Equatable):
+struct ImageUsageFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -2213,9 +2045,6 @@ struct ImageUsageFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ImageUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -2277,7 +2106,7 @@ struct ImageUsageFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVED_30 = Self(value = ImageUsageFlagBits.RESERVED_30.value())
 
 
-struct ImageUsageFlagBits(TrivialRegisterPassable, Equatable):
+struct ImageUsageFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -2285,9 +2114,6 @@ struct ImageUsageFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ImageUsageFlags:
         return ImageUsageFlags(value = self._value | other._value)
@@ -2325,7 +2151,7 @@ struct ImageUsageFlagBits(TrivialRegisterPassable, Equatable):
     comptime RESERVED_30 = Self(value = 1 << 30)
 
 
-struct ImageCreateFlags(TrivialRegisterPassable, Equatable):
+struct ImageCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -2343,9 +2169,6 @@ struct ImageCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ImageCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -2397,7 +2220,7 @@ struct ImageCreateFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVED_22 = Self(value = ImageCreateFlagBits.RESERVED_22.value())
 
 
-struct ImageCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct ImageCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -2405,9 +2228,6 @@ struct ImageCreateFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ImageCreateFlags:
         return ImageCreateFlags(value = self._value | other._value)
@@ -2435,7 +2255,7 @@ struct ImageCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime RESERVED_22 = Self(value = 1 << 22)
 
 
-struct ImageViewCreateFlags(TrivialRegisterPassable, Equatable):
+struct ImageViewCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -2453,9 +2273,6 @@ struct ImageViewCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ImageViewCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -2489,7 +2306,7 @@ struct ImageViewCreateFlags(TrivialRegisterPassable, Equatable):
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = ImageViewCreateFlagBits.DESCRIPTOR_BUFFER_CAPTURE_REPLAY.value())
 
 
-struct ImageViewCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct ImageViewCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -2497,9 +2314,6 @@ struct ImageViewCreateFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ImageViewCreateFlags:
         return ImageViewCreateFlags(value = self._value | other._value)
@@ -2509,7 +2323,7 @@ struct ImageViewCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = 1 << 2)
 
 
-struct PipelineCreateFlags(TrivialRegisterPassable, Equatable):
+struct PipelineCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -2527,9 +2341,6 @@ struct PipelineCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -2591,7 +2402,7 @@ struct PipelineCreateFlags(TrivialRegisterPassable, Equatable):
     comptime PROTECTED_ACCESS_ONLY = Self(value = PipelineCreateFlagBits.PROTECTED_ACCESS_ONLY.value())
 
 
-struct PipelineCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -2599,9 +2410,6 @@ struct PipelineCreateFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> PipelineCreateFlags:
         return PipelineCreateFlags(value = self._value | other._value)
@@ -2639,7 +2447,7 @@ struct PipelineCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime PROTECTED_ACCESS_ONLY = Self(value = 1 << 30)
 
 
-struct ColorComponentFlags(TrivialRegisterPassable, Equatable):
+struct ColorComponentFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -2657,9 +2465,6 @@ struct ColorComponentFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ColorComponentFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -2694,7 +2499,7 @@ struct ColorComponentFlags(TrivialRegisterPassable, Equatable):
     comptime A = Self(value = ColorComponentFlagBits.A.value())
 
 
-struct ColorComponentFlagBits(TrivialRegisterPassable, Equatable):
+struct ColorComponentFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -2702,9 +2507,6 @@ struct ColorComponentFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ColorComponentFlags:
         return ColorComponentFlags(value = self._value | other._value)
@@ -2715,7 +2517,7 @@ struct ColorComponentFlagBits(TrivialRegisterPassable, Equatable):
     comptime A = Self(value = 1 << 3)
 
 
-struct FenceCreateFlags(TrivialRegisterPassable, Equatable):
+struct FenceCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -2733,9 +2535,6 @@ struct FenceCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: FenceCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -2767,7 +2566,7 @@ struct FenceCreateFlags(TrivialRegisterPassable, Equatable):
     comptime SIGNALED = Self(value = FenceCreateFlagBits.SIGNALED.value())
 
 
-struct FenceCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct FenceCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -2776,16 +2575,13 @@ struct FenceCreateFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> FenceCreateFlags:
         return FenceCreateFlags(value = self._value | other._value)
 
     comptime SIGNALED = Self(value = 1 << 0)
 
 
-struct SemaphoreCreateFlags(TrivialRegisterPassable, Equatable):
+struct SemaphoreCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -2803,9 +2599,6 @@ struct SemaphoreCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SemaphoreCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -2835,7 +2628,7 @@ struct SemaphoreCreateFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct SemaphoreCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct SemaphoreCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -2844,14 +2637,11 @@ struct SemaphoreCreateFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> SemaphoreCreateFlags:
         return SemaphoreCreateFlags(value = self._value | other._value)
 
 
-struct FormatFeatureFlags(TrivialRegisterPassable, Equatable):
+struct FormatFeatureFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -2869,9 +2659,6 @@ struct FormatFeatureFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: FormatFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -2932,7 +2719,7 @@ struct FormatFeatureFlags(TrivialRegisterPassable, Equatable):
     comptime FRAGMENT_SHADING_RATE_ATTACHMENT = Self(value = FormatFeatureFlagBits.FRAGMENT_SHADING_RATE_ATTACHMENT.value())
 
 
-struct FormatFeatureFlagBits(TrivialRegisterPassable, Equatable):
+struct FormatFeatureFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -2940,9 +2727,6 @@ struct FormatFeatureFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> FormatFeatureFlags:
         return FormatFeatureFlags(value = self._value | other._value)
@@ -2979,7 +2763,7 @@ struct FormatFeatureFlagBits(TrivialRegisterPassable, Equatable):
     comptime FRAGMENT_SHADING_RATE_ATTACHMENT = Self(value = 1 << 30)
 
 
-struct QueryControlFlags(TrivialRegisterPassable, Equatable):
+struct QueryControlFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -2997,9 +2781,6 @@ struct QueryControlFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: QueryControlFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -3031,7 +2812,7 @@ struct QueryControlFlags(TrivialRegisterPassable, Equatable):
     comptime PRECISE = Self(value = QueryControlFlagBits.PRECISE.value())
 
 
-struct QueryControlFlagBits(TrivialRegisterPassable, Equatable):
+struct QueryControlFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -3040,16 +2821,13 @@ struct QueryControlFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> QueryControlFlags:
         return QueryControlFlags(value = self._value | other._value)
 
     comptime PRECISE = Self(value = 1 << 0)
 
 
-struct QueryResultFlags(TrivialRegisterPassable, Equatable):
+struct QueryResultFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -3067,9 +2845,6 @@ struct QueryResultFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: QueryResultFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -3105,7 +2880,7 @@ struct QueryResultFlags(TrivialRegisterPassable, Equatable):
     comptime WITH_STATUS = Self(value = QueryResultFlagBits.WITH_STATUS.value())
 
 
-struct QueryResultFlagBits(TrivialRegisterPassable, Equatable):
+struct QueryResultFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -3113,9 +2888,6 @@ struct QueryResultFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> QueryResultFlags:
         return QueryResultFlags(value = self._value | other._value)
@@ -3127,7 +2899,7 @@ struct QueryResultFlagBits(TrivialRegisterPassable, Equatable):
     comptime WITH_STATUS = Self(value = 1 << 4)
 
 
-struct ShaderModuleCreateFlags(TrivialRegisterPassable, Equatable):
+struct ShaderModuleCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -3145,9 +2917,6 @@ struct ShaderModuleCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ShaderModuleCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -3177,7 +2946,7 @@ struct ShaderModuleCreateFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct ShaderModuleCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct ShaderModuleCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -3186,14 +2955,11 @@ struct ShaderModuleCreateFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> ShaderModuleCreateFlags:
         return ShaderModuleCreateFlags(value = self._value | other._value)
 
 
-struct EventCreateFlags(TrivialRegisterPassable, Equatable):
+struct EventCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -3211,9 +2977,6 @@ struct EventCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: EventCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -3245,7 +3008,7 @@ struct EventCreateFlags(TrivialRegisterPassable, Equatable):
     comptime DEVICE_ONLY = Self(value = EventCreateFlagBits.DEVICE_ONLY.value())
 
 
-struct EventCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct EventCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -3254,16 +3017,13 @@ struct EventCreateFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> EventCreateFlags:
         return EventCreateFlags(value = self._value | other._value)
 
     comptime DEVICE_ONLY = Self(value = 1 << 0)
 
 
-struct CommandPoolCreateFlags(TrivialRegisterPassable, Equatable):
+struct CommandPoolCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -3281,9 +3041,6 @@ struct CommandPoolCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: CommandPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -3317,7 +3074,7 @@ struct CommandPoolCreateFlags(TrivialRegisterPassable, Equatable):
     comptime PROTECTED = Self(value = CommandPoolCreateFlagBits.PROTECTED.value())
 
 
-struct CommandPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct CommandPoolCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -3325,9 +3082,6 @@ struct CommandPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> CommandPoolCreateFlags:
         return CommandPoolCreateFlags(value = self._value | other._value)
@@ -3337,7 +3091,7 @@ struct CommandPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime PROTECTED = Self(value = 1 << 2)
 
 
-struct CommandPoolResetFlags(TrivialRegisterPassable, Equatable):
+struct CommandPoolResetFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -3355,9 +3109,6 @@ struct CommandPoolResetFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: CommandPoolResetFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -3390,7 +3141,7 @@ struct CommandPoolResetFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVED_1_BIT_COREAVI = Self(value = CommandPoolResetFlagBits.RESERVED_1_BIT_COREAVI.value())
 
 
-struct CommandPoolResetFlagBits(TrivialRegisterPassable, Equatable):
+struct CommandPoolResetFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -3399,9 +3150,6 @@ struct CommandPoolResetFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> CommandPoolResetFlags:
         return CommandPoolResetFlags(value = self._value | other._value)
 
@@ -3409,7 +3157,7 @@ struct CommandPoolResetFlagBits(TrivialRegisterPassable, Equatable):
     comptime RESERVED_1_BIT_COREAVI = Self(value = 1 << 1)
 
 
-struct CommandBufferResetFlags(TrivialRegisterPassable, Equatable):
+struct CommandBufferResetFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -3427,9 +3175,6 @@ struct CommandBufferResetFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: CommandBufferResetFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -3461,7 +3206,7 @@ struct CommandBufferResetFlags(TrivialRegisterPassable, Equatable):
     comptime RELEASE_RESOURCES = Self(value = CommandBufferResetFlagBits.RELEASE_RESOURCES.value())
 
 
-struct CommandBufferResetFlagBits(TrivialRegisterPassable, Equatable):
+struct CommandBufferResetFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -3470,16 +3215,13 @@ struct CommandBufferResetFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> CommandBufferResetFlags:
         return CommandBufferResetFlags(value = self._value | other._value)
 
     comptime RELEASE_RESOURCES = Self(value = 1 << 0)
 
 
-struct CommandBufferUsageFlags(TrivialRegisterPassable, Equatable):
+struct CommandBufferUsageFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -3497,9 +3239,6 @@ struct CommandBufferUsageFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: CommandBufferUsageFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -3535,7 +3274,7 @@ struct CommandBufferUsageFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVED_4 = Self(value = CommandBufferUsageFlagBits.RESERVED_4.value())
 
 
-struct CommandBufferUsageFlagBits(TrivialRegisterPassable, Equatable):
+struct CommandBufferUsageFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -3543,9 +3282,6 @@ struct CommandBufferUsageFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> CommandBufferUsageFlags:
         return CommandBufferUsageFlags(value = self._value | other._value)
@@ -3557,7 +3293,7 @@ struct CommandBufferUsageFlagBits(TrivialRegisterPassable, Equatable):
     comptime RESERVED_4 = Self(value = 1 << 4)
 
 
-struct QueryPipelineStatisticFlags(TrivialRegisterPassable, Equatable):
+struct QueryPipelineStatisticFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -3575,9 +3311,6 @@ struct QueryPipelineStatisticFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: QueryPipelineStatisticFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -3622,7 +3355,7 @@ struct QueryPipelineStatisticFlags(TrivialRegisterPassable, Equatable):
     comptime CLUSTER_CULLING_SHADER_INVOCATIONS = Self(value = QueryPipelineStatisticFlagBits.CLUSTER_CULLING_SHADER_INVOCATIONS.value())
 
 
-struct QueryPipelineStatisticFlagBits(TrivialRegisterPassable, Equatable):
+struct QueryPipelineStatisticFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -3630,9 +3363,6 @@ struct QueryPipelineStatisticFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> QueryPipelineStatisticFlags:
         return QueryPipelineStatisticFlags(value = self._value | other._value)
@@ -3653,7 +3383,7 @@ struct QueryPipelineStatisticFlagBits(TrivialRegisterPassable, Equatable):
     comptime CLUSTER_CULLING_SHADER_INVOCATIONS = Self(value = 1 << 13)
 
 
-struct MemoryMapFlags(TrivialRegisterPassable, Equatable):
+struct MemoryMapFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -3671,9 +3401,6 @@ struct MemoryMapFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: MemoryMapFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -3705,7 +3432,7 @@ struct MemoryMapFlags(TrivialRegisterPassable, Equatable):
     comptime PLACED = Self(value = MemoryMapFlagBits.PLACED.value())
 
 
-struct MemoryMapFlagBits(TrivialRegisterPassable, Equatable):
+struct MemoryMapFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -3714,16 +3441,13 @@ struct MemoryMapFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> MemoryMapFlags:
         return MemoryMapFlags(value = self._value | other._value)
 
     comptime PLACED = Self(value = 1 << 0)
 
 
-struct MemoryUnmapFlags(TrivialRegisterPassable, Equatable):
+struct MemoryUnmapFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -3741,9 +3465,6 @@ struct MemoryUnmapFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: MemoryUnmapFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -3775,7 +3496,7 @@ struct MemoryUnmapFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVE = Self(value = MemoryUnmapFlagBits.RESERVE.value())
 
 
-struct MemoryUnmapFlagBits(TrivialRegisterPassable, Equatable):
+struct MemoryUnmapFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -3784,16 +3505,13 @@ struct MemoryUnmapFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> MemoryUnmapFlags:
         return MemoryUnmapFlags(value = self._value | other._value)
 
     comptime RESERVE = Self(value = 1 << 0)
 
 
-struct ImageAspectFlags(TrivialRegisterPassable, Equatable):
+struct ImageAspectFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -3811,9 +3529,6 @@ struct ImageAspectFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ImageAspectFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -3857,7 +3572,7 @@ struct ImageAspectFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVED_11 = Self(value = ImageAspectFlagBits.RESERVED_11.value())
 
 
-struct ImageAspectFlagBits(TrivialRegisterPassable, Equatable):
+struct ImageAspectFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -3865,9 +3580,6 @@ struct ImageAspectFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ImageAspectFlags:
         return ImageAspectFlags(value = self._value | other._value)
@@ -3887,7 +3599,7 @@ struct ImageAspectFlagBits(TrivialRegisterPassable, Equatable):
     comptime RESERVED_11 = Self(value = 1 << 11)
 
 
-struct SparseMemoryBindFlags(TrivialRegisterPassable, Equatable):
+struct SparseMemoryBindFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -3905,9 +3617,6 @@ struct SparseMemoryBindFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SparseMemoryBindFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -3939,7 +3648,7 @@ struct SparseMemoryBindFlags(TrivialRegisterPassable, Equatable):
     comptime METADATA = Self(value = SparseMemoryBindFlagBits.METADATA.value())
 
 
-struct SparseMemoryBindFlagBits(TrivialRegisterPassable, Equatable):
+struct SparseMemoryBindFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -3948,16 +3657,13 @@ struct SparseMemoryBindFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> SparseMemoryBindFlags:
         return SparseMemoryBindFlags(value = self._value | other._value)
 
     comptime METADATA = Self(value = 1 << 0)
 
 
-struct SparseImageFormatFlags(TrivialRegisterPassable, Equatable):
+struct SparseImageFormatFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -3975,9 +3681,6 @@ struct SparseImageFormatFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SparseImageFormatFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -4011,7 +3714,7 @@ struct SparseImageFormatFlags(TrivialRegisterPassable, Equatable):
     comptime NONSTANDARD_BLOCK_SIZE = Self(value = SparseImageFormatFlagBits.NONSTANDARD_BLOCK_SIZE.value())
 
 
-struct SparseImageFormatFlagBits(TrivialRegisterPassable, Equatable):
+struct SparseImageFormatFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -4019,9 +3722,6 @@ struct SparseImageFormatFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> SparseImageFormatFlags:
         return SparseImageFormatFlags(value = self._value | other._value)
@@ -4031,7 +3731,7 @@ struct SparseImageFormatFlagBits(TrivialRegisterPassable, Equatable):
     comptime NONSTANDARD_BLOCK_SIZE = Self(value = 1 << 2)
 
 
-struct SubpassDescriptionFlags(TrivialRegisterPassable, Equatable):
+struct SubpassDescriptionFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -4049,9 +3749,6 @@ struct SubpassDescriptionFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SubpassDescriptionFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -4087,7 +3784,7 @@ struct SubpassDescriptionFlags(TrivialRegisterPassable, Equatable):
     comptime TILE_SHADING_APRON = Self(value = SubpassDescriptionFlagBits.TILE_SHADING_APRON.value())
 
 
-struct SubpassDescriptionFlagBits(TrivialRegisterPassable, Equatable):
+struct SubpassDescriptionFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -4095,9 +3792,6 @@ struct SubpassDescriptionFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> SubpassDescriptionFlags:
         return SubpassDescriptionFlags(value = self._value | other._value)
@@ -4109,7 +3803,7 @@ struct SubpassDescriptionFlagBits(TrivialRegisterPassable, Equatable):
     comptime TILE_SHADING_APRON = Self(value = 1 << 8)
 
 
-struct PipelineStageFlags(TrivialRegisterPassable, Equatable):
+struct PipelineStageFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -4127,9 +3821,6 @@ struct PipelineStageFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineStageFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -4184,7 +3875,7 @@ struct PipelineStageFlags(TrivialRegisterPassable, Equatable):
     comptime ACCELERATION_STRUCTURE_BUILD = Self(value = PipelineStageFlagBits.ACCELERATION_STRUCTURE_BUILD.value())
 
 
-struct PipelineStageFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineStageFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -4192,9 +3883,6 @@ struct PipelineStageFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> PipelineStageFlags:
         return PipelineStageFlags(value = self._value | other._value)
@@ -4225,7 +3913,7 @@ struct PipelineStageFlagBits(TrivialRegisterPassable, Equatable):
     comptime ACCELERATION_STRUCTURE_BUILD = Self(value = 1 << 25)
 
 
-struct SampleCountFlags(TrivialRegisterPassable, Equatable):
+struct SampleCountFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -4243,9 +3931,6 @@ struct SampleCountFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SampleCountFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -4283,7 +3968,7 @@ struct SampleCountFlags(TrivialRegisterPassable, Equatable):
     comptime COUNT_64 = Self(value = SampleCountFlagBits.COUNT_64.value())
 
 
-struct SampleCountFlagBits(TrivialRegisterPassable, Equatable):
+struct SampleCountFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -4291,9 +3976,6 @@ struct SampleCountFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> SampleCountFlags:
         return SampleCountFlags(value = self._value | other._value)
@@ -4307,7 +3989,7 @@ struct SampleCountFlagBits(TrivialRegisterPassable, Equatable):
     comptime COUNT_64 = Self(value = 1 << 6)
 
 
-struct AttachmentDescriptionFlags(TrivialRegisterPassable, Equatable):
+struct AttachmentDescriptionFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -4325,9 +4007,6 @@ struct AttachmentDescriptionFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: AttachmentDescriptionFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -4361,7 +4040,7 @@ struct AttachmentDescriptionFlags(TrivialRegisterPassable, Equatable):
     comptime RESOLVE_ENABLE_TRANSFER_FUNCTION = Self(value = AttachmentDescriptionFlagBits.RESOLVE_ENABLE_TRANSFER_FUNCTION.value())
 
 
-struct AttachmentDescriptionFlagBits(TrivialRegisterPassable, Equatable):
+struct AttachmentDescriptionFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -4369,9 +4048,6 @@ struct AttachmentDescriptionFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> AttachmentDescriptionFlags:
         return AttachmentDescriptionFlags(value = self._value | other._value)
@@ -4381,7 +4057,7 @@ struct AttachmentDescriptionFlagBits(TrivialRegisterPassable, Equatable):
     comptime RESOLVE_ENABLE_TRANSFER_FUNCTION = Self(value = 1 << 2)
 
 
-struct StencilFaceFlags(TrivialRegisterPassable, Equatable):
+struct StencilFaceFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -4399,9 +4075,6 @@ struct StencilFaceFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: StencilFaceFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -4435,7 +4108,7 @@ struct StencilFaceFlags(TrivialRegisterPassable, Equatable):
     comptime BACK = Self(value = StencilFaceFlagBits.BACK.value())
 
 
-struct StencilFaceFlagBits(TrivialRegisterPassable, Equatable):
+struct StencilFaceFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -4443,9 +4116,6 @@ struct StencilFaceFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> StencilFaceFlags:
         return StencilFaceFlags(value = self._value | other._value)
@@ -4455,7 +4125,7 @@ struct StencilFaceFlagBits(TrivialRegisterPassable, Equatable):
     comptime BACK = Self(value = 1 << 1)
 
 
-struct CullModeFlags(TrivialRegisterPassable, Equatable):
+struct CullModeFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -4473,9 +4143,6 @@ struct CullModeFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: CullModeFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -4510,7 +4177,7 @@ struct CullModeFlags(TrivialRegisterPassable, Equatable):
     comptime BACK = Self(value = CullModeFlagBits.BACK.value())
 
 
-struct CullModeFlagBits(TrivialRegisterPassable, Equatable):
+struct CullModeFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -4518,9 +4185,6 @@ struct CullModeFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> CullModeFlags:
         return CullModeFlags(value = self._value | other._value)
@@ -4531,7 +4195,7 @@ struct CullModeFlagBits(TrivialRegisterPassable, Equatable):
     comptime BACK = Self(value = 1 << 1)
 
 
-struct DescriptorPoolCreateFlags(TrivialRegisterPassable, Equatable):
+struct DescriptorPoolCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -4549,9 +4213,6 @@ struct DescriptorPoolCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DescriptorPoolCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -4586,7 +4247,7 @@ struct DescriptorPoolCreateFlags(TrivialRegisterPassable, Equatable):
     comptime ALLOW_OVERALLOCATION_POOLS = Self(value = DescriptorPoolCreateFlagBits.ALLOW_OVERALLOCATION_POOLS.value())
 
 
-struct DescriptorPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct DescriptorPoolCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -4594,9 +4255,6 @@ struct DescriptorPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> DescriptorPoolCreateFlags:
         return DescriptorPoolCreateFlags(value = self._value | other._value)
@@ -4607,7 +4265,7 @@ struct DescriptorPoolCreateFlagBits(TrivialRegisterPassable, Equatable):
     comptime ALLOW_OVERALLOCATION_POOLS = Self(value = 1 << 4)
 
 
-struct DescriptorPoolResetFlags(TrivialRegisterPassable, Equatable):
+struct DescriptorPoolResetFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -4625,9 +4283,6 @@ struct DescriptorPoolResetFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DescriptorPoolResetFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -4657,7 +4312,7 @@ struct DescriptorPoolResetFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct DescriptorPoolResetFlagBits(TrivialRegisterPassable, Equatable):
+struct DescriptorPoolResetFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -4666,14 +4321,11 @@ struct DescriptorPoolResetFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> DescriptorPoolResetFlags:
         return DescriptorPoolResetFlags(value = self._value | other._value)
 
 
-struct DependencyFlags(TrivialRegisterPassable, Equatable):
+struct DependencyFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -4691,9 +4343,6 @@ struct DependencyFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DependencyFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -4731,7 +4380,7 @@ struct DependencyFlags(TrivialRegisterPassable, Equatable):
     comptime ASYMMETRIC_EVENT = Self(value = DependencyFlagBits.ASYMMETRIC_EVENT.value())
 
 
-struct DependencyFlagBits(TrivialRegisterPassable, Equatable):
+struct DependencyFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -4739,9 +4388,6 @@ struct DependencyFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> DependencyFlags:
         return DependencyFlags(value = self._value | other._value)
@@ -4755,7 +4401,7 @@ struct DependencyFlagBits(TrivialRegisterPassable, Equatable):
     comptime ASYMMETRIC_EVENT = Self(value = 1 << 6)
 
 
-struct SubgroupFeatureFlags(TrivialRegisterPassable, Equatable):
+struct SubgroupFeatureFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -4773,9 +4419,6 @@ struct SubgroupFeatureFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SubgroupFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -4816,7 +4459,7 @@ struct SubgroupFeatureFlags(TrivialRegisterPassable, Equatable):
     comptime ROTATE_CLUSTERED = Self(value = SubgroupFeatureFlagBits.ROTATE_CLUSTERED.value())
 
 
-struct SubgroupFeatureFlagBits(TrivialRegisterPassable, Equatable):
+struct SubgroupFeatureFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -4824,9 +4467,6 @@ struct SubgroupFeatureFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> SubgroupFeatureFlags:
         return SubgroupFeatureFlags(value = self._value | other._value)
@@ -4843,7 +4483,7 @@ struct SubgroupFeatureFlagBits(TrivialRegisterPassable, Equatable):
     comptime ROTATE_CLUSTERED = Self(value = 1 << 10)
 
 
-struct IndirectCommandsLayoutUsageFlagsNV(TrivialRegisterPassable, Equatable):
+struct IndirectCommandsLayoutUsageFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -4861,9 +4501,6 @@ struct IndirectCommandsLayoutUsageFlagsNV(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: IndirectCommandsLayoutUsageFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -4897,7 +4534,7 @@ struct IndirectCommandsLayoutUsageFlagsNV(TrivialRegisterPassable, Equatable):
     comptime UNORDERED_SEQUENCES = Self(value = IndirectCommandsLayoutUsageFlagBitsNV.UNORDERED_SEQUENCES.value())
 
 
-struct IndirectCommandsLayoutUsageFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct IndirectCommandsLayoutUsageFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -4905,9 +4542,6 @@ struct IndirectCommandsLayoutUsageFlagBitsNV(TrivialRegisterPassable, Equatable)
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> IndirectCommandsLayoutUsageFlagsNV:
         return IndirectCommandsLayoutUsageFlagsNV(value = self._value | other._value)
@@ -4917,7 +4551,7 @@ struct IndirectCommandsLayoutUsageFlagBitsNV(TrivialRegisterPassable, Equatable)
     comptime UNORDERED_SEQUENCES = Self(value = 1 << 2)
 
 
-struct IndirectStateFlagsNV(TrivialRegisterPassable, Equatable):
+struct IndirectStateFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -4935,9 +4569,6 @@ struct IndirectStateFlagsNV(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: IndirectStateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -4969,7 +4600,7 @@ struct IndirectStateFlagsNV(TrivialRegisterPassable, Equatable):
     comptime FLAG_FRONTFACE = Self(value = IndirectStateFlagBitsNV.FLAG_FRONTFACE.value())
 
 
-struct IndirectStateFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct IndirectStateFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -4978,16 +4609,13 @@ struct IndirectStateFlagBitsNV(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> IndirectStateFlagsNV:
         return IndirectStateFlagsNV(value = self._value | other._value)
 
     comptime FLAG_FRONTFACE = Self(value = 1 << 0)
 
 
-struct GeometryFlagsKHR(TrivialRegisterPassable, Equatable):
+struct GeometryFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5005,9 +4633,6 @@ struct GeometryFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: GeometryFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -5040,7 +4665,7 @@ struct GeometryFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime NO_DUPLICATE_ANY_HIT_INVOCATION = Self(value = GeometryFlagBitsKHR.NO_DUPLICATE_ANY_HIT_INVOCATION.value())
 
 
-struct GeometryFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct GeometryFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -5049,9 +4674,6 @@ struct GeometryFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> GeometryFlagsKHR:
         return GeometryFlagsKHR(value = self._value | other._value)
 
@@ -5059,7 +4681,7 @@ struct GeometryFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime NO_DUPLICATE_ANY_HIT_INVOCATION = Self(value = 1 << 1)
 
 
-struct GeometryInstanceFlagsKHR(TrivialRegisterPassable, Equatable):
+struct GeometryInstanceFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5077,9 +4699,6 @@ struct GeometryInstanceFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: GeometryInstanceFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -5116,7 +4735,7 @@ struct GeometryInstanceFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime DISABLE_OPACITY_MICROMAPS = Self(value = GeometryInstanceFlagBitsKHR.DISABLE_OPACITY_MICROMAPS.value())
 
 
-struct GeometryInstanceFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct GeometryInstanceFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -5124,9 +4743,6 @@ struct GeometryInstanceFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> GeometryInstanceFlagsKHR:
         return GeometryInstanceFlagsKHR(value = self._value | other._value)
@@ -5139,7 +4755,7 @@ struct GeometryInstanceFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime DISABLE_OPACITY_MICROMAPS = Self(value = 1 << 5)
 
 
-struct ClusterAccelerationStructureGeometryFlagsNV(TrivialRegisterPassable, Equatable):
+struct ClusterAccelerationStructureGeometryFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5157,9 +4773,6 @@ struct ClusterAccelerationStructureGeometryFlagsNV(TrivialRegisterPassable, Equa
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ClusterAccelerationStructureGeometryFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -5193,7 +4806,7 @@ struct ClusterAccelerationStructureGeometryFlagsNV(TrivialRegisterPassable, Equa
     comptime OPAQUE = Self(value = ClusterAccelerationStructureGeometryFlagBitsNV.OPAQUE.value())
 
 
-struct ClusterAccelerationStructureGeometryFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct ClusterAccelerationStructureGeometryFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -5201,9 +4814,6 @@ struct ClusterAccelerationStructureGeometryFlagBitsNV(TrivialRegisterPassable, E
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ClusterAccelerationStructureGeometryFlagsNV:
         return ClusterAccelerationStructureGeometryFlagsNV(value = self._value | other._value)
@@ -5213,7 +4823,7 @@ struct ClusterAccelerationStructureGeometryFlagBitsNV(TrivialRegisterPassable, E
     comptime OPAQUE = Self(value = 1 << 2)
 
 
-struct ClusterAccelerationStructureClusterFlagsNV(TrivialRegisterPassable, Equatable):
+struct ClusterAccelerationStructureClusterFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5231,9 +4841,6 @@ struct ClusterAccelerationStructureClusterFlagsNV(TrivialRegisterPassable, Equat
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ClusterAccelerationStructureClusterFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -5265,7 +4872,7 @@ struct ClusterAccelerationStructureClusterFlagsNV(TrivialRegisterPassable, Equat
     comptime ALLOW_DISABLE_OPACITY_MICROMAPS = Self(value = ClusterAccelerationStructureClusterFlagBitsNV.ALLOW_DISABLE_OPACITY_MICROMAPS.value())
 
 
-struct ClusterAccelerationStructureClusterFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct ClusterAccelerationStructureClusterFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -5274,16 +4881,13 @@ struct ClusterAccelerationStructureClusterFlagBitsNV(TrivialRegisterPassable, Eq
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> ClusterAccelerationStructureClusterFlagsNV:
         return ClusterAccelerationStructureClusterFlagsNV(value = self._value | other._value)
 
     comptime ALLOW_DISABLE_OPACITY_MICROMAPS = Self(value = 1 << 0)
 
 
-struct ClusterAccelerationStructureAddressResolutionFlagsNV(TrivialRegisterPassable, Equatable):
+struct ClusterAccelerationStructureAddressResolutionFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5301,9 +4905,6 @@ struct ClusterAccelerationStructureAddressResolutionFlagsNV(TrivialRegisterPassa
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ClusterAccelerationStructureAddressResolutionFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -5341,7 +4942,7 @@ struct ClusterAccelerationStructureAddressResolutionFlagsNV(TrivialRegisterPassa
     comptime INDIRECTED_SRC_INFOS_COUNT = Self(value = ClusterAccelerationStructureAddressResolutionFlagBitsNV.INDIRECTED_SRC_INFOS_COUNT.value())
 
 
-struct ClusterAccelerationStructureAddressResolutionFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct ClusterAccelerationStructureAddressResolutionFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -5349,9 +4950,6 @@ struct ClusterAccelerationStructureAddressResolutionFlagBitsNV(TrivialRegisterPa
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ClusterAccelerationStructureAddressResolutionFlagsNV:
         return ClusterAccelerationStructureAddressResolutionFlagsNV(value = self._value | other._value)
@@ -5365,7 +4963,7 @@ struct ClusterAccelerationStructureAddressResolutionFlagBitsNV(TrivialRegisterPa
     comptime INDIRECTED_SRC_INFOS_COUNT = Self(value = 1 << 5)
 
 
-struct BuildAccelerationStructureFlagsKHR(TrivialRegisterPassable, Equatable):
+struct BuildAccelerationStructureFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5383,9 +4981,6 @@ struct BuildAccelerationStructureFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: BuildAccelerationStructureFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -5429,7 +5024,7 @@ struct BuildAccelerationStructureFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime ALLOW_CLUSTER_OPACITY_MICROMAPS = Self(value = BuildAccelerationStructureFlagBitsKHR.ALLOW_CLUSTER_OPACITY_MICROMAPS.value())
 
 
-struct BuildAccelerationStructureFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct BuildAccelerationStructureFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -5437,9 +5032,6 @@ struct BuildAccelerationStructureFlagBitsKHR(TrivialRegisterPassable, Equatable)
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> BuildAccelerationStructureFlagsKHR:
         return BuildAccelerationStructureFlagsKHR(value = self._value | other._value)
@@ -5459,7 +5051,7 @@ struct BuildAccelerationStructureFlagBitsKHR(TrivialRegisterPassable, Equatable)
     comptime ALLOW_CLUSTER_OPACITY_MICROMAPS = Self(value = 1 << 12)
 
 
-struct PrivateDataSlotCreateFlags(TrivialRegisterPassable, Equatable):
+struct PrivateDataSlotCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5477,9 +5069,6 @@ struct PrivateDataSlotCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PrivateDataSlotCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -5511,7 +5100,7 @@ struct PrivateDataSlotCreateFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVED_0 = Self(value = PrivateDataSlotCreateFlagBits.RESERVED_0.value())
 
 
-struct PrivateDataSlotCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct PrivateDataSlotCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -5520,16 +5109,13 @@ struct PrivateDataSlotCreateFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PrivateDataSlotCreateFlags:
         return PrivateDataSlotCreateFlags(value = self._value | other._value)
 
     comptime RESERVED_0 = Self(value = 1 << 0)
 
 
-struct AccelerationStructureCreateFlagsKHR(TrivialRegisterPassable, Equatable):
+struct AccelerationStructureCreateFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5547,9 +5133,6 @@ struct AccelerationStructureCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: AccelerationStructureCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -5583,7 +5166,7 @@ struct AccelerationStructureCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = AccelerationStructureCreateFlagBitsKHR.DESCRIPTOR_BUFFER_CAPTURE_REPLAY.value())
 
 
-struct AccelerationStructureCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct AccelerationStructureCreateFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -5591,9 +5174,6 @@ struct AccelerationStructureCreateFlagBitsKHR(TrivialRegisterPassable, Equatable
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> AccelerationStructureCreateFlagsKHR:
         return AccelerationStructureCreateFlagsKHR(value = self._value | other._value)
@@ -5603,7 +5183,7 @@ struct AccelerationStructureCreateFlagBitsKHR(TrivialRegisterPassable, Equatable
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = 1 << 3)
 
 
-struct DescriptorUpdateTemplateCreateFlags(TrivialRegisterPassable, Equatable):
+struct DescriptorUpdateTemplateCreateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5621,9 +5201,6 @@ struct DescriptorUpdateTemplateCreateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DescriptorUpdateTemplateCreateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -5653,7 +5230,7 @@ struct DescriptorUpdateTemplateCreateFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct DescriptorUpdateTemplateCreateFlagBits(TrivialRegisterPassable, Equatable):
+struct DescriptorUpdateTemplateCreateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -5662,14 +5239,11 @@ struct DescriptorUpdateTemplateCreateFlagBits(TrivialRegisterPassable, Equatable
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> DescriptorUpdateTemplateCreateFlags:
         return DescriptorUpdateTemplateCreateFlags(value = self._value | other._value)
 
 
-struct PipelineCreationFeedbackFlags(TrivialRegisterPassable, Equatable):
+struct PipelineCreationFeedbackFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5687,9 +5261,6 @@ struct PipelineCreationFeedbackFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineCreationFeedbackFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -5723,7 +5294,7 @@ struct PipelineCreationFeedbackFlags(TrivialRegisterPassable, Equatable):
     comptime BASE_PIPELINE_ACCELERATION = Self(value = PipelineCreationFeedbackFlagBits.BASE_PIPELINE_ACCELERATION.value())
 
 
-struct PipelineCreationFeedbackFlagBits(TrivialRegisterPassable, Equatable):
+struct PipelineCreationFeedbackFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -5731,9 +5302,6 @@ struct PipelineCreationFeedbackFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> PipelineCreationFeedbackFlags:
         return PipelineCreationFeedbackFlags(value = self._value | other._value)
@@ -5743,7 +5311,7 @@ struct PipelineCreationFeedbackFlagBits(TrivialRegisterPassable, Equatable):
     comptime BASE_PIPELINE_ACCELERATION = Self(value = 1 << 2)
 
 
-struct PerformanceCounterDescriptionFlagsKHR(TrivialRegisterPassable, Equatable):
+struct PerformanceCounterDescriptionFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5761,9 +5329,6 @@ struct PerformanceCounterDescriptionFlagsKHR(TrivialRegisterPassable, Equatable)
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PerformanceCounterDescriptionFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -5796,7 +5361,7 @@ struct PerformanceCounterDescriptionFlagsKHR(TrivialRegisterPassable, Equatable)
     comptime CONCURRENTLY_IMPACTED = Self(value = PerformanceCounterDescriptionFlagBitsKHR.CONCURRENTLY_IMPACTED.value())
 
 
-struct PerformanceCounterDescriptionFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct PerformanceCounterDescriptionFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -5805,9 +5370,6 @@ struct PerformanceCounterDescriptionFlagBitsKHR(TrivialRegisterPassable, Equatab
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PerformanceCounterDescriptionFlagsKHR:
         return PerformanceCounterDescriptionFlagsKHR(value = self._value | other._value)
 
@@ -5815,7 +5377,7 @@ struct PerformanceCounterDescriptionFlagBitsKHR(TrivialRegisterPassable, Equatab
     comptime CONCURRENTLY_IMPACTED = Self(value = 1 << 1)
 
 
-struct AcquireProfilingLockFlagsKHR(TrivialRegisterPassable, Equatable):
+struct AcquireProfilingLockFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5833,9 +5395,6 @@ struct AcquireProfilingLockFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: AcquireProfilingLockFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -5865,7 +5424,7 @@ struct AcquireProfilingLockFlagsKHR(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct AcquireProfilingLockFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct AcquireProfilingLockFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -5874,14 +5433,11 @@ struct AcquireProfilingLockFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> AcquireProfilingLockFlagsKHR:
         return AcquireProfilingLockFlagsKHR(value = self._value | other._value)
 
 
-struct SemaphoreWaitFlags(TrivialRegisterPassable, Equatable):
+struct SemaphoreWaitFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5899,9 +5455,6 @@ struct SemaphoreWaitFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SemaphoreWaitFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -5933,7 +5486,7 @@ struct SemaphoreWaitFlags(TrivialRegisterPassable, Equatable):
     comptime ANY = Self(value = SemaphoreWaitFlagBits.ANY.value())
 
 
-struct SemaphoreWaitFlagBits(TrivialRegisterPassable, Equatable):
+struct SemaphoreWaitFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -5942,16 +5495,13 @@ struct SemaphoreWaitFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> SemaphoreWaitFlags:
         return SemaphoreWaitFlags(value = self._value | other._value)
 
     comptime ANY = Self(value = 1 << 0)
 
 
-struct PipelineCompilerControlFlagsAMD(TrivialRegisterPassable, Equatable):
+struct PipelineCompilerControlFlagsAMD(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -5969,9 +5519,6 @@ struct PipelineCompilerControlFlagsAMD(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineCompilerControlFlagsAMD) -> Self:
         return Self(value = self.value() | other.value())
@@ -6001,7 +5548,7 @@ struct PipelineCompilerControlFlagsAMD(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct PipelineCompilerControlFlagBitsAMD(TrivialRegisterPassable, Equatable):
+struct PipelineCompilerControlFlagBitsAMD(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -6010,14 +5557,11 @@ struct PipelineCompilerControlFlagBitsAMD(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineCompilerControlFlagsAMD:
         return PipelineCompilerControlFlagsAMD(value = self._value | other._value)
 
 
-struct ShaderCorePropertiesFlagsAMD(TrivialRegisterPassable, Equatable):
+struct ShaderCorePropertiesFlagsAMD(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -6035,9 +5579,6 @@ struct ShaderCorePropertiesFlagsAMD(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ShaderCorePropertiesFlagsAMD) -> Self:
         return Self(value = self.value() | other.value())
@@ -6067,7 +5608,7 @@ struct ShaderCorePropertiesFlagsAMD(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct ShaderCorePropertiesFlagBitsAMD(TrivialRegisterPassable, Equatable):
+struct ShaderCorePropertiesFlagBitsAMD(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -6076,14 +5617,11 @@ struct ShaderCorePropertiesFlagBitsAMD(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> ShaderCorePropertiesFlagsAMD:
         return ShaderCorePropertiesFlagsAMD(value = self._value | other._value)
 
 
-struct DeviceDiagnosticsConfigFlagsNV(TrivialRegisterPassable, Equatable):
+struct DeviceDiagnosticsConfigFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -6101,9 +5639,6 @@ struct DeviceDiagnosticsConfigFlagsNV(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DeviceDiagnosticsConfigFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -6138,7 +5673,7 @@ struct DeviceDiagnosticsConfigFlagsNV(TrivialRegisterPassable, Equatable):
     comptime ENABLE_SHADER_ERROR_REPORTING = Self(value = DeviceDiagnosticsConfigFlagBitsNV.ENABLE_SHADER_ERROR_REPORTING.value())
 
 
-struct DeviceDiagnosticsConfigFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct DeviceDiagnosticsConfigFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -6146,9 +5681,6 @@ struct DeviceDiagnosticsConfigFlagBitsNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> DeviceDiagnosticsConfigFlagsNV:
         return DeviceDiagnosticsConfigFlagsNV(value = self._value | other._value)
@@ -6159,7 +5691,7 @@ struct DeviceDiagnosticsConfigFlagBitsNV(TrivialRegisterPassable, Equatable):
     comptime ENABLE_SHADER_ERROR_REPORTING = Self(value = 1 << 3)
 
 
-struct RefreshObjectFlagsKHR(TrivialRegisterPassable, Equatable):
+struct RefreshObjectFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -6177,9 +5709,6 @@ struct RefreshObjectFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: RefreshObjectFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -6209,7 +5738,7 @@ struct RefreshObjectFlagsKHR(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct RefreshObjectFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct RefreshObjectFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -6218,14 +5747,11 @@ struct RefreshObjectFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> RefreshObjectFlagsKHR:
         return RefreshObjectFlagsKHR(value = self._value | other._value)
 
 
-struct AccessFlags2(TrivialRegisterPassable, Equatable):
+struct AccessFlags2(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self):
@@ -6243,9 +5769,6 @@ struct AccessFlags2(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: AccessFlags2) -> Self:
         return Self(value = self.value() | other.value())
@@ -6332,7 +5855,7 @@ struct AccessFlags2(TrivialRegisterPassable, Equatable):
     comptime RESERVED_63 = Self(value = AccessFlagBits2.RESERVED_63.value())
 
 
-struct AccessFlagBits2(TrivialRegisterPassable, Equatable):
+struct AccessFlagBits2(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self, *, value: UInt64):
@@ -6340,9 +5863,6 @@ struct AccessFlagBits2(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt64:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> AccessFlags2:
         return AccessFlags2(value = self._value | other._value)
@@ -6405,7 +5925,7 @@ struct AccessFlagBits2(TrivialRegisterPassable, Equatable):
     comptime RESERVED_63 = Self(value = 1 << 63)
 
 
-struct PipelineStageFlags2(TrivialRegisterPassable, Equatable):
+struct PipelineStageFlags2(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self):
@@ -6423,9 +5943,6 @@ struct PipelineStageFlags2(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineStageFlags2) -> Self:
         return Self(value = self.value() | other.value())
@@ -6503,7 +6020,7 @@ struct PipelineStageFlags2(TrivialRegisterPassable, Equatable):
     comptime RESERVED_49 = Self(value = PipelineStageFlagBits2.RESERVED_49.value())
 
 
-struct PipelineStageFlagBits2(TrivialRegisterPassable, Equatable):
+struct PipelineStageFlagBits2(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self, *, value: UInt64):
@@ -6511,9 +6028,6 @@ struct PipelineStageFlagBits2(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt64:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> PipelineStageFlags2:
         return PipelineStageFlags2(value = self._value | other._value)
@@ -6567,7 +6081,7 @@ struct PipelineStageFlagBits2(TrivialRegisterPassable, Equatable):
     comptime RESERVED_49 = Self(value = 1 << 49)
 
 
-struct AccelerationStructureMotionInfoFlagsNV(TrivialRegisterPassable, Equatable):
+struct AccelerationStructureMotionInfoFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -6585,9 +6099,6 @@ struct AccelerationStructureMotionInfoFlagsNV(TrivialRegisterPassable, Equatable
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: AccelerationStructureMotionInfoFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -6617,7 +6128,7 @@ struct AccelerationStructureMotionInfoFlagsNV(TrivialRegisterPassable, Equatable
         return self & other == other
 
 
-struct AccelerationStructureMotionInfoFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct AccelerationStructureMotionInfoFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -6626,14 +6137,11 @@ struct AccelerationStructureMotionInfoFlagBitsNV(TrivialRegisterPassable, Equata
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> AccelerationStructureMotionInfoFlagsNV:
         return AccelerationStructureMotionInfoFlagsNV(value = self._value | other._value)
 
 
-struct AccelerationStructureMotionInstanceFlagsNV(TrivialRegisterPassable, Equatable):
+struct AccelerationStructureMotionInstanceFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -6651,9 +6159,6 @@ struct AccelerationStructureMotionInstanceFlagsNV(TrivialRegisterPassable, Equat
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: AccelerationStructureMotionInstanceFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -6683,7 +6188,7 @@ struct AccelerationStructureMotionInstanceFlagsNV(TrivialRegisterPassable, Equat
         return self & other == other
 
 
-struct AccelerationStructureMotionInstanceFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct AccelerationStructureMotionInstanceFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -6692,14 +6197,11 @@ struct AccelerationStructureMotionInstanceFlagBitsNV(TrivialRegisterPassable, Eq
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> AccelerationStructureMotionInstanceFlagsNV:
         return AccelerationStructureMotionInstanceFlagsNV(value = self._value | other._value)
 
 
-struct FormatFeatureFlags2(TrivialRegisterPassable, Equatable):
+struct FormatFeatureFlags2(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self):
@@ -6717,9 +6219,6 @@ struct FormatFeatureFlags2(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: FormatFeatureFlags2) -> Self:
         return Self(value = self.value() | other.value())
@@ -6811,7 +6310,7 @@ struct FormatFeatureFlags2(TrivialRegisterPassable, Equatable):
     comptime RESERVED_61 = Self(value = FormatFeatureFlagBits2.RESERVED_61.value())
 
 
-struct FormatFeatureFlagBits2(TrivialRegisterPassable, Equatable):
+struct FormatFeatureFlagBits2(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self, *, value: UInt64):
@@ -6819,9 +6318,6 @@ struct FormatFeatureFlagBits2(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt64:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> FormatFeatureFlags2:
         return FormatFeatureFlags2(value = self._value | other._value)
@@ -6889,7 +6385,7 @@ struct FormatFeatureFlagBits2(TrivialRegisterPassable, Equatable):
     comptime RESERVED_61 = Self(value = 1 << 61)
 
 
-struct RenderingFlags(TrivialRegisterPassable, Equatable):
+struct RenderingFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -6907,9 +6403,6 @@ struct RenderingFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: RenderingFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -6949,7 +6442,7 @@ struct RenderingFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVED_9 = Self(value = RenderingFlagBits.RESERVED_9.value())
 
 
-struct RenderingFlagBits(TrivialRegisterPassable, Equatable):
+struct RenderingFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -6957,9 +6450,6 @@ struct RenderingFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> RenderingFlags:
         return RenderingFlags(value = self._value | other._value)
@@ -6975,7 +6465,7 @@ struct RenderingFlagBits(TrivialRegisterPassable, Equatable):
     comptime RESERVED_9 = Self(value = 1 << 9)
 
 
-struct MemoryDecompressionMethodFlagsEXT(TrivialRegisterPassable, Equatable):
+struct MemoryDecompressionMethodFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self):
@@ -6993,9 +6483,6 @@ struct MemoryDecompressionMethodFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: MemoryDecompressionMethodFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -7027,7 +6514,7 @@ struct MemoryDecompressionMethodFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime GDEFLATE_1_0 = Self(value = MemoryDecompressionMethodFlagBitsEXT.GDEFLATE_1_0.value())
 
 
-struct MemoryDecompressionMethodFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct MemoryDecompressionMethodFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self, *, value: UInt64):
@@ -7036,16 +6523,13 @@ struct MemoryDecompressionMethodFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> MemoryDecompressionMethodFlagsEXT:
         return MemoryDecompressionMethodFlagsEXT(value = self._value | other._value)
 
     comptime GDEFLATE_1_0 = Self(value = 1 << 0)
 
 
-struct BuildMicromapFlagsEXT(TrivialRegisterPassable, Equatable):
+struct BuildMicromapFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -7063,9 +6547,6 @@ struct BuildMicromapFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: BuildMicromapFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -7099,7 +6580,7 @@ struct BuildMicromapFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime ALLOW_COMPACTION = Self(value = BuildMicromapFlagBitsEXT.ALLOW_COMPACTION.value())
 
 
-struct BuildMicromapFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct BuildMicromapFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -7107,9 +6588,6 @@ struct BuildMicromapFlagBitsEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> BuildMicromapFlagsEXT:
         return BuildMicromapFlagsEXT(value = self._value | other._value)
@@ -7119,7 +6597,7 @@ struct BuildMicromapFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime ALLOW_COMPACTION = Self(value = 1 << 2)
 
 
-struct MicromapCreateFlagsEXT(TrivialRegisterPassable, Equatable):
+struct MicromapCreateFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -7137,9 +6615,6 @@ struct MicromapCreateFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: MicromapCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -7171,7 +6646,7 @@ struct MicromapCreateFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime DEVICE_ADDRESS_CAPTURE_REPLAY = Self(value = MicromapCreateFlagBitsEXT.DEVICE_ADDRESS_CAPTURE_REPLAY.value())
 
 
-struct MicromapCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct MicromapCreateFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -7180,16 +6655,13 @@ struct MicromapCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> MicromapCreateFlagsEXT:
         return MicromapCreateFlagsEXT(value = self._value | other._value)
 
     comptime DEVICE_ADDRESS_CAPTURE_REPLAY = Self(value = 1 << 0)
 
 
-struct IndirectCommandsLayoutUsageFlagsEXT(TrivialRegisterPassable, Equatable):
+struct IndirectCommandsLayoutUsageFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -7207,9 +6679,6 @@ struct IndirectCommandsLayoutUsageFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: IndirectCommandsLayoutUsageFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -7242,7 +6711,7 @@ struct IndirectCommandsLayoutUsageFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime UNORDERED_SEQUENCES = Self(value = IndirectCommandsLayoutUsageFlagBitsEXT.UNORDERED_SEQUENCES.value())
 
 
-struct IndirectCommandsLayoutUsageFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct IndirectCommandsLayoutUsageFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -7251,9 +6720,6 @@ struct IndirectCommandsLayoutUsageFlagBitsEXT(TrivialRegisterPassable, Equatable
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> IndirectCommandsLayoutUsageFlagsEXT:
         return IndirectCommandsLayoutUsageFlagsEXT(value = self._value | other._value)
 
@@ -7261,7 +6727,7 @@ struct IndirectCommandsLayoutUsageFlagBitsEXT(TrivialRegisterPassable, Equatable
     comptime UNORDERED_SEQUENCES = Self(value = 1 << 1)
 
 
-struct IndirectCommandsInputModeFlagsEXT(TrivialRegisterPassable, Equatable):
+struct IndirectCommandsInputModeFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -7279,9 +6745,6 @@ struct IndirectCommandsInputModeFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: IndirectCommandsInputModeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -7314,7 +6777,7 @@ struct IndirectCommandsInputModeFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime DXGI_INDEX_BUFFER = Self(value = IndirectCommandsInputModeFlagBitsEXT.DXGI_INDEX_BUFFER.value())
 
 
-struct IndirectCommandsInputModeFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct IndirectCommandsInputModeFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -7323,9 +6786,6 @@ struct IndirectCommandsInputModeFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> IndirectCommandsInputModeFlagsEXT:
         return IndirectCommandsInputModeFlagsEXT(value = self._value | other._value)
 
@@ -7333,7 +6793,7 @@ struct IndirectCommandsInputModeFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime DXGI_INDEX_BUFFER = Self(value = 1 << 1)
 
 
-struct DirectDriverLoadingFlagsLUNARG(TrivialRegisterPassable, Equatable):
+struct DirectDriverLoadingFlagsLUNARG(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -7351,9 +6811,6 @@ struct DirectDriverLoadingFlagsLUNARG(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DirectDriverLoadingFlagsLUNARG) -> Self:
         return Self(value = self.value() | other.value())
@@ -7383,7 +6840,7 @@ struct DirectDriverLoadingFlagsLUNARG(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct DirectDriverLoadingFlagBitsLUNARG(TrivialRegisterPassable, Equatable):
+struct DirectDriverLoadingFlagBitsLUNARG(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -7392,14 +6849,11 @@ struct DirectDriverLoadingFlagBitsLUNARG(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> DirectDriverLoadingFlagsLUNARG:
         return DirectDriverLoadingFlagsLUNARG(value = self._value | other._value)
 
 
-struct PipelineCreateFlags2(TrivialRegisterPassable, Equatable):
+struct PipelineCreateFlags2(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self):
@@ -7417,9 +6871,6 @@ struct PipelineCreateFlags2(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineCreateFlags2) -> Self:
         return Self(value = self.value() | other.value())
@@ -7496,7 +6947,7 @@ struct PipelineCreateFlags2(TrivialRegisterPassable, Equatable):
     comptime RESERVED_48 = Self(value = PipelineCreateFlagBits2.RESERVED_48.value())
 
 
-struct PipelineCreateFlagBits2(TrivialRegisterPassable, Equatable):
+struct PipelineCreateFlagBits2(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self, *, value: UInt64):
@@ -7504,9 +6955,6 @@ struct PipelineCreateFlagBits2(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt64:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> PipelineCreateFlags2:
         return PipelineCreateFlags2(value = self._value | other._value)
@@ -7559,7 +7007,7 @@ struct PipelineCreateFlagBits2(TrivialRegisterPassable, Equatable):
     comptime RESERVED_48 = Self(value = 1 << 48)
 
 
-struct BufferUsageFlags2(TrivialRegisterPassable, Equatable):
+struct BufferUsageFlags2(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self):
@@ -7577,9 +7025,6 @@ struct BufferUsageFlags2(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: BufferUsageFlags2) -> Self:
         return Self(value = self.value() | other.value())
@@ -7646,7 +7091,7 @@ struct BufferUsageFlags2(TrivialRegisterPassable, Equatable):
     comptime RESERVED_37 = Self(value = BufferUsageFlagBits2.RESERVED_37.value())
 
 
-struct BufferUsageFlagBits2(TrivialRegisterPassable, Equatable):
+struct BufferUsageFlagBits2(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self, *, value: UInt64):
@@ -7654,9 +7099,6 @@ struct BufferUsageFlagBits2(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt64:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> BufferUsageFlags2:
         return BufferUsageFlags2(value = self._value | other._value)
@@ -7699,7 +7141,7 @@ struct BufferUsageFlagBits2(TrivialRegisterPassable, Equatable):
     comptime RESERVED_37 = Self(value = 1 << 37)
 
 
-struct AddressCopyFlagsKHR(TrivialRegisterPassable, Equatable):
+struct AddressCopyFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -7717,9 +7159,6 @@ struct AddressCopyFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: AddressCopyFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -7753,7 +7192,7 @@ struct AddressCopyFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime PROTECTED = Self(value = AddressCopyFlagBitsKHR.PROTECTED.value())
 
 
-struct AddressCopyFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct AddressCopyFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -7761,9 +7200,6 @@ struct AddressCopyFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> AddressCopyFlagsKHR:
         return AddressCopyFlagsKHR(value = self._value | other._value)
@@ -7773,7 +7209,7 @@ struct AddressCopyFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime PROTECTED = Self(value = 1 << 2)
 
 
-struct TensorCreateFlagsARM(TrivialRegisterPassable, Equatable):
+struct TensorCreateFlagsARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self):
@@ -7791,9 +7227,6 @@ struct TensorCreateFlagsARM(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: TensorCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
@@ -7828,7 +7261,7 @@ struct TensorCreateFlagsARM(TrivialRegisterPassable, Equatable):
     comptime DESCRIPTOR_HEAP_CAPTURE_REPLAY = Self(value = TensorCreateFlagBitsARM.DESCRIPTOR_HEAP_CAPTURE_REPLAY.value())
 
 
-struct TensorCreateFlagBitsARM(TrivialRegisterPassable, Equatable):
+struct TensorCreateFlagBitsARM(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self, *, value: UInt64):
@@ -7836,9 +7269,6 @@ struct TensorCreateFlagBitsARM(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt64:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> TensorCreateFlagsARM:
         return TensorCreateFlagsARM(value = self._value | other._value)
@@ -7849,7 +7279,7 @@ struct TensorCreateFlagBitsARM(TrivialRegisterPassable, Equatable):
     comptime DESCRIPTOR_HEAP_CAPTURE_REPLAY = Self(value = 1 << 3)
 
 
-struct TensorUsageFlagsARM(TrivialRegisterPassable, Equatable):
+struct TensorUsageFlagsARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self):
@@ -7867,9 +7297,6 @@ struct TensorUsageFlagsARM(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: TensorUsageFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
@@ -7905,7 +7332,7 @@ struct TensorUsageFlagsARM(TrivialRegisterPassable, Equatable):
     comptime DATA_GRAPH = Self(value = TensorUsageFlagBitsARM.DATA_GRAPH.value())
 
 
-struct TensorUsageFlagBitsARM(TrivialRegisterPassable, Equatable):
+struct TensorUsageFlagBitsARM(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self, *, value: UInt64):
@@ -7913,9 +7340,6 @@ struct TensorUsageFlagBitsARM(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt64:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> TensorUsageFlagsARM:
         return TensorUsageFlagsARM(value = self._value | other._value)
@@ -7927,7 +7351,7 @@ struct TensorUsageFlagBitsARM(TrivialRegisterPassable, Equatable):
     comptime DATA_GRAPH = Self(value = 1 << 5)
 
 
-struct TensorViewCreateFlagsARM(TrivialRegisterPassable, Equatable):
+struct TensorViewCreateFlagsARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self):
@@ -7945,9 +7369,6 @@ struct TensorViewCreateFlagsARM(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: TensorViewCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
@@ -7979,7 +7400,7 @@ struct TensorViewCreateFlagsARM(TrivialRegisterPassable, Equatable):
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = TensorViewCreateFlagBitsARM.DESCRIPTOR_BUFFER_CAPTURE_REPLAY.value())
 
 
-struct TensorViewCreateFlagBitsARM(TrivialRegisterPassable, Equatable):
+struct TensorViewCreateFlagBitsARM(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self, *, value: UInt64):
@@ -7988,16 +7409,13 @@ struct TensorViewCreateFlagBitsARM(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> TensorViewCreateFlagsARM:
         return TensorViewCreateFlagsARM(value = self._value | other._value)
 
     comptime DESCRIPTOR_BUFFER_CAPTURE_REPLAY = Self(value = 1 << 0)
 
 
-struct DataGraphPipelineSessionCreateFlagsARM(TrivialRegisterPassable, Equatable):
+struct DataGraphPipelineSessionCreateFlagsARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self):
@@ -8015,9 +7433,6 @@ struct DataGraphPipelineSessionCreateFlagsARM(TrivialRegisterPassable, Equatable
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DataGraphPipelineSessionCreateFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
@@ -8049,7 +7464,7 @@ struct DataGraphPipelineSessionCreateFlagsARM(TrivialRegisterPassable, Equatable
     comptime PROTECTED = Self(value = DataGraphPipelineSessionCreateFlagBitsARM.PROTECTED.value())
 
 
-struct DataGraphPipelineSessionCreateFlagBitsARM(TrivialRegisterPassable, Equatable):
+struct DataGraphPipelineSessionCreateFlagBitsARM(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self, *, value: UInt64):
@@ -8058,16 +7473,13 @@ struct DataGraphPipelineSessionCreateFlagBitsARM(TrivialRegisterPassable, Equata
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> DataGraphPipelineSessionCreateFlagsARM:
         return DataGraphPipelineSessionCreateFlagsARM(value = self._value | other._value)
 
     comptime PROTECTED = Self(value = 1 << 0)
 
 
-struct DataGraphPipelineDispatchFlagsARM(TrivialRegisterPassable, Equatable):
+struct DataGraphPipelineDispatchFlagsARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self):
@@ -8085,9 +7497,6 @@ struct DataGraphPipelineDispatchFlagsARM(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DataGraphPipelineDispatchFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
@@ -8117,7 +7526,7 @@ struct DataGraphPipelineDispatchFlagsARM(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct DataGraphPipelineDispatchFlagBitsARM(TrivialRegisterPassable, Equatable):
+struct DataGraphPipelineDispatchFlagBitsARM(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self, *, value: UInt64):
@@ -8126,14 +7535,11 @@ struct DataGraphPipelineDispatchFlagBitsARM(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> DataGraphPipelineDispatchFlagsARM:
         return DataGraphPipelineDispatchFlagsARM(value = self._value | other._value)
 
 
-struct VideoEncodeRgbModelConversionFlagsVALVE(TrivialRegisterPassable, Equatable):
+struct VideoEncodeRgbModelConversionFlagsVALVE(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -8151,9 +7557,6 @@ struct VideoEncodeRgbModelConversionFlagsVALVE(TrivialRegisterPassable, Equatabl
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeRgbModelConversionFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
@@ -8189,7 +7592,7 @@ struct VideoEncodeRgbModelConversionFlagsVALVE(TrivialRegisterPassable, Equatabl
     comptime YCBCR_2020 = Self(value = VideoEncodeRgbModelConversionFlagBitsVALVE.YCBCR_2020.value())
 
 
-struct VideoEncodeRgbModelConversionFlagBitsVALVE(TrivialRegisterPassable, Equatable):
+struct VideoEncodeRgbModelConversionFlagBitsVALVE(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -8197,9 +7600,6 @@ struct VideoEncodeRgbModelConversionFlagBitsVALVE(TrivialRegisterPassable, Equat
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeRgbModelConversionFlagsVALVE:
         return VideoEncodeRgbModelConversionFlagsVALVE(value = self._value | other._value)
@@ -8211,7 +7611,7 @@ struct VideoEncodeRgbModelConversionFlagBitsVALVE(TrivialRegisterPassable, Equat
     comptime YCBCR_2020 = Self(value = 1 << 4)
 
 
-struct VideoEncodeRgbRangeCompressionFlagsVALVE(TrivialRegisterPassable, Equatable):
+struct VideoEncodeRgbRangeCompressionFlagsVALVE(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -8229,9 +7629,6 @@ struct VideoEncodeRgbRangeCompressionFlagsVALVE(TrivialRegisterPassable, Equatab
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeRgbRangeCompressionFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
@@ -8264,7 +7661,7 @@ struct VideoEncodeRgbRangeCompressionFlagsVALVE(TrivialRegisterPassable, Equatab
     comptime NARROW_RANGE = Self(value = VideoEncodeRgbRangeCompressionFlagBitsVALVE.NARROW_RANGE.value())
 
 
-struct VideoEncodeRgbRangeCompressionFlagBitsVALVE(TrivialRegisterPassable, Equatable):
+struct VideoEncodeRgbRangeCompressionFlagBitsVALVE(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -8273,9 +7670,6 @@ struct VideoEncodeRgbRangeCompressionFlagBitsVALVE(TrivialRegisterPassable, Equa
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> VideoEncodeRgbRangeCompressionFlagsVALVE:
         return VideoEncodeRgbRangeCompressionFlagsVALVE(value = self._value | other._value)
 
@@ -8283,7 +7677,7 @@ struct VideoEncodeRgbRangeCompressionFlagBitsVALVE(TrivialRegisterPassable, Equa
     comptime NARROW_RANGE = Self(value = 1 << 1)
 
 
-struct VideoEncodeRgbChromaOffsetFlagsVALVE(TrivialRegisterPassable, Equatable):
+struct VideoEncodeRgbChromaOffsetFlagsVALVE(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -8301,9 +7695,6 @@ struct VideoEncodeRgbChromaOffsetFlagsVALVE(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeRgbChromaOffsetFlagsVALVE) -> Self:
         return Self(value = self.value() | other.value())
@@ -8336,7 +7727,7 @@ struct VideoEncodeRgbChromaOffsetFlagsVALVE(TrivialRegisterPassable, Equatable):
     comptime MIDPOINT = Self(value = VideoEncodeRgbChromaOffsetFlagBitsVALVE.MIDPOINT.value())
 
 
-struct VideoEncodeRgbChromaOffsetFlagBitsVALVE(TrivialRegisterPassable, Equatable):
+struct VideoEncodeRgbChromaOffsetFlagBitsVALVE(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -8345,9 +7736,6 @@ struct VideoEncodeRgbChromaOffsetFlagBitsVALVE(TrivialRegisterPassable, Equatabl
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> VideoEncodeRgbChromaOffsetFlagsVALVE:
         return VideoEncodeRgbChromaOffsetFlagsVALVE(value = self._value | other._value)
 
@@ -8355,7 +7743,7 @@ struct VideoEncodeRgbChromaOffsetFlagBitsVALVE(TrivialRegisterPassable, Equatabl
     comptime MIDPOINT = Self(value = 1 << 1)
 
 
-struct SpirvResourceTypeFlagsEXT(TrivialRegisterPassable, Equatable):
+struct SpirvResourceTypeFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -8373,9 +7761,6 @@ struct SpirvResourceTypeFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SpirvResourceTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -8417,7 +7802,7 @@ struct SpirvResourceTypeFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime TENSOR = Self(value = SpirvResourceTypeFlagBitsEXT.TENSOR.value())
 
 
-struct SpirvResourceTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct SpirvResourceTypeFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -8425,9 +7810,6 @@ struct SpirvResourceTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> SpirvResourceTypeFlagsEXT:
         return SpirvResourceTypeFlagsEXT(value = self._value | other._value)
@@ -8445,7 +7827,7 @@ struct SpirvResourceTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime TENSOR = Self(value = 1 << 9)
 
 
-struct CompositeAlphaFlagsKHR(TrivialRegisterPassable, Equatable):
+struct CompositeAlphaFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -8463,9 +7845,6 @@ struct CompositeAlphaFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: CompositeAlphaFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -8500,7 +7879,7 @@ struct CompositeAlphaFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime INHERIT = Self(value = CompositeAlphaFlagBitsKHR.INHERIT.value())
 
 
-struct CompositeAlphaFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct CompositeAlphaFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -8508,9 +7887,6 @@ struct CompositeAlphaFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> CompositeAlphaFlagsKHR:
         return CompositeAlphaFlagsKHR(value = self._value | other._value)
@@ -8521,7 +7897,7 @@ struct CompositeAlphaFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime INHERIT = Self(value = 1 << 3)
 
 
-struct DisplayPlaneAlphaFlagsKHR(TrivialRegisterPassable, Equatable):
+struct DisplayPlaneAlphaFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -8539,9 +7915,6 @@ struct DisplayPlaneAlphaFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DisplayPlaneAlphaFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -8576,7 +7949,7 @@ struct DisplayPlaneAlphaFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime PER_PIXEL_PREMULTIPLIED = Self(value = DisplayPlaneAlphaFlagBitsKHR.PER_PIXEL_PREMULTIPLIED.value())
 
 
-struct DisplayPlaneAlphaFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct DisplayPlaneAlphaFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -8584,9 +7957,6 @@ struct DisplayPlaneAlphaFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> DisplayPlaneAlphaFlagsKHR:
         return DisplayPlaneAlphaFlagsKHR(value = self._value | other._value)
@@ -8597,7 +7967,7 @@ struct DisplayPlaneAlphaFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime PER_PIXEL_PREMULTIPLIED = Self(value = 1 << 3)
 
 
-struct SurfaceTransformFlagsKHR(TrivialRegisterPassable, Equatable):
+struct SurfaceTransformFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -8615,9 +7985,6 @@ struct SurfaceTransformFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SurfaceTransformFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -8657,7 +8024,7 @@ struct SurfaceTransformFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime INHERIT = Self(value = SurfaceTransformFlagBitsKHR.INHERIT.value())
 
 
-struct SurfaceTransformFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct SurfaceTransformFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -8665,9 +8032,6 @@ struct SurfaceTransformFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> SurfaceTransformFlagsKHR:
         return SurfaceTransformFlagsKHR(value = self._value | other._value)
@@ -8683,7 +8047,7 @@ struct SurfaceTransformFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime INHERIT = Self(value = 1 << 8)
 
 
-struct SwapchainCreateFlagsKHR(TrivialRegisterPassable, Equatable):
+struct SwapchainCreateFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -8701,9 +8065,6 @@ struct SwapchainCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SwapchainCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -8743,7 +8104,7 @@ struct SwapchainCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime PRESENT_TIMING = Self(value = SwapchainCreateFlagBitsKHR.PRESENT_TIMING.value())
 
 
-struct SwapchainCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct SwapchainCreateFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -8751,9 +8112,6 @@ struct SwapchainCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> SwapchainCreateFlagsKHR:
         return SwapchainCreateFlagsKHR(value = self._value | other._value)
@@ -8769,7 +8127,7 @@ struct SwapchainCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime PRESENT_TIMING = Self(value = 1 << 9)
 
 
-struct DisplayModeCreateFlagsKHR(TrivialRegisterPassable, Equatable):
+struct DisplayModeCreateFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -8787,9 +8145,6 @@ struct DisplayModeCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DisplayModeCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -8819,7 +8174,7 @@ struct DisplayModeCreateFlagsKHR(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct DisplayModeCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct DisplayModeCreateFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -8828,14 +8183,11 @@ struct DisplayModeCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> DisplayModeCreateFlagsKHR:
         return DisplayModeCreateFlagsKHR(value = self._value | other._value)
 
 
-struct DisplaySurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
+struct DisplaySurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -8853,9 +8205,6 @@ struct DisplaySurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DisplaySurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -8885,7 +8234,7 @@ struct DisplaySurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct DisplaySurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct DisplaySurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -8894,14 +8243,11 @@ struct DisplaySurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> DisplaySurfaceCreateFlagsKHR:
         return DisplaySurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
-struct AndroidSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
+struct AndroidSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -8919,9 +8265,6 @@ struct AndroidSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: AndroidSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -8951,7 +8294,7 @@ struct AndroidSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct AndroidSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct AndroidSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -8960,14 +8303,11 @@ struct AndroidSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> AndroidSurfaceCreateFlagsKHR:
         return AndroidSurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
-struct ViSurfaceCreateFlagsNN(TrivialRegisterPassable, Equatable):
+struct ViSurfaceCreateFlagsNN(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -8985,9 +8325,6 @@ struct ViSurfaceCreateFlagsNN(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ViSurfaceCreateFlagsNN) -> Self:
         return Self(value = self.value() | other.value())
@@ -9017,7 +8354,7 @@ struct ViSurfaceCreateFlagsNN(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct ViSurfaceCreateFlagBitsNN(TrivialRegisterPassable, Equatable):
+struct ViSurfaceCreateFlagBitsNN(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9026,14 +8363,11 @@ struct ViSurfaceCreateFlagBitsNN(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> ViSurfaceCreateFlagsNN:
         return ViSurfaceCreateFlagsNN(value = self._value | other._value)
 
 
-struct WaylandSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
+struct WaylandSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9051,9 +8385,6 @@ struct WaylandSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: WaylandSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -9085,7 +8416,7 @@ struct WaylandSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime DISABLE_COLOR_MANAGEMENT = Self(value = WaylandSurfaceCreateFlagBitsKHR.DISABLE_COLOR_MANAGEMENT.value())
 
 
-struct WaylandSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct WaylandSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9094,16 +8425,13 @@ struct WaylandSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> WaylandSurfaceCreateFlagsKHR:
         return WaylandSurfaceCreateFlagsKHR(value = self._value | other._value)
 
     comptime DISABLE_COLOR_MANAGEMENT = Self(value = 1 << 0)
 
 
-struct Win32SurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
+struct Win32SurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9121,9 +8449,6 @@ struct Win32SurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Win32SurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -9153,7 +8478,7 @@ struct Win32SurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct Win32SurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct Win32SurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9162,14 +8487,11 @@ struct Win32SurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> Win32SurfaceCreateFlagsKHR:
         return Win32SurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
-struct XlibSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
+struct XlibSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9187,9 +8509,6 @@ struct XlibSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: XlibSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -9219,7 +8538,7 @@ struct XlibSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct XlibSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct XlibSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9228,14 +8547,11 @@ struct XlibSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> XlibSurfaceCreateFlagsKHR:
         return XlibSurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
-struct XcbSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
+struct XcbSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9253,9 +8569,6 @@ struct XcbSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: XcbSurfaceCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -9285,7 +8598,7 @@ struct XcbSurfaceCreateFlagsKHR(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct XcbSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct XcbSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9294,14 +8607,11 @@ struct XcbSurfaceCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> XcbSurfaceCreateFlagsKHR:
         return XcbSurfaceCreateFlagsKHR(value = self._value | other._value)
 
 
-struct DirectFBSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable):
+struct DirectFBSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9319,9 +8629,6 @@ struct DirectFBSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DirectFBSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -9351,7 +8658,7 @@ struct DirectFBSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct DirectFBSurfaceCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct DirectFBSurfaceCreateFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9360,14 +8667,11 @@ struct DirectFBSurfaceCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> DirectFBSurfaceCreateFlagsEXT:
         return DirectFBSurfaceCreateFlagsEXT(value = self._value | other._value)
 
 
-struct IOSSurfaceCreateFlagsMVK(TrivialRegisterPassable, Equatable):
+struct IOSSurfaceCreateFlagsMVK(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9385,9 +8689,6 @@ struct IOSSurfaceCreateFlagsMVK(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: IOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() | other.value())
@@ -9417,7 +8718,7 @@ struct IOSSurfaceCreateFlagsMVK(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct IOSSurfaceCreateFlagBitsMVK(TrivialRegisterPassable, Equatable):
+struct IOSSurfaceCreateFlagBitsMVK(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9426,14 +8727,11 @@ struct IOSSurfaceCreateFlagBitsMVK(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> IOSSurfaceCreateFlagsMVK:
         return IOSSurfaceCreateFlagsMVK(value = self._value | other._value)
 
 
-struct MacOSSurfaceCreateFlagsMVK(TrivialRegisterPassable, Equatable):
+struct MacOSSurfaceCreateFlagsMVK(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9451,9 +8749,6 @@ struct MacOSSurfaceCreateFlagsMVK(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: MacOSSurfaceCreateFlagsMVK) -> Self:
         return Self(value = self.value() | other.value())
@@ -9483,7 +8778,7 @@ struct MacOSSurfaceCreateFlagsMVK(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct MacOSSurfaceCreateFlagBitsMVK(TrivialRegisterPassable, Equatable):
+struct MacOSSurfaceCreateFlagBitsMVK(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9492,14 +8787,11 @@ struct MacOSSurfaceCreateFlagBitsMVK(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> MacOSSurfaceCreateFlagsMVK:
         return MacOSSurfaceCreateFlagsMVK(value = self._value | other._value)
 
 
-struct MetalSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable):
+struct MetalSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9517,9 +8809,6 @@ struct MetalSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: MetalSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -9549,7 +8838,7 @@ struct MetalSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct MetalSurfaceCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct MetalSurfaceCreateFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9558,14 +8847,11 @@ struct MetalSurfaceCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> MetalSurfaceCreateFlagsEXT:
         return MetalSurfaceCreateFlagsEXT(value = self._value | other._value)
 
 
-struct ImagePipeSurfaceCreateFlagsFUCHSIA(TrivialRegisterPassable, Equatable):
+struct ImagePipeSurfaceCreateFlagsFUCHSIA(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9583,9 +8869,6 @@ struct ImagePipeSurfaceCreateFlagsFUCHSIA(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ImagePipeSurfaceCreateFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
@@ -9615,7 +8898,7 @@ struct ImagePipeSurfaceCreateFlagsFUCHSIA(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct ImagePipeSurfaceCreateFlagBitsFUCHSIA(TrivialRegisterPassable, Equatable):
+struct ImagePipeSurfaceCreateFlagBitsFUCHSIA(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9624,14 +8907,11 @@ struct ImagePipeSurfaceCreateFlagBitsFUCHSIA(TrivialRegisterPassable, Equatable)
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> ImagePipeSurfaceCreateFlagsFUCHSIA:
         return ImagePipeSurfaceCreateFlagsFUCHSIA(value = self._value | other._value)
 
 
-struct StreamDescriptorSurfaceCreateFlagsGGP(TrivialRegisterPassable, Equatable):
+struct StreamDescriptorSurfaceCreateFlagsGGP(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9649,9 +8929,6 @@ struct StreamDescriptorSurfaceCreateFlagsGGP(TrivialRegisterPassable, Equatable)
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: StreamDescriptorSurfaceCreateFlagsGGP) -> Self:
         return Self(value = self.value() | other.value())
@@ -9681,7 +8958,7 @@ struct StreamDescriptorSurfaceCreateFlagsGGP(TrivialRegisterPassable, Equatable)
         return self & other == other
 
 
-struct StreamDescriptorSurfaceCreateFlagBitsGGP(TrivialRegisterPassable, Equatable):
+struct StreamDescriptorSurfaceCreateFlagBitsGGP(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9690,14 +8967,11 @@ struct StreamDescriptorSurfaceCreateFlagBitsGGP(TrivialRegisterPassable, Equatab
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> StreamDescriptorSurfaceCreateFlagsGGP:
         return StreamDescriptorSurfaceCreateFlagsGGP(value = self._value | other._value)
 
 
-struct HeadlessSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable):
+struct HeadlessSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9715,9 +8989,6 @@ struct HeadlessSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: HeadlessSurfaceCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -9747,7 +9018,7 @@ struct HeadlessSurfaceCreateFlagsEXT(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct HeadlessSurfaceCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct HeadlessSurfaceCreateFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9756,14 +9027,11 @@ struct HeadlessSurfaceCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> HeadlessSurfaceCreateFlagsEXT:
         return HeadlessSurfaceCreateFlagsEXT(value = self._value | other._value)
 
 
-struct ScreenSurfaceCreateFlagsQNX(TrivialRegisterPassable, Equatable):
+struct ScreenSurfaceCreateFlagsQNX(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9781,9 +9049,6 @@ struct ScreenSurfaceCreateFlagsQNX(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ScreenSurfaceCreateFlagsQNX) -> Self:
         return Self(value = self.value() | other.value())
@@ -9813,7 +9078,7 @@ struct ScreenSurfaceCreateFlagsQNX(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct ScreenSurfaceCreateFlagBitsQNX(TrivialRegisterPassable, Equatable):
+struct ScreenSurfaceCreateFlagBitsQNX(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9822,14 +9087,11 @@ struct ScreenSurfaceCreateFlagBitsQNX(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> ScreenSurfaceCreateFlagsQNX:
         return ScreenSurfaceCreateFlagsQNX(value = self._value | other._value)
 
 
-struct PeerMemoryFeatureFlags(TrivialRegisterPassable, Equatable):
+struct PeerMemoryFeatureFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9847,9 +9109,6 @@ struct PeerMemoryFeatureFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PeerMemoryFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -9884,7 +9143,7 @@ struct PeerMemoryFeatureFlags(TrivialRegisterPassable, Equatable):
     comptime GENERIC_DST = Self(value = PeerMemoryFeatureFlagBits.GENERIC_DST.value())
 
 
-struct PeerMemoryFeatureFlagBits(TrivialRegisterPassable, Equatable):
+struct PeerMemoryFeatureFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9892,9 +9151,6 @@ struct PeerMemoryFeatureFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> PeerMemoryFeatureFlags:
         return PeerMemoryFeatureFlags(value = self._value | other._value)
@@ -9905,7 +9161,7 @@ struct PeerMemoryFeatureFlagBits(TrivialRegisterPassable, Equatable):
     comptime GENERIC_DST = Self(value = 1 << 3)
 
 
-struct MemoryAllocateFlags(TrivialRegisterPassable, Equatable):
+struct MemoryAllocateFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9923,9 +9179,6 @@ struct MemoryAllocateFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: MemoryAllocateFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -9960,7 +9213,7 @@ struct MemoryAllocateFlags(TrivialRegisterPassable, Equatable):
     comptime ZERO_INITIALIZE = Self(value = MemoryAllocateFlagBits.ZERO_INITIALIZE.value())
 
 
-struct MemoryAllocateFlagBits(TrivialRegisterPassable, Equatable):
+struct MemoryAllocateFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -9968,9 +9221,6 @@ struct MemoryAllocateFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> MemoryAllocateFlags:
         return MemoryAllocateFlags(value = self._value | other._value)
@@ -9981,7 +9231,7 @@ struct MemoryAllocateFlagBits(TrivialRegisterPassable, Equatable):
     comptime ZERO_INITIALIZE = Self(value = 1 << 3)
 
 
-struct DeviceGroupPresentModeFlagsKHR(TrivialRegisterPassable, Equatable):
+struct DeviceGroupPresentModeFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -9999,9 +9249,6 @@ struct DeviceGroupPresentModeFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DeviceGroupPresentModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -10036,7 +9283,7 @@ struct DeviceGroupPresentModeFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime LOCAL_MULTI_DEVICE = Self(value = DeviceGroupPresentModeFlagBitsKHR.LOCAL_MULTI_DEVICE.value())
 
 
-struct DeviceGroupPresentModeFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct DeviceGroupPresentModeFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -10044,9 +9291,6 @@ struct DeviceGroupPresentModeFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> DeviceGroupPresentModeFlagsKHR:
         return DeviceGroupPresentModeFlagsKHR(value = self._value | other._value)
@@ -10057,7 +9301,7 @@ struct DeviceGroupPresentModeFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime LOCAL_MULTI_DEVICE = Self(value = 1 << 3)
 
 
-struct DebugReportFlagsEXT(TrivialRegisterPassable, Equatable):
+struct DebugReportFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -10075,9 +9319,6 @@ struct DebugReportFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DebugReportFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -10113,7 +9354,7 @@ struct DebugReportFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime DEBUG = Self(value = DebugReportFlagBitsEXT.DEBUG.value())
 
 
-struct DebugReportFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct DebugReportFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -10121,9 +9362,6 @@ struct DebugReportFlagBitsEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> DebugReportFlagsEXT:
         return DebugReportFlagsEXT(value = self._value | other._value)
@@ -10135,7 +9373,7 @@ struct DebugReportFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime DEBUG = Self(value = 1 << 4)
 
 
-struct CommandPoolTrimFlags(TrivialRegisterPassable, Equatable):
+struct CommandPoolTrimFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -10153,9 +9391,6 @@ struct CommandPoolTrimFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: CommandPoolTrimFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -10185,7 +9420,7 @@ struct CommandPoolTrimFlags(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct CommandPoolTrimFlagBits(TrivialRegisterPassable, Equatable):
+struct CommandPoolTrimFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -10194,14 +9429,11 @@ struct CommandPoolTrimFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> CommandPoolTrimFlags:
         return CommandPoolTrimFlags(value = self._value | other._value)
 
 
-struct ExternalMemoryHandleTypeFlagsNV(TrivialRegisterPassable, Equatable):
+struct ExternalMemoryHandleTypeFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -10219,9 +9451,6 @@ struct ExternalMemoryHandleTypeFlagsNV(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ExternalMemoryHandleTypeFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -10256,7 +9485,7 @@ struct ExternalMemoryHandleTypeFlagsNV(TrivialRegisterPassable, Equatable):
     comptime D3D11_IMAGE_KMT = Self(value = ExternalMemoryHandleTypeFlagBitsNV.D3D11_IMAGE_KMT.value())
 
 
-struct ExternalMemoryHandleTypeFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct ExternalMemoryHandleTypeFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -10264,9 +9493,6 @@ struct ExternalMemoryHandleTypeFlagBitsNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ExternalMemoryHandleTypeFlagsNV:
         return ExternalMemoryHandleTypeFlagsNV(value = self._value | other._value)
@@ -10277,7 +9503,7 @@ struct ExternalMemoryHandleTypeFlagBitsNV(TrivialRegisterPassable, Equatable):
     comptime D3D11_IMAGE_KMT = Self(value = 1 << 3)
 
 
-struct ClusterAccelerationStructureIndexFormatFlagsNV(TrivialRegisterPassable, Equatable):
+struct ClusterAccelerationStructureIndexFormatFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -10295,9 +9521,6 @@ struct ClusterAccelerationStructureIndexFormatFlagsNV(TrivialRegisterPassable, E
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ClusterAccelerationStructureIndexFormatFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -10331,7 +9554,7 @@ struct ClusterAccelerationStructureIndexFormatFlagsNV(TrivialRegisterPassable, E
     comptime FORMAT_32BIT = Self(value = ClusterAccelerationStructureIndexFormatFlagBitsNV.FORMAT_32BIT.value())
 
 
-struct ClusterAccelerationStructureIndexFormatFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct ClusterAccelerationStructureIndexFormatFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -10339,9 +9562,6 @@ struct ClusterAccelerationStructureIndexFormatFlagBitsNV(TrivialRegisterPassable
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ClusterAccelerationStructureIndexFormatFlagsNV:
         return ClusterAccelerationStructureIndexFormatFlagsNV(value = self._value | other._value)
@@ -10351,7 +9571,7 @@ struct ClusterAccelerationStructureIndexFormatFlagBitsNV(TrivialRegisterPassable
     comptime FORMAT_32BIT = Self(value = 1 << 2)
 
 
-struct ExternalMemoryFeatureFlagsNV(TrivialRegisterPassable, Equatable):
+struct ExternalMemoryFeatureFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -10369,9 +9589,6 @@ struct ExternalMemoryFeatureFlagsNV(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ExternalMemoryFeatureFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -10405,7 +9622,7 @@ struct ExternalMemoryFeatureFlagsNV(TrivialRegisterPassable, Equatable):
     comptime IMPORTABLE = Self(value = ExternalMemoryFeatureFlagBitsNV.IMPORTABLE.value())
 
 
-struct ExternalMemoryFeatureFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct ExternalMemoryFeatureFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -10413,9 +9630,6 @@ struct ExternalMemoryFeatureFlagBitsNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ExternalMemoryFeatureFlagsNV:
         return ExternalMemoryFeatureFlagsNV(value = self._value | other._value)
@@ -10425,7 +9639,7 @@ struct ExternalMemoryFeatureFlagBitsNV(TrivialRegisterPassable, Equatable):
     comptime IMPORTABLE = Self(value = 1 << 2)
 
 
-struct ExternalMemoryHandleTypeFlags(TrivialRegisterPassable, Equatable):
+struct ExternalMemoryHandleTypeFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -10443,9 +9657,6 @@ struct ExternalMemoryHandleTypeFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ExternalMemoryHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -10495,7 +9706,7 @@ struct ExternalMemoryHandleTypeFlags(TrivialRegisterPassable, Equatable):
     comptime MTLHEAP = Self(value = ExternalMemoryHandleTypeFlagBits.MTLHEAP.value())
 
 
-struct ExternalMemoryHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
+struct ExternalMemoryHandleTypeFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -10503,9 +9714,6 @@ struct ExternalMemoryHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ExternalMemoryHandleTypeFlags:
         return ExternalMemoryHandleTypeFlags(value = self._value | other._value)
@@ -10531,7 +9739,7 @@ struct ExternalMemoryHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
     comptime MTLHEAP = Self(value = 1 << 18)
 
 
-struct ExternalMemoryFeatureFlags(TrivialRegisterPassable, Equatable):
+struct ExternalMemoryFeatureFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -10549,9 +9757,6 @@ struct ExternalMemoryFeatureFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ExternalMemoryFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -10585,7 +9790,7 @@ struct ExternalMemoryFeatureFlags(TrivialRegisterPassable, Equatable):
     comptime IMPORTABLE = Self(value = ExternalMemoryFeatureFlagBits.IMPORTABLE.value())
 
 
-struct ExternalMemoryFeatureFlagBits(TrivialRegisterPassable, Equatable):
+struct ExternalMemoryFeatureFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -10593,9 +9798,6 @@ struct ExternalMemoryFeatureFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ExternalMemoryFeatureFlags:
         return ExternalMemoryFeatureFlags(value = self._value | other._value)
@@ -10605,7 +9807,7 @@ struct ExternalMemoryFeatureFlagBits(TrivialRegisterPassable, Equatable):
     comptime IMPORTABLE = Self(value = 1 << 2)
 
 
-struct ExternalSemaphoreHandleTypeFlags(TrivialRegisterPassable, Equatable):
+struct ExternalSemaphoreHandleTypeFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -10623,9 +9825,6 @@ struct ExternalSemaphoreHandleTypeFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ExternalSemaphoreHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -10663,7 +9862,7 @@ struct ExternalSemaphoreHandleTypeFlags(TrivialRegisterPassable, Equatable):
     comptime ZIRCON_EVENT = Self(value = ExternalSemaphoreHandleTypeFlagBits.ZIRCON_EVENT.value())
 
 
-struct ExternalSemaphoreHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
+struct ExternalSemaphoreHandleTypeFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -10671,9 +9870,6 @@ struct ExternalSemaphoreHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ExternalSemaphoreHandleTypeFlags:
         return ExternalSemaphoreHandleTypeFlags(value = self._value | other._value)
@@ -10687,7 +9883,7 @@ struct ExternalSemaphoreHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
     comptime ZIRCON_EVENT = Self(value = 1 << 7)
 
 
-struct ExternalSemaphoreFeatureFlags(TrivialRegisterPassable, Equatable):
+struct ExternalSemaphoreFeatureFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -10705,9 +9901,6 @@ struct ExternalSemaphoreFeatureFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ExternalSemaphoreFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -10740,7 +9933,7 @@ struct ExternalSemaphoreFeatureFlags(TrivialRegisterPassable, Equatable):
     comptime IMPORTABLE = Self(value = ExternalSemaphoreFeatureFlagBits.IMPORTABLE.value())
 
 
-struct ExternalSemaphoreFeatureFlagBits(TrivialRegisterPassable, Equatable):
+struct ExternalSemaphoreFeatureFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -10749,9 +9942,6 @@ struct ExternalSemaphoreFeatureFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> ExternalSemaphoreFeatureFlags:
         return ExternalSemaphoreFeatureFlags(value = self._value | other._value)
 
@@ -10759,7 +9949,7 @@ struct ExternalSemaphoreFeatureFlagBits(TrivialRegisterPassable, Equatable):
     comptime IMPORTABLE = Self(value = 1 << 1)
 
 
-struct SemaphoreImportFlags(TrivialRegisterPassable, Equatable):
+struct SemaphoreImportFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -10777,9 +9967,6 @@ struct SemaphoreImportFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SemaphoreImportFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -10811,7 +9998,7 @@ struct SemaphoreImportFlags(TrivialRegisterPassable, Equatable):
     comptime TEMPORARY = Self(value = SemaphoreImportFlagBits.TEMPORARY.value())
 
 
-struct SemaphoreImportFlagBits(TrivialRegisterPassable, Equatable):
+struct SemaphoreImportFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -10820,16 +10007,13 @@ struct SemaphoreImportFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> SemaphoreImportFlags:
         return SemaphoreImportFlags(value = self._value | other._value)
 
     comptime TEMPORARY = Self(value = 1 << 0)
 
 
-struct ExternalFenceHandleTypeFlags(TrivialRegisterPassable, Equatable):
+struct ExternalFenceHandleTypeFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -10847,9 +10031,6 @@ struct ExternalFenceHandleTypeFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ExternalFenceHandleTypeFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -10886,7 +10067,7 @@ struct ExternalFenceHandleTypeFlags(TrivialRegisterPassable, Equatable):
     comptime SCI_SYNC_FENCE = Self(value = ExternalFenceHandleTypeFlagBits.SCI_SYNC_FENCE.value())
 
 
-struct ExternalFenceHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
+struct ExternalFenceHandleTypeFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -10894,9 +10075,6 @@ struct ExternalFenceHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ExternalFenceHandleTypeFlags:
         return ExternalFenceHandleTypeFlags(value = self._value | other._value)
@@ -10909,7 +10087,7 @@ struct ExternalFenceHandleTypeFlagBits(TrivialRegisterPassable, Equatable):
     comptime SCI_SYNC_FENCE = Self(value = 1 << 5)
 
 
-struct ExternalFenceFeatureFlags(TrivialRegisterPassable, Equatable):
+struct ExternalFenceFeatureFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -10927,9 +10105,6 @@ struct ExternalFenceFeatureFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ExternalFenceFeatureFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -10962,7 +10137,7 @@ struct ExternalFenceFeatureFlags(TrivialRegisterPassable, Equatable):
     comptime IMPORTABLE = Self(value = ExternalFenceFeatureFlagBits.IMPORTABLE.value())
 
 
-struct ExternalFenceFeatureFlagBits(TrivialRegisterPassable, Equatable):
+struct ExternalFenceFeatureFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -10971,9 +10146,6 @@ struct ExternalFenceFeatureFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> ExternalFenceFeatureFlags:
         return ExternalFenceFeatureFlags(value = self._value | other._value)
 
@@ -10981,7 +10153,7 @@ struct ExternalFenceFeatureFlagBits(TrivialRegisterPassable, Equatable):
     comptime IMPORTABLE = Self(value = 1 << 1)
 
 
-struct FenceImportFlags(TrivialRegisterPassable, Equatable):
+struct FenceImportFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -10999,9 +10171,6 @@ struct FenceImportFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: FenceImportFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -11033,7 +10202,7 @@ struct FenceImportFlags(TrivialRegisterPassable, Equatable):
     comptime TEMPORARY = Self(value = FenceImportFlagBits.TEMPORARY.value())
 
 
-struct FenceImportFlagBits(TrivialRegisterPassable, Equatable):
+struct FenceImportFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11042,16 +10211,13 @@ struct FenceImportFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> FenceImportFlags:
         return FenceImportFlags(value = self._value | other._value)
 
     comptime TEMPORARY = Self(value = 1 << 0)
 
 
-struct SurfaceCounterFlagsEXT(TrivialRegisterPassable, Equatable):
+struct SurfaceCounterFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11069,9 +10235,6 @@ struct SurfaceCounterFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SurfaceCounterFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -11103,7 +10266,7 @@ struct SurfaceCounterFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime VBLANK = Self(value = SurfaceCounterFlagBitsEXT.VBLANK.value())
 
 
-struct SurfaceCounterFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct SurfaceCounterFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11112,16 +10275,13 @@ struct SurfaceCounterFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> SurfaceCounterFlagsEXT:
         return SurfaceCounterFlagsEXT(value = self._value | other._value)
 
     comptime VBLANK = Self(value = 1 << 0)
 
 
-struct PipelineViewportSwizzleStateCreateFlagsNV(TrivialRegisterPassable, Equatable):
+struct PipelineViewportSwizzleStateCreateFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11139,9 +10299,6 @@ struct PipelineViewportSwizzleStateCreateFlagsNV(TrivialRegisterPassable, Equata
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineViewportSwizzleStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -11171,7 +10328,7 @@ struct PipelineViewportSwizzleStateCreateFlagsNV(TrivialRegisterPassable, Equata
         return self & other == other
 
 
-struct PipelineViewportSwizzleStateCreateFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct PipelineViewportSwizzleStateCreateFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11180,14 +10337,11 @@ struct PipelineViewportSwizzleStateCreateFlagBitsNV(TrivialRegisterPassable, Equ
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineViewportSwizzleStateCreateFlagsNV:
         return PipelineViewportSwizzleStateCreateFlagsNV(value = self._value | other._value)
 
 
-struct PipelineDiscardRectangleStateCreateFlagsEXT(TrivialRegisterPassable, Equatable):
+struct PipelineDiscardRectangleStateCreateFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11205,9 +10359,6 @@ struct PipelineDiscardRectangleStateCreateFlagsEXT(TrivialRegisterPassable, Equa
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineDiscardRectangleStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -11237,7 +10388,7 @@ struct PipelineDiscardRectangleStateCreateFlagsEXT(TrivialRegisterPassable, Equa
         return self & other == other
 
 
-struct PipelineDiscardRectangleStateCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct PipelineDiscardRectangleStateCreateFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11246,14 +10397,11 @@ struct PipelineDiscardRectangleStateCreateFlagBitsEXT(TrivialRegisterPassable, E
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineDiscardRectangleStateCreateFlagsEXT:
         return PipelineDiscardRectangleStateCreateFlagsEXT(value = self._value | other._value)
 
 
-struct PipelineCoverageToColorStateCreateFlagsNV(TrivialRegisterPassable, Equatable):
+struct PipelineCoverageToColorStateCreateFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11271,9 +10419,6 @@ struct PipelineCoverageToColorStateCreateFlagsNV(TrivialRegisterPassable, Equata
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineCoverageToColorStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -11303,7 +10448,7 @@ struct PipelineCoverageToColorStateCreateFlagsNV(TrivialRegisterPassable, Equata
         return self & other == other
 
 
-struct PipelineCoverageToColorStateCreateFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct PipelineCoverageToColorStateCreateFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11312,14 +10457,11 @@ struct PipelineCoverageToColorStateCreateFlagBitsNV(TrivialRegisterPassable, Equ
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineCoverageToColorStateCreateFlagsNV:
         return PipelineCoverageToColorStateCreateFlagsNV(value = self._value | other._value)
 
 
-struct PipelineCoverageModulationStateCreateFlagsNV(TrivialRegisterPassable, Equatable):
+struct PipelineCoverageModulationStateCreateFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11337,9 +10479,6 @@ struct PipelineCoverageModulationStateCreateFlagsNV(TrivialRegisterPassable, Equ
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineCoverageModulationStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -11369,7 +10508,7 @@ struct PipelineCoverageModulationStateCreateFlagsNV(TrivialRegisterPassable, Equ
         return self & other == other
 
 
-struct PipelineCoverageModulationStateCreateFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct PipelineCoverageModulationStateCreateFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11378,14 +10517,11 @@ struct PipelineCoverageModulationStateCreateFlagBitsNV(TrivialRegisterPassable, 
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineCoverageModulationStateCreateFlagsNV:
         return PipelineCoverageModulationStateCreateFlagsNV(value = self._value | other._value)
 
 
-struct PipelineCoverageReductionStateCreateFlagsNV(TrivialRegisterPassable, Equatable):
+struct PipelineCoverageReductionStateCreateFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11403,9 +10539,6 @@ struct PipelineCoverageReductionStateCreateFlagsNV(TrivialRegisterPassable, Equa
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineCoverageReductionStateCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -11435,7 +10568,7 @@ struct PipelineCoverageReductionStateCreateFlagsNV(TrivialRegisterPassable, Equa
         return self & other == other
 
 
-struct PipelineCoverageReductionStateCreateFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct PipelineCoverageReductionStateCreateFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11444,14 +10577,11 @@ struct PipelineCoverageReductionStateCreateFlagBitsNV(TrivialRegisterPassable, E
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineCoverageReductionStateCreateFlagsNV:
         return PipelineCoverageReductionStateCreateFlagsNV(value = self._value | other._value)
 
 
-struct ValidationCacheCreateFlagsEXT(TrivialRegisterPassable, Equatable):
+struct ValidationCacheCreateFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11469,9 +10599,6 @@ struct ValidationCacheCreateFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ValidationCacheCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -11501,7 +10628,7 @@ struct ValidationCacheCreateFlagsEXT(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct ValidationCacheCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct ValidationCacheCreateFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11510,14 +10637,11 @@ struct ValidationCacheCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> ValidationCacheCreateFlagsEXT:
         return ValidationCacheCreateFlagsEXT(value = self._value | other._value)
 
 
-struct DebugUtilsMessageSeverityFlagsEXT(TrivialRegisterPassable, Equatable):
+struct DebugUtilsMessageSeverityFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11535,9 +10659,6 @@ struct DebugUtilsMessageSeverityFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DebugUtilsMessageSeverityFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -11572,7 +10693,7 @@ struct DebugUtilsMessageSeverityFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime ERROR = Self(value = DebugUtilsMessageSeverityFlagBitsEXT.ERROR.value())
 
 
-struct DebugUtilsMessageSeverityFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct DebugUtilsMessageSeverityFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11580,9 +10701,6 @@ struct DebugUtilsMessageSeverityFlagBitsEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> DebugUtilsMessageSeverityFlagsEXT:
         return DebugUtilsMessageSeverityFlagsEXT(value = self._value | other._value)
@@ -11593,7 +10711,7 @@ struct DebugUtilsMessageSeverityFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime ERROR = Self(value = 1 << 12)
 
 
-struct DebugUtilsMessageTypeFlagsEXT(TrivialRegisterPassable, Equatable):
+struct DebugUtilsMessageTypeFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11611,9 +10729,6 @@ struct DebugUtilsMessageTypeFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DebugUtilsMessageTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -11648,7 +10763,7 @@ struct DebugUtilsMessageTypeFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime DEVICE_ADDRESS_BINDING = Self(value = DebugUtilsMessageTypeFlagBitsEXT.DEVICE_ADDRESS_BINDING.value())
 
 
-struct DebugUtilsMessageTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct DebugUtilsMessageTypeFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11656,9 +10771,6 @@ struct DebugUtilsMessageTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> DebugUtilsMessageTypeFlagsEXT:
         return DebugUtilsMessageTypeFlagsEXT(value = self._value | other._value)
@@ -11669,7 +10781,7 @@ struct DebugUtilsMessageTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime DEVICE_ADDRESS_BINDING = Self(value = 1 << 3)
 
 
-struct DebugUtilsMessengerCreateFlagsEXT(TrivialRegisterPassable, Equatable):
+struct DebugUtilsMessengerCreateFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11687,9 +10799,6 @@ struct DebugUtilsMessengerCreateFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DebugUtilsMessengerCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -11719,7 +10828,7 @@ struct DebugUtilsMessengerCreateFlagsEXT(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct DebugUtilsMessengerCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct DebugUtilsMessengerCreateFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11728,14 +10837,11 @@ struct DebugUtilsMessengerCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> DebugUtilsMessengerCreateFlagsEXT:
         return DebugUtilsMessengerCreateFlagsEXT(value = self._value | other._value)
 
 
-struct DebugUtilsMessengerCallbackDataFlagsEXT(TrivialRegisterPassable, Equatable):
+struct DebugUtilsMessengerCallbackDataFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11753,9 +10859,6 @@ struct DebugUtilsMessengerCallbackDataFlagsEXT(TrivialRegisterPassable, Equatabl
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DebugUtilsMessengerCallbackDataFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -11785,7 +10888,7 @@ struct DebugUtilsMessengerCallbackDataFlagsEXT(TrivialRegisterPassable, Equatabl
         return self & other == other
 
 
-struct DebugUtilsMessengerCallbackDataFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct DebugUtilsMessengerCallbackDataFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11794,14 +10897,11 @@ struct DebugUtilsMessengerCallbackDataFlagBitsEXT(TrivialRegisterPassable, Equat
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> DebugUtilsMessengerCallbackDataFlagsEXT:
         return DebugUtilsMessengerCallbackDataFlagsEXT(value = self._value | other._value)
 
 
-struct DeviceMemoryReportFlagsEXT(TrivialRegisterPassable, Equatable):
+struct DeviceMemoryReportFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11819,9 +10919,6 @@ struct DeviceMemoryReportFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DeviceMemoryReportFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -11851,7 +10948,7 @@ struct DeviceMemoryReportFlagsEXT(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct DeviceMemoryReportFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct DeviceMemoryReportFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11860,14 +10957,11 @@ struct DeviceMemoryReportFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> DeviceMemoryReportFlagsEXT:
         return DeviceMemoryReportFlagsEXT(value = self._value | other._value)
 
 
-struct PipelineRasterizationConservativeStateCreateFlagsEXT(TrivialRegisterPassable, Equatable):
+struct PipelineRasterizationConservativeStateCreateFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11885,9 +10979,6 @@ struct PipelineRasterizationConservativeStateCreateFlagsEXT(TrivialRegisterPassa
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineRasterizationConservativeStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -11917,7 +11008,7 @@ struct PipelineRasterizationConservativeStateCreateFlagsEXT(TrivialRegisterPassa
         return self & other == other
 
 
-struct PipelineRasterizationConservativeStateCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct PipelineRasterizationConservativeStateCreateFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11926,14 +11017,11 @@ struct PipelineRasterizationConservativeStateCreateFlagBitsEXT(TrivialRegisterPa
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineRasterizationConservativeStateCreateFlagsEXT:
         return PipelineRasterizationConservativeStateCreateFlagsEXT(value = self._value | other._value)
 
 
-struct DescriptorBindingFlags(TrivialRegisterPassable, Equatable):
+struct DescriptorBindingFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -11951,9 +11039,6 @@ struct DescriptorBindingFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DescriptorBindingFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -11989,7 +11074,7 @@ struct DescriptorBindingFlags(TrivialRegisterPassable, Equatable):
     comptime RESERVED_4 = Self(value = DescriptorBindingFlagBits.RESERVED_4.value())
 
 
-struct DescriptorBindingFlagBits(TrivialRegisterPassable, Equatable):
+struct DescriptorBindingFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -11997,9 +11082,6 @@ struct DescriptorBindingFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> DescriptorBindingFlags:
         return DescriptorBindingFlags(value = self._value | other._value)
@@ -12011,7 +11093,7 @@ struct DescriptorBindingFlagBits(TrivialRegisterPassable, Equatable):
     comptime RESERVED_4 = Self(value = 1 << 4)
 
 
-struct ConditionalRenderingFlagsEXT(TrivialRegisterPassable, Equatable):
+struct ConditionalRenderingFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12029,9 +11111,6 @@ struct ConditionalRenderingFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ConditionalRenderingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -12063,7 +11142,7 @@ struct ConditionalRenderingFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime INVERTED = Self(value = ConditionalRenderingFlagBitsEXT.INVERTED.value())
 
 
-struct ConditionalRenderingFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct ConditionalRenderingFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -12072,16 +11151,13 @@ struct ConditionalRenderingFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> ConditionalRenderingFlagsEXT:
         return ConditionalRenderingFlagsEXT(value = self._value | other._value)
 
     comptime INVERTED = Self(value = 1 << 0)
 
 
-struct ResolveModeFlags(TrivialRegisterPassable, Equatable):
+struct ResolveModeFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12099,9 +11175,6 @@ struct ResolveModeFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ResolveModeFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -12139,7 +11212,7 @@ struct ResolveModeFlags(TrivialRegisterPassable, Equatable):
     comptime CUSTOM = Self(value = ResolveModeFlagBits.CUSTOM.value())
 
 
-struct ResolveModeFlagBits(TrivialRegisterPassable, Equatable):
+struct ResolveModeFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -12147,9 +11220,6 @@ struct ResolveModeFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ResolveModeFlags:
         return ResolveModeFlags(value = self._value | other._value)
@@ -12163,7 +11233,7 @@ struct ResolveModeFlagBits(TrivialRegisterPassable, Equatable):
     comptime CUSTOM = Self(value = 1 << 5)
 
 
-struct PipelineRasterizationStateStreamCreateFlagsEXT(TrivialRegisterPassable, Equatable):
+struct PipelineRasterizationStateStreamCreateFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12181,9 +11251,6 @@ struct PipelineRasterizationStateStreamCreateFlagsEXT(TrivialRegisterPassable, E
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineRasterizationStateStreamCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -12213,7 +11280,7 @@ struct PipelineRasterizationStateStreamCreateFlagsEXT(TrivialRegisterPassable, E
         return self & other == other
 
 
-struct PipelineRasterizationStateStreamCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct PipelineRasterizationStateStreamCreateFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -12222,14 +11289,11 @@ struct PipelineRasterizationStateStreamCreateFlagBitsEXT(TrivialRegisterPassable
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineRasterizationStateStreamCreateFlagsEXT:
         return PipelineRasterizationStateStreamCreateFlagsEXT(value = self._value | other._value)
 
 
-struct PipelineRasterizationDepthClipStateCreateFlagsEXT(TrivialRegisterPassable, Equatable):
+struct PipelineRasterizationDepthClipStateCreateFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12247,9 +11311,6 @@ struct PipelineRasterizationDepthClipStateCreateFlagsEXT(TrivialRegisterPassable
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PipelineRasterizationDepthClipStateCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -12279,7 +11340,7 @@ struct PipelineRasterizationDepthClipStateCreateFlagsEXT(TrivialRegisterPassable
         return self & other == other
 
 
-struct PipelineRasterizationDepthClipStateCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct PipelineRasterizationDepthClipStateCreateFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -12288,14 +11349,11 @@ struct PipelineRasterizationDepthClipStateCreateFlagBitsEXT(TrivialRegisterPassa
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PipelineRasterizationDepthClipStateCreateFlagsEXT:
         return PipelineRasterizationDepthClipStateCreateFlagsEXT(value = self._value | other._value)
 
 
-struct SwapchainImageUsageFlagsANDROID(TrivialRegisterPassable, Equatable):
+struct SwapchainImageUsageFlagsANDROID(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12313,9 +11371,6 @@ struct SwapchainImageUsageFlagsANDROID(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SwapchainImageUsageFlagsANDROID) -> Self:
         return Self(value = self.value() | other.value())
@@ -12347,7 +11402,7 @@ struct SwapchainImageUsageFlagsANDROID(TrivialRegisterPassable, Equatable):
     comptime SHARED = Self(value = SwapchainImageUsageFlagBitsANDROID.SHARED.value())
 
 
-struct SwapchainImageUsageFlagBitsANDROID(TrivialRegisterPassable, Equatable):
+struct SwapchainImageUsageFlagBitsANDROID(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -12356,16 +11411,13 @@ struct SwapchainImageUsageFlagBitsANDROID(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> SwapchainImageUsageFlagsANDROID:
         return SwapchainImageUsageFlagsANDROID(value = self._value | other._value)
 
     comptime SHARED = Self(value = 1 << 0)
 
 
-struct ToolPurposeFlags(TrivialRegisterPassable, Equatable):
+struct ToolPurposeFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12383,9 +11435,6 @@ struct ToolPurposeFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ToolPurposeFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -12423,7 +11472,7 @@ struct ToolPurposeFlags(TrivialRegisterPassable, Equatable):
     comptime DEBUG_MARKERS = Self(value = ToolPurposeFlagBits.DEBUG_MARKERS.value())
 
 
-struct ToolPurposeFlagBits(TrivialRegisterPassable, Equatable):
+struct ToolPurposeFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -12431,9 +11480,6 @@ struct ToolPurposeFlagBits(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ToolPurposeFlags:
         return ToolPurposeFlags(value = self._value | other._value)
@@ -12447,7 +11493,7 @@ struct ToolPurposeFlagBits(TrivialRegisterPassable, Equatable):
     comptime DEBUG_MARKERS = Self(value = 1 << 6)
 
 
-struct SubmitFlags(TrivialRegisterPassable, Equatable):
+struct SubmitFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12465,9 +11511,6 @@ struct SubmitFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SubmitFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -12499,7 +11542,7 @@ struct SubmitFlags(TrivialRegisterPassable, Equatable):
     comptime PROTECTED = Self(value = SubmitFlagBits.PROTECTED.value())
 
 
-struct SubmitFlagBits(TrivialRegisterPassable, Equatable):
+struct SubmitFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -12508,16 +11551,13 @@ struct SubmitFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> SubmitFlags:
         return SubmitFlags(value = self._value | other._value)
 
     comptime PROTECTED = Self(value = 1 << 0)
 
 
-struct ImageFormatConstraintsFlagsFUCHSIA(TrivialRegisterPassable, Equatable):
+struct ImageFormatConstraintsFlagsFUCHSIA(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12535,9 +11575,6 @@ struct ImageFormatConstraintsFlagsFUCHSIA(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ImageFormatConstraintsFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
@@ -12567,7 +11604,7 @@ struct ImageFormatConstraintsFlagsFUCHSIA(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct ImageFormatConstraintsFlagBitsFUCHSIA(TrivialRegisterPassable, Equatable):
+struct ImageFormatConstraintsFlagBitsFUCHSIA(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -12576,14 +11613,11 @@ struct ImageFormatConstraintsFlagBitsFUCHSIA(TrivialRegisterPassable, Equatable)
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> ImageFormatConstraintsFlagsFUCHSIA:
         return ImageFormatConstraintsFlagsFUCHSIA(value = self._value | other._value)
 
 
-struct HostImageCopyFlags(TrivialRegisterPassable, Equatable):
+struct HostImageCopyFlags(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12601,9 +11635,6 @@ struct HostImageCopyFlags(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: HostImageCopyFlags) -> Self:
         return Self(value = self.value() | other.value())
@@ -12635,7 +11666,7 @@ struct HostImageCopyFlags(TrivialRegisterPassable, Equatable):
     comptime MEMCPY = Self(value = HostImageCopyFlagBits.MEMCPY.value())
 
 
-struct HostImageCopyFlagBits(TrivialRegisterPassable, Equatable):
+struct HostImageCopyFlagBits(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -12644,16 +11675,13 @@ struct HostImageCopyFlagBits(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> HostImageCopyFlags:
         return HostImageCopyFlags(value = self._value | other._value)
 
     comptime MEMCPY = Self(value = 1 << 0)
 
 
-struct PartitionedAccelerationStructureInstanceFlagsNV(TrivialRegisterPassable, Equatable):
+struct PartitionedAccelerationStructureInstanceFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12671,9 +11699,6 @@ struct PartitionedAccelerationStructureInstanceFlagsNV(TrivialRegisterPassable, 
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PartitionedAccelerationStructureInstanceFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -12709,7 +11734,7 @@ struct PartitionedAccelerationStructureInstanceFlagsNV(TrivialRegisterPassable, 
     comptime FLAG_ENABLE_EXPLICIT_BOUNDING_BOX = Self(value = PartitionedAccelerationStructureInstanceFlagBitsNV.FLAG_ENABLE_EXPLICIT_BOUNDING_BOX.value())
 
 
-struct PartitionedAccelerationStructureInstanceFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct PartitionedAccelerationStructureInstanceFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -12717,9 +11742,6 @@ struct PartitionedAccelerationStructureInstanceFlagBitsNV(TrivialRegisterPassabl
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> PartitionedAccelerationStructureInstanceFlagsNV:
         return PartitionedAccelerationStructureInstanceFlagsNV(value = self._value | other._value)
@@ -12731,7 +11753,7 @@ struct PartitionedAccelerationStructureInstanceFlagBitsNV(TrivialRegisterPassabl
     comptime FLAG_ENABLE_EXPLICIT_BOUNDING_BOX = Self(value = 1 << 4)
 
 
-struct ImageConstraintsInfoFlagsFUCHSIA(TrivialRegisterPassable, Equatable):
+struct ImageConstraintsInfoFlagsFUCHSIA(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12749,9 +11771,6 @@ struct ImageConstraintsInfoFlagsFUCHSIA(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ImageConstraintsInfoFlagsFUCHSIA) -> Self:
         return Self(value = self.value() | other.value())
@@ -12787,7 +11806,7 @@ struct ImageConstraintsInfoFlagsFUCHSIA(TrivialRegisterPassable, Equatable):
     comptime PROTECTED_OPTIONAL = Self(value = ImageConstraintsInfoFlagBitsFUCHSIA.PROTECTED_OPTIONAL.value())
 
 
-struct ImageConstraintsInfoFlagBitsFUCHSIA(TrivialRegisterPassable, Equatable):
+struct ImageConstraintsInfoFlagBitsFUCHSIA(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -12795,9 +11814,6 @@ struct ImageConstraintsInfoFlagBitsFUCHSIA(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ImageConstraintsInfoFlagsFUCHSIA:
         return ImageConstraintsInfoFlagsFUCHSIA(value = self._value | other._value)
@@ -12809,7 +11825,7 @@ struct ImageConstraintsInfoFlagBitsFUCHSIA(TrivialRegisterPassable, Equatable):
     comptime PROTECTED_OPTIONAL = Self(value = 1 << 4)
 
 
-struct GraphicsPipelineLibraryFlagsEXT(TrivialRegisterPassable, Equatable):
+struct GraphicsPipelineLibraryFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12827,9 +11843,6 @@ struct GraphicsPipelineLibraryFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: GraphicsPipelineLibraryFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -12864,7 +11877,7 @@ struct GraphicsPipelineLibraryFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime FRAGMENT_OUTPUT_INTERFACE = Self(value = GraphicsPipelineLibraryFlagBitsEXT.FRAGMENT_OUTPUT_INTERFACE.value())
 
 
-struct GraphicsPipelineLibraryFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct GraphicsPipelineLibraryFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -12872,9 +11885,6 @@ struct GraphicsPipelineLibraryFlagBitsEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> GraphicsPipelineLibraryFlagsEXT:
         return GraphicsPipelineLibraryFlagsEXT(value = self._value | other._value)
@@ -12885,7 +11895,7 @@ struct GraphicsPipelineLibraryFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime FRAGMENT_OUTPUT_INTERFACE = Self(value = 1 << 3)
 
 
-struct ImageCompressionFlagsEXT(TrivialRegisterPassable, Equatable):
+struct ImageCompressionFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12903,9 +11913,6 @@ struct ImageCompressionFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ImageCompressionFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -12940,7 +11947,7 @@ struct ImageCompressionFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime DISABLED = Self(value = ImageCompressionFlagBitsEXT.DISABLED.value())
 
 
-struct ImageCompressionFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct ImageCompressionFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -12948,9 +11955,6 @@ struct ImageCompressionFlagBitsEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ImageCompressionFlagsEXT:
         return ImageCompressionFlagsEXT(value = self._value | other._value)
@@ -12961,7 +11965,7 @@ struct ImageCompressionFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime DISABLED = Self(value = 1 << 2)
 
 
-struct ImageCompressionFixedRateFlagsEXT(TrivialRegisterPassable, Equatable):
+struct ImageCompressionFixedRateFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -12979,9 +11983,6 @@ struct ImageCompressionFixedRateFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ImageCompressionFixedRateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -13037,7 +12038,7 @@ struct ImageCompressionFixedRateFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime RATE_24BPC = Self(value = ImageCompressionFixedRateFlagBitsEXT.RATE_24BPC.value())
 
 
-struct ImageCompressionFixedRateFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct ImageCompressionFixedRateFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -13045,9 +12046,6 @@ struct ImageCompressionFixedRateFlagBitsEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ImageCompressionFixedRateFlagsEXT:
         return ImageCompressionFixedRateFlagsEXT(value = self._value | other._value)
@@ -13079,7 +12077,7 @@ struct ImageCompressionFixedRateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime RATE_24BPC = Self(value = 1 << 23)
 
 
-struct ExportMetalObjectTypeFlagsEXT(TrivialRegisterPassable, Equatable):
+struct ExportMetalObjectTypeFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -13097,9 +12095,6 @@ struct ExportMetalObjectTypeFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ExportMetalObjectTypeFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -13136,7 +12131,7 @@ struct ExportMetalObjectTypeFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime METAL_SHARED_EVENT = Self(value = ExportMetalObjectTypeFlagBitsEXT.METAL_SHARED_EVENT.value())
 
 
-struct ExportMetalObjectTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct ExportMetalObjectTypeFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -13144,9 +12139,6 @@ struct ExportMetalObjectTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ExportMetalObjectTypeFlagsEXT:
         return ExportMetalObjectTypeFlagsEXT(value = self._value | other._value)
@@ -13159,7 +12151,7 @@ struct ExportMetalObjectTypeFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime METAL_SHARED_EVENT = Self(value = 1 << 5)
 
 
-struct RenderingAttachmentFlagsKHR(TrivialRegisterPassable, Equatable):
+struct RenderingAttachmentFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -13177,9 +12169,6 @@ struct RenderingAttachmentFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: RenderingAttachmentFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -13213,7 +12202,7 @@ struct RenderingAttachmentFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime RESOLVE_ENABLE_TRANSFER_FUNCTION = Self(value = RenderingAttachmentFlagBitsKHR.RESOLVE_ENABLE_TRANSFER_FUNCTION.value())
 
 
-struct RenderingAttachmentFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct RenderingAttachmentFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -13221,9 +12210,6 @@ struct RenderingAttachmentFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> RenderingAttachmentFlagsKHR:
         return RenderingAttachmentFlagsKHR(value = self._value | other._value)
@@ -13233,7 +12219,7 @@ struct RenderingAttachmentFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime RESOLVE_ENABLE_TRANSFER_FUNCTION = Self(value = 1 << 2)
 
 
-struct ResolveImageFlagsKHR(TrivialRegisterPassable, Equatable):
+struct ResolveImageFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -13251,9 +12237,6 @@ struct ResolveImageFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ResolveImageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -13286,7 +12269,7 @@ struct ResolveImageFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime ENABLE_TRANSFER_FUNCTION = Self(value = ResolveImageFlagBitsKHR.ENABLE_TRANSFER_FUNCTION.value())
 
 
-struct ResolveImageFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct ResolveImageFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -13295,9 +12278,6 @@ struct ResolveImageFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> ResolveImageFlagsKHR:
         return ResolveImageFlagsKHR(value = self._value | other._value)
 
@@ -13305,7 +12285,7 @@ struct ResolveImageFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime ENABLE_TRANSFER_FUNCTION = Self(value = 1 << 1)
 
 
-struct DeviceAddressBindingFlagsEXT(TrivialRegisterPassable, Equatable):
+struct DeviceAddressBindingFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -13323,9 +12303,6 @@ struct DeviceAddressBindingFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: DeviceAddressBindingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -13357,7 +12334,7 @@ struct DeviceAddressBindingFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime INTERNAL_OBJECT = Self(value = DeviceAddressBindingFlagBitsEXT.INTERNAL_OBJECT.value())
 
 
-struct DeviceAddressBindingFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct DeviceAddressBindingFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -13366,16 +12343,13 @@ struct DeviceAddressBindingFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> DeviceAddressBindingFlagsEXT:
         return DeviceAddressBindingFlagsEXT(value = self._value | other._value)
 
     comptime INTERNAL_OBJECT = Self(value = 1 << 0)
 
 
-struct OpticalFlowGridSizeFlagsNV(TrivialRegisterPassable, Equatable):
+struct OpticalFlowGridSizeFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -13393,9 +12367,6 @@ struct OpticalFlowGridSizeFlagsNV(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: OpticalFlowGridSizeFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -13431,7 +12402,7 @@ struct OpticalFlowGridSizeFlagsNV(TrivialRegisterPassable, Equatable):
     comptime SIZE_8X8 = Self(value = OpticalFlowGridSizeFlagBitsNV.SIZE_8X8.value())
 
 
-struct OpticalFlowGridSizeFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct OpticalFlowGridSizeFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -13439,9 +12410,6 @@ struct OpticalFlowGridSizeFlagBitsNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> OpticalFlowGridSizeFlagsNV:
         return OpticalFlowGridSizeFlagsNV(value = self._value | other._value)
@@ -13453,7 +12421,7 @@ struct OpticalFlowGridSizeFlagBitsNV(TrivialRegisterPassable, Equatable):
     comptime SIZE_8X8 = Self(value = 1 << 3)
 
 
-struct OpticalFlowUsageFlagsNV(TrivialRegisterPassable, Equatable):
+struct OpticalFlowUsageFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -13471,9 +12439,6 @@ struct OpticalFlowUsageFlagsNV(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: OpticalFlowUsageFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -13510,7 +12475,7 @@ struct OpticalFlowUsageFlagsNV(TrivialRegisterPassable, Equatable):
     comptime GLOBAL_FLOW = Self(value = OpticalFlowUsageFlagBitsNV.GLOBAL_FLOW.value())
 
 
-struct OpticalFlowUsageFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct OpticalFlowUsageFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -13518,9 +12483,6 @@ struct OpticalFlowUsageFlagBitsNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> OpticalFlowUsageFlagsNV:
         return OpticalFlowUsageFlagsNV(value = self._value | other._value)
@@ -13533,7 +12495,7 @@ struct OpticalFlowUsageFlagBitsNV(TrivialRegisterPassable, Equatable):
     comptime GLOBAL_FLOW = Self(value = 1 << 4)
 
 
-struct OpticalFlowSessionCreateFlagsNV(TrivialRegisterPassable, Equatable):
+struct OpticalFlowSessionCreateFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -13551,9 +12513,6 @@ struct OpticalFlowSessionCreateFlagsNV(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: OpticalFlowSessionCreateFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -13589,7 +12548,7 @@ struct OpticalFlowSessionCreateFlagsNV(TrivialRegisterPassable, Equatable):
     comptime BOTH_DIRECTIONS = Self(value = OpticalFlowSessionCreateFlagBitsNV.BOTH_DIRECTIONS.value())
 
 
-struct OpticalFlowSessionCreateFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct OpticalFlowSessionCreateFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -13597,9 +12556,6 @@ struct OpticalFlowSessionCreateFlagBitsNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> OpticalFlowSessionCreateFlagsNV:
         return OpticalFlowSessionCreateFlagsNV(value = self._value | other._value)
@@ -13611,7 +12567,7 @@ struct OpticalFlowSessionCreateFlagBitsNV(TrivialRegisterPassable, Equatable):
     comptime BOTH_DIRECTIONS = Self(value = 1 << 4)
 
 
-struct OpticalFlowExecuteFlagsNV(TrivialRegisterPassable, Equatable):
+struct OpticalFlowExecuteFlagsNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -13629,9 +12585,6 @@ struct OpticalFlowExecuteFlagsNV(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: OpticalFlowExecuteFlagsNV) -> Self:
         return Self(value = self.value() | other.value())
@@ -13663,7 +12616,7 @@ struct OpticalFlowExecuteFlagsNV(TrivialRegisterPassable, Equatable):
     comptime DISABLE_TEMPORAL_HINTS = Self(value = OpticalFlowExecuteFlagBitsNV.DISABLE_TEMPORAL_HINTS.value())
 
 
-struct OpticalFlowExecuteFlagBitsNV(TrivialRegisterPassable, Equatable):
+struct OpticalFlowExecuteFlagBitsNV(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -13672,16 +12625,13 @@ struct OpticalFlowExecuteFlagBitsNV(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> OpticalFlowExecuteFlagsNV:
         return OpticalFlowExecuteFlagsNV(value = self._value | other._value)
 
     comptime DISABLE_TEMPORAL_HINTS = Self(value = 1 << 0)
 
 
-struct FrameBoundaryFlagsEXT(TrivialRegisterPassable, Equatable):
+struct FrameBoundaryFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -13699,9 +12649,6 @@ struct FrameBoundaryFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: FrameBoundaryFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -13733,7 +12680,7 @@ struct FrameBoundaryFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime FRAME_END = Self(value = FrameBoundaryFlagBitsEXT.FRAME_END.value())
 
 
-struct FrameBoundaryFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct FrameBoundaryFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -13742,16 +12689,13 @@ struct FrameBoundaryFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> FrameBoundaryFlagsEXT:
         return FrameBoundaryFlagsEXT(value = self._value | other._value)
 
     comptime FRAME_END = Self(value = 1 << 0)
 
 
-struct PresentScalingFlagsKHR(TrivialRegisterPassable, Equatable):
+struct PresentScalingFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -13769,9 +12713,6 @@ struct PresentScalingFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PresentScalingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -13805,7 +12746,7 @@ struct PresentScalingFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime STRETCH = Self(value = PresentScalingFlagBitsKHR.STRETCH.value())
 
 
-struct PresentScalingFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct PresentScalingFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -13813,9 +12754,6 @@ struct PresentScalingFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> PresentScalingFlagsKHR:
         return PresentScalingFlagsKHR(value = self._value | other._value)
@@ -13825,7 +12763,7 @@ struct PresentScalingFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime STRETCH = Self(value = 1 << 2)
 
 
-struct PresentGravityFlagsKHR(TrivialRegisterPassable, Equatable):
+struct PresentGravityFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -13843,9 +12781,6 @@ struct PresentGravityFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PresentGravityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -13879,7 +12814,7 @@ struct PresentGravityFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime CENTERED = Self(value = PresentGravityFlagBitsKHR.CENTERED.value())
 
 
-struct PresentGravityFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct PresentGravityFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -13887,9 +12822,6 @@ struct PresentGravityFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> PresentGravityFlagsKHR:
         return PresentGravityFlagsKHR(value = self._value | other._value)
@@ -13899,7 +12831,7 @@ struct PresentGravityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime CENTERED = Self(value = 1 << 2)
 
 
-struct ShaderCreateFlagsEXT(TrivialRegisterPassable, Equatable):
+struct ShaderCreateFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -13917,9 +12849,6 @@ struct ShaderCreateFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: ShaderCreateFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -13966,7 +12895,7 @@ struct ShaderCreateFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime RESERVED_18 = Self(value = ShaderCreateFlagBitsEXT.RESERVED_18.value())
 
 
-struct ShaderCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct ShaderCreateFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -13974,9 +12903,6 @@ struct ShaderCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> ShaderCreateFlagsEXT:
         return ShaderCreateFlagsEXT(value = self._value | other._value)
@@ -13999,7 +12925,7 @@ struct ShaderCreateFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime RESERVED_18 = Self(value = 1 << 18)
 
 
-struct TileShadingRenderPassFlagsQCOM(TrivialRegisterPassable, Equatable):
+struct TileShadingRenderPassFlagsQCOM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -14017,9 +12943,6 @@ struct TileShadingRenderPassFlagsQCOM(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: TileShadingRenderPassFlagsQCOM) -> Self:
         return Self(value = self.value() | other.value())
@@ -14052,7 +12975,7 @@ struct TileShadingRenderPassFlagsQCOM(TrivialRegisterPassable, Equatable):
     comptime PER_TILE_EXECUTION = Self(value = TileShadingRenderPassFlagBitsQCOM.PER_TILE_EXECUTION.value())
 
 
-struct TileShadingRenderPassFlagBitsQCOM(TrivialRegisterPassable, Equatable):
+struct TileShadingRenderPassFlagBitsQCOM(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -14061,9 +12984,6 @@ struct TileShadingRenderPassFlagBitsQCOM(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> TileShadingRenderPassFlagsQCOM:
         return TileShadingRenderPassFlagsQCOM(value = self._value | other._value)
 
@@ -14071,7 +12991,7 @@ struct TileShadingRenderPassFlagBitsQCOM(TrivialRegisterPassable, Equatable):
     comptime PER_TILE_EXECUTION = Self(value = 1 << 1)
 
 
-struct PhysicalDeviceSchedulingControlsFlagsARM(TrivialRegisterPassable, Equatable):
+struct PhysicalDeviceSchedulingControlsFlagsARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self):
@@ -14089,9 +13009,6 @@ struct PhysicalDeviceSchedulingControlsFlagsARM(TrivialRegisterPassable, Equatab
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PhysicalDeviceSchedulingControlsFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
@@ -14123,7 +13040,7 @@ struct PhysicalDeviceSchedulingControlsFlagsARM(TrivialRegisterPassable, Equatab
     comptime SHADER_CORE_COUNT = Self(value = PhysicalDeviceSchedulingControlsFlagBitsARM.SHADER_CORE_COUNT.value())
 
 
-struct PhysicalDeviceSchedulingControlsFlagBitsARM(TrivialRegisterPassable, Equatable):
+struct PhysicalDeviceSchedulingControlsFlagBitsARM(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self, *, value: UInt64):
@@ -14132,16 +13049,13 @@ struct PhysicalDeviceSchedulingControlsFlagBitsARM(TrivialRegisterPassable, Equa
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PhysicalDeviceSchedulingControlsFlagsARM:
         return PhysicalDeviceSchedulingControlsFlagsARM(value = self._value | other._value)
 
     comptime SHADER_CORE_COUNT = Self(value = 1 << 0)
 
 
-struct SurfaceCreateFlagsOHOS(TrivialRegisterPassable, Equatable):
+struct SurfaceCreateFlagsOHOS(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -14159,9 +13073,6 @@ struct SurfaceCreateFlagsOHOS(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SurfaceCreateFlagsOHOS) -> Self:
         return Self(value = self.value() | other.value())
@@ -14191,7 +13102,7 @@ struct SurfaceCreateFlagsOHOS(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct SurfaceCreateFlagBitsOHOS(TrivialRegisterPassable, Equatable):
+struct SurfaceCreateFlagBitsOHOS(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -14200,14 +13111,11 @@ struct SurfaceCreateFlagBitsOHOS(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> SurfaceCreateFlagsOHOS:
         return SurfaceCreateFlagsOHOS(value = self._value | other._value)
 
 
-struct PresentStageFlagsEXT(TrivialRegisterPassable, Equatable):
+struct PresentStageFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -14225,9 +13133,6 @@ struct PresentStageFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PresentStageFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -14262,7 +13167,7 @@ struct PresentStageFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime IMAGE_FIRST_PIXEL_VISIBLE = Self(value = PresentStageFlagBitsEXT.IMAGE_FIRST_PIXEL_VISIBLE.value())
 
 
-struct PresentStageFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct PresentStageFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -14270,9 +13175,6 @@ struct PresentStageFlagBitsEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> PresentStageFlagsEXT:
         return PresentStageFlagsEXT(value = self._value | other._value)
@@ -14283,7 +13185,7 @@ struct PresentStageFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime IMAGE_FIRST_PIXEL_VISIBLE = Self(value = 1 << 3)
 
 
-struct PastPresentationTimingFlagsEXT(TrivialRegisterPassable, Equatable):
+struct PastPresentationTimingFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -14301,9 +13203,6 @@ struct PastPresentationTimingFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PastPresentationTimingFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -14336,7 +13235,7 @@ struct PastPresentationTimingFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime ALLOW_OUT_OF_ORDER_RESULTS = Self(value = PastPresentationTimingFlagBitsEXT.ALLOW_OUT_OF_ORDER_RESULTS.value())
 
 
-struct PastPresentationTimingFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct PastPresentationTimingFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -14345,9 +13244,6 @@ struct PastPresentationTimingFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PastPresentationTimingFlagsEXT:
         return PastPresentationTimingFlagsEXT(value = self._value | other._value)
 
@@ -14355,7 +13251,7 @@ struct PastPresentationTimingFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime ALLOW_OUT_OF_ORDER_RESULTS = Self(value = 1 << 1)
 
 
-struct PresentTimingInfoFlagsEXT(TrivialRegisterPassable, Equatable):
+struct PresentTimingInfoFlagsEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -14373,9 +13269,6 @@ struct PresentTimingInfoFlagsEXT(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PresentTimingInfoFlagsEXT) -> Self:
         return Self(value = self.value() | other.value())
@@ -14408,7 +13301,7 @@ struct PresentTimingInfoFlagsEXT(TrivialRegisterPassable, Equatable):
     comptime PRESENT_AT_NEAREST_REFRESH_CYCLE = Self(value = PresentTimingInfoFlagBitsEXT.PRESENT_AT_NEAREST_REFRESH_CYCLE.value())
 
 
-struct PresentTimingInfoFlagBitsEXT(TrivialRegisterPassable, Equatable):
+struct PresentTimingInfoFlagBitsEXT(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -14417,9 +13310,6 @@ struct PresentTimingInfoFlagBitsEXT(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PresentTimingInfoFlagsEXT:
         return PresentTimingInfoFlagsEXT(value = self._value | other._value)
 
@@ -14427,7 +13317,7 @@ struct PresentTimingInfoFlagBitsEXT(TrivialRegisterPassable, Equatable):
     comptime PRESENT_AT_NEAREST_REFRESH_CYCLE = Self(value = 1 << 1)
 
 
-struct SwapchainImageUsageFlagsOHOS(TrivialRegisterPassable, Equatable):
+struct SwapchainImageUsageFlagsOHOS(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -14445,9 +13335,6 @@ struct SwapchainImageUsageFlagsOHOS(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: SwapchainImageUsageFlagsOHOS) -> Self:
         return Self(value = self.value() | other.value())
@@ -14479,7 +13366,7 @@ struct SwapchainImageUsageFlagsOHOS(TrivialRegisterPassable, Equatable):
     comptime SHARED = Self(value = SwapchainImageUsageFlagBitsOHOS.SHARED.value())
 
 
-struct SwapchainImageUsageFlagBitsOHOS(TrivialRegisterPassable, Equatable):
+struct SwapchainImageUsageFlagBitsOHOS(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -14488,16 +13375,13 @@ struct SwapchainImageUsageFlagBitsOHOS(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> SwapchainImageUsageFlagsOHOS:
         return SwapchainImageUsageFlagsOHOS(value = self._value | other._value)
 
     comptime SHARED = Self(value = 1 << 0)
 
 
-struct PerformanceCounterDescriptionFlagsARM(TrivialRegisterPassable, Equatable):
+struct PerformanceCounterDescriptionFlagsARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -14515,9 +13399,6 @@ struct PerformanceCounterDescriptionFlagsARM(TrivialRegisterPassable, Equatable)
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: PerformanceCounterDescriptionFlagsARM) -> Self:
         return Self(value = self.value() | other.value())
@@ -14547,7 +13428,7 @@ struct PerformanceCounterDescriptionFlagsARM(TrivialRegisterPassable, Equatable)
         return self & other == other
 
 
-struct PerformanceCounterDescriptionFlagBitsARM(TrivialRegisterPassable, Equatable):
+struct PerformanceCounterDescriptionFlagBitsARM(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -14556,14 +13437,11 @@ struct PerformanceCounterDescriptionFlagBitsARM(TrivialRegisterPassable, Equatab
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> PerformanceCounterDescriptionFlagsARM:
         return PerformanceCounterDescriptionFlagsARM(value = self._value | other._value)
 
 
-struct VideoCodecOperationFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoCodecOperationFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -14581,9 +13459,6 @@ struct VideoCodecOperationFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoCodecOperationFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -14622,7 +13497,7 @@ struct VideoCodecOperationFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime ENCODE_AV1 = Self(value = VideoCodecOperationFlagBitsKHR.ENCODE_AV1.value())
 
 
-struct VideoCodecOperationFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoCodecOperationFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -14630,9 +13505,6 @@ struct VideoCodecOperationFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoCodecOperationFlagsKHR:
         return VideoCodecOperationFlagsKHR(value = self._value | other._value)
@@ -14647,7 +13519,7 @@ struct VideoCodecOperationFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime ENCODE_AV1 = Self(value = 1 << 18)
 
 
-struct VideoCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoCapabilityFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -14665,9 +13537,6 @@ struct VideoCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -14700,7 +13569,7 @@ struct VideoCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime SEPARATE_REFERENCE_IMAGES = Self(value = VideoCapabilityFlagBitsKHR.SEPARATE_REFERENCE_IMAGES.value())
 
 
-struct VideoCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoCapabilityFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -14709,9 +13578,6 @@ struct VideoCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> VideoCapabilityFlagsKHR:
         return VideoCapabilityFlagsKHR(value = self._value | other._value)
 
@@ -14719,7 +13585,7 @@ struct VideoCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime SEPARATE_REFERENCE_IMAGES = Self(value = 1 << 1)
 
 
-struct VideoSessionCreateFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoSessionCreateFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -14737,9 +13603,6 @@ struct VideoSessionCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoSessionCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -14776,7 +13639,7 @@ struct VideoSessionCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime INLINE_SESSION_PARAMETERS = Self(value = VideoSessionCreateFlagBitsKHR.INLINE_SESSION_PARAMETERS.value())
 
 
-struct VideoSessionCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoSessionCreateFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -14784,9 +13647,6 @@ struct VideoSessionCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoSessionCreateFlagsKHR:
         return VideoSessionCreateFlagsKHR(value = self._value | other._value)
@@ -14799,7 +13659,7 @@ struct VideoSessionCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime INLINE_SESSION_PARAMETERS = Self(value = 1 << 5)
 
 
-struct VideoSessionParametersCreateFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoSessionParametersCreateFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -14817,9 +13677,6 @@ struct VideoSessionParametersCreateFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoSessionParametersCreateFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -14851,7 +13708,7 @@ struct VideoSessionParametersCreateFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime QUANTIZATION_MAP_COMPATIBLE = Self(value = VideoSessionParametersCreateFlagBitsKHR.QUANTIZATION_MAP_COMPATIBLE.value())
 
 
-struct VideoSessionParametersCreateFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoSessionParametersCreateFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -14860,16 +13717,13 @@ struct VideoSessionParametersCreateFlagBitsKHR(TrivialRegisterPassable, Equatabl
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> VideoSessionParametersCreateFlagsKHR:
         return VideoSessionParametersCreateFlagsKHR(value = self._value | other._value)
 
     comptime QUANTIZATION_MAP_COMPATIBLE = Self(value = 1 << 0)
 
 
-struct VideoBeginCodingFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoBeginCodingFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -14887,9 +13741,6 @@ struct VideoBeginCodingFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoBeginCodingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -14919,7 +13770,7 @@ struct VideoBeginCodingFlagsKHR(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct VideoBeginCodingFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoBeginCodingFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -14928,14 +13779,11 @@ struct VideoBeginCodingFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> VideoBeginCodingFlagsKHR:
         return VideoBeginCodingFlagsKHR(value = self._value | other._value)
 
 
-struct VideoEndCodingFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEndCodingFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -14953,9 +13801,6 @@ struct VideoEndCodingFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEndCodingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -14985,7 +13830,7 @@ struct VideoEndCodingFlagsKHR(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct VideoEndCodingFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEndCodingFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -14994,14 +13839,11 @@ struct VideoEndCodingFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> VideoEndCodingFlagsKHR:
         return VideoEndCodingFlagsKHR(value = self._value | other._value)
 
 
-struct VideoCodingControlFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoCodingControlFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15019,9 +13861,6 @@ struct VideoCodingControlFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoCodingControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -15055,7 +13894,7 @@ struct VideoCodingControlFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime ENCODE_QUALITY_LEVEL = Self(value = VideoCodingControlFlagBitsKHR.ENCODE_QUALITY_LEVEL.value())
 
 
-struct VideoCodingControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoCodingControlFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -15063,9 +13902,6 @@ struct VideoCodingControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoCodingControlFlagsKHR:
         return VideoCodingControlFlagsKHR(value = self._value | other._value)
@@ -15075,7 +13911,7 @@ struct VideoCodingControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime ENCODE_QUALITY_LEVEL = Self(value = 1 << 2)
 
 
-struct VideoDecodeUsageFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoDecodeUsageFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15093,9 +13929,6 @@ struct VideoDecodeUsageFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoDecodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -15130,7 +13963,7 @@ struct VideoDecodeUsageFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime STREAMING = Self(value = VideoDecodeUsageFlagBitsKHR.STREAMING.value())
 
 
-struct VideoDecodeUsageFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoDecodeUsageFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -15138,9 +13971,6 @@ struct VideoDecodeUsageFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoDecodeUsageFlagsKHR:
         return VideoDecodeUsageFlagsKHR(value = self._value | other._value)
@@ -15151,7 +13981,7 @@ struct VideoDecodeUsageFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime STREAMING = Self(value = 1 << 2)
 
 
-struct VideoDecodeCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoDecodeCapabilityFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15169,9 +13999,6 @@ struct VideoDecodeCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoDecodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -15204,7 +14031,7 @@ struct VideoDecodeCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime DPB_AND_OUTPUT_DISTINCT = Self(value = VideoDecodeCapabilityFlagBitsKHR.DPB_AND_OUTPUT_DISTINCT.value())
 
 
-struct VideoDecodeCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoDecodeCapabilityFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -15213,9 +14040,6 @@ struct VideoDecodeCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> VideoDecodeCapabilityFlagsKHR:
         return VideoDecodeCapabilityFlagsKHR(value = self._value | other._value)
 
@@ -15223,7 +14047,7 @@ struct VideoDecodeCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime DPB_AND_OUTPUT_DISTINCT = Self(value = 1 << 1)
 
 
-struct VideoDecodeFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoDecodeFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15241,9 +14065,6 @@ struct VideoDecodeFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoDecodeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -15273,7 +14094,7 @@ struct VideoDecodeFlagsKHR(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct VideoDecodeFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoDecodeFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -15282,14 +14103,11 @@ struct VideoDecodeFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> VideoDecodeFlagsKHR:
         return VideoDecodeFlagsKHR(value = self._value | other._value)
 
 
-struct VideoDecodeH264PictureLayoutFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoDecodeH264PictureLayoutFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15307,9 +14125,6 @@ struct VideoDecodeH264PictureLayoutFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoDecodeH264PictureLayoutFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -15343,7 +14158,7 @@ struct VideoDecodeH264PictureLayoutFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime INTERLACED_SEPARATE_PLANES = Self(value = VideoDecodeH264PictureLayoutFlagBitsKHR.INTERLACED_SEPARATE_PLANES.value())
 
 
-struct VideoDecodeH264PictureLayoutFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoDecodeH264PictureLayoutFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -15351,9 +14166,6 @@ struct VideoDecodeH264PictureLayoutFlagBitsKHR(TrivialRegisterPassable, Equatabl
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoDecodeH264PictureLayoutFlagsKHR:
         return VideoDecodeH264PictureLayoutFlagsKHR(value = self._value | other._value)
@@ -15363,7 +14175,7 @@ struct VideoDecodeH264PictureLayoutFlagBitsKHR(TrivialRegisterPassable, Equatabl
     comptime INTERLACED_SEPARATE_PLANES = Self(value = 1 << 1)
 
 
-struct VideoEncodeFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15381,9 +14193,6 @@ struct VideoEncodeFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -15417,7 +14226,7 @@ struct VideoEncodeFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime INTRA_REFRESH = Self(value = VideoEncodeFlagBitsKHR.INTRA_REFRESH.value())
 
 
-struct VideoEncodeFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -15425,9 +14234,6 @@ struct VideoEncodeFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeFlagsKHR:
         return VideoEncodeFlagsKHR(value = self._value | other._value)
@@ -15437,7 +14243,7 @@ struct VideoEncodeFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime INTRA_REFRESH = Self(value = 1 << 2)
 
 
-struct VideoEncodeUsageFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeUsageFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15455,9 +14261,6 @@ struct VideoEncodeUsageFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeUsageFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -15493,7 +14296,7 @@ struct VideoEncodeUsageFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime CONFERENCING = Self(value = VideoEncodeUsageFlagBitsKHR.CONFERENCING.value())
 
 
-struct VideoEncodeUsageFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeUsageFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -15501,9 +14304,6 @@ struct VideoEncodeUsageFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeUsageFlagsKHR:
         return VideoEncodeUsageFlagsKHR(value = self._value | other._value)
@@ -15515,7 +14315,7 @@ struct VideoEncodeUsageFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime CONFERENCING = Self(value = 1 << 3)
 
 
-struct VideoEncodeContentFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeContentFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15533,9 +14333,6 @@ struct VideoEncodeContentFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeContentFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -15570,7 +14367,7 @@ struct VideoEncodeContentFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime RENDERED = Self(value = VideoEncodeContentFlagBitsKHR.RENDERED.value())
 
 
-struct VideoEncodeContentFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeContentFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -15578,9 +14375,6 @@ struct VideoEncodeContentFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeContentFlagsKHR:
         return VideoEncodeContentFlagsKHR(value = self._value | other._value)
@@ -15591,7 +14385,7 @@ struct VideoEncodeContentFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime RENDERED = Self(value = 1 << 2)
 
 
-struct VideoEncodeCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeCapabilityFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15609,9 +14403,6 @@ struct VideoEncodeCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeCapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -15646,7 +14437,7 @@ struct VideoEncodeCapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime EMPHASIS_MAP = Self(value = VideoEncodeCapabilityFlagBitsKHR.EMPHASIS_MAP.value())
 
 
-struct VideoEncodeCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeCapabilityFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -15654,9 +14445,6 @@ struct VideoEncodeCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeCapabilityFlagsKHR:
         return VideoEncodeCapabilityFlagsKHR(value = self._value | other._value)
@@ -15667,7 +14455,7 @@ struct VideoEncodeCapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime EMPHASIS_MAP = Self(value = 1 << 3)
 
 
-struct VideoEncodeFeedbackFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeFeedbackFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15685,9 +14473,6 @@ struct VideoEncodeFeedbackFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeFeedbackFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -15728,7 +14513,7 @@ struct VideoEncodeFeedbackFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime RESERVED_9 = Self(value = VideoEncodeFeedbackFlagBitsKHR.RESERVED_9.value())
 
 
-struct VideoEncodeFeedbackFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeFeedbackFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -15736,9 +14521,6 @@ struct VideoEncodeFeedbackFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeFeedbackFlagsKHR:
         return VideoEncodeFeedbackFlagsKHR(value = self._value | other._value)
@@ -15755,7 +14537,7 @@ struct VideoEncodeFeedbackFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime RESERVED_9 = Self(value = 1 << 9)
 
 
-struct VideoEncodeRateControlFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeRateControlFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15773,9 +14555,6 @@ struct VideoEncodeRateControlFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeRateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -15805,7 +14584,7 @@ struct VideoEncodeRateControlFlagsKHR(TrivialRegisterPassable, Equatable):
         return self & other == other
 
 
-struct VideoEncodeRateControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeRateControlFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -15814,14 +14593,11 @@ struct VideoEncodeRateControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> VideoEncodeRateControlFlagsKHR:
         return VideoEncodeRateControlFlagsKHR(value = self._value | other._value)
 
 
-struct VideoEncodeRateControlModeFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeRateControlModeFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15839,9 +14615,6 @@ struct VideoEncodeRateControlModeFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeRateControlModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -15876,7 +14649,7 @@ struct VideoEncodeRateControlModeFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime VBR = Self(value = VideoEncodeRateControlModeFlagBitsKHR.VBR.value())
 
 
-struct VideoEncodeRateControlModeFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeRateControlModeFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -15884,9 +14657,6 @@ struct VideoEncodeRateControlModeFlagBitsKHR(TrivialRegisterPassable, Equatable)
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeRateControlModeFlagsKHR:
         return VideoEncodeRateControlModeFlagsKHR(value = self._value | other._value)
@@ -15897,7 +14667,7 @@ struct VideoEncodeRateControlModeFlagBitsKHR(TrivialRegisterPassable, Equatable)
     comptime VBR = Self(value = 1 << 2)
 
 
-struct VideoEncodeIntraRefreshModeFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeIntraRefreshModeFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15915,9 +14685,6 @@ struct VideoEncodeIntraRefreshModeFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeIntraRefreshModeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -15953,7 +14720,7 @@ struct VideoEncodeIntraRefreshModeFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime BLOCK_COLUMN_BASED = Self(value = VideoEncodeIntraRefreshModeFlagBitsKHR.BLOCK_COLUMN_BASED.value())
 
 
-struct VideoEncodeIntraRefreshModeFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeIntraRefreshModeFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -15961,9 +14728,6 @@ struct VideoEncodeIntraRefreshModeFlagBitsKHR(TrivialRegisterPassable, Equatable
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeIntraRefreshModeFlagsKHR:
         return VideoEncodeIntraRefreshModeFlagsKHR(value = self._value | other._value)
@@ -15975,7 +14739,7 @@ struct VideoEncodeIntraRefreshModeFlagBitsKHR(TrivialRegisterPassable, Equatable
     comptime BLOCK_COLUMN_BASED = Self(value = 1 << 3)
 
 
-struct VideoChromaSubsamplingFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoChromaSubsamplingFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -15993,9 +14757,6 @@ struct VideoChromaSubsamplingFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoChromaSubsamplingFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -16031,7 +14792,7 @@ struct VideoChromaSubsamplingFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime SUBSAMPLING_444 = Self(value = VideoChromaSubsamplingFlagBitsKHR.SUBSAMPLING_444.value())
 
 
-struct VideoChromaSubsamplingFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoChromaSubsamplingFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -16039,9 +14800,6 @@ struct VideoChromaSubsamplingFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoChromaSubsamplingFlagsKHR:
         return VideoChromaSubsamplingFlagsKHR(value = self._value | other._value)
@@ -16053,7 +14811,7 @@ struct VideoChromaSubsamplingFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime SUBSAMPLING_444 = Self(value = 1 << 3)
 
 
-struct VideoComponentBitDepthFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoComponentBitDepthFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -16071,9 +14829,6 @@ struct VideoComponentBitDepthFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoComponentBitDepthFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -16108,7 +14863,7 @@ struct VideoComponentBitDepthFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime DEPTH_12 = Self(value = VideoComponentBitDepthFlagBitsKHR.DEPTH_12.value())
 
 
-struct VideoComponentBitDepthFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoComponentBitDepthFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -16116,9 +14871,6 @@ struct VideoComponentBitDepthFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoComponentBitDepthFlagsKHR:
         return VideoComponentBitDepthFlagsKHR(value = self._value | other._value)
@@ -16129,7 +14881,7 @@ struct VideoComponentBitDepthFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime DEPTH_12 = Self(value = 1 << 4)
 
 
-struct VideoEncodeH264CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH264CapabilityFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -16147,9 +14899,6 @@ struct VideoEncodeH264CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeH264CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -16191,7 +14940,7 @@ struct VideoEncodeH264CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime B_PICTURE_INTRA_REFRESH = Self(value = VideoEncodeH264CapabilityFlagBitsKHR.B_PICTURE_INTRA_REFRESH.value())
 
 
-struct VideoEncodeH264CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH264CapabilityFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -16199,9 +14948,6 @@ struct VideoEncodeH264CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeH264CapabilityFlagsKHR:
         return VideoEncodeH264CapabilityFlagsKHR(value = self._value | other._value)
@@ -16219,7 +14965,7 @@ struct VideoEncodeH264CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime B_PICTURE_INTRA_REFRESH = Self(value = 1 << 10)
 
 
-struct VideoEncodeH264StdFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH264StdFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -16237,9 +14983,6 @@ struct VideoEncodeH264StdFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeH264StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -16290,7 +15033,7 @@ struct VideoEncodeH264StdFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime DIFFERENT_SLICE_QP_DELTA = Self(value = VideoEncodeH264StdFlagBitsKHR.DIFFERENT_SLICE_QP_DELTA.value())
 
 
-struct VideoEncodeH264StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH264StdFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -16298,9 +15041,6 @@ struct VideoEncodeH264StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeH264StdFlagsKHR:
         return VideoEncodeH264StdFlagsKHR(value = self._value | other._value)
@@ -16327,7 +15067,7 @@ struct VideoEncodeH264StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime DIFFERENT_SLICE_QP_DELTA = Self(value = 1 << 20)
 
 
-struct VideoEncodeH264RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH264RateControlFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -16345,9 +15085,6 @@ struct VideoEncodeH264RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeH264RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -16383,7 +15120,7 @@ struct VideoEncodeH264RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime TEMPORAL_LAYER_PATTERN_DYADIC = Self(value = VideoEncodeH264RateControlFlagBitsKHR.TEMPORAL_LAYER_PATTERN_DYADIC.value())
 
 
-struct VideoEncodeH264RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH264RateControlFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -16391,9 +15128,6 @@ struct VideoEncodeH264RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable)
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeH264RateControlFlagsKHR:
         return VideoEncodeH264RateControlFlagsKHR(value = self._value | other._value)
@@ -16405,7 +15139,7 @@ struct VideoEncodeH264RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable)
     comptime TEMPORAL_LAYER_PATTERN_DYADIC = Self(value = 1 << 4)
 
 
-struct VideoEncodeH265CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH265CapabilityFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -16423,9 +15157,6 @@ struct VideoEncodeH265CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeH265CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -16468,7 +15199,7 @@ struct VideoEncodeH265CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime B_PICTURE_INTRA_REFRESH = Self(value = VideoEncodeH265CapabilityFlagBitsKHR.B_PICTURE_INTRA_REFRESH.value())
 
 
-struct VideoEncodeH265CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH265CapabilityFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -16476,9 +15207,6 @@ struct VideoEncodeH265CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeH265CapabilityFlagsKHR:
         return VideoEncodeH265CapabilityFlagsKHR(value = self._value | other._value)
@@ -16497,7 +15225,7 @@ struct VideoEncodeH265CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime B_PICTURE_INTRA_REFRESH = Self(value = 1 << 11)
 
 
-struct VideoEncodeH265StdFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH265StdFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -16515,9 +15243,6 @@ struct VideoEncodeH265StdFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeH265StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -16569,7 +15294,7 @@ struct VideoEncodeH265StdFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime DIFFERENT_SLICE_QP_DELTA = Self(value = VideoEncodeH265StdFlagBitsKHR.DIFFERENT_SLICE_QP_DELTA.value())
 
 
-struct VideoEncodeH265StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH265StdFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -16577,9 +15302,6 @@ struct VideoEncodeH265StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeH265StdFlagsKHR:
         return VideoEncodeH265StdFlagsKHR(value = self._value | other._value)
@@ -16607,7 +15329,7 @@ struct VideoEncodeH265StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime DIFFERENT_SLICE_QP_DELTA = Self(value = 1 << 20)
 
 
-struct VideoEncodeH265RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH265RateControlFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -16625,9 +15347,6 @@ struct VideoEncodeH265RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeH265RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -16663,7 +15382,7 @@ struct VideoEncodeH265RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime TEMPORAL_SUB_LAYER_PATTERN_DYADIC = Self(value = VideoEncodeH265RateControlFlagBitsKHR.TEMPORAL_SUB_LAYER_PATTERN_DYADIC.value())
 
 
-struct VideoEncodeH265RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH265RateControlFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -16671,9 +15390,6 @@ struct VideoEncodeH265RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable)
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeH265RateControlFlagsKHR:
         return VideoEncodeH265RateControlFlagsKHR(value = self._value | other._value)
@@ -16685,7 +15401,7 @@ struct VideoEncodeH265RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable)
     comptime TEMPORAL_SUB_LAYER_PATTERN_DYADIC = Self(value = 1 << 4)
 
 
-struct VideoEncodeH265CtbSizeFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH265CtbSizeFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -16703,9 +15419,6 @@ struct VideoEncodeH265CtbSizeFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeH265CtbSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -16739,7 +15452,7 @@ struct VideoEncodeH265CtbSizeFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime SIZE_64 = Self(value = VideoEncodeH265CtbSizeFlagBitsKHR.SIZE_64.value())
 
 
-struct VideoEncodeH265CtbSizeFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH265CtbSizeFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -16747,9 +15460,6 @@ struct VideoEncodeH265CtbSizeFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeH265CtbSizeFlagsKHR:
         return VideoEncodeH265CtbSizeFlagsKHR(value = self._value | other._value)
@@ -16759,7 +15469,7 @@ struct VideoEncodeH265CtbSizeFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime SIZE_64 = Self(value = 1 << 2)
 
 
-struct VideoEncodeH265TransformBlockSizeFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH265TransformBlockSizeFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -16777,9 +15487,6 @@ struct VideoEncodeH265TransformBlockSizeFlagsKHR(TrivialRegisterPassable, Equata
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeH265TransformBlockSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -16814,7 +15521,7 @@ struct VideoEncodeH265TransformBlockSizeFlagsKHR(TrivialRegisterPassable, Equata
     comptime SIZE_32 = Self(value = VideoEncodeH265TransformBlockSizeFlagBitsKHR.SIZE_32.value())
 
 
-struct VideoEncodeH265TransformBlockSizeFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeH265TransformBlockSizeFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -16822,9 +15529,6 @@ struct VideoEncodeH265TransformBlockSizeFlagBitsKHR(TrivialRegisterPassable, Equ
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeH265TransformBlockSizeFlagsKHR:
         return VideoEncodeH265TransformBlockSizeFlagsKHR(value = self._value | other._value)
@@ -16835,7 +15539,7 @@ struct VideoEncodeH265TransformBlockSizeFlagBitsKHR(TrivialRegisterPassable, Equ
     comptime SIZE_32 = Self(value = 1 << 3)
 
 
-struct VideoEncodeAV1CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeAV1CapabilityFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -16853,9 +15557,6 @@ struct VideoEncodeAV1CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeAV1CapabilityFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -16892,7 +15593,7 @@ struct VideoEncodeAV1CapabilityFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime COMPOUND_PREDICTION_INTRA_REFRESH = Self(value = VideoEncodeAV1CapabilityFlagBitsKHR.COMPOUND_PREDICTION_INTRA_REFRESH.value())
 
 
-struct VideoEncodeAV1CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeAV1CapabilityFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -16900,9 +15601,6 @@ struct VideoEncodeAV1CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeAV1CapabilityFlagsKHR:
         return VideoEncodeAV1CapabilityFlagsKHR(value = self._value | other._value)
@@ -16915,7 +15613,7 @@ struct VideoEncodeAV1CapabilityFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime COMPOUND_PREDICTION_INTRA_REFRESH = Self(value = 1 << 5)
 
 
-struct VideoEncodeAV1StdFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeAV1StdFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -16933,9 +15631,6 @@ struct VideoEncodeAV1StdFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeAV1StdFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -16970,7 +15665,7 @@ struct VideoEncodeAV1StdFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime DELTA_Q = Self(value = VideoEncodeAV1StdFlagBitsKHR.DELTA_Q.value())
 
 
-struct VideoEncodeAV1StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeAV1StdFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -16978,9 +15673,6 @@ struct VideoEncodeAV1StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeAV1StdFlagsKHR:
         return VideoEncodeAV1StdFlagsKHR(value = self._value | other._value)
@@ -16991,7 +15683,7 @@ struct VideoEncodeAV1StdFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime DELTA_Q = Self(value = 1 << 3)
 
 
-struct VideoEncodeAV1RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeAV1RateControlFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -17009,9 +15701,6 @@ struct VideoEncodeAV1RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeAV1RateControlFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -17046,7 +15735,7 @@ struct VideoEncodeAV1RateControlFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime REFERENCE_PATTERN_DYADIC = Self(value = VideoEncodeAV1RateControlFlagBitsKHR.REFERENCE_PATTERN_DYADIC.value())
 
 
-struct VideoEncodeAV1RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeAV1RateControlFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -17054,9 +15743,6 @@ struct VideoEncodeAV1RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> VideoEncodeAV1RateControlFlagsKHR:
         return VideoEncodeAV1RateControlFlagsKHR(value = self._value | other._value)
@@ -17067,7 +15753,7 @@ struct VideoEncodeAV1RateControlFlagBitsKHR(TrivialRegisterPassable, Equatable):
     comptime REFERENCE_PATTERN_DYADIC = Self(value = 1 << 3)
 
 
-struct VideoEncodeAV1SuperblockSizeFlagsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeAV1SuperblockSizeFlagsKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self):
@@ -17085,9 +15771,6 @@ struct VideoEncodeAV1SuperblockSizeFlagsKHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: VideoEncodeAV1SuperblockSizeFlagsKHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -17120,7 +15803,7 @@ struct VideoEncodeAV1SuperblockSizeFlagsKHR(TrivialRegisterPassable, Equatable):
     comptime SIZE_128 = Self(value = VideoEncodeAV1SuperblockSizeFlagBitsKHR.SIZE_128.value())
 
 
-struct VideoEncodeAV1SuperblockSizeFlagBitsKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeAV1SuperblockSizeFlagBitsKHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt32
 
     def __init__(out self, *, value: UInt32):
@@ -17129,9 +15812,6 @@ struct VideoEncodeAV1SuperblockSizeFlagBitsKHR(TrivialRegisterPassable, Equatabl
     def value(self) -> UInt32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __or__(self, other: Self) -> VideoEncodeAV1SuperblockSizeFlagsKHR:
         return VideoEncodeAV1SuperblockSizeFlagsKHR(value = self._value | other._value)
 
@@ -17139,7 +15819,7 @@ struct VideoEncodeAV1SuperblockSizeFlagBitsKHR(TrivialRegisterPassable, Equatabl
     comptime SIZE_128 = Self(value = 1 << 1)
 
 
-struct AccessFlags3KHR(TrivialRegisterPassable, Equatable):
+struct AccessFlags3KHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self):
@@ -17157,9 +15837,6 @@ struct AccessFlags3KHR(TrivialRegisterPassable, Equatable):
 
     def __bool__(self) -> Bool:
         return Bool(self._value)
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: AccessFlags3KHR) -> Self:
         return Self(value = self.value() | other.value())
@@ -17191,7 +15868,7 @@ struct AccessFlags3KHR(TrivialRegisterPassable, Equatable):
     comptime NONE = Self(value = AccessFlagBits3KHR.NONE.value())
 
 
-struct AccessFlagBits3KHR(TrivialRegisterPassable, Equatable):
+struct AccessFlagBits3KHR(TrivialRegisterPassable, Hashable, Writable):
     var _value: UInt64
 
     def __init__(out self, *, value: UInt64):
@@ -17199,9 +15876,6 @@ struct AccessFlagBits3KHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> UInt64:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __or__(self, other: Self) -> AccessFlags3KHR:
         return AccessFlags3KHR(value = self._value | other._value)

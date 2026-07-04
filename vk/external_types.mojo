@@ -322,7 +322,7 @@ struct IOSurfaceRef(TrivialRegisterPassable):
         return self._value
 
 
-struct StdVideoH264ProfileIdc(TrivialRegisterPassable, Equatable):
+struct StdVideoH264ProfileIdc(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -330,9 +330,6 @@ struct StdVideoH264ProfileIdc(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime BASELINE = StdVideoH264ProfileIdc(value = 66)
     comptime MAIN = StdVideoH264ProfileIdc(value = 77)
@@ -341,7 +338,7 @@ struct StdVideoH264ProfileIdc(TrivialRegisterPassable, Equatable):
     comptime INVALID = StdVideoH264ProfileIdc(value = 2147483647)
 
 
-struct StdVideoH264LevelIdc(TrivialRegisterPassable, Equatable):
+struct StdVideoH264LevelIdc(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -349,9 +346,6 @@ struct StdVideoH264LevelIdc(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime LEVEL_1_0 = StdVideoH264LevelIdc(value = 0)
     comptime LEVEL_1_1 = StdVideoH264LevelIdc(value = 1)
@@ -403,7 +397,7 @@ struct StdVideoDecodeH264ReferenceInfo:
     pass
 
 
-struct StdVideoH265ProfileIdc(TrivialRegisterPassable, Equatable):
+struct StdVideoH265ProfileIdc(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -411,9 +405,6 @@ struct StdVideoH265ProfileIdc(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime MAIN = StdVideoH265ProfileIdc(value = 1)
     comptime MAIN_10 = StdVideoH265ProfileIdc(value = 2)
@@ -423,7 +414,7 @@ struct StdVideoH265ProfileIdc(TrivialRegisterPassable, Equatable):
     comptime INVALID = StdVideoH265ProfileIdc(value = 2147483647)
 
 
-struct StdVideoH265LevelIdc(TrivialRegisterPassable, Equatable):
+struct StdVideoH265LevelIdc(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -431,9 +422,6 @@ struct StdVideoH265LevelIdc(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime LEVEL_1_0 = StdVideoH265LevelIdc(value = 0)
     comptime LEVEL_2_0 = StdVideoH265LevelIdc(value = 1)
@@ -483,7 +471,7 @@ struct StdVideoDecodeH265ReferenceInfo:
     pass
 
 
-struct StdVideoAV1Profile(TrivialRegisterPassable, Equatable):
+struct StdVideoAV1Profile(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -491,9 +479,6 @@ struct StdVideoAV1Profile(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime MAIN = StdVideoAV1Profile(value = 0)
     comptime HIGH = StdVideoAV1Profile(value = 1)
@@ -501,7 +486,7 @@ struct StdVideoAV1Profile(TrivialRegisterPassable, Equatable):
     comptime INVALID = StdVideoAV1Profile(value = 2147483647)
 
 
-struct StdVideoAV1Level(TrivialRegisterPassable, Equatable):
+struct StdVideoAV1Level(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -509,9 +494,6 @@ struct StdVideoAV1Level(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime LEVEL_2_0 = StdVideoAV1Level(value = 0)
     comptime LEVEL_2_1 = StdVideoAV1Level(value = 1)
@@ -608,7 +590,7 @@ struct StdVideoDecodeAV1ReferenceInfo:
     pass
 
 
-struct StdVideoVP9Profile(TrivialRegisterPassable, Equatable):
+struct StdVideoVP9Profile(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -616,9 +598,6 @@ struct StdVideoVP9Profile(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime PROFILE_0 = StdVideoVP9Profile(value = 0)
     comptime PROFILE_1 = StdVideoVP9Profile(value = 1)
@@ -627,7 +606,7 @@ struct StdVideoVP9Profile(TrivialRegisterPassable, Equatable):
     comptime INVALID = StdVideoVP9Profile(value = 2147483647)
 
 
-struct StdVideoVP9Level(TrivialRegisterPassable, Equatable):
+struct StdVideoVP9Level(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -635,9 +614,6 @@ struct StdVideoVP9Level(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime LEVEL_1_0 = StdVideoVP9Level(value = 0)
     comptime LEVEL_1_1 = StdVideoVP9Level(value = 1)

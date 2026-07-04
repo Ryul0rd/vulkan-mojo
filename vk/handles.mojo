@@ -3,7 +3,7 @@ comptime SamplerYcbcrConversionKHR = SamplerYcbcrConversion
 comptime PrivateDataSlotEXT = PrivateDataSlot
 
 
-struct Instance(TrivialRegisterPassable, Equatable, Writable):
+struct Instance(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -13,9 +13,6 @@ struct Instance(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -26,7 +23,7 @@ struct Instance(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct PhysicalDevice(TrivialRegisterPassable, Equatable, Writable):
+struct PhysicalDevice(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -36,9 +33,6 @@ struct PhysicalDevice(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -49,7 +43,7 @@ struct PhysicalDevice(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct Device(TrivialRegisterPassable, Equatable, Writable):
+struct Device(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -59,9 +53,6 @@ struct Device(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -72,7 +63,7 @@ struct Device(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct Queue(TrivialRegisterPassable, Equatable, Writable):
+struct Queue(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -82,9 +73,6 @@ struct Queue(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -95,7 +83,7 @@ struct Queue(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct CommandBuffer(TrivialRegisterPassable, Equatable, Writable):
+struct CommandBuffer(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -105,9 +93,6 @@ struct CommandBuffer(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -118,7 +103,7 @@ struct CommandBuffer(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct DeviceMemory(TrivialRegisterPassable, Equatable, Writable):
+struct DeviceMemory(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -128,9 +113,6 @@ struct DeviceMemory(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -141,7 +123,7 @@ struct DeviceMemory(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct CommandPool(TrivialRegisterPassable, Equatable, Writable):
+struct CommandPool(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -151,9 +133,6 @@ struct CommandPool(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -164,7 +143,7 @@ struct CommandPool(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct Buffer(TrivialRegisterPassable, Equatable, Writable):
+struct Buffer(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -174,9 +153,6 @@ struct Buffer(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -187,7 +163,7 @@ struct Buffer(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct BufferView(TrivialRegisterPassable, Equatable, Writable):
+struct BufferView(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -197,9 +173,6 @@ struct BufferView(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -210,7 +183,7 @@ struct BufferView(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct Image(TrivialRegisterPassable, Equatable, Writable):
+struct Image(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -220,9 +193,6 @@ struct Image(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -233,7 +203,7 @@ struct Image(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct ImageView(TrivialRegisterPassable, Equatable, Writable):
+struct ImageView(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -243,9 +213,6 @@ struct ImageView(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -256,7 +223,7 @@ struct ImageView(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct ShaderModule(TrivialRegisterPassable, Equatable, Writable):
+struct ShaderModule(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -266,9 +233,6 @@ struct ShaderModule(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -279,7 +243,7 @@ struct ShaderModule(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct Pipeline(TrivialRegisterPassable, Equatable, Writable):
+struct Pipeline(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -289,9 +253,6 @@ struct Pipeline(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -302,7 +263,7 @@ struct Pipeline(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct PipelineLayout(TrivialRegisterPassable, Equatable, Writable):
+struct PipelineLayout(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -312,9 +273,6 @@ struct PipelineLayout(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -325,7 +283,7 @@ struct PipelineLayout(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct Sampler(TrivialRegisterPassable, Equatable, Writable):
+struct Sampler(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -335,9 +293,6 @@ struct Sampler(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -348,7 +303,7 @@ struct Sampler(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct DescriptorSet(TrivialRegisterPassable, Equatable, Writable):
+struct DescriptorSet(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -358,9 +313,6 @@ struct DescriptorSet(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -371,7 +323,7 @@ struct DescriptorSet(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct DescriptorSetLayout(TrivialRegisterPassable, Equatable, Writable):
+struct DescriptorSetLayout(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -381,9 +333,6 @@ struct DescriptorSetLayout(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -394,7 +343,7 @@ struct DescriptorSetLayout(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct DescriptorPool(TrivialRegisterPassable, Equatable, Writable):
+struct DescriptorPool(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -404,9 +353,6 @@ struct DescriptorPool(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -417,7 +363,7 @@ struct DescriptorPool(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct Fence(TrivialRegisterPassable, Equatable, Writable):
+struct Fence(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -427,9 +373,6 @@ struct Fence(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -440,7 +383,7 @@ struct Fence(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct Semaphore(TrivialRegisterPassable, Equatable, Writable):
+struct Semaphore(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -450,9 +393,6 @@ struct Semaphore(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -463,7 +403,7 @@ struct Semaphore(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct Event(TrivialRegisterPassable, Equatable, Writable):
+struct Event(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -473,9 +413,6 @@ struct Event(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -486,7 +423,7 @@ struct Event(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct QueryPool(TrivialRegisterPassable, Equatable, Writable):
+struct QueryPool(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -496,9 +433,6 @@ struct QueryPool(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -509,7 +443,7 @@ struct QueryPool(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct Framebuffer(TrivialRegisterPassable, Equatable, Writable):
+struct Framebuffer(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -519,9 +453,6 @@ struct Framebuffer(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -532,7 +463,7 @@ struct Framebuffer(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct RenderPass(TrivialRegisterPassable, Equatable, Writable):
+struct RenderPass(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -542,9 +473,6 @@ struct RenderPass(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -555,7 +483,7 @@ struct RenderPass(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct PipelineCache(TrivialRegisterPassable, Equatable, Writable):
+struct PipelineCache(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -565,9 +493,6 @@ struct PipelineCache(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -578,7 +503,7 @@ struct PipelineCache(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct PipelineBinaryKHR(TrivialRegisterPassable, Equatable, Writable):
+struct PipelineBinaryKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -588,9 +513,6 @@ struct PipelineBinaryKHR(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -601,7 +523,7 @@ struct PipelineBinaryKHR(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct IndirectCommandsLayoutNV(TrivialRegisterPassable, Equatable, Writable):
+struct IndirectCommandsLayoutNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -611,9 +533,6 @@ struct IndirectCommandsLayoutNV(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -624,7 +543,7 @@ struct IndirectCommandsLayoutNV(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct IndirectCommandsLayoutEXT(TrivialRegisterPassable, Equatable, Writable):
+struct IndirectCommandsLayoutEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -634,9 +553,6 @@ struct IndirectCommandsLayoutEXT(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -647,7 +563,7 @@ struct IndirectCommandsLayoutEXT(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct IndirectExecutionSetEXT(TrivialRegisterPassable, Equatable, Writable):
+struct IndirectExecutionSetEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -657,9 +573,6 @@ struct IndirectExecutionSetEXT(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -670,7 +583,7 @@ struct IndirectExecutionSetEXT(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct DescriptorUpdateTemplate(TrivialRegisterPassable, Equatable, Writable):
+struct DescriptorUpdateTemplate(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -680,9 +593,6 @@ struct DescriptorUpdateTemplate(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -693,7 +603,7 @@ struct DescriptorUpdateTemplate(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct SamplerYcbcrConversion(TrivialRegisterPassable, Equatable, Writable):
+struct SamplerYcbcrConversion(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -703,9 +613,6 @@ struct SamplerYcbcrConversion(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -716,7 +623,7 @@ struct SamplerYcbcrConversion(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct ValidationCacheEXT(TrivialRegisterPassable, Equatable, Writable):
+struct ValidationCacheEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -726,9 +633,6 @@ struct ValidationCacheEXT(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -739,7 +643,7 @@ struct ValidationCacheEXT(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct AccelerationStructureKHR(TrivialRegisterPassable, Equatable, Writable):
+struct AccelerationStructureKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -749,9 +653,6 @@ struct AccelerationStructureKHR(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -762,7 +663,7 @@ struct AccelerationStructureKHR(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct AccelerationStructureNV(TrivialRegisterPassable, Equatable, Writable):
+struct AccelerationStructureNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -772,9 +673,6 @@ struct AccelerationStructureNV(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -785,7 +683,7 @@ struct AccelerationStructureNV(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct PerformanceConfigurationINTEL(TrivialRegisterPassable, Equatable, Writable):
+struct PerformanceConfigurationINTEL(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -795,9 +693,6 @@ struct PerformanceConfigurationINTEL(TrivialRegisterPassable, Equatable, Writabl
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -808,7 +703,7 @@ struct PerformanceConfigurationINTEL(TrivialRegisterPassable, Equatable, Writabl
         writer.write(String(self))
 
 
-struct BufferCollectionFUCHSIA(TrivialRegisterPassable, Equatable, Writable):
+struct BufferCollectionFUCHSIA(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -818,9 +713,6 @@ struct BufferCollectionFUCHSIA(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -831,7 +723,7 @@ struct BufferCollectionFUCHSIA(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct DeferredOperationKHR(TrivialRegisterPassable, Equatable, Writable):
+struct DeferredOperationKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -841,9 +733,6 @@ struct DeferredOperationKHR(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -854,7 +743,7 @@ struct DeferredOperationKHR(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct PrivateDataSlot(TrivialRegisterPassable, Equatable, Writable):
+struct PrivateDataSlot(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -864,9 +753,6 @@ struct PrivateDataSlot(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -877,7 +763,7 @@ struct PrivateDataSlot(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct CuModuleNVX(TrivialRegisterPassable, Equatable, Writable):
+struct CuModuleNVX(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -887,9 +773,6 @@ struct CuModuleNVX(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -900,7 +783,7 @@ struct CuModuleNVX(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct CuFunctionNVX(TrivialRegisterPassable, Equatable, Writable):
+struct CuFunctionNVX(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -910,9 +793,6 @@ struct CuFunctionNVX(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -923,7 +803,7 @@ struct CuFunctionNVX(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct OpticalFlowSessionNV(TrivialRegisterPassable, Equatable, Writable):
+struct OpticalFlowSessionNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -933,9 +813,6 @@ struct OpticalFlowSessionNV(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -946,7 +823,7 @@ struct OpticalFlowSessionNV(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct MicromapEXT(TrivialRegisterPassable, Equatable, Writable):
+struct MicromapEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -956,9 +833,6 @@ struct MicromapEXT(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -969,7 +843,7 @@ struct MicromapEXT(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct ShaderEXT(TrivialRegisterPassable, Equatable, Writable):
+struct ShaderEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -979,9 +853,6 @@ struct ShaderEXT(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -992,7 +863,7 @@ struct ShaderEXT(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct TensorARM(TrivialRegisterPassable, Equatable, Writable):
+struct TensorARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1002,9 +873,6 @@ struct TensorARM(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1015,7 +883,7 @@ struct TensorARM(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct TensorViewARM(TrivialRegisterPassable, Equatable, Writable):
+struct TensorViewARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1025,9 +893,6 @@ struct TensorViewARM(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1038,7 +903,7 @@ struct TensorViewARM(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct DataGraphPipelineSessionARM(TrivialRegisterPassable, Equatable, Writable):
+struct DataGraphPipelineSessionARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1048,9 +913,6 @@ struct DataGraphPipelineSessionARM(TrivialRegisterPassable, Equatable, Writable)
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1061,7 +923,7 @@ struct DataGraphPipelineSessionARM(TrivialRegisterPassable, Equatable, Writable)
         writer.write(String(self))
 
 
-struct DisplayKHR(TrivialRegisterPassable, Equatable, Writable):
+struct DisplayKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1071,9 +933,6 @@ struct DisplayKHR(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1084,7 +943,7 @@ struct DisplayKHR(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct DisplayModeKHR(TrivialRegisterPassable, Equatable, Writable):
+struct DisplayModeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1094,9 +953,6 @@ struct DisplayModeKHR(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1107,7 +963,7 @@ struct DisplayModeKHR(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct SurfaceKHR(TrivialRegisterPassable, Equatable, Writable):
+struct SurfaceKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1117,9 +973,6 @@ struct SurfaceKHR(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1130,7 +983,7 @@ struct SurfaceKHR(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct SwapchainKHR(TrivialRegisterPassable, Equatable, Writable):
+struct SwapchainKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1140,9 +993,6 @@ struct SwapchainKHR(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1153,7 +1003,7 @@ struct SwapchainKHR(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct DebugReportCallbackEXT(TrivialRegisterPassable, Equatable, Writable):
+struct DebugReportCallbackEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1163,9 +1013,6 @@ struct DebugReportCallbackEXT(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1176,7 +1023,7 @@ struct DebugReportCallbackEXT(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct DebugUtilsMessengerEXT(TrivialRegisterPassable, Equatable, Writable):
+struct DebugUtilsMessengerEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1186,9 +1033,6 @@ struct DebugUtilsMessengerEXT(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1199,7 +1043,7 @@ struct DebugUtilsMessengerEXT(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct VideoSessionKHR(TrivialRegisterPassable, Equatable, Writable):
+struct VideoSessionKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1209,9 +1053,6 @@ struct VideoSessionKHR(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1222,7 +1063,7 @@ struct VideoSessionKHR(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct VideoSessionParametersKHR(TrivialRegisterPassable, Equatable, Writable):
+struct VideoSessionParametersKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1232,9 +1073,6 @@ struct VideoSessionParametersKHR(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1245,7 +1083,7 @@ struct VideoSessionParametersKHR(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct SemaphoreSciSyncPoolNV(TrivialRegisterPassable, Equatable, Writable):
+struct SemaphoreSciSyncPoolNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1255,9 +1093,6 @@ struct SemaphoreSciSyncPoolNV(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1268,7 +1103,7 @@ struct SemaphoreSciSyncPoolNV(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct CudaModuleNV(TrivialRegisterPassable, Equatable, Writable):
+struct CudaModuleNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1278,9 +1113,6 @@ struct CudaModuleNV(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1291,7 +1123,7 @@ struct CudaModuleNV(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct CudaFunctionNV(TrivialRegisterPassable, Equatable, Writable):
+struct CudaFunctionNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1301,9 +1133,6 @@ struct CudaFunctionNV(TrivialRegisterPassable, Equatable, Writable):
     def value(self) -> UInt64:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     def __bool__(self) -> Bool:
         return self._value != 0
 
@@ -1314,7 +1143,7 @@ struct CudaFunctionNV(TrivialRegisterPassable, Equatable, Writable):
         writer.write(String(self))
 
 
-struct ExternalComputeQueueNV(TrivialRegisterPassable, Equatable, Writable):
+struct ExternalComputeQueueNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -1323,9 +1152,6 @@ struct ExternalComputeQueueNV(TrivialRegisterPassable, Equatable, Writable):
 
     def value(self) -> UInt:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def __bool__(self) -> Bool:
         return self._value != 0

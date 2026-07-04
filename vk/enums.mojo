@@ -55,7 +55,7 @@ comptime MemoryUnmapFlagBitsKHR = MemoryUnmapFlagBits
 comptime DriverIdKHR = DriverId
 
 
-struct ImageLayout(TrivialRegisterPassable, Equatable):
+struct ImageLayout(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -63,9 +63,6 @@ struct ImageLayout(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime UNDEFINED = ImageLayout(value = 0)
     comptime GENERAL = ImageLayout(value = 1)
@@ -102,7 +99,7 @@ struct ImageLayout(TrivialRegisterPassable, Equatable):
     comptime ZERO_INITIALIZED = ImageLayout(value = 1000620000)
 
 
-struct AttachmentLoadOp(TrivialRegisterPassable, Equatable):
+struct AttachmentLoadOp(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -110,9 +107,6 @@ struct AttachmentLoadOp(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime LOAD = AttachmentLoadOp(value = 0)
     comptime CLEAR = AttachmentLoadOp(value = 1)
@@ -120,7 +114,7 @@ struct AttachmentLoadOp(TrivialRegisterPassable, Equatable):
     comptime NONE = AttachmentLoadOp(value = 1000400000)
 
 
-struct AttachmentStoreOp(TrivialRegisterPassable, Equatable):
+struct AttachmentStoreOp(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -128,16 +122,13 @@ struct AttachmentStoreOp(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime STORE = AttachmentStoreOp(value = 0)
     comptime DONT_CARE = AttachmentStoreOp(value = 1)
     comptime NONE = AttachmentStoreOp(value = 1000301000)
 
 
-struct ImageType(TrivialRegisterPassable, Equatable):
+struct ImageType(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -145,16 +136,13 @@ struct ImageType(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime TYPE_1D = ImageType(value = 0)
     comptime TYPE_2D = ImageType(value = 1)
     comptime TYPE_3D = ImageType(value = 2)
 
 
-struct ImageTiling(TrivialRegisterPassable, Equatable):
+struct ImageTiling(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -162,16 +150,13 @@ struct ImageTiling(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime OPTIMAL = ImageTiling(value = 0)
     comptime LINEAR = ImageTiling(value = 1)
     comptime DRM_FORMAT_MODIFIER = ImageTiling(value = 1000158000)
 
 
-struct ImageViewType(TrivialRegisterPassable, Equatable):
+struct ImageViewType(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -179,9 +164,6 @@ struct ImageViewType(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime TYPE_1D = ImageViewType(value = 0)
     comptime TYPE_2D = ImageViewType(value = 1)
@@ -192,7 +174,7 @@ struct ImageViewType(TrivialRegisterPassable, Equatable):
     comptime CUBE_ARRAY = ImageViewType(value = 6)
 
 
-struct CommandBufferLevel(TrivialRegisterPassable, Equatable):
+struct CommandBufferLevel(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -200,15 +182,12 @@ struct CommandBufferLevel(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime PRIMARY = CommandBufferLevel(value = 0)
     comptime SECONDARY = CommandBufferLevel(value = 1)
 
 
-struct ComponentSwizzle(TrivialRegisterPassable, Equatable):
+struct ComponentSwizzle(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -216,9 +195,6 @@ struct ComponentSwizzle(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime IDENTITY = ComponentSwizzle(value = 0)
     comptime ZERO = ComponentSwizzle(value = 1)
@@ -229,7 +205,7 @@ struct ComponentSwizzle(TrivialRegisterPassable, Equatable):
     comptime A = ComponentSwizzle(value = 6)
 
 
-struct DescriptorType(TrivialRegisterPassable, Equatable):
+struct DescriptorType(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -237,9 +213,6 @@ struct DescriptorType(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime SAMPLER = DescriptorType(value = 0)
     comptime COMBINED_IMAGE_SAMPLER = DescriptorType(value = 1)
@@ -261,7 +234,7 @@ struct DescriptorType(TrivialRegisterPassable, Equatable):
     comptime PARTITIONED_ACCELERATION_STRUCTURE = DescriptorType(value = 1000570000)
 
 
-struct QueryType(TrivialRegisterPassable, Equatable):
+struct QueryType(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -269,9 +242,6 @@ struct QueryType(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime OCCLUSION = QueryType(value = 0)
     comptime PIPELINE_STATISTICS = QueryType(value = 1)
@@ -290,7 +260,7 @@ struct QueryType(TrivialRegisterPassable, Equatable):
     comptime MICROMAP_COMPACTED_SIZE = QueryType(value = 1000396001)
 
 
-struct BorderColor(TrivialRegisterPassable, Equatable):
+struct BorderColor(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -298,9 +268,6 @@ struct BorderColor(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime FLOAT_TRANSPARENT_BLACK = BorderColor(value = 0)
     comptime INT_TRANSPARENT_BLACK = BorderColor(value = 1)
@@ -312,7 +279,7 @@ struct BorderColor(TrivialRegisterPassable, Equatable):
     comptime INT_CUSTOM = BorderColor(value = 1000287004)
 
 
-struct PipelineBindPoint(TrivialRegisterPassable, Equatable):
+struct PipelineBindPoint(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -320,9 +287,6 @@ struct PipelineBindPoint(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime GRAPHICS = PipelineBindPoint(value = 0)
     comptime COMPUTE = PipelineBindPoint(value = 1)
@@ -332,7 +296,7 @@ struct PipelineBindPoint(TrivialRegisterPassable, Equatable):
     comptime DATA_GRAPH = PipelineBindPoint(value = 1000507000)
 
 
-struct PipelineCacheHeaderVersion(TrivialRegisterPassable, Equatable):
+struct PipelineCacheHeaderVersion(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -340,16 +304,13 @@ struct PipelineCacheHeaderVersion(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime ONE = PipelineCacheHeaderVersion(value = 1)
     comptime SAFETY_CRITICAL_ONE = PipelineCacheHeaderVersion(value = 1000298001)
     comptime DATA_GRAPH = PipelineCacheHeaderVersion(value = 1000629000)
 
 
-struct PrimitiveTopology(TrivialRegisterPassable, Equatable):
+struct PrimitiveTopology(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -357,9 +318,6 @@ struct PrimitiveTopology(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime POINT_LIST = PrimitiveTopology(value = 0)
     comptime LINE_LIST = PrimitiveTopology(value = 1)
@@ -374,7 +332,7 @@ struct PrimitiveTopology(TrivialRegisterPassable, Equatable):
     comptime PATCH_LIST = PrimitiveTopology(value = 10)
 
 
-struct SharingMode(TrivialRegisterPassable, Equatable):
+struct SharingMode(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -382,15 +340,12 @@ struct SharingMode(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime EXCLUSIVE = SharingMode(value = 0)
     comptime CONCURRENT = SharingMode(value = 1)
 
 
-struct IndexType(TrivialRegisterPassable, Equatable):
+struct IndexType(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -398,9 +353,6 @@ struct IndexType(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime UINT16 = IndexType(value = 0)
     comptime UINT32 = IndexType(value = 1)
@@ -408,7 +360,7 @@ struct IndexType(TrivialRegisterPassable, Equatable):
     comptime UINT8 = IndexType(value = 1000265000)
 
 
-struct Filter(TrivialRegisterPassable, Equatable):
+struct Filter(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -416,16 +368,13 @@ struct Filter(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime NEAREST = Filter(value = 0)
     comptime LINEAR = Filter(value = 1)
     comptime CUBIC = Filter(value = 1000015000)
 
 
-struct SamplerMipmapMode(TrivialRegisterPassable, Equatable):
+struct SamplerMipmapMode(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -433,15 +382,12 @@ struct SamplerMipmapMode(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime NEAREST = SamplerMipmapMode(value = 0)
     comptime LINEAR = SamplerMipmapMode(value = 1)
 
 
-struct SamplerAddressMode(TrivialRegisterPassable, Equatable):
+struct SamplerAddressMode(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -449,9 +395,6 @@ struct SamplerAddressMode(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime REPEAT = SamplerAddressMode(value = 0)
     comptime MIRRORED_REPEAT = SamplerAddressMode(value = 1)
@@ -460,7 +403,7 @@ struct SamplerAddressMode(TrivialRegisterPassable, Equatable):
     comptime MIRROR_CLAMP_TO_EDGE = SamplerAddressMode(value = 4)
 
 
-struct CompareOp(TrivialRegisterPassable, Equatable):
+struct CompareOp(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -468,9 +411,6 @@ struct CompareOp(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime NEVER = CompareOp(value = 0)
     comptime LESS = CompareOp(value = 1)
@@ -482,7 +422,7 @@ struct CompareOp(TrivialRegisterPassable, Equatable):
     comptime ALWAYS = CompareOp(value = 7)
 
 
-struct PolygonMode(TrivialRegisterPassable, Equatable):
+struct PolygonMode(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -490,9 +430,6 @@ struct PolygonMode(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime FILL = PolygonMode(value = 0)
     comptime LINE = PolygonMode(value = 1)
@@ -500,7 +437,7 @@ struct PolygonMode(TrivialRegisterPassable, Equatable):
     comptime FILL_RECTANGLE = PolygonMode(value = 1000153000)
 
 
-struct FrontFace(TrivialRegisterPassable, Equatable):
+struct FrontFace(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -508,15 +445,12 @@ struct FrontFace(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime COUNTER_CLOCKWISE = FrontFace(value = 0)
     comptime CLOCKWISE = FrontFace(value = 1)
 
 
-struct BlendFactor(TrivialRegisterPassable, Equatable):
+struct BlendFactor(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -524,9 +458,6 @@ struct BlendFactor(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime ZERO = BlendFactor(value = 0)
     comptime ONE = BlendFactor(value = 1)
@@ -549,7 +480,7 @@ struct BlendFactor(TrivialRegisterPassable, Equatable):
     comptime ONE_MINUS_SRC1_ALPHA = BlendFactor(value = 18)
 
 
-struct BlendOp(TrivialRegisterPassable, Equatable):
+struct BlendOp(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -557,9 +488,6 @@ struct BlendOp(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime ADD = BlendOp(value = 0)
     comptime SUBTRACT = BlendOp(value = 1)
@@ -614,7 +542,7 @@ struct BlendOp(TrivialRegisterPassable, Equatable):
     comptime BLUE = BlendOp(value = 1000148045)
 
 
-struct StencilOp(TrivialRegisterPassable, Equatable):
+struct StencilOp(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -622,9 +550,6 @@ struct StencilOp(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime KEEP = StencilOp(value = 0)
     comptime ZERO = StencilOp(value = 1)
@@ -636,7 +561,7 @@ struct StencilOp(TrivialRegisterPassable, Equatable):
     comptime DECREMENT_AND_WRAP = StencilOp(value = 7)
 
 
-struct LogicOp(TrivialRegisterPassable, Equatable):
+struct LogicOp(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -644,9 +569,6 @@ struct LogicOp(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime CLEAR = LogicOp(value = 0)
     comptime AND = LogicOp(value = 1)
@@ -666,7 +588,7 @@ struct LogicOp(TrivialRegisterPassable, Equatable):
     comptime SET = LogicOp(value = 15)
 
 
-struct InternalAllocationType(TrivialRegisterPassable, Equatable):
+struct InternalAllocationType(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -674,14 +596,11 @@ struct InternalAllocationType(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime EXECUTABLE = InternalAllocationType(value = 0)
 
 
-struct SystemAllocationScope(TrivialRegisterPassable, Equatable):
+struct SystemAllocationScope(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -689,9 +608,6 @@ struct SystemAllocationScope(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime COMMAND = SystemAllocationScope(value = 0)
     comptime OBJECT = SystemAllocationScope(value = 1)
@@ -700,7 +616,7 @@ struct SystemAllocationScope(TrivialRegisterPassable, Equatable):
     comptime INSTANCE = SystemAllocationScope(value = 4)
 
 
-struct PhysicalDeviceType(TrivialRegisterPassable, Equatable):
+struct PhysicalDeviceType(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -708,9 +624,6 @@ struct PhysicalDeviceType(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime OTHER = PhysicalDeviceType(value = 0)
     comptime INTEGRATED_GPU = PhysicalDeviceType(value = 1)
@@ -719,7 +632,7 @@ struct PhysicalDeviceType(TrivialRegisterPassable, Equatable):
     comptime CPU = PhysicalDeviceType(value = 4)
 
 
-struct VertexInputRate(TrivialRegisterPassable, Equatable):
+struct VertexInputRate(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -727,15 +640,12 @@ struct VertexInputRate(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime VERTEX = VertexInputRate(value = 0)
     comptime INSTANCE = VertexInputRate(value = 1)
 
 
-struct Format(TrivialRegisterPassable, Equatable):
+struct Format(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -743,9 +653,6 @@ struct Format(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime UNDEFINED = Format(value = 0)
     comptime R4G4_UNORM_PACK8 = Format(value = 1)
@@ -1045,7 +952,7 @@ struct Format(TrivialRegisterPassable, Equatable):
     comptime G14X2_B14X2R14X2_2PLANE_422_UNORM_3PACK16 = Format(value = 1000609013)
 
 
-struct StructureType(TrivialRegisterPassable, Equatable):
+struct StructureType(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -1053,9 +960,6 @@ struct StructureType(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime APPLICATION_INFO = StructureType(value = 0)
     comptime INSTANCE_CREATE_INFO = StructureType(value = 1)
@@ -2233,7 +2137,7 @@ struct StructureType(TrivialRegisterPassable, Equatable):
     comptime SURFACE_CREATE_INFO = StructureType(value = 1000685000)
 
 
-struct SubpassContents(TrivialRegisterPassable, Equatable):
+struct SubpassContents(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2242,15 +2146,12 @@ struct SubpassContents(TrivialRegisterPassable, Equatable):
     def value(self) -> Int32:
         return self._value
 
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
-
     comptime INLINE = SubpassContents(value = 0)
     comptime SECONDARY_COMMAND_BUFFERS = SubpassContents(value = 1)
     comptime INLINE_AND_SECONDARY_COMMAND_BUFFERS = SubpassContents(value = 1000451000)
 
 
-struct Result(TrivialRegisterPassable, Equatable, Writable):
+struct Result(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     comptime _descriptions: Dict[Int32, StaticString] = {
@@ -2316,9 +2217,6 @@ struct Result(TrivialRegisterPassable, Equatable, Writable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     def is_error(self) -> Bool:
         return self.value() < 0
@@ -2394,7 +2292,7 @@ struct Result(TrivialRegisterPassable, Equatable, Writable):
     comptime PIPELINE_BINARY_MISSING = Result(value = 1000483000)
 
 
-struct DynamicState(TrivialRegisterPassable, Equatable):
+struct DynamicState(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2402,9 +2300,6 @@ struct DynamicState(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime VIEWPORT = DynamicState(value = 0)
     comptime SCISSOR = DynamicState(value = 1)
@@ -2481,7 +2376,7 @@ struct DynamicState(TrivialRegisterPassable, Equatable):
     comptime DEPTH_CLAMP_RANGE = DynamicState(value = 1000582000)
 
 
-struct DescriptorUpdateTemplateType(TrivialRegisterPassable, Equatable):
+struct DescriptorUpdateTemplateType(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2489,15 +2384,12 @@ struct DescriptorUpdateTemplateType(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DESCRIPTOR_SET = DescriptorUpdateTemplateType(value = 0)
     comptime PUSH_DESCRIPTORS = DescriptorUpdateTemplateType(value = 1)
 
 
-struct ObjectType(TrivialRegisterPassable, Equatable):
+struct ObjectType(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2505,9 +2397,6 @@ struct ObjectType(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime UNKNOWN = ObjectType(value = 0)
     comptime INSTANCE = ObjectType(value = 1)
@@ -2568,7 +2457,7 @@ struct ObjectType(TrivialRegisterPassable, Equatable):
     comptime INDIRECT_EXECUTION_SET = ObjectType(value = 1000572001)
 
 
-struct RayTracingInvocationReorderModeEXT(TrivialRegisterPassable, Equatable):
+struct RayTracingInvocationReorderModeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2576,15 +2465,12 @@ struct RayTracingInvocationReorderModeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime NONE = RayTracingInvocationReorderModeEXT(value = 0)
     comptime REORDER = RayTracingInvocationReorderModeEXT(value = 1)
 
 
-struct RayTracingLssIndexingModeNV(TrivialRegisterPassable, Equatable):
+struct RayTracingLssIndexingModeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2592,15 +2478,12 @@ struct RayTracingLssIndexingModeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime LIST = RayTracingLssIndexingModeNV(value = 0)
     comptime SUCCESSIVE = RayTracingLssIndexingModeNV(value = 1)
 
 
-struct RayTracingLssPrimitiveEndCapsModeNV(TrivialRegisterPassable, Equatable):
+struct RayTracingLssPrimitiveEndCapsModeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2608,15 +2491,12 @@ struct RayTracingLssPrimitiveEndCapsModeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime NONE = RayTracingLssPrimitiveEndCapsModeNV(value = 0)
     comptime CHAINED = RayTracingLssPrimitiveEndCapsModeNV(value = 1)
 
 
-struct DirectDriverLoadingModeLUNARG(TrivialRegisterPassable, Equatable):
+struct DirectDriverLoadingModeLUNARG(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2624,15 +2504,12 @@ struct DirectDriverLoadingModeLUNARG(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime EXCLUSIVE = DirectDriverLoadingModeLUNARG(value = 0)
     comptime INCLUSIVE = DirectDriverLoadingModeLUNARG(value = 1)
 
 
-struct AntiLagModeAMD(TrivialRegisterPassable, Equatable):
+struct AntiLagModeAMD(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2640,16 +2517,13 @@ struct AntiLagModeAMD(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DRIVER_CONTROL = AntiLagModeAMD(value = 0)
     comptime ON = AntiLagModeAMD(value = 1)
     comptime OFF = AntiLagModeAMD(value = 2)
 
 
-struct AntiLagStageAMD(TrivialRegisterPassable, Equatable):
+struct AntiLagStageAMD(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2657,15 +2531,12 @@ struct AntiLagStageAMD(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime INPUT = AntiLagStageAMD(value = 0)
     comptime PRESENT = AntiLagStageAMD(value = 1)
 
 
-struct SemaphoreType(TrivialRegisterPassable, Equatable):
+struct SemaphoreType(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2673,15 +2544,12 @@ struct SemaphoreType(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime BINARY = SemaphoreType(value = 0)
     comptime TIMELINE = SemaphoreType(value = 1)
 
 
-struct PresentModeKHR(TrivialRegisterPassable, Equatable):
+struct PresentModeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2689,9 +2557,6 @@ struct PresentModeKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime IMMEDIATE = PresentModeKHR(value = 0)
     comptime MAILBOX = PresentModeKHR(value = 1)
@@ -2702,7 +2567,7 @@ struct PresentModeKHR(TrivialRegisterPassable, Equatable):
     comptime FIFO_LATEST_READY = PresentModeKHR(value = 1000361000)
 
 
-struct ColorSpaceKHR(TrivialRegisterPassable, Equatable):
+struct ColorSpaceKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2710,9 +2575,6 @@ struct ColorSpaceKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime SRGB_NONLINEAR = ColorSpaceKHR(value = 0)
     comptime DISPLAY_P3_NONLINEAR = ColorSpaceKHR(value = 1000104001)
@@ -2733,7 +2595,7 @@ struct ColorSpaceKHR(TrivialRegisterPassable, Equatable):
     comptime DISPLAY_NATIVE = ColorSpaceKHR(value = 1000213000)
 
 
-struct DisplaySurfaceStereoTypeNV(TrivialRegisterPassable, Equatable):
+struct DisplaySurfaceStereoTypeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2741,9 +2603,6 @@ struct DisplaySurfaceStereoTypeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime NONE = DisplaySurfaceStereoTypeNV(value = 0)
     comptime ONBOARD_DIN = DisplaySurfaceStereoTypeNV(value = 1)
@@ -2751,7 +2610,7 @@ struct DisplaySurfaceStereoTypeNV(TrivialRegisterPassable, Equatable):
     comptime INBAND_DISPLAYPORT = DisplaySurfaceStereoTypeNV(value = 3)
 
 
-struct TimeDomainKHR(TrivialRegisterPassable, Equatable):
+struct TimeDomainKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2759,9 +2618,6 @@ struct TimeDomainKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DEVICE = TimeDomainKHR(value = 0)
     comptime CLOCK_MONOTONIC = TimeDomainKHR(value = 1)
@@ -2771,7 +2627,7 @@ struct TimeDomainKHR(TrivialRegisterPassable, Equatable):
     comptime SWAPCHAIN_LOCAL = TimeDomainKHR(value = 1000208001)
 
 
-struct DebugReportObjectTypeEXT(TrivialRegisterPassable, Equatable):
+struct DebugReportObjectTypeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2779,9 +2635,6 @@ struct DebugReportObjectTypeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime UNKNOWN = DebugReportObjectTypeEXT(value = 0)
     comptime INSTANCE = DebugReportObjectTypeEXT(value = 1)
@@ -2828,7 +2681,7 @@ struct DebugReportObjectTypeEXT(TrivialRegisterPassable, Equatable):
     comptime BUFFER_COLLECTION_FUCHSIA = DebugReportObjectTypeEXT(value = 1000366000)
 
 
-struct DeviceMemoryReportEventTypeEXT(TrivialRegisterPassable, Equatable):
+struct DeviceMemoryReportEventTypeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2836,9 +2689,6 @@ struct DeviceMemoryReportEventTypeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime ALLOCATE = DeviceMemoryReportEventTypeEXT(value = 0)
     comptime FREE = DeviceMemoryReportEventTypeEXT(value = 1)
@@ -2847,7 +2697,7 @@ struct DeviceMemoryReportEventTypeEXT(TrivialRegisterPassable, Equatable):
     comptime ALLOCATION_FAILED = DeviceMemoryReportEventTypeEXT(value = 4)
 
 
-struct RasterizationOrderAMD(TrivialRegisterPassable, Equatable):
+struct RasterizationOrderAMD(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2855,15 +2705,12 @@ struct RasterizationOrderAMD(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime STRICT = RasterizationOrderAMD(value = 0)
     comptime RELAXED = RasterizationOrderAMD(value = 1)
 
 
-struct ClusterAccelerationStructureTypeNV(TrivialRegisterPassable, Equatable):
+struct ClusterAccelerationStructureTypeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2871,16 +2718,13 @@ struct ClusterAccelerationStructureTypeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime CLUSTERS_BOTTOM_LEVEL = ClusterAccelerationStructureTypeNV(value = 0)
     comptime TRIANGLE_CLUSTER = ClusterAccelerationStructureTypeNV(value = 1)
     comptime TRIANGLE_CLUSTER_TEMPLATE = ClusterAccelerationStructureTypeNV(value = 2)
 
 
-struct ClusterAccelerationStructureOpTypeNV(TrivialRegisterPassable, Equatable):
+struct ClusterAccelerationStructureOpTypeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2888,9 +2732,6 @@ struct ClusterAccelerationStructureOpTypeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime MOVE_OBJECTS = ClusterAccelerationStructureOpTypeNV(value = 0)
     comptime BUILD_CLUSTERS_BOTTOM_LEVEL = ClusterAccelerationStructureOpTypeNV(value = 1)
@@ -2900,7 +2741,7 @@ struct ClusterAccelerationStructureOpTypeNV(TrivialRegisterPassable, Equatable):
     comptime GET_CLUSTER_TEMPLATE_INDICES = ClusterAccelerationStructureOpTypeNV(value = 5)
 
 
-struct ClusterAccelerationStructureOpModeNV(TrivialRegisterPassable, Equatable):
+struct ClusterAccelerationStructureOpModeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2908,16 +2749,13 @@ struct ClusterAccelerationStructureOpModeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime IMPLICIT_DESTINATIONS = ClusterAccelerationStructureOpModeNV(value = 0)
     comptime EXPLICIT_DESTINATIONS = ClusterAccelerationStructureOpModeNV(value = 1)
     comptime COMPUTE_SIZES = ClusterAccelerationStructureOpModeNV(value = 2)
 
 
-struct ValidationCheckEXT(TrivialRegisterPassable, Equatable):
+struct ValidationCheckEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2925,15 +2763,12 @@ struct ValidationCheckEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime ALL = ValidationCheckEXT(value = 0)
     comptime SHADERS = ValidationCheckEXT(value = 1)
 
 
-struct ValidationFeatureEnableEXT(TrivialRegisterPassable, Equatable):
+struct ValidationFeatureEnableEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2941,9 +2776,6 @@ struct ValidationFeatureEnableEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime GPU_ASSISTED = ValidationFeatureEnableEXT(value = 0)
     comptime GPU_ASSISTED_RESERVE_BINDING_SLOT = ValidationFeatureEnableEXT(value = 1)
@@ -2952,7 +2784,7 @@ struct ValidationFeatureEnableEXT(TrivialRegisterPassable, Equatable):
     comptime SYNCHRONIZATION_VALIDATION = ValidationFeatureEnableEXT(value = 4)
 
 
-struct ValidationFeatureDisableEXT(TrivialRegisterPassable, Equatable):
+struct ValidationFeatureDisableEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2960,9 +2792,6 @@ struct ValidationFeatureDisableEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime ALL = ValidationFeatureDisableEXT(value = 0)
     comptime SHADERS = ValidationFeatureDisableEXT(value = 1)
@@ -2974,7 +2803,7 @@ struct ValidationFeatureDisableEXT(TrivialRegisterPassable, Equatable):
     comptime SHADER_VALIDATION_CACHE = ValidationFeatureDisableEXT(value = 7)
 
 
-struct LayerSettingTypeEXT(TrivialRegisterPassable, Equatable):
+struct LayerSettingTypeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -2982,9 +2811,6 @@ struct LayerSettingTypeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime BOOL32 = LayerSettingTypeEXT(value = 0)
     comptime INT32 = LayerSettingTypeEXT(value = 1)
@@ -2996,7 +2822,7 @@ struct LayerSettingTypeEXT(TrivialRegisterPassable, Equatable):
     comptime STRING = LayerSettingTypeEXT(value = 7)
 
 
-struct IndirectCommandsTokenTypeNV(TrivialRegisterPassable, Equatable):
+struct IndirectCommandsTokenTypeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3004,9 +2830,6 @@ struct IndirectCommandsTokenTypeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime SHADER_GROUP = IndirectCommandsTokenTypeNV(value = 0)
     comptime STATE_FLAGS = IndirectCommandsTokenTypeNV(value = 1)
@@ -3022,7 +2845,7 @@ struct IndirectCommandsTokenTypeNV(TrivialRegisterPassable, Equatable):
     comptime DISPATCH = IndirectCommandsTokenTypeNV(value = 1000428004)
 
 
-struct DisplayPowerStateEXT(TrivialRegisterPassable, Equatable):
+struct DisplayPowerStateEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3030,16 +2853,13 @@ struct DisplayPowerStateEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime OFF = DisplayPowerStateEXT(value = 0)
     comptime SUSPEND = DisplayPowerStateEXT(value = 1)
     comptime ON = DisplayPowerStateEXT(value = 2)
 
 
-struct DeviceEventTypeEXT(TrivialRegisterPassable, Equatable):
+struct DeviceEventTypeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3047,14 +2867,11 @@ struct DeviceEventTypeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DISPLAY_HOTPLUG = DeviceEventTypeEXT(value = 0)
 
 
-struct DisplayEventTypeEXT(TrivialRegisterPassable, Equatable):
+struct DisplayEventTypeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3062,14 +2879,11 @@ struct DisplayEventTypeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime FIRST_PIXEL_OUT = DisplayEventTypeEXT(value = 0)
 
 
-struct ViewportCoordinateSwizzleNV(TrivialRegisterPassable, Equatable):
+struct ViewportCoordinateSwizzleNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3077,9 +2891,6 @@ struct ViewportCoordinateSwizzleNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime POSITIVE_X = ViewportCoordinateSwizzleNV(value = 0)
     comptime NEGATIVE_X = ViewportCoordinateSwizzleNV(value = 1)
@@ -3091,7 +2902,7 @@ struct ViewportCoordinateSwizzleNV(TrivialRegisterPassable, Equatable):
     comptime NEGATIVE_W = ViewportCoordinateSwizzleNV(value = 7)
 
 
-struct DiscardRectangleModeEXT(TrivialRegisterPassable, Equatable):
+struct DiscardRectangleModeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3099,15 +2910,12 @@ struct DiscardRectangleModeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime INCLUSIVE = DiscardRectangleModeEXT(value = 0)
     comptime EXCLUSIVE = DiscardRectangleModeEXT(value = 1)
 
 
-struct PointClippingBehavior(TrivialRegisterPassable, Equatable):
+struct PointClippingBehavior(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3115,15 +2923,12 @@ struct PointClippingBehavior(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime ALL_CLIP_PLANES = PointClippingBehavior(value = 0)
     comptime USER_CLIP_PLANES_ONLY = PointClippingBehavior(value = 1)
 
 
-struct SamplerReductionMode(TrivialRegisterPassable, Equatable):
+struct SamplerReductionMode(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3131,9 +2936,6 @@ struct SamplerReductionMode(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime WEIGHTED_AVERAGE = SamplerReductionMode(value = 0)
     comptime MIN = SamplerReductionMode(value = 1)
@@ -3141,7 +2943,7 @@ struct SamplerReductionMode(TrivialRegisterPassable, Equatable):
     comptime WEIGHTED_AVERAGE_RANGECLAMP = SamplerReductionMode(value = 1000521000)
 
 
-struct TessellationDomainOrigin(TrivialRegisterPassable, Equatable):
+struct TessellationDomainOrigin(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3149,15 +2951,12 @@ struct TessellationDomainOrigin(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime UPPER_LEFT = TessellationDomainOrigin(value = 0)
     comptime LOWER_LEFT = TessellationDomainOrigin(value = 1)
 
 
-struct SamplerYcbcrModelConversion(TrivialRegisterPassable, Equatable):
+struct SamplerYcbcrModelConversion(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3165,9 +2964,6 @@ struct SamplerYcbcrModelConversion(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime RGB_IDENTITY = SamplerYcbcrModelConversion(value = 0)
     comptime YCBCR_IDENTITY = SamplerYcbcrModelConversion(value = 1)
@@ -3176,7 +2972,7 @@ struct SamplerYcbcrModelConversion(TrivialRegisterPassable, Equatable):
     comptime YCBCR_2020 = SamplerYcbcrModelConversion(value = 4)
 
 
-struct SamplerYcbcrRange(TrivialRegisterPassable, Equatable):
+struct SamplerYcbcrRange(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3184,15 +2980,12 @@ struct SamplerYcbcrRange(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime ITU_FULL = SamplerYcbcrRange(value = 0)
     comptime ITU_NARROW = SamplerYcbcrRange(value = 1)
 
 
-struct ChromaLocation(TrivialRegisterPassable, Equatable):
+struct ChromaLocation(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3200,15 +2993,12 @@ struct ChromaLocation(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime COSITED_EVEN = ChromaLocation(value = 0)
     comptime MIDPOINT = ChromaLocation(value = 1)
 
 
-struct BlendOverlapEXT(TrivialRegisterPassable, Equatable):
+struct BlendOverlapEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3216,16 +3006,13 @@ struct BlendOverlapEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime UNCORRELATED = BlendOverlapEXT(value = 0)
     comptime DISJOINT = BlendOverlapEXT(value = 1)
     comptime CONJOINT = BlendOverlapEXT(value = 2)
 
 
-struct CoverageModulationModeNV(TrivialRegisterPassable, Equatable):
+struct CoverageModulationModeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3233,9 +3020,6 @@ struct CoverageModulationModeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime NONE = CoverageModulationModeNV(value = 0)
     comptime RGB = CoverageModulationModeNV(value = 1)
@@ -3243,7 +3027,7 @@ struct CoverageModulationModeNV(TrivialRegisterPassable, Equatable):
     comptime RGBA = CoverageModulationModeNV(value = 3)
 
 
-struct CoverageReductionModeNV(TrivialRegisterPassable, Equatable):
+struct CoverageReductionModeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3251,15 +3035,12 @@ struct CoverageReductionModeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime MERGE = CoverageReductionModeNV(value = 0)
     comptime TRUNCATE = CoverageReductionModeNV(value = 1)
 
 
-struct ValidationCacheHeaderVersionEXT(TrivialRegisterPassable, Equatable):
+struct ValidationCacheHeaderVersionEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3267,14 +3048,11 @@ struct ValidationCacheHeaderVersionEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime ONE = ValidationCacheHeaderVersionEXT(value = 1)
 
 
-struct ShaderInfoTypeAMD(TrivialRegisterPassable, Equatable):
+struct ShaderInfoTypeAMD(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3282,16 +3060,13 @@ struct ShaderInfoTypeAMD(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime STATISTICS = ShaderInfoTypeAMD(value = 0)
     comptime BINARY = ShaderInfoTypeAMD(value = 1)
     comptime DISASSEMBLY = ShaderInfoTypeAMD(value = 2)
 
 
-struct QueueGlobalPriority(TrivialRegisterPassable, Equatable):
+struct QueueGlobalPriority(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3299,9 +3074,6 @@ struct QueueGlobalPriority(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime LOW = QueueGlobalPriority(value = 128)
     comptime MEDIUM = QueueGlobalPriority(value = 256)
@@ -3309,7 +3081,7 @@ struct QueueGlobalPriority(TrivialRegisterPassable, Equatable):
     comptime REALTIME = QueueGlobalPriority(value = 1024)
 
 
-struct ConservativeRasterizationModeEXT(TrivialRegisterPassable, Equatable):
+struct ConservativeRasterizationModeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3317,16 +3089,13 @@ struct ConservativeRasterizationModeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DISABLED = ConservativeRasterizationModeEXT(value = 0)
     comptime OVERESTIMATE = ConservativeRasterizationModeEXT(value = 1)
     comptime UNDERESTIMATE = ConservativeRasterizationModeEXT(value = 2)
 
 
-struct VendorId(TrivialRegisterPassable, Equatable):
+struct VendorId(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3334,9 +3103,6 @@ struct VendorId(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime KHRONOS = VendorId(value = 65536)
     comptime VIV = VendorId(value = 65537)
@@ -3348,7 +3114,7 @@ struct VendorId(TrivialRegisterPassable, Equatable):
     comptime MOBILEYE = VendorId(value = 65543)
 
 
-struct DriverId(TrivialRegisterPassable, Equatable):
+struct DriverId(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3356,9 +3122,6 @@ struct DriverId(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime AMD_PROPRIETARY = DriverId(value = 1)
     comptime AMD_OPEN_SOURCE = DriverId(value = 2)
@@ -3391,7 +3154,7 @@ struct DriverId(TrivialRegisterPassable, Equatable):
     comptime MESA_KOSMICKRISP = DriverId(value = 28)
 
 
-struct ShadingRatePaletteEntryNV(TrivialRegisterPassable, Equatable):
+struct ShadingRatePaletteEntryNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3399,9 +3162,6 @@ struct ShadingRatePaletteEntryNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime NO_INVOCATIONS = ShadingRatePaletteEntryNV(value = 0)
     comptime ENTRY_16_INVOCATIONS_PER_PIXEL = ShadingRatePaletteEntryNV(value = 1)
@@ -3417,7 +3177,7 @@ struct ShadingRatePaletteEntryNV(TrivialRegisterPassable, Equatable):
     comptime ENTRY_1_INVOCATION_PER_4X4_PIXELS = ShadingRatePaletteEntryNV(value = 11)
 
 
-struct CoarseSampleOrderTypeNV(TrivialRegisterPassable, Equatable):
+struct CoarseSampleOrderTypeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3425,9 +3185,6 @@ struct CoarseSampleOrderTypeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DEFAULT = CoarseSampleOrderTypeNV(value = 0)
     comptime CUSTOM = CoarseSampleOrderTypeNV(value = 1)
@@ -3435,7 +3192,7 @@ struct CoarseSampleOrderTypeNV(TrivialRegisterPassable, Equatable):
     comptime SAMPLE_MAJOR = CoarseSampleOrderTypeNV(value = 3)
 
 
-struct CopyAccelerationStructureModeKHR(TrivialRegisterPassable, Equatable):
+struct CopyAccelerationStructureModeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3443,9 +3200,6 @@ struct CopyAccelerationStructureModeKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime CLONE = CopyAccelerationStructureModeKHR(value = 0)
     comptime COMPACT = CopyAccelerationStructureModeKHR(value = 1)
@@ -3453,7 +3207,7 @@ struct CopyAccelerationStructureModeKHR(TrivialRegisterPassable, Equatable):
     comptime DESERIALIZE = CopyAccelerationStructureModeKHR(value = 3)
 
 
-struct BuildAccelerationStructureModeKHR(TrivialRegisterPassable, Equatable):
+struct BuildAccelerationStructureModeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3461,15 +3215,12 @@ struct BuildAccelerationStructureModeKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime BUILD = BuildAccelerationStructureModeKHR(value = 0)
     comptime UPDATE = BuildAccelerationStructureModeKHR(value = 1)
 
 
-struct AccelerationStructureTypeKHR(TrivialRegisterPassable, Equatable):
+struct AccelerationStructureTypeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3477,16 +3228,13 @@ struct AccelerationStructureTypeKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime TOP_LEVEL = AccelerationStructureTypeKHR(value = 0)
     comptime BOTTOM_LEVEL = AccelerationStructureTypeKHR(value = 1)
     comptime GENERIC = AccelerationStructureTypeKHR(value = 2)
 
 
-struct GeometryTypeKHR(TrivialRegisterPassable, Equatable):
+struct GeometryTypeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3494,9 +3242,6 @@ struct GeometryTypeKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime TRIANGLES = GeometryTypeKHR(value = 0)
     comptime AABBS = GeometryTypeKHR(value = 1)
@@ -3506,7 +3251,7 @@ struct GeometryTypeKHR(TrivialRegisterPassable, Equatable):
     comptime DENSE_GEOMETRY_FORMAT_TRIANGLES = GeometryTypeKHR(value = 1000478000)
 
 
-struct AccelerationStructureMemoryRequirementsTypeNV(TrivialRegisterPassable, Equatable):
+struct AccelerationStructureMemoryRequirementsTypeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3514,16 +3259,13 @@ struct AccelerationStructureMemoryRequirementsTypeNV(TrivialRegisterPassable, Eq
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime OBJECT = AccelerationStructureMemoryRequirementsTypeNV(value = 0)
     comptime BUILD_SCRATCH = AccelerationStructureMemoryRequirementsTypeNV(value = 1)
     comptime UPDATE_SCRATCH = AccelerationStructureMemoryRequirementsTypeNV(value = 2)
 
 
-struct AccelerationStructureBuildTypeKHR(TrivialRegisterPassable, Equatable):
+struct AccelerationStructureBuildTypeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3531,16 +3273,13 @@ struct AccelerationStructureBuildTypeKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime HOST = AccelerationStructureBuildTypeKHR(value = 0)
     comptime DEVICE = AccelerationStructureBuildTypeKHR(value = 1)
     comptime HOST_OR_DEVICE = AccelerationStructureBuildTypeKHR(value = 2)
 
 
-struct RayTracingShaderGroupTypeKHR(TrivialRegisterPassable, Equatable):
+struct RayTracingShaderGroupTypeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3548,16 +3287,13 @@ struct RayTracingShaderGroupTypeKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime GENERAL = RayTracingShaderGroupTypeKHR(value = 0)
     comptime TRIANGLES_HIT_GROUP = RayTracingShaderGroupTypeKHR(value = 1)
     comptime PROCEDURAL_HIT_GROUP = RayTracingShaderGroupTypeKHR(value = 2)
 
 
-struct AccelerationStructureCompatibilityKHR(TrivialRegisterPassable, Equatable):
+struct AccelerationStructureCompatibilityKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3565,15 +3301,12 @@ struct AccelerationStructureCompatibilityKHR(TrivialRegisterPassable, Equatable)
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime COMPATIBLE = AccelerationStructureCompatibilityKHR(value = 0)
     comptime INCOMPATIBLE = AccelerationStructureCompatibilityKHR(value = 1)
 
 
-struct ShaderGroupShaderKHR(TrivialRegisterPassable, Equatable):
+struct ShaderGroupShaderKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3581,9 +3314,6 @@ struct ShaderGroupShaderKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime GENERAL = ShaderGroupShaderKHR(value = 0)
     comptime CLOSEST_HIT = ShaderGroupShaderKHR(value = 1)
@@ -3591,7 +3321,7 @@ struct ShaderGroupShaderKHR(TrivialRegisterPassable, Equatable):
     comptime INTERSECTION = ShaderGroupShaderKHR(value = 3)
 
 
-struct MemoryOverallocationBehaviorAMD(TrivialRegisterPassable, Equatable):
+struct MemoryOverallocationBehaviorAMD(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3599,16 +3329,13 @@ struct MemoryOverallocationBehaviorAMD(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DEFAULT = MemoryOverallocationBehaviorAMD(value = 0)
     comptime ALLOWED = MemoryOverallocationBehaviorAMD(value = 1)
     comptime DISALLOWED = MemoryOverallocationBehaviorAMD(value = 2)
 
 
-struct FullScreenExclusiveEXT(TrivialRegisterPassable, Equatable):
+struct FullScreenExclusiveEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3616,9 +3343,6 @@ struct FullScreenExclusiveEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DEFAULT = FullScreenExclusiveEXT(value = 0)
     comptime ALLOWED = FullScreenExclusiveEXT(value = 1)
@@ -3626,7 +3350,7 @@ struct FullScreenExclusiveEXT(TrivialRegisterPassable, Equatable):
     comptime APPLICATION_CONTROLLED = FullScreenExclusiveEXT(value = 3)
 
 
-struct PerformanceCounterScopeKHR(TrivialRegisterPassable, Equatable):
+struct PerformanceCounterScopeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3634,16 +3358,13 @@ struct PerformanceCounterScopeKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime COMMAND_BUFFER = PerformanceCounterScopeKHR(value = 0)
     comptime RENDER_PASS = PerformanceCounterScopeKHR(value = 1)
     comptime COMMAND = PerformanceCounterScopeKHR(value = 2)
 
 
-struct PerformanceCounterUnitKHR(TrivialRegisterPassable, Equatable):
+struct PerformanceCounterUnitKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3651,9 +3372,6 @@ struct PerformanceCounterUnitKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime GENERIC = PerformanceCounterUnitKHR(value = 0)
     comptime PERCENTAGE = PerformanceCounterUnitKHR(value = 1)
@@ -3668,7 +3386,7 @@ struct PerformanceCounterUnitKHR(TrivialRegisterPassable, Equatable):
     comptime CYCLES = PerformanceCounterUnitKHR(value = 10)
 
 
-struct PerformanceCounterStorageKHR(TrivialRegisterPassable, Equatable):
+struct PerformanceCounterStorageKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3676,9 +3394,6 @@ struct PerformanceCounterStorageKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime INT32 = PerformanceCounterStorageKHR(value = 0)
     comptime INT64 = PerformanceCounterStorageKHR(value = 1)
@@ -3688,7 +3403,7 @@ struct PerformanceCounterStorageKHR(TrivialRegisterPassable, Equatable):
     comptime FLOAT64 = PerformanceCounterStorageKHR(value = 5)
 
 
-struct PerformanceConfigurationTypeINTEL(TrivialRegisterPassable, Equatable):
+struct PerformanceConfigurationTypeINTEL(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3696,14 +3411,11 @@ struct PerformanceConfigurationTypeINTEL(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime COMMAND_QUEUE_METRICS_DISCOVERY_ACTIVATED = PerformanceConfigurationTypeINTEL(value = 0)
 
 
-struct QueryPoolSamplingModeINTEL(TrivialRegisterPassable, Equatable):
+struct QueryPoolSamplingModeINTEL(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3711,14 +3423,11 @@ struct QueryPoolSamplingModeINTEL(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime MANUAL = QueryPoolSamplingModeINTEL(value = 0)
 
 
-struct PerformanceOverrideTypeINTEL(TrivialRegisterPassable, Equatable):
+struct PerformanceOverrideTypeINTEL(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3726,15 +3435,12 @@ struct PerformanceOverrideTypeINTEL(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime NULL_HARDWARE = PerformanceOverrideTypeINTEL(value = 0)
     comptime FLUSH_GPU_CACHES = PerformanceOverrideTypeINTEL(value = 1)
 
 
-struct PerformanceParameterTypeINTEL(TrivialRegisterPassable, Equatable):
+struct PerformanceParameterTypeINTEL(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3742,15 +3448,12 @@ struct PerformanceParameterTypeINTEL(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime HW_COUNTERS_SUPPORTED = PerformanceParameterTypeINTEL(value = 0)
     comptime STREAM_MARKER_VALID_BITS = PerformanceParameterTypeINTEL(value = 1)
 
 
-struct PerformanceValueTypeINTEL(TrivialRegisterPassable, Equatable):
+struct PerformanceValueTypeINTEL(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3758,9 +3461,6 @@ struct PerformanceValueTypeINTEL(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime UINT32 = PerformanceValueTypeINTEL(value = 0)
     comptime UINT64 = PerformanceValueTypeINTEL(value = 1)
@@ -3769,7 +3469,7 @@ struct PerformanceValueTypeINTEL(TrivialRegisterPassable, Equatable):
     comptime STRING = PerformanceValueTypeINTEL(value = 4)
 
 
-struct ShaderFloatControlsIndependence(TrivialRegisterPassable, Equatable):
+struct ShaderFloatControlsIndependence(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3777,16 +3477,13 @@ struct ShaderFloatControlsIndependence(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime INDEPENDENCE_32_BIT_ONLY = ShaderFloatControlsIndependence(value = 0)
     comptime ALL = ShaderFloatControlsIndependence(value = 1)
     comptime NONE = ShaderFloatControlsIndependence(value = 2)
 
 
-struct PipelineExecutableStatisticFormatKHR(TrivialRegisterPassable, Equatable):
+struct PipelineExecutableStatisticFormatKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3794,9 +3491,6 @@ struct PipelineExecutableStatisticFormatKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime BOOL32 = PipelineExecutableStatisticFormatKHR(value = 0)
     comptime INT64 = PipelineExecutableStatisticFormatKHR(value = 1)
@@ -3804,7 +3498,7 @@ struct PipelineExecutableStatisticFormatKHR(TrivialRegisterPassable, Equatable):
     comptime FLOAT64 = PipelineExecutableStatisticFormatKHR(value = 3)
 
 
-struct LineRasterizationMode(TrivialRegisterPassable, Equatable):
+struct LineRasterizationMode(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3812,9 +3506,6 @@ struct LineRasterizationMode(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DEFAULT = LineRasterizationMode(value = 0)
     comptime RECTANGULAR = LineRasterizationMode(value = 1)
@@ -3822,7 +3513,7 @@ struct LineRasterizationMode(TrivialRegisterPassable, Equatable):
     comptime RECTANGULAR_SMOOTH = LineRasterizationMode(value = 3)
 
 
-struct FaultLevel(TrivialRegisterPassable, Equatable):
+struct FaultLevel(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3830,9 +3521,6 @@ struct FaultLevel(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime UNASSIGNED = FaultLevel(value = 0)
     comptime CRITICAL = FaultLevel(value = 1)
@@ -3840,7 +3528,7 @@ struct FaultLevel(TrivialRegisterPassable, Equatable):
     comptime WARNING = FaultLevel(value = 3)
 
 
-struct FaultType(TrivialRegisterPassable, Equatable):
+struct FaultType(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3848,9 +3536,6 @@ struct FaultType(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime INVALID = FaultType(value = 0)
     comptime UNASSIGNED = FaultType(value = 1)
@@ -3861,7 +3546,7 @@ struct FaultType(TrivialRegisterPassable, Equatable):
     comptime INVALID_API_USAGE = FaultType(value = 6)
 
 
-struct FaultQueryBehavior(TrivialRegisterPassable, Equatable):
+struct FaultQueryBehavior(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3869,14 +3554,11 @@ struct FaultQueryBehavior(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime GET_AND_CLEAR_ALL_FAULTS = FaultQueryBehavior(value = 0)
 
 
-struct PipelineMatchControl(TrivialRegisterPassable, Equatable):
+struct PipelineMatchControl(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3884,14 +3566,11 @@ struct PipelineMatchControl(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime APPLICATION_UUID_EXACT_MATCH = PipelineMatchControl(value = 0)
 
 
-struct FragmentShadingRateCombinerOpKHR(TrivialRegisterPassable, Equatable):
+struct FragmentShadingRateCombinerOpKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3899,9 +3578,6 @@ struct FragmentShadingRateCombinerOpKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime KEEP = FragmentShadingRateCombinerOpKHR(value = 0)
     comptime REPLACE = FragmentShadingRateCombinerOpKHR(value = 1)
@@ -3910,7 +3586,7 @@ struct FragmentShadingRateCombinerOpKHR(TrivialRegisterPassable, Equatable):
     comptime MUL = FragmentShadingRateCombinerOpKHR(value = 4)
 
 
-struct FragmentShadingRateNV(TrivialRegisterPassable, Equatable):
+struct FragmentShadingRateNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3918,9 +3594,6 @@ struct FragmentShadingRateNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime RATE_1_INVOCATION_PER_PIXEL = FragmentShadingRateNV(value = 0)
     comptime RATE_1_INVOCATION_PER_1X2_PIXELS = FragmentShadingRateNV(value = 1)
@@ -3936,7 +3609,7 @@ struct FragmentShadingRateNV(TrivialRegisterPassable, Equatable):
     comptime NO_INVOCATIONS = FragmentShadingRateNV(value = 15)
 
 
-struct FragmentShadingRateTypeNV(TrivialRegisterPassable, Equatable):
+struct FragmentShadingRateTypeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3944,15 +3617,12 @@ struct FragmentShadingRateTypeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime FRAGMENT_SIZE = FragmentShadingRateTypeNV(value = 0)
     comptime ENUMS = FragmentShadingRateTypeNV(value = 1)
 
 
-struct SubpassMergeStatusEXT(TrivialRegisterPassable, Equatable):
+struct SubpassMergeStatusEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3960,9 +3630,6 @@ struct SubpassMergeStatusEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime MERGED = SubpassMergeStatusEXT(value = 0)
     comptime DISALLOWED = SubpassMergeStatusEXT(value = 1)
@@ -3980,7 +3647,7 @@ struct SubpassMergeStatusEXT(TrivialRegisterPassable, Equatable):
     comptime NOT_MERGED_UNSPECIFIED = SubpassMergeStatusEXT(value = 13)
 
 
-struct SciSyncClientTypeNV(TrivialRegisterPassable, Equatable):
+struct SciSyncClientTypeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -3988,16 +3655,13 @@ struct SciSyncClientTypeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime SIGNALER = SciSyncClientTypeNV(value = 0)
     comptime WAITER = SciSyncClientTypeNV(value = 1)
     comptime SIGNALER_WAITER = SciSyncClientTypeNV(value = 2)
 
 
-struct SciSyncPrimitiveTypeNV(TrivialRegisterPassable, Equatable):
+struct SciSyncPrimitiveTypeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4005,15 +3669,12 @@ struct SciSyncPrimitiveTypeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime FENCE = SciSyncPrimitiveTypeNV(value = 0)
     comptime SEMAPHORE = SciSyncPrimitiveTypeNV(value = 1)
 
 
-struct ProvokingVertexModeEXT(TrivialRegisterPassable, Equatable):
+struct ProvokingVertexModeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4021,15 +3682,12 @@ struct ProvokingVertexModeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime FIRST_VERTEX = ProvokingVertexModeEXT(value = 0)
     comptime LAST_VERTEX = ProvokingVertexModeEXT(value = 1)
 
 
-struct PipelineCacheValidationVersion(TrivialRegisterPassable, Equatable):
+struct PipelineCacheValidationVersion(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4037,14 +3695,11 @@ struct PipelineCacheValidationVersion(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime SAFETY_CRITICAL_ONE = PipelineCacheValidationVersion(value = 1)
 
 
-struct AccelerationStructureMotionInstanceTypeNV(TrivialRegisterPassable, Equatable):
+struct AccelerationStructureMotionInstanceTypeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4052,16 +3707,13 @@ struct AccelerationStructureMotionInstanceTypeNV(TrivialRegisterPassable, Equata
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime STATIC = AccelerationStructureMotionInstanceTypeNV(value = 0)
     comptime MATRIX_MOTION = AccelerationStructureMotionInstanceTypeNV(value = 1)
     comptime SRT_MOTION = AccelerationStructureMotionInstanceTypeNV(value = 2)
 
 
-struct DeviceAddressBindingTypeEXT(TrivialRegisterPassable, Equatable):
+struct DeviceAddressBindingTypeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4069,15 +3721,12 @@ struct DeviceAddressBindingTypeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime BIND = DeviceAddressBindingTypeEXT(value = 0)
     comptime UNBIND = DeviceAddressBindingTypeEXT(value = 1)
 
 
-struct QueryResultStatusKHR(TrivialRegisterPassable, Equatable):
+struct QueryResultStatusKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4085,9 +3734,6 @@ struct QueryResultStatusKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime ERROR = QueryResultStatusKHR(value = -1)
     comptime INSUFFICIENT_BITSTREAM_BUFFER_RANGE = QueryResultStatusKHR(value = -1000299000)
@@ -4095,7 +3741,7 @@ struct QueryResultStatusKHR(TrivialRegisterPassable, Equatable):
     comptime COMPLETE = QueryResultStatusKHR(value = 1)
 
 
-struct VideoEncodeTuningModeKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeTuningModeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4103,9 +3749,6 @@ struct VideoEncodeTuningModeKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DEFAULT = VideoEncodeTuningModeKHR(value = 0)
     comptime HIGH_QUALITY = VideoEncodeTuningModeKHR(value = 1)
@@ -4114,7 +3757,7 @@ struct VideoEncodeTuningModeKHR(TrivialRegisterPassable, Equatable):
     comptime LOSSLESS = VideoEncodeTuningModeKHR(value = 4)
 
 
-struct PartitionedAccelerationStructureOpTypeNV(TrivialRegisterPassable, Equatable):
+struct PartitionedAccelerationStructureOpTypeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4122,16 +3765,13 @@ struct PartitionedAccelerationStructureOpTypeNV(TrivialRegisterPassable, Equatab
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime WRITE_INSTANCE = PartitionedAccelerationStructureOpTypeNV(value = 0)
     comptime UPDATE_INSTANCE = PartitionedAccelerationStructureOpTypeNV(value = 1)
     comptime WRITE_PARTITION_TRANSLATION = PartitionedAccelerationStructureOpTypeNV(value = 2)
 
 
-struct VideoEncodeAV1PredictionModeKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeAV1PredictionModeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4139,9 +3779,6 @@ struct VideoEncodeAV1PredictionModeKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime INTRA_ONLY = VideoEncodeAV1PredictionModeKHR(value = 0)
     comptime SINGLE_REFERENCE = VideoEncodeAV1PredictionModeKHR(value = 1)
@@ -4149,7 +3786,7 @@ struct VideoEncodeAV1PredictionModeKHR(TrivialRegisterPassable, Equatable):
     comptime BIDIRECTIONAL_COMPOUND = VideoEncodeAV1PredictionModeKHR(value = 3)
 
 
-struct VideoEncodeAV1RateControlGroupKHR(TrivialRegisterPassable, Equatable):
+struct VideoEncodeAV1RateControlGroupKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4157,16 +3794,13 @@ struct VideoEncodeAV1RateControlGroupKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime INTRA = VideoEncodeAV1RateControlGroupKHR(value = 0)
     comptime PREDICTIVE = VideoEncodeAV1RateControlGroupKHR(value = 1)
     comptime BIPREDICTIVE = VideoEncodeAV1RateControlGroupKHR(value = 2)
 
 
-struct PipelineRobustnessBufferBehavior(TrivialRegisterPassable, Equatable):
+struct PipelineRobustnessBufferBehavior(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4174,9 +3808,6 @@ struct PipelineRobustnessBufferBehavior(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DEVICE_DEFAULT = PipelineRobustnessBufferBehavior(value = 0)
     comptime DISABLED = PipelineRobustnessBufferBehavior(value = 1)
@@ -4184,7 +3815,7 @@ struct PipelineRobustnessBufferBehavior(TrivialRegisterPassable, Equatable):
     comptime ROBUST_BUFFER_ACCESS_2 = PipelineRobustnessBufferBehavior(value = 3)
 
 
-struct PipelineRobustnessImageBehavior(TrivialRegisterPassable, Equatable):
+struct PipelineRobustnessImageBehavior(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4192,9 +3823,6 @@ struct PipelineRobustnessImageBehavior(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DEVICE_DEFAULT = PipelineRobustnessImageBehavior(value = 0)
     comptime DISABLED = PipelineRobustnessImageBehavior(value = 1)
@@ -4202,7 +3830,7 @@ struct PipelineRobustnessImageBehavior(TrivialRegisterPassable, Equatable):
     comptime ROBUST_IMAGE_ACCESS_2 = PipelineRobustnessImageBehavior(value = 3)
 
 
-struct OpticalFlowPerformanceLevelNV(TrivialRegisterPassable, Equatable):
+struct OpticalFlowPerformanceLevelNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4210,9 +3838,6 @@ struct OpticalFlowPerformanceLevelNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime UNKNOWN = OpticalFlowPerformanceLevelNV(value = 0)
     comptime SLOW = OpticalFlowPerformanceLevelNV(value = 1)
@@ -4220,7 +3845,7 @@ struct OpticalFlowPerformanceLevelNV(TrivialRegisterPassable, Equatable):
     comptime FAST = OpticalFlowPerformanceLevelNV(value = 3)
 
 
-struct OpticalFlowSessionBindingPointNV(TrivialRegisterPassable, Equatable):
+struct OpticalFlowSessionBindingPointNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4228,9 +3853,6 @@ struct OpticalFlowSessionBindingPointNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime UNKNOWN = OpticalFlowSessionBindingPointNV(value = 0)
     comptime INPUT = OpticalFlowSessionBindingPointNV(value = 1)
@@ -4243,7 +3865,7 @@ struct OpticalFlowSessionBindingPointNV(TrivialRegisterPassable, Equatable):
     comptime GLOBAL_FLOW = OpticalFlowSessionBindingPointNV(value = 8)
 
 
-struct MicromapTypeEXT(TrivialRegisterPassable, Equatable):
+struct MicromapTypeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4251,15 +3873,12 @@ struct MicromapTypeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime OPACITY_MICROMAP = MicromapTypeEXT(value = 0)
     comptime DISPLACEMENT_MICROMAP = MicromapTypeEXT(value = 1000397000)
 
 
-struct CopyMicromapModeEXT(TrivialRegisterPassable, Equatable):
+struct CopyMicromapModeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4267,9 +3886,6 @@ struct CopyMicromapModeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime CLONE = CopyMicromapModeEXT(value = 0)
     comptime SERIALIZE = CopyMicromapModeEXT(value = 1)
@@ -4277,7 +3893,7 @@ struct CopyMicromapModeEXT(TrivialRegisterPassable, Equatable):
     comptime COMPACT = CopyMicromapModeEXT(value = 3)
 
 
-struct BuildMicromapModeEXT(TrivialRegisterPassable, Equatable):
+struct BuildMicromapModeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4285,14 +3901,11 @@ struct BuildMicromapModeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime BUILD = BuildMicromapModeEXT(value = 0)
 
 
-struct OpacityMicromapFormatEXT(TrivialRegisterPassable, Equatable):
+struct OpacityMicromapFormatEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4300,15 +3913,12 @@ struct OpacityMicromapFormatEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime FORMAT_2_STATE = OpacityMicromapFormatEXT(value = 1)
     comptime FORMAT_4_STATE = OpacityMicromapFormatEXT(value = 2)
 
 
-struct OpacityMicromapSpecialIndexEXT(TrivialRegisterPassable, Equatable):
+struct OpacityMicromapSpecialIndexEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4316,9 +3926,6 @@ struct OpacityMicromapSpecialIndexEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime FULLY_TRANSPARENT = OpacityMicromapSpecialIndexEXT(value = -1)
     comptime FULLY_OPAQUE = OpacityMicromapSpecialIndexEXT(value = -2)
@@ -4327,7 +3934,7 @@ struct OpacityMicromapSpecialIndexEXT(TrivialRegisterPassable, Equatable):
     comptime CLUSTER_GEOMETRY_DISABLE_OPACITY_MICROMAP = OpacityMicromapSpecialIndexEXT(value = -5)
 
 
-struct DepthBiasRepresentationEXT(TrivialRegisterPassable, Equatable):
+struct DepthBiasRepresentationEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4335,16 +3942,13 @@ struct DepthBiasRepresentationEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime LEAST_REPRESENTABLE_VALUE_FORMAT = DepthBiasRepresentationEXT(value = 0)
     comptime LEAST_REPRESENTABLE_VALUE_FORCE_UNORM = DepthBiasRepresentationEXT(value = 1)
     comptime FLOAT = DepthBiasRepresentationEXT(value = 2)
 
 
-struct DeviceFaultAddressTypeEXT(TrivialRegisterPassable, Equatable):
+struct DeviceFaultAddressTypeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4352,9 +3956,6 @@ struct DeviceFaultAddressTypeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime NONE = DeviceFaultAddressTypeEXT(value = 0)
     comptime READ_INVALID = DeviceFaultAddressTypeEXT(value = 1)
@@ -4365,7 +3966,7 @@ struct DeviceFaultAddressTypeEXT(TrivialRegisterPassable, Equatable):
     comptime INSTRUCTION_POINTER_FAULT = DeviceFaultAddressTypeEXT(value = 6)
 
 
-struct DeviceFaultVendorBinaryHeaderVersionEXT(TrivialRegisterPassable, Equatable):
+struct DeviceFaultVendorBinaryHeaderVersionEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4373,14 +3974,11 @@ struct DeviceFaultVendorBinaryHeaderVersionEXT(TrivialRegisterPassable, Equatabl
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime ONE = DeviceFaultVendorBinaryHeaderVersionEXT(value = 1)
 
 
-struct IndirectExecutionSetInfoTypeEXT(TrivialRegisterPassable, Equatable):
+struct IndirectExecutionSetInfoTypeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4388,15 +3986,12 @@ struct IndirectExecutionSetInfoTypeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime PIPELINES = IndirectExecutionSetInfoTypeEXT(value = 0)
     comptime SHADER_OBJECTS = IndirectExecutionSetInfoTypeEXT(value = 1)
 
 
-struct IndirectCommandsTokenTypeEXT(TrivialRegisterPassable, Equatable):
+struct IndirectCommandsTokenTypeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4404,9 +3999,6 @@ struct IndirectCommandsTokenTypeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime EXECUTION_SET = IndirectCommandsTokenTypeEXT(value = 0)
     comptime PUSH_CONSTANT = IndirectCommandsTokenTypeEXT(value = 1)
@@ -4427,7 +4019,7 @@ struct IndirectCommandsTokenTypeEXT(TrivialRegisterPassable, Equatable):
     comptime TRACE_RAYS2 = IndirectCommandsTokenTypeEXT(value = 1000386004)
 
 
-struct DisplacementMicromapFormatNV(TrivialRegisterPassable, Equatable):
+struct DisplacementMicromapFormatNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4435,16 +4027,13 @@ struct DisplacementMicromapFormatNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime FORMAT_64_TRIANGLES_64_BYTES = DisplacementMicromapFormatNV(value = 1)
     comptime FORMAT_256_TRIANGLES_128_BYTES = DisplacementMicromapFormatNV(value = 2)
     comptime FORMAT_1024_TRIANGLES_128_BYTES = DisplacementMicromapFormatNV(value = 3)
 
 
-struct ShaderCodeTypeEXT(TrivialRegisterPassable, Equatable):
+struct ShaderCodeTypeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4452,15 +4041,12 @@ struct ShaderCodeTypeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime BINARY = ShaderCodeTypeEXT(value = 0)
     comptime SPIRV = ShaderCodeTypeEXT(value = 1)
 
 
-struct ScopeKHR(TrivialRegisterPassable, Equatable):
+struct ScopeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4468,9 +4054,6 @@ struct ScopeKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DEVICE = ScopeKHR(value = 1)
     comptime WORKGROUP = ScopeKHR(value = 2)
@@ -4478,7 +4061,7 @@ struct ScopeKHR(TrivialRegisterPassable, Equatable):
     comptime QUEUE_FAMILY = ScopeKHR(value = 5)
 
 
-struct ComponentTypeKHR(TrivialRegisterPassable, Equatable):
+struct ComponentTypeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4486,9 +4069,6 @@ struct ComponentTypeKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime FLOAT16 = ComponentTypeKHR(value = 0)
     comptime FLOAT32 = ComponentTypeKHR(value = 1)
@@ -4510,7 +4090,7 @@ struct ComponentTypeKHR(TrivialRegisterPassable, Equatable):
     comptime FLOAT_E5M2 = ComponentTypeKHR(value = 1000491003)
 
 
-struct CubicFilterWeightsQCOM(TrivialRegisterPassable, Equatable):
+struct CubicFilterWeightsQCOM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4518,9 +4098,6 @@ struct CubicFilterWeightsQCOM(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime CATMULL_ROM = CubicFilterWeightsQCOM(value = 0)
     comptime ZERO_TANGENT_CARDINAL = CubicFilterWeightsQCOM(value = 1)
@@ -4528,7 +4105,7 @@ struct CubicFilterWeightsQCOM(TrivialRegisterPassable, Equatable):
     comptime MITCHELL_NETRAVALI = CubicFilterWeightsQCOM(value = 3)
 
 
-struct BlockMatchWindowCompareModeQCOM(TrivialRegisterPassable, Equatable):
+struct BlockMatchWindowCompareModeQCOM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4536,15 +4113,12 @@ struct BlockMatchWindowCompareModeQCOM(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime MIN = BlockMatchWindowCompareModeQCOM(value = 0)
     comptime MAX = BlockMatchWindowCompareModeQCOM(value = 1)
 
 
-struct PhysicalDeviceLayeredApiKHR(TrivialRegisterPassable, Equatable):
+struct PhysicalDeviceLayeredApiKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4552,9 +4126,6 @@ struct PhysicalDeviceLayeredApiKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime VULKAN = PhysicalDeviceLayeredApiKHR(value = 0)
     comptime D3D12 = PhysicalDeviceLayeredApiKHR(value = 1)
@@ -4563,7 +4134,7 @@ struct PhysicalDeviceLayeredApiKHR(TrivialRegisterPassable, Equatable):
     comptime OPENGLES = PhysicalDeviceLayeredApiKHR(value = 4)
 
 
-struct LayeredDriverUnderlyingApiMSFT(TrivialRegisterPassable, Equatable):
+struct LayeredDriverUnderlyingApiMSFT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4571,15 +4142,12 @@ struct LayeredDriverUnderlyingApiMSFT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime NONE = LayeredDriverUnderlyingApiMSFT(value = 0)
     comptime D3D12 = LayeredDriverUnderlyingApiMSFT(value = 1)
 
 
-struct LatencyMarkerNV(TrivialRegisterPassable, Equatable):
+struct LatencyMarkerNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4587,9 +4155,6 @@ struct LatencyMarkerNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime SIMULATION_START = LatencyMarkerNV(value = 0)
     comptime SIMULATION_END = LatencyMarkerNV(value = 1)
@@ -4605,7 +4170,7 @@ struct LatencyMarkerNV(TrivialRegisterPassable, Equatable):
     comptime OUT_OF_BAND_PRESENT_END = LatencyMarkerNV(value = 11)
 
 
-struct OutOfBandQueueTypeNV(TrivialRegisterPassable, Equatable):
+struct OutOfBandQueueTypeNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4613,15 +4178,12 @@ struct OutOfBandQueueTypeNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime RENDER = OutOfBandQueueTypeNV(value = 0)
     comptime PRESENT = OutOfBandQueueTypeNV(value = 1)
 
 
-struct CompressedTriangleFormatAMDX(TrivialRegisterPassable, Equatable):
+struct CompressedTriangleFormatAMDX(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4629,14 +4191,11 @@ struct CompressedTriangleFormatAMDX(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DGF1 = CompressedTriangleFormatAMDX(value = 0)
 
 
-struct DepthClampModeEXT(TrivialRegisterPassable, Equatable):
+struct DepthClampModeEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4644,15 +4203,12 @@ struct DepthClampModeEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime VIEWPORT_RANGE = DepthClampModeEXT(value = 0)
     comptime USER_DEFINED_RANGE = DepthClampModeEXT(value = 1)
 
 
-struct CooperativeVectorMatrixLayoutNV(TrivialRegisterPassable, Equatable):
+struct CooperativeVectorMatrixLayoutNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4660,9 +4216,6 @@ struct CooperativeVectorMatrixLayoutNV(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime ROW_MAJOR = CooperativeVectorMatrixLayoutNV(value = 0)
     comptime COLUMN_MAJOR = CooperativeVectorMatrixLayoutNV(value = 1)
@@ -4670,7 +4223,7 @@ struct CooperativeVectorMatrixLayoutNV(TrivialRegisterPassable, Equatable):
     comptime TRAINING_OPTIMAL = CooperativeVectorMatrixLayoutNV(value = 3)
 
 
-struct TensorTilingARM(TrivialRegisterPassable, Equatable):
+struct TensorTilingARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4678,15 +4231,12 @@ struct TensorTilingARM(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime OPTIMAL = TensorTilingARM(value = 0)
     comptime LINEAR = TensorTilingARM(value = 1)
 
 
-struct DefaultVertexAttributeValueKHR(TrivialRegisterPassable, Equatable):
+struct DefaultVertexAttributeValueKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4694,15 +4244,12 @@ struct DefaultVertexAttributeValueKHR(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime ZERO_ZERO_ZERO_ZERO = DefaultVertexAttributeValueKHR(value = 0)
     comptime ZERO_ZERO_ZERO_ONE = DefaultVertexAttributeValueKHR(value = 1)
 
 
-struct DataGraphPipelineSessionBindPointARM(TrivialRegisterPassable, Equatable):
+struct DataGraphPipelineSessionBindPointARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4710,14 +4257,11 @@ struct DataGraphPipelineSessionBindPointARM(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime TRANSIENT = DataGraphPipelineSessionBindPointARM(value = 0)
 
 
-struct DataGraphPipelineSessionBindPointTypeARM(TrivialRegisterPassable, Equatable):
+struct DataGraphPipelineSessionBindPointTypeARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4725,14 +4269,11 @@ struct DataGraphPipelineSessionBindPointTypeARM(TrivialRegisterPassable, Equatab
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime MEMORY = DataGraphPipelineSessionBindPointTypeARM(value = 0)
 
 
-struct DataGraphPipelinePropertyARM(TrivialRegisterPassable, Equatable):
+struct DataGraphPipelinePropertyARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4740,15 +4281,12 @@ struct DataGraphPipelinePropertyARM(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime CREATION_LOG = DataGraphPipelinePropertyARM(value = 0)
     comptime IDENTIFIER = DataGraphPipelinePropertyARM(value = 1)
 
 
-struct PhysicalDeviceDataGraphProcessingEngineTypeARM(TrivialRegisterPassable, Equatable):
+struct PhysicalDeviceDataGraphProcessingEngineTypeARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4756,16 +4294,13 @@ struct PhysicalDeviceDataGraphProcessingEngineTypeARM(TrivialRegisterPassable, E
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime DEFAULT = PhysicalDeviceDataGraphProcessingEngineTypeARM(value = 0)
     comptime NEURAL = PhysicalDeviceDataGraphProcessingEngineTypeARM(value = 1000629000)
     comptime COMPUTE = PhysicalDeviceDataGraphProcessingEngineTypeARM(value = 1000629001)
 
 
-struct PhysicalDeviceDataGraphOperationTypeARM(TrivialRegisterPassable, Equatable):
+struct PhysicalDeviceDataGraphOperationTypeARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4773,16 +4308,13 @@ struct PhysicalDeviceDataGraphOperationTypeARM(TrivialRegisterPassable, Equatabl
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime SPIRV_EXTENDED_INSTRUCTION_SET = PhysicalDeviceDataGraphOperationTypeARM(value = 0)
     comptime NEURAL_MODEL = PhysicalDeviceDataGraphOperationTypeARM(value = 1000629000)
     comptime BUILTIN_MODEL = PhysicalDeviceDataGraphOperationTypeARM(value = 1000629001)
 
 
-struct DataGraphModelCacheTypeQCOM(TrivialRegisterPassable, Equatable):
+struct DataGraphModelCacheTypeQCOM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4790,14 +4322,11 @@ struct DataGraphModelCacheTypeQCOM(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime GENERIC_BINARY = DataGraphModelCacheTypeQCOM(value = 0)
 
 
-struct DescriptorMappingSourceEXT(TrivialRegisterPassable, Equatable):
+struct DescriptorMappingSourceEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     var _value: Int32
 
     def __init__(out self, *, value: Int32):
@@ -4805,9 +4334,6 @@ struct DescriptorMappingSourceEXT(TrivialRegisterPassable, Equatable):
 
     def value(self) -> Int32:
         return self._value
-
-    def __eq__(self, other: Self) -> Bool:
-        return self._value == other._value
 
     comptime HEAP_WITH_CONSTANT_OFFSET = DescriptorMappingSourceEXT(value = 0)
     comptime HEAP_WITH_PUSH_INDEX = DescriptorMappingSourceEXT(value = 1)

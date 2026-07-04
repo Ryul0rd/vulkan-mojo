@@ -1387,7 +1387,7 @@ class MojoEnum:
             return self.emit_result()
         parts: List[str] = []
         parts.append(
-            f"struct {self.name}(TrivialRegisterPassable, Equatable):\n"
+            f"struct {self.name}(TrivialRegisterPassable, Equatable, Hashable, Writable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"\n"
             f"    def __init__(out self, *, value: {self.underlying_type}):\n"
@@ -1395,9 +1395,6 @@ class MojoEnum:
             f"\n"
             f"    def value(self) -> {self.underlying_type}:\n"
             f"        return self._value\n"
-            f"\n"
-            f"    def __eq__(self, other: Self) -> Bool:\n"
-            f"        return self._value == other._value\n"
             f"\n"
         )
         for value in self.values:
@@ -1407,7 +1404,7 @@ class MojoEnum:
     def emit_result(self) -> str:
         parts: List[str] = []
         parts.append(
-            "struct Result(TrivialRegisterPassable, Equatable, Writable):\n"
+            "struct Result(TrivialRegisterPassable, Equatable, Hashable, Writable):\n"
             "    var _value: Int32\n"
             "\n"
             "    comptime _descriptions: Dict[Int32, StaticString] = {\n"
@@ -1422,9 +1419,6 @@ class MojoEnum:
             "\n"
             "    def value(self) -> Int32:\n"
             "        return self._value\n"
-            "\n"
-            "    def __eq__(self, other: Self) -> Bool:\n"
-            "        return self._value == other._value\n"
             "\n"
             "    def is_error(self) -> Bool:\n"
             "        return self.value() < 0\n"
@@ -1615,7 +1609,7 @@ class MojoFlags:
     def __str__(self) -> str:
         parts: List[str] = []
         parts.append(
-            f"struct {self.name}(TrivialRegisterPassable, Equatable):\n"
+            f"struct {self.name}(TrivialRegisterPassable, Equatable, Hashable, Writable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"\n"
             f"    def __init__(out self):\n"
@@ -1633,9 +1627,6 @@ class MojoFlags:
             f"\n"
             f"    def __bool__(self) -> Bool:\n"
             f"        return Bool(self._value)\n"
-            f"\n"
-            f"    def __eq__(self, other: Self) -> Bool:\n"
-            f"        return self._value == other._value\n"
             f"\n"
             f"    def __or__(self, other: {self.name}) -> Self:\n"
             f"        return Self(value = self.value() | other.value())\n"
@@ -1682,7 +1673,7 @@ class MojoFlagBits:
     def __str__(self) -> str:
         parts: List[str] = []
         parts.append(
-            f"struct {self.name}(TrivialRegisterPassable, Equatable):\n"
+            f"struct {self.name}(TrivialRegisterPassable, Hashable, Writable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"\n"
             f"    def __init__(out self, *, value: {self.underlying_type}):\n"
@@ -1690,9 +1681,6 @@ class MojoFlagBits:
             f"\n"
             f"    def value(self) -> {self.underlying_type}:\n"
             f"        return self._value\n"
-            f"\n"
-            f"    def __eq__(self, other: Self) -> Bool:\n"
-            f"        return self._value == other._value\n"
             f"\n"
             f"    def __or__(self, other: Self) -> {self.flags_name}:\n"
             f"        return {self.flags_name}(value = self._value | other._value)\n"
@@ -2096,7 +2084,7 @@ class MojoHandle:
 
     def __str__(self) -> str:
         return (
-            f"struct {self.name}(TrivialRegisterPassable, Equatable, Writable):\n"
+            f"struct {self.name}(TrivialRegisterPassable, Equatable, Hashable, Writable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"    comptime NULL = Self(value = 0)\n"
             f"\n"
@@ -2105,9 +2093,6 @@ class MojoHandle:
             f"\n"
             f"    def value(self) -> {self.underlying_type}:\n"
             f"        return self._value\n"
-            f"\n"
-            f"    def __eq__(self, other: Self) -> Bool:\n"
-            f"        return self._value == other._value\n"
             f"\n"
             f"    def __bool__(self) -> Bool:\n"
             f"        return self._value != 0\n"
