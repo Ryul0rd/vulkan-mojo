@@ -10,9 +10,6 @@ bindgen = "python3 bindgen.py"
 package = "mojo package vk -o vk.mojopkg"
 build = {depends-on = ["bindgen", "package"]}
 
-[build-dependencies]
+[dependencies]
 mojo = "==1.0.0b2"
 python = ">=3.10,<3.11"
-
-[host-dependencies]
-mojo = "==1.0.0b2"
