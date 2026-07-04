@@ -603,7 +603,7 @@ def parse_extensions(xml_registry: Element) -> List[RegistryExtension]:
 # --------------------------------
 
 
-MojoOriginLiteral = Literal["MutUntrackedOrigin", "ImmutUntrackedOrigin", "MutAnyOrigin", "ImmutAnyOrigin"]
+MojoOriginLiteral = Literal["MutUntrackedOrigin", "ImmutUntrackedOrigin"]
 
 
 @dataclass
@@ -829,24 +829,14 @@ LogicalField = StandardLogicalField | PackedLogicalField
 
 def convert_origins_to_external(mojo_type: MojoType) -> MojoType:
     if isinstance(mojo_type, MojoPointerType):
-        new_origin = mojo_type.origin
-        if new_origin == "MutAnyOrigin":
-            new_origin = "MutUntrackedOrigin"
-        elif new_origin == "ImmutAnyOrigin":
-            new_origin = "ImmutUntrackedOrigin"
         return MojoPointerType(
             pointee_type=convert_origins_to_external(mojo_type.pointee_type),
-            origin=new_origin
+            origin=mojo_type.origin
         )
     elif isinstance(mojo_type, MojoBaseType) and mojo_type.name == "CStringSlice":
         new_params: List[MojoOriginLiteral | MojoParametricOrigin | str] = []
         for p in mojo_type.parameters:
-            if p == "MutAnyOrigin":
-                new_params.append("MutUntrackedOrigin")
-            elif p == "ImmutAnyOrigin":
-                new_params.append("ImmutUntrackedOrigin")
-            else:
-                new_params.append(p)
+            new_params.append(p)
         return MojoBaseType(mojo_type.name, new_params)
     elif isinstance(mojo_type, MojoArrayType):
         return MojoArrayType(
@@ -914,11 +904,11 @@ def as_parametric_type(name: str, mojo_type: MojoType, parameters: List[MojoPara
 
     if isinstance(mojo_type, MojoPointerType):
         param_name = get_unique_name(f"{name}_origin")
-        is_mutable = mojo_type.origin in ("MutAnyOrigin", "MutUntrackedOrigin")
+        is_mutable = mojo_type.origin == "MutUntrackedOrigin"
         parameters.append(MojoParameter(
             name=param_name,
             type="MutOrigin" if is_mutable else "ImmutOrigin",
-            default_value="MutAnyOrigin" if is_mutable else "ImmutAnyOrigin"
+            default_value="MutUntrackedOrigin" if is_mutable else "ImmutUntrackedOrigin"
         ))
         new_pointee = as_parametric_type(name, mojo_type.pointee_type, parameters)
         return MojoPointerType(
@@ -929,11 +919,11 @@ def as_parametric_type(name: str, mojo_type: MojoType, parameters: List[MojoPara
     elif isinstance(mojo_type, MojoBaseType) and mojo_type.name == "CStringSlice":
         param_name = get_unique_name(f"{name}_origin")
         # CStringSlice has 1 param
-        is_mutable = mojo_type.parameters[0] in ("MutAnyOrigin", "MutUntrackedOrigin")
+        is_mutable = mojo_type.parameters[0] == "MutUntrackedOrigin"
         parameters.append(MojoParameter(
             name=param_name,
             type="MutOrigin" if is_mutable else "ImmutOrigin",
-            default_value="MutAnyOrigin" if is_mutable else "ImmutAnyOrigin"
+            default_value="MutUntrackedOrigin" if is_mutable else "ImmutUntrackedOrigin"
         ))
         return MojoBaseType(
             name="CStringSlice",
@@ -2302,16 +2292,13 @@ def registry_command_to_mojo_methods(
                 continue
             inner_type = original_arg_type.pointee_type
             parametric_type = as_parametric_type(arg_name, inner_type, parameters)
-            arguments.append(MojoArgument(arg_name, parametric_type, mut=original_arg_type.origin == "MutAnyOrigin"))
-            if parametric_type != inner_type:
-                call_args.append(f"Ptr(to=Ptr(to={arg_name})).bitcast[{original_arg_type}]()[]")
-            else:
-                call_args.append(f"Ptr(to={arg_name})")
+            arguments.append(MojoArgument(arg_name, parametric_type, mut=original_arg_type.origin == "MutUntrackedOrigin"))
+            call_args.append(f"Ptr(to={arg_name}).bitcast[{inner_type}]().unsafe_origin_cast[{original_arg_type.origin}]()")
         else:
             if any(arg.name == arg_name for arg in arguments):
                 continue
             if isinstance(original_arg_type, MojoPointerType):
-                new_origin: MojoOriginLiteral = "MutAnyOrigin" if original_arg_type.origin == "MutAnyOrigin" else "ImmutAnyOrigin"
+                new_origin: MojoOriginLiteral = "MutUntrackedOrigin" if original_arg_type.origin == "MutUntrackedOrigin" else "ImmutUntrackedOrigin"
                 arg_type = MojoPointerType(original_arg_type.pointee_type, new_origin)
             else:
                 arg_type = original_arg_type
@@ -2320,7 +2307,7 @@ def registry_command_to_mojo_methods(
             arguments.append(MojoArgument(arg_name, parametric_arg_type))
             
             if parametric_arg_type != arg_type:
-                call_args.append(f"Ptr(to={arg_name}).bitcast[{original_arg_type}]()[]")
+                call_args.append(f"Ptr(to={arg_name}).bitcast[{arg_type}]()[]")
             else:
                 call_args.append(arg_name)
 
@@ -2349,9 +2336,9 @@ def registry_command_to_mojo_methods(
     count_type, data_type = parse_c_type(count_param.text), parse_c_type(data_param.text)
     is_valid_pattern = (
         isinstance(return_type, MojoBaseType) and return_type.name in ("Result", "NoneType") and
-        isinstance(count_type, MojoPointerType) and count_type.origin == "MutAnyOrigin" and 
+        isinstance(count_type, MojoPointerType) and count_type.origin == "MutUntrackedOrigin" and 
         isinstance(count_type.pointee_type, MojoBaseType) and count_type.pointee_type.name in ("UInt32", "UInt") and
-        isinstance(data_type, MojoPointerType) and data_type.origin == "MutAnyOrigin" and
+        isinstance(data_type, MojoPointerType) and data_type.origin == "MutUntrackedOrigin" and
         data_param.optional and data_param.len == count_param.name
     )
     if not is_valid_pattern: 
@@ -2373,7 +2360,7 @@ def registry_command_to_mojo_methods(
     # Handle casts (e.g. if data is void* but element is UInt8)
     needs_cast = elem_type != data_type.pointee_type
     ptr_dangling = f"Ptr[{data_type.pointee_type}, MutUntrackedOrigin].unsafe_dangling()"
-    ptr_list = f"list.unsafe_ptr(){'.bitcast['+str(data_type.pointee_type)+']()' if needs_cast else ''}"
+    ptr_list = f"list.unsafe_ptr(){'.bitcast['+str(data_type.pointee_type)+']()' if needs_cast else ''}.unsafe_origin_cast[MutUntrackedOrigin]()"
 
     # Pre-generate calls
     base_args = call_args[:-2]
@@ -2381,12 +2368,12 @@ def registry_command_to_mojo_methods(
     prefix = "result = " if is_result else ""
     call_1 = emit_fn_like(
         f"{prefix}{call_target}",
-        base_args + ["Ptr(to=count)", ptr_dangling],
+        base_args + [f"Ptr(to=count).bitcast[{count_pointee_type.name}]().unsafe_origin_cast[MutUntrackedOrigin]()", ptr_dangling],
         base_indent_level=indent
     ).strip()
     call_2 = emit_fn_like(
         f"{prefix}{call_target}",
-        base_args + ["Ptr(to=count)", ptr_list],
+        base_args + [f"Ptr(to=count).bitcast[{count_pointee_type.name}]().unsafe_origin_cast[MutUntrackedOrigin]()", ptr_list],
         base_indent_level=indent
     ).strip()
     
@@ -2751,7 +2738,7 @@ def parse_declarator(declarator: str) -> ParsedDeclarator:
 
     type: MojoType = MojoBaseType(c_type_name_to_mojo(base_name))
     for i in range(ptr_level):
-        origin: MojoOriginLiteral = "MutAnyOrigin" if not pointee_is_const[i] else "ImmutAnyOrigin"
+        origin: MojoOriginLiteral = "MutUntrackedOrigin" if not pointee_is_const[i] else "ImmutUntrackedOrigin"
         type = MojoPointerType(pointee_type=type, origin=origin)
         is_const_char_ptr = (
             type.origin == "ImmutAnyOrigin"

@@ -9,20 +9,20 @@ struct ShaderEnqueue(Copyable):
         device: Device,
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
-        p_create_infos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_pipelines: Ptr[Pipeline, MutAnyOrigin],
+        p_create_infos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutUntrackedOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_pipelines: Ptr[Pipeline, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_execution_graph_pipeline_scratch_size: def(
         device: Device,
         execution_graph: Pipeline,
-        p_size_info: Ptr[ExecutionGraphPipelineScratchSizeAMDX, MutAnyOrigin],
+        p_size_info: Ptr[ExecutionGraphPipelineScratchSizeAMDX, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_execution_graph_pipeline_node_index: def(
         device: Device,
         execution_graph: Pipeline,
-        p_node_info: Ptr[PipelineShaderStageNodeCreateInfoAMDX, ImmutAnyOrigin],
-        p_node_index: Ptr[UInt32, MutAnyOrigin],
+        p_node_info: Ptr[PipelineShaderStageNodeCreateInfoAMDX, ImmutUntrackedOrigin],
+        p_node_index: Ptr[UInt32, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _cmd_initialize_graph_scratch_memory: def(
         command_buffer: CommandBuffer,
@@ -34,13 +34,13 @@ struct ShaderEnqueue(Copyable):
         command_buffer: CommandBuffer,
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
-        p_count_info: Ptr[DispatchGraphCountInfoAMDX, ImmutAnyOrigin],
+        p_count_info: Ptr[DispatchGraphCountInfoAMDX, ImmutUntrackedOrigin],
     ) thin abi("C")
     var _cmd_dispatch_graph_indirect: def(
         command_buffer: CommandBuffer,
         scratch: DeviceAddress,
         scratch_size: DeviceSize,
-        p_count_info: Ptr[DispatchGraphCountInfoAMDX, ImmutAnyOrigin],
+        p_count_info: Ptr[DispatchGraphCountInfoAMDX, ImmutUntrackedOrigin],
     ) thin abi("C")
     var _cmd_dispatch_graph_indirect_count: def(
         command_buffer: CommandBuffer,
@@ -77,9 +77,9 @@ struct ShaderEnqueue(Copyable):
         )).bitcast[type_of(self._cmd_dispatch_graph_indirect_count)]()[]
 
     def create_execution_graph_pipelines[
-        p_create_infos_origin: ImmutOrigin = ImmutAnyOrigin,
-        p_allocator_origin: ImmutOrigin = ImmutAnyOrigin,
-        p_pipelines_origin: MutOrigin = MutAnyOrigin,
+        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -97,9 +97,9 @@ struct ShaderEnqueue(Copyable):
             device,
             pipeline_cache,
             create_info_count,
-            Ptr(to=p_create_infos).bitcast[Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutAnyOrigin]]()[],
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
-            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutAnyOrigin]]()[],
+            Ptr(to=p_create_infos).bitcast[Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
     def get_execution_graph_pipeline_scratch_size(
@@ -112,7 +112,11 @@ struct ShaderEnqueue(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetExecutionGraphPipelineScratchSizeAMDX.html
         """
-        return self._get_execution_graph_pipeline_scratch_size(device, execution_graph, Ptr(to=size_info))
+        return self._get_execution_graph_pipeline_scratch_size(
+            device,
+            execution_graph,
+            Ptr(to=size_info).bitcast[ExecutionGraphPipelineScratchSizeAMDX]().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
 
     def get_execution_graph_pipeline_node_index(
         self,
@@ -126,7 +130,10 @@ struct ShaderEnqueue(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetExecutionGraphPipelineNodeIndexAMDX.html
         """
         return self._get_execution_graph_pipeline_node_index(
-            device, execution_graph, Ptr(to=node_info), Ptr(to=node_index)
+            device,
+            execution_graph,
+            Ptr(to=node_info).bitcast[PipelineShaderStageNodeCreateInfoAMDX]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=node_index).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
     def cmd_initialize_graph_scratch_memory(
@@ -155,7 +162,12 @@ struct ShaderEnqueue(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchGraphAMDX.html
         """
-        return self._cmd_dispatch_graph(command_buffer, scratch, scratch_size, Ptr(to=count_info))
+        return self._cmd_dispatch_graph(
+            command_buffer,
+            scratch,
+            scratch_size,
+            Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+        )
 
     def cmd_dispatch_graph_indirect(
         self,
@@ -168,7 +180,12 @@ struct ShaderEnqueue(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchGraphIndirectAMDX.html
         """
-        return self._cmd_dispatch_graph_indirect(command_buffer, scratch, scratch_size, Ptr(to=count_info))
+        return self._cmd_dispatch_graph_indirect(
+            command_buffer,
+            scratch,
+            scratch_size,
+            Ptr(to=count_info).bitcast[DispatchGraphCountInfoAMDX]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+        )
 
     def cmd_dispatch_graph_indirect_count(
         self,

@@ -80,8 +80,8 @@ struct ShaderInfo(Copyable):
         pipeline: Pipeline,
         shader_stage: ShaderStageFlagBits,
         info_type: ShaderInfoTypeAMD,
-        p_info_size: Ptr[UInt, MutAnyOrigin],
-        p_info: Ptr[NoneType, MutAnyOrigin],
+        p_info_size: Ptr[UInt, MutUntrackedOrigin],
+        p_info: Ptr[NoneType, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -93,7 +93,7 @@ struct ShaderInfo(Copyable):
             device, "vkGetShaderInfoAMD".as_c_string_slice()
         )).bitcast[type_of(self._get_shader_info)]()[]
 
-    def get_shader_info[p_info_origin: MutOrigin = MutAnyOrigin](
+    def get_shader_info[p_info_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
@@ -111,11 +111,11 @@ struct ShaderInfo(Copyable):
             pipeline,
             shader_stage,
             info_type,
-            Ptr(to=info_size),
-            Ptr(to=p_info).bitcast[Ptr[NoneType, MutAnyOrigin]]()[],
+            Ptr(to=info_size).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr(to=p_info).bitcast[Ptr[NoneType, MutUntrackedOrigin]]()[],
         )
 
-    def get_shader_info[p_info_origin: MutOrigin = MutAnyOrigin](
+    def get_shader_info[p_info_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
@@ -135,7 +135,7 @@ struct ShaderInfo(Copyable):
                 pipeline,
                 shader_stage,
                 info_type,
-                Ptr(to=count),
+                Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[NoneType, MutUntrackedOrigin].unsafe_dangling(),
             )
             if result == Result.SUCCESS:
@@ -145,8 +145,8 @@ struct ShaderInfo(Copyable):
                 pipeline,
                 shader_stage,
                 info_type,
-                Ptr(to=count),
-                list.unsafe_ptr().bitcast[NoneType](),
+                Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
+                list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
             )
         list._len = Int(count)
         return ListResult(list^, result)
@@ -237,7 +237,9 @@ struct DisplayNativeHdr(Copyable):
 
 struct AntiLag(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
-    var _anti_lag_update: def(device: Device, p_data: Ptr[AntiLagDataAMD, ImmutAnyOrigin]) thin abi("C")
+    var _anti_lag_update: def(
+        device: Device, p_data: Ptr[AntiLagDataAMD, ImmutUntrackedOrigin]
+    ) thin abi("C")
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
         self._dlhandle = global_functions.get_dlhandle()
@@ -253,4 +255,6 @@ struct AntiLag(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAntiLagUpdateAMD.html
         """
-        return self._anti_lag_update(device, Ptr(to=data))
+        return self._anti_lag_update(
+            device, Ptr(to=data).bitcast[AntiLagDataAMD]().unsafe_origin_cast[ImmutUntrackedOrigin]()
+        )

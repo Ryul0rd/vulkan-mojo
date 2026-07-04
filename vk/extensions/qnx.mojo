@@ -7,9 +7,9 @@ struct ScreenSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_screen_surface: def(
         instance: Instance,
-        p_create_info: Ptr[ScreenSurfaceCreateInfoQNX, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
+        p_create_info: Ptr[ScreenSurfaceCreateInfoQNX, ImmutUntrackedOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_physical_device_screen_presentation_support: def(
         physical_device: PhysicalDevice, queue_family_index: UInt32, window: screen_window_t
@@ -27,7 +27,7 @@ struct ScreenSurface(Copyable):
             instance, "vkGetPhysicalDeviceScreenPresentationSupportQNX".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_screen_presentation_support)]()[]
 
-    def create_screen_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_screen_surface[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         create_info: ScreenSurfaceCreateInfoQNX,
@@ -40,9 +40,9 @@ struct ScreenSurface(Copyable):
         """
         return self._create_screen_surface(
             instance,
-            Ptr(to=create_info),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
-            Ptr(to=surface),
+            Ptr(to=create_info).bitcast[ScreenSurfaceCreateInfoQNX]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
     def get_physical_device_screen_presentation_support(
@@ -62,7 +62,7 @@ struct ExternalMemoryScreenBuffer(Copyable):
     var _get_screen_buffer_properties: def(
         device: Device,
         buffer: screen_buffer_t,
-        p_properties: Ptr[ScreenBufferPropertiesQNX, MutAnyOrigin],
+        p_properties: Ptr[ScreenBufferPropertiesQNX, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -81,4 +81,8 @@ struct ExternalMemoryScreenBuffer(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetScreenBufferPropertiesQNX.html
         """
-        return self._get_screen_buffer_properties(device, buffer, Ptr(to=properties))
+        return self._get_screen_buffer_properties(
+            device,
+            buffer,
+            Ptr(to=properties).bitcast[ScreenBufferPropertiesQNX]().unsafe_origin_cast[MutUntrackedOrigin](),
+        )

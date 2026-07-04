@@ -7,13 +7,13 @@ struct ExternalMemory(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_native_buffer_properties: def(
         device: Device,
-        buffer: Ptr[OH_NativeBuffer, ImmutAnyOrigin],
-        p_properties: Ptr[NativeBufferPropertiesOHOS, MutAnyOrigin],
+        buffer: Ptr[OH_NativeBuffer, ImmutUntrackedOrigin],
+        p_properties: Ptr[NativeBufferPropertiesOHOS, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_memory_native_buffer: def(
         device: Device,
-        p_info: Ptr[MemoryGetNativeBufferInfoOHOS, ImmutAnyOrigin],
-        p_buffer: Ptr[Ptr[OH_NativeBuffer, MutAnyOrigin], MutAnyOrigin],
+        p_info: Ptr[MemoryGetNativeBufferInfoOHOS, ImmutUntrackedOrigin],
+        p_buffer: Ptr[Ptr[OH_NativeBuffer, MutUntrackedOrigin], MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -35,9 +35,13 @@ struct ExternalMemory(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetNativeBufferPropertiesOHOS.html
         """
-        return self._get_native_buffer_properties(device, Ptr(to=buffer), Ptr(to=properties))
+        return self._get_native_buffer_properties(
+            device,
+            Ptr(to=buffer).bitcast[OH_NativeBuffer]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=properties).bitcast[NativeBufferPropertiesOHOS]().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
 
-    def get_memory_native_buffer[buffer_origin: MutOrigin = MutAnyOrigin](
+    def get_memory_native_buffer[buffer_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         info: MemoryGetNativeBufferInfoOHOS,
@@ -49,8 +53,8 @@ struct ExternalMemory(Copyable):
         """
         return self._get_memory_native_buffer(
             device,
-            Ptr(to=info),
-            Ptr(to=Ptr(to=buffer)).bitcast[Ptr[Ptr[OH_NativeBuffer, MutAnyOrigin], MutAnyOrigin]]()[],
+            Ptr(to=info).bitcast[MemoryGetNativeBufferInfoOHOS]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=buffer).bitcast[Ptr[OH_NativeBuffer, MutUntrackedOrigin]]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
 
@@ -58,9 +62,9 @@ struct Surface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_surface: def(
         instance: Instance,
-        p_create_info: Ptr[SurfaceCreateInfoOHOS, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
+        p_create_info: Ptr[SurfaceCreateInfoOHOS, ImmutUntrackedOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
@@ -72,7 +76,7 @@ struct Surface(Copyable):
             instance, "vkCreateSurfaceOHOS".as_c_string_slice()
         )).bitcast[type_of(self._create_surface)]()[]
 
-    def create_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_surface[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         create_info: SurfaceCreateInfoOHOS,
@@ -85,7 +89,7 @@ struct Surface(Copyable):
         """
         return self._create_surface(
             instance,
-            Ptr(to=create_info),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
-            Ptr(to=surface),
+            Ptr(to=create_info).bitcast[SurfaceCreateInfoOHOS]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )

@@ -7,13 +7,13 @@ struct ExternalMemoryAndroidHardwareBuffer(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_android_hardware_buffer_properties: def(
         device: Device,
-        buffer: Ptr[AHardwareBuffer, ImmutAnyOrigin],
-        p_properties: Ptr[AndroidHardwareBufferPropertiesANDROID, MutAnyOrigin],
+        buffer: Ptr[AHardwareBuffer, ImmutUntrackedOrigin],
+        p_properties: Ptr[AndroidHardwareBufferPropertiesANDROID, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_memory_android_hardware_buffer: def(
         device: Device,
-        p_info: Ptr[MemoryGetAndroidHardwareBufferInfoANDROID, ImmutAnyOrigin],
-        p_buffer: Ptr[Ptr[AHardwareBuffer, MutAnyOrigin], MutAnyOrigin],
+        p_info: Ptr[MemoryGetAndroidHardwareBufferInfoANDROID, ImmutUntrackedOrigin],
+        p_buffer: Ptr[Ptr[AHardwareBuffer, MutUntrackedOrigin], MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -38,9 +38,13 @@ struct ExternalMemoryAndroidHardwareBuffer(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetAndroidHardwareBufferPropertiesANDROID.html
         """
-        return self._get_android_hardware_buffer_properties(device, Ptr(to=buffer), Ptr(to=properties))
+        return self._get_android_hardware_buffer_properties(
+            device,
+            Ptr(to=buffer).bitcast[AHardwareBuffer]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=properties).bitcast[AndroidHardwareBufferPropertiesANDROID]().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
 
-    def get_memory_android_hardware_buffer[buffer_origin: MutOrigin = MutAnyOrigin](
+    def get_memory_android_hardware_buffer[buffer_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         info: MemoryGetAndroidHardwareBufferInfoANDROID,
@@ -52,6 +56,6 @@ struct ExternalMemoryAndroidHardwareBuffer(Copyable):
         """
         return self._get_memory_android_hardware_buffer(
             device,
-            Ptr(to=info),
-            Ptr(to=Ptr(to=buffer)).bitcast[Ptr[Ptr[AHardwareBuffer, MutAnyOrigin], MutAnyOrigin]]()[],
+            Ptr(to=info).bitcast[MemoryGetAndroidHardwareBufferInfoANDROID]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=buffer).bitcast[Ptr[AHardwareBuffer, MutUntrackedOrigin]]().unsafe_origin_cast[MutUntrackedOrigin](),
         )

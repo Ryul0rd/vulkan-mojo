@@ -7,13 +7,13 @@ struct DescriptorSetHostMapping(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_descriptor_set_layout_host_mapping_info: def(
         device: Device,
-        p_binding_reference: Ptr[DescriptorSetBindingReferenceVALVE, ImmutAnyOrigin],
-        p_host_mapping: Ptr[DescriptorSetLayoutHostMappingInfoVALVE, MutAnyOrigin],
+        p_binding_reference: Ptr[DescriptorSetBindingReferenceVALVE, ImmutUntrackedOrigin],
+        p_host_mapping: Ptr[DescriptorSetLayoutHostMappingInfoVALVE, MutUntrackedOrigin],
     ) thin abi("C")
     var _get_descriptor_set_host_mapping: def(
         device: Device,
         descriptor_set: DescriptorSet,
-        pp_data: Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin],
+        pp_data: Ptr[Ptr[NoneType, MutUntrackedOrigin], MutUntrackedOrigin],
     ) thin abi("C")
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -39,10 +39,12 @@ struct DescriptorSetHostMapping(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDescriptorSetLayoutHostMappingInfoVALVE.html
         """
         return self._get_descriptor_set_layout_host_mapping_info(
-            device, Ptr(to=binding_reference), Ptr(to=host_mapping)
+            device,
+            Ptr(to=binding_reference).bitcast[DescriptorSetBindingReferenceVALVE]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=host_mapping).bitcast[DescriptorSetLayoutHostMappingInfoVALVE]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_descriptor_set_host_mapping[p_data_origin: MutOrigin = MutAnyOrigin](
+    def get_descriptor_set_host_mapping[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         descriptor_set: DescriptorSet,
@@ -55,5 +57,5 @@ struct DescriptorSetHostMapping(Copyable):
         return self._get_descriptor_set_host_mapping(
             device,
             descriptor_set,
-            Ptr(to=Ptr(to=p_data)).bitcast[Ptr[Ptr[NoneType, MutAnyOrigin], MutAnyOrigin]]()[],
+            Ptr(to=p_data).bitcast[Ptr[NoneType, MutUntrackedOrigin]]().unsafe_origin_cast[MutUntrackedOrigin](),
         )

@@ -8,13 +8,13 @@ struct DisplayTiming(Copyable):
     var _get_refresh_cycle_duration: def(
         device: Device,
         swapchain: SwapchainKHR,
-        p_display_timing_properties: Ptr[RefreshCycleDurationGOOGLE, MutAnyOrigin],
+        p_display_timing_properties: Ptr[RefreshCycleDurationGOOGLE, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_past_presentation_timing: def(
         device: Device,
         swapchain: SwapchainKHR,
-        p_presentation_timing_count: Ptr[UInt32, MutAnyOrigin],
-        p_presentation_timings: Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin],
+        p_presentation_timing_count: Ptr[UInt32, MutUntrackedOrigin],
+        p_presentation_timings: Ptr[PastPresentationTimingGOOGLE, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -39,9 +39,13 @@ struct DisplayTiming(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetRefreshCycleDurationGOOGLE.html
         """
-        return self._get_refresh_cycle_duration(device, swapchain, Ptr(to=display_timing_properties))
+        return self._get_refresh_cycle_duration(
+            device,
+            swapchain,
+            Ptr(to=display_timing_properties).bitcast[RefreshCycleDurationGOOGLE]().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
 
-    def get_past_presentation_timing[p_presentation_timings_origin: MutOrigin = MutAnyOrigin](
+    def get_past_presentation_timing[p_presentation_timings_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         swapchain: SwapchainKHR,
@@ -55,11 +59,11 @@ struct DisplayTiming(Copyable):
         return self._get_past_presentation_timing(
             device,
             swapchain,
-            Ptr(to=presentation_timing_count),
-            Ptr(to=p_presentation_timings).bitcast[Ptr[PastPresentationTimingGOOGLE, MutAnyOrigin]]()[],
+            Ptr(to=presentation_timing_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr(to=p_presentation_timings).bitcast[Ptr[PastPresentationTimingGOOGLE, MutUntrackedOrigin]]()[],
         )
 
-    def get_past_presentation_timing[p_presentation_timings_origin: MutOrigin = MutAnyOrigin](
+    def get_past_presentation_timing[p_presentation_timings_origin: MutOrigin = MutUntrackedOrigin](
         self, device: Device, swapchain: SwapchainKHR
     ) -> ListResult[PastPresentationTimingGOOGLE]:
         """See official vulkan docs for details.
@@ -73,13 +77,16 @@ struct DisplayTiming(Copyable):
             result = self._get_past_presentation_timing(
                 device,
                 swapchain,
-                Ptr(to=count),
+                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[PastPresentationTimingGOOGLE, MutUntrackedOrigin].unsafe_dangling(),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_past_presentation_timing(
-                device, swapchain, Ptr(to=count), list.unsafe_ptr()
+                device,
+                swapchain,
+                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
         list._len = Int(count)
         return ListResult(list^, result)

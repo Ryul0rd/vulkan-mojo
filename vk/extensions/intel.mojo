@@ -6,24 +6,25 @@ from vk.core_functions import GlobalFunctions
 struct PerformanceQuery(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _initialize_performance_api: def(
-        device: Device, p_initialize_info: Ptr[InitializePerformanceApiInfoINTEL, ImmutAnyOrigin]
+        device: Device, p_initialize_info: Ptr[InitializePerformanceApiInfoINTEL, ImmutUntrackedOrigin]
     ) thin abi("C") -> Result
     var _uninitialize_performance_api: def(device: Device) thin abi("C")
     var _cmd_set_performance_marker: def(
-        command_buffer: CommandBuffer, p_marker_info: Ptr[PerformanceMarkerInfoINTEL, ImmutAnyOrigin]
+        command_buffer: CommandBuffer,
+        p_marker_info: Ptr[PerformanceMarkerInfoINTEL, ImmutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _cmd_set_performance_stream_marker: def(
         command_buffer: CommandBuffer,
-        p_marker_info: Ptr[PerformanceStreamMarkerInfoINTEL, ImmutAnyOrigin],
+        p_marker_info: Ptr[PerformanceStreamMarkerInfoINTEL, ImmutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _cmd_set_performance_override: def(
         command_buffer: CommandBuffer,
-        p_override_info: Ptr[PerformanceOverrideInfoINTEL, ImmutAnyOrigin],
+        p_override_info: Ptr[PerformanceOverrideInfoINTEL, ImmutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _acquire_performance_configuration: def(
         device: Device,
-        p_acquire_info: Ptr[PerformanceConfigurationAcquireInfoINTEL, ImmutAnyOrigin],
-        p_configuration: Ptr[PerformanceConfigurationINTEL, MutAnyOrigin],
+        p_acquire_info: Ptr[PerformanceConfigurationAcquireInfoINTEL, ImmutUntrackedOrigin],
+        p_configuration: Ptr[PerformanceConfigurationINTEL, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _release_performance_configuration: def(
         device: Device, configuration: PerformanceConfigurationINTEL
@@ -34,7 +35,7 @@ struct PerformanceQuery(Copyable):
     var _get_performance_parameter: def(
         device: Device,
         parameter: PerformanceParameterTypeINTEL,
-        p_value: Ptr[PerformanceValueINTEL, MutAnyOrigin],
+        p_value: Ptr[PerformanceValueINTEL, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -77,7 +78,10 @@ struct PerformanceQuery(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkInitializePerformanceApiINTEL.html
         """
-        return self._initialize_performance_api(device, Ptr(to=initialize_info))
+        return self._initialize_performance_api(
+            device,
+            Ptr(to=initialize_info).bitcast[InitializePerformanceApiInfoINTEL]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+        )
 
     def uninitialize_performance_api(self, device: Device):
         """See official vulkan docs for details.
@@ -93,7 +97,10 @@ struct PerformanceQuery(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPerformanceMarkerINTEL.html
         """
-        return self._cmd_set_performance_marker(command_buffer, Ptr(to=marker_info))
+        return self._cmd_set_performance_marker(
+            command_buffer,
+            Ptr(to=marker_info).bitcast[PerformanceMarkerInfoINTEL]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+        )
 
     def cmd_set_performance_stream_marker(
         self, command_buffer: CommandBuffer, marker_info: PerformanceStreamMarkerInfoINTEL
@@ -102,7 +109,10 @@ struct PerformanceQuery(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPerformanceStreamMarkerINTEL.html
         """
-        return self._cmd_set_performance_stream_marker(command_buffer, Ptr(to=marker_info))
+        return self._cmd_set_performance_stream_marker(
+            command_buffer,
+            Ptr(to=marker_info).bitcast[PerformanceStreamMarkerInfoINTEL]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+        )
 
     def cmd_set_performance_override(
         self, command_buffer: CommandBuffer, override_info: PerformanceOverrideInfoINTEL
@@ -111,7 +121,10 @@ struct PerformanceQuery(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdSetPerformanceOverrideINTEL.html
         """
-        return self._cmd_set_performance_override(command_buffer, Ptr(to=override_info))
+        return self._cmd_set_performance_override(
+            command_buffer,
+            Ptr(to=override_info).bitcast[PerformanceOverrideInfoINTEL]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+        )
 
     def acquire_performance_configuration(
         self,
@@ -123,7 +136,11 @@ struct PerformanceQuery(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkAcquirePerformanceConfigurationINTEL.html
         """
-        return self._acquire_performance_configuration(device, Ptr(to=acquire_info), Ptr(to=configuration))
+        return self._acquire_performance_configuration(
+            device,
+            Ptr(to=acquire_info).bitcast[PerformanceConfigurationAcquireInfoINTEL]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=configuration).bitcast[PerformanceConfigurationINTEL]().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
 
     def release_performance_configuration(
         self, device: Device, configuration: PerformanceConfigurationINTEL
@@ -153,4 +170,8 @@ struct PerformanceQuery(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetPerformanceParameterINTEL.html
         """
-        return self._get_performance_parameter(device, parameter, Ptr(to=value))
+        return self._get_performance_parameter(
+            device,
+            parameter,
+            Ptr(to=value).bitcast[PerformanceValueINTEL]().unsafe_origin_cast[MutUntrackedOrigin](),
+        )

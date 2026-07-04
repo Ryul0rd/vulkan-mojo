@@ -6,7 +6,7 @@ from vk.core_functions import GlobalFunctions
 struct SubpassShading(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _get_device_subpass_shading_max_workgroup_size: def(
-        device: Device, renderpass: RenderPass, p_max_workgroup_size: Ptr[Extent2D, MutAnyOrigin]
+        device: Device, renderpass: RenderPass, p_max_workgroup_size: Ptr[Extent2D, MutUntrackedOrigin]
     ) thin abi("C") -> Result
     var _cmd_subpass_shading: def(command_buffer: CommandBuffer) thin abi("C")
 
@@ -23,7 +23,7 @@ struct SubpassShading(Copyable):
         )).bitcast[type_of(self._cmd_subpass_shading)]()[]
 
     def get_device_subpass_shading_max_workgroup_size[
-        p_max_workgroup_size_origin: MutOrigin = MutAnyOrigin
+        p_max_workgroup_size_origin: MutOrigin = MutUntrackedOrigin
     ](
         self,
         device: Device,
@@ -35,7 +35,7 @@ struct SubpassShading(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceSubpassShadingMaxWorkgroupSizeHUAWEI.html
         """
         return self._get_device_subpass_shading_max_workgroup_size(
-            device, renderpass, Ptr(to=p_max_workgroup_size).bitcast[Ptr[Extent2D, MutAnyOrigin]]()[]
+            device, renderpass, Ptr(to=p_max_workgroup_size).bitcast[Ptr[Extent2D, MutUntrackedOrigin]]()[]
         )
 
     def cmd_subpass_shading(self, command_buffer: CommandBuffer):

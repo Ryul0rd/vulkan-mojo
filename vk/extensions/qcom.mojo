@@ -6,13 +6,16 @@ from vk.core_functions import GlobalFunctions
 struct TileShading(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_dispatch_tile: def(
-        command_buffer: CommandBuffer, p_dispatch_tile_info: Ptr[DispatchTileInfoQCOM, ImmutAnyOrigin]
+        command_buffer: CommandBuffer,
+        p_dispatch_tile_info: Ptr[DispatchTileInfoQCOM, ImmutUntrackedOrigin],
     ) thin abi("C")
     var _cmd_begin_per_tile_execution: def(
-        command_buffer: CommandBuffer, p_per_tile_begin_info: Ptr[PerTileBeginInfoQCOM, ImmutAnyOrigin]
+        command_buffer: CommandBuffer,
+        p_per_tile_begin_info: Ptr[PerTileBeginInfoQCOM, ImmutUntrackedOrigin],
     ) thin abi("C")
     var _cmd_end_per_tile_execution: def(
-        command_buffer: CommandBuffer, p_per_tile_end_info: Ptr[PerTileEndInfoQCOM, ImmutAnyOrigin]
+        command_buffer: CommandBuffer,
+        p_per_tile_end_info: Ptr[PerTileEndInfoQCOM, ImmutUntrackedOrigin],
     ) thin abi("C")
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -37,7 +40,10 @@ struct TileShading(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdDispatchTileQCOM.html
         """
-        return self._cmd_dispatch_tile(command_buffer, Ptr(to=dispatch_tile_info))
+        return self._cmd_dispatch_tile(
+            command_buffer,
+            Ptr(to=dispatch_tile_info).bitcast[DispatchTileInfoQCOM]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+        )
 
     def cmd_begin_per_tile_execution(
         self, command_buffer: CommandBuffer, per_tile_begin_info: PerTileBeginInfoQCOM
@@ -46,7 +52,10 @@ struct TileShading(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdBeginPerTileExecutionQCOM.html
         """
-        return self._cmd_begin_per_tile_execution(command_buffer, Ptr(to=per_tile_begin_info))
+        return self._cmd_begin_per_tile_execution(
+            command_buffer,
+            Ptr(to=per_tile_begin_info).bitcast[PerTileBeginInfoQCOM]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+        )
 
     def cmd_end_per_tile_execution(
         self, command_buffer: CommandBuffer, per_tile_end_info: PerTileEndInfoQCOM
@@ -55,7 +64,10 @@ struct TileShading(Copyable):
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkCmdEndPerTileExecutionQCOM.html
         """
-        return self._cmd_end_per_tile_execution(command_buffer, Ptr(to=per_tile_end_info))
+        return self._cmd_end_per_tile_execution(
+            command_buffer,
+            Ptr(to=per_tile_end_info).bitcast[PerTileEndInfoQCOM]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+        )
 
 
 struct TileProperties(Copyable):
@@ -63,13 +75,13 @@ struct TileProperties(Copyable):
     var _get_framebuffer_tile_properties: def(
         device: Device,
         framebuffer: Framebuffer,
-        p_properties_count: Ptr[UInt32, MutAnyOrigin],
-        p_properties: Ptr[TilePropertiesQCOM, MutAnyOrigin],
+        p_properties_count: Ptr[UInt32, MutUntrackedOrigin],
+        p_properties: Ptr[TilePropertiesQCOM, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_dynamic_rendering_tile_properties: def(
         device: Device,
-        p_rendering_info: Ptr[RenderingInfo, ImmutAnyOrigin],
-        p_properties: Ptr[TilePropertiesQCOM, MutAnyOrigin],
+        p_rendering_info: Ptr[RenderingInfo, ImmutUntrackedOrigin],
+        p_properties: Ptr[TilePropertiesQCOM, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -84,7 +96,7 @@ struct TileProperties(Copyable):
             device, "vkGetDynamicRenderingTilePropertiesQCOM".as_c_string_slice()
         )).bitcast[type_of(self._get_dynamic_rendering_tile_properties)]()[]
 
-    def get_framebuffer_tile_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
+    def get_framebuffer_tile_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         framebuffer: Framebuffer,
@@ -98,11 +110,11 @@ struct TileProperties(Copyable):
         return self._get_framebuffer_tile_properties(
             device,
             framebuffer,
-            Ptr(to=properties_count),
-            Ptr(to=p_properties).bitcast[Ptr[TilePropertiesQCOM, MutAnyOrigin]]()[],
+            Ptr(to=properties_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr(to=p_properties).bitcast[Ptr[TilePropertiesQCOM, MutUntrackedOrigin]]()[],
         )
 
-    def get_framebuffer_tile_properties[p_properties_origin: MutOrigin = MutAnyOrigin](
+    def get_framebuffer_tile_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self, device: Device, framebuffer: Framebuffer
     ) -> ListResult[TilePropertiesQCOM]:
         """See official vulkan docs for details.
@@ -116,13 +128,16 @@ struct TileProperties(Copyable):
             result = self._get_framebuffer_tile_properties(
                 device,
                 framebuffer,
-                Ptr(to=count),
+                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[TilePropertiesQCOM, MutUntrackedOrigin].unsafe_dangling(),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_framebuffer_tile_properties(
-                device, framebuffer, Ptr(to=count), list.unsafe_ptr()
+                device,
+                framebuffer,
+                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
         list._len = Int(count)
         return ListResult(list^, result)
@@ -135,7 +150,9 @@ struct TileProperties(Copyable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDynamicRenderingTilePropertiesQCOM.html
         """
         return self._get_dynamic_rendering_tile_properties(
-            device, Ptr(to=rendering_info), Ptr(to=properties)
+            device,
+            Ptr(to=rendering_info).bitcast[RenderingInfo]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=properties).bitcast[TilePropertiesQCOM]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
 
@@ -143,7 +160,7 @@ struct TileMemoryHeap(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_bind_tile_memory: def(
         command_buffer: CommandBuffer,
-        p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, ImmutAnyOrigin],
+        p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, ImmutUntrackedOrigin],
     ) thin abi("C")
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -155,7 +172,7 @@ struct TileMemoryHeap(Copyable):
             device, "vkCmdBindTileMemoryQCOM".as_c_string_slice()
         )).bitcast[type_of(self._cmd_bind_tile_memory)]()[]
 
-    def cmd_bind_tile_memory[p_tile_memory_bind_info_origin: ImmutOrigin = ImmutAnyOrigin](
+    def cmd_bind_tile_memory[p_tile_memory_bind_info_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, p_tile_memory_bind_info_origin],
@@ -166,5 +183,5 @@ struct TileMemoryHeap(Copyable):
         """
         return self._cmd_bind_tile_memory(
             command_buffer,
-            Ptr(to=p_tile_memory_bind_info).bitcast[Ptr[TileMemoryBindInfoQCOM, ImmutAnyOrigin]]()[],
+            Ptr(to=p_tile_memory_bind_info).bitcast[Ptr[TileMemoryBindInfoQCOM, ImmutUntrackedOrigin]]()[],
         )

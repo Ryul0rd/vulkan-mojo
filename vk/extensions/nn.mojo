@@ -7,9 +7,9 @@ struct ViSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_vi_surface: def(
         instance: Instance,
-        p_create_info: Ptr[ViSurfaceCreateInfoNN, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
+        p_create_info: Ptr[ViSurfaceCreateInfoNN, ImmutUntrackedOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
@@ -21,7 +21,7 @@ struct ViSurface(Copyable):
             instance, "vkCreateViSurfaceNN".as_c_string_slice()
         )).bitcast[type_of(self._create_vi_surface)]()[]
 
-    def create_vi_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_vi_surface[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         create_info: ViSurfaceCreateInfoNN,
@@ -34,7 +34,7 @@ struct ViSurface(Copyable):
         """
         return self._create_vi_surface(
             instance,
-            Ptr(to=create_info),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
-            Ptr(to=surface),
+            Ptr(to=create_info).bitcast[ViSurfaceCreateInfoNN]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )

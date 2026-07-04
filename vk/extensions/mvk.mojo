@@ -7,9 +7,9 @@ struct IosSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_ios_surface: def(
         instance: Instance,
-        p_create_info: Ptr[IOSSurfaceCreateInfoMVK, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
+        p_create_info: Ptr[IOSSurfaceCreateInfoMVK, ImmutUntrackedOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
@@ -21,7 +21,7 @@ struct IosSurface(Copyable):
             instance, "vkCreateIOSSurfaceMVK".as_c_string_slice()
         )).bitcast[type_of(self._create_ios_surface)]()[]
 
-    def create_ios_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_ios_surface[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         create_info: IOSSurfaceCreateInfoMVK,
@@ -34,9 +34,9 @@ struct IosSurface(Copyable):
         """
         return self._create_ios_surface(
             instance,
-            Ptr(to=create_info),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
-            Ptr(to=surface),
+            Ptr(to=create_info).bitcast[IOSSurfaceCreateInfoMVK]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
 
@@ -44,9 +44,9 @@ struct MacosSurface(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_mac_os_surface: def(
         instance: Instance,
-        p_create_info: Ptr[MacOSSurfaceCreateInfoMVK, ImmutAnyOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutAnyOrigin],
-        p_surface: Ptr[SurfaceKHR, MutAnyOrigin],
+        p_create_info: Ptr[MacOSSurfaceCreateInfoMVK, ImmutUntrackedOrigin],
+        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
@@ -58,7 +58,7 @@ struct MacosSurface(Copyable):
             instance, "vkCreateMacOSSurfaceMVK".as_c_string_slice()
         )).bitcast[type_of(self._create_mac_os_surface)]()[]
 
-    def create_mac_os_surface[p_allocator_origin: ImmutOrigin = ImmutAnyOrigin](
+    def create_mac_os_surface[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         create_info: MacOSSurfaceCreateInfoMVK,
@@ -71,7 +71,7 @@ struct MacosSurface(Copyable):
         """
         return self._create_mac_os_surface(
             instance,
-            Ptr(to=create_info),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutAnyOrigin]]()[],
-            Ptr(to=surface),
+            Ptr(to=create_info).bitcast[MacOSSurfaceCreateInfoMVK]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
