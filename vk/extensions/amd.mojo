@@ -93,7 +93,7 @@ struct ShaderInfo(Copyable):
             device, "vkGetShaderInfoAMD".as_c_string_slice()
         )).bitcast[type_of(self._get_shader_info)]()[]
 
-    def get_shader_info[p_info_origin: MutOrigin = MutUntrackedOrigin](
+    def get_shader_info[p_info_origin: MutOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
@@ -115,7 +115,7 @@ struct ShaderInfo(Copyable):
             Ptr(to=p_info).bitcast[Optional[Ptr[NoneType, MutUntrackedOrigin]]]()[],
         )
 
-    def get_shader_info[p_info_origin: MutOrigin = MutUntrackedOrigin](
+    def get_shader_info[p_info_origin: MutOrigin](
         self,
         device: Device,
         pipeline: Pipeline,

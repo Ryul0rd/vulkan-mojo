@@ -100,7 +100,7 @@ struct Tensors(Copyable):
             device, "vkGetTensorViewOpaqueCaptureDescriptorDataARM".as_c_string_slice()
         )).bitcast[type_of(self._get_tensor_view_opaque_capture_descriptor_data)]()[]
 
-    def create_tensor[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
+    def create_tensor[p_allocator_origin: ImmutOrigin](
         self,
         device: Device,
         create_info: TensorCreateInfoARM,
@@ -118,7 +118,7 @@ struct Tensors(Copyable):
             Ptr(to=tensor).bitcast[TensorARM]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_tensor[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
+    def destroy_tensor[p_allocator_origin: ImmutOrigin](
         self,
         device: Device,
         tensor: TensorARM,
@@ -134,7 +134,7 @@ struct Tensors(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_tensor_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
+    def create_tensor_view[p_allocator_origin: ImmutOrigin](
         self,
         device: Device,
         create_info: TensorViewCreateInfoARM,
@@ -152,7 +152,7 @@ struct Tensors(Copyable):
             Ptr(to=view).bitcast[TensorViewARM]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_tensor_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
+    def destroy_tensor_view[p_allocator_origin: ImmutOrigin](
         self,
         device: Device,
         tensor_view: TensorViewARM,
@@ -184,7 +184,7 @@ struct Tensors(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def bind_tensor_memory[p_bind_infos_origin: ImmutOrigin = ImmutUntrackedOrigin](
+    def bind_tensor_memory[p_bind_infos_origin: ImmutOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
@@ -242,7 +242,7 @@ struct Tensors(Copyable):
             Ptr(to=external_tensor_properties).bitcast[ExternalTensorPropertiesARM]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_tensor_opaque_capture_descriptor_data[p_data_origin: MutOrigin = MutUntrackedOrigin](
+    def get_tensor_opaque_capture_descriptor_data[p_data_origin: MutOrigin](
         self,
         device: Device,
         info: TensorCaptureDescriptorDataInfoARM,
@@ -258,9 +258,7 @@ struct Tensors(Copyable):
             Ptr(to=p_data).bitcast[Ptr[NoneType, MutUntrackedOrigin]]()[],
         )
 
-    def get_tensor_view_opaque_capture_descriptor_data[
-        p_data_origin: MutOrigin = MutUntrackedOrigin
-    ](
+    def get_tensor_view_opaque_capture_descriptor_data[p_data_origin: MutOrigin](
         self,
         device: Device,
         info: TensorViewCaptureDescriptorDataInfoARM,
@@ -384,9 +382,9 @@ struct DataGraph(Copyable):
         )).bitcast[type_of(self._get_physical_device_queue_family_data_graph_processing_engine_properties)]()[]
 
     def create_data_graph_pipelines[
-        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
-        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
-        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
+        p_create_infos_origin: ImmutOrigin,
+        p_allocator_origin: ImmutOrigin,
+        p_pipelines_origin: MutOrigin,
     ](
         self,
         device: Device,
@@ -411,7 +409,7 @@ struct DataGraph(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
-    def create_data_graph_pipeline_session[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
+    def create_data_graph_pipeline_session[p_allocator_origin: ImmutOrigin](
         self,
         device: Device,
         create_info: DataGraphPipelineSessionCreateInfoARM,
@@ -430,7 +428,7 @@ struct DataGraph(Copyable):
         )
 
     def get_data_graph_pipeline_session_bind_point_requirements[
-        p_bind_point_requirements_origin: MutOrigin = MutUntrackedOrigin
+        p_bind_point_requirements_origin: MutOrigin
     ](
         self,
         device: Device,
@@ -450,7 +448,7 @@ struct DataGraph(Copyable):
         )
 
     def get_data_graph_pipeline_session_bind_point_requirements[
-        p_bind_point_requirements_origin: MutOrigin = MutUntrackedOrigin
+        p_bind_point_requirements_origin: MutOrigin
     ](
         self, device: Device, info: DataGraphPipelineSessionBindPointRequirementsInfoARM
     ) -> ListResult[DataGraphPipelineSessionBindPointRequirementARM]:
@@ -495,9 +493,7 @@ struct DataGraph(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def bind_data_graph_pipeline_session_memory[
-        p_bind_infos_origin: ImmutOrigin = ImmutUntrackedOrigin
-    ](
+    def bind_data_graph_pipeline_session_memory[p_bind_infos_origin: ImmutOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
@@ -513,7 +509,7 @@ struct DataGraph(Copyable):
             Ptr(to=p_bind_infos).bitcast[Ptr[BindDataGraphPipelineSessionMemoryInfoARM, ImmutUntrackedOrigin]]()[],
         )
 
-    def destroy_data_graph_pipeline_session[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
+    def destroy_data_graph_pipeline_session[p_allocator_origin: ImmutOrigin](
         self,
         device: Device,
         session: DataGraphPipelineSessionARM,
@@ -529,7 +525,7 @@ struct DataGraph(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def cmd_dispatch_data_graph[p_info_origin: ImmutOrigin = ImmutUntrackedOrigin](
+    def cmd_dispatch_data_graph[p_info_origin: ImmutOrigin](
         self,
         command_buffer: CommandBuffer,
         session: DataGraphPipelineSessionARM,
@@ -545,9 +541,7 @@ struct DataGraph(Copyable):
             Ptr(to=p_info).bitcast[Optional[Ptr[DataGraphPipelineDispatchInfoARM, ImmutUntrackedOrigin]]]()[],
         )
 
-    def get_data_graph_pipeline_available_properties[
-        p_properties_origin: MutOrigin = MutUntrackedOrigin
-    ](
+    def get_data_graph_pipeline_available_properties[p_properties_origin: MutOrigin](
         self,
         device: Device,
         pipeline_info: DataGraphPipelineInfoARM,
@@ -565,9 +559,7 @@ struct DataGraph(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[DataGraphPipelinePropertyARM, MutUntrackedOrigin]]]()[],
         )
 
-    def get_data_graph_pipeline_available_properties[
-        p_properties_origin: MutOrigin = MutUntrackedOrigin
-    ](
+    def get_data_graph_pipeline_available_properties[p_properties_origin: MutOrigin](
         self, device: Device, pipeline_info: DataGraphPipelineInfoARM
     ) -> ListResult[DataGraphPipelinePropertyARM]:
         """See official vulkan docs for details.
@@ -595,7 +587,7 @@ struct DataGraph(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def get_data_graph_pipeline_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
+    def get_data_graph_pipeline_properties[p_properties_origin: MutOrigin](
         self,
         device: Device,
         pipeline_info: DataGraphPipelineInfoARM,
@@ -614,7 +606,7 @@ struct DataGraph(Copyable):
         )
 
     def get_physical_device_queue_family_data_graph_properties[
-        p_queue_family_data_graph_properties_origin: MutOrigin = MutUntrackedOrigin
+        p_queue_family_data_graph_properties_origin: MutOrigin
     ](
         self,
         physical_device: PhysicalDevice,
@@ -634,7 +626,7 @@ struct DataGraph(Copyable):
         )
 
     def get_physical_device_queue_family_data_graph_properties[
-        p_queue_family_data_graph_properties_origin: MutOrigin = MutUntrackedOrigin
+        p_queue_family_data_graph_properties_origin: MutOrigin
     ](
         self, physical_device: PhysicalDevice, queue_family_index: UInt32
     ) -> ListResult[QueueFamilyDataGraphPropertiesARM]:
@@ -700,8 +692,7 @@ struct PerformanceCountersByRegion(Copyable):
         )).bitcast[type_of(self._enumerate_physical_device_queue_family_performance_counters_by_region)]()[]
 
     def enumerate_physical_device_queue_family_performance_counters_by_region[
-        p_counters_origin: MutOrigin = MutUntrackedOrigin,
-        p_counter_descriptions_origin: MutOrigin = MutUntrackedOrigin,
+        p_counters_origin: MutOrigin, p_counter_descriptions_origin: MutOrigin
     ](
         self,
         physical_device: PhysicalDevice,

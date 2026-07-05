@@ -41,7 +41,7 @@ struct ExternalMemory(Copyable):
             Ptr(to=properties).bitcast[NativeBufferPropertiesOHOS]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_memory_native_buffer[buffer_origin: MutOrigin = MutUntrackedOrigin](
+    def get_memory_native_buffer[buffer_origin: MutOrigin](
         self,
         device: Device,
         info: MemoryGetNativeBufferInfoOHOS,
@@ -76,7 +76,7 @@ struct Surface(Copyable):
             instance, "vkCreateSurfaceOHOS".as_c_string_slice()
         )).bitcast[type_of(self._create_surface)]()[]
 
-    def create_surface[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
+    def create_surface[p_allocator_origin: ImmutOrigin](
         self,
         instance: Instance,
         create_info: SurfaceCreateInfoOHOS,

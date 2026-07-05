@@ -77,9 +77,9 @@ struct ShaderEnqueue(Copyable):
         )).bitcast[type_of(self._cmd_dispatch_graph_indirect_count)]()[]
 
     def create_execution_graph_pipelines[
-        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
-        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
-        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
+        p_create_infos_origin: ImmutOrigin,
+        p_allocator_origin: ImmutOrigin,
+        p_pipelines_origin: MutOrigin,
     ](
         self,
         device: Device,

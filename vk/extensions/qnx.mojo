@@ -27,7 +27,7 @@ struct ScreenSurface(Copyable):
             instance, "vkGetPhysicalDeviceScreenPresentationSupportQNX".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_screen_presentation_support)]()[]
 
-    def create_screen_surface[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
+    def create_screen_surface[p_allocator_origin: ImmutOrigin](
         self,
         instance: Instance,
         create_info: ScreenSurfaceCreateInfoQNX,

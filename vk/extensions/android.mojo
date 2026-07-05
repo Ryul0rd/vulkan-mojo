@@ -44,7 +44,7 @@ struct ExternalMemoryAndroidHardwareBuffer(Copyable):
             Ptr(to=properties).bitcast[AndroidHardwareBufferPropertiesANDROID]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_memory_android_hardware_buffer[buffer_origin: MutOrigin = MutUntrackedOrigin](
+    def get_memory_android_hardware_buffer[buffer_origin: MutOrigin](
         self,
         device: Device,
         info: MemoryGetAndroidHardwareBufferInfoANDROID,

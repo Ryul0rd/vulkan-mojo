@@ -22,9 +22,7 @@ struct SubpassShading(Copyable):
             device, "vkCmdSubpassShadingHUAWEI".as_c_string_slice()
         )).bitcast[type_of(self._cmd_subpass_shading)]()[]
 
-    def get_device_subpass_shading_max_workgroup_size[
-        p_max_workgroup_size_origin: MutOrigin = MutUntrackedOrigin
-    ](
+    def get_device_subpass_shading_max_workgroup_size[p_max_workgroup_size_origin: MutOrigin](
         self,
         device: Device,
         renderpass: RenderPass,

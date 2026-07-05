@@ -96,7 +96,7 @@ struct TileProperties(Copyable):
             device, "vkGetDynamicRenderingTilePropertiesQCOM".as_c_string_slice()
         )).bitcast[type_of(self._get_dynamic_rendering_tile_properties)]()[]
 
-    def get_framebuffer_tile_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
+    def get_framebuffer_tile_properties[p_properties_origin: MutOrigin](
         self,
         device: Device,
         framebuffer: Framebuffer,
@@ -114,7 +114,7 @@ struct TileProperties(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[TilePropertiesQCOM, MutUntrackedOrigin]]]()[],
         )
 
-    def get_framebuffer_tile_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
+    def get_framebuffer_tile_properties[p_properties_origin: MutOrigin](
         self, device: Device, framebuffer: Framebuffer
     ) -> ListResult[TilePropertiesQCOM]:
         """See official vulkan docs for details.
@@ -172,7 +172,7 @@ struct TileMemoryHeap(Copyable):
             device, "vkCmdBindTileMemoryQCOM".as_c_string_slice()
         )).bitcast[type_of(self._cmd_bind_tile_memory)]()[]
 
-    def cmd_bind_tile_memory[p_tile_memory_bind_info_origin: ImmutOrigin = ImmutUntrackedOrigin](
+    def cmd_bind_tile_memory[p_tile_memory_bind_info_origin: ImmutOrigin](
         self,
         command_buffer: CommandBuffer,
         p_tile_memory_bind_info: Optional[Ptr[TileMemoryBindInfoQCOM, p_tile_memory_bind_info_origin]],
